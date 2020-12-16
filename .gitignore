@@ -2,6 +2,9 @@
 Audio/
 Graphics/
 
+# Other Azurite folders
+Animations/
+
 # Data folder, but not Data/Scripts folder
 Data/*
 !Data/Scripts.rxdata

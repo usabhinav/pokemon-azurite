@@ -1364,7 +1364,7 @@ class PokeBattle_AI
            :ROCK,   # Cave
            :GROUND  # Sand
         ]
-        type = envtypes[@environment]
+        type = envtypes[@battle.environment]
         score -= 90 if user.pbHasType?(type)
       end
     #---------------------------------------------------------------------------
@@ -2806,7 +2806,7 @@ class PokeBattle_AI
     when "152"
     #---------------------------------------------------------------------------
     when "153"
-      score -= 95 if target.pbOwnSide.effects[PBEffects::StickyWeb]
+      score -= 95 if user.pbOpposingSide.effects[PBEffects::StickyWeb]
     #---------------------------------------------------------------------------
     when "154"
     #---------------------------------------------------------------------------
@@ -2997,7 +2997,7 @@ class PokeBattle_AI
       if target.effects[PBEffects::ThroatChop]==0 && skill>=PBTrainerAI.highSkill
         hasSoundMove = false
         user.eachMove do |m|
-          next if !m.pbSoundMove?(user)
+          next if !m.soundMove?
           hasSoundMove = true
           break
         end

@@ -33,7 +33,7 @@ class PokeBattle_Battler
       return false
     end
     # Throat Chop
-    if @effects[PBEffects::ThroatChop]>0 && move.pbSoundMove?(self)
+    if @effects[PBEffects::ThroatChop]>0 && move.soundMove?
       if showMessages
         msg = _INTL("{1} can't use {2} because of Throat Chop!",pbThis,move.name)
         (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)

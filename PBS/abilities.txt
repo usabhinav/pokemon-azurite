@@ -332,4 +332,4 @@
 330,RAINBOON,Rain Boon,"A random stat will be raised by 1 stage on this Pokémon on at the end of every turn with rain."
 331,ROUNDRECORD,Round Record,"This Pokémon is always confused."
 332,PHASINGBODY,Phasing Body,"This ability needs finishing"
-332,WEATHERBENEFIT,Weather Benefit,"Immune to all weather effects. Also gains stat boosts depending on the weather in effect."
+333,WEATHERBENEFIT,Weather Benefit,"Immune to all weather effects. Also gains stat boosts depending on the weather in effect."

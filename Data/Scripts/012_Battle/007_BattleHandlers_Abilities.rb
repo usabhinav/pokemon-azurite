@@ -1149,6 +1149,25 @@ BattleHandlers::DamageCalcUserAbility.add(:WATERBUBBLE,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:MAGMATICHEAT,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    targetTypes = target.pbTypes(true) # Takes third type into account
+    for targetType in targetTypes
+      if PBTypes.notVeryEffective?(type, targetType) && isConst?(type,PBTypes,:FIRE)
+        # Changes the 0.5x "not very effective" multiplier to 0.75x
+        mults[FINAL_DMG_MULT] *= 1.5
+      end
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:RAINBOWGUARD,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    types = [PBTypes::FIRE, PBTypes::ICE, PBTypes::ELECTRIC]
+    mults[FINAL_DMG_MULT] *= 1.3 if types.include?(type) && !user.pbHasType?(type)
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -1272,15 +1291,6 @@ BattleHandlers::DamageCalcTargetAbility.add(:CRYSTALLINE,
 BattleHandlers::DamageCalcTargetAbility.add(:IMMATERIAL,
   proc { |ability,user,target,move,mults,baseDmg,type|
     if move.specialMove?
-      mults[FINAL_DMG_MULT] *= 1.5
-    end
-  }
-)
-
-BattleHandlers::DamageCalcTargetAbility.add(:MAGMATICHEAT,
-  proc { |ability,user,target,move,mults,baseDmg,type|
-    if PBTypes.notVeryEffective?(target.damageState.typeMod)
-      # Changes the 0.5x "not very effective" multiplier to 0.75x
       mults[FINAL_DMG_MULT] *= 1.5
     end
   }

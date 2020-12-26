@@ -2030,6 +2030,10 @@ class PokeBattle_Move_0C2 < PokeBattle_Move
     user.effects[PBEffects::HyperBeam] = 2
     user.currentMove = @id
   end
+
+  def rollingBasedMove?
+    return true
+  end
 end
 
 
@@ -2372,6 +2376,10 @@ class PokeBattle_Move_0D1 < PokeBattle_Move
       b.pbCureStatus
     end
   end
+
+  def rollingBasedMove?
+    return true
+  end
 end
 
 
@@ -2392,6 +2400,10 @@ class PokeBattle_Move_0D2 < PokeBattle_Move
         user.pbConfuse(_INTL("{1} became confused due to fatigue!",user.pbThis))
       end
     end
+  end
+
+  def rollingBasedMove?
+    return true
   end
 end
 
@@ -2416,6 +2428,10 @@ class PokeBattle_Move_0D3 < PokeBattle_Move
       user.currentMove = @id
     end
     user.effects[PBEffects::Rollout] -= 1 if user.effects[PBEffects::Rollout] > 0
+  end
+
+  def rollingBasedMove?
+    return true
   end
 end
 
@@ -2487,6 +2503,10 @@ class PokeBattle_Move_0D4 < PokeBattle_FixedDamageMove
   def pbShowAnimation(id,user,targets,hitNum=0,showAnimation=true)
     hitNum = 1 if !@damagingTurn   # Charging anim
     super
+  end
+
+  def rollingBasedMove?
+    return true
   end
 end
 

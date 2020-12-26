@@ -408,6 +408,7 @@ end
 #===============================================================================
 class PokeBattle_TwoTurnMove < PokeBattle_Move
   def chargingTurnMove?; return true; end
+  def rollingBasedMove?; return true; end
 
   # user.effects[PBEffects::TwoTurnAttack] is set to the move's ID if this
   # method returns true, or 0 if false.

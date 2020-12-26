@@ -96,6 +96,7 @@ class PokeBattle_Move
   def recoilMove?;             return false; end
   def flinchingMove?;          return false; end
   def callsAnotherMove?;       return false; end
+  def rollingBasedMove?;       return false; end
   # Whether the move can/will hit more than once in the same turn (including
   # Beat Up which may instead hit just once). Not the same as pbNumHits>1.
   def multiHitMove?;           return false; end

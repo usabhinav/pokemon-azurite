@@ -597,6 +597,10 @@ class PokeBattle_Move_12E < PokeBattle_Move
     user.effects[PBEffects::HyperBeam] = 2
     user.currentMove = @id
   end
+
+  def rollingBasedMove?
+    return true
+  end
 end
 
 

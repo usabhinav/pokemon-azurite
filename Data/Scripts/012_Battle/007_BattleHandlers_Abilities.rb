@@ -538,6 +538,12 @@ BattleHandlers::PriorityChangeAbility.add(:TRIAGE,
   }
 )
 
+BattleHandlers::PriorityChangeAbility.add(:SPEEDBALL,
+  proc { |ability,battler,move,pri|
+    next pri+1 if move.rollingBasedMove? || battler.usingMultiTurnAttack?
+  }
+)
+
 #===============================================================================
 # PriorityBracketChangeAbility handlers
 #===============================================================================

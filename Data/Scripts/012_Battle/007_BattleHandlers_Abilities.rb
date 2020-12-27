@@ -2637,6 +2637,46 @@ BattleHandlers::AbilityOnSwitchIn.add(:MYSTERYTYPE,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:RETEXTURING,
+  proc { |ability,battler,battle|
+    opps = []
+    battler.eachOpposing do |b|
+      opps.push(b)
+    end
+    next if opps.length == 0
+    opp = opps[battle.pbRandom(opps.length)]
+    restypes = []
+    maxrescount = 0
+    for i in 0..PBTypes.maxValue
+      next if isConst?(i,PBTypes,:QMARKS)
+      rescount = 0 # Number of opponent's types that this type resists
+      for opptype in opp.pbTypes(true)
+        rescount += 1 if PBTypes.resistant?(opptype, i)
+      end
+      if rescount > 0
+        echoln PBTypes.getName(i)
+        echoln rescount
+        restypes.push([i, rescount]) # First element is type, second is resistance count
+        maxrescount = rescount if rescount > maxrescount
+      end
+    end
+    restypes.reject! {|type| type[1] != maxrescount}
+    newtype = restypes[battle.pbRandom(restypes.length)][0]
+    battle.pbShowAbilitySplash(battler)
+    battler.pbChangeTypes(newtype)
+    battle.pbDisplay(_INTL("{1} changed into the {2} type to resist {3}!",battler.pbThis,PBTypes.getName(newtype),opp.pbThis(true)))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:ROOTED,
+  proc { |ability,battler,battle|
+    battle.pbShowAbilitySplash(battler)
+    battler.pbUseMoveExtra(getConst(PBMoves,:INGRAIN),battler.index,-1,true)
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # AbilityOnSwitchOut handlers
 #===============================================================================

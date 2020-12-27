@@ -159,6 +159,16 @@ class PokeBattle_Battler
   end
 
   #=============================================================================
+  # Simple "use move" method, used when a move is called but should not cost
+  # the user a turn
+  #=============================================================================
+  def pbUseMoveExtra(moveID,target=-1,idxMove=-1,specialUsage=true)
+    lastRoundMoved = self.lastRoundMoved
+    pbUseMoveSimple(moveID,target,idxMove,specialUsage)
+    self.lastRoundMoved = lastRoundMoved
+  end
+
+  #=============================================================================
   # Master "use move" method
   #=============================================================================
   def pbUseMove(choice,specialUsage=false)

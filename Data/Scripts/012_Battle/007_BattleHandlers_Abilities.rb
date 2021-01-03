@@ -1174,6 +1174,12 @@ BattleHandlers::DamageCalcUserAbility.add(:RAINBOWGUARD,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:TAINTEDPOWER,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[ATK_MULT] *= 2
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -1838,6 +1844,18 @@ BattleHandlers::UserAbilityOnHit.add(:PHILANTHROPIST,
       target.pbCureStatus
       battle.pbHideAbilitySplash(user)
     end
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:TAINTEDPOWER,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbDamagingMove?
+    battle.pbShowAbilitySplash(user)
+    battle.scene.pbDamageAnimation(user)
+    user.pbReduceHP(user.totalhp/8,false)
+    battle.pbDisplay(_INTL("{1} was hurt by its Tainted Power!",user.pbThis))
+    battle.pbHideAbilitySplash(user)
+    user.pbItemHPHealCheck
   }
 )
 

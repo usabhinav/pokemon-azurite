@@ -23,6 +23,7 @@ def pbSave(safesave=false)
        Marshal.dump($PokemonGlobal,f)
        Marshal.dump($PokemonMap,f)
        Marshal.dump($PokemonBag,f)
+	   Marshal.dump($ApparelBag,f)
        Marshal.dump($PokemonStorage,f)
        Marshal.dump(ESSENTIALS_VERSION,f)
     }

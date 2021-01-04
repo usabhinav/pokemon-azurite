@@ -1173,6 +1173,9 @@ def pbCompileAllData(mustCompile)
     pbCompileShadowMoves
     yield(_INTL("Compiling messages"))
     pbCompileAnimations
+	# Depends on PBApparel
+	yield(_INTL("Compiling apparel"))
+	pbCompileApparel
     pbCompileTrainerEvents(mustCompile)
     pbSetTextMessages
     MessageTypes.saveMessages

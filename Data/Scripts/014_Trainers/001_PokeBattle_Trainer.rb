@@ -15,6 +15,8 @@ class PokeBattle_Trainer
   attr_accessor :pokedex    # Whether the Pokédex was obtained
   attr_accessor :pokegear   # Whether the Pokégear was obtained
   attr_writer   :language
+  
+  attr_accessor :outfitstate
 
   def trainerTypeName   # Name of this trainer type (localized)
     return PBTrainers.getName(@trainertype) rescue _INTL("PkMn Trainer")
@@ -265,5 +267,10 @@ class PokeBattle_Trainer
     end
     @money             = INITIAL_MONEY
     @party             = []
+	
+	# Initialize trainer ouftit state.
+	@outfitstate = ObservableOutfitState.new(OutfitState.new(trainertype, "Walking"))
+    @outfitstate.setDryLayerPart("Base", 1)
+    @outfitstate.setWetLayerPart("Base", 1)
   end
 end

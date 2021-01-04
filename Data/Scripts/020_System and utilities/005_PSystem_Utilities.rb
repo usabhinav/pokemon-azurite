@@ -668,11 +668,14 @@ def pbChangePlayer(id)
   return false if id<0 || id>=8
   meta = pbGetMetadata(0,MetadataPlayerA+id)
   return false if !meta
-  $Trainer.trainertype = meta[0] if $Trainer
   $game_player.character_name = meta[1]
   $game_player.character_hue = 0
   $PokemonGlobal.playerID = id
-  $Trainer.metaID = id if $Trainer
+  if $Trainer
+	$Trainer.metaID = id
+	$Trainer.outfitstate.gender = pbGetTrainerTypeGenderString(id)
+	$Trainer.trainertype = meta[0]
+  end
 end
 
 def pbGetPlayerGraphic
@@ -697,6 +700,16 @@ def pbGetTrainerTypeGender(trainertype)
   return 2   # Gender unknown
 end
 
+def pbGetTrainerTypeGenderString(trainertype)
+  gender = pbGetTrainerTypeGender(trainertype)
+  
+  if gender == 0
+    return "Male"
+  else
+    return "Female"
+  end
+end
+
 def pbTrainerName(name=nil,outfit=0)
   pbChangePlayer(0) if $PokemonGlobal.playerID<0
   trainertype = pbGetPlayerTrainerType
@@ -713,6 +726,7 @@ def pbTrainerName(name=nil,outfit=0)
   $Trainer.name = trname
   $PokemonBag = PokemonBag.new
   $PokemonTemp.begunNewGame = true
+  $ApparelBag=ApparelBag.new
 end
 
 def pbSuggestTrainerName(gender)

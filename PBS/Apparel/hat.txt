@@ -1,0 +1,2 @@
+1,STD,Std,1,"Default","std",1,0,0,,"Hair-2"
+2,STD,Std,1,"Default","std",1,0,0,

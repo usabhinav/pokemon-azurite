@@ -1,3 +1,4 @@
+# Notes: Previously known as the "Walk_Run" script in the older Engine
 class Game_Player < Game_Character
   @@bobFrameSpeed = 1.0/15
 
@@ -41,8 +42,10 @@ class Game_Player < Game_Character
       meta = pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
       if meta && !$PokemonGlobal.bicycle && !$PokemonGlobal.diving && !$PokemonGlobal.surfing
         charset = 1   # Display normal character sprite
+		$Trainer.outfitstate.animation = "Walking"
         if pbCanRun? && (moving? || @wasmoving) && Input.dir4!=0 && meta[4] && meta[4]!=""
           charset = 4   # Display running character sprite
+		  $Trainer.outfitstate.animation = "Running"
         end
         newCharName = pbGetPlayerCharset(meta,charset)
         @character_name = newCharName if newCharName

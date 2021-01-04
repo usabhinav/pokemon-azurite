@@ -6,6 +6,7 @@ class PokemonGlobalMetadata
   # Movement
   attr_accessor :bicycle
   attr_accessor :surfing
+  attr_accessor :swimming # Swimsuit Mechanic
   attr_accessor :diving
   attr_accessor :sliding
   attr_accessor :fishing
@@ -66,6 +67,7 @@ class PokemonGlobalMetadata
     # Movement
     @bicycle              = false
     @surfing              = false
+	@swimming             = false
     @diving               = false
     @sliding              = false
     @fishing              = false

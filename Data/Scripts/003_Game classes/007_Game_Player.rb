@@ -341,6 +341,46 @@ class Game_Player < Game_Character
       $PokemonTemp.endSurf  = false
     end
     update_event_triggering
+	
+	# Reroll outfit if ALT was pressed during debug
+	if Input.press?(Input::ALT) && $DEBUG
+	  for layer_name in $LAYER_NAMES
+
+		# Get the highest possible apparel ID for the current layer
+		getIDCountCode = "PBApparel" + layer_name + ".maxValue"
+		maxValue = eval(getIDCountCode)
+		  
+		apparelId = 0
+		  
+		while apparelId == 0
+		  # Generate a random apparel ID
+		  apparelId = rand(maxValue) + 1
+			
+		  # Repeat this if apparel ID does not exist
+		  if $ApparelData[layer_name][apparelId] == nil
+			apparelId = 0
+		  # Select the apparel
+		  else
+			# Select a random color out of the for the apparel available ones
+			if layer_name != "Base"
+			  colors = pbGetApparelColors(layer_name, apparelId)
+				
+			  echo "For apparel " + layer_name + apparelId.to_s + " " + colors.inspect + "\n"
+	 
+			  color = colors[rand(colors.length)]
+				
+			  # Add the outfit to the bag
+			  $ApparelBag.pbStoreApparel(layer_name, apparelId, color)
+			else
+			  color = nil
+			end
+			  
+			# Set the outfit layer part
+			$Trainer.outfitstate.setDryLayerPart(layer_name, apparelId, color)
+		  end
+		end
+	  end
+	end
   end
 
   def update_command_new
@@ -431,6 +471,7 @@ end
 def pbUpdateVehicle
   meta = pbGetMetadata(0,MetadataPlayerA+$PokemonGlobal.playerID)
   if meta
+=begin
     charset = 1                                 # Regular graphic
     if $PokemonGlobal.diving;     charset = 5   # Diving graphic
     elsif $PokemonGlobal.surfing; charset = 3   # Surfing graphic
@@ -438,6 +479,21 @@ def pbUpdateVehicle
     end
     newCharName = pbGetPlayerCharset(meta,charset)
     $game_player.character_name = newCharName if newCharName
+=end
+	if $PokemonGlobal.diving
+      #$game_player.character_name=pbGetPlayerCharset(meta,5) # Diving graphic
+      $Trainer.outfitstate.animation = "Diving"
+    elsif $PokemonGlobal.surfing
+      #$game_player.character_name=pbGetPlayerCharset(meta,3) # Surfing graphic
+      $Trainer.outfitstate.animation = "Surfing"
+    elsif $PokemonGlobal.bicycle
+      #$game_player.character_name=pbGetPlayerCharset(meta,2) # Bicycle graphic
+      $Trainer.outfitstate.animation = "Bicycle"
+    elsif $PokemonGlobal.swimming
+      $Trainer.outfitstate.animation = "Swimming"            # Swimming animation
+    else
+      #$game_player.character_name=pbGetPlayerCharset(meta,1) # Regular graphic
+    end
   end
 end
 

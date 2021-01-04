@@ -161,6 +161,7 @@ class PokemonLoad_Scene
     return if !trainer || !trainer.party
     meta = pbGetMetadata(0,MetadataPlayerA+trainer.metaID)
     if meta
+      # TODO: Make this draw a mughsot based on the saved outfit state instead
       filename = pbGetPlayerCharset(meta,1,trainer,true)
       @sprites["player"] = TrainerWalkingCharSprite.new(filename,@viewport)
       charwidth  = @sprites["player"].bitmap.width
@@ -168,6 +169,7 @@ class PokemonLoad_Scene
       @sprites["player"].x        = 56*2-charwidth/8
       @sprites["player"].y        = 56*2-charheight/8
       @sprites["player"].src_rect = Rect.new(0,0,charwidth/4,charheight/4)
+	  trainer.outfitstate.applyToMugshotBitmap(@sprites["player"].bitmap)
     end
     for i in 0...trainer.party.length
       @sprites["party#{i}"] = PokemonIconSprite.new(trainer.party[i],@viewport)
@@ -282,13 +284,14 @@ class PokemonLoadScreen
       mapid        = 0
       haveBackup   = false
       showContinue = false
+	  outfitstate=nil
       begin
-        trainer, framecount, $game_system, $PokemonSystem, mapid = pbTryLoadFile(savefile)
+        trainer, framecount, $game_system, $PokemonSystem, mapid, outfitstate = pbTryLoadFile(savefile)
         showContinue = true
       rescue
         if safeExists?(savefile+".bak")
           begin
-            trainer, framecount, $game_system, $PokemonSystem, mapid = pbTryLoadFile(savefile+".bak")
+            trainer, framecount, $game_system, $PokemonSystem, mapid, outfitstate = pbTryLoadFile(savefile+".bak")
             haveBackup   = true
             showContinue = true
           rescue
@@ -357,6 +360,10 @@ class PokemonLoadScreen
           $PokemonBag          = Marshal.load(f)
           $PokemonStorage      = Marshal.load(f)
           $SaveVersion         = Marshal.load(f) unless f.eof?
+		  # Every available apparel piece
+		  $ApparelData         = readApparelList("Data/Apparel/")
+		  # Every apparel piece collected by the player
+          $ApparelBag          = Marshal.load(f)
           pbRefreshResizeFactor   # To fix Game_Screen pictures
           magicNumberMatches = false
           if $data_system.respond_to?("magic_number")
@@ -429,6 +436,7 @@ class PokemonLoadScreen
         $PokemonStorage      = PokemonStorage.new
         $PokemonEncounters   = PokemonEncounters.new
         $PokemonTemp.begunNewGame = true
+		$ApparelData         = readApparelList("Data/Apparel/")
         pbRefreshResizeFactor   # To fix Game_Screen pictures
         $data_system         = pbLoadRxData("Data/System")
         $MapFactory          = PokemonMapFactory.new($data_system.start_map_id)   # calls setMapChanged

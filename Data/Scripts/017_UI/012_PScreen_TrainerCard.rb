@@ -24,6 +24,8 @@ class PokemonTrainerCard_Scene
     pbSetSystemFont(@sprites["overlay"].bitmap)
     @sprites["trainer"] = IconSprite.new(336,112,@viewport)
     @sprites["trainer"].setBitmap(pbPlayerSpriteFile($Trainer.trainertype))
+	# Apply the trainer's outfitstate to the trainer ID bitmap
+	$Trainer.outfitstate.applyToIdBitmap(@sprites["trainer"].bitmap)
     @sprites["trainer"].x -= (@sprites["trainer"].bitmap.width-128)/2
     @sprites["trainer"].y -= (@sprites["trainer"].bitmap.height-128)
     @sprites["trainer"].z = 2

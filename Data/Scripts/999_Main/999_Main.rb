@@ -1,3 +1,4 @@
+$DEBUG = TRUE
 pbCompiler
 
 class Scene_DebugIntro

@@ -733,6 +733,25 @@ BattleHandlers::MoveImmunityTargetAbility.add(:IMMATERIAL,
   }
 )
 
+BattleHandlers::MoveImmunityTargetAbility.add(:THERMALPOWER,
+  proc { |ability,user,target,move,type,battle|
+    next false if !isConst?(type,PBTypes,:FIRE)
+    next false if !move.pbDamagingMove?
+    battle.pbShowAbilitySplash(target)
+    if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
+    else
+      battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+         target.pbThis,target.abilityName,move.name))
+    end
+    if target.pbCanRaiseStatStage?(PBStats::SPEED,target)
+      target.pbRaiseStatStageByAbility(PBStats::SPEED,1,target,false)
+    end
+    battle.pbHideAbilitySplash(target)
+    next true
+  }
+)
+
 #===============================================================================
 # MoveBaseTypeModifierAbility handlers
 #===============================================================================
@@ -1308,6 +1327,14 @@ BattleHandlers::DamageCalcTargetAbility.add(:IMMATERIAL,
   }
 )
 
+BattleHandlers::DamageCalcTargetAbility.add(:THERMALPOWER,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    if isConst?(move.type,PBTypes,:ICE)
+      mults[FINAL_DMG_MULT] *= 2
+    end
+  }
+)
+
 #===============================================================================
 # DamageCalcTargetAbilityNonIgnorable handlers
 #===============================================================================
@@ -1764,6 +1791,15 @@ BattleHandlers::TargetAbilityOnHit.add(:PHILANTHROPIST,
       battle.pbShowAbilitySplash(target)
       user.pbCureStatus
       battle.pbHideAbilitySplash(target)
+    end
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:THERMALPOWER,
+  proc { |ability,user,target,move,battle|
+    next if !isConst?(move.type,PBTypes,:ICE)
+    if target.pbCanLowerStatStage?(PBStats::SPEED,target)
+      target.pbLowerStatStageByAbility(PBStats::SPEED,1,target)
     end
   }
 )

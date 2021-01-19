@@ -364,10 +364,12 @@ class Game_Player < Game_Character
 			# Select a random color out of the for the apparel available ones
 			if layer_name != "Base"
 			  colors = pbGetApparelColors(layer_name, apparelId)
-				
-			  echo "For apparel " + layer_name + apparelId.to_s + " " + colors.inspect + "\n"
-	 
+			  
+			  #echo "For apparel " + layer_name + apparelId.to_s + " " + colors.inspect + "\n"
+			  
 			  color = colors[rand(colors.length)]
+			  
+			  #echo "Working combination of arguments: " + layer_name + ", " + apparelId.to_s + ", " + color + "\n"
 				
 			  # Add the outfit to the bag
 			  $ApparelBag.pbStoreApparel(layer_name, apparelId, color)

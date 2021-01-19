@@ -11,13 +11,13 @@ class ApparelBag
       # Arrays will hold Strings with ID + color, representing colored apparel
       @apparel[layer_name] = []
     end
-    # Include Rod and Bike as extras
+    # Include Rod and Bike as extras.
     @apparel["Bike"] = []
     @apparel["Rod"] = []
 
   end
 
-  # Clears the entire apparel
+  # Clears the entire apparel list.
   def clear
     for layername in $LAYER_NAMES
       @apparel[layername].clear
@@ -25,9 +25,16 @@ class ApparelBag
   end
 
   # Convert an apparel piece in form of a Symbol or String to an ID, or return
-  # it as is if it is an ID already
+  # it as is if it is an ID already.
   def convertToApparelId(layer, apparel_piece)
+  
+	# Check if the layer actually exists and throw an error if not.
+	if !$LAYER_NAMES.include?(layer)
+	  raise "convertToApparelId: \"" + layer + "\" is not an existing layer."
+	end
+		
     if apparel_piece.is_a?(String) || apparel_piece.is_a?(Symbol)
+	  # TODO: Make it so if you pass an invalid apparel name you get a coherent error message. (Do that in PBApparel)
       code = "getID(PBApparel{layer},{apparel})"
       apparel_piece = eval(code)
     end
@@ -38,13 +45,13 @@ class ApparelBag
   def pbStoreApparel(layer, apparel_piece, color="Default")
     apparel_piece = convertToApparelId(layer, apparel_piece)
 
-    # Check if the apparel ID is valid
+    # Check if the apparel ID is valid.
     if !apparel_piece || apparel_piece<1
       raise ArgumentError.new(_INTL("The apparel number is invalid."))
       return false
     end
 
-    # Check if the given color is valid
+    # Check if the given color is valid.
     if !pbGetApparelColors(layer, apparel_piece).include?(color)
       raise ArgumentError.new(_INTL("The color for the given apparel is invalid."))
       return false

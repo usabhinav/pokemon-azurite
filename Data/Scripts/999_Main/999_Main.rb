@@ -1,5 +1,7 @@
 $DEBUG = TRUE
 
+#Console::setup_console
+
 # Create .dat apparel files in case they don't exist. Without this the compiler is unable to write into them. 
 for layer in $LAYER_NAMES
   File.open("Data/Apparel/" + layer + ".dat", "w") if !safeExists?("Data/Apparel/" + layer + ".dat")

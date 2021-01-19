@@ -548,14 +548,22 @@ end
 
 
 def pbSetWetLayerPart(layer_name, apparel_id, color="Default")
+  if $DEBUG
+    $ApparelBag.pbStoreApparel(layer_name, apparel_id, color)
+  end
+	
   if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
     $Trainer.outfitstate.setWetLayerPart(layer_name, apparel_id, color)
   else
-    #echo "Doesnt have apparel\n"
+    #echo "Doesnt have apparel\n" 
   end
 end
 
 def pbSetDryLayerPart(layer_name, apparel_id, color="Default")
+  if $DEBUG
+    $ApparelBag.pbStoreApparel(layer_name, apparel_id, color)
+  end
+
   if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
     $Trainer.outfitstate.setDryLayerPart(layer_name, apparel_id, color)
   else

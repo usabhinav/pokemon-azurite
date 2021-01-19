@@ -548,7 +548,7 @@ end
 
 
 def pbSetWetLayerPart(layer_name, apparel_id, color="Default")
-  if $PokemonBag.pbHasApparel?(layer_name, apparel_id, color)
+  if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
     $Trainer.outfitstate.setWetLayerPart(layer_name, apparel_id, color)
   else
     #echo "Doesnt have apparel\n"
@@ -556,7 +556,7 @@ def pbSetWetLayerPart(layer_name, apparel_id, color="Default")
 end
 
 def pbSetDryLayerPart(layer_name, apparel_id, color="Default")
-  if $PokemonBag.pbHasApparel?(layer_name, apparel_id, color)
+  if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
     $Trainer.outfitstate.setDryLayerPart(layer_name, apparel_id, color)
   else
     #echo "Doesnt have apparel\n"

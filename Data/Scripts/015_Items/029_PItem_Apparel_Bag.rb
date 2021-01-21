@@ -42,7 +42,16 @@ class ApparelBag
     return apparel_piece
   end
 
+  # Created this so the first pbStoreApparel can call this and make it uncrashable
   def pbStoreApparel(layer, apparel_piece, color="Default")
+	begin
+	  pbStoreApparel_safe(layer, apparel_piece, color)
+	rescue
+	  echo "Error: Couldn't add apparel piece: " + layer + "-" + apparel_piece.to_s + "-" + color + "\n"
+	end
+  end
+  
+  def pbStoreApparel_safe(layer, apparel_piece, color="Default")
     apparel_piece = convertToApparelId(layer, apparel_piece)
 
     # Check if the apparel ID is valid.

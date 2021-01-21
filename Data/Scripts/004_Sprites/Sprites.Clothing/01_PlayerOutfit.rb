@@ -270,10 +270,11 @@ class OutfitState
       
       layer_folder = folder + "/" + layer_name
       
+	  # Deprecated. TODO: Add expression type instead. No more gender distinctions.
       # Make a gender distinction for eyes
-      if layer_name == "Eyes"
-        layer_folder += "/" + @gender
-      end
+      #if layer_name == "Eyes"
+      #  layer_folder += "/" + @gender
+      #end
       
       # Add the color to the path as a folder if we have one
       if @active_layer_states[layer_name].color != nil
@@ -320,14 +321,23 @@ class OutfitState
     
     #echo layer_bitmap_path + " " + bitmap.inspect + "\n\n"
     
-    layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
+    if $DEBUG
+	  begin
+	    layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
+	    #layer_bitmap = BitmapCache.load_bitmap(layer_bitmap_path)
+        #width = [bitmap.width, layer_bitmap.width].max
+        #height = [bitmap.height, layer_bitmap.height].max
+        #bitmap.width = width
+        #bitmap.height = height
+        bitmap.blt(0,0, layer_bitmap, Rect.new(0,0,bitmap.width, bitmap.width))
+	  rescue
+		  echo "Error: Couldnt apply layer to bitmap: " + layer_bitmap_path + "\n"
+	  end
+	else
+		layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
+	end
     
-    #layer_bitmap = BitmapCache.load_bitmap(layer_bitmap_path)
-    #width = [bitmap.width, layer_bitmap.width].max
-    #height = [bitmap.height, layer_bitmap.height].max
-    #bitmap.width = width
-    #bitmap.height = height
-    bitmap.blt(0,0, layer_bitmap, Rect.new(0,0,bitmap.width, bitmap.width))
+    
   end
   
 end
@@ -570,6 +580,7 @@ def pbSetDryLayerPart(layer_name, apparel_id, color="Default")
     #echo "Doesnt have apparel\n"
   end
 end
+
 
 # UNUSED
 # Converts a file name into a part name

@@ -486,7 +486,7 @@ class PokemonOption_Scene
          proc { $PokemonSystem.textskin },
          proc { |value|
            $PokemonSystem.textskin = value
-           MessageConfig.pbSetSpeechFrame("Graphics/Windowskins/"+$SpeechFrames[value])
+           MessageConfig.pbSetSpeechFrame("Graphics/Windowskins/" + $SpeechFrames[value])
          }
        ),
        NumberOption.new(_INTL("Menu Frame"),1,$TextFrames.length,

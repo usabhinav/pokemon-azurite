@@ -387,6 +387,24 @@ class PokeBattle_Battler
         end
       end
     end
+    # Omnigene
+    if user.hasActiveAbility?(:OMNIGENE) && !move.callsAnotherMove? && !move.snatched
+      if user.pbHasOtherType?(move.calcType) && !PBTypes.isPseudoType?(move.calcType)
+        @battle.pbShowAbilitySplash(user)
+        user.pbChangeTypes(move.calcType)
+        typeName = PBTypes.getName(move.calcType)
+        @battle.pbDisplay(_INTL("{1} transformed into the {2} type!",user.pbThis,typeName))
+        @battle.pbHideAbilitySplash(user)
+        # NOTE: The GF games say that if Curse is used by a non-Ghost-type
+        #       Pokémon which becomes Ghost-type because of Protean, it should
+        #       target and curse itself. I think this is silly, so I'm making it
+        #       choose a random opponent to curse instead.
+        if move.function=="10D" && targets.length==0   # Curse
+          choice[3] = -1
+          targets = pbFindTargets(choice,move,user)
+        end
+      end
+    end
     #---------------------------------------------------------------------------
     magicCoater  = -1
     magicBouncer = -1

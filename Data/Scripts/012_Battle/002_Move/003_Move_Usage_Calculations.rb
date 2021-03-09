@@ -422,6 +422,14 @@ class PokeBattle_Move
         multipliers[FINAL_DMG_MULT] *= 1.5
       end
     end
+    # STAB
+    if type>=0 && user.pbHasType?(type)
+      if user.hasActiveAbility?(:OMNIGENE)
+        multipliers[FINAL_DMG_MULT] *= 2
+      else
+        multipliers[FINAL_DMG_MULT] *= 1.5
+      end
+    end
     # Type effectiveness
     multipliers[FINAL_DMG_MULT] *= target.damageState.typeMod.to_f/PBTypeEffectiveness::NORMAL_EFFECTIVE
     # Burn

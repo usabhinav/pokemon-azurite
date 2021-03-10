@@ -1969,7 +1969,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:MOXIE,
 
 BattleHandlers::UserAbilityEndOfMove.add(:TRICKSTER,
   proc { |ability,user,targets,move,battle|
-    next if battle.futureSight
+    next if !battle.futureSight
     next if !move.pbDamagingMove?
     next if user.item>0
     next if battle.wildBattle? && user.opposes?

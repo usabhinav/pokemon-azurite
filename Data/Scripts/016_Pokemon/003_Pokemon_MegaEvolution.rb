@@ -168,3 +168,25 @@ MultipleForms.register(:LOPUNNY,{
     next
   }
 })
+
+MultipleForms.register(:SHAYMIN,{
+  "getSpecificMegaForm" => proc { |pkmn|
+    next 2 if (pkmn.form == 0 && pkmn.hasItem?(:SHAYMINITE))
+    next
+  },
+  "getSpecificUnmegaForm" => proc { |pkmn|
+    next 0 if pkmn.form == 2
+    next
+  }
+})
+  
+MultipleForms.register(:SHAYMIN,{
+  "getSpecificMegaForm" => proc { |pkmn|
+    next 3 if (pkmn.form == 1 && pkmn.hasItem?(:SHAYMINITE))
+    next
+  },
+  "getSpecificUnmegaForm" => proc { |pkmn|
+    next 1 if pkmn.form == 3
+    next
+  }
+})

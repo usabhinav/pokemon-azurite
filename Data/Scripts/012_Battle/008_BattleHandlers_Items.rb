@@ -806,6 +806,160 @@ BattleHandlers::DamageCalcUserItem.add(:WISEGLASSES,
 )
 
 #===============================================================================
+# Eon Gene
+# I had to split this up into multiple different code sets to get it working right - Sincerely, ShadowSear
+#===============================================================================
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:EEVEE) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:VAPOREON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:JOLTEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:FLAREON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:ESPEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:UMBREON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:LEAFEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:GLACEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:SYLVEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:TYPHEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:ASTREON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:ILLUSEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:ICHEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:FULGEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+  
+BattleHandlers::DamageCalcUserItem.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    if user.isSpecies?(:CYRSEON) && type>=0 && user.pbHasType?(type)
+      mults[FINAL_DMG_MULT] *= 2
+    else
+      mults[FINAL_DMG_MULT] *= 0.5
+    end
+  }
+)
+#===============================================================================
 # DamageCalcTargetItem handlers
 #===============================================================================
 # NOTE: Species-specific held items consider the original species, not the

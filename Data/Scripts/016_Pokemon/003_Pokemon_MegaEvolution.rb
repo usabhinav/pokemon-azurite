@@ -108,3 +108,63 @@ MultipleForms.register(:KYOGRE,{
     next
   }
 })
+
+#===============================================================================
+# Form Specific Mega Evolution
+# To prevent regional varients from Mega Evolving into the wrong Mega Form
+#===============================================================================
+class PokeBattle_Pokemon
+  def hasSpecificMegaForm?
+    v = MultipleForms.call("getSpecificMegaForm",self)
+    return v!=nil
+  end
+
+  def getSpecificMegaForm
+    v = MultipleForms.call("getSpecificMegaForm",self)
+    return v if v.is_a?(Numeric)
+  end
+
+  def hasSpecificUnmegaForm?
+    v = MultipleForms.call("getSpecificUnmegaForm",self)
+    return v!=nil
+  end
+
+  def getSpecificUnmegaForm
+    v = MultipleForms.call("getSpecificUnmegaForm",self)
+    v = self.form if !v || v<0
+    return v if v.is_a?(Numeric)
+  end
+end
+  
+MultipleForms.register(:SLOWBRO,{
+  "getSpecificMegaForm" => proc { |pkmn|
+    next 2 if (pkmn.form == 0 && pkmn.hasItem?(:SLOWBRONITE))
+    next
+  },
+  "getSpecificUnmegaForm" => proc { |pkmn|
+    next 0 if pkmn.form == 2
+    next
+  }
+})
+
+MultipleForms.register(:LOPUNNY,{
+  "getSpecificMegaForm" => proc { |pkmn|
+    next 2 if (pkmn.form == 0 && pkmn.hasItem?(:LOPUNNITE))
+    next
+  },
+  "getSpecificUnmegaForm" => proc { |pkmn|
+    next 0 if pkmn.form == 2
+    next
+  }
+})
+
+MultipleForms.register(:LOPUNNY,{
+  "getSpecificMegaForm" => proc { |pkmn|
+    next 3 if (pkmn.form == 1 && pkmn.hasItem?(:KURIANLOPUNNITE))
+    next
+  },
+  "getSpecificUnmegaForm" => proc { |pkmn|
+    next 1 if pkmn.form == 3
+    next
+  }
+})

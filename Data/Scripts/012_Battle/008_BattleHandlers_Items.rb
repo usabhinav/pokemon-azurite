@@ -807,7 +807,7 @@ BattleHandlers::DamageCalcUserItem.add(:WISEGLASSES,
   
 BattleHandlers::DamageCalcUserItem.add(:EONGENE,
   proc { |item,user,target,move,mults,baseDmg,type|
-    species_list = [:EEVEE, :VAPOREON, :JOLTEON, :FLAREON, :ESPEON, :UMBREON, :LEAFEON, :GLACEON, :SYLVEON, :TYPHEON, :CRYSEON, :ILLUSEON, :ASTREON, :ICHEON, :FULGEON]
+    species_list = [:EEVEE, :VAPOREON, :JOLTEON, :FLAREON, :ESPEON, :UMBREON, :LEAFEON, :GLACEON, :SYLVEON, :TYPHEON, :SHYNEON, :ILLUSEON, :ASTREON, :ICHEON, :FULGEON]
     isSpecies = false
     for species_sym in species_list
       isSpecies = true if user.isSpecies?(species_sym)

@@ -234,6 +234,50 @@ class PokeBattle_Battler
         pbChangeForm(0,_INTL("{1} changed to Shield Forme!",pbThis))
       end
     end
+#===========================================================================
+    # Formula Shift
+    # note: not made by me! Credits to Lucidious89 - Sincerely, ShadowSear
+    #===========================================================================
+    if isSpecies?(:DEOXYS) && isConst?(@ability,PBAbilities,:FORMULASHIFT)
+      speedmoves   = [:AGILITY,:EXTREMESPEED,:SWIFT,:PURSUIT,:DOUBLETEAM,:TAUNT,
+                      :TRICK,:SNATCH,:TORMENT,:TELEPORT,:ALLYSWITCH,:ROLEPLAY,
+                      :SKILLSWAP,:PSYCHUP,:SWAGGER,:THUNDERWAVE,:SUBSTITUTE,
+                      :SUNNYDAY,:RAINDANCE,:LASERFOCUS,:TELEKINESIS,:FLING,:FLASH,
+                      :PSYCHOSHIFT,:TRICKROOM,:WONDERROOM,:RECYCLE,:THROATCHOP]
+
+      defensemoves = [:RECOVER,:REST,:AMNESIA,:IRONDEFENSE,:CALMMIND,:COSMICPOWER,
+                      :REFLECT,:LIGHTSCREEN,:SAFEGUARD,:PROTECT,:DETECT,:MAGICCOAT,
+                      :MIRRORCOAT,:COUNTER,:SPIKES,:STEALTHROCK,:GRAVITY,:ENDURE,:SNORE,
+                      :SLEEPTALK,:NIGHTSHADE,:KNOCKOFF,:TOXIC,:DREAMEATER,:SEISMICTOSS,
+                      :DRAINPUNCH]
+      
+      for i in speedmoves; speedform=true if isConst?(move.id,PBMoves,i); end
+      for i in defensemoves; defenseform=true if isConst?(move.id,PBMoves,i); end
+        
+      if speedform
+        if form!=3
+          @battle.pbShowAbilitySplash(self,true)
+          pbChangeForm(3,_INTL("{1} shifted into Speed Forme!",pbThis))
+        end
+      elsif defenseform
+        if form!=2
+          @battle.pbShowAbilitySplash(self,true)
+          pbChangeForm(2,_INTL("{1} shifted into Defense Forme!",pbThis))
+        end
+      elsif move.damagingMove?
+        if form!=1
+          @battle.pbShowAbilitySplash(self,true)
+          pbChangeForm(1,_INTL("{1} shifted into Attack Forme!",pbThis))
+        end
+      else
+        if form!=0
+          @battle.pbShowAbilitySplash(self,true)
+          pbChangeForm(0,_INTL("{1} reverted into Normal Forme!",pbThis))
+        end
+      end
+      @battle.pbHideAbilitySplash(self)
+    end
+    #===========================================================================
     # Calculate the move's type during this usage
     move.calcType = move.pbCalcType(self)
     # Start effect of Mold Breaker

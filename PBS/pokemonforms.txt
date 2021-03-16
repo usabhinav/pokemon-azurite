@@ -243,7 +243,7 @@ Color = Gray
 Pokedex = It fires rocks charged with electricity. Even if the rock isn't fired that accurately, just grazing an opponent will cause numbness and fainting.
 WildItemCommon = CELLBATTERY
 #-------------------------------
-[SLOWBRO,1]
+[SLOWBRO,2]
 FormName = Mega Slowbro
 MegaStone = SLOWBRONITE
 BaseStats = 95,75,180,30,130,80
@@ -693,7 +693,7 @@ Height = 1.8
 Weight = 112.6
 Pokedex = It puts its forelegs inside its shell to streamline itself for flight. Salamence flies at high speeds over all kinds of topographical features.
 #-------------------------------
-[METAGROSS,1]
+[METAGROSS,2]
 FormName = Mega Metagross
 MegaStone = METAGROSSITE
 BaseStats = 95,145,130,120,120,90
@@ -1652,6 +1652,8 @@ Pokedex = This gorgeous Magearna looks as it did at the time of its invention. I
 #AZURITE ADDED FORMS - NO OFFICIAL FORMS PAST THIS POINT! 
 #Add official forms prior to this section
 #-------------------------------
+#Region Variants
+#-------------------------------
 [AIPOM,1]
 FormName = Kurian
 Type1 = NORMAL
@@ -1703,3 +1705,510 @@ Abilities = PHASINGBODY,QUEENLY
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
+#-------------------------------
+#Mega Forms
+#-------------------------------
+[RATICATE,2]
+FormName = Mega Kantonian Raticate
+Type1 = NORMAL
+Type2 = FIRE
+BaseStats = 60,119,91,128,45,91
+#-------------------------------
+[RATICATE,3]
+FormName = Mega Alolanian Raticate
+Type1 = DARK
+Type2 = ICE
+BaseStats = 60,119,91,128,45,91
+#-------------------------------
+[ARBOK,1]
+FormName = Mega Arbok
+Type1 = POISON
+Type2 = GROUND
+BaseStats = 60,130,84,95,85,94
+#-------------------------------
+[SANDSLASH,2]
+FormName = Mega Sandslash
+Type1 = GROUND
+Type2 = FIGHTING
+BaseStats = 70,140,115,100,50,70
+Abilities = TOUGHCLAWS
+HiddenAbility = TOUGHCLAWS
+#-------------------------------
+[WIGGLYTUFF,1]
+FormName = Mega Wigglytuff
+Type1 = FAIRY
+Type2 = SOUND
+BaseStats = 140,135,75,25,135,75
+Abilities = FLUFFY
+HiddenAbility = FLUFFY
+Kind = Balloon Animal
+Color = Pink
+Pokedex = Mega Evolution gives Wigglytuff super soft micro fur, though the static electricity created from hugging it will cause Wigglytuff to spontaneously combust.
+#-------------------------------
+[VENOMOTH,1]
+FormName = Mega Venomoth
+#-------------------------------
+[GOLDUCK,1]
+FormName = Mega Golduck
+Type1 = WATER
+Type2 = PSYCHIC
+BaseStats = 80,110,92,96,150,92
+Abilities = MAGICGUARD
+HiddenAbility = MAGICGUARD
+#-------------------------------
+[MACHAMP,1]
+FormName = Mega Machamp
+#-------------------------------
+[DEWGONG,1]
+FormName = Mega Dewgong
+Type1 = WATER
+Type2 = FAIRY
+BaseStats = 90,100,120,80,90,115
+#-------------------------------
+[ELECTRODE,1]
+FormName = Mega Electrode
+Type1 = ELECTRIC
+Type2 = NORMAL
+BaseStats = 60,80,70,180,110,90
+#-------------------------------
+[MAROWAK,2]
+FormName = Mega Marowak
+Type1 = GROUND
+Type2 = DRAGON
+BaseStats = 60,100,115,100,60,90
+#-------------------------------
+[HITMONCHAN,2]
+FormName = Mega Kantonian Hitmonchan
+#-------------------------------
+[MRMIME,2]
+FormName = Mega Kantonian Mr. Mime
+#-------------------------------
+[MEW,1]
+FormName = Mega Mew
+Abilities = OMNIGENE
+HiddenAbility = OMNIGENE
+#-------------------------------
+[XATU,1]
+FormName = Mega Xatu
+Type1 = MYSTIC
+Type2 = FLYING
+BaseStats = 65,70,105,120,105,105
+#-------------------------------
+[ENTEI,1]
+FormName = Mega Entei
+Type1 = FIRE
+Type2 = GHOST
+BaseStats = 115,150,110,100,120,85
+#-------------------------------
+[CELEBI,1]
+FormName = Mega Celebi
+Type1 = GRASS
+Type2 = PSYCHIC
+BaseStats = 100,100,100,150,120,130
+Abilities = NATURALCURE
+HiddenAbility = NATURALCURE
+Kind = Time Travel
+Color = Green
+MegaMove = TIMEBREAK
+MegaMessage = 1
+Pokedex = The energy obtained from Mega Evolution allows Celebi to stop time, although temporarily. The gem seems to cause that time stop, channeling the power of the ancient Pokémon of time.
+#-------------------------------
+[CACTURNE,1]
+FormName = Mega Cacturne
+BaseStats = 70,145,110,30,120,100
+Abilities = DESERTBODY
+HiddenAbility = DESERTBODY
+Kind = Scarecrow
+Color = Green
+Pokedex = Cacturne undergo immense pain during the process of Mega Evolution to fuel its cruelty. It then seeks to cause even worse suffering on the opponent.
+#-------------------------------
+[METAGROSS,3]
+FormName = Mega Delta Metagross
+Type1 = GRASS
+Type2 = ROCK
+BaseStats = 100,160,210,70,70,90
+Abilities = ROCKHEAD
+HiddenAbility = ROCKHEAD
+UnmegaForm = 1
+#-------------------------------
+[LUXRAY,1]
+FormName = Mega Luxray
+#-------------------------------
+[MOTHIM,1]
+FormName = Mega Mothim
+Type1 = BUG
+Type2 = MYSTIC
+BaseStats = 70,95,85,101,119,85
+#-------------------------------
+[CHERRIM,2]
+FormName = Mega Cherrim
+Type1 = GRASS
+Type2 = FIRE
+BaseStats = 70,60,70,103,144,103
+Abilities = DROUGHT,FORESTFIRE
+HiddenAbility = DROUGHT,FORESTFIRE
+#-------------------------------
+[LOPUNNY,3]
+FormName = Mega Kurian Lopunny
+Type1 = GHOST
+Type2 = FIGHTING
+BaseStats = 80,162,34,120,72,112
+UnmegaForm = 1
+#-------------------------------
+[MISMAGIUS,1]
+FormName = Mega Mismagius
+BaseStats = 65,55,55,145,145,145
+Abilities = SECONDSIGHT
+HiddenAbility = SECONDSIGHT
+#-------------------------------
+[TOGEKISS,1]
+FormName = Mega Togekiss
+#-------------------------------
+[PORYGONZ,1]
+FormName = Mega Porygon-Z
+BaseStats = 85,100,80,100,190,80
+#-------------------------------
+[DUSKNOIR,1]
+FormName = Mega Dusknoir
+BaseStats = 75,120,175,45,60,175
+#-------------------------------
+[SHAYMIN,2]
+FormName = Mega Shaymin (Land)
+#-------------------------------
+[SHAYMIN,3]
+FormName = Mega Shaymin (Sky)
+Type1 = GRASS
+Type2 = FLYING
+UnmegaForm = 1
+#-------------------------------
+[VICTINI,1]
+FormName = Mega Victini
+#-------------------------------
+[UNFEZANT,1]
+FormName = Mega Unfezant
+BaseStats = 80,145,100,113,75,75
+#-------------------------------
+[DARMANITAN,4]
+FormName = Mega Darmanitan
+#-------------------------------
+[SIGILYPH,1]
+FormName = Mega Sigilyph
+#-------------------------------
+[BEHEEYEM,1]
+FormName = Mega Beheeyem
+Type1 = COSMIC
+Type2 = PSYCHIC
+BaseStats = 90,70,115,45,155,145
+Abilities = MINDIPULATION
+HiddenAbility = MINDIPULATION
+Kind = Cerebral
+Pokedex = The process of Mega Evolution manages to train its brain to an IQ that surpasses that of Alakazam. Sometimes, its intelligence can even make the Beheeyem itself confused.
+#-------------------------------
+[ACCELGOR,1]
+FormName = Mega Accelgor
+#-------------------------------
+[AROMATISSE,1]
+FormName = Mega Aromatisse
+BaseStats = 101,72,82,29,149,129
+Abilities = HYPERAROMA
+HiddenAbility = HYPERAROMA
+Kind = Fragrance
+Color = Pink
+Pokedex = Mega Evolution inflates Aromatisse's ego immensely. Because of this, it can get distracted by its own self-admiration. Even losing in battle won't make it love itself less.
+#-------------------------------
+[SLURPUFF,1]
+FormName = Mega Slurpuff
+BaseStats = 82,80,118,99,116,90
+#-------------------------------
+[GOODRA,1]
+FormName = Mega Goodra
+BaseStats = 90,140,90,40,150,190
+#-------------------------------
+[CHEETATIC,1]
+FormName = Mega Cheetatic
+#-------------------------------
+[VISARAB,1]
+FormName = Mega Visarab
+Type1 = BUG
+Type2 = DRAGON
+BaseStats = 72,170,111,150,116,81
+#-------------------------------
+#Crystal Forms
+#-------------------------------
+[VENUSAUR,2]
+FormName = Crystal Venusaur
+Type1 = GRASS
+Type2 = CRYSTAL
+BaseStats = 90,90,113,60,152,120
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[CHARIZARD,3]
+FormName = Crystal Charizard
+Type1 = FIRE
+Type2 = CRYSTAL
+BaseStats = 78,159,110,100,109,78
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[BLASTOISE,2]
+FormName = Crystal Blastoise
+Type1 = WATER
+Type2 = CRYSTAL
+BaseStats = 79,80,155,30,160,126
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[BEEDRILL,2]
+FormName = Crystal Beedrill
+Type1 = BUG
+Type2 = CRYSTAL
+BaseStats = 60,110,100,110,15,100
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[RAICHI,2]
+FormName = Crystal Raichu
+Type1 = ELECTRIC
+Type2 = CRYSTAL
+BaseStats = 70,105,80,140,130,80
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[RAICHI,3]
+FormName = Crystal Raichu
+Type1 = ELECTRIC
+Type2 = CRYSTAL
+BaseStats = 70,105,80,140,130,80
+UnmegaForm = 1
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[STARMIE,1]
+FormName = Crystal Starmie
+Type1 = WATER
+Type2 = CRYSTAL
+BaseStats = 60,75,105,135,140,105
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[AMPHAROS,2]
+FormName = Crystal Ampharos
+Type1 = LIGHT
+Type2 = CRYSTAL
+BaseStats = 90,75,85,40,155,155
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[STEELIX,2]
+FormName = Crystal Steelix
+Type1 = STEEL
+Type2 = CRYSTAL
+BaseStats = 75,85,205,20,50,155
+#-------------------------------
+[DELIBIRD,1]
+FormName = Crystal Delibird
+Type1 = ICE
+Type2 = CRYSTAL
+BaseStats = 45,115,65,120,20,60
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[RAIKOU,1]
+FormName = Crystal Raikou
+Type1 = ELECTRIC
+Type2 = CRYSTAL
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[CRAWDAUNT,1]
+FormName = Mega Crawdaunt
+Type1 = WATER
+Type2 = CRYSTAL
+BaseStats = 68,145,115,70,95,90
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[METAGROSS,4]
+FormName = Crystal Delta Metagross
+Type1 = GRASS
+Type2 = CRYSTAL
+BaseStats = 100,165,105,115,110,105
+MegaStone = CRYSTALFRAGMENT
+UnmegaForm = 1
+#-------------------------------
+[JIRACHI,1]
+FormName = Crystal Jirachi
+Type1 = STEEL
+Type2 = CRYSTAL
+BaseStats = 100,120,130,120,120,110
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[TORTERRA,1]
+FormName = Crystal Torterra
+Type1 = GRASS
+Type2 = CRYSTAL
+BaseStats = 104,144,150,11,85,140
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[INFERNAPE,1]
+FormName = Crystal Infernape
+Type1 = FIRE
+Type2 = CRYSTAL
+BaseStats = 76,144,71,128,144,71
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[EMPOLEON,1]
+FormName = Crystal Empoleon
+Type1 = WATER
+Type2 = CRYSTAL
+BaseStats = 84,130,94,75,150,101
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[LUXRAY,2]
+FormName = Crystal Luxray
+Type1 = ELECTRIC
+Type2 = CRYSTAL
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[VESPIQUEN,1]
+FormName = Crystal Vespiquen
+Type1 = BUG
+Type2 = CRYSTAL
+BaseStats = 70,100,129,40,105,130
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[LUCARIO,2]
+FormName = Crystal Lucario
+Type1 = FIGHTING
+Type2 = CRYSTAL
+BaseStats = 70,115,100,70,150,120
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[WEAVILE,1]
+FormName = Crystal Weavile
+Type1 = DARK
+Type2 = CRYSTAL
+BaseStats = 70,155,55,135,115,60
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[FROSLASS,1]
+FormName = Crystal Froslass
+Type1 = ICE
+Type2 = CRYSTAL
+BaseStats = 70,90,70,120,120,110
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[DARKRAI,1]
+FormName = Crystal Darkrai
+Type1 = COSMIC
+Type2 = CRYSTAL
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[GIGALITH,2]
+FormName = Crystal Gigalith
+Type1 = ROCK
+Type2 = CRYSTAL
+BaseStats = 85,155,160,45,60,110
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[REUNICLUS,1]
+FormName = Crystal Reuniclus
+Type1 = PSYCHIC
+Type2 = CRYSTAL
+BaseStats = 110,65,120,30,155,110
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[BISHARP,1]
+FormName = Crystal Bisharp
+Type1 = DARK
+Type2 = CRYSTAL
+BaseStats = 70,160,130,85,75,100
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[MELOETTA,2]
+FormName = Crystal Meloetta
+Type1 = SOUND
+Type2 = CRYSTAL
+BaseStats = 100,92,50,102,163,163
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[FLORGES,5]
+FormName = Crystal Florges
+Type1 = FAIRY
+Type2 = CRYSTAL
+BaseStats = 78,65,85,85,135,204
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+#Other Forms
+#-------------------------------
+[SUICUNE,1]
+FormName = Perfect Suicune
+Type1 = WATER
+Type2 = CRYSTAL
+BaseStats = 100,110,150,105,110,155
+BaseEXP = 300
+EffortPoints = 0,0,2,0,0,2
+Abilities = CRYSTALADAPTION
+HiddenAbility = CRYSTALADAPTION
+Kind = Aurora
+Pokedex = The Perfect Transformation. Also known as Crystal Mega Evolution. Suicune underwent this transformation in order to reach "Perfection" and ascend beyond any other Pokémon.
+#-------------------------------
+[SPRITZEE,1]
+FormName = Azure Spritzee
+BaseStats = 78,52,60,72,63,65
+BaseEXP = 69
+Abilities = CRYSTALSURGE
+HiddenAbility = CRYSTALSURGE
+Pokedex = Spritzee who have seen the legendary Crystal Pokémon, Kaizure. While Spritzee are too weak to crystallize, their Aroma changed when coming in contact with a huge amount of Crystal Energy for an long time. For a Spritzee's aroma to change this much, it must've been around Kaizure for a very long time.
+Evolutions = AROMATISSE,None,
+#-------------------------------
+[GIGALITH,1]
+FormName = Azure Gigalith
+#-------------------------------
+[CRYOGANOL,1]
+FormName = Azure Cryoganol
+#-------------------------------
+[COMBEE,1]
+FormName = Guard Combee
+BaseStats = 90,20,150,45,20,150
+BaseEXP = 60
+EffortPoints = 0,0,1,0,0,1
+Pokedex = It collects and delivers honey to its colony. At night, they cluster to form a beehive and sleep.
+Evolutions = VESPIQUEN,None,
+#-------------------------------
+[BELDUM,1]
+FormName = Delta Beldum
+Type1 = GRASS
+Type2 = ROCK
+BaseStats = 40,55,80,30,35,60
+Moves = 1,DOUBLEEDGE
+Height = 0.6
+Weight = 95.2
+Compatibility = Undiscovered
+WildItemUncommon = HARDSTONE
+Abilities = STURDY
+HiddenAbility = ROCKHEAD
+Kind = Ruined
+Pokedex = A Delta Species discovered by LunarDusk and Cowctus. It is said that beneath its rough exterior exists a crystal shard of unimaginable value.
+Evolutions = METANG,Level,20
+#-------------------------------
+[METANG,1]
+FormName = Delta Metang
+Type1 = GRASS
+Type2 = ROCK
+BaseStats = 60,75,100,50,55,80
+Moves = 1,STEALTHROCK,1,DOUBLEEDGE,1,MEGADRAIN,1,SMACKDOWN,20,MEGADRAIN,20,SMACKDOWN,23,PURSUIT,26,BULLETSEED,29,LEECHSEED,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,ROCKPOLISH,44,STONEEDGE,47,GROWTH,50,HEADSMASH,60,CRYSTALRUSH
+Compatibility = Undiscovered
+WildItemUncommon = HARDSTONE
+Height = 1.2
+Weight = 202.5
+Abilities = STURDY
+HiddenAbility = ROCKHEAD
+Kind = Ruined
+Pokedex = As multiple altered Beldums come into contact with each other, their crystals resonate, causing their cores to fuse. They then reconstruct into a single entity.
+Evolutions = METAGROSS,Level,45
+#-------------------------------
+[METAGROSS,1]
+FormName = Delta Metagross
+Type1 = GRASS
+Type2 = ROCK
+BaseStats = 80,135,130,70,95,90
+Moves = 1,STEALTHROCK,1,WOODHAMMER,1,MEGADRAIN,1,SMACKDOWN,20,MEGADRAIN,20,SMACKDOWN,23,PURSUIT,26,BULLETSEED,29,LEECHSEED,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,ROCKPOLISH,44,STONEEDGE,45,DIAMONDSTORM,52,GROWTH,60,HEADSMASH,65,CRYSTALRUSH
+Compatibility = Undiscovered
+WildItemUncommon = HARDSTONE
+Height = 1.6
+Weight = 550.0
+Abilities = STURDY
+HiddenAbility = ROCKHEAD
+Kind = Ruined
+Pokedex = After two altered Metang fuse into this Pokémon, all but the exterior of its body is composed of crystal. Additional crystals allow it to break free of its rocky shell.

@@ -1725,6 +1725,7 @@ FormName = Mega Arbok
 Type1 = POISON
 Type2 = GROUND
 BaseStats = 60,130,84,95,85,94
+MegaStone = ARBOKITE
 #-------------------------------
 [SANDSLASH,2]
 FormName = Mega Sandslash
@@ -1747,6 +1748,7 @@ Pokedex = Mega Evolution gives Wigglytuff super soft micro fur, though the stati
 #-------------------------------
 [VENOMOTH,1]
 FormName = Mega Venomoth
+MegaStone = VENOMITE
 #-------------------------------
 [GOLDUCK,1]
 FormName = Mega Golduck
@@ -1770,6 +1772,7 @@ FormName = Mega Electrode
 Type1 = ELECTRIC
 Type2 = NORMAL
 BaseStats = 60,80,70,180,110,90
+MegaStone = ELECTRODITE
 #-------------------------------
 [MAROWAK,2]
 FormName = Mega Marowak
@@ -1793,12 +1796,14 @@ FormName = Mega Xatu
 Type1 = MYSTIC
 Type2 = FLYING
 BaseStats = 65,70,105,120,105,105
+MegaStone = XATITE
 #-------------------------------
 [ENTEI,1]
 FormName = Mega Entei
 Type1 = FIRE
 Type2 = GHOST
 BaseStats = 115,150,110,100,120,85
+MegaStone = ENTEINITE
 #-------------------------------
 [CELEBI,1]
 FormName = Mega Celebi
@@ -1821,6 +1826,7 @@ HiddenAbility = DESERTBODY
 Kind = Scarecrow
 Color = Green
 Pokedex = Cacturne undergo immense pain during the process of Mega Evolution to fuel its cruelty. It then seeks to cause even worse suffering on the opponent.
+MegaStone = CACTURNITE
 #-------------------------------
 [METAGROSS,3]
 FormName = Mega Delta Metagross
@@ -1830,6 +1836,7 @@ BaseStats = 100,160,210,70,70,90
 Abilities = ROCKHEAD
 HiddenAbility = ROCKHEAD
 UnmegaForm = 1
+MegaStone = DELTAMETAGROSSITE
 #-------------------------------
 [LUXRAY,1]
 FormName = Mega Luxray
@@ -1847,6 +1854,7 @@ Type2 = FIRE
 BaseStats = 70,60,70,103,144,103
 Abilities = DROUGHT,FORESTFIRE
 HiddenAbility = DROUGHT,FORESTFIRE
+MegaStone = CHERRITE
 #-------------------------------
 [LOPUNNY,3]
 FormName = Mega Kurian Lopunny
@@ -1854,12 +1862,14 @@ Type1 = GHOST
 Type2 = FIGHTING
 BaseStats = 80,162,34,120,72,112
 UnmegaForm = 1
+MegaStone = KURIANLOPPUNITE
 #-------------------------------
 [MISMAGIUS,1]
 FormName = Mega Mismagius
 BaseStats = 65,55,55,145,145,145
 Abilities = SECONDSIGHT
 HiddenAbility = SECONDSIGHT
+MegaStone = MISMAGITE
 #-------------------------------
 [TOGEKISS,1]
 FormName = Mega Togekiss
@@ -1867,22 +1877,27 @@ FormName = Mega Togekiss
 [PORYGONZ,1]
 FormName = Mega Porygon-Z
 BaseStats = 85,100,80,100,190,80
+MegaStone = MEGADISC
 #-------------------------------
 [DUSKNOIR,1]
 FormName = Mega Dusknoir
 BaseStats = 75,120,175,45,60,175
+MegaStone = DUSKNITE
 #-------------------------------
 [SHAYMIN,2]
 FormName = Mega Shaymin (Land)
+MegaStone = SHAYMINITE
 #-------------------------------
 [SHAYMIN,3]
 FormName = Mega Shaymin (Sky)
 Type1 = GRASS
 Type2 = FLYING
 UnmegaForm = 1
+MegaStone = SHAYMINITE
 #-------------------------------
 [VICTINI,1]
 FormName = Mega Victini
+MegaStone = VICTINITE
 #-------------------------------
 [UNFEZANT,1]
 FormName = Mega Unfezant
@@ -1890,6 +1905,7 @@ BaseStats = 80,145,100,113,75,75
 #-------------------------------
 [DARMANITAN,4]
 FormName = Mega Darmanitan
+MegaStone = DARMANITE
 #-------------------------------
 [SIGILYPH,1]
 FormName = Mega Sigilyph
@@ -1903,6 +1919,7 @@ Abilities = MINDIPULATION
 HiddenAbility = MINDIPULATION
 Kind = Cerebral
 Pokedex = The process of Mega Evolution manages to train its brain to an IQ that surpasses that of Alakazam. Sometimes, its intelligence can even make the Beheeyem itself confused.
+MegaStone = BEHEYITTE
 #-------------------------------
 [ACCELGOR,1]
 FormName = Mega Accelgor
@@ -1915,10 +1932,12 @@ HiddenAbility = HYPERAROMA
 Kind = Fragrance
 Color = Pink
 Pokedex = Mega Evolution inflates Aromatisse's ego immensely. Because of this, it can get distracted by its own self-admiration. Even losing in battle won't make it love itself less.
+MegaStone = AROMATISSITE
 #-------------------------------
 [SLURPUFF,1]
 FormName = Mega Slurpuff
 BaseStats = 82,80,118,99,116,90
+MegaStone = SLURPITE
 #-------------------------------
 [GOODRA,1]
 FormName = Mega Goodra
@@ -1926,6 +1945,7 @@ BaseStats = 90,140,90,40,150,190
 #-------------------------------
 [CHEETATIC,1]
 FormName = Mega Cheetatic
+MegaStone = CHETITE
 #-------------------------------
 [VISARAB,1]
 FormName = Mega Visarab
@@ -2178,6 +2198,7 @@ Compatibility = Undiscovered
 WildItemUncommon = HARDSTONE
 Abilities = STURDY
 HiddenAbility = ROCKHEAD
+Color = Brown
 Kind = Ruined
 Pokedex = A Delta Species discovered by LunarDusk and Cowctus. It is said that beneath its rough exterior exists a crystal shard of unimaginable value.
 Evolutions = METANG,Level,20
@@ -2194,6 +2215,7 @@ Height = 1.2
 Weight = 202.5
 Abilities = STURDY
 HiddenAbility = ROCKHEAD
+Color = Brown
 Kind = Ruined
 Pokedex = As multiple altered Beldums come into contact with each other, their crystals resonate, causing their cores to fuse. They then reconstruct into a single entity.
 Evolutions = METAGROSS,Level,45
@@ -2210,5 +2232,56 @@ Height = 1.6
 Weight = 550.0
 Abilities = STURDY
 HiddenAbility = ROCKHEAD
+Color = Brown
 Kind = Ruined
 Pokedex = After two altered Metang fuse into this Pokémon, all but the exterior of its body is composed of crystal. Additional crystals allow it to break free of its rocky shell.
+#-------------------------------
+[JIRACHI,2]
+FormName = God Form Jirachi
+BaseStats = 999,999,999,999,999,999
+BaseEXP = 999
+EffortPoints = 252,252,252,252,252,252
+Rareness = 0
+Happiness = 252
+Abilities = OMNIPOTENT
+HiddenAbility = OMNIPOTENT
+StepsToHatch = 0
+Height = 1
+Weight = 0
+Kind = Sleepy
+Pokedex = Wow
+#-------------------------------
+[DEINO,1]
+FormName = Vitrian Deino
+Type1 = STEEL
+Type2 = DRAGON
+BaseStats = 50,45,50,55,80,50
+Abilities = ANALYTIC
+HiddenAbility = SPEEDBOOST
+Compatibility = Undiscovered
+Kind = Augmented
+Pokedex = A victim of experimentation from Team Vitreus taking advantage of the softened Deino on (island name). It lacks eyes, but can sense its surroundings via signals from its antenna.
+Evolutions = ZWEILOUS,Level,35
+#-------------------------------
+[ZWEILOUS,1]
+FormName = Vitrian Zweilous
+Type1 = STEEL
+Type2 = DRAGON
+BaseStats = 70,65,75,60,100,75
+Abilities = ANALYTIC
+HiddenAbility = MEGALAUNCHER
+Compatibility = Undiscovered
+Kind = Augmented
+Pokedex = It has legs instead of wheels to stabilize its footing while its blasting powerful attacks from its two cannons. It is unknown if it can emote.
+Evolutions = HYDREIGON,Level,55
+#-------------------------------
+[HYDREIGON,1]
+FormName = Vitrian Hydreigon
+Type1 = STEEL
+Type2 = DRAGON
+BaseStats = 90,100,105,95,135,105
+Abilities = LEVITATE
+HiddenAbility = MEGALAUNCHER
+Compatibility = Undiscovered
+Kind = Augmented
+Pokedex = An attempt of bringing the softened Kurian Hydreigon back to their former glory. It flies at high speeds and shoots down its target with powerful beams from either its armcannons or its mouth.

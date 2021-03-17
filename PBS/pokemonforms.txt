@@ -1653,6 +1653,7 @@ Pokedex = This gorgeous Magearna looks as it did at the time of its invention. I
 #Add official forms prior to this section
 #-------------------------------
 #Region Variants
+#Note: not done with this, yet
 #-------------------------------
 [MAGIKARP,1]
 FormName = Kurian Magikarp
@@ -1702,6 +1703,22 @@ EffortPoints = 0,0,0,0,2,0
 Abilities = SUBTRACTION,INFILTRATOR
 HiddenAbility = RIVALRY
 Compatibility = Field,Fairy
+#-------------------------------
+[ROSELIA,1]
+ForName = Kurian Roselia
+Type1 = DARK
+Type2 = POISON
+#-------------------------------
+[BUDEW,1]
+FormName = Kurian Budew
+Type1 = DARK
+Type2 = POISON
+BaseStats = 50,42,40,41,67,45
+EffortPoints = 0,0,0,0,1,0
+Abilities = PRANKSTER,WONDERSKIN
+HiddenAbility = COMPOUNDEYES
+Compatibility = Fairy,Monster
+Evolutions = ROSELIA,HasMove,TOXICTHREAD
 #-------------------------------
 [AMBIPOM,1]
 FormName = Kurian Ambipom

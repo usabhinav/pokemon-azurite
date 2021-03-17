@@ -1654,8 +1654,17 @@ Pokedex = This gorgeous Magearna looks as it did at the time of its invention. I
 #-------------------------------
 #Region Variants
 #-------------------------------
+[MAGIKARP,1]
+FormName = Kurian Magikarp
+BaseStats = 50,80,55,80,25,40
+EffortPoints = 0,1,0,0,0,0
+Abilities = INTIMIDATE,SWIFTSWIM
+HiddenAbility = MOXIE
+Compatibility = Water2,Dragon
+Evolutions = GYARADOS,Level,36
+#-------------------------------
 [AIPOM,1]
-FormName = Kurian
+FormName = Kurian Aipom
 Type1 = NORMAL
 Type2 = SOUND
 BaseStats = 55,70,55,85,40,55
@@ -1664,8 +1673,38 @@ Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
 #-------------------------------
+[BRELOOM,1]
+FormName = Kurian Breloom
+Type1 = POISON
+Type2 = MYSTIC
+BaseStats = 90,110,80,70,50,90
+EffortPoints = 0,2,0,0,0,0
+Abilities = STENCH,CLEARINGFUMES
+HiddenAbility = ADAPTABILITY
+Compatibility = Grass,Fairy
+#-------------------------------
+[PLUSLE,1]
+FormName = Kurian Plusle
+Type1 = FAIRY
+Type2 = LIGHT
+BaseStats = 70,40,70,65,75,85
+EffortPoints = 0,0,0,0,0,2
+Abilities = ADDITION,TRIAGE
+HiddenAbility = RIVALRY
+Compatibility = Field,Fairy
+#-------------------------------
+[MINUN,1]
+FormName = Kurian Minun
+Type1 = FAIRY
+Type2 = MYSTIC
+BaseStats = 60,50,45,100,95,55
+EffortPoints = 0,0,0,0,2,0
+Abilities = SUBTRACTION,INFILTRATOR
+HiddenAbility = RIVALRY
+Compatibility = Field,Fairy
+#-------------------------------
 [AMBIPOM,1]
-FormName = Kurian
+FormName = Kurian Ambipom
 Type1 = NORMAL
 Type2 = SOUND
 BaseStats = 75,105,65,120,55,65
@@ -1674,8 +1713,28 @@ Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
 #-------------------------------
+[BUNEARY,1]
+FormName = Kurian Buneary
+Type1 = GHOST
+Type2 = NORMAL
+BaseStats = 50,66,60,80,44,50
+EffortPoints = 0,0,0,0,1,0
+Abilities = UNNERVE,FLUFFY
+HiddenAbility = VOODOO
+Compatibility = Amorphous,Humanlike
+#-------------------------------
+[LOPUNNY,1]
+FormName = Kurian Lopunny
+Type1 = GHOST
+Type2 = NORMAL
+BaseStats = 80,115,64,95,59,67
+EffortPoints = 0,2,0,0,0,0
+Abilities = UNNERVE,FLUFFY
+HiddenAbility = VOODOO
+Compatibility = Amorphous,Humanlike
+#-------------------------------
 [BOUNSWEET,1]
-FormName = Kurian
+FormName = Kurian Bounsweet
 Type1 = FAIRY
 BaseStats = 44,30,35,40,31,20
 EffortPoints = 1,0,0,0,0,0
@@ -1685,7 +1744,7 @@ EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
 #-------------------------------
 [STEENEE,1]
-FormName = Kurian
+FormName = Kurian Steenee
 Type1 = COSMIC
 Type2 = DARK
 BaseStats = 50,48,45,66,61,55
@@ -1696,7 +1755,7 @@ EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
 #-------------------------------
 [TSAREENA,1]
-FormName = Kurian
+FormName = Kurian Tsareena
 Type1 = COSMIC
 Type2 = DARK
 BaseStats = 101,90,60,71,123,90
@@ -2191,16 +2250,16 @@ FormName = Delta Beldum
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 40,55,80,30,35,60
-Moves = 1,DOUBLEEDGE
+Moves = 1,TAKEDOWN,1,TACKLE,25,DOUBLEEDGE,50,HEADSMASH
 Height = 0.6
 Weight = 95.2
-Compatibility = Undiscovered
+Compatibility = Mineral
 WildItemUncommon = HARDSTONE
 Abilities = STURDY
 HiddenAbility = ROCKHEAD
 Color = Brown
 Kind = Ruined
-Pokedex = A Delta Species discovered by LunarDusk and Cowctus. It is said that beneath its rough exterior exists a crystal shard of unimaginable value.
+Pokedex = A Delta form believed to have originated in Torren. These Beldum appear to be made of Rock instead of steel.
 Evolutions = METANG,Level,20
 #-------------------------------
 [METANG,1]
@@ -2208,8 +2267,8 @@ FormName = Delta Metang
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 60,75,100,50,55,80
-Moves = 1,STEALTHROCK,1,DOUBLEEDGE,1,MEGADRAIN,1,SMACKDOWN,20,MEGADRAIN,20,SMACKDOWN,23,PURSUIT,26,BULLETSEED,29,LEECHSEED,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,ROCKPOLISH,44,STONEEDGE,47,GROWTH,50,HEADSMASH,60,CRYSTALRUSH
-Compatibility = Undiscovered
+Moves = 0,ROCKCLAW,0,BULLETSEED,1,ROCKCLAW,1,BULLETSEED,1,STEALTHROCK,1,LEECHSEED,1,TAKEDOWN,20,ROCKCLAW,20,BULLETSEED,23,PURSUIT,26,ROCKBLAST,29,GROWTH,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,STONEFIST,44,ROCKPOLISH,47,IRONDEFENSE,52,ROCKWRECKER,57,HEADSMASH
+Compatibility = Mineral
 WildItemUncommon = HARDSTONE
 Height = 1.2
 Weight = 202.5
@@ -2217,7 +2276,7 @@ Abilities = STURDY
 HiddenAbility = ROCKHEAD
 Color = Brown
 Kind = Ruined
-Pokedex = As multiple altered Beldums come into contact with each other, their crystals resonate, causing their cores to fuse. They then reconstruct into a single entity.
+Pokedex = A Delta form believed to have originated in Torren. These Metang appear to be made of Rock instead of steel.
 Evolutions = METAGROSS,Level,45
 #-------------------------------
 [METAGROSS,1]
@@ -2225,8 +2284,8 @@ FormName = Delta Metagross
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 80,135,130,70,95,90
-Moves = 1,STEALTHROCK,1,WOODHAMMER,1,MEGADRAIN,1,SMACKDOWN,20,MEGADRAIN,20,SMACKDOWN,23,PURSUIT,26,BULLETSEED,29,LEECHSEED,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,ROCKPOLISH,44,STONEEDGE,45,DIAMONDSTORM,52,GROWTH,60,HEADSMASH,65,CRYSTALRUSH
-Compatibility = Undiscovered
+Moves = 0,HAMMERARM,1,HAMMERARM,1,CRYSTALRUSH,1,WOODHAMMER,1,LEECHSEED,1,STEALTHROCK,1,TAKEDOWN,20,ROCKCLAW,20,BULLETSEED,23,PURSUIT,26,ROCKBLAST,29,GROWTH,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,STONEFIST,44,ROCKPOLISH,45,HAMMERARM,49,IRONDEFENSE,53,ROCKWRECKER,59,EXPLOSION,64,HEADSMASH
+Compatibility = Mineral
 WildItemUncommon = HARDSTONE
 Height = 1.6
 Weight = 550.0
@@ -2234,7 +2293,7 @@ Abilities = STURDY
 HiddenAbility = ROCKHEAD
 Color = Brown
 Kind = Ruined
-Pokedex = After two altered Metang fuse into this Pokémon, all but the exterior of its body is composed of crystal. Additional crystals allow it to break free of its rocky shell.
+Pokedex = A Delta form believed to have originated in Torren. These Metagross appear to be made of Rock instead of steel.
 #-------------------------------
 [JIRACHI,2]
 FormName = God Form Jirachi

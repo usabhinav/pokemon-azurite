@@ -1740,7 +1740,7 @@ Abilities = UNNERVE,FLUFFY
 HiddenAbility = VOODOO
 Compatibility = Amorphous,Humanlike
 #-------------------------------
-[LOPUNNY,1]
+[LOPUNNY,2]
 FormName = Kurian Lopunny
 Type1 = GHOST
 Type2 = NORMAL
@@ -1938,13 +1938,13 @@ Type1 = GHOST
 Type2 = FIGHTING
 BaseStats = 80,162,34,120,72,112
 UnmegaForm = 1
-MegaStone = KURIANLOPPUNITE
+MegaStone = KURIANLOPUNNITE
 #-------------------------------
 [MISMAGIUS,1]
 FormName = Mega Mismagius
 BaseStats = 65,55,55,145,145,145
-Abilities = SECONDSIGHT
-HiddenAbility = SECONDSIGHT
+Abilities = TRICKSTER
+HiddenAbility = TRICKSTER
 MegaStone = MISMAGITE
 #-------------------------------
 [TOGEKISS,1]
@@ -1995,7 +1995,7 @@ Abilities = MINDIPULATION
 HiddenAbility = MINDIPULATION
 Kind = Cerebral
 Pokedex = The process of Mega Evolution manages to train its brain to an IQ that surpasses that of Alakazam. Sometimes, its intelligence can even make the Beheeyem itself confused.
-MegaStone = BEHEYITTE
+MegaStone = BEHEEYITE
 #-------------------------------
 [ACCELGOR,1]
 FormName = Mega Accelgor
@@ -2021,7 +2021,7 @@ BaseStats = 90,140,90,40,150,190
 #-------------------------------
 [CHEETATIC,1]
 FormName = Mega Cheetatic
-MegaStone = CHETITE
+MegaStone = CHEETITE
 #-------------------------------
 [VISARAB,1]
 FormName = Mega Visarab
@@ -2059,14 +2059,14 @@ Type2 = CRYSTAL
 BaseStats = 60,110,100,110,15,100
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
-[RAICHI,2]
+[RAICHU,2]
 FormName = Crystal Raichu
 Type1 = ELECTRIC
 Type2 = CRYSTAL
 BaseStats = 70,105,80,140,130,80
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
-[RAICHI,3]
+[RAICHU,3]
 FormName = Crystal Raichu
 Type1 = ELECTRIC
 Type2 = CRYSTAL
@@ -2234,8 +2234,8 @@ Type2 = CRYSTAL
 BaseStats = 100,110,150,105,110,155
 BaseEXP = 300
 EffortPoints = 0,0,2,0,0,2
-Abilities = CRYSTALADAPTION
-HiddenAbility = CRYSTALADAPTION
+Abilities = CRYSTALADAPTATION
+HiddenAbility = CRYSTALADAPTATION
 Kind = Aurora
 Pokedex = The Perfect Transformation. Also known as Crystal Mega Evolution. Suicune underwent this transformation in order to reach "Perfection" and ascend beyond any other Pokémon.
 #-------------------------------
@@ -2251,8 +2251,8 @@ Evolutions = AROMATISSE,None,
 [GIGALITH,1]
 FormName = Azure Gigalith
 #-------------------------------
-[CRYOGANOL,1]
-FormName = Azure Cryoganol
+[CRYOGONAL,1]
+FormName = Azure Cryogonal
 #-------------------------------
 [COMBEE,1]
 FormName = Guard Combee
@@ -2319,11 +2319,11 @@ BaseEXP = 999
 EffortPoints = 252,252,252,252,252,252
 Rareness = 0
 Happiness = 252
-Abilities = OMNIPOTENT
-HiddenAbility = OMNIPOTENT
-StepsToHatch = 0
-Height = 1
-Weight = 0
+Abilities = OMNIGENE
+HiddenAbility = OMNIGENE
+StepsToHatch = 1
+Height = 1.0
+Weight = 0.1
 Kind = Sleepy
 Pokedex = Wow
 #-------------------------------

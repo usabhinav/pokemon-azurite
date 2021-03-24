@@ -2997,7 +2997,7 @@ class PokeBattle_AI
       if target.effects[PBEffects::ThroatChop]==0 && skill>=PBTrainerAI.highSkill
         hasSoundMove = false
         user.eachMove do |m|
-          next if !m.soundMove?
+          next if !m.pbSoundMove?(user)
           hasSoundMove = true
           break
         end

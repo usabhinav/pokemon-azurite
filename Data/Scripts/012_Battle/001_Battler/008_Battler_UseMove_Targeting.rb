@@ -134,6 +134,26 @@ class PokeBattle_Battler
     targets = pbChangeTargetByAbility(:LIGHTNINGROD,:ELECTRIC,move,user,targets,priority,nearOnly)
     # Storm Drain
     targets = pbChangeTargetByAbility(:STORMDRAIN,:WATER,move,user,targets,priority,nearOnly)
+    # Alluring Glow
+    if !targets[0].hasActiveAbility?(:ALLURINGGLOW)
+      priority.each do |b|
+        next if b.index==user.index || b.index==targets[0].index
+        next if !b.opposes?(user)
+        next if !b.hasActiveAbility?(:ALLURINGGLOW)
+        next if nearOnly && !b.near?(user)
+        @battle.pbShowAbilitySplash(b)
+        targets.clear
+        pbAddTarget(targets,user,b,move,nearOnly)
+        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+          @battle.pbDisplay(_INTL("{1} took the attack!",b.pbThis))
+        else
+          @battle.pbDisplay(_INTL("{1} took the attack with its {2}!",b.pbThis,b.abilityName))
+        end
+        @battle.pbHideAbilitySplash(b)
+        break
+      end
+    end
+    # targets = pbChangeTargetByAbility(:ALLURINGGLOW,getConstantName(PBTypes,move.calcType),move,user,targets,priority,nearOnly)
     return targets
   end
 

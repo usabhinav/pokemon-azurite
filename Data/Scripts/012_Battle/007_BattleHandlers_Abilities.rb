@@ -449,6 +449,8 @@ BattleHandlers::StatLossImmunityAbility.add(:KEENEYE,
   }
 )
 
+BattleHandlers::StatLossImmunityAbility.copy(:KEENEYE, :SENSORYAWARENESS)
+
 #===============================================================================
 # StatLossImmunityAbilityNonIgnorable handlers
 #===============================================================================
@@ -541,6 +543,12 @@ BattleHandlers::PriorityChangeAbility.add(:TRIAGE,
 BattleHandlers::PriorityChangeAbility.add(:SPEEDBALL,
   proc { |ability,battler,move,pri|
     next pri+1 if move.rollingBasedMove? || battler.usingMultiTurnAttack?
+  }
+)
+
+BattleHandlers::PriorityChangeAbility.add(:FREESTYLE,
+  proc { |ability,battler,move,pri|
+    next pri+1 if isConst?(move.type,PBTypes,:SOUND) || move.pbSoundMove?(battler)
   }
 )
 
@@ -654,7 +662,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:SAPSIPPER,
 
 BattleHandlers::MoveImmunityTargetAbility.add(:SOUNDPROOF,
   proc { |ability,user,target,move,type,battle|
-    next false if !move.soundMove?
+    next false if !move.pbSoundMove?(user) && !isConst?(move.type,PBTypes,:SOUND)
     battle.pbShowAbilitySplash(target)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
       battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
@@ -774,7 +782,7 @@ BattleHandlers::MoveBaseTypeModifierAbility.add(:GALVANIZE,
 
 BattleHandlers::MoveBaseTypeModifierAbility.add(:LIQUIDVOICE,
   proc { |ability,user,move,type|
-    next getConst(PBTypes,:WATER) if hasConst?(PBTypes,:WATER) && move.soundMove?
+    next getConst(PBTypes,:WATER) if hasConst?(PBTypes,:WATER) && move.pbSoundMove?(user)
   }
 )
 
@@ -2310,6 +2318,16 @@ BattleHandlers::EOREffectAbility.add(:SPEEDBOOST,
   }
 )
 
+BattleHandlers::EOREffectAbility.add(:ALLSEEING,
+  proc { |ability,battler,battle|
+    battle.eachOtherSideBattler(battler.index) do |b|
+      if b.near?(battler) && b.pbCanLowerStatStage?(PBStats::EVASION,battler)
+        b.pbLowerStatStageByAbility(PBStats::EVASION,1,battler)
+      end
+    end
+  }
+)
+
 #===============================================================================
 # EORGainItemAbility handlers
 #===============================================================================
@@ -2764,8 +2782,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:RETEXTURING,
         rescount += 1 if PBTypes.resistant?(opptype, i)
       end
       if rescount > 0
-        echoln PBTypes.getName(i)
-        echoln rescount
         restypes.push([i, rescount]) # First element is type, second is resistance count
         maxrescount = rescount if rescount > maxrescount
       end

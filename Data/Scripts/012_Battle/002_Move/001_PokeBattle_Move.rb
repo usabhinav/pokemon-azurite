@@ -133,7 +133,7 @@ class PokeBattle_Move
 
   def ignoresSubstitute?(user)   # user is the Pokémon using this move
     if NEWEST_BATTLE_MECHANICS
-      return true if soundMove?
+      return true if pbSoundMove?(user)
       return true if user && user.hasActiveAbility?(:INFILTRATOR)
     end
     return false

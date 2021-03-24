@@ -115,7 +115,7 @@ class PokeBattle_AI
                      target.hasActiveAbility?(:TELEPATHY)
       return true if move.canMagicCoat? && target.hasActiveAbility?(:MAGICBOUNCE) &&
                      target.opposes?(user)
-      return true if move.soundMove? && target.hasActiveAbility?(:SOUNDPROOF)
+      return true if move.pbSoundMove?(user) && target.hasActiveAbility?(:SOUNDPROOF)
       return true if move.bombMove? && target.hasActiveAbility?(:BULLETPROOF)
       if move.powderMove?
         return true if target.pbHasType?(:GRASS)

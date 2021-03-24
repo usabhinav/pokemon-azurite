@@ -35,6 +35,7 @@ class PokeBattle_Battle
   def pbCanShowCommands?(idxBattler)
     battler = @battlers[idxBattler]
     return false if !battler || battler.fainted?
+    return true if battler.hasActiveAbility?(:UNSTABLE) && !self.moldBreaker
     return false if battler.usingMultiTurnAttack?
     return true
   end
@@ -214,7 +215,10 @@ class PokeBattle_Battle
         when 0    # Fight
           break if pbFightMenu(idxBattler)
         when 1    # Bag
-          if pbItemMenu(idxBattler,actioned.length==1)
+          # This check is necessary so that Pokemon with Unstable don't get a free item turn
+          if @battlers[idxBattler].usingMultiTurnAttack?
+            pbDisplay(_INTL("{1} is in the middle of an attack!",@battlers[idxBattler].pbThis))
+          elsif pbItemMenu(idxBattler,actioned.length==1)
             commandsEnd = true if pbItemUsesAllActions?(@choices[idxBattler][1])
             break
           end

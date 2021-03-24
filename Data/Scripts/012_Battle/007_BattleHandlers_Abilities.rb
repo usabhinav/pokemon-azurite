@@ -1804,6 +1804,20 @@ BattleHandlers::TargetAbilityOnHit.add(:THERMALPOWER,
   }
 )
 
+BattleHandlers::TargetAbilityOnHit.add(:VINDICTIVE,
+  proc { |ability,user,target,move,battle|
+    next if !target.fainted?
+    stat = PBStats::ATTACK
+    # Photon Geyser uses the higher of Sp. Atk and Attack
+    if move.specialMove? || (move.function == "164" && user.spatk >= user.attack)
+      stat = PBStats::SPATK
+    end
+    if user.pbCanLowerStatStage?(stat,user)
+      user.pbLowerStatStageByAbility(stat,2,target)
+    end
+  }
+)
+
 #===============================================================================
 # UserAbilityOnHit handlers
 #===============================================================================

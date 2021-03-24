@@ -52,6 +52,8 @@ class PokeBattle_Battle
     # Check whether battler can switch out
     battler = @battlers[idxBattler]
     return true if battler.fainted?
+    # Unstable
+    return true if battler.hasActiveAbility?(:UNSTABLE) && !self.moldBreaker
     # Ability/item effects that allow switching no matter what
     if battler.abilityActive?
       if BattleHandlers.triggerCertainSwitchingUserAbility(battler.ability,battler,self)

@@ -400,7 +400,7 @@ class PokeBattle_Battler
       end
     end
     # Ungrounded
-    if user.hasActiveAbility?(:UNGROUNDED) && !@battle.moldBreaker
+    if user.hasActiveAbility?(:UNGROUNDED) && move.pbContactMove?(user) && !@battle.moldBreaker
       return true
     end
     # Immaterial

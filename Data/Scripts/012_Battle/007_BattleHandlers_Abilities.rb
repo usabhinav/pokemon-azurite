@@ -1969,39 +1969,41 @@ BattleHandlers::UserAbilityEndOfMove.add(:MOXIE,
 
 BattleHandlers::UserAbilityEndOfMove.add(:TRICKSTER,
   proc { |ability,user,targets,move,battle|
-    next if !battle.futureSight
+    next if battle.futureSight
     next if !move.pbDamagingMove?
-    next if user.item>0
+    next if !move.pbContactMove?(user)
     next if battle.wildBattle? && user.opposes?
     targets.each do |b|
       next if b.damageState.unaffected || b.damageState.substitute
-      next if b.item==0
-      next if b.unlosableItem?(b.item) || user.unlosableItem?(b.item)
+      next if user.item==0 && b.item==0
+      next if b.unlosableItem?(b.item) || user.unlosableItem?(b.item) || b.unlosableItem?(user.item) || user.unlosableItem?(user.item)
       battle.pbShowAbilitySplash(user)
-      if b.hasActiveAbility?(:STICKYHOLD)
+      if b.hasActiveAbility?(:STICKYHOLD) && !battle.moldBreaker
         battle.pbShowAbilitySplash(b) if user.opposes?(b)
         if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
-          battle.pbDisplay(_INTL("{1}'s item cannot be stolen!",b.pbThis))
+          battle.pbDisplay(_INTL("{1}'s item cannot be swapped!",b.pbThis))
         end
         battle.pbHideAbilitySplash(b) if user.opposes?(b)
         next
       end
-      user.item = b.item
-      b.item = 0
-      b.effects[PBEffects::Unburden] = true
-      if battle.wildBattle? && user.initialItem==0 && b.initialItem==user.item
-        user.setInitialItem(user.item)
-        b.setInitialItem(0)
+      oldUserItem = user.item;     oldUserItemName = user.itemName
+      oldTargetItem = b.item; oldTargetItemName = b.itemName
+      user.item                             = oldTargetItem
+      user.effects[PBEffects::ChoiceBand]   = -1
+      user.effects[PBEffects::Unburden]     = (user.item==0 && oldUserItem>0)
+      b.item                           = oldUserItem
+      b.effects[PBEffects::ChoiceBand] = -1
+      b.effects[PBEffects::Unburden]   = (b.item==0 && oldTargetItem>0)
+      # Permanently steal the item from wild Pokémon
+      if battle.wildBattle? && b.opposes? && b.initialItem==oldTargetItem && user.initialItem==0
+        user.setInitialItem(oldTargetItem)
       end
-      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
-        battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,
-           b.pbThis(true),user.itemName))
-      else
-        battle.pbDisplay(_INTL("{1} stole {2}'s {3} with {4}!",user.pbThis,
-           b.pbThis(true),user.itemName,user.abilityName))
-      end
-      battle.pbHideAbilitySplash(user)
+      battle.pbDisplay(_INTL("{1} switched items with its opponent!",user.pbThis))
+      battle.pbDisplay(_INTL("{1} obtained {2}.",user.pbThis,oldTargetItemName)) if oldTargetItem>0
+      battle.pbDisplay(_INTL("{1} obtained {2}.",b.pbThis,oldUserItemName)) if oldUserItem>0
       user.pbHeldItemTriggerCheck
+      b.pbHeldItemTriggerCheck
+      battle.pbHideAbilitySplash(user)
       break
     end
   }

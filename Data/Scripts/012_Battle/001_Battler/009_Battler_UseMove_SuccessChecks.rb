@@ -399,8 +399,12 @@ class PokeBattle_Battler
         return false
       end
     end
+    # Ungrounded
+    if user.hasActiveAbility?(:UNGROUNDED) && !@battle.moldBreaker
+      return true
+    end
     # Immaterial
-    if move.pbContactMove?(user) && user.hasActiveAbility?(:IMMATERIAL)
+    if move.pbContactMove?(user) && user.hasActiveAbility?(:IMMATERIAL) && !@battle.moldBreaker
       @battle.pbShowAbilitySplash(user)
       @battle.pbDisplay(_INTL("But it failed!"))
       @battle.pbHideAbilitySplash(user)

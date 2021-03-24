@@ -390,3 +390,5 @@
 388,GLEAMINGGLARE,Gleaming Glare,"Has a 10% chance to paralyze one of its opponents every turn."
 389,CLOAKCONTROL,Cloak Control,"Allows user to choose its type upon switch-in."
 390,ROLLUP,Rollup,"Rolling moves deal double damage."
+391,SECONDSIGHT,Second Sight,"If this Pokémon uses Future Sight, it will roll twice for damage and choose the higher of the two."
+392,OMNIPOTENT,Omnipotent,"This Pokémon evades all moves and always lands critical hits, like a true god."

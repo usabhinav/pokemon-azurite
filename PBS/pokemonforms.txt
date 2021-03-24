@@ -1943,8 +1943,8 @@ MegaStone = KURIANLOPUNNITE
 [MISMAGIUS,1]
 FormName = Mega Mismagius
 BaseStats = 65,55,55,145,145,145
-Abilities = TRICKSTER
-HiddenAbility = TRICKSTER
+Abilities = SECONDSIGHT
+HiddenAbility = SECONDSIGHT
 MegaStone = MISMAGITE
 #-------------------------------
 [TOGEKISS,1]
@@ -2319,8 +2319,8 @@ BaseEXP = 999
 EffortPoints = 252,252,252,252,252,252
 Rareness = 0
 Happiness = 252
-Abilities = OMNIGENE
-HiddenAbility = OMNIGENE
+Abilities = OMNIPOTENT
+HiddenAbility = OMNIPOTENT
 StepsToHatch = 1
 Height = 1.0
 Weight = 0.1

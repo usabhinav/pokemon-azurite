@@ -47,6 +47,12 @@ class PokeBattle_Move
       ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:DARK) &&
                                                          PBTypes.ineffective?(moveType,defType)
     end
+    # Synthetic Alloy
+    if target.hasActiveAbility?(:UNHOLY)
+      ret = PBTypeEffectiveness::NOT_EFFECTIVE_ONE  if isConst?(moveType,PBTypes,:LIGHT)
+      ret = PBTypeEffectiveness::NOT_EFFECTIVE_ONE  if isConst?(moveType,PBTypes,:GHOST)
+      ret = PBTypeEffectiveness::NOT_EFFECTIVE_ONE  if isConst?(moveType,PBTypes,:FAIRY)
+    end
     # Delta Stream's weather
     if @battle.pbWeather==PBWeather::StrongWinds
       ret = PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:FLYING) &&

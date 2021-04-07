@@ -2604,6 +2604,21 @@ end
 #       new effects.
 
 #===============================================================================
+# Vapor Wave
+#===============================================================================
+
+class PokeBattle_Move_199 < PokeBattle_Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:FIRE)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ROCK)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ROCK)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:GROUND)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:GROUND)
+    return super
+  end
+end
+
+#===============================================================================
 # Searing Meteor
 #===============================================================================
 

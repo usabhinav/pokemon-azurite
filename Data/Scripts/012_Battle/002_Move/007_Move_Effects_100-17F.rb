@@ -2603,6 +2603,23 @@ end
 #       just to make sure later additions to Essentials don't clash with your
 #       new effects.
 
+class PokeBattle_Move_199 < PokeBattle_Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:BUG)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:BUG)
+    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:STEEL)
+    return PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:GRASS)
+    return PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ICE)
+    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:DRAGON)
+    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:WATER)
+    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ROCK)
+    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ROCK)
+    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:FIRE)
+    return PBTypeEffectiveness::INEFFECTIVE if isConst?(defType,PBTypes,:COSMIC)
+    return super
+  end
+end
+
 #===============================================================================
 # Used for extra effect moves. (Forest Fire, thunderstorm weather)
 #===============================================================================

@@ -2697,7 +2697,18 @@ end
 class PokeBattle_Move_254 < PokeBattle_Move
   def pbDisplayUseMessage(user); end
 end
-
+#===============================================================================
+# Boil
+#===============================================================================
+class PokeBattle_Move_278 < PokeBattle_Move
+  def pbBaseDamage(baseDmg,user,target)
+    if target.burned? &&
+       (target.effects[PBEffects::Substitute]==0 || ignoresSubstitute?(user))
+      baseDmg *= 2
+    end
+    return baseDmg
+  end
+end
 #===============================================================================
 # Used for Kamikaze's "Self Destruct" move.
 #===============================================================================

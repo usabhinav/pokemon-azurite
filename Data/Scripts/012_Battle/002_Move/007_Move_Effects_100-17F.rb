@@ -2662,6 +2662,23 @@ class PokeBattle_Move_19A < PokeBattle_Move
     return super
   end
 end
+
+#===============================================================================
+# Crash Landing
+#===============================================================================
+class PokeBattle_Move_19F < PokeBattle_Move
+  def recoilMove?;        return true; end
+  def unusableInGravity?; return true; end
+
+  def pbCrashDamage(user)
+    return if !user.takesIndirectDamage?
+    @battle.pbDisplay(_INTL("{1} kept going and crashed!",user.pbThis))
+    @battle.scene.pbDamageAnimation(user)
+    user.pbReduceHP(user.speed,false)
+    user.pbItemHPHealCheck
+    user.pbFaint if user.fainted?
+  end
+end
 #===============================================================================
 # Used for extra effect moves. (Forest Fire, thunderstorm weather)
 #===============================================================================

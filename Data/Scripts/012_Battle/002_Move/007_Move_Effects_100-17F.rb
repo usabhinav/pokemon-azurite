@@ -2680,6 +2680,18 @@ class PokeBattle_Move_19F < PokeBattle_Move
   end
 end
 #===============================================================================
+# Warp Storm
+#===============================================================================
+class PokeBattle_Move_24D < PokeBattle_Move
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(2)
+    when 0; target.pbBurn(user) if target.pbCanBurn?(user,false,self)
+    when 1; target.pbFreeze if target.pbCanFreeze?(user,false,self)
+    end
+  end
+end
+#===============================================================================
 # Used for extra effect moves. (Forest Fire, thunderstorm weather)
 #===============================================================================
 class PokeBattle_Move_254 < PokeBattle_Move

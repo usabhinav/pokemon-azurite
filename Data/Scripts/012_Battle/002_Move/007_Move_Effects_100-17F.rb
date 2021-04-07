@@ -2680,6 +2680,25 @@ class PokeBattle_Move_19F < PokeBattle_Move
   end
 end
 #===============================================================================
+# Magical Roots
+#===============================================================================
+class PokeBattle_Move_201 < PokeBattle_Move
+  def tramplesMinimize?(param=1)
+    return true if param==1 && NEWEST_BATTLE_MECHANICS   # Perfect accuracy
+    return true if param==2   # Double damage
+    return super
+  end
+
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    ret = super
+    if hasConst?(PBTypes,:GRASS)
+      flyingEff = PBTypes.getEffectiveness(getConst(PBTypes,:GRASS),defType)
+      ret *= flyingEff.to_f/PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    return ret
+  end
+end
+#===============================================================================
 # Warp Storm
 #===============================================================================
 class PokeBattle_Move_24D < PokeBattle_Move
@@ -2692,10 +2711,34 @@ class PokeBattle_Move_24D < PokeBattle_Move
   end
 end
 #===============================================================================
+# Magic Fang
+#===============================================================================
+class PokeBattle_Move_25E < PokeBattle_Move
+  def flinchingMove?; return true; end
+
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    chance = pbAdditionalEffectChance(user,target,10)
+    return if chance==0
+    if @battle.pbRandom(100)<chance
+      target.pbConfuse(user) if target.pbCanConfuse?(user,false,self)
+    end
+    target.pbFlinch(user) if @battle.pbRandom(100)<chance
+  end
+end
+#===============================================================================
 # Used for extra effect moves. (Forest Fire, thunderstorm weather)
 #===============================================================================
 class PokeBattle_Move_254 < PokeBattle_Move
   def pbDisplayUseMessage(user); end
+end
+#===============================================================================
+# Energy Bomb
+#===============================================================================
+class PokeBattle_Move_257 < PokeBattle_RecoilMove
+  def pbRecoilDamage(user,target)
+    return (user.totalhp/5,false).round
+  end
 end
 #===============================================================================
 # Boil

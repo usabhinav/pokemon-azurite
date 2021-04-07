@@ -2603,6 +2603,10 @@ end
 #       just to make sure later additions to Essentials don't clash with your
 #       new effects.
 
+#===============================================================================
+# Searing Meteor
+#===============================================================================
+
 class PokeBattle_Move_199 < PokeBattle_Move
   def pbCalcTypeModSingle(moveType,defType,user,target)
     return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:BUG)
@@ -2620,6 +2624,29 @@ class PokeBattle_Move_199 < PokeBattle_Move
   end
 end
 
+#===============================================================================
+# Hits 3-5 times.
+#===============================================================================
+class PokeBattle_Move_0C0 < PokeBattle_Move
+  def multiHitMove?; return true; end
+
+  def pbNumHits(user,targets)
+      return 3
+    end
+    hitChances = [2,2,3,3,4,5]
+    r = @battle.pbRandom(hitChances.length)
+    r = hitChances.length-1 if user.hasActiveAbility?(:SKILLLINK)
+    return hitChances[r]
+  end
+
+  def pbBaseDamage(baseDmg,user,target)
+    if isConst?(@id,PBMoves,:WATERSHURIKEN) &&
+       user.isSpecies?(:GRENINJA) && user.form==2
+      return 20
+    end
+    return super
+  end
+end
 #===============================================================================
 # Used for extra effect moves. (Forest Fire, thunderstorm weather)
 #===============================================================================

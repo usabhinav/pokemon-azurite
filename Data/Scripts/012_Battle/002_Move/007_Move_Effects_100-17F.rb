@@ -2607,7 +2607,7 @@ end
 # Searing Meteor
 #===============================================================================
 
-class PokeBattle_Move_19A < PokeBattle_Move
+class PokeBattle_Move_199 < PokeBattle_Move
   def pbCalcTypeModSingle(moveType,defType,user,target)
     return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:BUG)
     return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:BUG)
@@ -2627,7 +2627,7 @@ end
 #===============================================================================
 # Hits 3-5 times.
 #===============================================================================
-class PokeBattle_Move_0C0 < PokeBattle_Move
+class PokeBattle_Move_19A < PokeBattle_Move
   def multiHitMove?; return true; end
 
   def pbNumHits(user,targets)

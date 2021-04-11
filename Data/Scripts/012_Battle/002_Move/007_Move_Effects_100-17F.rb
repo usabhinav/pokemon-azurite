@@ -2646,6 +2646,8 @@ class PokeBattle_Move_19A < PokeBattle_Move
   def multiHitMove?; return true; end
 
   def pbNumHits(user,targets)
+    if isConst?(@id,PBMoves,:WATERSHURIKEN) &&
+      user.isSpecies?(:GRENINJA) && user.form==2
       return 3
     end
     hitChances = [2,2,3,3,4,5]
@@ -2737,7 +2739,7 @@ end
 #===============================================================================
 class PokeBattle_Move_257 < PokeBattle_RecoilMove
   def pbRecoilDamage(user,target)
-    return (user.totalhp/5,false).round
+    return user.totalhp/5
   end
 end
 #===============================================================================

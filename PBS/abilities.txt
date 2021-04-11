@@ -392,3 +392,37 @@
 390,ROLLUP,Rollup,"Rolling moves deal double damage."
 391,SECONDSIGHT,Second Sight,"If this Pokémon uses Future Sight, it will roll twice for damage and choose the higher of the two."
 392,OMNIPOTENT,Omnipotent,"This Pokémon evades all moves and always lands critical hits, like a true god."
+393,BALLFETCH,Ball Fetch,"Fetches the Poké Ball from the first failed throw.",
+394,COTTONDOWN,Cotton Down,"Lowers everyone else's Speed when hit by an attack.",
+395,DAUNTLESSSHIELD,Dauntless Shield,"Boosts Defense stat when the Pokémon enters a battle.",
+396,GORILLATACTICS,Gorilla Tactics,"Boosts Attack but only allows the use of one move.",
+397,GULPMISSILE,Gulp Missile,"Attacks with prey caught when using Surf or Dive.",
+398,HUNGERSWITCH,Hunger Switch,"It alternates between Full Belly Mode and Hangry Mode.",
+399,ICEFACE,Ice Face,"Prevents a physical attack. Can be restored with hail.",
+400,ICESCALES,Ice Scales,"Halves the damage from special moves.",
+401,INTREPIDSWORD,Intrepid Sword,"Boosts Attack stat when the Pokémon enters a battle.",
+402,LIBERO,Libero,"Changes type to the type of the move it's about to use.",
+403,MIMICRY,Mimicry,"Changes the Pokémon's type depending on the terrain.",
+404,MIRRORARMOR,Mirror Armor,"Bounces back stat-lowering effects.",
+405,NEUTRALIZINGGAS,Neutralizing Gas,"Abilities will be nullified or will not be triggered.",
+406,PASTELVEIL,Pastel Veil,"Protects it and ally Pokémon from being poisoned.",
+407,PERISHBODY,Perish Body,"When it takes a hit, both Pokémon faint after 3 turns.",
+408,POWERSPOT,Power Spot,"Just being next to the Pokémon powers up moves.",
+409,PROPELLERTAIL,Propeller Tail,"Ignores effects changing the target of a move.",
+410,PUNKROCK,Punk Rock,"Boosts power and resistance of sound-based moves.",
+411,RIPEN,Ripen,"Ripens Berries and doubles their effect.",
+412,SANDSPIT,Sand Spit,"Creates a sandstorm when it's hit by an attack.",
+413,SCREENCLEANER,Screen Cleaner,"Screens are nullified when entering battle.",
+414,STALWART,Stalwart,"Ignores effects changing the target of a move.",
+415,STEAMENGINE,Steam Engine,"Boosts Speed when hit by a Fire- or Water-type move.",
+416,STEELYSPIRIT,Steely Spirit,"Powers up ally Pokémon's Steel-type moves.",
+417,WANDERINGSPIRIT,Wandering Spirit,"Taking a direct contact hit exchanges Abilities."
+418,UNSEENFIST,Unseen Fist,"Contact moves negate all protection effects."
+419,QUICKDRAW,Quick Draw,"Enables the Pokémon to move first occasionally."
+420,CURIOUSMEDICINE,Curious Medicine,"Stat changes are cleared upon entering battle."
+421,TRANSISTOR,Transistor,"Powers up Electric-type moves."
+422,DRAGONSMAW,Dragon's Maw,"Powers up Dragon-type moves."
+423,CHILLINGNEIGH,Chilling Neigh,"Boosts Attack after knocking out any Pokémon."
+424,GRIMNEIGH,Grim Neigh,"Boosts Sp. Atk after knocking out any Pokémon."
+425,ASONEICE,As One,"Possesses 2 abilities, Unnerve and Chilling Neigh"
+426,ASONEGHOST,As One,"Possesses 2 abilities, Unnerve and Grim Neigh"

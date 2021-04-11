@@ -336,7 +336,7 @@ Moves = 1,PECK,1,SANDATTACK,5,LEER,10,FURYCUTTER,15,ROCKSMASH,20,BRUTALSWING,25,
 EggMoves = COUNTER,COVET,CURSE,DOUBLEEDGE,FEINT,FLAIL,NIGHTSLASH,QUICKATTACK,QUICKGUARD,SIMPLEBEAM,SKYATTACK
 Weight = 42.0
 Pokedex = The stalks of leeks are thicker and longer in the Galar region. Farfetch'd that adapted to these stalks took on a unique form.
-WildItemCommon = LEEK
+WildItemCommon = STICK
 BattlerPlayerX = -23
 BattlerPlayerY = 77
 BattlerEnemyX = 13
@@ -1292,7 +1292,7 @@ Pokedex = Though it has a gentle disposition, it's also very strong. It will qui
 BattlerPlayerX = 4
 BattlerPlayerY = 81
 #-------------------------------
-[DARMANITAN,2]
+[DARMANITAN,3]
 FormName = Zen Mode
 Type1 = FIRE
 Type2 = PSYCHIC
@@ -1304,7 +1304,7 @@ BattlerPlayerX = 1
 BattlerEnemyY = 30
 BattlerShadowSize = 2
 #-------------------------------
-[DARMANITAN,3]
+[DARMANITAN,4]
 FormName = Galarian Zen Mode
 Type1 = ICE
 Type2 = FIRE
@@ -1965,7 +1965,7 @@ Pokedex = This gorgeous Magearna looks as it did at the time of its invention. I
 #Region Variants
 #Note: not done with this, yet
 #-------------------------------
-[JIGGLYPUGG,1]
+[JIGGLYPUFF,1]
 FormName = Kurian Jigglypuff
 Type1 = GHOST
 Type2 = SOUND
@@ -2229,8 +2229,8 @@ Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 100,30,52,32,25,58
 #-------------------------------
-[ZWEILLOUS,1]
-FormName = Kurian Zweillous
+[ZWEILOUS,1]
+FormName = Kurian Zweilous
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 120,50,62,23,45,60
@@ -2301,8 +2301,8 @@ Type1 = ELECTRIC
 Type2 = GROUND
 BaseStats = 60,50,50,10,80,80
 #-------------------------------
-[PALLOSAND,1]
-FormName = Kurian Pallosand
+[PALOSSAND,1]
+FormName = Kurian Palossand
 Type1 = ELECTRIC
 Type2 = GROUND
 BaseStats = 100,60,60,20,120,120
@@ -2548,7 +2548,7 @@ MegaStone = VICTINITE
 FormName = Mega Unfezant
 BaseStats = 80,145,100,113,75,75
 #-------------------------------
-[DARMANITAN,4]
+[DARMANITAN,5]
 FormName = Mega Darmanitan
 MegaStone = DARMANITE
 #-------------------------------
@@ -2896,7 +2896,7 @@ Weight = 0.1
 Kind = Sleepy
 Pokedex = Wow
 #-------------------------------
-[DEINO,1]
+[DEINO,2]
 FormName = Vitrian Deino
 Type1 = STEEL
 Type2 = DRAGON
@@ -2908,7 +2908,7 @@ Kind = Augmented
 Pokedex = A victim of experimentation from Team Vitreus taking advantage of the softened Deino on (island name). It lacks eyes, but can sense its surroundings via signals from its antenna.
 Evolutions = ZWEILOUS,Level,35
 #-------------------------------
-[ZWEILOUS,1]
+[ZWEILOUS,2]
 FormName = Vitrian Zweilous
 Type1 = STEEL
 Type2 = DRAGON
@@ -2920,7 +2920,7 @@ Kind = Augmented
 Pokedex = It has legs instead of wheels to stabilize its footing while its blasting powerful attacks from its two cannons. It is unknown if it can emote.
 Evolutions = HYDREIGON,Level,55
 #-------------------------------
-[HYDREIGON,1]
+[HYDREIGON,2]
 FormName = Vitrian Hydreigon
 Type1 = STEEL
 Type2 = DRAGON

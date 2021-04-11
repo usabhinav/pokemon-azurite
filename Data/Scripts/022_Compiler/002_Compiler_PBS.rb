@@ -923,6 +923,9 @@ def pbCompilePokemonForms
   pokedexEntries = []
   formToSpecies  = []   # Saved
   speciesToForm  = []   # Only used in this method
+
+  Console::setup_console # Temporary debug output for forms compiling
+  
   for i in 1..PBSpecies.maxValue
     formToSpecies[i] = [i]
     speciesToForm[i] = i
@@ -944,6 +947,9 @@ def pbCompilePokemonForms
       end
       baseSpeciesID = parseSpecies(splitSectionName[0])
       form          = csvInt!(splitSectionName[1])
+
+      echoln "species: #{baseSpeciesID}, form: #{form}" # Temporary debug output for forms compiling
+
       # Ensure this is a valid form and not a duplicate.
       if form==0
         raise _INTL("Form {1} is invalid (PBS/pokemonforms.txt). Form 0 data should be defined in \"PBS/pokemon.txt\".",sectionName)

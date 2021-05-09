@@ -391,7 +391,8 @@ class Game_Player < Game_Character
 			end
 			  
 			# Set the outfit layer part
-			$Trainer.outfitstate.setDryLayerPart(layer_name, apparelId, color)
+      # OUTFIT DISABLED
+			# $Trainer.outfitstate.setDryLayerPart(layer_name, apparelId, color)
 		  end
 		end
 	  end
@@ -485,15 +486,19 @@ def pbUpdateVehicle
 =end
 	if $PokemonGlobal.diving
       #$game_player.character_name=pbGetPlayerCharset(meta,5) # Diving graphic
-      $Trainer.outfitstate.animation = "Diving"
+      # OUTFIT DISABLED
+      # $Trainer.outfitstate.animation = "Diving"
     elsif $PokemonGlobal.surfing
       #$game_player.character_name=pbGetPlayerCharset(meta,3) # Surfing graphic
-      $Trainer.outfitstate.animation = "Surfing"
+      # OUTFIT DISABLED
+      # $Trainer.outfitstate.animation = "Surfing"
     elsif $PokemonGlobal.bicycle
       #$game_player.character_name=pbGetPlayerCharset(meta,2) # Bicycle graphic
-      $Trainer.outfitstate.animation = "Bicycle"
+      # OUTFIT DISABLED
+      # $Trainer.outfitstate.animation = "Bicycle"
     elsif $PokemonGlobal.swimming
-      $Trainer.outfitstate.animation = "Swimming"            # Swimming animation
+      # OUTFIT DISABLED
+      # $Trainer.outfitstate.animation = "Swimming"            # Swimming animation
     else
       #$game_player.character_name=pbGetPlayerCharset(meta,1) # Regular graphic
     end

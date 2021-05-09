@@ -1655,7 +1655,8 @@ end
 # Compile apparel
 #===============================================================================
 def compile_apparel
-  
+  # OUTFIT DISABLED
+  return
   txts_no_extension = Marshal.load(Marshal.dump($LAYER_NAMES)) # creates a copy 
   txts_no_extension.push("Bike")
   txts_no_extension.push("Rod")

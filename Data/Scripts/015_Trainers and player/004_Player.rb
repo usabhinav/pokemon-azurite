@@ -108,8 +108,9 @@ class Player < Trainer
     @mystery_gifts         = []
     @outfit                = 0
     # Initialize trainer outfit state.
-    @outfitstate = ObservableOutfitState.new(OutfitState.new(trainertype, "Walking"))
-    @outfitstate.setDryLayerPart("Base", 1)
-    @outfitstate.setWetLayerPart("Base", 1)
+    # OUTFIT DISABLED (3 lines)
+    # @outfitstate = ObservableOutfitState.new(OutfitState.new(trainer_type, "Walking"))
+    # @outfitstate.setDryLayerPart("Base", 1)
+    # @outfitstate.setWetLayerPart("Base", 1)
   end
 end

@@ -1,4 +1,4 @@
-$DEBUG = TRUE
+$DEBUG = true
 
 #Console::setup_console
 
@@ -9,7 +9,7 @@ end
 File.open("Data/Apparel/Type.dat", "w") if !safeExists?("Data/Apparel/Type.dat")
 File.open("Data/Apparel/Class.dat", "w") if !safeExists?("Data/Apparel/Cype.dat")
 
-pbCompiler
+# pbCompiler
 
 class Scene_DebugIntro
   def main

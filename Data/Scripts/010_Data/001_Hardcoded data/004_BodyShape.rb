@@ -33,6 +33,12 @@ end
 #===============================================================================
 
 GameData::BodyShape.register({
+  :id        => :Temp,
+  :id_number => 0,
+  :name      => _INTL("TEMP")
+})
+
+GameData::BodyShape.register({
   :id        => :Head,
   :id_number => 1,
   :name      => _INTL("Head")

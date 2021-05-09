@@ -235,7 +235,8 @@ def pbChangePlayer(id)
   return false if !meta
   $Trainer.character_ID = id
   $Trainer.trainer_type = meta[0]
-  $Trainer.outfitstate.gender = pbGetTrainerTypeGenderString(id)
+  # OUTFIT DISABLED
+  #$Trainer.outfitstate.gender = pbGetTrainerTypeGenderString(id)
   $game_player.character_name = meta[1]
 end
 

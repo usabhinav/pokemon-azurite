@@ -725,6 +725,8 @@ module Compiler
       compile_animations
       yield(_INTL("Converting events"))
       compile_trainer_events(mustCompile)
+      yield(_INTL("Compiling apparel"))
+      compile_apparel                # Depends on Apparel
       yield(_INTL("Saving messages"))
       pbSetTextMessages
       MessageTypes.saveMessages

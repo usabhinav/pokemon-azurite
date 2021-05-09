@@ -30,6 +30,10 @@ class Player < Trainer
   attr_accessor :mystery_gift_unlocked
   # @return [Array<Array>] downloaded Mystery Gift data
   attr_accessor :mystery_gifts
+  # @return [Integer] the player's current outfit
+  attr_writer   :outfit
+  # @return [ObservableOutfitState] the player's outfit state
+  attr_accessor :outfitstate
 
   # Sets the player's money. It can not exceed {Settings::MAX_MONEY}.
   # @param value [Integer] new money value
@@ -65,6 +69,11 @@ class Player < Trainer
     return @badges.count { |badge| badge == true }
   end
 
+  # @return [Integer] the player's current outfit
+  def outfit
+    return @outfit || 0
+  end
+
   #=============================================================================
 
   # (see Pokedex#seen?)
@@ -97,5 +106,10 @@ class Player < Trainer
     @seen_storage_creator  = false
     @mystery_gift_unlocked = false
     @mystery_gifts         = []
+    @outfit                = 0
+    # Initialize trainer outfit state.
+    @outfitstate = ObservableOutfitState.new(OutfitState.new(trainertype, "Walking"))
+    @outfitstate.setDryLayerPart("Base", 1)
+    @outfitstate.setWetLayerPart("Base", 1)
   end
 end

@@ -74,3 +74,43 @@ GameData::Habitat.register({
   :id   => :Rare,
   :name => _INTL("Rare")
 })
+
+GameData::Habitat.register({
+  :id   => :Cosmos,
+  :name => _INTL("Cosmos")
+})
+
+GameData::Habitat.register({
+  :id   => :Jungle,
+  :name => _INTL("Jungle")
+})
+
+GameData::Habitat.register({
+  :id   => :Desert,
+  :name => _INTL("Desert")
+})
+
+GameData::Habitat.register({
+  :id   => :Skies,
+  :name => _INTL("Skies")
+})
+
+GameData::Habitat.register({
+  :id   => :Underwater,
+  :name => _INTL("Underwater")
+})
+
+GameData::Habitat.register({
+  :id   => :Tundra,
+  :name => _INTL("Tundra")
+})
+
+GameData::Habitat.register({
+  :id   => :Graveyard,
+  :name => _INTL("Graveyard")
+})
+
+GameData::Habitat.register({
+  :id   => :Volcano,
+  :name => _INTL("Volcano")
+})

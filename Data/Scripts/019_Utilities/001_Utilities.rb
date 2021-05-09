@@ -219,12 +219,23 @@ def pbGetTrainerTypeGender(trainer_type)
   return GameData::TrainerType.get(trainer_type).gender
 end
 
+def pbGetTrainerTypeGenderString(trainer_type)
+  gender = pbGetTrainerTypeGender(trainer_type)
+  
+  if gender == 0
+    return "Male"
+  else
+    return "Female"
+  end
+end
+
 def pbChangePlayer(id)
   return false if id < 0 || id >= 8
   meta = GameData::Metadata.get_player(id)
   return false if !meta
   $Trainer.character_ID = id
   $Trainer.trainer_type = meta[0]
+  $Trainer.outfitstate.gender = pbGetTrainerTypeGenderString(id)
   $game_player.character_name = meta[1]
 end
 
@@ -242,6 +253,7 @@ def pbTrainerName(name = nil, outfit = 0)
   $Trainer.name   = name
   $Trainer.outfit = outfit
   $PokemonTemp.begunNewGame = true
+  $ApparelBag=ApparelBag.new
 end
 
 def pbSuggestTrainerName(gender)

@@ -165,6 +165,7 @@ class PokemonLoad_Scene
     return if !trainer || !trainer.party
     meta = GameData::Metadata.get_player(trainer.character_ID)
     if meta
+      # TODO: Make this draw a mughsot based on the saved outfit state instead
       filename = pbGetPlayerCharset(meta,1,trainer,true)
       @sprites["player"] = TrainerWalkingCharSprite.new(filename,@viewport)
       charwidth  = @sprites["player"].bitmap.width
@@ -172,6 +173,7 @@ class PokemonLoad_Scene
       @sprites["player"].x        = 56*2-charwidth/8
       @sprites["player"].y        = 56*2-charheight/8
       @sprites["player"].src_rect = Rect.new(0,0,charwidth/4,charheight/4)
+      trainer.outfitstate.applyToMugshotBitmap(@sprites["player"].bitmap)
     end
     for i in 0...trainer.party.length
       @sprites["party#{i}"] = PokemonIconSprite.new(trainer.party[i],@viewport)

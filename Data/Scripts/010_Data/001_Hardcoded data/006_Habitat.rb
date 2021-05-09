@@ -36,11 +36,6 @@ GameData::Habitat.register({
 })
 
 GameData::Habitat.register({
-  :id   => :Fields,
-  :name => _INTL("Fields")
-})
-
-GameData::Habitat.register({
   :id   => :Forest,
   :name => _INTL("Forest")
 })
@@ -48,11 +43,6 @@ GameData::Habitat.register({
 GameData::Habitat.register({
   :id   => :WatersEdge,
   :name => _INTL("Water's Edge")
-})
-
-GameData::Habitat.register({
-  :id   => :Beach,
-  :name => _INTL("Beach")
 })
 
 GameData::Habitat.register({
@@ -73,11 +63,6 @@ GameData::Habitat.register({
 GameData::Habitat.register({
   :id   => :RoughTerrain,
   :name => _INTL("Rough Terrain")
-})
-
-GameData::Habitat.register({
-  :id   => :Underground,
-  :name => _INTL("Underground")
 })
 
 GameData::Habitat.register({

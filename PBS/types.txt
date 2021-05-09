@@ -129,36 +129,36 @@ Resistances = FIGHTING,BUG,DARK
 Immunities = DRAGON
 #-------------------------------
 [19]
-Name=Mystic
-InternalName=MYSTIC
-IsSpecialType=true
-Weaknesses=NORMAL,PSYCHIC,STEEL,SOUND
-Resistances=COSMIC
+Name = Mystic
+InternalName = MYSTIC
+IsSpecialType = true
+Weaknesses = NORMAL,PSYCHIC,STEEL,SOUND
+Resistances = COSMIC
 #-------------------------------
 [20]
-Name=Sound
-InternalName=SOUND
-IsSpecialType=true
-Weaknesses=WATER,FLYING,GROUND,POISON,COSMIC
-Resistances=FIGHTING,DARK,MYSTIC
-Immunities=SOUND
+Name = Sound
+InternalName = SOUND
+IsSpecialType = true
+Weaknesses = WATER,FLYING,GROUND,POISON,COSMIC
+Resistances = FIGHTING,DARK,MYSTIC
+Immunities = SOUND
 #-------------------------------
 [21]
-Name=Light
-InternalName=LIGHT
-IsSpecialType=true
-Weaknesses=GRASS,POISON,COSMIC
-Resistances=PSYCHIC,GHOST,DRAGON
-Immunities=DARK
+Name = Light
+InternalName = LIGHT
+IsSpecialType = true
+Weaknesses = GRASS,POISON,COSMIC
+Resistances = PSYCHIC,GHOST,DRAGON
+Immunities = DARK
 #-------------------------------
 [22]
-Name=Cosmic
-InternalName=COSMIC
-IsSpecialType=true
-Weaknesses=FLYING,ROCK,MYSTIC,POISON,STEEL
-Resistances=FIGHTING,ICE
-Immunities=SOUND,GROUND,FIRE
+Name = Cosmic
+InternalName = COSMIC
+IsSpecialType = true
+Weaknesses = FLYING,ROCK,MYSTIC,POISON,STEEL
+Resistances = FIGHTING,ICE
+Immunities = SOUND,GROUND,FIRE
 #-------------------------------
 [23]
-Name=Crystal
-InternalName=CRYSTAL
+Name = Crystal
+InternalName = CRYSTAL

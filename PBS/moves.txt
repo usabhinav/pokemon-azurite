@@ -693,30 +693,49 @@
 674,SOAK,Soak,061,0,WATER,Status,100,20,0,NearOther,0,bce,"The user shoots a torrent of water at the target and changes the target's type to Water."
 675,WATERSPORT,Water Sport,09E,0,WATER,Status,0,15,0,BothSides,0,,"The user soaks itself with water. The move weakens Fire-type moves while the user is in the battle."
 676,WITHDRAW,Withdraw,01D,0,WATER,Status,0,40,0,User,0,d,"The user withdraws its body into its hard shell, raising its Defense stat."
+#-------------------------------
 677,CRYSTALTEST,Crystal Test,000,50,CRYSTAL,Physical,100,35,0,NearOther,0,abef,"Clone of Tackle to test Crystal."
+#-------------------------------
 678,SOUNDTEST2,Sound Test,000,50,SOUND,Physical,100,35,0,NearOther,0,abefk,"Clone of Tackle to test Sound."
+#-------------------------------
 679,LIGHTTEST,Light Test,000,50,LIGHT,Physical,100,35,0,NearOther,0,abef,"Clone of Tackle to test Light."
+#-------------------------------
 680,MYSTICTEST,Mystic Test,000,50,MYSTIC,Physical,100,35,0,NearOther,0,abef,"Clone of Tackle to test Mystic."
+#-------------------------------
 681,COSMICTEST,Cosmic Test,000,50,COSMIC,Physical,100,35,0,NearOther,0,abef,"Clone of Tackle to test Cosmic."
+#-------------------------------
 682,QMARKSTEST,??? Test,000,50,QMARKS,Physical,100,35,0,NearOther,0,abef,"Clone of Tackle to test ???."
+#-------------------------------
 683,ONEPUNCH,One Punch,070,1,CRYSTAL,Physical,0,40,0,NearOther,0,be,"One punch is all it takes. Testy Instakill."
+#-------------------------------
 684,STORMSPLASH,Storm Splash,076,100,WATER,Physical,100,10,0,AllNearOthers,0,bef,"The user summons a water storm and splashes in it to strike surrounding Pokémon."
+#-------------------------------
 685,MIRAGECALL,Mirage Call,15A,0,NORMAL,Status,0,10,0,User,0,,"Mew uses a random move exclusive to other legendary Pokémon."
+#-------------------------------
 686,TIMEBREAK,Time Break,159,0,MYSTIC,Status,0,1,0,FoeSide,6,g,"The user shatters time, glimpsing the future moves of all foes before deciding further action."
+#-------------------------------
 687,STRONGHOLD,Stronghold,15D,0,NORMAL,Status,0,20,0,User,0,,"Boosts the user's Defense and Sp.Def by two stages, and lowers its Attack and Sp.Atk by the same amount."
 688,DIVINITY,Divinity,15E,0,NORMAL,Status,0,20,0,User,4,,"The infinite power of the creator-god. Only known to be usable by divine beings."
 689,FLEE,Flee,0EA,0,NORMAL,Status,0,20,0,User,0,,"The user flees from a wild battle."
+#-------------------------------
 690,CONPUNCH,Consecutive Punch,15F,10,FIGHTING,Physical,100,20,0,NearOther,0,abefj,"The user punches the target up to 12 times, with a minimum of 6 hits."
+#-------------------------------
 691,FEVERPOLLEN,Fever Pollen,00A,0,GRASS,Status,90,20,0,NearOther,0,bcl,"The users scatters an itchy powder that burns the target."
 692,SPLINTER,Splinter,160,75,GRASS,Physical,100,15,100,NearOther,0,abef,"The user smashes the target with massive force, then lowers the target's defense."
 693,BERRYSHARE,Berry Share,161,0,GRASS,Status,0,10,0,NearOther,0,b,"The user shares its berry with the target, proccing its effects without consuming it."
+#-------------------------------
 694,CRASHINGSUN,Crashing Sun,162,75,FIRE,Special,95,5,0,NearOther,0,bef,"Hurls a flaming orb at the enemy. Damage is doubled in sunny weather."
+#-------------------------------
 695,COLDSHOWER,Cold Shower,163,20,WATER,Special,100,15,10,AllNearOthers,0,bef,"Hits and wakes up all Pokémon on the field. Has a chance to freeze."
 696,TIDALSPLASH,Tidal Splash,164,80,WATER,Physical,90,15,0,NearOther,0,abef,"The user splashes the target, not only damaging them, but also causing it to rain."
 697,SHOWER,Shower,165,0,WATER,Status,0,10,0,NearOther,0,bce,"The target becomes wet for 5 turns. It's resistant to Fire-type moves and weak to Electric-type moves."
+#-------------------------------
 698,FINISHER,Finisher,166,0,FIGHTING,Status,85,5,0,NearOther,0,bc,"Instantly kills Pokémon under 30% HP, but the user's defense is lowered whether it succeeds or not."
+#-------------------------------
 699,DETERDRAIN,Deter Drain,167,55,GRASS,Special,90,15,0,NearOther,0,bef,"The user's HP is restored by half the damage dealt. Increases the damage of burn and poison status effects on target for 5 turns."
+#-------------------------------
 700,AIRCARRY,Air Carry,168,0,FLYING,Status,0,15,0,NearAlly,0,e,"The user carries its allies into the air, making them immune to Ground. However, duration depends on carried pokemon's weight."
+#-------------------------------
 701,SUNDERSURGE,Sunder Surge,169,140,ELECTRIC,Physical,90,5,0,NearOther,0,abef,"Deals a huge amount of damage, but the user takes a lot of recoil damage."
 702,VOLTATTRACT,Volt Attract,170,0,ELECTRIC,Status,60,20,0,NearOther,0,bce,"Although innaccurate, it can both paralyze and infatuate/confuse the target, depending on the species."
 703,VOLTBALL,Volt Ball,0D3,30,ELECTRIC,Physical,90,20,0,NearOther,0,abef,"The user continually rolls into the target over five turns. It becomes stronger each time it hits."
@@ -724,28 +743,41 @@
 705,VOLTSEED,Volt Seed,0C0,25,ELECTRIC,Physical,100,30,0,NearOther,0,befn,"The user forcefully shoots seeds at the target. Two to five seeds are shot in rapid succession."
 706,VOLTSPIKES,Volt Spikes,171,0,ELECTRIC,Status,0,20,0,FoeSide,0,c,"The user lays a trap of volt spikes at the foe's feet. They paralyze foes that switch into battle."
 707,VOLTWAVE,Volt Wave,172,90,ELECTRIC,Special,100,10,0,NearOther,0,abef,"This move is both electric and sound type."
+#-------------------------------
 708,CORROSIVESPIT,Corrosive Spit,173,20,POISON,Special,85,15,0,NearOther,0,abef,"This attack corrodes the enemy's defenses. It lowers them even more if they've stockpiled."
+#-------------------------------
 709,MUDDYTAKEDOWN,Muddy Takedown,11C,70,GROUND,Physical,100,10,0,NearOther,0,abef,"This attack brings the target to the ground, making them no longer immune to ground type."
+#-------------------------------
 710,ROCKCLAW,Rock Claw,174,45,ROCK,Physical,100,15,20,NearOther,0,abef,"The target is slashed twice in succession using rock covered claws. It may also lower their defense."
 711,ROCKSTAR,Rock Star,175,90,ROCK,Special,90,10,0,NearOther,0,bef,"If this attack misses, it raises the user's Accuracy."
+#-------------------------------
 712,SWARMATTACK,Swarm Attack,176,20,BUG,Physical,95,5,0,NearOther,0,abef,"This moves' power is multiplied by the ammount of bug-types in your party."
+#-------------------------------
 713,SPOOK,Spook,177,0,GHOST,Status,0,15,0,NearOther,0,bce,"The user spooks the target, lowering their Attack and Sp. Attack."
 714,DOOMSERENADE,Doomed Serenade,178,0,GHOST,Status,0,5,0,NearOther,0,k,"The target will faint after 3 turns, and can't escape the battle until it has fainted. If the target knocks out the user of this move or the user switches out, the effect is lifted."
 715,SURPRISEATK,Surprise Attack,179,40,GHOST,Physical,95,10,0,NearOther,0,abef,"This move is always super effective."
+#-------------------------------
 716,BRAINDRAIN,Brain Drain,17A,0,PSYCHIC,Status,100,10,0,NearOther,0,bce,"The user restores its HP by the same amount as the target's Sp. Atk stat. It also lowers the target's Sp. Atk stat."
+#-------------------------------
 717,RAVAGE,Ravage,17B,130,DRAGON,Physical,90,5,0,NearOther,0,abef,"Confuses the user before the move is even used."
+#-------------------------------
 718,DNAFLIP,DNA Flip,17C,0,PSYCHIC,Status,0,10,0,NearOther,0,bce,"Flips effect of the target's Nature for 5 turns."
+#-------------------------------
 719,REFRACTION,Refraction,17D,0,ICE,Status,0,20,0,User,4,,"The user protects itself from incoming damage. If the user is attacked this turn, its typing changes to the blocked attack's."
 720,ICYTERRAIN,Icy Terrain,17E,0,ICE,Status,0,20,0,BothSides,0,,"Increases Ice-type Pokémon's speed and damage, while halving Fighting-type moves' damage."
 721,ICICLERAIN,Icicle Rain,000,100,ICE,Physical,100,10,0,AllNearOthers,0,bef,"The user sets off an icicle rain that strikes every Pokémon around it."
+#-------------------------------
 722,DARKEN,Darken,17F,0,DARK,Status,0,10,0,BothSides,0,,"Shrouds the battlefield in darkness, reducing the accuracy of all moves that aren't Dark, Light, Fire, Cosmic or Electric. Lasts until a Light, Fire or Electric type move is used."
 723,DENY,Deny,180,80,DARK,Physical,100,10,0,NearOther,5,abef,"Always attacks before any kind of healing."
+#-------------------------------
 724,SMELT,Smelt,181,0,STEEL,Status,0,20,0,User,0,d,"Lowers defense and special defense to heal the user and raise its attack."
 725,COLDSTEEL,Cold Steel,182,0,STEEL,Status,0,10,0,User,0,,"Coats the user's steel body in frost for 5 turns. Coming into contact with the user has a 30% chance to freeze."
 726,REINFORCE,Reinforce,0D5,0,STEEL,Status,0,10,0,User,0,d,"Restoring its own cells, the user restores its own HP by half of its max HP."
+#-------------------------------
 727,PIXIEPOWDER,Pixie Powder,183,0,FAIRY,Status,0,15,0,NearOther,0,bce,"Can cause any random status effect, including Confusion and Infatuation."
 728,BRUTALPLAY,Brutal Play,013,120,FAIRY,Physical,70,5,5,NearOther,0,abef,"A violent hit that can also confuse the target."
 729,FAEBLAST,Fae Blast,0FA,110,FAIRY,Special,95,5,0,NearOther,0,bef,"A blast of energy that does recoil damage."
+#-------------------------------
 730,SOOTHGLEAM,Soothing Gleam,184,0,LIGHT,Status,0,5,0,None,0,,"Heals itself and allies by 50%, but has to recharge next turn. In Single Battles, heals Lumeny for 75%."
 731,BRIGHTSMILE,Bright Smile,185,0,LIGHT,Status,100,5,0,AllNearOthers,0,,"Lowers enemy's defense. In Doubles, it affects all enemies, and ally Pokémon also get a boost in Attack."
 732,LIGHTRAY,Light Ray,047,40,LIGHT,Special,100,30,10,NearOther,0,bef,"A blinding ray of light is shot by the Pokémon, with a chance of reducing the target's accuracy."
@@ -765,6 +797,7 @@
 746,BEACONRECON,Beacon Recon,18D,0,LIGHT,Status,0,5,0,NearFoe,0,bce,"Partner's attack next round against the target will definitely hit."
 747,LIFELIGHT,Lifelight,18E,0,LIGHT,Status,0,5,0,User,0,,"The user flashes a bright light and quickly switches with another Pokémon, which is healed."
 748,BEACON,Beacon,18F,0,LIGHT,Status,0,5,0,User,2,,"The user draws attention to itself, making all targets take aim only at the user, also healing its allies progressively."
+#-------------------------------
 749,SOUNDPULSE,Sound Pulse,190,65,SOUND,Special,0,25,0,NearOther,0,befk,"If the target has its evasion raised, this move's damage is doubled."
 750,NOISERIPPLE,Noise Ripple,191,90,SOUND,Special,100,20,0,NearOther,0,befk,"This move is both Sound and Water type."
 751,SOUNDWAVE,Soundwave,000,40,SOUND,Special,100,30,0,NearOther,0,efk,"Bypasses even protect and detect."
@@ -779,6 +812,7 @@
 760,DIRTYBEAT,Dirty Beat,047,70,SOUND,Physical,0,15,30,NearOther,0,abefk,"Lowers the target's accuracy."
 761,VAPORWAVE,Vaporwave,198,110,SOUND,Special,100,15,0,NearOther,-7,befk,"It's also Super Effective against every type that is weak to Water. Goes last."
 762,SUPERSOUND,Supersound,000,110,SOUND,Special,80,10,0,AllNearOthers,0,befk,"The user produces a high-pitched sound that damages everyone."
+#-------------------------------
 763,SEARMETEOR,Searing Meteor,199,90,COSMIC,Physical,100,10,0,NearOther,0,abef,"This move is both Cosmic and Fire type."
 764,KICKSHOWER,Kick Shower,19A,20,COSMIC,Physical,95,15,0,AllNearFoes,0,abef,"The user jumps up and rains down a barrage of kicks. Hits 3-5 times and hits all adjecent foes."
 765,STARSHOT,Star Shot,013,50,COSMIC,Special,100,30,20,NearOther,0,bef,"Has a chance to confuse the target."
@@ -790,6 +824,7 @@
 771,BLACKHOLE,Black Hole,19E,0,COSMIC,Status,0,5,0,None,5,d,"Set up a black hole which sends all moves that targeted the user to whoever used them. Can't be used twice in a row."
 772,CRASHLANDING,Crash Landing,19F,125,COSMIC,Physical,90,5,0,NearOther,0,abef,"If it misses, the user takes damage equal to it's current speed stat."
 773,OZONETHROW,Ozone Throw,200,95,COSMIC,Physical,95,10,0,NearOther,0,abef,"The user brings the target to the ozone layer and throws it back to the ground. In Doubles, its ally gets lightly damaged too."
+#-------------------------------
 774,MAGICALROOTS,Magical Roots,201,90,MYSTIC,Special,100,10,0,NearOther,0,bef,"This move is both Mystic and Grass type."
 775,INVERSEROOM,Inverse Room,202,0,MYSTIC,Status,0,20,0,BothSides,0,e,"Super effective moves and not very effective moves are reversed for 5 turns."
 776,DISTRACTION,Distraction,203,0,MYSTIC,Status,0,15,0,NearOther,0,bce,"Distract an enemy Pokémon. This makes them unable to attack and take more damage from moves for this turn. Fails if used consecutively."
@@ -799,6 +834,7 @@
 780,ROLEREVERSAL,Role Reversal,206,0,MYSTIC,Status,0,10,0,NearOther,0,bce,"Switches types with a target."
 781,DUPLICATE,Duplicate,207,0,MYSTIC,Status,0,10,0,NearAlly,5,,"Duplicates the attack of the target, hitting both targets if it was a single-target attack."
 782,AZURESCREAM,Azure Scream,208,120,MYSTIC,Special,100,5,0,AllNearFoes,0,bef,"The Pokémon releases a massive energy wave, leaving itself open."
+#-------------------------------
 783,CRYSTALCURSE,Crystal Curse,209,0,CRYSTAL,Status,0,5,0,NearOther,0,bce,"Replaces the target's second type (or adds it) with Crystal, confuses the target and takes away 30% of their HP."
 784,CRYSTALOVER,Crystal Overload,20A,120,CRYSTAL,Special,95,5,0,NearOther,0,bef,"Overloads Crystallized Pokémon with even more energy, causing the move to do double damage against Crystal Type Pokémon."
 785,CRYSTALTERRAIN,Crystal Terrain,20B,0,CRYSTAL,Status,0,10,0,BothSides,0,,"All Pokémon on the field are treated as Crystal types for 5 turns. Damage of Crystal type moves are increase by 50%"
@@ -818,38 +854,67 @@
 799,CRYSTALINSTINCT,Crystal Instinct,217,0,CRYSTAL,Status,0,5,0,User,0,ce,"The user calms itself to connect to the new energy and raises the user's highest stat by 2 stages (except HP)."
 800,CALMINGSHINE,Calming Shine,218,0,CRYSTAL,Status,0,10,0,NearOther,0,ce,"The user emits a warm glow, lowering the target's best stat and raising their worst one."
 801,CREATIONGEM,Creation Gem,219,80,CRYSTAL,Special,90,5,0,NearOther,0,bef,"The user boosts all of their stats for one turn, then attacks. Can't be used consecutively."
+#-------------------------------
 802,MAGICRING,Magic Ring,21A,60,MYSTIC,Physical,90,15,0,NearOther,0,bef,"The user throws a ring of mystic of energy at the foe that loops around and hits again after a turn."
+#-------------------------------
 803,SLEEPTEST,Sleeptest,21B,0,CRYSTAL,Status,0,15,0,NearOther,5,,"sleeptest"
+#-------------------------------
 804,ROCKETPUNCH,Rocket Punch,000,40,ELECTRIC,Physical,100,15,0,NearOther,1,abef,"No special effect."
+#-------------------------------
 805,VOLTTAIL,Volt Tail,007,75,STEEL,Physical,100,10,15,NearOther,1,abef,"Chance to paralyze the target."
+#-------------------------------
 806,NONAMEYET,No Name Yet,239,0,GRASS,Status,0,10,0,User,4,,"Protects from damage and boosts special attack or attack depending on what hit it."
+#-------------------------------
 807,FLAMETACKLE,Flame Tackle,240,15,FIRE,Special,100,10,0,NearOther,0,bef,"2-5 Turn Trapping move."
+#-------------------------------
 808,THUNDERARMOR,Thunder Armor,241,0,ELECTRIC,Status,100,10,0,UserAndAllies,0,d,"Raises both you and your allies speed and attack."
+#-------------------------------
 809,DIMENSIONALGAP,Dimensional Gap,242,0,COSMIC,Status,100,10,0,BothSides,0,,"Puts the battle into a pocket dimension where type match ups are inversed."
+#-------------------------------
 810,FRUBBLE,Frubble,04D,0,WATER,Status,95,10,0,NearOther,0,bce,"Sharply lowers speed."
+#-------------------------------
 811,AURASTORM,Aura Storm,098,1,FIGHTING,Special,95,10,0,NearOther,0,bef,"Damage output increases the lower the user's HP is."
+#-------------------------------
 812,THUNDERJOLT,Thunder Jolt,007,100,ELECTRIC,Special,95,10,20,NearOther,0,bef,"Chance to paralyze."
 813,MEGAVOLT,Mega Volt,03F,130,ELECTRIC,Special,90,10,0,NearOther,0,bef,"Sharply lowers special attack."
+#-------------------------------
 814,LURE,Lure,0EB,0,DARK,Status,100,10,0,NearOther,0,bc,"Forces foe to switch out randomly."
+#-------------------------------
 815,LEEKSLAP,Leek Slap,000,90,NORMAL,Physical,100,10,0,NearOther,0,abef,"Farfetch'd signature move."
 816,STIFFEN,Stiffen,0AA,0,NORMAL,Status,0,10,0,User,0,,"Protects from damage."
+#-------------------------------
 817,FOULGAS,Foul Gas,243,0,POISON,Status,100,10,0,NearOther,0,bce,"Poisons or confuses the target."
+#-------------------------------
 818,STARFREEZE,Star Freeze,00C,100,COSMIC,Special,95,10,10,NearOther,0,bef,"Can freeze the target."
+#-------------------------------
 819,CHAINLIGHTNING,Chain Lightning,0D2,120,ELECTRIC,Special,100,10,0,NearOther,0,bef,"Hits for 2 or 3 turns, then confuses the user."
+#-------------------------------
 820,BOYFRIENDS,Boyfriends,244,50,GROUND,Physical,100,10,0,NearOther,0,abef,"Damage increases for each Nidoking in the party."
+#-------------------------------
 821,IRONGRIP,Irongrip,007,75,STEEL,Physical,100,10,20,NearOther,0,abef,"Chance to paralyze."
+#-------------------------------
 822,VENOMPOWDER,Venom Powder,245,0,POISON,Status,65,10,0,NearOther,0,bce,"Confuses and poisons the target."
+#-------------------------------
 823,EGGSPLOSION,Eggsplosion,0E0,250,NORMAL,Special,100,10,0,AllNearOthers,0,bef,"KOs self."
+#-------------------------------
 824,FOULODOR,Foul Odor,246,0,POISON,Status,90,10,0,NearOther,0,bce,"Confuses both the target and the user."
+#-------------------------------
 825,POUNCE,Pounce,000,55,NORMAL,Physical,100,10,0,NearOther,0,abef,"No special effect."
+#-------------------------------
 826,TANTRUM,Tantrum,247,100,FIGHTING,Physical,100,10,0,NearOther,0,abef,"Chance to confuse the user."
+#-------------------------------
 827,SNIVEL,Snivel,248,0,NORMAL,Status,0,10,0,NearOther,0,bce,"Lowers foes attack and raises the user's defense."
+#-------------------------------
 828,STRETCHKICK,Stretch Kick,000,75,FIGHTING,Physical,100,10,0,AllNearFoes,0,abef,"Hits all foes."
+#-------------------------------
 829,GIGASHOCK,GigaShock,03C,120,ELECTRIC,Special,100,10,0,NearOther,0,bef,"Lowers the user's Defense stat and Special Defense stat by one stage each."
+#-------------------------------
 830,WILDFIRE,Wildfire,0D2,120,FIRE,Special,100,10,0,NearOther,0,bef,"Hits 2-3 turns and then confuses self."
+#-------------------------------
 831,NIPPYYIP,Nippy Yip,249,60,ICE,Physical,90,10,0,NearOther,-6,abef,"The user bites the target with a cold fang, causing them to switch with another Pokémon. In the wild, the battle ends."
 832,FROSTBITE,Frost Bite,00E,10,ICE,Physical,70,15,30,NearOther,0,abei,"The user bites with cold-infused fangs. It may also make the target flinch or leave it frozen."
-833,ASTEROIDBELT,Asteroid Belt,24A,0,COSMIC,Status,0,5,0,FoeSide,0,c,"The user summons an asteroid belt, damaging opposing Pokémon that enter or leave the battle." 
+#-------------------------------
+833,ASTEROIDBELT,Asteroid Belt,24A,0,COSMIC,Status,0,5,0,FoeSide,0,c,"The user summons an asteroid belt, damaging opposing Pokémon that enter or leave the battle."
 834,ASTRONOMY,Astronomy,24B,0,COSMIC,Status,0,10,0,User,0,,"The Pokémon contemplates the wonders of the universe, summoning unknown power."
 835,COMETRUSH,Comet Rush,00A,40,COSMIC,Physical,95,20,10,NearOther,1,abefg,"The user tackles at meteoric speeds, hitting first and possibly burning."
 836,LUNARIMPACT,Lunar Impact,000,100,COSMIC,Physical,100,10,0,NearOther,0,abef,"The user crashes into their opponent with the might of an entire moon."
@@ -863,45 +928,64 @@
 844,WARPSTORM,Warp Storm,24D,120,COSMIC,Special,85,5,20,AllNearOthers,0,bef,"The user creates a warp into the depths of space.  May freeze or burn."
 845,STARTACKLE,Star Tackle,042,65,COSMIC,Physical,100,15,20,NearOther,0,abef,"A star-stunning tackle.  May lower opponent's attack."
 846,VACUUMPULL,Vacuum Pull,0EC,60,COSMIC,Special,90,10,0,NearOther,-6,bef,"Creates a powerful vacuum, forcing the target to switch out."
+#-------------------------------
 847,CRYSTALBEAM,Crystal Beam,000,90,CRYSTAL,Special,100,10,0,NearOther,0,bef,"The user amplifies and fires energy out of a crystal."
 848,CRYSTALCHOMP,Crystal Chomp,00F,70,CRYSTAL,Physical,95,15,10,NearOther,0,abei,"The user bites with crystalline fangs.  May cause the target to flinch."
-849,CRYSTALSHARD,Crystal Shard,000,40,CRYSTAL,Physical,100,30,0,NearOther,1,bef,"The user fires sharpened crystal at blinding speeds.  This attack strikes first."  
+849,CRYSTALSHARD,Crystal Shard,000,40,CRYSTAL,Physical,100,30,0,NearOther,1,bef,"The user fires sharpened crystal at blinding speeds.  This attack strikes first."
 850,CRYSTALWAVE,Crystal Wave,000,90,CRYSTAL,Physical,100,10,0,AllNearOthers,0,bef,"The user conjures massive walls of crystal in all directions, striking every Pokémon on the field."
-851,GEMSHOTS,Gem Shots,24E,25,CRYSTAL,Physical,95,20,0,NearOther,0,befn,"The user fires a barrage of valuable gemstones, hitting 2-5 times."  
+851,GEMSHOTS,Gem Shots,24E,25,CRYSTAL,Physical,95,20,0,NearOther,0,befn,"The user fires a barrage of valuable gemstones, hitting 2-5 times."
+#-------------------------------
 852,CRUELBEATDOWN,Cruel Beatdown,0D3,50,DARK,Physical,80,10,0,NearOther,0,abef,"The user mercilessly pounds the opponent for five turns, increasing in power each turn."
 853,THREATEN,Threaten,04A,0,DARK,Status,100,20,0,NearOther,0,be,"The user lowers the opponent's will to fight with grave threats, dropping attack and defense."
-854,DISCONNECT,Disconnect,24F,0,DARK,Status,0,5,0,User,1,eg,"The user loses all will to fight, and becomes KO'd."  
-855,SCALESCRAPE,Scale Scrape,04C,55,DRAGON,Physical,100,20,100,NearOther,0,abef,"The user rakes their jagged scales across their opponent, harshly lowering the target's defense." 
+854,DISCONNECT,Disconnect,24F,0,DARK,Status,0,5,0,User,1,eg,"The user loses all will to fight, and becomes KO'd."
+#-------------------------------
+855,SCALESCRAPE,Scale Scrape,04C,55,DRAGON,Physical,100,20,100,NearOther,0,abef,"The user rakes their jagged scales across their opponent, harshly lowering the target's defense."
+#-------------------------------
 856,PORTALREBOUND,Portal Rebound,252,0,COSMIC,Status,0,5,0,User,4,d,"Creates a portal that returns attacks to sender.  Fails if used consecutively."
 857,GRANDREBOUND,Grand Rebound,250,0,COSMIC,Status,0,5,5,UserSide,4,d,"Creates a massive spacial rift that protects the user's entire team."
+#-------------------------------
 858,GIGASPARK,Giga Spark,00F,100,ELECTRIC,Special,85,10,30,NearOther,0,be,"The user fires an enormous jolt of energy.  May cause the target to flinch."
 859,THUNDERBLADE,Thunder Blade,007,85,ELECTRIC,Physical,100,10,10,NearOther,0,abefh,"Strikes with a blade of electricity.  Has a high critical-hit rate, and may cause paralysis."
+#-------------------------------
 860,BACKBREAKER,Back Breaker,007,100,FIGHTING,Physical,90,5,50,NearOther,0,abef,"A brutal grappling attack with a very high chance to cause paralysis."
 861,HEADLOCK,Headlock,00F,90,FIGHTING,Physical,90,10,30,NearOther,0,abe,"A powerful grapple that may cause the opponent to flinch."
+#-------------------------------
 862,BURST,Burst,000,40,FIRE,Physical,100,25,0,NearOther,1,abef,"Propelling with a blast of flame, the user tackles.  Always goes first."
 863,FIREBLADE,Fire Blade,00A,85,FIRE,Physical,100,15,10,NearOther,0,abef,"Attacks with a blade wreathed in flame.  May cause a burn."
 864,FIREBALL,Fireball,0C0,25,FIRE,Special,100,20,0,NearOther,0,bef,"The user fires a stream of exploding flames, hitting 2-5 times."
+#-------------------------------
 865,MAGNUMPUNCH,Magnum Punch,00F,75,FIGHTING,Physical,100,15,10,NearOther,0,abej,"The user launches a punch with the force of a bullet.  May cause flinch."
+#-------------------------------
 866,VINETANGLE,Vine Tangle,044,75,GRASS,Physical,100,15,100,NearOther,0,abef,"The user squeezes the target in a mass of vines, lowering speed."
+#-------------------------------
 867,FIELDCOLLAPSE,Field Collapse,253,200,GROUND,Physical,100,5,0,AllNearOthers,-1,bef,"The user expends all of their power to utterly wreck the battlefield.  The user faints upon using this move."
+#-------------------------------
 868,FORESTFIREATTACK,Forest Fire Attack,254,20,FIRE,Physical,100,15,0,NearOther,0,abf,"Modified Fire Punch, used in the Forest Fire ability's effect."
+#-------------------------------
 869,THUNDERSTORMWEAK,Thunderstorm Weak,254,60,ELECTRIC,Special,100,15,0,NearOther,0,bf,"Modified Thunderbolt, used as the weak attack in thunderstorm weather."
 870,THUNDERSTORMSTRONG,Thunderstorm Strong,254,110,ELECTRIC,Special,100,10,0,NearOther,0,bf,"Modified Thunder, used as the strong attack in thunderstorm weather."
+#-------------------------------
 871,MUDSLIDE,Mud Slide,047,75,GROUND,Special,95,10,30,AllNearFoes,0,bef,"The user buries their opponent in a wave of mud.  It may drop the accuracy of those it hits."
 872,TUNNEL,Tunnel,0CA,100,GROUND,Physical,80,10,0,NearOther,0,abef,"The user tunnels underground on the first turn, striking on the second."
+#-------------------------------
 873,DEEPFREEZE,Deep Freeze,00C,80,ICE,Special,80,10,20,AllNearFoes,0,bef,"The user covers the opposing team in unrelenting cold.  It may freeze targets hit."
 874,ICEBLADE,Ice Blade,00C,85,ICE,Physical,100,15,10,NearOther,0,abefh,"The user attacks with a frozen sword.  The attack has a high critical-hit rate."
+#-------------------------------
 875,BLINKPUNCH,Blink Punch,000,40,LIGHT,Physical,100,20,0,NearOther,1,abefj,"With a flash of light, the user punches as the opponent blinks.  It always goes first."
 876,COREBLAST,Core Blast,000,110,LIGHT,Special,80,5,0,NearOther,0,bef,"The user unleashes a searing ray of light from the core of their body."
 877,LIGHTSWITCH,Light Switch,0EE,60,LIGHT,Physical,100,15,0,NearOther,0,abef,"After attacking, the user switches out with another Pokémon in the party."
 878,LASERSIGHT,Laser Sight,000,70,LIGHT,Special,0,15,0,NearOther,0,bef,"The user tracks and strikes the opponent with a laser.  The attack never misses."
 879,LIGHTNINGFLASH,Lightning Flash,022,0,LIGHT,Status,0,15,0,User,1,de,"The user moves in a burst of lightning speed, raising evasion.  This move always goes first."
 880,SUNBURN,Sunburn,00A,80,LIGHT,Special,100,10,30,NearOther,0,bef,"The Pokémon bakes the opponent in ultraviolet light, possibly causing a burn."
+#-------------------------------
 881,MAGICSHOT,Magic Shot,013,50,MYSTIC,Special,100,20,10,NearOther,0,bef,"The user fires a bolt of raw magical energy.  May cause confusion."
 882,MAGICTRICK,Magic Trick,0EE,60,MYSTIC,Special,100,15,0,NearOther,0,bef,"The user performs a magic disappearing act, dealing damage and swapping themselves out."
 883,MIRAGESLAM,Mirage Slam,047,60,MYSTIC,Physical,100,15,10,NearOther,0,abef,"The user attacks with a decoy and then their real body.  May lower the target's accuracy."
+#-------------------------------
 884,DRAGONSPRIDE,Dragon's Pride,255,0,DRAGON,Status,0,5,0,User,0,de,"For five turns, the user's attack and special attack sharply rises whenever they score a KO."
+#-------------------------------
 885,PROPHECY,Prophecy,256,0,MYSTIC,Status,0,5,0,User,0,de,"A prophecy declares this Pokémon the chosen one, sharply raising all their stats three turns hence."
+#-------------------------------
 886,VORTEX,Vortex,110,20,WATER,Physical,100,35,0,NearOther,0,abef,"In a swirl of water, the user blows away hazards and trapping moves."
 887,TIDESHIFT,Tide Shift,0EE,60,WATER,Special,100,15,0,NearOther,0,bef,"After dealing damage, the user switches out with another member of the party."
 888,SPLASHSLAP,Splash Slap,047,65,WATER,Physical,100,15,20,NearOther,0,abef,"The user splashes the opponent's face with a wave.  It may lower the target's accuracy."
@@ -909,131 +993,228 @@
 890,FLUSH,Flush,0EC,60,WATER,Special,90,10,0,NearOther,-6,bef,"The user sucks the opponent away in a whirlpool. In the wild, the battle ends."
 891,FLOP,Flop,000,10,WATER,Physical,100,35,0,NearOther,0,abef,"The user makes a pathetic flop in the opponent's direction. It barely deals damage."
 892,BUBBLEBOMB,Bubble Bomb,000,100,WATER,Special,80,10,0,NearOther,0,befn,"The user sends a single bubble at the opponent, popping with a powerful explosion."
+#-------------------------------
 893,MAGNETPULSE,Magnet Pulse,0EF,90,STEEL,Special,100,10,0,NearOther,0,befm,"The user fires a magnetic pulse which renders the target unable to flee."
+#-------------------------------
 894,VIBRATIONPUNCH,Vibration Punch,013,75,SOUND,Physical,100,15,10,NearOther,0,abefjk,"The user throws a sonic punch that vibrates the target's body.  May cause confusion."
 895,SCREECHSLASH,Screech Slash,000,75,SOUND,Physical,100,15,0,NearOther,0,abefhk,"The user strikes with a sonic wave that cuts the air itself. Critical hits land more easily."
 896,ALLEGRO,Allegro,000,40,SOUND,Special,100,20,0,NearOther,1,befk,"The user plays at a blistering tempo.  This attack always strikes first."
+#-------------------------------
 897,STONEBLADE,Stone Blade,000,75,ROCK,Physical,100,15,0,NearOther,0,abefh,"The user strikes with a blade of stone. Critical hits land more easily."
 898,STONEFIST,Stone Fist,000,85,ROCK,Physical,100,15,0,NearOther,0,abefj,"The user punches with a fist as hard as rock."
 899,DUSTWAVE,Dust Wave,047,95,ROCK,Special,95,10,20,AllNearFoes,0,bef,"The user launches a wave of dust at the opposing team.  It may lower accuracy."
+#-------------------------------
 900,WARPSTRIKE,Warp Strike,000,40,PSYCHIC,Physical,100,20,0,NearOther,1,abefh,"The user teleports behind their foe, striking instantly.  It has a high critical-hit rate."
 901,TELEBLAST,Teleblast,0EE,70,PSYCHIC,Special,100,10,0,NearOther,0,bef,"The user fires a psychic blast and immediately teleports away, swapping with another Pokémon."
 902,PSYPUNCH,Psypunch,013,75,PSYCHIC,Physical,100,15,10,NearOther,0,abefj,"The user gathers psychic energy into their fist and punches.  It may cause confusion."
 903,PSYCHOSPIN,Psycho Spin,110,90,PSYCHIC,Physical,100,10,0,NearOther,0,abef,"The user strikes with a psychic vortex, blowing away hazards and trapping moves."
 904,CONCUSS,Concuss,0B9,55,PSYCHIC,Physical,95,15,0,NearOther,0,abef,"The user deals a crushing blow to the target's head, making them forget their last used move."
+#-------------------------------
 905,SLUDGEPUNCH,Sludge Punch,005,75,POISON,Physical,100,15,10,NearOther,0,abefj,"The user punches with a toxic fist.  It may poison the target."
 906,ACIDPRESS,Acid Press,04C,60,POISON,Physical,100,20,100,NearOther,0,abef,"The user crushes their opponent with their acidic body.  It harshly lowers the target's defense."
 907,ACIDCANNON,Acid Cannon,00A,120,POISON,Special,80,5,20,NearOther,0,bef,"The user fires a jet of extremely powerful acid.  It may leave the target with a burn."
+#-------------------------------
 908,TAILFAN,Tail Fan,01F,0,NORMAL,Status,0,20,0,User,0,de,"The user blows air with a swish of their tail, raising speed."
 909,LUCKYSHOT,Lucky Shot,000,150,NORMAL,Special,50,5,0,NearOther,0,befn,"The user fires a wild shot, packing immense power but poor accuracy."
 910,CHOMP,Chomp,000,60,NORMAL,Physical,100,15,0,NearOther,0,abefi,"The user bites the target with their powerful jaws."
+#-------------------------------
 911,ENERGYBOMB,Energy Bomb,257,175,LIGHT,Special,100,5,0,NearOther,0,befn,"The user unleashes a massive explosion at the cost of half their own hit points."
+#-------------------------------
 912,TAPOUT,Tap Out,258,0,FIGHTING,Status,0,10,0,User,0,,"The user calls in an ally to take over, swapping out and recovering HP."
+#-------------------------------
 913,BUBBLETRAP,Bubble Trap,259,0,WATER,Status,0,10,0,FoeSide,0,de,"The user lays three explosive bubbles around the enemy team."
+#-------------------------------
 914,BRIGHTCONTRAST,Bright Contrast,25A,0,LIGHT,Status,0,10,0,BothSides,0,,"For five turns, type effectiveness is amplified."
+#-------------------------------
 915,SIGNALBOOST,Signal Boost,25B,0,COSMIC,Status,0,10,0,User,0,de,"The user refines their energy, allowing them to bypass type immunity and accuracy."
 916,COMETSWING,Comet Swing,25C,140,COSMIC,Physical,90,10,0,NearOther,0,abef,"The Pokémon lines up a reckless swing. If the user is hit with a contact move, ups power and accuracy."
+#-------------------------------
 917,FORCEPULSE,Force Pulse,046,90,FIGHTING,Special,100,10,20,NearOther,0,befm,"The Pokémon's power is concentrated into a single blast.  May lower the target's Sp. Defense."
+#-------------------------------
 918,CLEANSEFLAME,Cleanse Flame,050,40,FIRE,Special,0,20,0,NearOther,0,befg,"A hearth-like flame damages the target and returns its stats to normal. Never misses."
+#-------------------------------
 919,RELICWAVE,Relic Wave,25D,100,MYSTIC,Special,90,10,10,AllNearFoes,0,bef,"The user sends a blast of magic at the opposing team.  May lower Sp. Atk or Sp. Def."
 920,MAGICFANG,Magic Fang,25E,65,MYSTIC,Physical,95,15,10,NearOther,0,abei,"The user bites down with magically empowered fangs.  May confuse or flinch."
+#-------------------------------
 921,AUDIOCANNON,Audio Cannon,25F,120,SOUND,Special,75,5,0,NearOther,0,befk,"The Pokémon launches a blast of concentrated sound. Confuses the user if it misses."
+#-------------------------------
 922,FLAMEMISSILE,Flame Missile,0C0,25,FIRE,Physical,90,10,0,NearOther,0,bef,"The Pokémon launches a salvo of fiery missiles, hitting 2-5 times."
 923,FLAREFIST,Flare Fist,260,80,FIRE,Physical,80,10,100,NearOther,0,abefgj,"The Pokémon swings a violent, burning haymaker, causing a burn and significant recoil damage."
+#-------------------------------
 924,WILDMAGIC,Wild Magic,261,0,MYSTIC,Status,0,20,0,User,0,,"The Pokémon calls on unshaped magical power, casting any Mystic-type move at random."
+#-------------------------------
 925,FREESTYLE,Freestyle,262,0,SOUND,Status,0,20,0,User,0,,"The Pokémon lays down whatever beats feel right, using a random Sound-type move."
+#-------------------------------
 926,SECRETPULSE,Secret Pulse,263,60,MYSTIC,Special,100,20,50,NearOther,0,befm,"The Pokémon fires a pulse of chaotic energy that may randomly lower one of the opponent's stats."
+#-------------------------------
 927,ACCELERANDO,Accelerando,264,0,SOUND,Status,0,20,0,User,0,de,"The Pokémon grooves with increasing tempo, raising Attack, Sp. Attack, and Speed."
+#-------------------------------
 928,FROSTBLITZ,Frost Blitz,265,120,ICE,Physical,100,5,10,NearOther,0,abef,"Wreathing themselves in ice, the Pokémon makes a reckless, full-body tackle. Causes recoil damage."
+#-------------------------------
 929,VOLUMECRASH,Volume Crash,266,130,SOUND,Physical,95,5,0,NearOther,0,abefk,"Riding the wave of a sonic boom, the user tackles, harshly lowering their defense."
+#-------------------------------
 930,PLUNDER,Plunder,0F1,60,WATER,Physical,100,20,0,NearOther,0,abf,"After giving the opponent a good sailor's beating, the Pokémon steals their held item too."
+#-------------------------------
 931,INJECT,Inject,267,60,POISON,Physical,100,10,0,NearOther,0,abef,"The user compounds poison in the target's body, increasing its strength. Deals more damage to poisoned foes."
+#-------------------------------
 932,VOLUMEMIXER,Volume Mixer,268,0,SOUND,Status,0,15,0,UserSide,0,ek,"For the next five turns, ally Sound-type Pokémon are immune to stat loss from any source."
 933,BASSBOOST,Bass Boost,020,75,SOUND,Special,90,10,50,NearOther,0,befk,"The Pokémon amplifies low-frequency waves in the area, possibly raising Sp. Attack."
-934,ADVANCEDARMOR,Advanced Armor,269,0,STEEL,Status,0,10,0,User,0,de,"The Pokémon surrounds itself in heavy metal armor, granting itself the Steel type.
+#-------------------------------
+934,ADVANCEDARMOR,Advanced Armor,269,0,STEEL,Status,0,10,0,User,0,de,"The Pokémon surrounds itself in heavy metal armor, granting itself the Steel type."
+#-------------------------------
 935,ZIPPYNIP,Zippy Nip,0EE,60,ELECTRIC,Physical,100,20,0,NearOther,0,bef,"After making a quick bite, the user playfully retreats to swap with a party Pokémon in waiting."
+#-------------------------------
 936,HUG,Hug,26A,1,NORMAL,Physical,100,20,0,NearOther,0,abe,"The user gives a big hug, flinching and preventing switching for 1 turn. Deals 1 damage."
+#-------------------------------
 937,SLUDGEBATH,Sludge Bath,26B,0,POISON,Status,0,5,0,UserSide,0,de,"The user heals and cures the status of all allied poison-type Pokémon, but poisons their other allies."
+#-------------------------------
 938,LIGHTMISSILES,Light Missiles,26C,150,LIGHT,Special,100,10,0,NearOther,0,,"The user fires off missiles of light which crash down the turn after. Can't be protected."
+#-------------------------------
 939,DROPWAVE,Drop Wave,09B,1,SOUND,Physical,100,15,0,NearOther,0,abefk,"The user slams their heavy body hard enough to make a sonic boom.  Deals more damage if the user is heavier."
+#-------------------------------
 940,BRIGHTBLADE,Bright Blade,10A,90,LIGHT,Physical,100,10,0,NearOther,0,abefh,"With a sword of light, the user cleaves through Reflect and Light Screen. High critical-hit rate."
+#-------------------------------
 941,COTTONPUNCH,Cotton Punch,044,75,GRASS,Physical,100,15,10,NearOther,0,abefjl,"The user strikes with a powdery punch.  May lower the target's Speed."
+#-------------------------------
 942,SHADOWBIND,Shadow Bind,0CF,15,GHOST,Special,100,10,0,NearOther,0,bef,"The user binds the target with ghostly chains, trapping them for 2-5 turns."
+#-------------------------------
 943,MAGICDUST,Magic Dust,26D,40,MYSTIC,Special,100,20,80,NearOther,0,befl,"The user sprays their foe with chaotic powder, randomly causing status conditions."
+#-------------------------------
 944,STRANGEPOWDER,Strange Powder,26D,40,GRASS,Special,100,20,80,NearOther,0,befl,"The user sprays their foe with chaotic powder, randomly causing status conditions."
+#-------------------------------
 945,ASCENDANCEKICK,Ascendance Kick,26E,90,MYSTIC,Physical,90,15,0,NearOther,0,abef,"A powerful kick that becomes even stronger when used against opponents in the air."
+#-------------------------------
 946,ASCENSION,Ascension,119,0,LIGHT,Status,0,10,0,User,0,d,"The user rises high into the air for five turns."
-947,QIDRAIN,Qi Drain,26F,80,GHOST,Physical,100,10,0,NearOther,0,abef,"The user devours the target's vitality, healing themselves. More powerful if the foe is boosted.
+#-------------------------------
+947,QIDRAIN,Qi Drain,26F,80,GHOST,Physical,100,10,0,NearOther,0,abef,"The user devours the target's vitality, healing themselves. More powerful if the foe is boosted."
+#-------------------------------
 948,DREAMDANCE,Dream Dance,270,0,MYSTIC,Status,0,5,0,NearOther,0,be,"The user performs a magical dance, putting their target and themselves to sleep."
 949,INNERFORCE,Inner Force,08B,150,MYSTIC,Special,100,5,0,AllNearFoes,0,bef,"The user unleashes the power they store within. The lower the user's HP, the weaker it becomes."
+#-------------------------------
 950,PILEDRIVER,Piledriver,271,120,FIGHTING,Physical,100,15,10,NearOther,0,abef,"Lifting the foe upwards, the Pokémon jumps and slams them headfirst into the ground. Causes recoil."
+#-------------------------------
 951,ROARINGFLAME,Roaring Flame,000,55,FIRE,Special,100,20,0,NearOther,0,befk,"A burning flame that possesses many of the qualities of SOUND-type moves."
+#-------------------------------
 952,BLOOMBOMB,Bloom Bomb,046,120,GRASS,Special,85,5,10,NearOther,0,befn,"The user launches a seed that explosively blooms around its target, potentially lowering Sp. Defense."
+#-------------------------------
 953,BINAURALBEAT,Binaural Beat,272,85,SOUND,Physical,95,15,0,NearOther,0,abefk,"A combo with a devastating rhythm. If the target has stat changes, it reverses one."
 954,CYMBALCLAP,Cymbal Clap,273,40,SOUND,Physical,90,15,10,NearOther,0,abek,"The user crashes two cymbals about the foe's head, hitting twice. May cause flinch."
+#-------------------------------
 955,FLARINGPRIDE,Flaring Pride,274,100,FIRE,Physical,100,10,0,NearOther,0,abef,"A powerful fire attack that becomes even more powerful as the user loses health."
+#-------------------------------
 956,GLEAMBEAM,Gleam Beam,275,75,LIGHT,Special,100,15,0,NearOther,0,bef,"A bouncing beam of light which amplifies in power if the target shares a type with the user."
+#-------------------------------
 957,ARCANESTRIKE,Arcane Strike,276,70,MYSTIC,Physical,100,10,0,NearOther,0,abef,"The user attacks with a magical blow which targets the opponent's Sp. Defense."
+#-------------------------------
 958,MONSOON,Monsoon,144,110,WATER,Special,80,5,0,AllNearFoes,0,bef,"The user launches a tropical storm at the target.  Deals Flying and Water damage."
+#-------------------------------
 959,REMOVALPULSE,Removal Pulse,277,0,MYSTIC,Status,0,25,0,NearOther,-6,,"The Pokémon forces itself and its target to randomly switch out. Causes wild Pokémon to flee."
+#-------------------------------
 960,BOIL,Boil,278,80,WATER,Special,100,15,0,NearOther,0,befg,"The user vaporizes water around the target, dealing double damage if the target is burned."
+#-------------------------------
 961,OUTPLAY,Outplay,121,95,PSYCHIC,Special,100,15,0,NearOther,0,bef,"The user tricks the foe with superior tactics. Uses target's Sp. Attack for damage."
+#-------------------------------
 962,IRONMAIDEN,Iron Maiden,279,110,STEEL,Physical,80,10,20,NearOther,0,abef,"The user traps the target in a spiky cavity, chomping and crushing them.  May cause burn."
+#-------------------------------
 963,VINETAKEDOWN,Vine Takedown,11C,70,GRASS,Physical,95,15,0,NearOther,0,bef,"The user yanks the target to the ground with powerful vines. Deals more damage to flying opponents."
+#-------------------------------
 964,PHOENIXFLAME,Phoenix Flame,27A,100,FIRE,Physical,90,10,0,NearOther,0,abef,"With an overwhelming mystical heat, the user smashes the target. If it KOs, the user heals."
+#-------------------------------
 965,LIGHTFLARE,Light Flare,0FE,110,LIGHT,Physical,100,10,30,NearOther,0,abefg,"A reckless charge that travels faster than the eye can see. May burn the target, but damages the user."
+#-------------------------------
 966,FATALERROR,Fatal Error,27B,255,STEEL,Special,100,5,0,NearOther,0,bef,"The user overloads, KOing themselves. Deals extra damage to Steel- and Electric-types."
+#-------------------------------
 967,THROWHANDS,Throw Hands,276,80,FIGHTING,Physical,100,10,0,NearOther,0,bef,"The user strikes the air, sending a pressure wave to damage the target's Sp. Defense."
+#-------------------------------
 968,PEPPERSPRAY,Pepper Spray,27C,80,POISON,Special,90,10,100,NearOther,0,bef,"The user launches an acid that cuts Defense and Sp. Defense, more if the target is burned."
+#-------------------------------
 969,ENERGYWAVE,Energy Wave,000,90,NORMAL,Special,100,10,0,NearOther,0,ef,"The user fires a wave of intangible energy that bypasses Substitute and Protect."
 970,NAP,Nap,27D,0,NORMAL,Status,0,10,0,User,0,d,"The user takes a short nap, curing status and healing health as they fall asleep."
+#-------------------------------
 971,RITUAL,Ritual,27E,0,MYSTIC,Status,0,10,0,BothSides,0,,"A cursed ritual, empowering Mystic, Ghost, and Dark while weakening Fairy, Light, and Psychic."
 972,MYSTERYSHROUD,Mystery Shroud,27F,0,MYSTIC,Status,0,5,0,BothSides,0,,"A chaotic mist settles over the field, randomizing the type of every move used for 5 turns."
+#-------------------------------
 973,ENERGYCONVERSION,Energy Conversion,280,0,ELECTRIC,Status,0,5,0,User,0,d,"Converting their own life force to energy, the Pokémon cuts is own HP and maximizes a random stat."
+#-------------------------------
 974,MAGMASHIELD,Magma Shield,281,0,FIRE,Status,0,10,0,User,4,d,"Encasing themselves in magma, the Pokémon sharply raises its defense and burns those who touch it."
+#-------------------------------
 975,CURSETAG,Curse Tag,282,60,GHOST,Physical,100,20,0,NearOther,0,abef,"With a dark grudge, the Pokémon transfers all its negative stats and status onto the target."
+#-------------------------------
 976,HEATDROP,Heat Drop,283,70,FIRE,Special,100,15,0,AllNearOthers,0,bef,"The Pokémon devours the heat in an area. This move is strong against other Fire-types but not Ice."
+#-------------------------------
 977,TOMBRAID,Tomb Raid,284,55,GHOST,Physical,90,10,0,NearOther,0,abef,"Drawing hate from fallen souls, its power increases for each fainted Pokémon in the target's party."
+#-------------------------------
 978,SANDHAMMER,Sand Hammer,285,100,GROUND,Physical,100,10,0,NearOther,0,bef,"Crushes foes with a hammer strong enough to shock the skies. Hits flying types super-effectively."
+#-------------------------------
 979,STARLINE,Star Line,286,50,COSMIC,Special,100,20,0,NearOther,0,bef,"The user channels energy from their entire team. For each Cosmic-type Pokémon, the power increases."
+#-------------------------------
 980,ENERGYSHARE,Energy Share,287,0,ELECTRIC,Status,0,10,0,UserSide,0,de,"The user gifts energy to their friends, damaging themselves but spreading HP across their team."
 981,THUNDERSTORM,Thunderstorm,288,0,ELECTRIC,Status,0,10,0,BothSides,0,,"The user unleashes stormy skies, striking randomly and empowering Electric-type moves for 5 turns."
+#-------------------------------
 982,COMBUSTION,Combustion,289,80,FIRE,Special,80,10,100,AllNearOthers,0,befg,"The user sets the entire field on fire, damaging themselves. When this move hits, it always burns."
+#-------------------------------
 983,GLASSBLADE,Glass Blade,000,90,ICE,Physical,100,10,0,NearOther,0,befh,"A beautiful sword of glass. Has a high critical-hit rate, and deals strong damage even when resisted."
+#-------------------------------
 984,CADENZA,Cadenza,28A,110,SOUND,Special,100,10,50,RandomNearFoe,0,befk,"The Pokémon performs a glorious virtuoso solo for 2-3 turns. May confuse friends, foes, and the user."
+#-------------------------------
 985,FLASHSTRIKE,Flash Strike,28B,70,LIGHT,Physical,100,10,0,NearOther,0,abef,"A hit designed to catch the foe off-guard. The power is doubled if the user moves first."
+#-------------------------------
 986,STICKYTERRAIN,Sticky Terrain,28C,0,POISON,Status,0,10,0,BothSides,0,,"The ground becomes sticky, weakening contact moves and slowing fighters unless Poison-type."
+#-------------------------------
 987,STONEGRIND,Stone Grind,28D,0,ROCK,Status,0,20,0,User,0,de,"The Pokémon grinds their body to a sharp point, raising attack and speed but lowering defense."
+#-------------------------------
 988,DELTABEAM,Delta Beam,28E,65,LIGHT,Special,100,20,0,NearOther,0,bef,"The Pokémon fires a beam of energy that deals more damage if the target has more HP."
+#-------------------------------
 989,DIVINATION,Divination,28F,0,MYSTIC,Status,0,15,0,User,0,,"Forseeing a powerful ally, the Pokémon switches out, granting a random stat boost."
+#-------------------------------
 990,THORNTRAP,Thorn Trap,290,70,GRASS,Physical,100,15,0,NearOther,0,bef,"The target is bound in thorny vines that stick around, dealing extra damage if they swap out."
+#-------------------------------
 991,WARCRY,War Cry,291,0,SOUND,Status,0,15,0,UserSide,0,dek,"With a triumphant roar, the Pokémon boosts the team's Attack and critical chance. The effect cannot stack."
+#-------------------------------
 992,STAGESHIFT,Stage Shift,292,0,MYSTIC,Status,0,15,0,BothSides,0,,"The Pokémon twists the battlefield, swapping effects on either side of the field."
+#-------------------------------
 993,SPUTTER,Sputter,293,0,NORMAL,Status,0,15,0,BothSides,0,,"The Pokémon disrupts the battlefield, causing abilities to fail this round."
+#-------------------------------
 994,FIRESTORM,Fire Storm,294,30,FIRE,Special,100,10,0,NearOther,0,beg,"The user conjures a mighty storm of fire, damaging all Pokémon for 5 rounds."
+#-------------------------------
 995,GOLDENSPIN,Golden Spin,295,120,MYSTIC,Physical,100,10,0,RandomNearFoe,0,abef,"In a spiral of overwhelming energy, the Pokémon strikes for 2-3 turns, taking recoil each hit."
+#-------------------------------
 996,CAGEMATCH,Cage Match,296,0,FIGHTING,Status,0,5,0,BothSides,0,,"The user traps the battlefield, increasing Attack and Defense of all Pokémon. Fighting-types improve more."
 997,TRACKPUNCH,Track Punch,297,55,FIGHTING,Physical,95,15,0,NearOther,1,abefj,"The Pokémon strikes with an in-your-face punch that forces the opponent to target the user."
+#-------------------------------
 998,MIRACLEPULSE,Miracle Pulse,298,80,MYSTIC,Special,100,15,0,NearOther,0,befm,"A magical resonance will heal the user if the target has a status condition, but cure the condition."
+#-------------------------------
 999,FIREWORKS,Fireworks,299,0,LIGHT,Status,100,15,0,NearOther,0,ce,"The user launches a firework that burns at the end of the round unless the target swaps out."
+#-------------------------------
 1000,FLAMERING,Flame Ring,29A,0,FIRE,Status,0,10,0,BothSides,0,,"The user creates a ring of fire around the battlefield, trapping and dealing damage to all non-Fire-types."
+#-------------------------------
 1001,PAINAMPLIFIER,Pain Amplifier,29B,0,SOUND,Status,0,10,0,BothSides,0,,"The user emits waves which amplify the power of all moves, friend and foe."
+#-------------------------------
 1002,HEADACHE,Headache,29C,0,NORMAL,Status,0,40,0,User,0,,"The user gets a massive headache, inflicting confusion on themselves. Why would you do this?"
+#-------------------------------
 1003,DROPGUARD,Drop Guard,29D,0,FIGHTING,Status,0,10,0,User,3,d,"Focusing, the user raises speed and hit chance. If the user is hit, the move fails and the hit is critical."
+#-------------------------------
 1004,DELAYEDATTACK,Delayed Attack,29E,0,MYSTIC,Status,0,10,0,NearOther,0,,"Imbuing one of their attacks into a magical spell, it takes place three turns later."
+#-------------------------------
 1005,BRAVEBUG,Brave Bug,03C,110,BUG,Physical,100,10,0,NearOther,0,abef,"The Pokémon unleashes a reckless charge that ignores the size of its foe. Lowers Defense and Sp. Defense."
 1006,POLLENSHIELD,Pollen Shield,01A,0,BUG,Status,0,25,0,UserSide,0,d,"The user creates a barrier of pollen that blocks status problems for five turns."
 1007,WEBTIE,Web Tie,044,75,BUG,Special,95,15,100,AllNearFoes,0,bef,"Spraying high-pressure webs, the user damages and lowers the Speed of all opponents."
+#-------------------------------
 1008,SCAREOFF,Scare Off,0EC,60,DARK,Physical,90,15,0,NearOther,-6,bf,"The user startles their opponent so hard they take damage and swap out."
+#-------------------------------
 1009,POWERBLAST,Power Blast,03C,120,ELECTRIC,Special,100,5,0,NearOther,0,bef,"Unleashing a massive voltage storm, the user deals damage but lowers their Defense and Special Defense."
+#-------------------------------
 1010,KAMIKAZEATTACK,Self-Destruct,29E,200,NORMAL,Physical,100,5,0,AllNearOthers,0,bef,"The user blows up to inflict damage on all Pokémon in battle. The user faints upon using this move."
+#-------------------------------
 1011,SKITTERSMACK,Skitter Smack,045,70,BUG,Physical,90,10,100,NearOther,0,abef,"The user skitters behind the target to attack. This also lowers the target's Sp. Atk stat."
+#-------------------------------
 1012,JAWLOCK,Jaw Lock,17D,80,DARK,Physical,100,10,0,NearOther,0,bef,"Prevents the user and target from switching out until either of them faints or is switched out."
 1013,FALSESURRENDER,False Surrender,000,80,DARK,Physical,0,10,0,NearOther,0,abef,"The user fakes the target out and stabs them with its disheveled hair. The attack never misses."
 1014,OBSTRUCT,Obstruct,180,0,DARK,Status,0,10,0,NearOther,4,,"Protects the user from all attacks. Direct contact harshly lowers the attacker's Defense stat."
 1015,WICKEDBLOW,Wicked Blow,0A0,80,DARK,Physical,100,5,0,NearOther,0,abef,"The user strikes with a fierce blow of Dark Mastery. It always results in a critical hit"
 1016,LASHOUT,Lash Out,194,75,DARK,Physical,100,5,100,NearOther,0,abef,"If the user's stats were lowered during the turn, the power of this move is doubled."
 1017,FIERYWRATH,Fiery Wrath,00F,90,DARK,Special,100,10,20,AllNearFoes,0,ef,"The user transforms its wrath into a fire-like aura to attack. It may cause flinching."
+#-------------------------------
 1018,BREAKINGSWIPE,Breaking Swipe,042,60,DRAGON,Physical,100,15,100,AllNearFoes,0,abef,"The user swings its tail wildly and attacks opposing Pokémon, lowering their Attack stats."
 1019,DRAGONDARTS,Dragon Darts,17C,50,DRAGON,Physical,100,10,0,AllNearFoes,0,bef,"The user attacks twice using Dreepy. If there are two targets, this move hits each target once."
 1020,DYNAMAXCANNON,Dynamax Cannon,000,100,DRAGON,Special,100,5,0,NearOther,0,bf,"The user unleashes a strong beam from its core."
@@ -1041,26 +1222,33 @@
 1022,CLANGOROUSSOUL,Clangorous Soul,179,0,DRAGON,Status,100,5,0,User,0,dk,"The user raises all its stats by using some of its HP."
 1023,SCALESHOT,Scale Shot,193,25,DRAGON,Physical,90,20,100,NearOther,0,abef,"The user attacks by shooting scales two to five times. It boosts the user's Speed stat but lowers its Defense stat."
 1024,DRAGONENERGY,Dragon Energy,08B,150,DRAGON,Special,100,5,0,AllNearFoes,0,ef,"Attacks opposing all Pokémon by converting its life-force into power. It's power decreases with the user's HP"
+#-------------------------------
 1025,OVERDRIVE,Overdrive,000,80,ELECTRIC,Special,100,10,0,AllNearFoes,0,bef,"Attacks opposing Pokémon by twanging a guitar or bass guitar."
 1026,AURAWHEEL,Aura Wheel,176,110,ELECTRIC,Physical,100,10,100,NearOther,0,bef,"Attacks and raises Speed using stored energy. Type changes depending on the user's form."
 1027,BOLTBEAK,Bolt Beak,178,85,ELECTRIC,Physical,100,10,0,NearOther,0,abef,"Attacks with an electrified beak. Power is doubled if the user moves before the target."
 1028,RISINGVOLTAGE,Rising Voltage,18D,70,ELECTRIC,Special,100,20,0,NearOther,0,bef,"Attacks with electric voltage rising from the ground. Power doubles on Electric Terrain."
 1029,THUNDERCAGE,Thunder Cage,0CF,80,ELECTRIC,Special,90,15,0,NearOther,0,bef,"The user traps the target in a cage of sparking electricity for four to five turns."
+#-------------------------------
 1030,SPIRITBREAK,Spirit Break,045,75,FAIRY,Physical,100,15,100,NearOther,0,abef,"Attacks the target and breaks its spirit. Lowers the target's Sp. Atk stat."
 1031,DECORATE,Decorate,17B,0,FAIRY,Status,0,15,0,NearOther,0,,"The user sharply raises the target's Attack and Sp. Atk stats by decorating the target."
 1032,MISTYEXPLOSION,Misty Explosion,196,100,FAIRY,Special,100,5,0,AllNearOthers,0,bef,"Attacks everything around it and faints. Power is increased on Misty Terrain."
 1033,STRANGESTEAM,Strange Steam,013,90,FAIRY,Special,95,10,20,NearOther,0,bef,"The user attacks the target by emitting steam. This may also confuse the target."
+#-------------------------------
 1034,OCTOLOCK,Octolock,181,0,FIGHTING,Status,100,15,0,NearOther,0,be,"Locks the target in and prevents fleeing. Lowers target's Defense and Sp. Def every turn."
 1035,METEORASSAULT,Meteor Assault,0C2,150,FIGHTING,Physical,100,5,0,NearOther,0,bef,"Attacks wildly with its thick leek. The user can't move on the next turn."
 1036,NORETREAT,No Retreat,17F,0,FIGHTING,Status,0,5,0,User,3,d,"This move raises all the user's stats but prevents the user from switching out or fleeing."
 1037,COACHING,Coaching,18E,0,FIGHTING,Status,0,10,0,NearAlly,0,,"The user properly coaches its ally Pokémon, boosting their Attack and Defense stats."
 1038,BODYPRESS,Body Press,177,80,FIGHTING,Physical,100,10,0,NearOther,0,abef,"Attacks by slamming its body into the target. Damage increases with the user's Defense stat."
 1039,THUNDEROUSKICK,Thunderous Kick,043,90,FIGHTING,Physical,100,10,100,NearOther,0,abef,"The user kicks the target with lightning-like movement. It lowers the target's Defense."
+#-------------------------------
 1040,PYROBALL,Pyro Ball,00A,120,FIRE,Physical,90,5,10,NearOther,0,bef,"Attacks by igniting a small stone and launching it as a fiery ball. May cause a burn."
 1041,BURNINGJEALOUSY,Burning Jealousy,18B,70,FIRE,Special,100,5,100,AllNearFoes,0,bef,"Attacks with energy from jealousy. All opposing Pokémon with stat boosts get burned."
+#-------------------------------
 1042,DUALWINGBEAT,Dual Wingbeat,0BD,40,FLYING,Physical,90,10,0,NearOther,0,abef,"The user slams the target with its wings. The target is hit twice in a row."
+#-------------------------------
 1043,POLTERGEIST,Poltergeist,192,110,GHOST,Physical,90,5,0,NearOther,0,abef,"Attacks the target by controlling its item. Fails if the target doesn't have an item."
 1044,ASTRALBARRAGE,Astral Barrage,000,120,GHOST,Special,100,5,0,AllNearFoes,0,bef,"The user attacks by sending a frightful amount of small ghosts at opposing Pokémon."
+#-------------------------------
 1045,BRANCHPOKE,Branch Poke,000,40,GRASS,Physical,100,40,0,NearOther,0,bef,"The user attacks the target by poking it with a sharply pointed branch."
 1046,DRUMBEATING,Drum Beating,044,80,GRASS,Physical,100,10,100,NearOther,0,bef,"The user controls the drum's roots to attack the target. This also lowers the target's Speed stat."
 1047,GRAVAPPLE,Grav Apple,185,80,GRASS,Physical,100,10,100,NearOther,0,bef,"Inflicts damage by dropping an apple from high above. Lowers the target's Defense stat."
@@ -1068,25 +1256,33 @@
 1049,SNAPTRAP,Snap Trap,0CF,35,GRASS,Special,100,15,0,NearOther,0,abef,"The user snares the target in a snap trap for four to five turns."
 1050,GRASSYGLIDE,Grassy Glide,18C,70,GRASS,Physical,100,20,0,NearOther,0,abef,"Attacks by gliding on the ground. This move always goes first on Grassy Terrain."
 1051,JUNGLEHEALING,Jungle Healing,189,0,GRASS,Status,0,10,0,UserAndAllies,0,,"Restores HP and heals status of itself and its ally Pokémon in battle by using Jungle Powers."
+#-------------------------------
 1052,SCORCHINGSANDS,Scorching Sands,00A,70,GROUND,Special,100,10,30,NearOther,0,abef,"Throws scorching sand at the target to attack. This may also leave the target with a burn."
+#-------------------------------
 1053,TRIPLEAXEL,Triple Axel,0BF,20,ICE,Physical,90,10,0,NearOther,0,abef,"A consecutive three-kick attack that becomes more powerful with each successful hit."
 1054,GLACIALLANCE,Glacial Lance,000,130,ICE,Physical,100,5,0,NearOther,0,bef,"The user attacks by hurling a blizzard-cloaked icicle lance at opposing Pokémon."
+#-------------------------------
 1055,COURTCHANGE,Court Change,17A,0,NORMAL,Status,100,10,0,BothSides,0,e,"With its mysterious power, the user swaps the effects on either side of the field."
 1056,STUFFCHEEKS,Stuff Cheeks,183,0,NORMAL,Status,100,10,0,User,0,e,"The user eats its held Berry, then sharply raises its Defense stat."
 1057,TEATIME,Teatime,184,0,NORMAL,Status,0,10,0,AllBattlers,0,,"The user has teatime with all the Pokémon in the battle. Each Pokémon eats its held Berry."
 1058,TERRAINPULSE,Terrain Pulse,18A,50,NORMAL,Special,100,10,0,NearOther,0,befm,"Uses the power of the terrain to attack. Type and power changes depending on the terrain."
+#-------------------------------
 1059,CORROSIVEGAS,Corrosive Gas,201,0,POISON,Status,100,40,0,AllNearOthers,0,,"The user surrounds everything around it with highly acidic gas and melts away items they hold."
 1060,SHELLSIDEARM,Shell Side Arm,187,90,POISON,Special,100,10,25,NearOther,0,bef,"Inflicts physical or special damage, whichever will be more effective. May poison the target."
+#-------------------------------
 1061,MAGICPOWDER,Magic Powder,197,0,PSYCHIC,Status,100,20,0,NearOther,0,bcel,"The user scatters a cloud of magic powder that changes the target to Psychic type."
 1062,EXPANDINGFORCE,Expanding Force,190,80,PSYCHIC,Special,100,20,0,AllNearOthers,0,bef,"Attacks with its psychic power. Power increases and damages all opponents on Psychic Terrain."
 1063,EERIESPELL,Eerie Spell,210,90,PSYCHIC,Special,100,10,0,NearOther,0,bef,"The user casts a horrible spell on the opponent. This removes 3 PP from their last used move."
 1064,FREEZINGGLARE,Freezing Glare,00C,90,PSYCHIC,Special,100,10,10,NearOther,0,ef,"The user shoots its psychic power from its eyes to attack. This may also leave the target frozen."
+#-------------------------------
 1065,TARSHOT,Tar Shot,186,0,ROCK,Status,0,15,0,NearOther,3,bce,"Pours sticky tar over the target, lowering its Speed stat and making it weak to Fire."
 1066,METEORBEAM,Meteor Beam,191,120,ROCK,Special,90,10,0,NearOther,0,bef,"Gathers space power and boosts its Sp. Atk stat on one turn, then attacks on the next turn."
+#-------------------------------
 1067,BEHEMOTHBASH,Behemoth Bash,000,100,STEEL,Physical,100,5,0,NearOther,0,abef,"The user becomes a gigantic shield and slams into the target."
 1068,BEHEMOTHBLADE,Behemoth Blade,000,100,STEEL,Physical,100,5,0,NearOther,0,abef,"The user becomes a gigantic sword and cuts the target."
 1069,STEELROLLER,Steel Roller,195,130,STEEL,Physical,100,5,0,NearOther,0,abef,"Attacks while destroying the terrain. This move fails in the absence of a terrain."
 1070,STEELBEAM,Steel Beam,0FC,140,STEEL,Special,95,5,100,NearOther,0,bef,"Fires a beam of steel that it collected from its entire body. This also damages the user."
+#-------------------------------
 1071,SNIPESHOT,Snipe Shot,182,80,WATER,Special,100,15,0,NearOther,0,bef,"Ignores all attempts at redirection, allowing this move to hit the chosen target."
 1072,FISHIOUSREND,Fishious Rend,178,85,WATER,Physical,100,10,0,NearOther,0,abef,"Rends the target with its hard gills. Power doubles if the user moves before the target."
 1073,LIFEDEW,Life Dew,17E,0,WATER,Status,0,10,0,UserAndAllies,0,d,"The user scatters mysterious water around and restores the HP of itself."

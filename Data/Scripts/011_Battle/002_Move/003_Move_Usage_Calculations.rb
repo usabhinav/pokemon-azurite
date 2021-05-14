@@ -45,11 +45,11 @@ class PokeBattle_Move
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :DARK &&
                                                    Effectiveness.ineffective_type?(moveType, defType)
     end
-    # Synthetic Alloy
+    # Unholy
     if target.hasActiveAbility?(:UNHOLY)
-      ret = PBTypeEffectiveness::NOT_EFFECTIVE_ONE  if isConst?(moveType,PBTypes,:LIGHT)
-      ret = PBTypeEffectiveness::NOT_EFFECTIVE_ONE  if isConst?(moveType,PBTypes,:GHOST)
-      ret = PBTypeEffectiveness::NOT_EFFECTIVE_ONE  if isConst?(moveType,PBTypes,:FAIRY)
+      if moveType == :LIGHT || moveType == :GHOST || moveType == :FAIRY
+        ret = Effectiveness::NOT_EFFECTIVE_ONE
+      end
     end
     # Delta Stream's weather
     if @battle.pbWeather == :StrongWinds
@@ -85,10 +85,10 @@ class PokeBattle_Move
     # Multiply all effectivenesses together
     ret = 1
     typeMods.each { |m| ret *= m }
-    return PBTypeEffectiveness::NORMAL_EFFECTIVE if isConst?(moveType,PBTypes,:ELECTRIC) &&
-          user.hasActiveAbility?(:CRYSTALLINE) && ret == PBTypeEffectiveness::INEFFECTIVE
-    return PBTypeEffectiveness::NORMAL_EFFECTIVE if isConst?(moveType,PBTypes,:PSYCHIC) &&
-          user.hasActiveAbility?(:DARKLIGHT) && ret == PBTypeEffectiveness::INEFFECTIVE && target.pbHasType?(:DARK)
+    return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
+          user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
+    return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&
+          user.hasActiveAbility?(:DARKLIGHT) && ret == Effectiveness::INEFFECTIVE && target.pbHasType?(:DARK)
     return ret
   end
 
@@ -423,18 +423,10 @@ class PokeBattle_Move
     end
     # STAB
     if type && user.pbHasType?(type)
-      if user.hasActiveAbility?(:ADAPTABILITY)
+      if user.hasActiveAbility?(:ADAPTABILITY) || user.hasActiveAbility?(:OMNIGENE)
         multipliers[:final_damage_multiplier] *= 2
       else
         multipliers[:final_damage_multiplier] *= 1.5
-      end
-    end
-    # STAB
-    if type>=0 && user.pbHasType?(type)
-      if user.hasActiveAbility?(:OMNIGENE)
-        multipliers[FINAL_DMG_MULT] *= 2
-      else
-        multipliers[FINAL_DMG_MULT] *= 1.5
       end
     end
     # Type effectiveness

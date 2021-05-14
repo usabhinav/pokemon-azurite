@@ -806,9 +806,9 @@ BattleHandlers::DamageCalcUserItem.add(:EONGENE,
       isSpecies = true if user.isSpecies?(species_sym)
     end
     if isSpecies && type>=0 && user.pbHasType?(type)
-      mults[FINAL_DMG_MULT] *= 2
+      mults[:final_damage_multiplier] *= 2
     else
-      mults[FINAL_DMG_MULT] *= 0.5
+      mults[:final_damage_multiplier] *= 0.5
     end
   }
 )

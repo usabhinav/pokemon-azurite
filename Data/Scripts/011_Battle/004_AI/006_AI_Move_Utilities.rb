@@ -74,10 +74,10 @@ class PokeBattle_AI
     # Multiply all effectivenesses together
     ret = 1
     typeMods.each { |m| ret *= m }
-    return PBTypeEffectiveness::NORMAL_EFFECTIVE if isConst?(moveType,PBTypes,:ELECTRIC) &&
-          user.hasActiveAbility?(:CRYSTALLINE) && ret == PBTypeEffectiveness::INEFFECTIVE
-    return PBTypeEffectiveness::NORMAL_EFFECTIVE if isConst?(moveType,PBTypes,:PSYCHIC) &&
-          user.hasActiveAbility?(:DARKLIGHT) && ret == PBTypeEffectiveness::INEFFECTIVE && target.pbHasType?(:DARK)
+    return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
+          user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
+    return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&
+          user.hasActiveAbility?(:DARKLIGHT) && ret == Effectiveness::INEFFECTIVE && target.pbHasType?(:DARK)
     return ret
   end
 
@@ -284,7 +284,7 @@ class PokeBattle_AI
       defense = pbRoughStat(target,:SPECIAL_DEFENSE,skill)
     end
     if move.pbContactMove?(user) && user.hasActiveAbility?(:CACOPHONY)
-      defense = pbRoughStat(target,PBStats::SPDEF,skill)
+      defense = pbRoughStat(target,:SPECIAL_DEFENSE,skill)
     end
     ##### Calculate all multiplier effects #####
     multipliers = {

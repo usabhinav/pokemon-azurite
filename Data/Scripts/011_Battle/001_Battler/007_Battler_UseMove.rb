@@ -252,9 +252,9 @@ class PokeBattle_Battler
                       :SLEEPTALK,:NIGHTSHADE,:KNOCKOFF,:TOXIC,:DREAMEATER,:SEISMICTOSS,
                       :DRAINPUNCH]
       
-      for i in speedmoves; speedform=true if isConst?(move.id,PBMoves,i); end
-      for i in defensemoves; defenseform=true if isConst?(move.id,PBMoves,i); end
-        
+      speedform = speedmoves.include?(move.id)
+      defenseform = defensemoves.include?(move.id)
+
       if speedform
         if form!=3
           @battle.pbShowAbilitySplash(self,true)
@@ -433,10 +433,10 @@ class PokeBattle_Battler
     end
     # Omnigene
     if user.hasActiveAbility?(:OMNIGENE) && !move.callsAnotherMove? && !move.snatched
-      if user.pbHasOtherType?(move.calcType) && !PBTypes.isPseudoType?(move.calcType)
+      if user.pbHasOtherType?(move.calcType) && !GameData::Type.get(move.calcType).pseudo_type
         @battle.pbShowAbilitySplash(user)
         user.pbChangeTypes(move.calcType)
-        typeName = PBTypes.getName(move.calcType)
+        typeName = GameData::Type.get(move.calcType).name
         @battle.pbDisplay(_INTL("{1} transformed into the {2} type!",user.pbThis,typeName))
         @battle.pbHideAbilitySplash(user)
         # NOTE: The GF games say that if Curse is used by a non-Ghost-type

@@ -543,7 +543,7 @@ BattleHandlers::PriorityChangeAbility.add(:SPEEDBALL,
 
 BattleHandlers::PriorityChangeAbility.add(:FREESTYLE,
   proc { |ability,battler,move,pri|
-    next pri+1 if isConst?(move.type,PBTypes,:SOUND) || move.pbSoundMove?(battler)
+    next pri+1 if move.type == :SOUND || move.pbSoundMove?(battler)
   }
 )
 
@@ -657,7 +657,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:SAPSIPPER,
 
 BattleHandlers::MoveImmunityTargetAbility.add(:SOUNDPROOF,
   proc { |ability,user,target,move,type,battle|
-    next false if !move.pbSoundMove?(user) && !isConst?(move.type,PBTypes,:SOUND)
+    next false if !move.pbSoundMove?(user) && move.type != :SOUND
     battle.pbShowAbilitySplash(target)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
       battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
@@ -738,7 +738,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:IMMATERIAL,
 
 BattleHandlers::MoveImmunityTargetAbility.add(:THERMALPOWER,
   proc { |ability,user,target,move,type,battle|
-    next false if !isConst?(type,PBTypes,:FIRE)
+    next false if type != :FIRE
     next false if !move.pbDamagingMove?
     battle.pbShowAbilitySplash(target)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
@@ -747,8 +747,8 @@ BattleHandlers::MoveImmunityTargetAbility.add(:THERMALPOWER,
       battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
          target.pbThis,target.abilityName,move.name))
     end
-    if target.pbCanRaiseStatStage?(PBStats::SPEED,target)
-      target.pbRaiseStatStageByAbility(PBStats::SPEED,1,target,false)
+    if target.pbCanRaiseStatStage?(:SPEED,target)
+      target.pbRaiseStatStageByAbility(:SPEED,1,target,false)
     end
     battle.pbHideAbilitySplash(target)
     next true
@@ -847,7 +847,7 @@ BattleHandlers::AccuracyCalcUserAbility.add(:VICTORYSTAR,
 
 BattleHandlers::AccuracyCalcUserAbility.add(:DARKLIGHT,
   proc { |ability,mods,user,target,move,type|
-    mods[ACC_MULT] *= 1.1 if target.pbHasType?(:DARK)
+    mods[:accuracy_multiplier] *= 1.1 if target.pbHasType?(:DARK)
   }
 )
 
@@ -863,7 +863,7 @@ BattleHandlers::AccuracyCalcUserAllyAbility.add(:VICTORYSTAR,
 
 BattleHandlers::AccuracyCalcUserAllyAbility.add(:DARKLIGHT,
   proc { |ability,mods,user,target,move,type|
-    mods[ACC_MULT] *= 1.1 if target.pbHasType?(:DARK)
+    mods[:accuracy_multiplier] *= 1.1 if target.pbHasType?(:DARK)
   }
 )
 
@@ -1174,9 +1174,9 @@ BattleHandlers::DamageCalcUserAbility.add(:MAGMATICHEAT,
   proc { |ability,user,target,move,mults,baseDmg,type|
     targetTypes = target.pbTypes(true) # Takes third type into account
     for targetType in targetTypes
-      if PBTypes.notVeryEffective?(type, targetType) && isConst?(type,PBTypes,:FIRE)
+      if Effectiveness.not_very_effective_type?(type, targetType) && type == :FIRE
         # Changes the 0.5x "not very effective" multiplier to 0.75x
-        mults[FINAL_DMG_MULT] *= 1.5
+        mults[:final_damage_multiplier] *= 1.5
       end
     end
   }
@@ -1184,14 +1184,14 @@ BattleHandlers::DamageCalcUserAbility.add(:MAGMATICHEAT,
 
 BattleHandlers::DamageCalcUserAbility.add(:RAINBOWGUARD,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    types = [PBTypes::FIRE, PBTypes::ICE, PBTypes::ELECTRIC]
-    mults[FINAL_DMG_MULT] *= 1.3 if types.include?(type) && !user.pbHasType?(type)
+    types = [:FIRE, :ICE, :ELECTRIC]
+    mults[:final_damage_multiplier] *= 1.3 if types.include?(type) && !user.pbHasType?(type)
   }
 )
 
 BattleHandlers::DamageCalcUserAbility.add(:TAINTEDPOWER,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    mults[ATK_MULT] *= 2
+    mults[:attack_multiplier] *= 2
   }
 )
 
@@ -1297,10 +1297,10 @@ BattleHandlers::DamageCalcTargetAbility.add(:WATERBUBBLE,
 
 BattleHandlers::DamageCalcTargetAbility.add(:CRYSTALLINE,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    if isConst?(type,PBTypes,:WATER) || isConst?(type,PBTypes,:GRASS)
-      mults[FINAL_DMG_MULT] /= 2
-    elsif isConst?(type,PBTypes,:ELECTRIC)
-      mults[FINAL_DMG_MULT] *= 2
+    if type == :WATER || type == :GRASS
+      mults[:final_damage_multiplier] /= 2
+    elsif type == :ELECTRIC
+      mults[:final_damage_multiplier] *= 2
     end
   }
 )
@@ -1308,15 +1308,15 @@ BattleHandlers::DamageCalcTargetAbility.add(:CRYSTALLINE,
 BattleHandlers::DamageCalcTargetAbility.add(:IMMATERIAL,
   proc { |ability,user,target,move,mults,baseDmg,type|
     if move.specialMove?
-      mults[FINAL_DMG_MULT] *= 1.5
+      mults[:final_damage_multiplier] *= 1.5
     end
   }
 )
 
 BattleHandlers::DamageCalcTargetAbility.add(:THERMALPOWER,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    if isConst?(move.type,PBTypes,:ICE)
-      mults[FINAL_DMG_MULT] *= 2
+    if move.type == :ICE
+      mults[:final_damage_multiplier] *= 2
     end
   }
 )
@@ -1732,7 +1732,7 @@ BattleHandlers::TargetAbilityOnHit.add(:ENTANGLINGMESS,
     battle.pbShowAbilitySplash(target)
     # Set trapping effect duration and info
     user.effects[PBEffects::Trapping] = 2+battle.pbRandom(2)
-    user.effects[PBEffects::TrappingMove] = PBMoves::BIND
+    user.effects[PBEffects::TrappingMove] = :BIND
     user.effects[PBEffects::TrappingUser] = target.index
     battle.pbDisplay(_INTL("{1} was squeezed by {2}!",user.pbThis,target.pbThis(true)))
     battle.pbHideAbilitySplash(target)
@@ -1748,7 +1748,7 @@ BattleHandlers::TargetAbilityOnHit.add(:KAMIKAZE,
     chance=maxchance-((target.hp/(target.totalhp/2.0))*(maxchance-minchance)).round
     if !target.fainted? && battle.pbRandom(100) < chance
       battle.pbShowAbilitySplash(target)
-      target.pbUseMoveSimple(getConst(PBMoves,:KAMIKAZEATTACK),user.index,-1,true)
+      target.pbUseMoveSimple(:KAMIKAZEATTACK,user.index,-1,true)
       battle.pbHideAbilitySplash(target)
     end
   }
@@ -1780,9 +1780,9 @@ BattleHandlers::TargetAbilityOnHit.add(:PHILANTHROPIST,
 
 BattleHandlers::TargetAbilityOnHit.add(:THERMALPOWER,
   proc { |ability,user,target,move,battle|
-    next if !isConst?(move.type,PBTypes,:ICE)
-    if target.pbCanLowerStatStage?(PBStats::SPEED,target)
-      target.pbLowerStatStageByAbility(PBStats::SPEED,1,target)
+    next if move.type != :ICE
+    if target.pbCanLowerStatStage?(:SPEED,target)
+      target.pbLowerStatStageByAbility(:SPEED,1,target)
     end
   }
 )
@@ -1790,10 +1790,10 @@ BattleHandlers::TargetAbilityOnHit.add(:THERMALPOWER,
 BattleHandlers::TargetAbilityOnHit.add(:VINDICTIVE,
   proc { |ability,user,target,move,battle|
     next if !target.fainted?
-    stat = PBStats::ATTACK
+    stat = :ATTACK
     # Photon Geyser uses the higher of Sp. Atk and Attack
     if move.specialMove? || (move.function == "164" && user.spatk >= user.attack)
-      stat = PBStats::SPATK
+      stat = :SPECIAL_ATTACK
     end
     if user.pbCanLowerStatStage?(stat,user)
       user.pbLowerStatStageByAbility(stat,2,target)
@@ -1829,14 +1829,14 @@ BattleHandlers::UserAbilityOnHit.add(:POISONTOUCH,
 
 BattleHandlers::UserAbilityOnHit.add(:FORESTFIRE,
   proc { |ability,user,target,move,battle|
-    next if !isConst?(move.calcType,PBTypes,:GRASS)
+    next if move.calcType != :GRASS
     battle.pbShowAbilitySplash(user)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
       battle.pbDisplay(_INTL("{1} added extra fire damage!",user.pbThis))
     else
-      battle.pbDisplay(_INTL("{1}'s {2} added extra fire damage!",user.pbThis,PBAbilities.getName(user.ability)))
+      battle.pbDisplay(_INTL("{1}'s {2} added extra fire damage!",user.pbThis,user.abilityName))
     end
-    user.pbUseMoveSimple(getConst(PBMoves,:FORESTFIREATTACK),target.index,-1)
+    user.pbUseMoveSimple(:FORESTFIREATTACK,target.index,-1)
     battle.pbHideAbilitySplash(user)
   }
 )
@@ -1849,7 +1849,7 @@ BattleHandlers::UserAbilityOnHit.add(:ENTANGLINGMESS,
     battle.pbShowAbilitySplash(user)
     # Set trapping effect duration and info
     target.effects[PBEffects::Trapping] = 2+battle.pbRandom(2)
-    target.effects[PBEffects::TrappingMove] = PBMoves::BIND
+    target.effects[PBEffects::TrappingMove] = :BIND
     target.effects[PBEffects::TrappingUser] = user.index
     battle.pbDisplay(_INTL("{1} was squeezed by {2}!",target.pbThis,user.pbThis(true)))
     battle.pbHideAbilitySplash(user)
@@ -2297,8 +2297,8 @@ BattleHandlers::EOREffectAbility.add(:SPEEDBOOST,
 BattleHandlers::EOREffectAbility.add(:ALLSEEING,
   proc { |ability,battler,battle|
     battle.eachOtherSideBattler(battler.index) do |b|
-      if b.near?(battler) && b.pbCanLowerStatStage?(PBStats::EVASION,battler)
-        b.pbLowerStatStageByAbility(PBStats::EVASION,1,battler)
+      if b.near?(battler) && b.pbCanLowerStatStage?(:EVASION,battler)
+        b.pbLowerStatStageByAbility(:EVASION,1,battler)
       end
     end
   }
@@ -2705,7 +2705,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:TEMPERMENTAL,
   proc { |ability,battler,battle|
     battle.pbShowAbilitySplash(battler)
     battler.pbConfuse
-    battler.pbRaiseStatStageByAbility(PBStats::ATTACK,2,battler,false)
+    battler.pbRaiseStatStageByAbility(:ATTACK,2,battler,false)
     battle.pbHideAbilitySplash(battler)
   }
 )
@@ -2727,12 +2727,12 @@ BattleHandlers::AbilityOnSwitchIn.add(:MIRRORTYPE,
 BattleHandlers::AbilityOnSwitchIn.add(:MYSTERYTYPE,
   proc { |ability,battler,battle|
     types = []
-    for i in 0..PBTypes.maxValue
-      types.push(i) if !isConst?(i,PBTypes,:QMARKS)
+    GameData::Type.each do |i|
+      types.push(i) if i != :QMARKS
     end
     type = types[rand(types.length)]
     battle.pbShowAbilitySplash(battler)
-    battle.pbDisplay(_INTL("{1} changed into the {2} type!",battler.pbThis,PBTypes.getName(type)))
+    battle.pbDisplay(_INTL("{1} changed into the {2} type!",battler.pbThis,GameData::Type.get(type).name))
     battler.pbChangeTypes(type)
     battle.pbHideAbilitySplash(battler)
   }
@@ -2748,11 +2748,11 @@ BattleHandlers::AbilityOnSwitchIn.add(:RETEXTURING,
     opp = opps[battle.pbRandom(opps.length)]
     restypes = []
     maxrescount = 0
-    for i in 0..PBTypes.maxValue
-      next if isConst?(i,PBTypes,:QMARKS)
+    GameData::Type.each do |i|
+      next if i == :QMARKS
       rescount = 0 # Number of opponent's types that this type resists
       for opptype in opp.pbTypes(true)
-        rescount += 1 if PBTypes.resistant?(opptype, i)
+        rescount += 1 if Effectiveness.resistant_type?(opptype, i)
       end
       if rescount > 0
         restypes.push([i, rescount]) # First element is type, second is resistance count
@@ -2763,7 +2763,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:RETEXTURING,
     newtype = restypes[battle.pbRandom(restypes.length)][0]
     battle.pbShowAbilitySplash(battler)
     battler.pbChangeTypes(newtype)
-    battle.pbDisplay(_INTL("{1} changed into the {2} type to resist {3}!",battler.pbThis,PBTypes.getName(newtype),opp.pbThis(true)))
+    battle.pbDisplay(_INTL("{1} changed into the {2} type to resist {3}!",battler.pbThis,GameData::Type.get(newtype).name,opp.pbThis(true)))
     battle.pbHideAbilitySplash(battler)
   }
 )
@@ -2771,7 +2771,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:RETEXTURING,
 BattleHandlers::AbilityOnSwitchIn.add(:ROOTED,
   proc { |ability,battler,battle|
     battle.pbShowAbilitySplash(battler)
-    battler.pbUseMoveExtra(getConst(PBMoves,:INGRAIN),battler.index,-1,true)
+    battler.pbUseMoveExtra(:INGRAIN,battler.index,-1,true)
     battle.pbHideAbilitySplash(battler)
   }
 )

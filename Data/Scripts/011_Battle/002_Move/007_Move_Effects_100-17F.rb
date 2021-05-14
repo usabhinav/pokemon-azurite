@@ -2601,11 +2601,9 @@ end
 
 class PokeBattle_Move_198 < PokeBattle_Move
   def pbCalcTypeModSingle(moveType,defType,user,target)
-    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:FIRE)
-    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ROCK)
-    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ROCK)
-    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:GROUND)
-    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:GROUND)
+    if [:FIRE, :ROCK, :GROUND].include?(defType)
+      return Effectiveness::SUPER_EFFECTIVE_ONE
+    end
     return super
   end
 end
@@ -2616,17 +2614,16 @@ end
 
 class PokeBattle_Move_199 < PokeBattle_Move
   def pbCalcTypeModSingle(moveType,defType,user,target)
-    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:BUG)
-    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:BUG)
-    return PBTypeEffectiveness::SUPER_EFFECTIVE_ONE if isConst?(defType,PBTypes,:STEEL)
-    return PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:GRASS)
-    return PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ICE)
-    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:DRAGON)
-    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:WATER)
-    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ROCK)
-    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:ROCK)
-    return PBTypeEffectiveness::NOT_EFFECTIVE_ONE if isConst?(defType,PBTypes,:FIRE)
-    return PBTypeEffectiveness::INEFFECTIVE if isConst?(defType,PBTypes,:COSMIC)
+    if [:BUG, :STEEL].include?(defType)
+      return Effectiveness::SUPER_EFFECTIVE_ONE
+    end
+    if [:GRASS, :ICE].include?(defType)
+      return Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    if [:DRAGON, :WATER, :ROCK, :FIRE].include?(defType)
+      return Effectiveness::NOT_EFFECTIVE_ONE
+    end
+    return Effectiveness::INEFFECTIVE if defType == :COSMIC
     return super
   end
 end
@@ -2638,8 +2635,7 @@ class PokeBattle_Move_19A < PokeBattle_Move
   def multiHitMove?; return true; end
 
   def pbNumHits(user,targets)
-    if isConst?(@id,PBMoves,:WATERSHURIKEN) &&
-      user.isSpecies?(:GRENINJA) && user.form==2
+    if @id == :WATERSHURIKEN && user.isSpecies?(:GRENINJA) && user.form==2
       return 3
     end
     hitChances = [2,2,3,3,4,5]
@@ -2649,8 +2645,7 @@ class PokeBattle_Move_19A < PokeBattle_Move
   end
 
   def pbBaseDamage(baseDmg,user,target)
-    if isConst?(@id,PBMoves,:WATERSHURIKEN) &&
-       user.isSpecies?(:GRENINJA) && user.form==2
+    if @id == :WATERSHURIKEN && user.isSpecies?(:GRENINJA) && user.form==2
       return 20
     end
     return super
@@ -2685,10 +2680,8 @@ class PokeBattle_Move_201 < PokeBattle_Move
 
   def pbCalcTypeModSingle(moveType,defType,user,target)
     ret = super
-    if hasConst?(PBTypes,:GRASS)
-      flyingEff = PBTypes.getEffectiveness(getConst(PBTypes,:GRASS),defType)
-      ret *= flyingEff.to_f/PBTypeEffectiveness::NORMAL_EFFECTIVE_ONE
-    end
+    flyingEff = Effectiveness.calculate(:GRASS, defType)
+    ret *= flyingEff.to_f/Effectiveness::NORMAL_EFFECTIVE_ONE
     return ret
   end
 end

@@ -1,7 +1,6 @@
 # Audio, Graphics and Plugins folders
 Audio/
 Graphics/
-Plugins/
 
 # Other Azurite folders
 Animations/
@@ -41,4 +40,3 @@ Maps/Fallmont Town.png
 Maps/Candelle Residential.png
 traceback.log
 Game.yaml
-Data/Scripts.rxdata

@@ -2611,20 +2611,14 @@ end
 #===============================================================================
 # Searing Meteor
 #===============================================================================
-
 class PokeBattle_Move_199 < PokeBattle_Move
   def pbCalcTypeModSingle(moveType,defType,user,target)
-    if [:BUG, :STEEL].include?(defType)
-      return Effectiveness::SUPER_EFFECTIVE_ONE
+    ret = super
+    if GameData::Type.exists?(:FIRE)
+      fireEff = Effectiveness.calculate_one(:FIRE, defType)
+      ret *= fireEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     end
-    if [:GRASS, :ICE].include?(defType)
-      return Effectiveness::NORMAL_EFFECTIVE_ONE
-    end
-    if [:DRAGON, :WATER, :ROCK, :FIRE].include?(defType)
-      return Effectiveness::NOT_EFFECTIVE_ONE
-    end
-    return Effectiveness::INEFFECTIVE if defType == :COSMIC
-    return super
+    return ret
   end
 end
 
@@ -2725,6 +2719,23 @@ end
 class PokeBattle_Move_257 < PokeBattle_RecoilMove
   def pbRecoilDamage(user,target)
     return user.totalhp/5
+  end
+end
+#===============================================================================
+# Gleam Beam
+#===============================================================================
+class PokeBattle_Move_275 < PokeBattle_Move
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg *= 2 if user.sharesType = true
+    return baseDmg
+  end
+end
+#===============================================================================
+# Arcane Strike
+#===============================================================================
+class PokeBattle_Move_276 < PokeBattle_Move
+  def pbGetSpDefStats(user,target)
+    return target.spdef, target.stages[PBStats::SPDEF]+6
   end
 end
 #===============================================================================

@@ -2613,11 +2613,9 @@ end
 #===============================================================================
 class PokeBattle_Move_199 < PokeBattle_Move
   def pbCalcTypeModSingle(moveType,defType,user,target)
-    ret = super
-    if GameData::Type.exists?(:FIRE)
-      fireEff = Effectiveness.calculate_one(:FIRE, defType)
-      ret *= fireEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
-    end
+    ret = super(moveType,defType,user,target)
+    fireEff = Effectiveness.calculate_one(:FIRE, defType)
+    ret *= fireEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     return ret
   end
 end
@@ -2726,7 +2724,7 @@ end
 #===============================================================================
 class PokeBattle_Move_275 < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if user.sharesType = true
+    baseDmg *= 2 if user.sharesType
     return baseDmg
   end
 end

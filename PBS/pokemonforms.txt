@@ -2769,6 +2769,12 @@ Type1 = STEEL
 Type2 = CRYSTAL
 BaseStats = 75,85,205,20,50,155
 #-------------------------------
+[STEELIX,3]
+FormName = Mega Crystal Steelix
+Type1 = STEEL
+Type2 = CRYSTAL
+BaseStats = 75,85,205,20,50,155
+#-------------------------------
 [DELIBIRD,1]
 FormName = Crystal Delibird
 Type1 = ICE

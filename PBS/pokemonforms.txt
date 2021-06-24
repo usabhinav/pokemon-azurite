@@ -928,7 +928,27 @@ BaseStats = 50,85,125,20,85,115
 Abilities = MAGICBOUNCE
 HiddenAbility = MAGICBOUNCE
 Weight = 161.0
-Pokedex = Supporting a giant heavy jewel, it can't change direction very nimbly and is vulnerable to attack from behind.
+Pokedex = Supporting a giant heavy jewel, it can't change direction very nimbly and is vulnerable to attack from behind. (red)
+Generation = 6
+#-------------------------------
+[SABLEYE,2]
+FormName = Mega Sableye
+MegaStone = SABLENITE
+BaseStats = 50,85,125,20,85,115
+Abilities = MAGICBOUNCE
+HiddenAbility = MAGICBOUNCE
+Weight = 161.0
+Pokedex = Supporting a giant heavy jewel, it can't change direction very nimbly and is vulnerable to attack from behind. (blue)
+Generation = 6
+#-------------------------------
+[SABLEYE,3]
+FormName = Mega Sableye
+MegaStone = SABLENITE
+BaseStats = 50,85,125,20,85,115
+Abilities = MAGICBOUNCE
+HiddenAbility = MAGICBOUNCE
+Weight = 161.0
+Pokedex = Supporting a giant heavy jewel, it can't change direction very nimbly and is vulnerable to attack from behind. (green)
 Generation = 6
 #-------------------------------
 [MAWILE,1]
@@ -1306,6 +1326,9 @@ Pokedex = This is Rotom after it's seized control of a lawn mower that has a spe
 BattlerPlayerX = 1
 BattlerEnemyY = 0
 BattlerShadowSize = 2
+#-------------------------------
+[DIALGA,1]
+FormName = Primal Dialga
 #-------------------------------
 [GIRATINA,1]
 FormName = Origin Forme

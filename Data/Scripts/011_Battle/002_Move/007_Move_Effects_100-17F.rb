@@ -2596,6 +2596,38 @@ end
 #       new effects.
 
 #===============================================================================
+# Flash Kick
+#===============================================================================
+class PokeBattle_Move_188 < PokeBattle_Move
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg *= 2 if target.pbHasType?(:DARK)
+    return baseDmg
+  end
+end
+#===============================================================================
+# Noise Ripple
+#===============================================================================
+class PokeBattle_Move_191 < PokeBattle_Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    ret = super(moveType,defType,user,target)
+    waterEff = Effectiveness.calculate_one(:WATER, defType)
+    ret *= waterEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    return ret
+  end
+end
+#===============================================================================
+# Ring Through
+#===============================================================================
+class PokeBattle_Move_196 < PokeBattle_Move
+  def pbBaseDamage(baseDmg,user,target)
+    if target.defense > target.spdef
+      return target.defense
+    else
+    return target.spdef
+   end
+ end
+end
+#===============================================================================
 # Vapor Wave
 #===============================================================================
 
@@ -2677,6 +2709,16 @@ class PokeBattle_Move_201 < PokeBattle_Move
     return ret
   end
 end
+
+#===============================================================================
+# Azure Scream
+#===============================================================================
+class PokeBattle_Move_208 < PokeBattle_StatDownMove
+  def initialize(battle,move)
+    super
+    @statDown = [PBStats::DEFENSE,1,PBStats::SPDEF,1]
+  end
+end
 #===============================================================================
 # Warp Storm
 #===============================================================================
@@ -2715,9 +2757,16 @@ end
 # Energy Bomb
 #===============================================================================
 class PokeBattle_Move_257 < PokeBattle_RecoilMove
+  def pbMoveFailed?(user,targets)
+    if user.hp<=user.totalhp/2
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+   end
+    
   def pbRecoilDamage(user,target)
-    return user.totalhp/5
+    return user.totalhp/2
   end
+ end
 end
 #===============================================================================
 # Gleam Beam

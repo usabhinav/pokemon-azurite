@@ -2677,6 +2677,76 @@ class PokeBattle_Move_19A < PokeBattle_Move
 end
 
 #===============================================================================
+# Wormhole
+#===============================================================================
+class PokeBattle_Move_19D < PokeBattle_Move
+  def ignoresSubstitute?(user); return true; end
+
+  def pbFailsAgainstTarget?(user,target)
+    if target.hasActiveAbility?(:SUCTIONCUPS) && !@battle.moldBreaker
+      @battle.pbShowAbilitySplash(target)
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        @battle.pbDisplay(_INTL("{1} anchors itself!",target.pbThis))
+      else
+        @battle.pbDisplay(_INTL("{1} anchors itself with {2}!",target.pbThis,target.abilityName))
+      end
+      @battle.pbHideAbilitySplash(target)
+      return true
+    end
+    if target.effects[PBEffects::Ingrain]
+      @battle.pbDisplay(_INTL("{1} anchored itself with its roots!",target.pbThis))
+      return true
+    end
+    if @battle.wildBattle? && target.level>user.level
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    if @battle.trainerBattle?
+      canSwitch = false
+      @battle.eachInTeamFromBattlerIndex(target.index) do |_pkmn,i|
+        next if !@battle.pbCanSwitchLax?(target.index,i)
+        canSwitch = true
+        break
+      end
+      if !canSwitch
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return true
+      end
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.decision = 3 if @battle.wildBattle?   # Escaped from battle
+  end
+
+  def pbSwitchOutTargetsEffect(user,targets,numHits,switchedBattlers)
+    return if @battle.wildBattle?
+    return if user.fainted? || numHits==0
+    roarSwitched = []
+    targets.each do |b|
+      next if b.fainted? || b.damageState.unaffected || switchedBattlers.include?(b.index)
+      newPkmn = @battle.pbGetReplacementPokemonIndex(b.index,true)   # Random
+      next if newPkmn<0
+      @battle.pbRecallAndReplace(b.index, newPkmn, true)
+      @battle.pbDisplay(_INTL("{1} was dragged out!",b.pbThis))
+      @battle.pbClearChoice(b.index)   # Replacement Pokémon does nothing this round
+      switchedBattlers.push(b.index)
+      roarSwitched.push(b.index)
+    end
+    if roarSwitched.length>0
+      @battle.moldBreaker = false if roarSwitched.include?(user.index)
+      @battle.pbPriority(true).each do |b|
+        b.pbEffectsOnSwitchIn(true) if roarSwitched.include?(b.index)
+      end
+   def pbEffectGeneral(user)
+    user.effects[PBEffects::HyperBeam] = 2
+    user.currentMove = @id
+  end
+    end
+  end
+end
+#===============================================================================
 # Crash Landing
 #===============================================================================
 class PokeBattle_Move_19F < PokeBattle_Move
@@ -2804,5 +2874,13 @@ class PokeBattle_Move_29E < PokeBattle_Move_0E0
   def pbBaseType(user)
     userTypes = user.pbTypes(true)
     return (userTypes.length==0) ? -1 : userTypes[0]
+  end
+end
+#===============================================================================
+# Sunder Surge
+#===============================================================================
+class PokeBattle_Move_300 < PokeBattle_RecoilMove
+  def pbRecoilDamage(user,target)
+    return user.hp/2
   end
 end

@@ -2623,9 +2623,9 @@ class PokeBattle_Move_196 < PokeBattle_Move
     if target.defense > target.spdef
       return target.defense
     else
-    return target.spdef
-   end
- end
+      return target.spdef
+    end
+  end
 end
 #===============================================================================
 # Vapor Wave
@@ -2739,11 +2739,12 @@ class PokeBattle_Move_19D < PokeBattle_Move
       @battle.pbPriority(true).each do |b|
         b.pbEffectsOnSwitchIn(true) if roarSwitched.include?(b.index)
       end
-   def pbEffectGeneral(user)
+    end
+  end
+
+  def pbEffectGeneral(user)
     user.effects[PBEffects::HyperBeam] = 2
     user.currentMove = @id
-  end
-    end
   end
 end
 #===============================================================================
@@ -2831,12 +2832,13 @@ class PokeBattle_Move_257 < PokeBattle_RecoilMove
     if user.hp<=user.totalhp/2
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
-   end
-    
+    end
+    return false
+  end
+  
   def pbRecoilDamage(user,target)
     return user.totalhp/2
   end
- end
 end
 #===============================================================================
 # Gleam Beam

@@ -396,6 +396,19 @@ class PokeBattle_Battle
       b.pbAbilitiesOnDamageTaken(oldHP)
       b.pbFaint if b.fainted?
     end
+    # Scorching Coat
+    priority.each do |b|
+      next if !b.hasActiveAbility?(:SCORCHINGCOAT)
+      priority.each do |j|
+        next if j.fainted? || j.pbHasType?(:FIRE) || j.hasActiveAbility?(:SCORCHINGCOAT)
+        pbShowAbilitySplash(b)
+        pbDisplay(_INTL("{1} was burned!",j.pbThis))
+        @scene.pbDamageAnimation(j)
+        j.pbReduceHP(j.totalhp/16)
+        j.pbFaint if j.fainted?
+        pbHideAbilitySplash(b)
+      end
+    end
     # Trapping attacks (Bind/Clamp/Fire Spin/Magma Storm/Sand Tomb/Whirlpool/Wrap)
     priority.each do |b|
       next if b.fainted? || b.effects[PBEffects::Trapping]==0

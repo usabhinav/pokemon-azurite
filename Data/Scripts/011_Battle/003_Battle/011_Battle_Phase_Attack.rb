@@ -104,6 +104,22 @@ class PokeBattle_Battle
       next if b.movedThisRound?
       @choices[b.index][2].pbDisplayChargeMessage(b)
     end
+    # Reverb Damage
+    pbPriority.each do |b|
+      if b.effects[PBEffects::ReverbDamage] > 0
+        # NOTE: I am not checking for Sound-type immunity here because it's not necessary.
+        #       The only way for Reverb damage to build up is if the battler was hit by a
+        #       Sound-type move in the first place, and since immunity is checked at that
+        #       stage, it can be assumed that any battler with built-up Reverb damage is not
+        #       immune to Sound-type damage.
+        pbDisplay(_INTL("{1} felt the reverberations of the previous attack!",b.pbThis))
+        typemod = Effectiveness.calculate(:SOUND,b.type1,b.type2,b.effects[PBEffects::Type3])
+        @scene.pbDamageAnimation(b)
+        b.pbReduceHP((b.effects[PBEffects::ReverbDamage]*typemod/8.0).round)
+        b.pbFaint if b.fainted?
+        b.effects[PBEffects::ReverbDamage] = 0
+      end
+    end
     # Main move processing loop
     loop do
       priority = pbPriority

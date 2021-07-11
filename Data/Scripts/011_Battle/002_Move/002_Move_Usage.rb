@@ -174,6 +174,12 @@ class PokeBattle_Move
       target.damageState.disguise = true
       return
     end
+    # Shed Body will take the damage
+    if !@battle.moldBreaker && target.hasActiveAbility?(:SHEDBODY) && !target.effects[PBEffects::ShedBody]
+      target.damageState.disguise = true
+      target.effects[PBEffects::ShedBody] = true
+      return
+    end
   end
 
   def pbReduceDamage(user,target)
@@ -295,14 +301,25 @@ class PokeBattle_Move
 
   def pbEndureKOMessage(target)
     if target.damageState.disguise
-      @battle.pbShowAbilitySplash(target)
-      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
-        @battle.pbDisplay(_INTL("Its disguise served it as a decoy!"))
+      if target.effects[PBEffects::ShedBody]
+        @battle.pbShowAbilitySplash(target)
+        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+          @battle.pbDisplay(_INTL("It shed its body and took no damage!"))
+        else
+          @battle.pbDisplay(_INTL("{1} {2}'s prevented it from taking damage!",target.pbThis,target.abilityName))
+        end
+        @battle.pbHideAbilitySplash(target)
+        target.damageState.disguise = false
       else
-        @battle.pbDisplay(_INTL("{1}'s disguise served it as a decoy!",target.pbThis))
+        @battle.pbShowAbilitySplash(target)
+        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+          @battle.pbDisplay(_INTL("Its disguise served it as a decoy!"))
+        else
+          @battle.pbDisplay(_INTL("{1}'s disguise served it as a decoy!",target.pbThis))
+        end
+        @battle.pbHideAbilitySplash(target)
+        target.pbChangeForm(1,_INTL("{1}'s disguise was busted!",target.pbThis))
       end
-      @battle.pbHideAbilitySplash(target)
-      target.pbChangeForm(1,_INTL("{1}'s disguise was busted!",target.pbThis))
     elsif target.damageState.endured
       @battle.pbDisplay(_INTL("{1} endured the hit!",target.pbThis))
     elsif target.damageState.sturdy

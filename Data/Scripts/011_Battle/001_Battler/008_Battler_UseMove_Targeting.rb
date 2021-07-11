@@ -153,7 +153,6 @@ class PokeBattle_Battler
         break
       end
     end
-    # targets = pbChangeTargetByAbility(:ALLURINGGLOW,getConstantName(PBTypes,move.calcType),move,user,targets,priority,nearOnly)
     return targets
   end
 

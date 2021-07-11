@@ -547,6 +547,12 @@ BattleHandlers::PriorityChangeAbility.add(:FREESTYLE,
   }
 )
 
+BattleHandlers::PriorityChangeAbility.add(:RAPIDSTREAM,
+  proc { |ability,battler,move,pri|
+    next pri+1 if move.type == :WATER && battler.hp == battler.totalhp
+  }
+)
+
 #===============================================================================
 # PriorityBracketChangeAbility handlers
 #===============================================================================
@@ -646,6 +652,12 @@ BattleHandlers::MoveImmunityTargetAbility.add(:LIGHTNINGROD,
 BattleHandlers::MoveImmunityTargetAbility.add(:MOTORDRIVE,
   proc { |ability,user,target,move,type,battle|
     next pbBattleMoveImmunityStatAbility(user,target,move,type,:ELECTRIC,:SPEED,1,battle)
+  }
+)
+
+BattleHandlers::MoveImmunityTargetAbility.add(:CLOUDFLUFF,
+  proc { |ability,user,target,move,type,battle|
+    next pbBattleMoveImmunityStatAbility(user,target,move,type,:ELECTRIC,:SPECIAL_ATTACK,1,battle)
   }
 )
 
@@ -1315,9 +1327,29 @@ BattleHandlers::DamageCalcTargetAbility.add(:IMMATERIAL,
 
 BattleHandlers::DamageCalcTargetAbility.add(:THERMALPOWER,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    if move.type == :ICE
+    if type == :ICE
       mults[:final_damage_multiplier] *= 2
     end
+  }
+)
+
+BattleHandlers::DamageCalcTargetAbility.add(:CLOUDFLUFF,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    if move.pbContactMove?(user) && move.physicalMove?
+      mults[:final_damage_multiplier] *= 0.75
+    end
+  }
+)
+
+BattleHandlers::DamageCalcTargetAbility.add(:DESERTBODY,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:base_damage_multiplier] /= 2 if type == :FIRE || type == :ICE || type == :WATER
+  }
+)
+
+BattleHandlers::DamageCalcTargetAbility.add(:EDIBLE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:final_damage_multiplier] *= 1.5 if move.bitingMove?
   }
 )
 
@@ -1801,6 +1833,35 @@ BattleHandlers::TargetAbilityOnHit.add(:VINDICTIVE,
   }
 )
 
+BattleHandlers::TargetAbilityOnHit.add(:REFLECTIVE,
+  proc { |ability,user,target,move,battle|
+    if move.specialMove? && !user.hasActiveAbility?(:ROCKHEAD) && user.takesIndirectDamage?
+      battle.pbShowAbilitySplash(target)
+      battle.pbDisplay(_INTL("{1} is damaged by recoil!", user.pbThis))
+      battle.scene.pbDamageAnimation(user,0)
+      user.pbReduceHP(target.damageState.calcDamage/2)
+      user.pbFaint if user.fainted?
+      battle.pbHideAbilitySplash(target)
+    end
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:BATTLESTANCE,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbContactMove?(user)
+    next if !target.pbCanRaiseStatStage?(:ATTACK, target)
+    target.pbRaiseStatStageByAbility(:ATTACK, 1, target)
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:EDIBLE,
+  proc { |ability,user,target,move,battle|
+    next if !move.bitingMove?
+    next if !target.pbCanRaiseStatStage?(:SPEED, target)
+    target.pbRaiseStatStageByAbility(:SPEED, 2, target)
+  }
+)
+
 #===============================================================================
 # UserAbilityOnHit handlers
 #===============================================================================
@@ -1885,10 +1946,44 @@ BattleHandlers::UserAbilityOnHit.add(:TAINTEDPOWER,
     next if !move.pbDamagingMove?
     battle.pbShowAbilitySplash(user)
     battle.scene.pbDamageAnimation(user)
-    user.pbReduceHP(user.totalhp/8,false)
+    user.pbReduceHP(user.totalhp/8)
     battle.pbDisplay(_INTL("{1} was hurt by its Tainted Power!",user.pbThis))
     battle.pbHideAbilitySplash(user)
     user.pbItemHPHealCheck
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:REVERB,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbDamagingMove?
+    next if move.type != :SOUND && !move.pbSoundMove?(user)
+    target.effects[PBEffects::ReverbDamage] += target.damageState.calcDamage * 0.3
+    target.effects[PBEffects::ReverbDamage] = 1 if target.effects[PBEffects::ReverbDamage] < 1
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:BATTLESTANCE,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbContactMove?(user)
+    next if !user.pbCanRaiseStatStage?(:ATTACK, user)
+    user.pbRaiseStatStageByAbility(:ATTACK, 1, user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:ROARINGHORN,
+  proc { |ability,user,target,move,battle|
+    next if move.pbTarget(user).num_targets > 1
+    next if !user.opposes?(target)
+    battle.eachSameSideBattler(target.index) do |b|
+      next if b.index != target.index + 2 && b.index != target.index - 2
+      next if !b.takesIndirectDamage?
+      battle.pbShowAbilitySplash(user)
+      battle.pbDisplay(_INTL("{1} took damage from the impact!",b.pbThis))
+      battle.scene.pbDamageAnimation(b)
+      b.pbReduceHP(target.damageState.calcDamage/2)
+      b.pbFaint if b.fainted?
+      battle.pbHideAbilitySplash(user)
+    end
   }
 )
 
@@ -2256,6 +2351,24 @@ BattleHandlers::EOREffectAbility.add(:BADDREAMS,
       b.pbItemHPHealCheck
       b.pbAbilitiesOnDamageTaken(oldHP)
       b.pbFaint if b.fainted?
+    end
+  }
+)
+
+BattleHandlers::EOREffectAbility.add(:SWEETDREAMS,
+  proc { |ability,battler,battle|
+    battle.eachSameSideBattler(battler.index) do |b|
+      next if !b.near?(battler) || !b.asleep?
+      next if b.totalhp == b.hp
+      battle.pbShowAbilitySplash(battler)
+      b.pbRecoverHP(b.totalhp/8)
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1} is having a nice dream!",b.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} is having a nice dream thanks to {2}'s {3}!",b.pbThis,
+           battler.pbThis(true),battler.abilityName))
+      end
+      battle.pbHideAbilitySplash(battler)
     end
   }
 )

@@ -116,6 +116,8 @@ begin
     WaterSport          = 110
     WeightChange        = 111
     Yawn                = 112
+    ShedBody            = 113
+    ReverbDamage        = 114
 
     #===========================================================================
     # These effects apply to a battler position

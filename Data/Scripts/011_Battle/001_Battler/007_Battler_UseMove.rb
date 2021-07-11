@@ -192,6 +192,22 @@ class PokeBattle_Battler
           choice[3] = -1   # No target chosen
         end
       end
+    else
+      hasabil = nil
+      for i in @battle.pbPriority
+        if i.index != @index && i.hasActiveAbility?(:VERMILINGUA)
+          hasabil = i
+          break
+        end
+      end
+      if hasabil && pbHasType?(:BUG) && !hasActiveAbility?(:VERMILINGUA)
+        @battle.pbShowAbilitySplash(hasabil)
+        @battle.pbDisplay(_INTL("{1}'s move was changed to Struggle!", pbThis))
+        @battle.pbHideAbilitySplash(hasabil)
+        choice[1] = -1
+        choice[2] = @battle.struggle
+        choice[3] = -1
+      end
     end
     # Labels the move being used as "move"
     move = choice[2]

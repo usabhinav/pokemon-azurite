@@ -2605,6 +2605,24 @@ class PokeBattle_Move_188 < PokeBattle_Move
   end
 end
 #===============================================================================
+# Ligt Show
+#===============================================================================
+class PokeBattle_Move_18A < PokeBattle_TargetStatDownMove
+  def initialize(battle,move)
+    super
+    @statDown = [PBStats::EVASION,3]
+  end
+end
+#===============================================================================
+# Sound Pulse
+#===============================================================================
+class PokeBattle_Move_190 < PokeBattle_Move
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg *= 2 if target.stages[EVASION]>=1
+    return baseDmg
+  end
+end
+#===============================================================================
 # Noise Ripple
 #===============================================================================
 class PokeBattle_Move_191 < PokeBattle_Move
@@ -2841,6 +2859,48 @@ class PokeBattle_Move_257 < PokeBattle_RecoilMove
   end
 end
 #===============================================================================
+# Relic Wave
+#===============================================================================
+class PokeBattle_Move_25D < PokeBattle_TargetStatDownMove
+  def initialize(battle,move)
+    super
+    case @battle.pbRandom(2)
+    when 0; @statDown = [PBStats::SPATK,1] || ret
+    when 1; @statDown = [PBStats::SPDEF,1] || ret
+    end
+  end
+end
+#===============================================================================
+# Secret Pulse
+#===============================================================================
+class PokeBattle_Move_263 < PokeBattle_TargetStatDownMove
+  def initialize(battle,move)
+    super
+    case @battle.pbRandom(7)
+    when 0; @statDown = [PBStats::SPATK,1] || ret
+    when 1; @statDown = [PBStats::SPDEF,1] || ret
+    when 2; @statDown = [PBStats::ATTACK,1] || ret
+    when 3; @statDown = [PBStats::DEFENSE,1] || ret
+    when 4; @statDown = [PBStats::SPEED,1] || ret
+    when 5; @statDown = [PBStats::EVASION,1] || ret
+    when 6; @statDown = [PBStats::ACCURACY,1] || ret
+    end
+  end
+end
+#===============================================================================
+# Frost Blitz
+#===============================================================================
+class PokeBattle_Move_265 < PokeBattle_RecoilMove
+  def pbRecoilDamage(user,target)
+    return (target.damageState.totalHPLost/3.0).round
+  end
+
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    target.pbFreeze(user) if target.pbCanFreeze?(user,false,self)
+  end
+end
+#===============================================================================
 # Magic Dust/Strange Powder
 #===============================================================================
 class PokeBattle_Move_26D < PokeBattle_Move
@@ -2905,6 +2965,15 @@ class PokeBattle_Move_278 < PokeBattle_Move
   end
 end
 #===============================================================================
+# Flash Strike
+#===============================================================================
+class PokeBattle_Move_28B < PokeBattle_Move
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg *= 2 if unmoved = true
+    return baseDmg
+  end
+end
+#===============================================================================
 # Used for Kamikaze's "Self Destruct" move.
 #===============================================================================
 class PokeBattle_Move_29E < PokeBattle_Move_0E0
@@ -2919,5 +2988,16 @@ end
 class PokeBattle_Move_300 < PokeBattle_RecoilMove
   def pbRecoilDamage(user,target)
     return user.hp/2
+  end
+end
+#===============================================================================
+# Luminous Gust
+#===============================================================================
+class PokeBattle_Move_29F < PokeBattle_Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    if [:DARK, :GHOST, :FLYING].include?(defType)
+      return Effectiveness::SUPER_EFFECTIVE_ONE
+    end
+    return super
   end
 end

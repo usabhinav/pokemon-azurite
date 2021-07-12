@@ -2841,6 +2841,22 @@ class PokeBattle_Move_257 < PokeBattle_RecoilMove
   end
 end
 #===============================================================================
+# Magic Dust/Strange Powder
+#===============================================================================
+class PokeBattle_Move_26D < PokeBattle_Move
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(6)
+    when 0; target.pbBurn(user) if target.pbCanBurn?(user,false,self)
+    when 1; target.pbParalyze(user) if target.pbCanParalyze?(user,false,self)
+    when 2; target.pbPoison(user) if target.pbCanPoison?(user,false,self)
+    when 3; target.pbSleep if target.pbCanSleep?(user,false,self)
+    when 4; target.pbConfuse if target.pbCanConfuse?(user,false,self)
+    when 5; target.pbAttract if target.pbCanAttract?(user,false,self)
+    end
+  end
+end
+#===============================================================================
 # Gleam Beam
 #===============================================================================
 class PokeBattle_Move_275 < PokeBattle_Move

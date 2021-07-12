@@ -2857,6 +2857,25 @@ class PokeBattle_Move_26D < PokeBattle_Move
   end
 end
 #===============================================================================
+# Dream Dance
+#===============================================================================
+class PokeBattle_Move_270 < PokeBattle_SleepMove
+  def pbMoveFailed?(user,targets)
+    if user.asleep?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return true if !user.pbCanSleep?(user,true,self,true)
+    return true if super
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbSleepSelf(_INTL("{1} and it's target both fell asleep",user.pbThis),3)
+    super
+  end
+end
+#===============================================================================
 # Gleam Beam
 #===============================================================================
 class PokeBattle_Move_275 < PokeBattle_Move

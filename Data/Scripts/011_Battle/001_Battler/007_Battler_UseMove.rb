@@ -255,7 +255,7 @@ class PokeBattle_Battler
     # Formula Shift
     # note: not made by me! Credits to Lucidious89 - Sincerely, ShadowSear
     #===========================================================================
-    if isSpecies?(:DEOXYS) && isConst?(@ability,PBAbilities,:FORMULASHIFT)
+    if isSpecies?(:DEOXYS) && hasActiveAbility?(:FORMULASHIFT)
       speedmoves   = [:AGILITY,:EXTREMESPEED,:SWIFT,:PURSUIT,:DOUBLETEAM,:TAUNT,
                       :TRICK,:SNATCH,:TORMENT,:TELEPORT,:ALLYSWITCH,:ROLEPLAY,
                       :SKILLSWAP,:PSYCHUP,:SWAGGER,:THUNDERWAVE,:SUBSTITUTE,

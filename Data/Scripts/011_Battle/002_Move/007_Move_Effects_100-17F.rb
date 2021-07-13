@@ -2605,12 +2605,12 @@ class PokeBattle_Move_188 < PokeBattle_Move
   end
 end
 #===============================================================================
-# Ligt Show
+# Light Show
 #===============================================================================
 class PokeBattle_Move_18A < PokeBattle_TargetStatDownMove
   def initialize(battle,move)
     super
-    @statDown = [PBStats::EVASION,3]
+    @statDown = [:EVASION,3]
   end
 end
 #===============================================================================
@@ -2618,7 +2618,7 @@ end
 #===============================================================================
 class PokeBattle_Move_190 < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if target.stages[EVASION]>=1
+    baseDmg *= 2 if target.stages[:EVASION]>=1
     return baseDmg
   end
 end
@@ -2805,7 +2805,7 @@ end
 class PokeBattle_Move_208 < PokeBattle_StatDownMove
   def initialize(battle,move)
     super
-    @statDown = [PBStats::DEFENSE,1,PBStats::SPDEF,1]
+    @statDown = [:DEFENSE,1,:SPECIAL_DEFENSE,1]
   end
 end
 #===============================================================================
@@ -2865,8 +2865,8 @@ class PokeBattle_Move_25D < PokeBattle_TargetStatDownMove
   def initialize(battle,move)
     super
     case @battle.pbRandom(2)
-    when 0; @statDown = [PBStats::SPATK,1] || ret
-    when 1; @statDown = [PBStats::SPDEF,1] || ret
+    when 0; @statDown = [:SPECIAL_ATTACK,1]
+    when 1; @statDown = [:SPECIAL_DEFENSE,1]
     end
   end
 end
@@ -2877,13 +2877,13 @@ class PokeBattle_Move_263 < PokeBattle_TargetStatDownMove
   def initialize(battle,move)
     super
     case @battle.pbRandom(7)
-    when 0; @statDown = [PBStats::SPATK,1] || ret
-    when 1; @statDown = [PBStats::SPDEF,1] || ret
-    when 2; @statDown = [PBStats::ATTACK,1] || ret
-    when 3; @statDown = [PBStats::DEFENSE,1] || ret
-    when 4; @statDown = [PBStats::SPEED,1] || ret
-    when 5; @statDown = [PBStats::EVASION,1] || ret
-    when 6; @statDown = [PBStats::ACCURACY,1] || ret
+    when 0; @statDown = [:SPECIAL_ATTACK,1]
+    when 1; @statDown = [:SPECIAL_DEFENSE,1]
+    when 2; @statDown = [:ATTACK,1]
+    when 3; @statDown = [:DEFENSE,1]
+    when 4; @statDown = [:SPEED,1]
+    when 5; @statDown = [:EVASION,1]
+    when 6; @statDown = [:ACCURACY,1]
     end
   end
 end
@@ -2949,7 +2949,7 @@ end
 #===============================================================================
 class PokeBattle_Move_276 < PokeBattle_Move
   def pbGetSpDefStats(user,target)
-    return target.spdef, target.stages[PBStats::SPDEF]+6
+    return target.spdef, target.stages[:SPECIAL_DEFENSE]+6
   end
 end
 #===============================================================================
@@ -2969,7 +2969,15 @@ end
 #===============================================================================
 class PokeBattle_Move_28B < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if unmoved = true
+    noneMoved = true
+    @battle.eachBattler do |b|
+      next if b.index==user.index
+      next if @battle.choices[b.index][0]!=:UseMove && @battle.choices[b.index][0]!=:Shift
+      next if !b.movedThisRound?
+      noneMoved = false
+      break
+    end
+    baseDmg *= 2 if noneMoved
     return baseDmg
   end
 end

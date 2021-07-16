@@ -45,12 +45,6 @@ class PokeBattle_Move
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :DARK &&
                                                    Effectiveness.ineffective_type?(moveType, defType)
     end
-    # Unholy
-    if target.hasActiveAbility?(:UNHOLY)
-      if moveType == :LIGHT || moveType == :GHOST || moveType == :FAIRY
-        ret = Effectiveness::NOT_EFFECTIVE_ONE
-      end
-    end
     # Delta Stream's weather
     if @battle.pbWeather == :StrongWinds
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :FLYING &&
@@ -59,6 +53,10 @@ class PokeBattle_Move
     # Grounded Flying-type Pokémon become susceptible to Ground moves
     if !target.airborne?
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :FLYING && moveType == :GROUND
+    end
+    # Entersphere
+    if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
+      ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     end
     return ret
   end
@@ -85,6 +83,14 @@ class PokeBattle_Move
     # Multiply all effectivenesses together
     ret = 1
     typeMods.each { |m| ret *= m }
+    # Unholy
+    if target.hasActiveAbility?(:UNHOLY) && [:LIGHT, :GHOST, :FAIRY].include?(moveType)
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Spice Tank
+    if target.hasActiveAbility?(:SPICETANK) && [:FIRE, :ICE].include?(moveType)
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
           user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&

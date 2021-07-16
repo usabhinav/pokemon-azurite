@@ -281,6 +281,7 @@ class PokeBattle_Battler
     @effects[PBEffects::Yawn]                = 0
     @effects[PBEffects::ShedBody]            = false
     @effects[PBEffects::ReverbDamage]        = 0
+    @effects[PBEffects::BlastUsers]          = []
   end
 
   #=============================================================================

@@ -400,7 +400,7 @@ class PokeBattle_Battle
     priority.each do |b|
       next if !b.hasActiveAbility?(:SCORCHINGCOAT)
       priority.each do |j|
-        next if j.fainted? || j.pbHasType?(:FIRE) || j.hasActiveAbility?(:SCORCHINGCOAT)
+        next if j.pbHasType?(:FIRE) || j.hasActiveAbility?(:SCORCHINGCOAT)
         pbShowAbilitySplash(b)
         pbDisplay(_INTL("{1} was burned!",j.pbThis))
         @scene.pbDamageAnimation(j)
@@ -408,6 +408,18 @@ class PokeBattle_Battle
         j.pbFaint if j.fainted?
         pbHideAbilitySplash(b)
       end
+    end
+    # Blast
+    priority.each do |b|
+      for j in b.effects[PBEffects::BlastUsers]
+        pbShowAbilitySplash(j)
+        pbDisplay(_INTL("{1} blasted {2}!", j.pbThis, b.pbThis(true)))
+        @scene.pbDamageAnimation(b)
+        b.pbReduceHP(b.hp/8) # Yes, not total hp, just remaining hp
+        b.pbFaint if b.fainted?
+        pbHideAbilitySplash(j)
+      end
+      b.effects[PBEffects::BlastUsers].clear
     end
     # Trapping attacks (Bind/Clamp/Fire Spin/Magma Storm/Sand Tomb/Whirlpool/Wrap)
     priority.each do |b|

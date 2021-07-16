@@ -719,6 +719,18 @@ class PokeBattle_Battler
         move.pbCrashDamage(user)
         user.pbItemHPHealCheck
         pbCancelMoves
+        # Opportunist
+        if user.hasActiveAbility?(:OPPORTUNIST) && move.accuracy != 0
+          if move.accuracy < 60
+            if user.pbCanLowerStatStage?(:DEFENSE, user)
+              user.pbLowerStatStageByAbility(:DEFENSE, 2, user)
+            end
+          elsif move.accuracy < 100
+            if user.pbCanLowerStatStage?(:DEFENSE, user)
+              user.pbLowerStatStageByAbility(:DEFENSE, 1, user)
+            end
+          end
+        end
         return false
       end
     end

@@ -170,6 +170,7 @@ BattleHandlers::StatusImmunityAbility.add(:WATERVEIL,
 )
 
 BattleHandlers::StatusImmunityAbility.copy(:WATERVEIL,:WATERBUBBLE)
+BattleHandlers::StatusImmunityAbility.copy(:WATERVEIL,:SPICETANK)
 
 #===============================================================================
 # StatusImmunityAbilityNonIgnorable handlers
@@ -1207,6 +1208,27 @@ BattleHandlers::DamageCalcUserAbility.add(:TAINTEDPOWER,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:OPPORTUNIST,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if move.accuracy == 0 # Moves that never miss
+    if move.accuracy < 60
+      mults[:final_damage_multiplier] *= 2
+    elsif move.accuracy < 100
+      mults[:final_damage_multiplier] *= 1.3
+    end
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:ENTERSPHERE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    if type == :FIRE
+      mults[:final_damage_multiplier] *= 1.6
+    elsif move.pbContactMove?(user)
+      mults[:final_damage_multiplier] *= 1.3
+    end
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -1987,6 +2009,24 @@ BattleHandlers::UserAbilityOnHit.add(:ROARINGHORN,
   }
 )
 
+BattleHandlers::UserAbilityOnHit.add(:BLAST,
+  proc { |ability,user,target,move,battle|
+    next if !user.opposes?(target)
+    target.effects[PBEffects::BlastUsers].push(user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:SPICETANK,
+  proc { |ability,user,target,move,battle|
+    next if move.type != :POISON
+    next if !target.pbCanBurn?(user, false)
+    next if battle.pbRandom(100) >= 30
+    battle.pbShowAbilitySplash(user)
+    target.pbBurn(user)
+    battle.pbHideAbilitySplash(user)
+  }
+)
+
 #===============================================================================
 # UserAbilityEndOfMove handlers
 #===============================================================================
@@ -2099,6 +2139,14 @@ BattleHandlers::UserAbilityEndOfMove.add(:TRICKSTER,
       battle.pbHideAbilitySplash(user)
       break
     end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:SHARPENER,
+  proc { |ability,user,targets,move,battle|
+    next if !move.statusMove?
+    next if !user.pbCanRaiseStatStage?(:ATTACK, user)
+    user.pbRaiseStatStageByAbility(:ATTACK, 1, user)
   }
 )
 
@@ -2359,7 +2407,7 @@ BattleHandlers::EOREffectAbility.add(:SWEETDREAMS,
   proc { |ability,battler,battle|
     battle.eachSameSideBattler(battler.index) do |b|
       next if !b.near?(battler) || !b.asleep?
-      next if b.totalhp == b.hp
+      next if !b.canHeal?
       battle.pbShowAbilitySplash(battler)
       b.pbRecoverHP(b.totalhp/8)
       if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
@@ -2885,6 +2933,26 @@ BattleHandlers::AbilityOnSwitchIn.add(:ROOTED,
   proc { |ability,battler,battle|
     battle.pbShowAbilitySplash(battler)
     battler.pbUseMoveExtra(:INGRAIN,battler.index,-1,true)
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:FERTILEGIFTS,
+  proc { |ability,battler,battle|
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} is ready to share its fertile gifts!", battler.pbThis))
+    battle.eachSameSideBattler(battler) do |b|
+      next if b.index != battler.index && !b.pbHasType?(:GRASS)
+      if b.pbCanRaiseStatStage?(:ATTACK, battler)
+        b.pbRaiseStatStage(:ATTACK, 1, battler)
+      end
+      if b.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
+        b.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, battler)
+      end
+      if b.canHeal?
+        b.pbRecoverHP(b.totalhp/10)
+      end
+    end
     battle.pbHideAbilitySplash(battler)
   }
 )

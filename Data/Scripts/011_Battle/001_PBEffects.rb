@@ -118,6 +118,7 @@ begin
     Yawn                = 112
     ShedBody            = 113
     ReverbDamage        = 114
+    BlastUsers          = 115
 
     #===========================================================================
     # These effects apply to a battler position

@@ -1229,6 +1229,20 @@ BattleHandlers::DamageCalcUserAbility.add(:ENTERSPHERE,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:VANGUARD,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if user.turnCount != 1
+    mults[:final_damage_multiplier] *= 1.5
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:FLYTRAP,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if !target.pbHasType?(:BUG)
+    mults[:final_damage_multiplier] *= 1.3
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -1881,6 +1895,19 @@ BattleHandlers::TargetAbilityOnHit.add(:EDIBLE,
     next if !move.bitingMove?
     next if !target.pbCanRaiseStatStage?(:SPEED, target)
     target.pbRaiseStatStageByAbility(:SPEED, 2, target)
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:CRYSTALADAPTATION,
+  proc { |ability,user,target,move,battle|
+    type = move.type
+    res = target.effects[PBEffects::CrystalAdaptation]
+    if res[type].nil?
+      res[type] = Effectiveness::NORMAL_EFFECTIVE
+    end
+    if res[type] > Effectiveness::NORMAL_EFFECTIVE/4 # 4x resistance
+      res[type] /= 2
+    end
   }
 )
 
@@ -2957,6 +2984,64 @@ BattleHandlers::AbilityOnSwitchIn.add(:FERTILEGIFTS,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:CRYSTALSURGE,
+  proc { |ability,battler,battle|
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} covered the battlefield with Crystal Energy!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:HYPERAROMA,
+  proc { |ability,battler,battle|
+    battle.pbPriority(true).each do |b|
+      next if b.index == battler.index
+      next if !b.pbCanAttract?(battler, false)
+      next if b.hasActiveAbility?(:HYPERAROMA)
+      battle.pbShowAbilitySplash(battler)
+      b.pbAttract(battler, _INTL("{1} fell in love with {2}!", b.pbThis, battler.pbThis(true)))
+      battle.pbHideAbilitySplash(battler)
+    end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:MINDIPULATION,
+  proc { |ability,battler,battle|
+    battle.eachBattler do |b|
+      next if b.index == battler.index
+      next if !b.pbCanConfuse?(battler, false)
+      next if battle.pbRandom(100) < 50
+      battle.pbShowAbilitySplash(battler)
+      b.pbConfuse
+      battle.pbHideAbilitySplash(battler)
+    end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:LASTBASTION,
+  proc { |ability,battler,battle|
+    next if battle.wildBattle? && battler.opposes?
+    party = battle.pbParty(battler.index)
+    able_pokemon_count = 0
+    party.each { |p| able_pokemon_count += 1 if p && !p.egg? && !p.fainted? }
+    next if able_pokemon_count > 1
+    battle.pbShowAbilitySplash(battler)
+    if battler.pbCanRaiseStatStage?(:ATTACK, battler)
+      battler.pbRaiseStatStage(:ATTACK, 1, battler)
+    end
+    if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
+      battler.pbRaiseStatStage(:DEFENSE, 1, battler)
+    end
+    if battler.pbCanRaiseStatStage?(:SPECIAL_ATTACK, battler)
+      battler.pbRaiseStatStage(:SPECIAL_ATTACK, 1, battler)
+    end
+    if battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
+      battler.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, battler)
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # AbilityOnSwitchOut handlers
 #===============================================================================
@@ -3002,6 +3087,31 @@ BattleHandlers::AbilityChangeOnBattlerFainting.copy(:POWEROFALCHEMY,:RECEIVER)
 BattleHandlers::AbilityOnBattlerFainting.add(:SOULHEART,
   proc { |ability,battler,fainted,battle|
     battler.pbRaiseStatStageByAbility(:SPECIAL_ATTACK,1,battler)
+  }
+)
+
+BattleHandlers::AbilityOnBattlerFainting.add(:LASTBASTION,
+  proc { |ability,battler,fainted,battle|
+    next if battler.opposes?(fainted)
+    next if battle.wildBattle? && battler.opposes?
+    party = battle.pbParty(battler.index)
+    able_pokemon_count = 0
+    party.each { |p| able_pokemon_count += 1 if p && !p.egg? && !p.fainted? }
+    next if able_pokemon_count > 1
+    battle.pbShowAbilitySplash(battler)
+    if battler.pbCanRaiseStatStage?(:ATTACK, battler)
+      battler.pbRaiseStatStage(:ATTACK, 1, battler)
+    end
+    if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
+      battler.pbRaiseStatStage(:DEFENSE, 1, battler)
+    end
+    if battler.pbCanRaiseStatStage?(:SPECIAL_ATTACK, battler)
+      battler.pbRaiseStatStage(:SPECIAL_ATTACK, 1, battler)
+    end
+    if battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
+      battler.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, battler)
+    end
+    battle.pbHideAbilitySplash(battler)
   }
 )
 

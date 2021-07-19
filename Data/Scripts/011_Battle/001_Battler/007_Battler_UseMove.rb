@@ -193,13 +193,7 @@ class PokeBattle_Battler
         end
       end
     else
-      hasabil = nil
-      for i in @battle.pbPriority
-        if i.index != @index && i.hasActiveAbility?(:VERMILINGUA)
-          hasabil = i
-          break
-        end
-      end
+      hasabil = @battle.pbCheckGlobalAbility(:VERMILINGUA)
       if hasabil && pbHasType?(:BUG) && !hasActiveAbility?(:VERMILINGUA)
         @battle.pbShowAbilitySplash(hasabil)
         @battle.pbDisplay(_INTL("{1}'s move was changed to Struggle!", pbThis))

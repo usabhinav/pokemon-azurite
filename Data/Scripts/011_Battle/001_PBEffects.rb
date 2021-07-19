@@ -119,6 +119,8 @@ begin
     ShedBody            = 113
     ReverbDamage        = 114
     BlastUsers          = 115
+    CrystalAdaptation   = 116
+    TypeModsI           = 117
 
     #===========================================================================
     # These effects apply to a battler position

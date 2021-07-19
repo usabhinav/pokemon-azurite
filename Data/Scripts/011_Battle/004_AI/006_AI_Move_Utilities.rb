@@ -26,6 +26,15 @@ class PokeBattle_AI
   #=============================================================================
   def pbCalcTypeModSingle(moveType,defType,user,target)
     ret = Effectiveness.calculate_one(moveType,defType)
+    # Crystal Adaptation (MUST go be first in list of type modifier effects in this function)
+    # Allows all other abilities/items/moves to override this effect
+    if target.hasActiveAbility?(:CRYSTALADAPTATION) && target.effects[PBEffects::TypeModsI]
+      ret = target.effects[PBEffects::TypeModsI]
+    end
+    # Crystal Surge (MUST be second in list of type modifier effects in this function)
+    if @battle.pbCheckGlobalAbility(:CRYSTALSURGE)
+      ret = Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
     # Ring Target
     if target.hasActiveItem?(:RINGTARGET)
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if Effectiveness.ineffective_type?(moveType, defType)
@@ -49,6 +58,10 @@ class PokeBattle_AI
     if !target.airborne?
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :FLYING && moveType == :GROUND
     end
+    # Entersphere
+    if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
+      ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
     return ret
   end
 
@@ -60,6 +73,17 @@ class PokeBattle_AI
     tTypes = target.pbTypes(true)
     # Get effectivenesses
     typeMods = [Effectiveness::NORMAL_EFFECTIVE_ONE] * 3   # 3 types max
+    # Crystal Adaptation
+    # Values are used in pbCalcTypeModSingle
+    res = target.effects[PBEffects::CrystalAdaptation]
+    if target.hasActiveAbility?(:CRYSTALADAPTATION) && res[moveType]
+      if res[moveType] < Effectiveness::NORMAL_EFFECTIVE
+        typeMods[0] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      end
+      if res[moveType] < Effectiveness::NORMAL_EFFECTIVE/2
+        typeMods[1] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      end
+    end
     if moveType == :SHADOW
       if target.shadowPokemon?
         typeMods[0] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
@@ -68,12 +92,26 @@ class PokeBattle_AI
       end
     else
       tTypes.each_with_index do |type,i|
+        target.effects[PBEffects::TypeModsI] = typeMods[i]
         typeMods[i] = pbCalcTypeModSingle(moveType,type,user,target)
+        target.effects[PBEffects::TypeModsI] = nil
       end
     end
     # Multiply all effectivenesses together
     ret = 1
     typeMods.each { |m| ret *= m }
+    # Unholy
+    if target.hasActiveAbility?(:UNHOLY) && [:LIGHT, :GHOST, :FAIRY].include?(moveType)
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Spice Tank
+    if target.hasActiveAbility?(:SPICETANK) && [:FIRE, :ICE].include?(moveType)
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Flytrap
+    if target.hasActiveAbility?(:FLYTRAP) && moveType == :BUG
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
           user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&
@@ -473,6 +511,10 @@ class PokeBattle_AI
         else
           multipliers[:final_damage_multiplier] *= 1.5
         end
+      end
+      # Crystal Surge
+      if user.hasActiveAbility?(:CRYSTALSURGE) && type == :CRYSTAL && !user.pbHasType?(:CRYSTAL)
+        multipliers[:final_damage_multiplier] *= 1.5
       end
     end
     # Type effectiveness

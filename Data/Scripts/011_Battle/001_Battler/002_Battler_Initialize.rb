@@ -282,6 +282,8 @@ class PokeBattle_Battler
     @effects[PBEffects::ShedBody]            = false
     @effects[PBEffects::ReverbDamage]        = 0
     @effects[PBEffects::BlastUsers]          = []
+    @effects[PBEffects::CrystalAdaptation]   = {} # Hash for type resistances
+    @effects[PBEffects::TypeModsI]           = nil
   end
 
   #=============================================================================

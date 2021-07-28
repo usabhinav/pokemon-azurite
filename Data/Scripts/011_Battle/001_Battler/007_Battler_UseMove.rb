@@ -245,7 +245,7 @@ class PokeBattle_Battler
         pbChangeForm(0,_INTL("{1} changed to Shield Forme!",pbThis))
       end
     end
-#===========================================================================
+    #===========================================================================
     # Formula Shift
     # note: not made by me! Credits to Lucidious89 - Sincerely, ShadowSear
     #===========================================================================

@@ -1243,6 +1243,14 @@ BattleHandlers::DamageCalcUserAbility.add(:FLYTRAP,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:BULLY,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if target.pokemon.height > user.pokemon.height
+    next if target.pokemon.height == user.pokemon.height && user.pbWeight <= target.pbWeight
+    mults[:final_damage_multiplier] *= 1.3
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -1814,7 +1822,7 @@ BattleHandlers::TargetAbilityOnHit.add(:KAMIKAZE,
     minchance = 25
     maxchance = 75
     chance=maxchance-((target.hp/(target.totalhp/2.0))*(maxchance-minchance)).round
-    if !target.fainted? && battle.pbRandom(100) < chance
+    if battle.pbRandom(100) < chance && !target.fainted?
       battle.pbShowAbilitySplash(target)
       target.pbUseMoveSimple(:KAMIKAZEATTACK,user.index,-1,true)
       battle.pbHideAbilitySplash(target)
@@ -1907,6 +1915,41 @@ BattleHandlers::TargetAbilityOnHit.add(:CRYSTALADAPTATION,
     end
     if res[type] > Effectiveness::NORMAL_EFFECTIVE/4 # 4x resistance
       res[type] /= 2
+    end
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:VIGILANT,
+  proc { |ability,user,target,move,battle|
+    next if !target.asleep?
+    battle.pbShowAbilitySplash(target)
+    target.pbCureStatus
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:WEBCOVER,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbContactMove?(user)
+    battle.pbShowAbilitySplash(target)
+    if user.pbCanLowerStatStage?(:SPEED, target)
+      user.pbLowerStatStageByAbility(:SPEED, 1, target, false)
+    end
+    if user.effects[PBEffects::MeanLook] < 0
+      user.effects[PBEffects::MeanLook] = target.index
+      battle.pbDisplay(_INTL("{1} can no longer escape!",user.pbThis))
+    end
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:PUSHBOMB,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbContactMove?(user)
+    if battle.pbRandom(100) < 30 && !target.fainted?
+      battle.pbShowAbilitySplash(target)
+      target.pbUseMoveSimple(:EXPLOSION,user.index,-1,true)
+      battle.pbHideAbilitySplash(target)
     end
   }
 )
@@ -2051,6 +2094,69 @@ BattleHandlers::UserAbilityOnHit.add(:SPICETANK,
     battle.pbShowAbilitySplash(user)
     target.pbBurn(user)
     battle.pbHideAbilitySplash(user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:SLOPPY,
+  proc { |ability,user,target,move,battle|
+    next if !move.physicalMove?
+    chance = battle.pbRandom(100)
+    # 50% chance to do nothing
+    if chance < 25 # Random stat down (25%)
+      randomDown = []
+      GameData::Stat.each_battle do |s|
+        randomDown.push(s.id) if target.pbCanLowerStatStage?(s.id, user)
+      end
+      next if randomDown.length==0
+      r = battle.pbRandom(randomDown.length)
+      target.pbLowerStatStageByAbility(randomDown[r],1,user)
+    elsif chance < 50 # Random status (25%)
+      whatStatusCondition = rand(7)
+      case whatStatusCondition
+      when 0
+        if target.pbCanSleep?(user,false)
+          battle.pbShowAbilitySplash(user)
+          target.pbSleep
+          battle.pbHideAbilitySplash(user)
+        end
+      when 1
+        if target.pbCanPoison?(user,false)
+          battle.pbShowAbilitySplash(user)
+          target.pbPoison(user)
+          battle.pbHideAbilitySplash(user)
+        end
+      when 2
+        if target.pbCanBurn?(user,false)
+          battle.pbShowAbilitySplash(user)
+          target.pbBurn(user)
+          battle.pbHideAbilitySplash(user)
+        end
+      when 3
+        if target.pbCanParalyze?(user,false)
+          battle.pbShowAbilitySplash(user)
+          target.pbParalyze(user)
+          battle.pbHideAbilitySplash(user)
+        end
+      when 4
+        if target.pbCanFreeze?(user,false)
+          battle.pbShowAbilitySplash(user)
+          target.pbFreeze
+          battle.pbHideAbilitySplash(user)
+        end
+      when 5
+        if target.pbCanConfuse?(user,false)
+          battle.pbShowAbilitySplash(user)
+          target.pbConfuse
+          battle.pbHideAbilitySplash(user)
+        end
+      when 6
+        if target.pbCanAttract?(user,false)
+          battle.pbShowAbilitySplash(user)
+          target.pbAttract(user)
+          battle.pbHideAbilitySplash(user)
+        end
+      end
+    end
   }
 )
 
@@ -2309,6 +2415,21 @@ BattleHandlers::EORWeatherAbility.add(:SOLARPOWER,
   }
 )
 
+BattleHandlers::EORWeatherAbility.add(:LIGHTGUARD,
+  proc { |ability,weather,battler,battle|
+    next unless [:HarshSun].include?(weather)
+    battle.pbShowAbilitySplash(battler)
+    if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
+      battler.pbRaiseStatStageByAbility(:DEFENSE, 1, battler, false)
+    end
+    if battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
+      battler.pbRaiseStatStageByAbility(:SPECIAL_DEFENSE, 1, battler, false)
+    end
+    battler.pbCureStatus
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # EORHealingAbility handlers
 #===============================================================================
@@ -2395,6 +2516,26 @@ BattleHandlers::EORHealingAbility.add(:DEEPSLEEPER,
     next if !battler.asleep? || battler.hp == battler.totalhp
     battle.pbShowAbilitySplash(battler)
     battler.pbRecoverHP(battler.totalhp/8)
+    if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
+    else
+      battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",battler.pbThis,battler.abilityName))
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+# TODO: Wait for Darkened field effect and Thunderstorm weather
+BattleHandlers::EORHealingAbility.add(:SYNTHESIZE,
+  proc { |ability,battler,battle|
+    next if battler.hp == battler.totalhp
+    choice = battle.choices[battler.index]
+    next if choice[0] == :UseMove && (choice[2].pbDamagingMove? || choice[2].healingMove?)
+    next if [:Rain, :HeavyRain].include?(battle.pbWeather)
+    next if PBDayNight.isNight?
+    battle.pbShowAbilitySplash(battler)
+    healfactor = [:Sun, :HarshSun].include?(battle.pbWeather) ? 8 : 16
+    battler.pbRecoverHP(battler.totalhp/healfactor)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
       battle.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
     else
@@ -3039,6 +3180,49 @@ BattleHandlers::AbilityOnSwitchIn.add(:LASTBASTION,
       battler.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, battler)
     end
     battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:ALIGNED,
+  proc { |ability,battler,battle|
+    next if battle.wildBattle? && battler.opposes?
+    party = battle.pbParty(battler.index)
+    # Calculate number of stat stages to increase
+    numStatIncrease = 0
+    party.each_with_index { |p, i|
+      next if !p || p.egg? || p.fainted?
+      next if battler.pokemonIndex == i
+      battler.pbTypes.each do |t|
+        if p.hasType?(t)
+          numStatIncrease += 1
+          break
+        end
+      end
+    }
+    next if numStatIncrease == 0
+    battle.pbShowAbilitySplash(battler)
+    # Increase a random stat one-by-one
+    for i in 0...numStatIncrease
+      randomUp = []
+      GameData::Stat.each_battle do |s|
+        randomUp.push(s.id) if battler.pbCanRaiseStatStage?(s.id, battler)
+      end
+      break if randomUp.length==0
+      r = battle.pbRandom(randomUp.length)
+      battler.pbRaiseStatStageByAbility(randomUp[r],1,battler,false)
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:BULLY,
+  proc { |ability,battler,battle|
+    battle.eachOtherSideBattler(battler.index) do |b|
+      next if b.pokemon.height > battler.pokemon.height
+      next if b.pokemon.height == battler.pokemon.height && battler.pbWeight <= b.pbWeight
+      next if !b.pbCanLowerStatStage?(:ATTACK, battler)
+      b.pbLowerStatStageByAbility(:ATTACK, 1, battler)
+    end
   }
 )
 

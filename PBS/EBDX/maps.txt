@@ -2,4 +2,4 @@
 [005]
 BattleEnv       = MOUNTAIN
 WINTER
-  BattleEnv     = SNOW
+    BattleEnv   = SNOW

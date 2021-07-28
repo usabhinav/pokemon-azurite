@@ -13,10 +13,7 @@ BattleVS         = wavesSM
 #-------------------------------
 [LEADER_Brock]
 TrainerPositionX = -8
-BattleEnv        = STAGE
-BattleVS         = classicVS
-#-------------------------------
-[LEADER_Brock,Brock]
+BattleVS         = integratedVS
 BattleScript     = BROCK
 #-------------------------------
 [TEAMROCKET_M]

@@ -21,13 +21,13 @@ SENDOUT
   SCALE            = 206
   ZOOM             = 0.5
 ENEMY
-  XY               = -276,678
-  ANGLE            = 32
-  SCALE            = 686
+  XY               = -272,628
+  ANGLE            = 28
+  SCALE            = 642
   ZOOM             = 1.5
 PLAYER
   XY               = 238,332
-  ANGLE            = 36
+  ANGLE            = 32
   SCALE            = 292
   ZOOM             = 1
 DUAL

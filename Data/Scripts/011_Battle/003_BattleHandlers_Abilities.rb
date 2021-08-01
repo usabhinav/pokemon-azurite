@@ -447,6 +447,22 @@ BattleHandlers::StatLossImmunityAbility.add(:KEENEYE,
 
 BattleHandlers::StatLossImmunityAbility.copy(:KEENEYE, :SENSORYAWARENESS)
 
+BattleHandlers::StatLossImmunityAbility.add(:VICTORYRUSH,
+  proc { |ability,battler,stat,battle,showMessages|
+    next false if !battler.effects[PBEffects::VictoryRush]
+    if showMessages
+      battle.pbShowAbilitySplash(battler)
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s stats cannot be lowered!",battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} is on its {2}!",battler.pbThis,battler.abilityName))
+      end
+      battle.pbHideAbilitySplash(battler)
+    end
+    next true
+  }
+)
+
 #===============================================================================
 # StatLossImmunityAbilityNonIgnorable handlers
 #===============================================================================
@@ -1251,6 +1267,12 @@ BattleHandlers::DamageCalcUserAbility.add(:BULLY,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:FRENZIED,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:attack_multiplier] *= [2 - ((user.hp.to_f-1) / user.totalhp), 1.0].max
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -1267,6 +1289,13 @@ BattleHandlers::DamageCalcUserAllyAbility.add(:FLOWERGIFT,
     if move.physicalMove? && [:Sun, :HarshSun].include?(user.battle.pbWeather)
       mults[:attack_multiplier] *= 1.5
     end
+  }
+)
+
+BattleHandlers::DamageCalcUserAllyAbility.add(:NOMAD,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if !user.pbHasType?(:FLYING) && !user.pbHasType?(:DRAGON)
+    mults[:final_damage_multiplier] *= 1.5
   }
 )
 
@@ -1856,7 +1885,7 @@ BattleHandlers::TargetAbilityOnHit.add(:PHILANTHROPIST,
 
 BattleHandlers::TargetAbilityOnHit.add(:THERMALPOWER,
   proc { |ability,user,target,move,battle|
-    next if move.type != :ICE
+    next if move.calcType != :ICE
     if target.pbCanLowerStatStage?(:SPEED,target)
       target.pbLowerStatStageByAbility(:SPEED,1,target)
     end
@@ -1908,7 +1937,7 @@ BattleHandlers::TargetAbilityOnHit.add(:EDIBLE,
 
 BattleHandlers::TargetAbilityOnHit.add(:CRYSTALADAPTATION,
   proc { |ability,user,target,move,battle|
-    type = move.type
+    type = move.calcType
     res = target.effects[PBEffects::CrystalAdaptation]
     if res[type].nil?
       res[type] = Effectiveness::NORMAL_EFFECTIVE
@@ -2048,7 +2077,7 @@ BattleHandlers::UserAbilityOnHit.add(:TAINTEDPOWER,
 BattleHandlers::UserAbilityOnHit.add(:REVERB,
   proc { |ability,user,target,move,battle|
     next if !move.pbDamagingMove?
-    next if move.type != :SOUND && !move.pbSoundMove?(user)
+    next if move.calcType != :SOUND && !move.pbSoundMove?(user)
     target.effects[PBEffects::ReverbDamage] += target.damageState.calcDamage * 0.3
     target.effects[PBEffects::ReverbDamage] = 1 if target.effects[PBEffects::ReverbDamage] < 1
   }
@@ -2088,7 +2117,7 @@ BattleHandlers::UserAbilityOnHit.add(:BLAST,
 
 BattleHandlers::UserAbilityOnHit.add(:SPICETANK,
   proc { |ability,user,target,move,battle|
-    next if move.type != :POISON
+    next if move.calcType != :POISON
     next if !target.pbCanBurn?(user, false)
     next if battle.pbRandom(100) >= 30
     battle.pbShowAbilitySplash(user)
@@ -2157,6 +2186,31 @@ BattleHandlers::UserAbilityOnHit.add(:SLOPPY,
         end
       end
     end
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:VICTORYRUSH,
+  proc { |ability,user,target,move,battle|
+    next if !target.fainted?
+    battle.pbShowAbilitySplash(user)
+    battle.pbDisplay(_INTL("{1} is on its {2}!", user.pbThis, user.abilityName))
+    user.effects[PBEffects::VictoryRush] = true
+    battle.pbHideAbilitySplash(user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:SOUNDWAVES,
+  proc { |ability,user,target,move,battle|
+    next if move.calcType != :SOUND && !move.pbSoundMove?(user)
+    next if battle.pbRandom(100) >= 30
+    battle.pbShowAbilitySplash(user)
+    if target.pbCanLowerStatStage?(:DEFENSE, user)
+      target.pbLowerStatStageByAbility(:DEFENSE, 1, user, false)
+    end
+    if target.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user)
+      target.pbLowerStatStageByAbility(:SPECIAL_DEFENSE, 1, user, false)
+    end
+    battle.pbHideAbilitySplash(user)
   }
 )
 
@@ -2280,6 +2334,102 @@ BattleHandlers::UserAbilityEndOfMove.add(:SHARPENER,
     next if !move.statusMove?
     next if !user.pbCanRaiseStatStage?(:ATTACK, user)
     user.pbRaiseStatStageByAbility(:ATTACK, 1, user)
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:HUNGRY,
+  proc { |ability,user,targets,move,battle|
+    next if battle.futureSight
+    next if !move.pbDamagingMove?
+    next if !move.pbContactMove?(user)
+    targets.each do |b|
+      next if b.damageState.unaffected || b.damageState.substitute
+      next if !b.item
+      next if b.unlosableItem?(b.item) || user.unlosableItem?(b.item)
+      battle.pbShowAbilitySplash(user)
+      if b.hasActiveAbility?(:STICKYHOLD)
+        battle.pbShowAbilitySplash(b) if user.opposes?(b)
+        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1}'s item cannot be stolen!",b.pbThis))
+        end
+        battle.pbHideAbilitySplash(b) if user.opposes?(b)
+        next
+      end
+      old_user_item = user.item
+      old_target_item = b.item
+      if user.item
+        user.effects[PBEffects::HungryItems].push(b.item)
+      else
+        user.item = b.item
+      end
+      b.item = nil
+      b.effects[PBEffects::Unburden] = true
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1} ate and stored {2}'s {3}!",user.pbThis,
+           b.pbThis(true),old_target_item.name))
+      else
+        battle.pbDisplay(_INTL("{1} ate and stored {2}'s {3} with {4}!",user.pbThis,
+           b.pbThis(true),old_target_item.name,user.abilityName))
+      end
+      battle.pbHideAbilitySplash(user)
+      user.pbHeldItemTriggerCheck if !old_user_item
+      break
+    end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:MASTERTHIEF,
+  proc { |ability,user,targets,move,battle|
+    next if battle.futureSight
+    next if !move.pbDamagingMove?
+    next if !move.pbContactMove?(user)
+    next if battle.wildBattle? && user.opposes?
+    targets.each do |b|
+      next if b.damageState.unaffected || b.damageState.substitute
+      next if !b.item
+      next if b.unlosableItem?(b.item) || user.unlosableItem?(b.item)
+      battle.pbShowAbilitySplash(user)
+      if b.hasActiveAbility?(:STICKYHOLD)
+        battle.pbShowAbilitySplash(b) if user.opposes?(b)
+        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1}'s item cannot be stolen!",b.pbThis))
+        end
+        battle.pbHideAbilitySplash(b) if user.opposes?(b)
+        next
+      end
+      # Steal item
+      if !user.item
+        user.item = b.item
+        b.item = nil
+        b.effects[PBEffects::Unburden] = true
+        if battle.wildBattle? && !user.initialItem && b.initialItem==user.item
+          user.setInitialItem(user.item)
+          b.setInitialItem(nil)
+        end
+        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1} stole {2}'s {3}!",user.pbThis,
+            b.pbThis(true),user.itemName))
+        else
+          battle.pbDisplay(_INTL("{1} stole {2}'s {3} with {4}!",user.pbThis,
+            b.pbThis(true),user.itemName,user.abilityName))
+        end
+        battle.pbHideAbilitySplash(user)
+        user.pbHeldItemTriggerCheck
+      # Knock off item
+      else
+        old_target_item = b.item
+        b.item = nil
+        b.effects[PBEffects::Unburden] = true
+        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1} knocked off {2}'s {3}!",user.pbThis,
+            b.pbThis(true),old_target_item.name))
+        else
+          battle.pbDisplay(_INTL("{1} knocked off {2}'s {3} with {4}!",user.pbThis,
+            b.pbThis(true),old_target_item.name,user.abilityName))
+        end
+        battle.pbHideAbilitySplash(user)
+      end
+    end
   }
 )
 
@@ -2630,6 +2780,16 @@ BattleHandlers::EOREffectAbility.add(:ALLSEEING,
         b.pbLowerStatStageByAbility(:EVASION,1,battler)
       end
     end
+  }
+)
+
+BattleHandlers::EOREffectAbility.add(:VICTORYRUSH,
+  proc { |ability,battler,battle|
+    next if !battler.effects[PBEffects::VictoryRush]
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1}'s {2} ended!", battler.pbThis, battler.abilityName))
+    battler.effects[PBEffects::VictoryRush] = false
+    battle.pbHideAbilitySplash(battler)
   }
 )
 

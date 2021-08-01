@@ -284,6 +284,8 @@ class PokeBattle_Battler
     @effects[PBEffects::BlastUsers]          = []
     @effects[PBEffects::CrystalAdaptation]   = {} # Hash for type resistances
     @effects[PBEffects::TypeModsI]           = nil
+    @effects[PBEffects::HungryItems]         = []
+    @effects[PBEffects::VictoryRush]         = false
   end
 
   #=============================================================================

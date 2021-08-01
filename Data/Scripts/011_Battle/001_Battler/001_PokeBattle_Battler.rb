@@ -75,6 +75,11 @@ class PokeBattle_Battler
 
   def item=(value)
     new_item = GameData::Item.try_get(value)
+    if new_item.nil? && @effects[PBEffects::HungryItems].length>0
+      new_item = GameData::Item.try_get(@effects[PBEffects::HungryItems].delete_at(0))
+      @battle.pbDisplay(_INTL("{1} set its backup {2}!",pbThis,new_item.name))
+      pbHeldItemTriggerCheck
+    end
     @item_id = (new_item) ? new_item.id : nil
     @pokemon.item = @item_id if @pokemon
   end

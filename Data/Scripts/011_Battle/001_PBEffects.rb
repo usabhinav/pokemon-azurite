@@ -121,6 +121,8 @@ begin
     BlastUsers          = 115
     CrystalAdaptation   = 116
     TypeModsI           = 117
+    HungryItems         = 118
+    VictoryRush         = 119
 
     #===========================================================================
     # These effects apply to a battler position

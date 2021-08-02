@@ -768,7 +768,6 @@ BattleHandlers::MoveImmunityTargetAbility.add(:IMMATERIAL,
 BattleHandlers::MoveImmunityTargetAbility.add(:THERMALPOWER,
   proc { |ability,user,target,move,type,battle|
     next false if type != :FIRE
-    next false if !move.pbDamagingMove?
     battle.pbShowAbilitySplash(target)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
       battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
@@ -778,6 +777,29 @@ BattleHandlers::MoveImmunityTargetAbility.add(:THERMALPOWER,
     end
     if target.pbCanRaiseStatStage?(:SPEED,target)
       target.pbRaiseStatStageByAbility(:SPEED,1,target,false)
+    end
+    battle.pbHideAbilitySplash(target)
+    next true
+  }
+)
+
+BattleHandlers::MoveImmunityTargetAbility.add(:HUMIDIFY,
+  proc { |ability,user,target,move,type,battle|
+    next false if type != :WATER
+    battle.pbShowAbilitySplash(target)
+    if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
+    else
+      battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+         target.pbThis,target.abilityName,move.name))
+    end
+    if target.pbCanRaiseStatStage?(:SPECIAL_ATTACK,target)
+      target.pbRaiseStatStageByAbility(:SPECIAL_ATTACK,1,target,false)
+    end
+    target.eachAlly do |b|
+      if b.pbCanRaiseStatStage?(:SPECIAL_ATTACK,target)
+        b.pbRaiseStatStageByAbility(:SPECIAL_ATTACK,1,target,false)
+      end
     end
     battle.pbHideAbilitySplash(target)
     next true
@@ -1270,6 +1292,16 @@ BattleHandlers::DamageCalcUserAbility.add(:BULLY,
 BattleHandlers::DamageCalcUserAbility.add(:FRENZIED,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[:attack_multiplier] *= [2 - ((user.hp.to_f-1) / user.totalhp), 1.0].max
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:PERSEVERANCE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    met = 1 + 0.2 * [user.effects[PBEffects::Metronome], 3].min
+    
+    echoln "MET = #{met}"
+    
+    mults[:final_damage_multiplier] *= met
   }
 )
 
@@ -1853,7 +1885,7 @@ BattleHandlers::TargetAbilityOnHit.add(:KAMIKAZE,
     chance=maxchance-((target.hp/(target.totalhp/2.0))*(maxchance-minchance)).round
     if battle.pbRandom(100) < chance && !target.fainted?
       battle.pbShowAbilitySplash(target)
-      target.pbUseMoveSimple(:KAMIKAZEATTACK,user.index,-1,true)
+      target.pbUseMoveSimple(:KAMIKAZEATTACK,user.index)
       battle.pbHideAbilitySplash(target)
     end
   }
@@ -1977,7 +2009,7 @@ BattleHandlers::TargetAbilityOnHit.add(:PUSHBOMB,
     next if !move.pbContactMove?(user)
     if battle.pbRandom(100) < 30 && !target.fainted?
       battle.pbShowAbilitySplash(target)
-      target.pbUseMoveSimple(:EXPLOSION,user.index,-1,true)
+      target.pbUseMoveSimple(:EXPLOSION,user.index)
       battle.pbHideAbilitySplash(target)
     end
   }
@@ -2018,7 +2050,7 @@ BattleHandlers::UserAbilityOnHit.add(:FORESTFIRE,
     else
       battle.pbDisplay(_INTL("{1}'s {2} added extra fire damage!",user.pbThis,user.abilityName))
     end
-    user.pbUseMoveSimple(:FORESTFIREATTACK,target.index,-1)
+    user.pbUseMoveSimple(:FORESTFIREATTACK,target.index)
     battle.pbHideAbilitySplash(user)
   }
 )
@@ -2210,6 +2242,26 @@ BattleHandlers::UserAbilityOnHit.add(:SOUNDWAVES,
     if target.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user)
       target.pbLowerStatStageByAbility(:SPECIAL_DEFENSE, 1, user, false)
     end
+    battle.pbHideAbilitySplash(user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:SUPERNOVA,
+  proc { |ability,user,target,move,battle|
+    next if move.calcType != :COSMIC
+    battle.pbShowAbilitySplash(user)
+    user.pbUseMoveSimple(:SUPERNOVAATTACK)
+    battle.pbHideAbilitySplash(user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:LIQUIDCONDUCTION,
+  proc { |ability,user,target,move,battle|
+    next if move.calcType != :WATER
+    next if battle.pbRandom(100) >= 20
+    next if !target.pbCanParalyze?(user, false)
+    battle.pbShowAbilitySplash(user)
+    target.pbParalyze(user)
     battle.pbHideAbilitySplash(user)
   }
 )
@@ -2430,6 +2482,22 @@ BattleHandlers::UserAbilityEndOfMove.add(:MASTERTHIEF,
         battle.pbHideAbilitySplash(user)
       end
     end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:WONDERHARP,
+  proc { |ability,user,targets,move,battle|
+    next if move.calcType != :SOUND && !move.pbSoundMove?(user)
+    battle.pbShowAbilitySplash(user)
+    battle.eachSameSideBattler(user.index) do |b|
+      if b.pbCanRaiseStatStage?(:DEFENSE, user)
+        b.pbRaiseStatStage(:DEFENSE, 1, user)
+      end
+      if b.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, user)
+        b.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, user)
+      end
+    end
+    battle.pbHideAbilitySplash(user)
   }
 )
 
@@ -2769,6 +2837,16 @@ BattleHandlers::EOREffectAbility.add(:SPEEDBOOST,
     # round
     if battler.turnCount>0 && battler.pbCanRaiseStatStage?(:SPEED,battler)
       battler.pbRaiseStatStageByAbility(:SPEED,1,battler)
+    end
+  }
+)
+
+BattleHandlers::EOREffectAbility.add(:SIGNALBOOST,
+  proc { |ability,battler,battle|
+    # A Pokémon's turnCount is 0 if it became active after the beginning of a
+    # round
+    if battler.turnCount>0 && battler.pbCanRaiseStatStage?(:ACCURACY,battler)
+      battler.pbRaiseStatStageByAbility(:ACCURACY,1,battler)
     end
   }
 )
@@ -3383,6 +3461,33 @@ BattleHandlers::AbilityOnSwitchIn.add(:BULLY,
       next if !b.pbCanLowerStatStage?(:ATTACK, battler)
       b.pbLowerStatStageByAbility(:ATTACK, 1, battler)
     end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SUDDENSEED,
+  proc { |ability,battler,battle|
+    battle.eachOtherSideBattler(battler.index) do |b|
+      next if b.effects[PBEffects::LeechSeed] >= 0
+      next if b.pbHasType?(:GRASS)
+      next if b.effects[PBEffects::Substitute] > 0
+      next if b.hasActiveAbility?(:SAPSIPPER)
+      battle.pbShowAbilitySplash(battler)
+      battle.pbAnimation(:LEECHSEED,battler,b)
+      b.effects[PBEffects::LeechSeed] = battler.index
+      battle.pbDisplay(_INTL("{1} was seeded!",b.pbThis))
+      battle.pbHideAbilitySplash(battler)
+    end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:ROCKYTRAP,
+  proc { |ability,battler,battle|
+    next if battler.pbOpposingSide.effects[PBEffects::StealthRock]
+    battle.pbShowAbilitySplash(battler)
+    battler.pbOpposingSide.effects[PBEffects::StealthRock] = true
+    battle.pbDisplay(_INTL("Pointed stones float in the air around {1}!",
+       battler.pbOpposingTeam(true)))
+    battle.pbHideAbilitySplash(battler)
   }
 )
 

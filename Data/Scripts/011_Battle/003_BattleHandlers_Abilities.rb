@@ -1298,9 +1298,6 @@ BattleHandlers::DamageCalcUserAbility.add(:FRENZIED,
 BattleHandlers::DamageCalcUserAbility.add(:PERSEVERANCE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     met = 1 + 0.2 * [user.effects[PBEffects::Metronome], 3].min
-    
-    echoln "MET = #{met}"
-    
     mults[:final_damage_multiplier] *= met
   }
 )
@@ -3487,6 +3484,14 @@ BattleHandlers::AbilityOnSwitchIn.add(:ROCKYTRAP,
     battler.pbOpposingSide.effects[PBEffects::StealthRock] = true
     battle.pbDisplay(_INTL("Pointed stones float in the air around {1}!",
        battler.pbOpposingTeam(true)))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:ROUNDRECORD,
+  proc { |ability,battler,battle|
+    battle.pbShowAbilitySplash(battler)
+    battler.pbConfuse
     battle.pbHideAbilitySplash(battler)
   }
 )

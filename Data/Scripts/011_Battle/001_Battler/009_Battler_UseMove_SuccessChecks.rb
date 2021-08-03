@@ -246,7 +246,7 @@ class PokeBattle_Battler
     end
     # Confusion
     if @effects[PBEffects::Confusion]>0
-      @effects[PBEffects::Confusion] -= 1
+      @effects[PBEffects::Confusion] -= 1 if !hasActiveAbility?(:ROUNDRECORD)
       if @effects[PBEffects::Confusion]<=0
         pbCureConfusion
         @battle.pbDisplay(_INTL("{1} snapped out of its confusion.",pbThis))

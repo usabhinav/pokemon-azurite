@@ -113,7 +113,7 @@ ItemHandlers::CanUseInBattle.copy(:ICEHEAL,:ASPEARBERRY)
 ItemHandlers::CanUseInBattle.add(:FULLHEAL,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
   if !pokemon.able? ||
      (pokemon.status == :NONE &&
-     (!battler || battler.effects[PBEffects::Confusion]==0))
+     (!battler || battler.effects[PBEffects::Confusion]==0 || battler.hasActiveAbility?(:ROUNDRECORD)))
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false
   end
@@ -128,7 +128,7 @@ ItemHandlers::CanUseInBattle.copy(:FULLHEAL,:RAGECANDYBAR) if Settings::RAGE_CAN
 ItemHandlers::CanUseInBattle.add(:FULLRESTORE,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
   if !pokemon.able? ||
      (pokemon.hp == pokemon.totalhp && pokemon.status == :NONE &&
-     (!battler || battler.effects[PBEffects::Confusion]==0))
+     (!battler || battler.effects[PBEffects::Confusion]==0 || battler.hasActiveAbility?(:ROUNDRECORD)))
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false
   end
@@ -188,7 +188,7 @@ ItemHandlers::CanUseInBattle.add(:REDFLUTE,proc { |item,pokemon,battler,move,fir
 })
 
 ItemHandlers::CanUseInBattle.add(:PERSIMBERRY,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
-  if !battler || battler.effects[PBEffects::Confusion]==0
+  if !battler || battler.effects[PBEffects::Confusion]==0 || battler.hasActiveAbility?(:ROUNDRECORD)
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false
   end
@@ -197,7 +197,7 @@ ItemHandlers::CanUseInBattle.add(:PERSIMBERRY,proc { |item,pokemon,battler,move,
 
 ItemHandlers::CanUseInBattle.add(:YELLOWFLUTE,proc { |item,pokemon,battler,move,firstAction,battle,scene,showMessages|
   if !battler || battler.effects[PBEffects::Confusion]==0 ||
-     battler.hasActiveAbility?(:SOUNDPROOF)
+     battler.hasActiveAbility?(:SOUNDPROOF) || battler.hasActiveAbility?(:ROUNDRECORD)
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false
   end
@@ -411,7 +411,7 @@ ItemHandlers::BattleUseOnPokemon.copy(:ICEHEAL,:ASPEARBERRY)
 ItemHandlers::BattleUseOnPokemon.add(:FULLHEAL,proc { |item,pokemon,battler,choices,scene|
   pokemon.heal_status
   battler.pbCureStatus(false) if battler
-  battler.pbCureConfusion if battler
+  battler.pbCureConfusion if battler && !battler.hasActiveAbility?(:ROUNDRECORD)
   name = (battler) ? battler.pbThis : pokemon.name
   scene.pbRefresh
   scene.pbDisplay(_INTL("{1} became healthy.",name))
@@ -425,7 +425,7 @@ ItemHandlers::BattleUseOnPokemon.copy(:FULLHEAL,:RAGECANDYBAR) if Settings::RAGE
 ItemHandlers::BattleUseOnPokemon.add(:FULLRESTORE,proc { |item,pokemon,battler,choices,scene|
   pokemon.heal_status
   battler.pbCureStatus(false) if battler
-  battler.pbCureConfusion if battler
+  battler.pbCureConfusion if battler && !battler.hasActiveAbility?(:ROUNDRECORD)
   name = (battler) ? battler.pbThis : pokemon.name
   if pokemon.hp<pokemon.totalhp
     pbBattleHPItem(pokemon,battler,pokemon.totalhp,scene)

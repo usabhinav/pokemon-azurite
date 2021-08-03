@@ -253,13 +253,18 @@ BattleHandlers::StatusCureItem.add(:LUMBERRY,
     next false if !forced && !battler.canConsumeBerry?
     next false if battler.status == :NONE &&
                   battler.effects[PBEffects::Confusion]==0
+    next false if battler.hasActiveAbility?(:ROUNDRECORD) && battler.status == :NONE
     itemName = GameData::Item.get(item).name
     PBDebug.log("[Item triggered] #{battler.pbThis}'s #{itemName}") if forced
     battle.pbCommonAnimation("EatBerry",battler) if !forced
     oldStatus = battler.status
     oldConfusion = (battler.effects[PBEffects::Confusion]>0)
     battler.pbCureStatus(forced)
-    battler.pbCureConfusion
+    if battler.hasActiveAbility?(:ROUNDRECORD)
+      oldConfusion = false
+    else
+      battler.pbCureConfusion
+    end
     if forced
       battle.pbDisplay(_INTL("{1} snapped out of its confusion.",battler.pbThis)) if oldConfusion
     else
@@ -335,6 +340,7 @@ BattleHandlers::StatusCureItem.add(:PERSIMBERRY,
   proc { |item,battler,battle,forced|
     next false if !forced && !battler.canConsumeBerry?
     next false if battler.effects[PBEffects::Confusion]==0
+    next false if battler.hasActiveAbility?(:ROUNDRECORD)
     itemName = GameData::Item.get(item).name
     PBDebug.log("[Item triggered] #{battler.pbThis}'s #{itemName}") if forced
     battle.pbCommonAnimation("EatBerry",battler) if !forced

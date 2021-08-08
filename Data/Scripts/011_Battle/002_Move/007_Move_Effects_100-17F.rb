@@ -3009,3 +3009,28 @@ class PokeBattle_Move_29F < PokeBattle_Move
     return super
   end
 end
+#===============================================================================
+# Stare
+#===============================================================================
+class PokeBattle_Move_Stare < PokeBattle_Move
+  def pbFailsAgainstTarget?(user, target)
+    if target.fainted? || target.damageState.substitute || target.unstoppableAbility?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    if target.effects[PBEffects::Stare] > 0
+      @battle.pbDisplay(_INTL("{1} is already being stared at!", target.pbThis))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    # Set trapping effect duration and info
+    target.effects[PBEffects::Stare] = 3
+    target.effects[PBEffects::Truant] = false
+    # Message
+    @battle.pbDisplay(_INTL("{1} is scared and can no longer use its ability!", target.pbThis))
+    target.pbOnAbilityChanged(target.ability)
+  end
+end

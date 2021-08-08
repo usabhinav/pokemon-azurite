@@ -286,6 +286,7 @@ class PokeBattle_Battler
     @effects[PBEffects::TypeModsI]           = nil
     @effects[PBEffects::HungryItems]         = []
     @effects[PBEffects::VictoryRush]         = false
+    @effects[PBEffects::Stare]               = 0
   end
 
   #=============================================================================

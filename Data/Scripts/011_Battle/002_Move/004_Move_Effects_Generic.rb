@@ -419,7 +419,7 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
     @damagingTurn = true
     # 0 at start of charging turn, move's ID at start of damaging turn
     if !user.effects[PBEffects::TwoTurnAttack]
-      @powerHerb = user.hasActiveItem?(:POWERHERB)
+      @powerHerb = user.hasActiveItem?(:POWERHERB) || user.hasActiveAbility?(:FLURESCENCE)
       @chargingTurn = true
       @damagingTurn = @powerHerb
     end
@@ -442,14 +442,20 @@ class PokeBattle_TwoTurnMove < PokeBattle_Move
       pbShowAnimation(@id,user,targets,1)   # Charging anim
       targets.each { |b| pbChargingTurnEffect(user,b) }
       if @powerHerb
-        # Moves that would make the user semi-invulnerable will hide the user
-        # after the charging animation, so the "UseItem" animation shouldn't show
-        # for it
-        if !["0C9","0CA","0CB","0CC","0CD","0CE","14D"].include?(@function)
-          @battle.pbCommonAnimation("UseItem",user)
+        if user.hasActiveAbility?(:FLURESCENCE)
+          @battle.pbShowAbilitySplash(user)
+          @battle.pbDisplay(_INTL("{1} became fully charged!",user.pbThis))
+          @battle.pbHideAbilitySplash(user)
+        elsif user.hasActiveItem?(:POWERHERB)
+          # Moves that would make the user semi-invulnerable will hide the user
+          # after the charging animation, so the "UseItem" animation shouldn't show
+          # for it
+          if !["0C9","0CA","0CB","0CC","0CD","0CE","14D"].include?(@function)
+            @battle.pbCommonAnimation("UseItem",user)
+          end
+          @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!",user.pbThis))
+          user.pbConsumeItem
         end
-        @battle.pbDisplay(_INTL("{1} became fully charged due to its Power Herb!",user.pbThis))
-        user.pbConsumeItem
       end
     end
     pbAttackingTurnMessage(user,targets) if @damagingTurn

@@ -343,6 +343,7 @@ class PokeBattle_Battler
   def abilityActive?(ignore_fainted = false)
     return false if fainted? && !ignore_fainted
     return false if @effects[PBEffects::GastroAcid]
+    return false if @effects[PBEffects::Stare] > 0
     return true
   end
 

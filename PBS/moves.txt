@@ -1289,3 +1289,4 @@
 1074,SURGINGSTRIKES,Surging Strikes,188,25,WATER,Physical,100,5,0,NearOther,0,abef,"Strikes the target thrice, with mastery of the Water style. Always results in a critical hit."
 1075,FLIPTURN,Flip Turn,0EE,60,WATER,Physical,100,20,0,NearOther,0,abef,"After making its attack, the user rushes back to switch places with a party Pokémon in waiting."
 1076,SUPERNOVAATTACK,Heat Wave,00A,20,FIRE,Special,90,10,10,AllNearFoes,0,bef,"Modified Heat Wave. Used as the attack for the Supernova ability."
+1077,STARE,Stare,Stare,0,DARK,Status,100,10,0,NearOther,0,bce,"The user stares intensely at the target, negating its ability for three turns."

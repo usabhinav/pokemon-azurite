@@ -123,6 +123,7 @@ begin
     TypeModsI           = 117
     HungryItems         = 118
     VictoryRush         = 119
+    Stare               = 120
 
     #===========================================================================
     # These effects apply to a battler position

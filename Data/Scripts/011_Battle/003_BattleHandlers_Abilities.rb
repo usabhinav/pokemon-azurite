@@ -856,6 +856,14 @@ BattleHandlers::MoveBaseTypeModifierAbility.add(:REFRIGERATE,
   }
 )
 
+BattleHandlers::MoveBaseTypeModifierAbility.add(:CRYSTALATE,
+  proc { |ability,user,move,type|
+    next if type != :NORMAL || !GameData::Type.exists?(:CRYSTAL)
+    move.powerBoost = true # TODO: Power boost or nah?
+    next :CRYSTAL
+  }
+)
+
 #===============================================================================
 # AccuracyCalcUserAbility handlers
 #===============================================================================
@@ -1274,6 +1282,8 @@ BattleHandlers::DamageCalcUserAbility.add(:VANGUARD,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.copy(:VANGUARD, :CHARGEDUP)
+
 BattleHandlers::DamageCalcUserAbility.add(:FLYTRAP,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if !target.pbHasType?(:BUG)
@@ -1299,6 +1309,30 @@ BattleHandlers::DamageCalcUserAbility.add(:PERSEVERANCE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     met = 1 + 0.2 * [user.effects[PBEffects::Metronome], 3].min
     mults[:final_damage_multiplier] *= met
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:ILLINTENT,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if move.calcType != :DARK
+    mults[:final_damage_multiplier] *= 1.3
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:WINDUP,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    # TODO: Consider making dedicated method for detecting two-turn attacks, charging or otherwise
+    # Two turn attack, Hyper Beam, or Shadow Half
+    next if !move.chargingTurnMove? && move.function != "0C2" && move.function != "12E"
+    mults[:final_damage_multiplier] *= 1.5
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:FLURESCENCE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if !move.chargingTurnMove?
+    echoln "TEST!"
+    mults[:final_damage_multiplier] *= 0.8
   }
 )
 
@@ -1452,6 +1486,13 @@ BattleHandlers::DamageCalcTargetAbility.add(:DESERTBODY,
 BattleHandlers::DamageCalcTargetAbility.add(:EDIBLE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[:final_damage_multiplier] *= 1.5 if move.bitingMove?
+  }
+)
+
+BattleHandlers::DamageCalcTargetAbility.add(:VINECOILSTYLE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if !move.pbContactMove?(user)
+    mults[:final_damage_multiplier] *= 0.7
   }
 )
 
@@ -1847,6 +1888,7 @@ BattleHandlers::TargetAbilityOnHit.add(:WEAKARMOR,
 BattleHandlers::TargetAbilityOnHit.add(:AMBIENTAMNESIA,
   proc { |ability,user,target,move,battle|
     next if !move.pbContactMove?(user)
+    next if !user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
     reduction = [4,move.pp].min
     if reduction > 0 && battle.pbRandom(10) < 5
       battle.pbShowAbilitySplash(target)
@@ -1863,6 +1905,7 @@ BattleHandlers::TargetAbilityOnHit.add(:ENTANGLINGMESS,
     next if !move.pbContactMove?(user)
     next if battle.pbRandom(10) < 5
     next if user.effects[PBEffects::Trapping]>0
+    next if !user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
     battle.pbShowAbilitySplash(target)
     # Set trapping effect duration and info
     user.effects[PBEffects::Trapping] = 2+battle.pbRandom(2)
@@ -1892,6 +1935,7 @@ BattleHandlers::TargetAbilityOnHit.add(:MADNESS,
   proc { |ability,user,target,move,battle|
     next if !move.pbContactMove?(user)
     next if battle.pbRandom(10) < 5
+    next if !user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
     battle.pbShowAbilitySplash(target)
     if user.pbCanConfuse?(target)
       user.pbConfuse(_INTL("{1} confused {2}!",target.pbThis,user.pbThis(true)))
@@ -1904,6 +1948,7 @@ BattleHandlers::TargetAbilityOnHit.add(:PHILANTHROPIST,
   proc { |ability,user,target,move,battle|
     next if !move.pbContactMove?(user)
     next if battle.pbRandom(10) < 5
+    next if !user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
     if user.status != PBStatuses::NONE
       battle.pbShowAbilitySplash(target)
       user.pbCureStatus
@@ -1989,6 +2034,7 @@ BattleHandlers::TargetAbilityOnHit.add(:VIGILANT,
 BattleHandlers::TargetAbilityOnHit.add(:WEBCOVER,
   proc { |ability,user,target,move,battle|
     next if !move.pbContactMove?(user)
+    next if !user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
     battle.pbShowAbilitySplash(target)
     if user.pbCanLowerStatStage?(:SPEED, target)
       user.pbLowerStatStageByAbility(:SPEED, 1, target, false)
@@ -2009,6 +2055,21 @@ BattleHandlers::TargetAbilityOnHit.add(:PUSHBOMB,
       target.pbUseMoveSimple(:EXPLOSION,user.index)
       battle.pbHideAbilitySplash(target)
     end
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:VINECOILSTYLE,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbContactMove?(user)
+    next if user.effects[PBEffects::Trapping] > 0
+    battle.pbShowAbilitySplash(target)
+    if user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
+      user.effects[PBEffects::Trapping] = 5
+      user.effects[PBEffects::TrappingMove] = :WRAP
+      user.effects[PBEffects::TrappingUser] = target.index
+      battle.pbDisplay(_INTL("{1} was trapped!", user.pbThis))
+    end
+    battle.pbHideAbilitySplash(target)
   }
 )
 
@@ -2263,6 +2324,21 @@ BattleHandlers::UserAbilityOnHit.add(:LIQUIDCONDUCTION,
   }
 )
 
+BattleHandlers::UserAbilityOnHit.add(:HEALTHYDIET,
+  proc { |ability,user,target,move,battle|
+    next if !move.bitingMove?
+    next if !user.canHeal?
+    battle.pbShowAbilitySplash(user)
+    user.pbRecoverHP(target.damageState.hpLost * 0.6)
+    if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("{1}'s HP was restored.",user.pbThis))
+    else
+      battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",user.pbThis,user.abilityName))
+    end
+    battle.pbHideAbilitySplash(user)
+  }
+)
+
 #===============================================================================
 # UserAbilityEndOfMove handlers
 #===============================================================================
@@ -2451,7 +2527,7 @@ BattleHandlers::UserAbilityEndOfMove.add(:MASTERTHIEF,
         user.item = b.item
         b.item = nil
         b.effects[PBEffects::Unburden] = true
-        if battle.wildBattle? && !user.initialItem && b.initialItem==user.item
+        if battle.wildBattle? && !user.initialItem && user.item == b.initialItem
           user.setInitialItem(user.item)
           b.setInitialItem(nil)
         end
@@ -3267,6 +3343,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:UNNERVE,
 
 BattleHandlers::AbilityOnSwitchIn.add(:TEMPERMENTAL,
   proc { |ability,battler,battle|
+    next if !battler.pbCanConfuseSelf?(false)
     battle.pbShowAbilitySplash(battler)
     battler.pbConfuse
     battler.pbRaiseStatStageByAbility(:ATTACK,2,battler,false)

@@ -614,6 +614,13 @@ class PokeBattle_Battle
       # Harvest, Pickup
       BattleHandlers.triggerEORGainItemAbility(b.ability,b,self) if b.abilityActive?
     end
+    # Stare
+    # NOTE: Put this near the very end of pbEndOfRoundPhase so that ability effects
+    # don't get triggered immediately after Stare effect ends
+    pbEORCountDownBattlerEffect(priority,PBEffects::Stare) { |battler|
+      pbDisplay(_INTL("{1} was freed from the stare!", battler.pbThis))
+      battler.pbEffectsOnSwitchIn if !battler.unstoppableAbility?
+    }
     pbGainExp
     return if @decision>0
     # Form checks

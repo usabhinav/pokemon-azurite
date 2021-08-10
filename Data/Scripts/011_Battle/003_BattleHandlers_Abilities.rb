@@ -169,8 +169,7 @@ BattleHandlers::StatusImmunityAbility.add(:WATERVEIL,
   }
 )
 
-BattleHandlers::StatusImmunityAbility.copy(:WATERVEIL,:WATERBUBBLE)
-BattleHandlers::StatusImmunityAbility.copy(:WATERVEIL,:SPICETANK)
+BattleHandlers::StatusImmunityAbility.copy(:WATERVEIL,:WATERBUBBLE,:SPICETANK)
 
 #===============================================================================
 # StatusImmunityAbilityNonIgnorable handlers
@@ -859,7 +858,7 @@ BattleHandlers::MoveBaseTypeModifierAbility.add(:REFRIGERATE,
 BattleHandlers::MoveBaseTypeModifierAbility.add(:CRYSTALATE,
   proc { |ability,user,move,type|
     next if type != :NORMAL || !GameData::Type.exists?(:CRYSTAL)
-    move.powerBoost = true # TODO: Power boost or nah?
+    move.powerBoost = true
     next :CRYSTAL
   }
 )
@@ -990,7 +989,7 @@ BattleHandlers::DamageCalcUserAbility.add(:AERILATE,
   }
 )
 
-BattleHandlers::DamageCalcUserAbility.copy(:AERILATE,:PIXILATE,:REFRIGERATE,:GALVANIZE)
+BattleHandlers::DamageCalcUserAbility.copy(:AERILATE,:PIXILATE,:REFRIGERATE,:GALVANIZE,:NORMALIZE,:CRYSTALATE)
 
 BattleHandlers::DamageCalcUserAbility.add(:ANALYTIC,
   proc { |ability,user,target,move,mults,baseDmg,type|
@@ -2944,6 +2943,15 @@ BattleHandlers::EOREffectAbility.add(:VICTORYRUSH,
   }
 )
 
+BattleHandlers::EOREffectAbility.add(:DYNAMICPOWER,
+  proc { |ability,battler,battle|
+    battle.pbShowAbilitySplash(battler)
+    battler.effects[PBEffects::DynamicPower] += 1
+    battle.pbDisplay(_INTL("{1}'s base stats increased!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # EORGainItemAbility handlers
 #===============================================================================
@@ -3572,6 +3580,21 @@ BattleHandlers::AbilityOnSwitchIn.add(:ROUNDRECORD,
     battle.pbHideAbilitySplash(battler)
   }
 )
+
+BattleHandlers::AbilityOnSwitchIn.add(:OUTMATCH,
+  proc { |ability,battler,battle|
+    next if !battler.pbCanRaiseStatStage?(:SPEED, battler)
+    statIncrement = 1
+    battler.eachOpposing do |b|
+      next if b.pbSpeed <= battler.pbSpeed
+      # Enemy is faster
+      statIncrement = 2
+      break
+    end
+    battler.pbRaiseStatStageByAbility(:SPEED, statIncrement, battler)
+  }
+)
+
 
 #===============================================================================
 # AbilityOnSwitchOut handlers

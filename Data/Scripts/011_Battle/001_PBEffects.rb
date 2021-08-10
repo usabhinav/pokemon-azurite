@@ -124,6 +124,7 @@ begin
     HungryItems         = 118
     VictoryRush         = 119
     Stare               = 120
+    DynamicPower        = 121
 
     #===========================================================================
     # These effects apply to a battler position

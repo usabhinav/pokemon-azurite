@@ -287,6 +287,7 @@ class PokeBattle_Battler
     @effects[PBEffects::HungryItems]         = []
     @effects[PBEffects::VictoryRush]         = false
     @effects[PBEffects::Stare]               = 0
+    @effects[PBEffects::DynamicPower]        = 0
   end
 
   #=============================================================================

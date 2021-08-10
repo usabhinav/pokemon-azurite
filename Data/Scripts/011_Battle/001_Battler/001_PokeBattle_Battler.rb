@@ -13,9 +13,6 @@ class PokeBattle_Battler
   attr_accessor :moves
   attr_accessor :gender
   attr_accessor :iv
-  attr_accessor :attack
-  attr_accessor :spatk
-  attr_accessor :speed
   attr_accessor :stages
   attr_reader   :totalhp
   attr_reader   :fainted    # Boolean to mark whether self has fainted properly
@@ -84,19 +81,43 @@ class PokeBattle_Battler
     @pokemon.item = @item_id if @pokemon
   end
 
+  # Stat readers/writers modified for Dynamic Power ability
+
+  def attack
+    return @attack + @effects[PBEffects::DynamicPower]
+  end
+
+  attr_writer :attack
+
   def defense
-    return @spdef if @battle.field.effects[PBEffects::WonderRoom]>0
-    return @defense
+    if @battle.field.effects[PBEffects::WonderRoom]>0
+      return @spdef + @effects[PBEffects::DynamicPower]
+    end
+    return @defense + @effects[PBEffects::DynamicPower]
   end
 
   attr_writer :defense
 
+  def spatk
+    return @spatk + @effects[PBEffects::DynamicPower]
+  end
+
+  attr_writer :spatk
+
   def spdef
-    return @defense if @battle.field.effects[PBEffects::WonderRoom]>0
-    return @spdef
+    if @battle.field.effects[PBEffects::WonderRoom]>0
+      return @defense + @effects[PBEffects::DynamicPower]
+    end
+    return @spdef + @effects[PBEffects::DynamicPower]
   end
 
   attr_writer :spdef
+
+  def speed
+    return @speed + @effects[PBEffects::DynamicPower]
+  end
+
+  attr_writer :speed
 
   attr_reader :hp
 
@@ -245,7 +266,7 @@ class PokeBattle_Battler
     stageMul = [2,2,2,2,2,2, 2, 3,4,5,6,7,8]
     stageDiv = [8,7,6,5,4,3, 2, 2,2,2,2,2,2]
     stage = @stages[:SPEED] + 6
-    speed = @speed*stageMul[stage]/stageDiv[stage]
+    speed = self.speed*stageMul[stage]/stageDiv[stage]
     speedMult = 1.0
     # Ability effects that alter calculated Speed
     if abilityActive?

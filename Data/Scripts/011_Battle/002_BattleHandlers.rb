@@ -500,7 +500,7 @@ def pbBattleConfusionBerry(battler,battle,item,forced,flavor,confuseMsg)
   battler.nature.stat_changes.each do |change|
     next if change[1] > 0 || change[0] != flavor_stat
     battle.pbDisplay(confuseMsg)
-    battler.pbConfuse if battler.pbCanConfuseSelf?(false)
+    battler.pbConfuseSelf if battler.pbCanConfuseSelf?(false)
     break
   end
   return true

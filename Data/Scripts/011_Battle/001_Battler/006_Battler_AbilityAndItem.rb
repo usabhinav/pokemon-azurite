@@ -9,6 +9,22 @@ class PokeBattle_Battler
     @battle.pbPrimalReversion(@index) if !fainted?
     # Ending primordial weather, checking Trace
     pbContinualAbilityChecks(true)
+    # Incomprehensible
+    if hasActiveAbility?(:INCOMPREHENSIBLE)
+      abilityList = []
+      GameData::Ability.each { |a|
+        next if ungainableAbility?(a.id) || a.id == self.ability ||
+                [:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(a.id)
+        abilityList.push(a.id)
+      }
+      newAbil = abilityList[@battle.pbRandom(abilityList.length)]
+      @battle.pbShowAbilitySplash(self)
+      @battle.pbDisplay(_INTL("{1} gained the ability {2}!", pbThis, GameData::Ability.get(newAbil).name))
+      @battle.pbHideAbilitySplash(self)
+      self.ability = newAbil
+      # Lets this battler switch abilities every turn
+      @effects[PBEffects::Incomprehensible] = true
+    end
     # Abilities that trigger upon switching in
     if (!fainted? && unstoppableAbility?) || abilityActive?
       BattleHandlers.triggerAbilityOnSwitchIn(self.ability,self,@battle)
@@ -75,7 +91,7 @@ class PokeBattle_Battler
       choices = []
       @battle.eachOtherSideBattler(@index) do |b|
         next if b.ungainableAbility? ||
-                [:POWEROFALCHEMY, :RECEIVER, :TRACE].include?(b.ability_id)
+                [:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(b.ability_id)
         choices.push(b)
       end
       if choices.length>0
@@ -113,6 +129,7 @@ class PokeBattle_Battler
         @battle.pbSetSeen(self)
       end
     end
+    @effects[PBEffects::Incomprehensible] = false
     @effects[PBEffects::GastroAcid] = false if unstoppableAbility?
     @effects[PBEffects::SlowStart]  = 0 if self.ability != :SLOWSTART
     # Revert form if Flower Gift/Forecast was lost

@@ -92,7 +92,7 @@ class PokeBattle_Battler
     # Outragers get confused anyway if they are disrupted during their final
     # turn of using the move
     if @effects[PBEffects::Outrage]==1 && pbCanConfuseSelf?(false) && !full_cancel
-      pbConfuse(_INTL("{1} became confused due to fatigue!",pbThis))
+      pbConfuseSelf(_INTL("{1} became confused due to fatigue!",pbThis))
     end
     # Cancel usage of most multi-turn moves
     @effects[PBEffects::TwoTurnAttack] = nil

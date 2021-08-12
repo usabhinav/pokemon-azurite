@@ -470,6 +470,13 @@ class PokeBattle_Battler
         return false
       end
     end
+    if !selfInflicted && hasActiveItem?(:DIZZYSPECS)
+      if showMessages
+        @battle.pbCommonAnimation("UseItem", self)
+        @battle.pbDisplay(_INTL("{1}'s {2} prevents confusion!",pbThis,itemName))
+      end
+      return false
+    end
     if pbOwnSide.effects[PBEffects::Safeguard]>0 && !selfInflicted &&
        !(user && user.hasActiveAbility?(:INFILTRATOR))
       @battle.pbDisplay(_INTL("{1}'s team is protected by Safeguard!",pbThis)) if showMessages
@@ -493,6 +500,12 @@ class PokeBattle_Battler
     pbAbilityStatusCureCheck
   end
 
+  def pbConfuseSelf(msg=nil)
+    # MUST go before pbConfuse because of item/ability status cure checks
+    @effects[PBEffects::SelfInflictedConfusion] = true
+    pbConfuse(msg)
+  end
+
   def pbConfusionDuration(duration=-1)
     duration = 2+@battle.pbRandom(4) if duration<=0
     return duration
@@ -500,6 +513,7 @@ class PokeBattle_Battler
 
   def pbCureConfusion
     @effects[PBEffects::Confusion] = 0
+    @effects[PBEffects::SelfInflictedConfusion] = false
   end
 
   #=============================================================================

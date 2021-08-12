@@ -614,6 +614,31 @@ class PokeBattle_Battle
       # Harvest, Pickup
       BattleHandlers.triggerEORGainItemAbility(b.ability,b,self) if b.abilityActive?
     end
+    # Incomprehensible
+    # NOTE: Put this near the very end of pbEndOfRoundPhase so that ability effects
+    # don't get triggered immediately after Incomprehensible effect switches ability
+    priority.each do |b|
+      next if b.fainted?
+      # Incomprehensible
+      if b.effects[PBEffects::Incomprehensible] && b.abilityActive?
+        oldAbil = b.ability
+        abilityList = []
+        GameData::Ability.each { |a|
+          next if b.ungainableAbility?(a.id) || a.id == oldAbil
+                  [:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(a.id)
+          abilityList.push(a.id)
+        }
+        newAbil = abilityList[pbRandom(abilityList.length)]
+        b.ability = :INCOMPREHENSIBLE
+        pbShowAbilitySplash(b)
+        pbDisplay(_INTL("{1}'s ability changed to {2}!", b.pbThis, GameData::Ability.get(newAbil).name))
+        pbHideAbilitySplash(b)
+        b.ability = newAbil
+        b.pbOnAbilityChanged(oldAbil)
+        b.effects[PBEffects::Incomprehensible] = true
+        b.pbEffectsOnSwitchIn
+      end
+    end
     # Stare
     # NOTE: Put this near the very end of pbEndOfRoundPhase so that ability effects
     # don't get triggered immediately after Stare effect ends

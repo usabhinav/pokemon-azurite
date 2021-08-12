@@ -125,6 +125,8 @@ begin
     VictoryRush         = 119
     Stare               = 120
     DynamicPower        = 121
+    Incomprehensible    = 122
+    SelfInflictedConfusion = 123
 
     #===========================================================================
     # These effects apply to a battler position

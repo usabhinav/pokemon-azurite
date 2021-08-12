@@ -1435,7 +1435,7 @@ class PokeBattle_AI
         if !target.ability || user.ability==target.ability ||
            [:MULTITYPE, :RKSSYSTEM].include?(user.ability_id) ||
            [:FLOWERGIFT, :FORECAST, :ILLUSION, :IMPOSTER, :MULTITYPE, :RKSSYSTEM,
-            :TRACE, :WONDERGUARD, :ZENMODE].include?(target.ability_id)
+            :TRACE, :WONDERGUARD, :ZENMODE, :INCOMPREHENSIBLE].include?(target.ability_id)
           score -= 90
         end
       end
@@ -1455,7 +1455,7 @@ class PokeBattle_AI
         if !user.ability || user.ability==target.ability ||
           [:MULTITYPE, :RKSSYSTEM, :TRUANT].include?(target.ability_id) ||
           [:FLOWERGIFT, :FORECAST, :ILLUSION, :IMPOSTER, :MULTITYPE, :RKSSYSTEM,
-           :TRACE, :ZENMODE].include?(user.ability_id)
+           :TRACE, :ZENMODE, :INCOMPREHENSIBLE].include?(user.ability_id)
           score -= 90
         end
         if skill>=PBTrainerAI.highSkill

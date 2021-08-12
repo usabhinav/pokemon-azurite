@@ -2379,7 +2379,7 @@ class PokeBattle_Move_0D2 < PokeBattle_Move
     if user.effects[PBEffects::Outrage]>0
       user.effects[PBEffects::Outrage] -= 1
       if user.effects[PBEffects::Outrage]==0 && user.pbCanConfuseSelf?(false)
-        user.pbConfuse(_INTL("{1} became confused due to fatigue!",user.pbThis))
+        user.pbConfuseSelf(_INTL("{1} became confused due to fatigue!",user.pbThis))
       end
     end
   end

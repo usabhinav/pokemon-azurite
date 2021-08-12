@@ -2433,21 +2433,21 @@ BattleHandlers::UserAbilityEndOfMove.add(:TRICKSTER,
       oldUserItem = user.item;     oldUserItemName = user.itemName
       oldTargetItem = b.item; oldTargetItemName = b.itemName
       user.item                             = oldTargetItem
-      user.effects[PBEffects::ChoiceBand]   = -1
-      user.effects[PBEffects::Unburden]     = (user.item==0 && oldUserItem>0)
+      user.effects[PBEffects::ChoiceBand]   = nil
+      user.effects[PBEffects::Unburden]     = (!user.item && oldUserItem)
       b.item                           = oldUserItem
-      b.effects[PBEffects::ChoiceBand] = -1
-      b.effects[PBEffects::Unburden]   = (b.item==0 && oldTargetItem>0)
+      b.effects[PBEffects::ChoiceBand] = nil
+      b.effects[PBEffects::Unburden]   = (!b.item && oldTargetItem)
       # Permanently steal the item from wild Pokémon
-      if battle.wildBattle? && b.opposes? && b.initialItem==oldTargetItem && user.initialItem==0
+      if battle.wildBattle? && b.opposes? && b.initialItem == oldTargetItem && !user.initialItem
         user.setInitialItem(oldTargetItem)
       end
       battle.pbDisplay(_INTL("{1} switched items with its opponent!",user.pbThis))
-      battle.pbDisplay(_INTL("{1} obtained {2}.",user.pbThis,oldTargetItemName)) if oldTargetItem>0
-      battle.pbDisplay(_INTL("{1} obtained {2}.",b.pbThis,oldUserItemName)) if oldUserItem>0
+      battle.pbDisplay(_INTL("{1} obtained {2}.",user.pbThis,oldTargetItemName)) if oldTargetItem
+      battle.pbDisplay(_INTL("{1} obtained {2}.",b.pbThis,oldUserItemName)) if oldUserItem
+      battle.pbHideAbilitySplash(user)
       user.pbHeldItemTriggerCheck
       b.pbHeldItemTriggerCheck
-      battle.pbHideAbilitySplash(user)
       break
     end
   }
@@ -3353,7 +3353,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:TEMPERMENTAL,
   proc { |ability,battler,battle|
     next if !battler.pbCanConfuseSelf?(false)
     battle.pbShowAbilitySplash(battler)
-    battler.pbConfuse
+    battler.pbConfuseSelf
     battler.pbRaiseStatStageByAbility(:ATTACK,2,battler,false)
     battle.pbHideAbilitySplash(battler)
   }
@@ -3576,7 +3576,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:ROCKYTRAP,
 BattleHandlers::AbilityOnSwitchIn.add(:ROUNDRECORD,
   proc { |ability,battler,battle|
     battle.pbShowAbilitySplash(battler)
-    battler.pbConfuse
+    battler.pbConfuseSelf
     battle.pbHideAbilitySplash(battler)
   }
 )
@@ -3594,7 +3594,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:OUTMATCH,
     battler.pbRaiseStatStageByAbility(:SPEED, statIncrement, battler)
   }
 )
-
 
 #===============================================================================
 # AbilityOnSwitchOut handlers
@@ -3623,7 +3622,7 @@ BattleHandlers::AbilityChangeOnBattlerFainting.add(:POWEROFALCHEMY,
   proc { |ability,battler,fainted,battle|
     next if battler.opposes?(fainted)
     next if fainted.ungainableAbility? ||
-       [:POWEROFALCHEMY, :RECEIVER, :TRACE, :WONDERGUARD].include?(fainted.ability_id)
+       [:POWEROFALCHEMY, :RECEIVER, :TRACE, :WONDERGUARD, :INCOMPREHENSIBLE].include?(fainted.ability_id)
     battle.pbShowAbilitySplash(battler,true)
     battler.ability = fainted.ability
     battle.pbReplaceAbilitySplash(battler)

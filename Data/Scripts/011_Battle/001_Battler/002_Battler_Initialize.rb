@@ -288,6 +288,8 @@ class PokeBattle_Battler
     @effects[PBEffects::VictoryRush]         = false
     @effects[PBEffects::Stare]               = 0
     @effects[PBEffects::DynamicPower]        = 0
+    @effects[PBEffects::Incomprehensible]    = false
+    @effects[PBEffects::SelfInflictedConfusion] = false
   end
 
   #=============================================================================

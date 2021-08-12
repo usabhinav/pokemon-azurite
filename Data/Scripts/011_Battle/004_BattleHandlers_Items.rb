@@ -368,6 +368,17 @@ BattleHandlers::StatusCureItem.add(:RAWSTBERRY,
   }
 )
 
+BattleHandlers::StatusCureItem.add(:DIZZYSPECS,
+  proc { |item,battler,battle,forced|
+    next false if battler.effects[PBEffects::Confusion] == 0
+    next false if battler.effects[PBEffects::SelfInflictedConfusion]
+    battle.pbCommonAnimation("UseItem", battler)
+    battler.pbCureConfusion
+    battle.pbDisplay(_INTL("{1}'s {2} snapped it out of its confusion!", battler.pbThis, GameData::Item.get(item).name))
+    next false
+  }
+)
+
 #===============================================================================
 # PriorityBracketChangeItem handlers
 #===============================================================================

@@ -2075,7 +2075,7 @@ class PokeBattle_Move_065 < PokeBattle_Move
       return true
     end
     if target.ungainableAbility? ||
-       [:POWEROFALCHEMY, :RECEIVER, :TRACE, :WONDERGUARD].include?(target.ability_id)
+       [:POWEROFALCHEMY, :RECEIVER, :TRACE, :WONDERGUARD, :INCOMPREHENSIBLE].include?(target.ability_id)
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -2107,7 +2107,7 @@ class PokeBattle_Move_066 < PokeBattle_Move
       return true
     end
     if user.ungainableAbility? ||
-       [:POWEROFALCHEMY, :RECEIVER, :TRACE].include?(user.ability_id)
+       [:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(user.ability_id)
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end

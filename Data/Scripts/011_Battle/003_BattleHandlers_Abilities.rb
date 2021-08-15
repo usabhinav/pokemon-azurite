@@ -1330,7 +1330,6 @@ BattleHandlers::DamageCalcUserAbility.add(:WINDUP,
 BattleHandlers::DamageCalcUserAbility.add(:FLURESCENCE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if !move.chargingTurnMove?
-    echoln "TEST!"
     mults[:final_damage_multiplier] *= 0.8
   }
 )
@@ -2338,6 +2337,17 @@ BattleHandlers::UserAbilityOnHit.add(:HEALTHYDIET,
   }
 )
 
+BattleHandlers::UserAbilityOnHit.add(:PUNISHER,
+  proc { |ability,user,target,move,battle|
+    next if target.effects[PBEffects::Curse]
+    next if battle.pbRandom(100) >= 10
+    battle.pbShowAbilitySplash(user)
+    battle.pbDisplay(_INTL("{1} laid a curse on {2}!",user.pbThis,target.pbThis(true)))
+    target.effects[PBEffects::Curse] = true
+    battle.pbHideAbilitySplash(user)
+  }
+)
+
 #===============================================================================
 # UserAbilityEndOfMove handlers
 #===============================================================================
@@ -2818,7 +2828,7 @@ BattleHandlers::EORHealingAbility.add(:DEEPSLEEPER,
 # TODO: Wait for Darkened field effect and Thunderstorm weather
 BattleHandlers::EORHealingAbility.add(:SYNTHESIZE,
   proc { |ability,battler,battle|
-    next if battler.hp == battler.totalhp
+    next if !battler.canHeal?
     choice = battle.choices[battler.index]
     next if choice[0] == :UseMove && (choice[2].pbDamagingMove? || choice[2].healingMove?)
     next if [:Rain, :HeavyRain].include?(battle.pbWeather)
@@ -2830,6 +2840,30 @@ BattleHandlers::EORHealingAbility.add(:SYNTHESIZE,
       battle.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
     else
       battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",battler.pbThis,battler.abilityName))
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::EORHealingAbility.add(:SOOTHINGSHINE,
+  proc { |ability,battler,battle|
+    # Validates if any battlers on same side need healing
+    canHealAnyBattler = false
+    battle.eachSameSideBattler(battler.index) do |b|
+      canHealAnyBattler = true if b.canHeal?
+    end
+    next if !canHealAnyBattler
+    # Ability effect
+    battle.pbShowAbilitySplash(battler)
+    healfactor = [:Sun, :HarshSun].include?(battle.pbWeather) ? 8 : 16
+    battle.eachSameSideBattler(battler.index) do |b|
+      next if !b.canHeal?
+      b.pbRecoverHP(b.totalhp/healfactor)
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s HP was restored.",b.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s HP.",battler.pbThis,battler.abilityName,b.pbThis(true)))
+      end
     end
     battle.pbHideAbilitySplash(battler)
   }

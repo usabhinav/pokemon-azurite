@@ -557,6 +557,16 @@ class PokeBattle_Battler
     return true
   end
 
+  def takesThunderstormDamage?
+    return false if !takesIndirectDamage?
+    return false if inTwoTurnAttack?("0CA","0CB")   # Dig, Dive
+    return true if hasActiveAbility?(:LIGHTNINGROD)
+    return false if pbHasType?(:ELECTRIC)
+    return false if hasActiveAbility?([:OVERCOAT,:ICEBODY,:SNOWCLOAK])
+    return false if hasActiveItem?(:SAFETYGOGGLES)
+    return true
+  end
+
   def affectedByPowder?(showMsg=false)
     return false if fainted?
     if pbHasType?(:GRASS) && Settings::MORE_TYPE_EFFECTS

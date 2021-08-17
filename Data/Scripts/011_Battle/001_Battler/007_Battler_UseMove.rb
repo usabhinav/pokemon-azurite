@@ -388,7 +388,7 @@ class PokeBattle_Battler
       @battle.pbCommonAnimation("Powder",user)
       @battle.pbDisplay(_INTL("When the flame touched the powder on the Pokémon, it exploded!"))
       user.lastMoveFailed = true
-      if ![:Rain, :HeavyRain].include?(@battle.pbWeather) && user.takesIndirectDamage?
+      if ![:Rain, :HeavyRain, :Thunderstorm].include?(@battle.pbWeather) && user.takesIndirectDamage?
         oldHP = user.hp
         user.pbReduceHP((user.totalhp/4.0).round,false)
         user.pbFaint if user.fainted?
@@ -423,8 +423,8 @@ class PokeBattle_Battler
         end
       end
     end
-    # Protean
-    if user.hasActiveAbility?(:PROTEAN) && !move.callsAnotherMove? && !move.snatched
+    # Protean or Omnigene
+    if (user.hasActiveAbility?(:PROTEAN) || user.hasActiveAbility?(:OMNIGENE)) && !move.callsAnotherMove? && !move.snatched
       if user.pbHasOtherType?(move.calcType) && !GameData::Type.get(move.calcType).pseudo_type
         @battle.pbShowAbilitySplash(user)
         user.pbChangeTypes(move.calcType)
@@ -441,23 +441,10 @@ class PokeBattle_Battler
         end
       end
     end
-    # Omnigene
-    if user.hasActiveAbility?(:OMNIGENE) && !move.callsAnotherMove? && !move.snatched
-      if user.pbHasOtherType?(move.calcType) && !GameData::Type.get(move.calcType).pseudo_type
-        @battle.pbShowAbilitySplash(user)
-        user.pbChangeTypes(move.calcType)
-        typeName = GameData::Type.get(move.calcType).name
-        @battle.pbDisplay(_INTL("{1} transformed into the {2} type!",user.pbThis,typeName))
-        @battle.pbHideAbilitySplash(user)
-        # NOTE: The GF games say that if Curse is used by a non-Ghost-type
-        #       Pokémon which becomes Ghost-type because of Protean, it should
-        #       target and curse itself. I think this is silly, so I'm making it
-        #       choose a random opponent to curse instead.
-        if move.function=="10D" && targets.length==0   # Curse
-          choice[3] = -1
-          targets = pbFindTargets(choice,move,user)
-        end
-      end
+    # Darkened field effect
+    if @battle.field.effects[PBEffects::Darkened] && [:LIGHT, :FIRE, :ELECTRIC].include?(move.calcType)
+      @battle.pbDisplay(_INTL("The attack brought light back to the battlefield!"))
+      @battle.field.effects[PBEffects::Darkened] = false
     end
     #---------------------------------------------------------------------------
     magicCoater  = -1

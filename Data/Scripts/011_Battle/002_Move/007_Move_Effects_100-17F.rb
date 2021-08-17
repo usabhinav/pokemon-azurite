@@ -404,6 +404,10 @@ class PokeBattle_Move_110 < PokeBattle_Move
       user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
       @battle.pbDisplay(_INTL("{1} blew away poison spikes!",user.pbThis))
     end
+    if user.pbOwnSide.effects[PBEffects::VoltSpikes]>0
+      user.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
+      @battle.pbDisplay(_INTL("{1} blew away volt spikes!",user.pbThis))
+    end
     if user.pbOwnSide.effects[PBEffects::StickyWeb]
       user.pbOwnSide.effects[PBEffects::StickyWeb] = false
       @battle.pbDisplay(_INTL("{1} blew away sticky webs!",user.pbThis))
@@ -2595,6 +2599,24 @@ end
 #       just to make sure later additions to Essentials don't clash with your
 #       new effects.
 
+################################################################################
+# Envelops the field in darkness. (Darken)
+################################################################################
+class PokeBattle_Move_Darken < PokeBattle_Move
+  def pbMoveFailed?(user,targets)
+    if @battle.field.effects[PBEffects::Darkened]
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbDisplay(_INTL("Darkness shrouded the battlefield!"))
+    @battle.field.effects[PBEffects::Darkened] = true
+  end
+end
+
 #===============================================================================
 # Flash Kick
 #===============================================================================
@@ -3032,5 +3054,25 @@ class PokeBattle_Move_Stare < PokeBattle_Move
     # Message
     @battle.pbDisplay(_INTL("{1} is scared and can no longer use its ability!", target.pbThis))
     target.pbOnAbilityChanged(target.ability)
+  end
+end
+
+#===============================================================================
+# Entry hazard. Lays electric spikes on the opposing side (max. 2 layers).
+# (Volt Spikes)
+#===============================================================================
+class PokeBattle_Move_VoltSpikes < PokeBattle_Move
+  def pbMoveFailed?(user,targets)
+    if user.pbOpposingSide.effects[PBEffects::VoltSpikes]>=2
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::VoltSpikes] += 1
+    @battle.pbDisplay(_INTL("Electric spikes were scattered all around {1}'s feet!",
+       user.pbOpposingTeam(true)))
   end
 end

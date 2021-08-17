@@ -49,8 +49,8 @@ class PokeBattle_AI
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :DARK &&
                                                    Effectiveness.ineffective_type?(moveType, defType)
     end
-    # Delta Stream's weather
-    if @battle.pbWeather == :StrongWinds
+    # Delta Stream's weather or Cyclone's weather
+    if @battle.pbWeather == :StrongWinds || @battle.pbWeather == :Windstorm
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :FLYING &&
                                                    Effectiveness.super_effective_type?(moveType, defType)
     end
@@ -489,10 +489,12 @@ class PokeBattle_AI
         elsif type == :WATER
           multipliers[:final_damage_multiplier] /= 2
         end
-      when :Rain, :HeavyRain
+      when :Rain, :HeavyRain, :Thunderstorm
         if type == :FIRE
           multipliers[:final_damage_multiplier] /= 2
         elsif type == :WATER
+          multipliers[:final_damage_multiplier] *= 1.5
+        elsif type == :ELECTRIC && @battle.pbWeather == :Thunderstorm
           multipliers[:final_damage_multiplier] *= 1.5
         end
       when :Sandstorm

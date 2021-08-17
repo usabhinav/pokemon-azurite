@@ -133,7 +133,7 @@ class PokeBattle_Move_008 < PokeBattle_ParalysisMove
     case @battle.pbWeather
     when :Sun, :HarshSun
       return 50
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       return 0
     end
     return super
@@ -310,7 +310,7 @@ class PokeBattle_Move_015 < PokeBattle_ConfuseMove
     case @battle.pbWeather
     when :Sun, :HarshSun
       return 50
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       return 0
     end
     return super
@@ -1276,11 +1276,13 @@ class PokeBattle_Move_049 < PokeBattle_TargetStatDownMove
     return false if targetSide.effects[PBEffects::StealthRock] ||
                     targetSide.effects[PBEffects::Spikes]>0 ||
                     targetSide.effects[PBEffects::ToxicSpikes]>0 ||
+                    targetSide.effects[PBEffects::VoltSpikes]>0 ||
                     targetSide.effects[PBEffects::StickyWeb]
     return false if Settings::MECHANICS_GENERATION >= 6 &&
                     (targetOpposingSide.effects[PBEffects::StealthRock] ||
                     targetOpposingSide.effects[PBEffects::Spikes]>0 ||
                     targetOpposingSide.effects[PBEffects::ToxicSpikes]>0 ||
+                    targetOpposingSide.effects[PBEffects::VoltSpikes]>0 ||
                     targetOpposingSide.effects[PBEffects::StickyWeb])
     return false if Settings::MECHANICS_GENERATION >= 8 && @battle.field.terrain != :None
     return super
@@ -1331,6 +1333,13 @@ class PokeBattle_Move_049 < PokeBattle_TargetStatDownMove
       target.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0 if Settings::MECHANICS_GENERATION >= 6
       @battle.pbDisplay(_INTL("{1} blew away poison spikes!",user.pbThis))
     end
+    if target.pbOwnSide.effects[PBEffects::VoltSpikes]>0 ||
+      (Settings::MECHANICS_GENERATION >= 6 &&
+      target.pbOpposingSide.effects[PBEffects::VoltSpikes]>0)
+     target.pbOwnSide.effects[PBEffects::VoltSpikes]      = 0
+     target.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0 if Settings::MECHANICS_GENERATION >= 6
+     @battle.pbDisplay(_INTL("{1} blew away volt spikes!",user.pbThis))
+   end
     if target.pbOwnSide.effects[PBEffects::StickyWeb] ||
        (Settings::MECHANICS_GENERATION >= 6 &&
        target.pbOpposingSide.effects[PBEffects::StickyWeb])

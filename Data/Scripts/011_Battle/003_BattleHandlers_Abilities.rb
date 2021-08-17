@@ -40,7 +40,7 @@ BattleHandlers::SpeedCalcAbility.add(:SURGESURFER,
 
 BattleHandlers::SpeedCalcAbility.add(:SWIFTSWIM,
   proc { |ability,battler,mult|
-    next mult * 2 if [:Rain, :HeavyRain].include?(battler.battle.pbWeather)
+    next mult * 2 if [:Rain, :HeavyRain, :Thunderstorm].include?(battler.battle.pbWeather)
   }
 )
 
@@ -2659,7 +2659,7 @@ BattleHandlers::EORWeatherAbility.add(:DRYSKIN,
       battle.pbDisplay(_INTL("{1} was hurt by the sunlight!",battler.pbThis))
       battle.pbHideAbilitySplash(battler)
       battler.pbItemHPHealCheck
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       next if !battler.canHeal?
       battle.pbShowAbilitySplash(battler)
       battler.pbRecoverHP(battler.totalhp/8)
@@ -2690,7 +2690,7 @@ BattleHandlers::EORWeatherAbility.add(:ICEBODY,
 
 BattleHandlers::EORWeatherAbility.add(:RAINDISH,
   proc { |ability,weather,battler,battle|
-    next unless [:Rain, :HeavyRain].include?(weather)
+    next unless [:Rain, :HeavyRain, :Thunderstorm].include?(weather)
     next if !battler.canHeal?
     battle.pbShowAbilitySplash(battler)
     battler.pbRecoverHP(battler.totalhp/16)
@@ -2764,7 +2764,7 @@ BattleHandlers::EORHealingAbility.add(:HEALER,
 BattleHandlers::EORHealingAbility.add(:HYDRATION,
   proc { |ability,battler,battle|
     next if battler.status == :NONE
-    next if ![:Rain, :HeavyRain].include?(battle.pbWeather)
+    next if ![:Rain, :HeavyRain, :Thunderstorm].include?(battle.pbWeather)
     battle.pbShowAbilitySplash(battler)
     oldStatus = battler.status
     battler.pbCureStatus(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
@@ -2825,13 +2825,13 @@ BattleHandlers::EORHealingAbility.add(:DEEPSLEEPER,
   }
 )
 
-# TODO: Wait for Darkened field effect and Thunderstorm weather
 BattleHandlers::EORHealingAbility.add(:SYNTHESIZE,
   proc { |ability,battler,battle|
     next if !battler.canHeal?
     choice = battle.choices[battler.index]
     next if choice[0] == :UseMove && (choice[2].pbDamagingMove? || choice[2].healingMove?)
-    next if [:Rain, :HeavyRain].include?(battle.pbWeather)
+    next if [:Rain, :HeavyRain, :Thunderstorm].include?(battle.pbWeather)
+    next if battle.field.effects[PBEffects::Darkened]
     next if PBDayNight.isNight?
     battle.pbShowAbilitySplash(battler)
     healfactor = [:Sun, :HarshSun].include?(battle.pbWeather) ? 8 : 16
@@ -3626,6 +3626,24 @@ BattleHandlers::AbilityOnSwitchIn.add(:OUTMATCH,
       break
     end
     battler.pbRaiseStatStageByAbility(:SPEED, statIncrement, battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:TEMPEST,
+  proc { |ability,battler,battle|
+    pbBattleWeatherAbility(:Thunderstorm, battler, battle)
+    # pbBattleWeatherAbility may fail due to some circumstances, so check if weather
+    # really was changed
+    if battle.pbWeather == :Thunderstorm
+      battle.field.effects[PBEffects::ThunderstormUserIndex] = battler.index
+      battle.field.effects[PBEffects::ThunderstormUserPartyIndex] = battler.pokemonIndex
+    end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:CYCLONE,
+  proc { |ability,battler,battle|
+    pbBattleWeatherAbility(:Windstorm, battler, battle)
   }
 )
 

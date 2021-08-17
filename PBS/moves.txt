@@ -741,7 +741,7 @@
 703,VOLTBALL,Volt Ball,0D3,30,ELECTRIC,Physical,90,20,0,NearOther,0,abef,"The user continually rolls into the target over five turns. It becomes stronger each time it hits."
 704,VOLTCRASH,Volt Crash,00F,80,ELECTRIC,Physical,90,10,30,NearOther,0,abef,"It may flinch the target."
 705,VOLTSEED,Volt Seed,0C0,25,ELECTRIC,Physical,100,30,0,NearOther,0,befn,"The user forcefully shoots seeds at the target. Two to five seeds are shot in rapid succession."
-706,VOLTSPIKES,Volt Spikes,171,0,ELECTRIC,Status,0,20,0,FoeSide,0,c,"The user lays a trap of volt spikes at the foe's feet. They paralyze foes that switch into battle."
+706,VOLTSPIKES,Volt Spikes,VoltSpikes,0,ELECTRIC,Status,0,20,0,FoeSide,0,c,"The user lays a trap of volt spikes at the foe's feet. They paralyze foes that switch into battle."
 707,VOLTWAVE,Volt Wave,172,90,ELECTRIC,Special,100,10,0,NearOther,0,abef,"This move is both electric and sound type."
 #-------------------------------
 708,CORROSIVESPIT,Corrosive Spit,173,20,POISON,Special,85,15,0,NearOther,0,abef,"This attack corrodes the enemy's defenses. It lowers them even more if they've stockpiled."
@@ -767,7 +767,7 @@
 720,ICYTERRAIN,Icy Terrain,17E,0,ICE,Status,0,20,0,BothSides,0,,"Increases Ice-type Pokémon's speed and damage, while halving Fighting-type moves' damage."
 721,ICICLERAIN,Icicle Rain,000,100,ICE,Physical,100,10,0,AllNearOthers,0,bef,"The user sets off an icicle rain that strikes every Pokémon around it."
 #-------------------------------
-722,DARKEN,Darken,17F,0,DARK,Status,0,10,0,BothSides,0,,"Shrouds the battlefield in darkness, reducing the accuracy of all moves that aren't Dark, Light, Fire, Cosmic or Electric. Lasts until a Light, Fire or Electric type move is used."
+722,DARKEN,Darken,Darken,0,DARK,Status,0,10,0,BothSides,0,,"Shrouds the battlefield in darkness, reducing the accuracy of all moves that aren't Dark, Light, Fire, Cosmic or Electric. Lasts until a Light, Fire or Electric type move is used."
 723,DENY,Deny,180,80,DARK,Physical,100,10,0,NearOther,5,abef,"Always attacks before any kind of healing."
 #-------------------------------
 724,SMELT,Smelt,181,0,STEEL,Status,0,20,0,User,0,d,"Lowers defense and special defense to heal the user and raise its attack."

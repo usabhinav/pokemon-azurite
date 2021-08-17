@@ -392,6 +392,22 @@ class PokeBattle_Battle
         end
       end
     end
+    # Volt Spikes
+    if battler.pbOwnSide.effects[PBEffects::VoltSpikes]>0 && battler.takesIndirectDamage? && !battler.airborne?
+      bTypes = battler.pbTypes(true)
+      eff = Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2])
+      if !Effectiveness.ineffective?(eff)
+        div = 16 / battler.pbOwnSide.effects[PBEffects::VoltSpikes]
+        eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+        oldHP = battler.hp
+        battler.pbReduceHP(battler.totalhp*eff/div,false)
+        pbDisplay(_INTL("{1} was shocked by the volt spikes!",battler.pbThis))
+        battler.pbItemHPHealCheck
+        if battler.pbAbilitiesOnDamageTaken(oldHP)   # Switched out
+          return pbOnActiveOne(battler)   # For replacement battler
+        end
+      end
+    end
     # Sticky Web
     if battler.pbOwnSide.effects[PBEffects::StickyWeb] && !battler.fainted? &&
        !battler.airborne?

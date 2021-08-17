@@ -23,6 +23,9 @@ begin
       @effects[PBEffects::TrickRoom]       = 0
       @effects[PBEffects::WaterSportField] = 0
       @effects[PBEffects::WonderRoom]      = 0
+      @effects[PBEffects::ThunderstormUserIndex] = -1
+      @effects[PBEffects::ThunderstormUserPartyIndex] = -1
+      @effects[PBEffects::Darkened]        = false
       @defaultWeather  = :None
       @weather         = :None
       @weatherDuration = 0
@@ -61,6 +64,7 @@ begin
       @effects[PBEffects::Tailwind]           = 0
       @effects[PBEffects::ToxicSpikes]        = 0
       @effects[PBEffects::WideGuard]          = false
+      @effects[PBEffects::VoltSpikes]         = 0
     end
   end
 

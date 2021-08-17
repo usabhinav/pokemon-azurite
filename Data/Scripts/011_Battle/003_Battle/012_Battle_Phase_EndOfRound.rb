@@ -45,6 +45,8 @@ class PokeBattle_Battle
       when :Sandstorm then pbDisplay(_INTL("The sandstorm subsided."))
       when :Hail      then pbDisplay(_INTL("The hail stopped."))
       when :ShadowSky then pbDisplay(_INTL("The shadow sky faded."))
+      when :Thunderstorm then pbDisplay(_INTL("The thunderstorm subsided."))
+      when :Windstorm then pbDisplay(_INTL("The windstorm subsided."))
       end
       @field.weather = :None
       # Check for form changes caused by the weather changing
@@ -65,6 +67,8 @@ class PokeBattle_Battle
 #    when :HeavyRain   then pbDisplay(_INTL("It is raining heavily."))
 #    when :StrongWinds then pbDisplay(_INTL("The wind is strong."))
     when :ShadowSky   then pbDisplay(_INTL("The shadow sky continues."))
+    when :Thunderstorm then pbDisplay(_INTL("Thunder is booming in the sky."))
+    when :Windstorm   then pbDisplay(_INTL("The windstorm is raging."))
     end
     # Effects due to weather
     curWeather = pbWeather
@@ -98,6 +102,65 @@ class PokeBattle_Battle
         b.pbReduceHP(b.totalhp/16,false)
         b.pbItemHPHealCheck
         b.pbFaint if b.fainted?
+      end
+    end
+    if curWeather == :Thunderstorm && pbRandom(100) < 25
+      # Collect eligible targets
+      targets = []
+      target = nil
+      priority.each do |b|
+        next if !b.takesThunderstormDamage?
+        if b.hasActiveAbility?(:LIGHTNINGROD)
+          target = b
+          break
+        else
+          targets.push(b)
+        end
+      end
+      # No Pokemon with Lightningrod, choose another Pokemon
+      if target.nil? && targets.length > 0
+        target = targets[pbRandom(targets.length)]
+      end
+      # If target is found
+      if target
+        # Lightningrod user can absorb attack
+        if target.hasActiveAbility?(:LIGHTNINGROD)
+          pbShowAbilitySplash(target)
+          if target.pbCanRaiseStatStage?(:SPECIAL_ATTACK,target)
+            if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+              target.pbRaiseStatStage(:SPECIAL_ATTACK,1,target)
+            else
+              target.pbRaiseStatStageByCause(:SPECIAL_ATTACK,1,target,target.abilityName)
+            end
+          else
+            if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+              battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
+            else
+              battle.pbDisplay(_INTL("{1}'s {2} made the lightning strike ineffective!",
+                 target.pbThis,target.abilityName))
+            end
+          end
+          pbHideAbilitySplash(target)
+        else
+          # Deal Electric-type damage
+          bTypes = target.pbTypes(true)
+          eff = Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2])
+          if !Effectiveness.ineffective?(eff)
+            # Choose weak or strong
+            strongAttack = pbRandom(25) < 5
+            div = strongAttack ? 8 : 16
+            eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+            @scene.pbDamageAnimation(target)
+            target.pbReduceHP(target.totalhp*eff/div)
+            if strongAttack
+              pbDisplay(_INTL("{1} was struck directly by heavy lightning!", target.pbThis))
+            else
+              pbDisplay(_INTL("{1} was struck by lightning!", target.pbThis))
+            end
+            target.pbItemHPHealCheck
+            target.pbFaint if target.fainted?
+          end
+        end
       end
     end
   end
@@ -260,7 +323,7 @@ class PokeBattle_Battle
     curWeather = pbWeather
     for side in 0...2
       next if sides[side].effects[PBEffects::SeaOfFire]==0
-      next if [:Rain, :HeavyRain].include?(curWeather)
+      next if [:Rain, :HeavyRain, :Thunderstorm].include?(curWeather)
       @battle.pbCommonAnimation("SeaOfFire") if side==0
       @battle.pbCommonAnimation("SeaOfFireOpp") if side==1
       priority.each do |b|

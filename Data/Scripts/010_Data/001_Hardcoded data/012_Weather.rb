@@ -161,3 +161,32 @@ GameData::Weather.register({
   :tile_delta_y     => 0,
   :graphics         => [nil, ["fog_tile"]]
 })
+
+# NOTE: This randomly flashes the screen in RPG::Weather#update.
+# TODO: Change animation here
+GameData::Weather.register({
+  :id               => :ThunderStorm,
+  :id_number        => 2,   # Must be 2 (preset RMXP weather)
+  :category         => :Rain,
+  :graphics         => [["storm_1", "storm_2", "storm_3", "storm_4"]],   # Last is splash
+  :particle_delta_x => -4800,
+  :particle_delta_y => 4800,
+  :tone_proc        => proc { |strength|
+    next Tone.new(-strength * 3 / 2, -strength * 3 / 2, -strength * 3 / 2, 20)
+  }
+})
+
+# TODO: Change animation here
+GameData::Weather.register({
+  :id               => :Windstorm,
+  :id_number        => 5,
+  :category         => :Sandstorm, # TODO: Change this?
+  :graphics         => [["sandstorm_1", "sandstorm_2", "sandstorm_3", "sandstorm_4"], ["sandstorm_tile"]],
+  :particle_delta_x => -1200,
+  :particle_delta_y => 640,
+  :tile_delta_x     => -720,
+  :tile_delta_y     => 360,
+  :tone_proc        => proc { |strength|
+    next Tone.new(strength / 2, 0, -strength / 2, 0)
+  }
+})

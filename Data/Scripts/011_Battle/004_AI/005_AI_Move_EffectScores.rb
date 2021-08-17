@@ -988,6 +988,7 @@ class PokeBattle_AI
                      target.pbOwnSide.effects[PBEffects::Safeguard]>0
       score -= 30 if target.pbOwnSide.effects[PBEffects::Spikes]>0 ||
                      target.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 ||
+                     target.pbOwnSide.effects[PBEffects::VoltSpikes]>0 ||
                      target.pbOwnSide.effects[PBEffects::StealthRock]
     #---------------------------------------------------------------------------
     when "04A"
@@ -2010,6 +2011,7 @@ class PokeBattle_AI
       if score>20
         score += 50 if target.pbOwnSide.effects[PBEffects::Spikes]>0
         score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+        score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes]>0
         score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
       end
     #---------------------------------------------------------------------------
@@ -2018,6 +2020,7 @@ class PokeBattle_AI
          !(skill>=PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS))
         score += 40 if target.pbOwnSide.effects[PBEffects::Spikes]>0
         score += 40 if target.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+        score += 40 if target.pbOwnSide.effects[PBEffects::VoltSpikes]>0
         score += 40 if target.pbOwnSide.effects[PBEffects::StealthRock]
       end
     #---------------------------------------------------------------------------
@@ -2315,6 +2318,7 @@ class PokeBattle_AI
       if @battle.pbAbleNonActiveCount(user.idxOwnSide)>0
         score += 80 if user.pbOwnSide.effects[PBEffects::Spikes]>0
         score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes]>0
+        score += 80 if user.pbOwnSide.effects[PBEffects::VoltSpikes]>0
         score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
       end
     #---------------------------------------------------------------------------

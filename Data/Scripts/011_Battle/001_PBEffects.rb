@@ -166,6 +166,7 @@ begin
     Tailwind           = 19
     ToxicSpikes        = 20
     WideGuard          = 21
+    VoltSpikes         = 22
 
     #===========================================================================
     # These effects apply to the battle (i.e. both sides)
@@ -183,6 +184,9 @@ begin
     TrickRoom       = 10
     WaterSportField = 11
     WonderRoom      = 12
+    ThunderstormUserIndex = 13
+    ThunderstormUserPartyIndex = 14
+    Darkened        = 15
   end
 
 rescue Exception

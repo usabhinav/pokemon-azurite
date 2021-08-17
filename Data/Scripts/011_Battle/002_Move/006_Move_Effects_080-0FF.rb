@@ -114,7 +114,7 @@ class PokeBattle_Move_087 < PokeBattle_Move
     case @battle.pbWeather
     when :Sun, :HarshSun
       ret = :FIRE if GameData::Type.exists?(:FIRE)
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       ret = :WATER if GameData::Type.exists?(:WATER)
     when :Sandstorm
       ret = :ROCK if GameData::Type.exists?(:ROCK)
@@ -2555,7 +2555,7 @@ class PokeBattle_Move_0D8 < PokeBattle_HealingMove
     case @battle.pbWeather
     when :Sun, :HarshSun
       @healAmount = (user.totalhp*2/3.0).round
-    when :None, :StrongWinds
+    when :None, :StrongWinds, :Windstorm
       @healAmount = (user.totalhp/2.0).round
     else
       @healAmount = (user.totalhp/4.0).round

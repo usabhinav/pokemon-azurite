@@ -54,8 +54,8 @@ class PokeBattle_Move
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :DARK &&
                                                    Effectiveness.ineffective_type?(moveType, defType)
     end
-    # Delta Stream's weather
-    if @battle.pbWeather == :StrongWinds
+    # Delta Stream's weather or Cyclone's weather
+    if @battle.pbWeather == :StrongWinds || @battle.pbWeather == :Windstorm
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :FLYING &&
                                                    Effectiveness.super_effective_type?(moveType, defType)
     end
@@ -193,6 +193,12 @@ class PokeBattle_Move
     if user.effects[PBEffects::MicleBerry]
       user.effects[PBEffects::MicleBerry] = false
       modifiers[:accuracy_multiplier] *= 1.2
+    end
+    if @battle.pbWeather == :Thunderstorm && @calcType == :ELECTRIC
+      modifiers[:accuracy_multiplier] *= 1.1
+    end
+    if @battle.field.effects[PBEffects::Darkened] && ![:DARK, :LIGHT, :FIRE, :COSMIC, :ELECTRIC].include?(@calcType)
+      modifiers[:accuracy_multiplier] *= 0.8
     end
     modifiers[:evasion_stage] = 0 if target.effects[PBEffects::Foresight] && modifiers[:evasion_stage] > 0
     modifiers[:evasion_stage] = 0 if target.effects[PBEffects::MiracleEye] && modifiers[:evasion_stage] > 0
@@ -429,10 +435,12 @@ class PokeBattle_Move
       elsif type == :WATER
         multipliers[:final_damage_multiplier] /= 2
       end
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       if type == :FIRE
         multipliers[:final_damage_multiplier] /= 2
       elsif type == :WATER
+        multipliers[:final_damage_multiplier] *= 1.5
+      elsif type == :ELECTRIC && @battle.pbWeather == :Thunderstorm
         multipliers[:final_damage_multiplier] *= 1.5
       end
     when :Sandstorm

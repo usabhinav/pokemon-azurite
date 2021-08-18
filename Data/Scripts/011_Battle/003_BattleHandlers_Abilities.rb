@@ -2730,6 +2730,39 @@ BattleHandlers::EORWeatherAbility.add(:LIGHTGUARD,
   }
 )
 
+BattleHandlers::EORWeatherAbility.add(:RAINBOON,
+  proc { |ability,weather,battler,battle|
+    next unless [:Rain, :HeavyRain, :Thunderstorm].include?(weather)
+    stats = []
+    GameData::Stat.each_battle do |s|
+      stats.push(s.id) if battler.pbCanRaiseStatStage?(s.id, battler)
+    end
+    next if stats.length == 0
+    battler.pbRaiseStatStageByAbility(stats[battle.pbRandom(stats.length)], 1, battler)
+  }
+)
+
+BattleHandlers::EORWeatherAbility.add(:WEATHERBENEFIT,
+  proc { |ability,weather,battler,battle|
+    stat = nil
+    case weather
+    when :Sun, :HarshSun
+      stat = :ATTACK
+    when :Rain, :HeavyRain, :Thunderstorm
+      stat = :SPECIAL_ATTACK
+    when :Sandstorm
+      stat = :DEFENSE
+    when :Hail
+      stat = :SPECIAL_DEFENSE
+    when :StrongWinds, :Windstorm
+      stat = :SPEED
+    end
+    if stat && battler.pbCanRaiseStatStage?(stat, battler)
+      battler.pbRaiseStatStageByAbility(stat, 1, battler)
+    end
+  }
+)
+
 #===============================================================================
 # EORHealingAbility handlers
 #===============================================================================
@@ -3632,12 +3665,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:OUTMATCH,
 BattleHandlers::AbilityOnSwitchIn.add(:TEMPEST,
   proc { |ability,battler,battle|
     pbBattleWeatherAbility(:Thunderstorm, battler, battle)
-    # pbBattleWeatherAbility may fail due to some circumstances, so check if weather
-    # really was changed
-    if battle.pbWeather == :Thunderstorm
-      battle.field.effects[PBEffects::ThunderstormUserIndex] = battler.index
-      battle.field.effects[PBEffects::ThunderstormUserPartyIndex] = battler.pokemonIndex
-    end
   }
 )
 

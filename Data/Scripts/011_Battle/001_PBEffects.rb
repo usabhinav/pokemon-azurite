@@ -184,9 +184,7 @@ begin
     TrickRoom       = 10
     WaterSportField = 11
     WonderRoom      = 12
-    ThunderstormUserIndex = 13
-    ThunderstormUserPartyIndex = 14
-    Darkened        = 15
+    Darkened        = 13
   end
 
 rescue Exception

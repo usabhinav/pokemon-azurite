@@ -23,8 +23,6 @@ begin
       @effects[PBEffects::TrickRoom]       = 0
       @effects[PBEffects::WaterSportField] = 0
       @effects[PBEffects::WonderRoom]      = 0
-      @effects[PBEffects::ThunderstormUserIndex] = -1
-      @effects[PBEffects::ThunderstormUserPartyIndex] = -1
       @effects[PBEffects::Darkened]        = false
       @defaultWeather  = :None
       @weather         = :None

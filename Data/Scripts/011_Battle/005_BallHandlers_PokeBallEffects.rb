@@ -132,7 +132,7 @@ BallHandlers::ModifyCatchRate.add(:TIMERBALL,proc { |ball,catchRate,battle,battl
 
 BallHandlers::ModifyCatchRate.add(:DUSKBALL,proc { |ball,catchRate,battle,battler,ultraBeast|
   multiplier = (Settings::NEW_POKE_BALL_CATCH_RATES) ? 3 : 3.5
-  catchRate *= multiplier if battle.time==2
+  catchRate *= multiplier if battle.time==2 || battle.field.effects[PBEffects::Darkened]
   next catchRate
 })
 

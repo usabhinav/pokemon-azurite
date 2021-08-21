@@ -228,6 +228,31 @@ class PokeBattle_Battle
   # Actually performs the recalling and sending out in all situations.
   def pbRecallAndReplace(idxBattler,idxParty,randomReplacement=false,batonPass=false)
     @scene.pbRecall(idxBattler) if !@battlers[idxBattler].fainted?
+    oldpoke = @battlers[idxBattler]
+    # Shed Spikes Armor
+    if oldpoke.effects[PBEffects::SpikesArmor] > 0
+      oldpoke.pbOwnSide.effects[PBEffects::Spikes] += [oldpoke.effects[PBEffects::SpikesArmor], 3].min
+      oldpoke.effects[PBEffects::SpikesArmor] = 0
+      pbDisplay(_INTL("{1} shed its Spikes Armor!", oldpoke.pbThis))
+    end
+    # Shed Toxic Spikes Armor
+    if oldpoke.effects[PBEffects::ToxicSpikesArmor] > 0
+      oldpoke.pbOwnSide.effects[PBEffects::ToxicSpikes] += [oldpoke.effects[PBEffects::ToxicSpikesArmor], 2].min
+      oldpoke.effects[PBEffects::ToxicSpikesArmor] = 0
+      pbDisplay(_INTL("{1} shed its Toxic Spikes Armor!", oldpoke.pbThis))
+    end
+    # Shed Stealth Rock Armor
+    if oldpoke.effects[PBEffects::StealthRockArmor]
+      oldpoke.pbOwnSide.effects[PBEffects::StealthRock] = true
+      oldpoke.effects[PBEffects::StealthRockArmor] = false
+      pbDisplay(_INTL("{1} shed its Stealth Rock Armor!", oldpoke.pbThis))
+    end
+    # Shed Volt Spikes Armor
+    if oldpoke.effects[PBEffects::VoltSpikesArmor] > 0
+      oldpoke.pbOwnSide.effects[PBEffects::VoltSpikes] += [oldpoke.effects[PBEffects::VoltSpikesArmor], 2].min
+      oldpoke.effects[PBEffects::VoltSpikesArmor] = 0
+      pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", oldpoke.pbThis))
+    end
     @battlers[idxBattler].pbAbilitiesOnSwitchOut   # Inc. primordial weather check
     @scene.pbShowPartyLineup(idxBattler&1) if pbSideSize(idxBattler)==1
     pbMessagesOnReplace(idxBattler,idxParty) if !randomReplacement
@@ -352,7 +377,7 @@ class PokeBattle_Battle
     # Entry hazards
     # Stealth Rock
     if battler.pbOwnSide.effects[PBEffects::StealthRock] && battler.takesIndirectDamage? &&
-       GameData::Type.exists?(:ROCK)
+       GameData::Type.exists?(:ROCK) && !battler.hasActiveAbility?(:DEBRISARMOR)
       bTypes = battler.pbTypes(true)
       eff = Effectiveness.calculate(:ROCK, bTypes[0], bTypes[1], bTypes[2])
       if !Effectiveness.ineffective?(eff)
@@ -368,7 +393,7 @@ class PokeBattle_Battle
     end
     # Spikes
     if battler.pbOwnSide.effects[PBEffects::Spikes]>0 && battler.takesIndirectDamage? &&
-       !battler.airborne?
+       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR)
       spikesDiv = [8,6,4][battler.pbOwnSide.effects[PBEffects::Spikes]-1]
       oldHP = battler.hp
       battler.pbReduceHP(battler.totalhp/spikesDiv,false)
@@ -380,7 +405,7 @@ class PokeBattle_Battle
     end
     # Toxic Spikes
     if battler.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 && !battler.fainted? &&
-       !battler.airborne?
+       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR)
       if battler.pbHasType?(:POISON)
         battler.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
         pbDisplay(_INTL("{1} absorbed the poison spikes!",battler.pbThis))
@@ -393,14 +418,14 @@ class PokeBattle_Battle
       end
     end
     # Volt Spikes
-    if battler.pbOwnSide.effects[PBEffects::VoltSpikes]>0 && battler.takesIndirectDamage? && !battler.airborne?
+    if battler.pbOwnSide.effects[PBEffects::VoltSpikes]>0 && battler.takesIndirectDamage? &&
+       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR)
       bTypes = battler.pbTypes(true)
       eff = Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2])
       if !Effectiveness.ineffective?(eff)
-        div = 16 / battler.pbOwnSide.effects[PBEffects::VoltSpikes]
         eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
         oldHP = battler.hp
-        battler.pbReduceHP(battler.totalhp*eff/div,false)
+        battler.pbReduceHP(battler.totalhp*eff*battler.pbOwnSide.effects[PBEffects::VoltSpikes]/16,false)
         pbDisplay(_INTL("{1} was shocked by the volt spikes!",battler.pbThis))
         battler.pbItemHPHealCheck
         if battler.pbAbilitiesOnDamageTaken(oldHP)   # Switched out

@@ -412,6 +412,14 @@ class PokeBattle_Move_110 < PokeBattle_Move
       user.pbOwnSide.effects[PBEffects::StickyWeb] = false
       @battle.pbDisplay(_INTL("{1} blew away sticky webs!",user.pbThis))
     end
+    if target.effects[PBEffects::SpikesArmor] > 0 || target.effects[PBEffects::ToxicSpikesArmor] > 0 ||
+       target.effects[PBEffects::StealthRockArmor] || target.effects[PBEffects::VoltSpikesArmor] > 0
+      target.effects[PBEffects::SpikesArmor] = 0
+      target.effects[PBEffects::ToxicSpikesArmor] = 0
+      target.effects[PBEffects::StealthRockArmor] = false
+      target.effects[PBEffects::VoltSpikesArmor] = 0
+      @battle.pbDisplay(_INTL("{1} blew away {2}'s Debris Armor!",user.pbThis,target.pbThis(true)))
+   end
   end
 end
 

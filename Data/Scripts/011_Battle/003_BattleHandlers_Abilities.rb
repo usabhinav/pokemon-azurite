@@ -2158,7 +2158,6 @@ BattleHandlers::UserAbilityOnHit.add(:TAINTEDPOWER,
     user.pbReduceHP(user.totalhp/8)
     battle.pbDisplay(_INTL("{1} was hurt by its Tainted Power!",user.pbThis))
     battle.pbHideAbilitySplash(user)
-    user.pbItemHPHealCheck
   }
 )
 
@@ -3671,6 +3670,44 @@ BattleHandlers::AbilityOnSwitchIn.add(:TEMPEST,
 BattleHandlers::AbilityOnSwitchIn.add(:CYCLONE,
   proc { |ability,battler,battle|
     pbBattleWeatherAbility(:Windstorm, battler, battle)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:DEBRISARMOR,
+  proc { |ability,battler,battle|
+    next if battler.pbOwnSide.effects[PBEffects::Spikes] == 0 &&
+            battler.pbOwnSide.effects[PBEffects::ToxicSpikes] == 0 &&
+            !battler.pbOwnSide.effects[PBEffects::StealthRock] &&
+            battler.pbOwnSide.effects[PBEffects::VoltSpikes] == 0
+    battle.pbShowAbilitySplash(battler)
+    # Spikes
+    if battler.pbOwnSide.effects[PBEffects::Spikes] > 0
+      battler.effects[PBEffects::SpikesArmor] = battler.pbOwnSide.effects[PBEffects::Spikes]
+      battler.pbOwnSide.effects[PBEffects::Spikes] = 0
+      battle.pbDisplay(_INTL("{1} put on Spikes Armor!", battler.pbThis))
+    end
+    # Toxic Spikes
+    if battler.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+      battler.effects[PBEffects::ToxicSpikesArmor] = battler.pbOwnSide.effects[PBEffects::ToxicSpikes]
+      battler.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
+      battle.pbDisplay(_INTL("{1} put on Toxic Spikes Armor!", battler.pbThis))
+    end
+    # Stealth Rock
+    if battler.pbOwnSide.effects[PBEffects::StealthRock]
+      battler.effects[PBEffects::StealthRockArmor] = true
+      battler.pbOwnSide.effects[PBEffects::StealthRock] = false
+      battle.pbDisplay(_INTL("{1} put on Stealth Rock Armor!", battler.pbThis))
+      if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
+        battler.pbRaiseStatStageByAbility(:DEFENSE, 1, battler, false)
+      end
+    end
+    # Volt Spikes
+    if battler.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+      battler.effects[PBEffects::VoltSpikesArmor] = battler.pbOwnSide.effects[PBEffects::VoltSpikes]
+      battler.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
+      battle.pbDisplay(_INTL("{1} put on Volt Spikes Armor!", battler.pbThis))
+    end
+    battle.pbHideAbilitySplash(battler)
   }
 )
 

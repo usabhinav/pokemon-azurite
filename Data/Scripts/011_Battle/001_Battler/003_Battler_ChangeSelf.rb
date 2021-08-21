@@ -53,6 +53,30 @@ class PokeBattle_Battler
       return
     end
     return if @fainted   # Has already fainted properly
+    # Shed Spikes Armor
+    if @effects[PBEffects::SpikesArmor] > 0
+      pbOwnSide.effects[PBEffects::Spikes] += [@effects[PBEffects::SpikesArmor], 3].min
+      @effects[PBEffects::SpikesArmor] = 0
+      @battle.pbDisplay(_INTL("{1} shed its Spikes Armor!", pbThis)) if showMessage
+    end
+    # Shed Toxic Spikes Armor
+    if @effects[PBEffects::ToxicSpikesArmor]>0
+      pbOwnSide.effects[PBEffects::ToxicSpikes] += [@effects[PBEffects::ToxicSpikesArmor], 2].min
+      @effects[PBEffects::ToxicSpikesArmor] = 0
+      @battle.pbDisplay(_INTL("{1} shed its Toxic Spikes Armor!", pbThis)) if showMessage
+    end
+    # Shed Stealth Rock Armor
+    if @effects[PBEffects::StealthRockArmor]
+      pbOwnSide.effects[PBEffects::StealthRock] = true
+      @effects[PBEffects::StealthRockArmor] = false
+      @battle.pbDisplay(_INTL("{1} shed its Stealth Rock Armor!", pbThis)) if showMessage
+    end
+    # Shed Volt Spikes Armor
+    if @effects[PBEffects::VoltSpikesArmor] > 0
+      pbOwnSide.effects[PBEffects::VoltSpikes] += [@effects[PBEffects::VoltSpikesArmor], 2].min
+      @effects[PBEffects::VoltSpikesArmor] = 0
+      @battle.pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", pbThis)) if showMessage
+    end
     @battle.pbDisplayBrief(_INTL("{1} fainted!",pbThis)) if showMessage
     PBDebug.log("[Pokémon fainted] #{pbThis} (#{@index})") if !showMessage
     @battle.scene.pbFaintBattler(self)

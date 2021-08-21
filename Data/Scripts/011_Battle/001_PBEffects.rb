@@ -127,6 +127,10 @@ begin
     DynamicPower        = 121
     Incomprehensible    = 122
     SelfInflictedConfusion = 123
+    SpikesArmor         = 124
+    ToxicSpikesArmor    = 125
+    StealthRockArmor    = 126
+    VoltSpikesArmor     = 127
 
     #===========================================================================
     # These effects apply to a battler position

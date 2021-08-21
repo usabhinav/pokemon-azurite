@@ -290,6 +290,10 @@ class PokeBattle_Battler
     @effects[PBEffects::DynamicPower]        = 0
     @effects[PBEffects::Incomprehensible]    = false
     @effects[PBEffects::SelfInflictedConfusion] = false
+    @effects[PBEffects::SpikesArmor]         = 0
+    @effects[PBEffects::ToxicSpikesArmor]    = 0
+    @effects[PBEffects::StealthRockArmor]    = false
+    @effects[PBEffects::VoltSpikesArmor]     = 0
   end
 
   #=============================================================================

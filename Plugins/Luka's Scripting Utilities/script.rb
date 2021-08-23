@@ -721,7 +721,7 @@ end
 #===============================================================================
 class Color
 	# alias for old constructor
-	alias init_org initialize unless self.method_defined?(:init_org)
+	alias init_org initialize unless self.private_method_defined?(:init_org)
   #-----------------------------------------------------------------------------
 	# new constructor accepts RGB values as well as a hex number or string value
   #-----------------------------------------------------------------------------

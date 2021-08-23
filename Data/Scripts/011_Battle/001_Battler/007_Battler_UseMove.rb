@@ -712,6 +712,10 @@ class PokeBattle_Battler
             end
           end
         end
+        # Wildfire Style
+        # Placed here to affect only missed targets, not unaffected targets, and to trigger
+        # for all missed targets per move hit
+        wildfireStyleEffect(user, targets, move)
         return false
       end
     end
@@ -758,6 +762,10 @@ class PokeBattle_Battler
       # Animate the hit flashing and HP bar changes
       move.pbAnimateHitAndHPLost(user,targets)
     end
+    # Wildfire Style
+    # Placed here to affect only missed targets, not unaffected targets, and to trigger
+    # for all missed targets per move hit
+    wildfireStyleEffect(user, targets, move)
     # Self-Destruct/Explosion's damaging and fainting of user
     move.pbSelfKO(user) if hitNum==0
     user.pbFaint if user.fainted?
@@ -836,5 +844,35 @@ class PokeBattle_Battler
     targets.each { |b| b.pbFaint if b && b.fainted? }
     user.pbFaint if user.fainted?
     return true
+  end
+
+  def wildfireStyleEffect(user, targets, move)
+    if user.hasActiveAbility?(:WILDFIRESTYLE) && move.pbDamagingMove?
+      # Validate if any targets were missed
+      hasMissedTarget = false
+      targets.each do |b|
+        next if !b.damageState.missed
+        hasMissedTarget = true
+      end
+      if hasMissedTarget
+        missed_targets = []
+        @battle.pbShowAbilitySplash(user)
+        targets.each do |b|
+          next if !b.damageState.missed
+          move.pbCalcDamage(user,b,targets.length)   # Stored in damageState.calcDamage
+          move.pbReduceDamage(user,b)   # Stored in damageState.hpLost
+          @battle.scene.pbDamageAnimation(b)
+          b.pbReduceHP(b.damageState.hpLost * 0.35, false)
+          # Reset damage state damage variables
+          b.damageState.calcDamage = 0
+          b.damageState.totalHPLost -= b.damageState.hpLost
+          b.damageState.hpLost = 0
+          missed_targets.push(b)
+        end
+        target_text = missed_targets.length == 1 ? missed_targets[0].pbThis(true) : "its missed targets"
+        @battle.pbDisplay(_INTL("{1} still dealt damage to {2}!", user.pbThis, target_text))
+        @battle.pbHideAbilitySplash(user)
+      end
+    end
   end
 end

@@ -402,7 +402,7 @@ class PokeBattle_Battler
     if user.hasActiveAbility?(:UNGROUNDED) && move.pbContactMove?(user) && !@battle.moldBreaker
       return true
     end
-    # Immaterial
+    # Immaterial (To prevent user from making contact moves)
     if move.pbContactMove?(user) && user.hasActiveAbility?(:IMMATERIAL) && !@battle.moldBreaker
       @battle.pbShowAbilitySplash(user)
       @battle.pbDisplay(_INTL("But it failed!"))

@@ -305,4 +305,26 @@ class PokeBattle_Battler
   def pbResetStatStages
     GameData::Stat.each_battle { |s| @stages[s.id] = 0 }
   end
+
+  #=============================================================================
+  # Stat methods
+  #=============================================================================
+
+  def getTotalStats
+    stats = self.plainStats
+    stats[:HP] = self.totalhp
+    totalStats = 0
+    GameData::Stat.each_main do |s|
+      totalStats += stats[s.id]
+    end
+    return totalStats
+  end
+
+  def getTotalEVs
+    totalEVs = 0
+    GameData::Stat.each_main do |s|
+      totalEVs += self.pokemon.ev[s.id]
+    end
+    return totalEVs
+  end
 end

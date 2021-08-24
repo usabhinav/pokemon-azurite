@@ -50,6 +50,20 @@ BattleHandlers::SpeedCalcAbility.add(:UNBURDEN,
   }
 )
 
+BattleHandlers::SpeedCalcAbility.add(:PRODIGY,
+  proc { |ability,battler,mult|
+    # Validate if any foes have higher total stats
+    abilityTriggered = false
+    userTotalStats = battler.getTotalStats
+    battler.eachOpposing do |b|
+      abilityTriggered = true if b.getTotalStats > userTotalStats
+    end
+    next mult if !abilityTriggered
+    # Calculate speed mult
+    next mult * (1 + ([battler.getTotalEVs, 500].min / 150.0))
+  }
+)
+
 #===============================================================================
 # WeightCalcAbility handlers
 #===============================================================================
@@ -749,6 +763,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:WONDERGUARD,
   }
 )
 
+# To make target immune to contact moves
 BattleHandlers::MoveImmunityTargetAbility.add(:IMMATERIAL,
   proc { |ability,user,target,move,type,battle|
     next false if !move.pbContactMove?(user)
@@ -906,6 +921,13 @@ BattleHandlers::AccuracyCalcUserAbility.add(:VICTORYSTAR,
 BattleHandlers::AccuracyCalcUserAbility.add(:DARKLIGHT,
   proc { |ability,mods,user,target,move,type|
     mods[:accuracy_multiplier] *= 1.1 if target.pbHasType?(:DARK)
+  }
+)
+
+BattleHandlers::AccuracyCalcUserAbility.add(:LUNARBLESSING,
+  proc { |ability,mods,user,target,move,type|
+    next if !move.pbDamagingMove?
+    mods[:accuracy_multiplier] *= 1.25
   }
 )
 
@@ -1234,7 +1256,7 @@ BattleHandlers::DamageCalcUserAbility.add(:MAGMATICHEAT,
     for targetType in targetTypes
       if Effectiveness.not_very_effective_type?(type, targetType) && type == :FIRE
         # Changes the 0.5x "not very effective" multiplier to 0.75x
-        mults[:final_damage_multiplier] *= 1.5
+        mults[:base_damage_multiplier] *= 1.5
       end
     end
   }
@@ -1243,7 +1265,7 @@ BattleHandlers::DamageCalcUserAbility.add(:MAGMATICHEAT,
 BattleHandlers::DamageCalcUserAbility.add(:RAINBOWGUARD,
   proc { |ability,user,target,move,mults,baseDmg,type|
     types = [:FIRE, :ICE, :ELECTRIC]
-    mults[:final_damage_multiplier] *= 1.3 if types.include?(type) && !user.pbHasType?(type)
+    mults[:base_damage_multiplier] *= 1.3 if types.include?(type) && !user.pbHasType?(type)
   }
 )
 
@@ -1267,9 +1289,9 @@ BattleHandlers::DamageCalcUserAbility.add(:OPPORTUNIST,
 BattleHandlers::DamageCalcUserAbility.add(:ENTERSPHERE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     if type == :FIRE
-      mults[:final_damage_multiplier] *= 1.6
+      mults[:base_damage_multiplier] *= 1.6
     elsif move.pbContactMove?(user)
-      mults[:final_damage_multiplier] *= 1.3
+      mults[:base_damage_multiplier] *= 1.3
     end
   }
 )
@@ -1286,7 +1308,7 @@ BattleHandlers::DamageCalcUserAbility.copy(:VANGUARD, :CHARGEDUP)
 BattleHandlers::DamageCalcUserAbility.add(:FLYTRAP,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if !target.pbHasType?(:BUG)
-    mults[:final_damage_multiplier] *= 1.3
+    mults[:base_damage_multiplier] *= 1.3
   }
 )
 
@@ -1294,7 +1316,7 @@ BattleHandlers::DamageCalcUserAbility.add(:BULLY,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if target.pokemon.height > user.pokemon.height
     next if target.pokemon.height == user.pokemon.height && user.pbWeight <= target.pbWeight
-    mults[:final_damage_multiplier] *= 1.3
+    mults[:base_damage_multiplier] *= 1.3
   }
 )
 
@@ -1314,7 +1336,7 @@ BattleHandlers::DamageCalcUserAbility.add(:PERSEVERANCE,
 BattleHandlers::DamageCalcUserAbility.add(:ILLINTENT,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if move.calcType != :DARK
-    mults[:final_damage_multiplier] *= 1.3
+    mults[:base_damage_multiplier] *= 1.3
   }
 )
 
@@ -1331,6 +1353,26 @@ BattleHandlers::DamageCalcUserAbility.add(:FLURESCENCE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if !move.chargingTurnMove?
     mults[:final_damage_multiplier] *= 0.8
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:LUNARBLESSING,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:final_damage_multiplier] *= 1.25
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:PRODIGY,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    # Validate if any foes have higher total stats
+    abilityTriggered = false
+    userTotalStats = user.getTotalStats
+    user.eachOpposing do |b|
+      abilityTriggered = true if b.getTotalStats > userTotalStats
+    end
+    next if !abilityTriggered
+    # Calculate attack mult
+    mults[:attack_multiplier] *= 1 + ([user.getTotalEVs, 500].min / 150.0)
   }
 )
 
@@ -1390,8 +1432,8 @@ BattleHandlers::DamageCalcTargetAbility.add(:FLOWERGIFT,
 
 BattleHandlers::DamageCalcTargetAbility.add(:FLUFFY,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    mults[:final_damage_multiplier] *= 2 if move.calcType == :FIRE
-    mults[:final_damage_multiplier] /= 2 if move.contactMove?
+    mults[:base_damage_multiplier] *= 2 if move.calcType == :FIRE
+    mults[:base_damage_multiplier] /= 2 if move.contactMove?
   }
 )
 
@@ -1444,9 +1486,9 @@ BattleHandlers::DamageCalcTargetAbility.add(:WATERBUBBLE,
 BattleHandlers::DamageCalcTargetAbility.add(:CRYSTALLINE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     if type == :WATER || type == :GRASS
-      mults[:final_damage_multiplier] /= 2
+      mults[:base_damage_multiplier] /= 2
     elsif type == :ELECTRIC
-      mults[:final_damage_multiplier] *= 2
+      mults[:base_damage_multiplier] *= 2
     end
   }
 )
@@ -1454,7 +1496,7 @@ BattleHandlers::DamageCalcTargetAbility.add(:CRYSTALLINE,
 BattleHandlers::DamageCalcTargetAbility.add(:IMMATERIAL,
   proc { |ability,user,target,move,mults,baseDmg,type|
     if move.specialMove?
-      mults[:final_damage_multiplier] *= 1.5
+      mults[:base_damage_multiplier] *= 1.5
     end
   }
 )
@@ -1462,7 +1504,7 @@ BattleHandlers::DamageCalcTargetAbility.add(:IMMATERIAL,
 BattleHandlers::DamageCalcTargetAbility.add(:THERMALPOWER,
   proc { |ability,user,target,move,mults,baseDmg,type|
     if type == :ICE
-      mults[:final_damage_multiplier] *= 2
+      mults[:base_damage_multiplier] *= 2
     end
   }
 )
@@ -1470,7 +1512,7 @@ BattleHandlers::DamageCalcTargetAbility.add(:THERMALPOWER,
 BattleHandlers::DamageCalcTargetAbility.add(:CLOUDFLUFF,
   proc { |ability,user,target,move,mults,baseDmg,type|
     if move.pbContactMove?(user) && move.physicalMove?
-      mults[:final_damage_multiplier] *= 0.75
+      mults[:base_damage_multiplier] *= 0.75
     end
   }
 )
@@ -1483,14 +1525,14 @@ BattleHandlers::DamageCalcTargetAbility.add(:DESERTBODY,
 
 BattleHandlers::DamageCalcTargetAbility.add(:EDIBLE,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    mults[:final_damage_multiplier] *= 1.5 if move.bitingMove?
+    mults[:base_damage_multiplier] *= 1.5 if move.bitingMove?
   }
 )
 
 BattleHandlers::DamageCalcTargetAbility.add(:VINECOILSTYLE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if !move.pbContactMove?(user)
-    mults[:final_damage_multiplier] *= 0.7
+    mults[:base_damage_multiplier] *= 0.7
   }
 )
 
@@ -2071,6 +2113,29 @@ BattleHandlers::TargetAbilityOnHit.add(:VINECOILSTYLE,
   }
 )
 
+BattleHandlers::TargetAbilityOnHit.add(:VOODOO,
+  proc { |ability,user,target,move,battle|
+    # Collect all battlers of the same egg group
+    targetBattlers = []
+    battle.eachBattler do |b|
+      next if b.index == target.index
+      # Validates that b and target share at least one egg group
+      next if b.pokemon.species_data.egg_groups.intersection(target.pokemon.species_data.egg_groups).length == 0
+      targetBattlers.push(b)
+    end
+    next if targetBattlers.length == 0
+    # Do damage effect
+    battle.pbShowAbilitySplash(target)
+    targetBattlers.each do |b|
+      battle.scene.pbDamageAnimation(b)
+      b.pbReduceHP(target.damageState.calcDamage, false)
+      b.pbFaint if b.fainted?
+    end
+    battle.pbDisplay(_INTL("{1} shared its damage with other Pokemon on the field!", target.pbThis))
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
 #===============================================================================
 # UserAbilityOnHit handlers
 #===============================================================================
@@ -2099,6 +2164,7 @@ BattleHandlers::UserAbilityOnHit.add(:POISONTOUCH,
 
 BattleHandlers::UserAbilityOnHit.add(:FORESTFIRE,
   proc { |ability,user,target,move,battle|
+    next if target.fainted?
     next if move.calcType != :GRASS
     battle.pbShowAbilitySplash(user)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
@@ -2113,6 +2179,7 @@ BattleHandlers::UserAbilityOnHit.add(:FORESTFIRE,
 
 BattleHandlers::UserAbilityOnHit.add(:ENTANGLINGMESS,
   proc { |ability,user,target,move,battle|
+    next if target.fainted?
     next if !move.pbContactMove?(user)
     next if battle.pbRandom(10) < 5
     next if target.effects[PBEffects::Trapping]>0
@@ -2140,6 +2207,7 @@ BattleHandlers::UserAbilityOnHit.add(:MADNESS,
 
 BattleHandlers::UserAbilityOnHit.add(:PHILANTHROPIST,
   proc { |ability,user,target,move,battle|
+    next if target.fainted?
     next if !move.pbContactMove?(user)
     next if battle.pbRandom(10) < 5
     if target.status != PBStatuses::NONE
@@ -2338,11 +2406,30 @@ BattleHandlers::UserAbilityOnHit.add(:HEALTHYDIET,
 
 BattleHandlers::UserAbilityOnHit.add(:PUNISHER,
   proc { |ability,user,target,move,battle|
+    next if target.fainted?
     next if target.effects[PBEffects::Curse]
     next if battle.pbRandom(100) >= 10
     battle.pbShowAbilitySplash(user)
     battle.pbDisplay(_INTL("{1} laid a curse on {2}!",user.pbThis,target.pbThis(true)))
     target.effects[PBEffects::Curse] = true
+    battle.pbHideAbilitySplash(user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:WHIRLPOOLSTYLE,
+  proc { |ability,user,target,move,battle|
+    next if target.fainted?
+    next if !move.pbContactMove?(user)
+    next if target.effects[PBEffects::Trapping] > 0
+    if user.hasActiveItem?(:GRIPCLAW)
+      target.effects[PBEffects::Trapping] = (Settings::MECHANICS_GENERATION >= 5) ? 8 : 6
+    else
+      target.effects[PBEffects::Trapping] = 5 + battle.pbRandom(2)
+    end
+    target.effects[PBEffects::TrappingMove] = :WHIRLPOOL
+    target.effects[PBEffects::TrappingUser] = user.index
+    battle.pbShowAbilitySplash(user)
+    battle.pbDisplay(_INTL("{1} became trapped in a whirlpool vortex!", target.pbThis))
     battle.pbHideAbilitySplash(user)
   }
 )
@@ -3707,6 +3794,32 @@ BattleHandlers::AbilityOnSwitchIn.add(:DEBRISARMOR,
       battler.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
       battle.pbDisplay(_INTL("{1} put on Volt Spikes Armor!", battler.pbThis))
     end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:CLEARINGFUMES,
+  proc { |ability,battler,battle|
+    userSide = battler.pbOwnSide
+    targetSide = battler.pbOpposingSide
+    # Clear own side hazards
+    userSide.effects[PBEffects::StealthRock] = false
+    userSide.effects[PBEffects::Spikes] = 0
+    userSide.effects[PBEffects::ToxicSpikes] = 0
+    userSide.effects[PBEffects::VoltSpikes] = 0
+    userSide.effects[PBEffects::StickyWeb] = false
+    # Clear opposing side hazards
+    targetSide.effects[PBEffects::StealthRock] = false
+    targetSide.effects[PBEffects::Spikes] = 0
+    targetSide.effects[PBEffects::ToxicSpikes] = 0
+    targetSide.effects[PBEffects::VoltSpikes] = 0
+    targetSide.effects[PBEffects::StickyWeb] = false
+    # Clear all battlers' stat changes
+    battle.eachBattler do |b|
+      b.pbResetStatStages
+    end
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} cleared all hazards and stat changes on the field!", battler.pbThis))
     battle.pbHideAbilitySplash(battler)
   }
 )

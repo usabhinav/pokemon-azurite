@@ -193,7 +193,7 @@ class PokemonEncounters
     first_pkmn = $Trainer.first_pokemon
     if first_pkmn
       case first_pkmn.ability_id
-      when :INTIMIDATE, :KEENEYE
+      when :INTIMIDATE, :KEENEYE, :CHILLING
         return false if enc_data[1] <= first_pkmn.level - 5 && rand(100) < 50
       end
     end

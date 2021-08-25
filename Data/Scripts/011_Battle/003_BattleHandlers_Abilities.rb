@@ -878,6 +878,14 @@ BattleHandlers::MoveBaseTypeModifierAbility.add(:CRYSTALATE,
   }
 )
 
+BattleHandlers::MoveBaseTypeModifierAbility.add(:SAKURA,
+  proc { |ability,user,move,type|
+    next if type != :GRASS || !GameData::Type.exists?(:FAIRY)
+    move.powerBoost = true
+    next :FAIRY
+  }
+)
+
 #===============================================================================
 # AccuracyCalcUserAbility handlers
 #===============================================================================
@@ -1001,6 +1009,12 @@ BattleHandlers::AccuracyCalcTargetAbility.add(:WONDERSKIN,
   }
 )
 
+BattleHandlers::AccuracyCalcTargetAbility.add(:AVOID,
+  proc { |ability,mods,user,target,move,type|
+    mods[:accuracy_multiplier] *= 0.85 if move.specialMove?
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAbility handlers
 #===============================================================================
@@ -1012,6 +1026,12 @@ BattleHandlers::DamageCalcUserAbility.add(:AERILATE,
 )
 
 BattleHandlers::DamageCalcUserAbility.copy(:AERILATE, :PIXILATE, :REFRIGERATE, :GALVANIZE, :NORMALIZE, :CRYSTALATE)
+
+BattleHandlers::DamageCalcUserAbility.add(:SAKURA,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:base_damage_multiplier] *= 1.1 if move.powerBoost
+  }
+)
 
 BattleHandlers::DamageCalcUserAbility.add(:ANALYTIC,
   proc { |ability,user,target,move,mults,baseDmg,type|
@@ -2136,6 +2156,16 @@ BattleHandlers::TargetAbilityOnHit.add(:VOODOO,
   }
 )
 
+BattleHandlers::TargetAbilityOnHit.add(:FRAGRANCE,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbContactMove?(user)
+    next if battle.pbRandom(100) >= 30
+    atk_stat = move.specialMove? ? :SPECIAL_ATTACK : :ATTACK
+    next if !user.pbCanLowerStatStage?(atk_stat, target)
+    user.pbLowerStatStageByAbility(atk_stat, 1, target)
+  }
+)
+
 #===============================================================================
 # UserAbilityOnHit handlers
 #===============================================================================
@@ -2431,6 +2461,16 @@ BattleHandlers::UserAbilityOnHit.add(:WHIRLPOOLSTYLE,
     battle.pbShowAbilitySplash(user)
     battle.pbDisplay(_INTL("{1} became trapped in a whirlpool vortex!", target.pbThis))
     battle.pbHideAbilitySplash(user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:FRAGRANCE,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbContactMove?(user)
+    next if battle.pbRandom(100) >= 30
+    atk_stat = move.specialMove? ? :SPECIAL_ATTACK : :ATTACK
+    next if !target.pbCanLowerStatStage?(atk_stat, user)
+    target.pbLowerStatStageByAbility(atk_stat, 1, user)
   }
 )
 
@@ -2978,6 +3018,37 @@ BattleHandlers::EORHealingAbility.add(:SOOTHINGSHINE,
     battle.eachSameSideBattler(battler.index) do |b|
       next if !b.canHeal?
       b.pbRecoverHP(b.totalhp/healfactor)
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s HP was restored.",b.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s HP.",battler.pbThis,battler.abilityName,b.pbThis(true)))
+      end
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::EORHealingAbility.add(:ADDITION,
+  proc { |ability,battler,battle|
+    # Validates if any battlers on same side need healing
+    canHealAnyBattler = false
+    battle.eachSameSideBattler(battler.index) do |b|
+      canHealAnyBattler = true if b.canHeal?
+    end
+    next if !canHealAnyBattler
+    # Ability effect
+    hasSubtraction = false
+    battle.eachSameSideBattler(battler.index) do |b|
+      hasSubtraction = true if b.hasActiveAbility?(:SUBTRACTION)
+    end
+    battle.pbShowAbilitySplash(battler)
+    healmult = hasSubtraction ? 0.3 : 0.1
+
+    echoln healmult
+
+    battle.eachSameSideBattler(battler.index) do |b|
+      next if !b.canHeal?
+      b.pbRecoverHP(b.totalhp * healmult)
       if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
         battle.pbDisplay(_INTL("{1}'s HP was restored.",b.pbThis))
       else
@@ -3820,6 +3891,18 @@ BattleHandlers::AbilityOnSwitchIn.add(:CLEARINGFUMES,
     end
     battle.pbShowAbilitySplash(battler)
     battle.pbDisplay(_INTL("{1} cleared all hazards and stat changes on the field!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:CHILLING,
+  proc { |ability,battler,battle|
+    battle.pbShowAbilitySplash(battler)
+    battle.eachOtherSideBattler(battler.index) do |b|
+      next if !b.near?(battler)
+      b.pbLowerSpecialAttackStatStageChilling(battler)
+      b.pbItemOnIntimidatedCheck # Copied from Intimidate
+    end
     battle.pbHideAbilitySplash(battler)
   }
 )

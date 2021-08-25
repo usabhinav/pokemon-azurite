@@ -67,6 +67,12 @@ class PokeBattle_Move
     if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
       ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     end
+    # Deceptive (moves are at most neutral effective except fire/water/grass)
+    if target.hasActiveAbility?(:DECEPTIVE)
+      if ![:FIRE, :WATER, :GRASS].include?(moveType)
+        ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].min
+      end
+    end
     return ret
   end
 
@@ -116,6 +122,13 @@ class PokeBattle_Move
     # Flytrap
     if target.hasActiveAbility?(:FLYTRAP) && moveType == :BUG
       ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Deceptive (fire/water/grass moves are super-effective)
+    # Placed here and not in pbCalcTypeModSingle because multi-typed Pokemon shouldn't get stacked
+    # weakness type mods. If it did, then a dual-type Pokemon would receive 4x damage instead of
+    # only 2x.
+    if target.hasActiveAbility?(:DECEPTIVE) && [:FIRE, :WATER, :GRASS].include?(moveType)
+      ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
     end
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
           user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE

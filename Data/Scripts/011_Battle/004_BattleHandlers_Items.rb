@@ -42,6 +42,16 @@ BattleHandlers::WeightCalcItem.add(:FLOATSTONE,
 )
 
 #===============================================================================
+# EvasionCalcItem handlers
+#===============================================================================
+
+BattleHandlers::EvasionCalcItem.add(:IRONSHELL,
+  proc { |item,battler,mult|
+    next mult/2
+  }
+)
+
+#===============================================================================
 # HPHealItem handlers
 #===============================================================================
 
@@ -933,6 +943,12 @@ BattleHandlers::DamageCalcTargetItem.add(:OCCABERRY,
 BattleHandlers::DamageCalcTargetItem.add(:PASSHOBERRY,
   proc { |item,user,target,move,mults,baseDmg,type|
     pbBattleTypeWeakingBerry(:WATER,type,target,mults)
+  }
+)
+
+BattleHandlers::DamageCalcTargetItem.add(:PLATEBODY,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    mults[:defense_multiplier] *= 1.5 if move.physicalMove?
   }
 )
 

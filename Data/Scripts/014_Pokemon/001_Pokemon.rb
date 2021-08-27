@@ -902,7 +902,7 @@ class Pokemon
     if gain > 0
       gain += 1 if @obtain_map == $game_map.map_id
       gain += 1 if @poke_ball == :LUXURYBALL
-      gain = (gain * 1.5).floor if hasItem?(:SOOTHEBELL)
+      gain = (gain * 1.5).floor if hasItem?(:SOOTHEBELL) || hasItem?(:FRIENDLYCOLLAR)
     end
     @happiness = (@happiness + gain).clamp(0, 255)
   end

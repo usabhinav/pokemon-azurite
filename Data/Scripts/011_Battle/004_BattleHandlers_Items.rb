@@ -42,16 +42,6 @@ BattleHandlers::WeightCalcItem.add(:FLOATSTONE,
 )
 
 #===============================================================================
-# EvasionCalcItem handlers
-#===============================================================================
-
-BattleHandlers::EvasionCalcItem.add(:IRONSHELL,
-  proc { |item,battler,mult|
-    next mult/2
-  }
-)
-
-#===============================================================================
 # HPHealItem handlers
 #===============================================================================
 
@@ -440,6 +430,12 @@ BattleHandlers::PriorityBracketUseItem.add(:QUICKCLAW,
 BattleHandlers::AccuracyCalcUserItem.add(:WIDELENS,
   proc { |item,mods,user,target,move,type|
     mods[:accuracy_multiplier] *= 1.1
+  }
+)
+
+BattleHandlers::AccuracyCalcUserItem.add(:IRONSHELL,
+  proc { |item,mods,user,target,move,type|
+    mods[:evasion_multiplier] *= 0.5
   }
 )
 

@@ -377,7 +377,7 @@ class PokeBattle_Battle
     # Entry hazards
     # Stealth Rock
     if battler.pbOwnSide.effects[PBEffects::StealthRock] && battler.takesIndirectDamage? &&
-       GameData::Type.exists?(:ROCK) && !battler.hasActiveAbility?(:DEBRISARMOR)
+       GameData::Type.exists?(:ROCK) && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?(:IRONSHELL)
       bTypes = battler.pbTypes(true)
       eff = Effectiveness.calculate(:ROCK, bTypes[0], bTypes[1], bTypes[2])
       if !Effectiveness.ineffective?(eff)
@@ -393,7 +393,7 @@ class PokeBattle_Battle
     end
     # Spikes
     if battler.pbOwnSide.effects[PBEffects::Spikes]>0 && battler.takesIndirectDamage? &&
-       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR)
+       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?(:IRONSHELL)
       spikesDiv = [8,6,4][battler.pbOwnSide.effects[PBEffects::Spikes]-1]
       oldHP = battler.hp
       battler.pbReduceHP(battler.totalhp/spikesDiv,false)
@@ -405,7 +405,7 @@ class PokeBattle_Battle
     end
     # Toxic Spikes
     if battler.pbOwnSide.effects[PBEffects::ToxicSpikes]>0 && !battler.fainted? &&
-       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR)
+       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?(:IRONSHELL)
       if battler.pbHasType?(:POISON)
         battler.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
         pbDisplay(_INTL("{1} absorbed the poison spikes!",battler.pbThis))
@@ -419,7 +419,7 @@ class PokeBattle_Battle
     end
     # Volt Spikes
     if battler.pbOwnSide.effects[PBEffects::VoltSpikes]>0 && battler.takesIndirectDamage? &&
-       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR)
+       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?(:IRONSHELL)
       bTypes = battler.pbTypes(true)
       eff = Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2])
       if !Effectiveness.ineffective?(eff)
@@ -435,7 +435,7 @@ class PokeBattle_Battle
     end
     # Sticky Web
     if battler.pbOwnSide.effects[PBEffects::StickyWeb] && !battler.fainted? &&
-       !battler.airborne?
+       !battler.airborne? && !battler.hasActiveItem?(:IRONSHELL)
       pbDisplay(_INTL("{1} was caught in a sticky web!",battler.pbThis))
       if battler.pbCanLowerStatStage?(:SPEED)
         battler.pbLowerStatStage(:SPEED,1,nil)

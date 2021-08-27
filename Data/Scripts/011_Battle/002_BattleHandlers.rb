@@ -5,6 +5,8 @@ module BattleHandlers
   # Battler's weight calculation
   WeightCalcAbility                   = AbilityHandlerHash.new
   WeightCalcItem                      = ItemHandlerHash.new   # Float Stone
+  EvasionCalcAbility                  = AbilityHandlerHash.new
+  EvasionCalcItem                     = ItemHandlerHash.new   # Iron Shell
   # Battler's HP changed
   HPHealItem                          = ItemHandlerHash.new
   AbilityOnHPDroppedBelowHalf         = AbilityHandlerHash.new
@@ -116,6 +118,18 @@ module BattleHandlers
   def self.triggerWeightCalcItem(item,battler,w)
     ret = WeightCalcItem.trigger(item,battler,w)
     return (ret!=nil) ? ret : w
+  end
+
+  #=============================================================================
+
+  def self.triggerEvasionCalcAbility(ability,battler,mult)
+    ret = EvasionCalcAbility.trigger(ability,battler,mult)
+    return (ret!=nil) ? ret : mult
+  end
+
+  def self.triggerEvasionCalcItem(item,battler,mult)
+    ret = EvasionCalcItem.trigger(item,battler,mult)
+    return (ret!=nil) ? ret : mult
   end
 
   #=============================================================================

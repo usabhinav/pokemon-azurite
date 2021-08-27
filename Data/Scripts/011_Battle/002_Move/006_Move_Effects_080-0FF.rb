@@ -162,6 +162,24 @@ class PokeBattle_Move_089 < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
     return [(user.happiness*2/5).floor,1].max
   end
+  
+  def pbFailsAgainstTarget?(user,target)
+    return if @battle.pbRandom(100)>=30
+    return true if !target.pbCanAttract?(user)
+    return true if pbMoveFailedAromaVeil?(user,target)
+    return false
+  end
+  
+  def pbEffectAgainstTarget(user,target)
+    return if @battle.pbRandom(100)>=30
+    target.pbAttract(user)
+  end
+  
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    return if !user.hasActiveItem?(:FRIENDLYCOLLAR)
+    target.pbAttract(user) if target.pbCanAttract?(user,false)
+  end
 end
 
 

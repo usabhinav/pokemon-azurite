@@ -499,13 +499,13 @@ BattleHandlers::DamageCalcUserItem.copy(:CHARCOAL,:FLAMEPLATE)
 
 BattleHandlers::DamageCalcUserItem.add(:CHOICEBAND,
   proc { |item,user,target,move,mults,baseDmg,type|
-    mults[:base_damage_multiplier] *= 1.5 if move.physicalMove?
+    mults[:base_damage_multiplier] *= 1.5 if move.pbPhysicalMove?(user)
   }
 )
 
 BattleHandlers::DamageCalcUserItem.add(:CHOICESPECS,
   proc { |item,user,target,move,mults,baseDmg,type|
-    mults[:base_damage_multiplier] *= 1.5 if move.specialMove?
+    mults[:base_damage_multiplier] *= 1.5 if move.pbSpecialMove?(user)
   }
 )
 
@@ -517,7 +517,7 @@ BattleHandlers::DamageCalcUserItem.add(:DARKGEM,
 
 BattleHandlers::DamageCalcUserItem.add(:DEEPSEATOOTH,
   proc { |item,user,target,move,mults,baseDmg,type|
-    if user.isSpecies?(:CLAMPERL) && move.specialMove?
+    if user.isSpecies?(:CLAMPERL) && move.pbSpecialMove?(user)
       mults[:attack_multiplier] *= 2
     end
   }
@@ -672,7 +672,7 @@ BattleHandlers::DamageCalcUserItem.copy(:MIRACLESEED,:MEADOWPLATE,:ROSEINCENSE)
 
 BattleHandlers::DamageCalcUserItem.add(:MUSCLEBAND,
   proc { |item,user,target,move,mults,baseDmg,type|
-    mults[:base_damage_multiplier] *= 1.1 if move.physicalMove?
+    mults[:base_damage_multiplier] *= 1.1 if move.pbPhysicalMove?(user)
   }
 )
 
@@ -766,7 +766,7 @@ BattleHandlers::DamageCalcUserItem.add(:SOULDEW,
     if Settings::SOUL_DEW_POWERS_UP_TYPES
       mults[:final_damage_multiplier] *= 1.2 if type == :PSYCHIC || type == :DRAGON
     else
-      if move.specialMove? && !user.battle.rules["souldewclause"]
+      if move.pbSpecialMove?(user) && !user.battle.rules["souldewclause"]
         mults[:attack_multiplier] *= 1.5
       end
     end
@@ -789,7 +789,7 @@ BattleHandlers::DamageCalcUserItem.add(:STEELGEM,
 
 BattleHandlers::DamageCalcUserItem.add(:THICKCLUB,
   proc { |item,user,target,move,mults,baseDmg,type|
-    if (user.isSpecies?(:CUBONE) || user.isSpecies?(:MAROWAK)) && move.physicalMove?
+    if (user.isSpecies?(:CUBONE) || user.isSpecies?(:MAROWAK)) && move.pbPhysicalMove?(user)
       mults[:attack_multiplier] *= 2
     end
   }
@@ -811,7 +811,7 @@ BattleHandlers::DamageCalcUserItem.add(:WATERGEM,
 
 BattleHandlers::DamageCalcUserItem.add(:WISEGLASSES,
   proc { |item,user,target,move,mults,baseDmg,type|
-    mults[:base_damage_multiplier] *= 1.1 if move.specialMove?
+    mults[:base_damage_multiplier] *= 1.1 if move.pbSpecialMove?(user)
   }
 )
   
@@ -838,7 +838,7 @@ BattleHandlers::DamageCalcUserItem.add(:EONGENE,
 
 BattleHandlers::DamageCalcTargetItem.add(:ASSAULTVEST,
   proc { |item,user,target,move,mults,baseDmg,type|
-    mults[:defense_multiplier] *= 1.5 if move.specialMove?
+    mults[:defense_multiplier] *= 1.5 if move.pbSpecialMove?(user)
   }
 )
 
@@ -880,7 +880,7 @@ BattleHandlers::DamageCalcTargetItem.add(:COLBURBERRY,
 
 BattleHandlers::DamageCalcTargetItem.add(:DEEPSEASCALE,
   proc { |item,user,target,move,mults,baseDmg,type|
-    if target.isSpecies?(:CLAMPERL) && move.specialMove?
+    if target.isSpecies?(:CLAMPERL) && move.pbSpecialMove?(user)
       mults[:defense_multiplier] *= 2
     end
   }
@@ -964,7 +964,7 @@ BattleHandlers::DamageCalcTargetItem.add(:SOULDEW,
   proc { |item,user,target,move,mults,baseDmg,type|
     next if Settings::SOUL_DEW_POWERS_UP_TYPES
     next if !target.isSpecies?(:LATIAS) && !target.isSpecies?(:LATIOS)
-    if move.specialMove? && !user.battle.rules["souldewclause"]
+    if move.pbSpecialMove?(user) && !user.battle.rules["souldewclause"]
       mults[:defense_multiplier] *= 1.5
     end
   }
@@ -1063,7 +1063,7 @@ BattleHandlers::TargetItemOnHit.add(:ENIGMABERRY,
 BattleHandlers::TargetItemOnHit.add(:JABOCABERRY,
   proc { |item,user,target,move,battle|
     next if !target.canConsumeBerry?
-    next if !move.physicalMove?
+    next if !move.pbPhysicalMove?(user)
     next if !user.takesIndirectDamage?
     battle.pbCommonAnimation("EatBerry",target)
     battle.scene.pbDamageAnimation(user)
@@ -1081,7 +1081,7 @@ BattleHandlers::TargetItemOnHit.add(:JABOCABERRY,
 #       effect that later changed and wasn't noticed.
 BattleHandlers::TargetItemOnHit.add(:KEEBERRY,
   proc { |item,user,target,move,battle|
-    next if !move.physicalMove?
+    next if !move.pbPhysicalMove?(user)
     if BattleHandlers.triggerTargetItemOnHitPositiveBerry(item,target,battle,false)
       target.pbHeldItemTriggered(item)
     end
@@ -1105,7 +1105,7 @@ BattleHandlers::TargetItemOnHit.add(:LUMINOUSMOSS,
 #       effect that later changed and wasn't noticed.
 BattleHandlers::TargetItemOnHit.add(:MARANGABERRY,
   proc { |item,user,target,move,battle|
-    next if !move.specialMove?
+    next if !move.pbSpecialMove?(user)
     if BattleHandlers.triggerTargetItemOnHitPositiveBerry(item,target,battle,false)
       target.pbHeldItemTriggered(item)
     end
@@ -1125,7 +1125,7 @@ BattleHandlers::TargetItemOnHit.add(:ROCKYHELMET,
 BattleHandlers::TargetItemOnHit.add(:ROWAPBERRY,
   proc { |item,user,target,move,battle|
     next if !target.canConsumeBerry?
-    next if !move.specialMove?
+    next if !move.pbSpecialMove?(user)
     next if !user.takesIndirectDamage?
     battle.pbCommonAnimation("EatBerry",target)
     battle.scene.pbDamageAnimation(user)

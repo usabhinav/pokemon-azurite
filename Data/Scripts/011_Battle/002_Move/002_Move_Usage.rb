@@ -43,6 +43,16 @@ class PokeBattle_Move
     return soundMove?
   end
 
+  def pbPhysicalMove?(user, thisType = nil)
+    return false if user.hasActiveAbility?(:PHASINGBODY)
+    return physicalMove?(thisType)
+  end
+
+  def pbSpecialMove?(user, thisType = nil)
+    return true if user.hasActiveAbility?(:PHASINGBODY)
+    return specialMove?(thisType)
+  end
+
   # The maximum number of hits in a round this move will actually perform. This
   # can be 1 for Beat Up, and can be 2 for any moves affected by Parental Bond.
   def pbNumHits(user,targets)
@@ -349,10 +359,10 @@ class PokeBattle_Move
     #       code.
     moveType = nil
     moveType = :NORMAL if @function=="090"   # Hidden Power
-    if physicalMove?(moveType)
+    if pbPhysicalMove?(user, moveType)
       target.effects[PBEffects::Counter]       = damage
       target.effects[PBEffects::CounterTarget] = user.index
-    elsif specialMove?(moveType)
+    elsif pbSpecialMove?(user, moveType)
       target.effects[PBEffects::MirrorCoat]       = damage
       target.effects[PBEffects::MirrorCoatTarget] = user.index
     end

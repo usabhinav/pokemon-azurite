@@ -41,6 +41,8 @@ class PokeBattle_Confusion < PokeBattle_Move
 
   def physicalMove?(thisType=nil);    return true;  end
   def specialMove?(thisType=nil);     return false; end
+  def pbPhysicalMove?(user,thisType=nil);    return true;  end
+  def pbSpecialMove?(user,thisType=nil);     return false; end
   def pbCritialOverride(user,target); return -1;    end
 end
 
@@ -73,6 +75,8 @@ class PokeBattle_Struggle < PokeBattle_Move
 
   def physicalMove?(thisType=nil); return true;  end
   def specialMove?(thisType=nil);  return false; end
+  def pbPhysicalMove?(user,thisType=nil);    return true;  end
+  def pbSpecialMove?(user,thisType=nil);     return false; end
 
   def pbEffectAfterAllHits(user,target)
     return if target.damageState.unaffected

@@ -322,7 +322,7 @@ class PokeBattle_AI
     atk = pbRoughStat(user,:ATTACK,skill)
     if move.function=="121"   # Foul Play
       atk = pbRoughStat(target,:ATTACK,skill)
-    elsif move.specialMove?(type)
+    elsif move.pbSpecialMove?(user, type)
       if move.function=="121"   # Foul Play
         atk = pbRoughStat(target,:SPECIAL_ATTACK,skill)
       else
@@ -331,7 +331,7 @@ class PokeBattle_AI
     end
     ##### Calculate target's defense stat #####
     defense = pbRoughStat(target,:DEFENSE,skill)
-    if move.specialMove?(type) && move.function!="122"   # Psyshock
+    if move.pbSpecialMove?(user, type) && move.function!="122"   # Psyshock
       defense = pbRoughStat(target,:SPECIAL_DEFENSE,skill)
     end
     if move.pbContactMove?(user) && user.hasActiveAbility?(:CACOPHONY)
@@ -479,9 +479,9 @@ class PokeBattle_AI
         # Don't need to check the Atk/Sp Atk-boosting badges because the AI
         # won't control the player's Pokémon.
         if target.pbOwnedByPlayer?
-          if move.physicalMove?(type) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_DEFENSE
+          if move.pbPhysicalMove?(user, type) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_DEFENSE
             multipliers[:defense_multiplier] *= 1.1
-          elsif move.specialMove?(type) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPDEF
+          elsif move.pbSpecialMove?(user, type) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPDEF
             multipliers[:defense_multiplier] *= 1.1
           end
         end
@@ -511,7 +511,7 @@ class PokeBattle_AI
           multipliers[:final_damage_multiplier] *= 1.5
         end
       when :Sandstorm
-        if target.pbHasType?(:ROCK) && move.specialMove?(type) && move.function != "122"   # Psyshock
+        if target.pbHasType?(:ROCK) && move.pbSpecialMove?(user, type) && move.function != "122"   # Psyshock
           multipliers[:defense_multiplier] *= 1.5
         end
       end
@@ -539,7 +539,7 @@ class PokeBattle_AI
     end
     # Burn
     if skill>=PBTrainerAI.highSkill
-      if user.status == :BURN && move.physicalMove?(type) &&
+      if user.status == :BURN && move.pbPhysicalMove?(user, type) &&
          !user.hasActiveAbility?(:GUTS) &&
          !(Settings::MECHANICS_GENERATION >= 6 && move.function == "07E")   # Facade
         multipliers[:final_damage_multiplier] /= 2
@@ -554,13 +554,13 @@ class PokeBattle_AI
           else
             multipliers[:final_damage_multiplier] /= 2
           end
-        elsif target.pbOwnSide.effects[PBEffects::Reflect] > 0 && move.physicalMove?(type)
+        elsif target.pbOwnSide.effects[PBEffects::Reflect] > 0 && move.pbPhysicalMove?(user, type)
           if @battle.pbSideBattlerCount(target) > 1
             multipliers[:final_damage_multiplier] *= 2 / 3.0
           else
             multipliers[:final_damage_multiplier] /= 2
           end
-        elsif target.pbOwnSide.effects[PBEffects::LightScreen] > 0 && move.specialMove?(type)
+        elsif target.pbOwnSide.effects[PBEffects::LightScreen] > 0 && move.pbSpecialMove?(user, type)
           if @battle.pbSideBattlerCount(target) > 1
             multipliers[:final_damage_multiplier] *= 2 / 3.0
           else

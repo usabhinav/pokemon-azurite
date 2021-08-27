@@ -97,7 +97,7 @@ class PokeBattle_Battler
       # Shell Trap (make the trapper move next if the trap was triggered)
       if target.effects[PBEffects::ShellTrap] &&
          @battle.choices[target.index][0]==:UseMove && !target.movedThisRound?
-        if target.damageState.hpLost>0 && !target.damageState.substitute && move.physicalMove?
+        if target.damageState.hpLost>0 && !target.damageState.substitute && move.pbPhysicalMove?(user)
           target.tookPhysicalHit              = true
           target.effects[PBEffects::MoveNext] = true
           target.effects[PBEffects::Quash]    = 0

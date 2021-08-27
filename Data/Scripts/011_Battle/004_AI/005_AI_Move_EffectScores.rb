@@ -236,7 +236,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasPhysicalAttack = false
             user.eachMove do |m|
-              next if !m.physicalMove?(m.type)
+              next if !m.pbPhysicalMove?(user, m.type)
               hasPhysicalAttack = true
               break
             end
@@ -252,7 +252,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -296,7 +296,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasSpecicalAttack = false
             user.eachMove do |m|
-              next if !m.specialMove?(m.type)
+              next if !m.pbSpecialMove?(user, m.type)
               hasSpecicalAttack = true
               break
             end
@@ -312,7 +312,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasSpecicalAttack = false
           user.eachMove do |m|
-            next if !m.specialMove?(m.type)
+            next if !m.pbSpecialMove?(user, m.type)
             hasSpecicalAttack = true
             break
           end
@@ -370,7 +370,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -394,7 +394,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -417,7 +417,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -469,7 +469,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -502,7 +502,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasSpecicalAttack = false
           user.eachMove do |m|
-            next if !m.specialMove?(m.type)
+            next if !m.pbSpecialMove?(user, m.type)
             hasSpecicalAttack = true
             break
           end
@@ -532,7 +532,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasSpecicalAttack = false
           user.eachMove do |m|
-            next if !m.specialMove?(m.type)
+            next if !m.pbSpecialMove?(user, m.type)
             hasSpecicalAttack = true
             break
           end
@@ -566,7 +566,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasPhysicalAttack = false
             user.eachMove do |m|
-              next if !m.physicalMove?(m.type)
+              next if !m.pbPhysicalMove?(user, m.type)
               hasPhysicalAttack = true
               break
             end
@@ -583,7 +583,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -632,7 +632,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasSpecicalAttack = false
             user.eachMove do |m|
-              next if !m.specialMove?(m.type)
+              next if !m.pbSpecialMove?(user, m.type)
               hasSpecicalAttack = true
               break
             end
@@ -649,7 +649,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasSpecicalAttack = false
           user.eachMove do |m|
-            next if !m.specialMove?(m.type)
+            next if !m.pbSpecialMove?(user, m.type)
             hasSpecicalAttack = true
             break
           end
@@ -709,7 +709,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -763,7 +763,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasSpecicalAttack = false
             user.eachMove do |m|
-              next if !m.specialMove?(m.type)
+              next if !m.pbSpecialMove?(user, m.type)
               hasSpecicalAttack = true
               break
             end
@@ -780,7 +780,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasSpecicalAttack = false
           user.eachMove do |m|
-            next if !m.specialMove?(m.type)
+            next if !m.pbSpecialMove?(user, m.type)
             hasSpecicalAttack = true
             break
           end
@@ -797,7 +797,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           user.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -854,7 +854,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasPhysicalAttack = false
             target.eachMove do |m|
-              next if !m.physicalMove?(m.type)
+              next if !m.pbPhysicalMove?(user, m.type)
               hasPhysicalAttack = true
               break
             end
@@ -870,7 +870,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           target.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -914,7 +914,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasSpecicalAttack = false
             target.eachMove do |m|
-              next if !m.specialMove?(m.type)
+              next if !m.pbSpecialMove?(user, m.type)
               hasSpecicalAttack = true
               break
             end
@@ -930,7 +930,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasSpecicalAttack = false
           target.eachMove do |m|
-            next if !m.specialMove?(m.type)
+            next if !m.pbSpecialMove?(user, m.type)
             hasSpecicalAttack = true
             break
           end
@@ -1006,7 +1006,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasPhysicalAttack = false
             target.eachMove do |m|
-              next if !m.physicalMove?(m.type)
+              next if !m.pbPhysicalMove?(user, m.type)
               hasPhysicalAttack = true
               break
             end
@@ -1023,7 +1023,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           target.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -1075,7 +1075,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasSpecicalAttack = false
             target.eachMove do |m|
-              next if !m.specialMove?(m.type)
+              next if !m.pbSpecialMove?(user, m.type)
               hasSpecicalAttack = true
               break
             end
@@ -1092,7 +1092,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasSpecicalAttack = false
           target.eachMove do |m|
-            next if !m.specialMove?(m.type)
+            next if !m.pbSpecialMove?(user, m.type)
             hasSpecicalAttack = true
             break
           end
@@ -2380,14 +2380,14 @@ class PokeBattle_AI
         score -= 20 if user.effects[PBEffects::MagnetRise]>0
         score -= 20 if user.effects[PBEffects::Telekinesis]>0
         score -= 20 if user.pbHasType?(:FLYING)
-        score -= 20 if user.hasActiveAbility?(:LEVITATE)
+        score -= 20 if user.hasActiveAbility?(:LEVITATE) || @battle.pbCheckGlobalAbility(:ZEROGRAVITY)
         score -= 20 if user.hasActiveItem?(:AIRBALLOON)
         score += 20 if target.effects[PBEffects::SkyDrop]>=0
         score += 20 if target.effects[PBEffects::MagnetRise]>0
         score += 20 if target.effects[PBEffects::Telekinesis]>0
         score += 20 if target.inTwoTurnAttack?("0C9","0CC","0CE")   # Fly, Bounce, Sky Drop
         score += 20 if target.pbHasType?(:FLYING)
-        score += 20 if target.hasActiveAbility?(:LEVITATE)
+        score += 20 if target.hasActiveAbility?(:LEVITATE) || @battle.pbCheckGlobalAbility(:ZEROGRAVITY)
         score += 20 if target.hasActiveItem?(:AIRBALLOON)
       end
     #---------------------------------------------------------------------------
@@ -2413,7 +2413,7 @@ class PokeBattle_AI
         score += 20 if target.effects[PBEffects::Telekinesis]>0
         score += 20 if target.inTwoTurnAttack?("0C9","0CC")   # Fly, Bounce
         score += 20 if target.pbHasType?(:FLYING)
-        score += 20 if target.hasActiveAbility?(:LEVITATE)
+        score += 20 if target.hasActiveAbility?(:LEVITATE) || @battle.pbCheckGlobalAbility(:ZEROGRAVITY)
         score += 20 if target.hasActiveItem?(:AIRBALLOON)
       end
     #---------------------------------------------------------------------------
@@ -2591,7 +2591,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasPhysicalAttack = false
           target.eachMove do |m|
-            next if !m.physicalMove?(m.type)
+            next if !m.pbPhysicalMove?(user, m.type)
             hasPhysicalAttack = true
             break
           end
@@ -2753,7 +2753,7 @@ class PokeBattle_AI
         if skill>=PBTrainerAI.mediumSkill
           hasSpecialAttack = false
           user.eachMove do |m|
-            next if !m.specialMove?(m.type)
+            next if !m.pbSpecialMove?(user, m.type)
             hasSpecialAttack = true
             break
           end
@@ -2889,7 +2889,7 @@ class PokeBattle_AI
           if skill>=PBTrainerAI.mediumSkill
             hasPhysicalAttack = false
             target.eachMove do |m|
-              next if !m.physicalMove?(m.type)
+              next if !m.pbPhysicalMove?(user, m.type)
               hasPhysicalAttack = true
               break
             end
@@ -3033,7 +3033,7 @@ class PokeBattle_AI
       if skill>=PBTrainerAI.mediumSkill
         hasPhysicalAttack = false
         target.eachMove do |m|
-          next if !m.physicalMove?(m.type)
+          next if !m.pbPhysicalMove?(user, m.type)
           hasPhysicalAttack = true
           break
         end

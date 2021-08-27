@@ -271,14 +271,14 @@ class PokeBattle_Move
   def pbModifyDamage(damageMult,user,target);         return damageMult; end
 
   def pbGetAttackStats(user,target)
-    if specialMove?
+    if pbSpecialMove?(user)
       return user.spatk, user.stages[:SPECIAL_ATTACK]+6
     end
     return user.attack, user.stages[:ATTACK]+6
   end
 
   def pbGetDefenseStats(user,target)
-    if specialMove? || (pbContactMove?(user) && user.hasActiveAbility?(:CACOPHONY))
+    if pbSpecialMove?(user) || (pbContactMove?(user) && user.hasActiveAbility?(:CACOPHONY))
       return target.spdef, target.stages[:SPECIAL_DEFENSE]+6
     end
     return target.defense, target.stages[:DEFENSE]+6
@@ -422,16 +422,16 @@ class PokeBattle_Move
     # Badge multipliers
     if @battle.internalBattle
       if user.pbOwnedByPlayer?
-        if physicalMove? && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_ATTACK
+        if pbPhysicalMove?(user) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_ATTACK
           multipliers[:attack_multiplier] *= 1.1
-        elsif specialMove? && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPATK
+        elsif pbSpecialMove?(user) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPATK
           multipliers[:attack_multiplier] *= 1.1
         end
       end
       if target.pbOwnedByPlayer?
-        if physicalMove? && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_DEFENSE
+        if pbPhysicalMove?(user) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_DEFENSE
           multipliers[:defense_multiplier] *= 1.1
-        elsif specialMove? && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPDEF
+        elsif pbSpecialMove?(user) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPDEF
           multipliers[:defense_multiplier] *= 1.1
         end
       end
@@ -457,7 +457,7 @@ class PokeBattle_Move
         multipliers[:final_damage_multiplier] *= 1.5
       end
     when :Sandstorm
-      if target.pbHasType?(:ROCK) && specialMove? && @function != "122"   # Psyshock
+      if target.pbHasType?(:ROCK) && pbSpecialMove?(user) && @function != "122"   # Psyshock
         multipliers[:defense_multiplier] *= 1.5
       end
     end
@@ -489,7 +489,7 @@ class PokeBattle_Move
     # Type effectiveness
     multipliers[:final_damage_multiplier] *= target.damageState.typeMod.to_f / Effectiveness::NORMAL_EFFECTIVE
     # Burn
-    if user.status == :BURN && physicalMove? && damageReducedByBurn? &&
+    if user.status == :BURN && pbPhysicalMove?(user) && damageReducedByBurn? &&
        !user.hasActiveAbility?(:GUTS)
       multipliers[:final_damage_multiplier] /= 2
     end
@@ -502,13 +502,13 @@ class PokeBattle_Move
         else
           multipliers[:final_damage_multiplier] /= 2
         end
-      elsif target.pbOwnSide.effects[PBEffects::Reflect] > 0 && physicalMove?
+      elsif target.pbOwnSide.effects[PBEffects::Reflect] > 0 && pbPhysicalMove?(user)
         if @battle.pbSideBattlerCount(target)>1
           multipliers[:final_damage_multiplier] *= 2 / 3.0
         else
           multipliers[:final_damage_multiplier] /= 2
         end
-      elsif target.pbOwnSide.effects[PBEffects::LightScreen] > 0 && specialMove?
+      elsif target.pbOwnSide.effects[PBEffects::LightScreen] > 0 && pbSpecialMove?(user)
         if @battle.pbSideBattlerCount(target) > 1
           multipliers[:final_damage_multiplier] *= 2 / 3.0
         else

@@ -940,7 +940,7 @@ end
 #===============================================================================
 class PokeBattle_Move_121 < PokeBattle_Move
   def pbGetAttackStats(user,target)
-    if specialMove?
+    if pbSpecialMove?(user)
       return target.spatk, target.stages[:SPECIAL_ATTACK]+6
     end
     return target.attack, target.stages[:ATTACK]+6
@@ -2167,6 +2167,8 @@ class PokeBattle_Move_164 < PokeBattle_Move_163
 
   def physicalMove?(thisType=nil); return (@calcCategory==0); end
   def specialMove?(thisType=nil);  return (@calcCategory==1); end
+  def pbPhysicalMove?(user,thisType=nil);    return true;  end
+  def pbSpecialMove?(user,thisType=nil);     return false; end
 
   def pbOnStartUse(user,targets)
     # Calculate user's effective attacking value

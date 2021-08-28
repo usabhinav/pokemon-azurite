@@ -167,7 +167,7 @@ class PokeBattle_Move_089 < PokeBattle_Move
   def pbAdditionalEffect(user,target)
     return if target.damageState.substitute
     return if !user.hasActiveItem?(:FRIENDLYCOLLAR)
-	chance = pbAdditionalEffectChance(user,target,10)
+	chance = pbAdditionalEffectChance(user,target,30)
     return if chance==0
     if @battle.pbRandom(100)<chance
     	target.pbAttract(user) if target.pbCanAttract?(user,false)

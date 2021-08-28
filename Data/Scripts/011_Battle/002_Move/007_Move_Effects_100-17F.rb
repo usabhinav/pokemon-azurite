@@ -2844,7 +2844,7 @@ end
 #===============================================================================
 # Astronomy
 #===============================================================================
-class PokeBattle_Move_24B < PokeBattle_Move
+class PokeBattle_Move_Astronomy < PokeBattle_Move
   def callsAnotherMove?; return true; end
 
   def initialize(battle,move)
@@ -2941,27 +2941,7 @@ class PokeBattle_Move_24B < PokeBattle_Move
       move_data = GameData::Move.get(move_id)
       next if @moveBlacklist.include?(move_data.function_code)
       next if @moveBlacklistSignatures.include?(move_data.id)
-      next if move_data.type == :SHADOW
-      next if move_data.type == :CRYSTAL
-      next if move_data.type == :LIGHT
-      next if move_data.type == :MYSTIC
-      next if move_data.type == :SOUND
-      next if move_data.type == :NORMAL
-      next if move_data.type == :FIGHTING
-      next if move_data.type == :WATER
-      next if move_data.type == :ELECTRIC
-      next if move_data.type == :GRASS
-      next if move_data.type == :FIRE
-      next if move_data.type == :ICE
-      next if move_data.type == :STEEL
-      next if move_data.type == :ROCK
-      next if move_data.type == :GROUND
-      next if move_data.type == :FLYING
-      next if move_data.type == :DRAGON
-      next if move_data.type == :GHOST
-      next if move_data.type == :BUG
-      next if move_data.type == :FAIRY
-      next if move_data.type == :DARK
+      next if move_data.type != :COSMIC
       @metronomeMove = move_data.id
       break
     end
@@ -3042,7 +3022,7 @@ end
 #===============================================================================
 # Wild Magic
 #===============================================================================
-class PokeBattle_Move_261 < PokeBattle_Move
+class PokeBattle_Move_Wildmagic < PokeBattle_Move
   def callsAnotherMove?; return true; end
 
   def initialize(battle,move)
@@ -3139,27 +3119,7 @@ class PokeBattle_Move_261 < PokeBattle_Move
       move_data = GameData::Move.get(move_id)
       next if @moveBlacklist.include?(move_data.function_code)
       next if @moveBlacklistSignatures.include?(move_data.id)
-      next if move_data.type == :SHADOW
-      next if move_data.type == :CRYSTAL
-      next if move_data.type == :LIGHT
-      next if move_data.type == :COSMIC
-      next if move_data.type == :SOUND
-      next if move_data.type == :NORMAL
-      next if move_data.type == :FIGHTING
-      next if move_data.type == :WATER
-      next if move_data.type == :ELECTRIC
-      next if move_data.type == :GRASS
-      next if move_data.type == :FIRE
-      next if move_data.type == :ICE
-      next if move_data.type == :STEEL
-      next if move_data.type == :ROCK
-      next if move_data.type == :GROUND
-      next if move_data.type == :FLYING
-      next if move_data.type == :DRAGON
-      next if move_data.type == :GHOST
-      next if move_data.type == :BUG
-      next if move_data.type == :FAIRY
-      next if move_data.type == :DARK
+      next if move_data.type != :MYSTIC
       @metronomeMove = move_data.id
       break
     end

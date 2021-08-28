@@ -62,6 +62,18 @@ class PokeBattle_AI
     if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
       ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     end
+    # Crystal Torrent (water moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALTORRENT) && moveType == :WATER
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Blaze (fire moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALBLAZE) && moveType == :FIRE
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Overgrow (grass moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALOVERGROW) && moveType == :GRASS
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
     # Deceptive (moves are at most neutral effective except fire/water/grass)
     if target.hasActiveAbility?(:DECEPTIVE)
       if ![:FIRE, :WATER, :GRASS].include?(moveType)

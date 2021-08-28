@@ -1643,6 +1643,12 @@ BattleHandlers::CriticalCalcUserAbility.add(:COUNTERPARRY,
   }
 )
 
+BattleHandlers::CriticalCalcUserAbility.add(:OMNIPOTENT,
+  proc { |ability,user,target,c|
+    next 99
+  }
+)
+
 #===============================================================================
 # CriticalCalcTargetAbility handlers
 #===============================================================================

@@ -820,6 +820,27 @@ BattleHandlers::MoveImmunityTargetAbility.add(:HUMIDIFY,
   }
 )
 
+BattleHandlers::MoveImmunityTargetAbility.add(:QUARTZARMOR,
+  proc { |ability,user,target,move,type,battle|
+    next false if type != :WATER
+    battle.pbShowAbilitySplash(target)
+    if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
+    else
+      battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+        target.pbThis,target.abilityName,move.name))
+    end
+    if target.pbCanRaiseStatStage?(:SPECIAL_DEFENSE,target)
+      target.pbRaiseStatStageByAbility(:SPECIAL_DEFENSE,1,target,false)
+    end
+    if target.pbCanLowerStatStage?(:SPEED,target)
+      target.pbLowerStatStageByAbility(:SPEED,1,target,false)
+    end
+    battle.pbHideAbilitySplash(target)
+    next true
+  }
+)
+
 #===============================================================================
 # MoveBaseTypeModifierAbility handlers
 #===============================================================================
@@ -1396,6 +1417,12 @@ BattleHandlers::DamageCalcUserAbility.add(:PRODIGY,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:CRYSTALSTINGER,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:final_damage_multiplier] *= 2
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -1607,6 +1634,12 @@ BattleHandlers::CriticalCalcUserAbility.add(:MERCILESS,
 BattleHandlers::CriticalCalcUserAbility.add(:SUPERLUCK,
   proc { |ability,user,target,c|
     next c+1
+  }
+)
+
+BattleHandlers::CriticalCalcUserAbility.add(:COUNTERPARRY,
+  proc { |ability,user,target,c|
+    next 99 if user.hasActiveAbility?(:COUNTERPARRY) && user.effects[PBEffects::CounterParry]
   }
 )
 
@@ -2166,6 +2199,13 @@ BattleHandlers::TargetAbilityOnHit.add(:FRAGRANCE,
   }
 )
 
+BattleHandlers::TargetAbilityOnHit.add(:COUNTERPARRY,
+  proc { |ability,user,target,move,battle|
+    next if !move.pbPhysicalMove?(user)
+    target.effects[PBEffects::CounterParry] = true
+  }
+)
+
 #===============================================================================
 # UserAbilityOnHit handlers
 #===============================================================================
@@ -2471,6 +2511,18 @@ BattleHandlers::UserAbilityOnHit.add(:FRAGRANCE,
     atk_stat = move.pbSpecialMove?(user) ? :SPECIAL_ATTACK : :ATTACK
     next if !target.pbCanLowerStatStage?(atk_stat, user)
     target.pbLowerStatStageByAbility(atk_stat, 1, user)
+  }
+)
+
+BattleHandlers::UserAbilityOnHit.add(:CRYSTALSTINGER,
+  proc { |ability,user,target,move,battle|
+    next if !user.takesIndirectDamage?
+    battle.pbShowAbilitySplash(user)
+    battle.pbDisplay(_INTL("{1} is damaged by recoil!", user.pbThis))
+    battle.scene.pbDamageAnimation(user,0)
+    user.pbReduceHP(target.damageState.calcDamage/2)
+    user.pbFaint if user.fainted?
+    battle.pbHideAbilitySplash(user)
   }
 )
 
@@ -3173,6 +3225,12 @@ BattleHandlers::EOREffectAbility.add(:DYNAMICPOWER,
     battler.effects[PBEffects::DynamicPower] += 1
     battle.pbDisplay(_INTL("{1}'s base stats increased!", battler.pbThis))
     battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::EOREffectAbility.add(:COUNTERPARRY,
+  proc { |ability,battler,battle|
+    battler.effects[PBEffects::CounterParry] = false
   }
 )
 

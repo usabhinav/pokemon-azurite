@@ -357,6 +357,8 @@ end
 
 #===============================================================================
 # Randomly damages or heals the target. (Present)
+# Edited to randomly damage the target or heal allies if the user has
+# Merry Christmas (Merry Christmas ya fools).
 # NOTE: Apparently a Normal Gem should be consumed even if this move will heal,
 #       but I think that's silly so I've omitted that effect.
 #===============================================================================
@@ -370,9 +372,14 @@ class PokeBattle_Move_094 < PokeBattle_Move
     end
   end
 
+  def pbBaseType(user)
+    return :CRYSTAL if user.hasActiveAbility?(:MERRYCHRISTMAS)
+    return super
+  end
+  
   def pbFailsAgainstTarget?(user,target)
     return false if @presentDmg>0
-    if !target.canHeal?
+    if !target.canHeal? && !user.hasActiveAbility?(:MERRYCHRISTMAS)
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -385,16 +392,45 @@ class PokeBattle_Move_094 < PokeBattle_Move
   end
 
   def pbBaseDamage(baseDmg,user,target)
+    if user.hasActiveAbility?(:MERRYCHRISTMAS)
+      happiness_range = target.happiness / 100
+      return [150, 120, 100][happiness_range]
+    end
     return @presentDmg
   end
 
   def pbEffectAgainstTarget(user,target)
     return if @presentDmg>0
+    return if user.hasActiveAbility?(:MERRYCHRISTMAS)
     target.pbRecoverHP(target.totalhp/4)
     @battle.pbDisplay(_INTL("{1}'s HP was restored.",target.pbThis))
   end
 
+  def pbEffectGeneral(user)
+    return if @presentDmg>0
+    return if !user.hasActiveAbility?(:MERRYCHRISTMAS)
+    # I'd put this validation in pbMoveFailed?, but I can't because @presentDmg
+    # is initialized in pbOnStartUse, which only occurs AFTER pbMoveFailed? is called
+    canHealAlly = false
+    user.eachAlly do |b|
+      canHealAlly = true if b.canHeal?
+    end
+    if !canHealAlly
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return
+    end
+    # Heal allies
+    user.eachAlly do |b|
+      next if !b.canHeal?
+      happiness_range = b.happiness / 100
+      heal_factor = [0.1, 0.4, 0.7][happiness_range]
+      b.pbRecoverHP(b.totalhp * heal_factor)
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.",b.pbThis))
+    end
+  end
+
   def pbShowAnimation(id,user,targets,hitNum=0,showAnimation=true)
+    return if @presentDmg == 0 && user.hasActiveAbility?(:MERRYCHRISTMAS)
     hitNum = 1 if @presentDmg==0   # Healing anim
     super
   end

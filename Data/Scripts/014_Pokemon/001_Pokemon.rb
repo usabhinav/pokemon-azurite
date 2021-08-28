@@ -521,6 +521,9 @@ class Pokemon
   def item=(value)
     return if value && !GameData::Item.exists?(value)
     @item = (value) ? GameData::Item.get(value).id : value
+	if hasItem?(:AWFULCOLLAR)
+      @happiness = 0
+    end
   end
 
   # Returns whether this Pokémon is holding an item. If an item id is passed,
@@ -869,6 +872,9 @@ class Pokemon
   # Changes the happiness of this Pokémon depending on what happened to change it.
   # @param method [String] the happiness changing method (e.g. 'walking')
   def changeHappiness(method)
+	if hasItem?(:AWFULCOLLAR)
+      method = ":("
+    end
     gain = 0
     happiness_range = @happiness / 100
     case method
@@ -896,6 +902,9 @@ class Pokemon
       gain = [-10, -10, -15][happiness_range]
     when "revivalherb"
       gain = [-15, -15, -20][happiness_range]
+	when ":("
+      gain = 0
+      @happiness = 0
     else
       raise _INTL("Unknown happiness-changing method: {1}", method.to_s)
     end

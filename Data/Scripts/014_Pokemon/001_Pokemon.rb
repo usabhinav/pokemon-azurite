@@ -903,8 +903,8 @@ class Pokemon
     when "revivalherb"
       gain = [-15, -15, -20][happiness_range]
 	when ":("
-      gain = 0
       @happiness = 0
+	  return
     else
       raise _INTL("Unknown happiness-changing method: {1}", method.to_s)
     end

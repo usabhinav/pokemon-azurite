@@ -494,9 +494,14 @@ class PokeBattle_Move
         multipliers[:final_damage_multiplier] *= 1.5
       end
     end
-    # Crystal Surge
-    if user.hasActiveAbility?(:CRYSTALSURGE) && type == :CRYSTAL && !user.pbHasType?(:CRYSTAL)
-      multipliers[:final_damage_multiplier] *= 1.5
+    # Monarch
+    for pkmn in @battle.pbParty(user.index)
+      next if @battle.moldBreaker
+      next if pkmn == user.pokemon
+      next if pkmn.fainted?
+      if pkmn.hasAbility?(:MONARCH) && pkmn.types.intersection(user.pokemon.types).length > 0
+        multipliers[:final_damage_multiplier] *= 1.25
+      end
     end
     # Type effectiveness
     multipliers[:final_damage_multiplier] *= target.damageState.typeMod.to_f / Effectiveness::NORMAL_EFFECTIVE

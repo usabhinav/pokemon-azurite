@@ -841,6 +841,25 @@ BattleHandlers::MoveImmunityTargetAbility.add(:QUARTZARMOR,
   }
 )
 
+BattleHandlers::MoveImmunityTargetAbility.add(:WINTERSPIRIT,
+  proc { |ability,user,target,move,type,battle|
+    next false if type != :NORMAL && type != :FIGHTING
+    next false if !move.pbContactMove?(user)
+    battle.pbShowAbilitySplash(target)
+    if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
+    else
+      battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+        target.pbThis,target.abilityName,move.name))
+    end
+    if user.pbCanFreeze?(target, false)
+      user.pbFreeze
+    end
+    battle.pbHideAbilitySplash(target)
+    next true
+  }
+)
+
 #===============================================================================
 # MoveBaseTypeModifierAbility handlers
 #===============================================================================
@@ -1337,6 +1356,14 @@ BattleHandlers::DamageCalcUserAbility.add(:ENTERSPHERE,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:CRYSTALSURGE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if type != :CRYSTAL
+    next if user.pbHasType?(:CRYSTAL)
+    mults[:final_damage_multiplier] *= 1.5
+  }
+)
+
 BattleHandlers::DamageCalcUserAbility.add(:VANGUARD,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if user.turnCount != 1
@@ -1420,6 +1447,14 @@ BattleHandlers::DamageCalcUserAbility.add(:PRODIGY,
 BattleHandlers::DamageCalcUserAbility.add(:CRYSTALSTINGER,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[:final_damage_multiplier] *= 2
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:WINTERSPIRIT,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if type != :GHOST
+    next if user.battle.pbWeather != :Hail
+    mults[:final_damage_multiplier] *= 1.5
   }
 )
 
@@ -2643,6 +2678,28 @@ BattleHandlers::UserAbilityEndOfMove.add(:TRICKSTER,
       user.pbHeldItemTriggerCheck
       b.pbHeldItemTriggerCheck
       break
+    end
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:OPPORTUNIST,
+  proc { |ability,user,targets,move,battle|
+    next if move.accuracy == 0
+    # Validate that all targets were unaffected
+    allUnaffected = true
+    for b in targets
+      allUnaffected = false if !b.damageState.unaffected
+    end
+    next if !allUnaffected
+    # Lower user's defense
+    if move.accuracy < 60
+      if user.pbCanLowerStatStage?(:DEFENSE, user)
+        user.pbLowerStatStageByAbility(:DEFENSE, 2, user)
+      end
+    elsif move.accuracy < 100
+      if user.pbCanLowerStatStage?(:DEFENSE, user)
+        user.pbLowerStatStageByAbility(:DEFENSE, 1, user)
+      end
     end
   }
 )

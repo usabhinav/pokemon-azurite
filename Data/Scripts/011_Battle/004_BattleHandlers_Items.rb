@@ -944,7 +944,7 @@ BattleHandlers::DamageCalcTargetItem.add(:PASSHOBERRY,
 
 BattleHandlers::DamageCalcTargetItem.add(:PLATEBODY,
   proc { |item,user,target,move,mults,baseDmg,type|
-    mults[:defense_multiplier] *= 1.5 if move.physicalMove?
+    mults[:defense_multiplier] *= 1.5 if move.pbPhysicalMove?(user)
   }
 )
 

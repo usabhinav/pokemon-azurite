@@ -292,6 +292,13 @@ class PokeBattle_Battler
     target.damageState.typeMod = typeMod
     # Two-turn attacks can't fail here in the charging turn
     return true if user.effects[PBEffects::TwoTurnAttack]
+    # Omnipotent
+    if target.hasActiveAbility?(:OMNIPOTENT)
+      @battle.pbShowAbilitySplash(target)
+      @battle.pbDisplay(_INTL("{1} evaded the attack!", target.pbThis))
+      @battle.pbHideAbilitySplash(target)
+      return false
+    end
     # Move-specific failures
     return false if move.pbFailsAgainstTarget?(user,target)
     # Immunity to priority moves because of Psychic Terrain

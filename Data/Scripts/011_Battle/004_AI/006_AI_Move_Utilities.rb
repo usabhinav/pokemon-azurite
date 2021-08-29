@@ -62,6 +62,18 @@ class PokeBattle_AI
     if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
       ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     end
+    # Crystal Torrent (water moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALTORRENT) && moveType == :WATER
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Blaze (fire moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALBLAZE) && moveType == :FIRE
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Overgrow (grass moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALOVERGROW) && moveType == :GRASS
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
     # Deceptive (moves are at most neutral effective except fire/water/grass)
     if target.hasActiveAbility?(:DECEPTIVE)
       if ![:FIRE, :WATER, :GRASS].include?(moveType)
@@ -527,9 +539,14 @@ class PokeBattle_AI
           multipliers[:final_damage_multiplier] *= 1.5
         end
       end
-      # Crystal Surge
-      if user.hasActiveAbility?(:CRYSTALSURGE) && type == :CRYSTAL && !user.pbHasType?(:CRYSTAL)
-        multipliers[:final_damage_multiplier] *= 1.5
+      # Monarch
+      for pkmn in @battle.pbParty(user.index)
+        next if @battle.moldBreaker
+        next if pkmn == user.pokemon
+        next if pkmn.fainted?
+        if pkmn.hasAbility?(:MONARCH) && pkmn.types.intersection(user.pokemon.types).length > 0
+          multipliers[:final_damage_multiplier] *= 1.25
+        end
       end
     end
     # Type effectiveness

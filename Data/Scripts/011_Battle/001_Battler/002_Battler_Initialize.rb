@@ -295,6 +295,7 @@ class PokeBattle_Battler
     @effects[PBEffects::StealthRockArmor]    = false
     @effects[PBEffects::VoltSpikesArmor]     = 0
     @effects[PBEffects::CounterParry]        = false
+    @effects[PBEffects::Overcharged]         = 0
   end
 
   #=============================================================================

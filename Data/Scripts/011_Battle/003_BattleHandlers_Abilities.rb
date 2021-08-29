@@ -926,6 +926,22 @@ BattleHandlers::MoveBaseTypeModifierAbility.add(:SAKURA,
   }
 )
 
+BattleHandlers::MoveBaseTypeModifierAbility.add(:MINDTRICK,
+  proc { |ability,user,move,type|
+    next if type != :PSYCHIC || !GameData::Type.exists?(:MYSTIC)
+    move.powerBoost = true
+    next :MYSTIC
+  }
+)
+
+BattleHandlers::MoveBaseTypeModifierAbility.add(:GALAXYBRAIN,
+  proc { |ability,user,move,type|
+    next if type != :PSYCHIC || !GameData::Type.exists?(:COSMIC)
+    move.powerBoost = true
+    next :COSMIC
+  }
+)
+
 #===============================================================================
 # AccuracyCalcUserAbility handlers
 #===============================================================================
@@ -1065,7 +1081,7 @@ BattleHandlers::DamageCalcUserAbility.add(:AERILATE,
   }
 )
 
-BattleHandlers::DamageCalcUserAbility.copy(:AERILATE, :PIXILATE, :REFRIGERATE, :GALVANIZE, :NORMALIZE, :CRYSTALATE)
+BattleHandlers::DamageCalcUserAbility.copy(:AERILATE, :PIXILATE, :REFRIGERATE, :GALVANIZE, :NORMALIZE, :CRYSTALATE, :MINDTRICK, :GALAXYBRAIN)
 
 BattleHandlers::DamageCalcUserAbility.add(:SAKURA,
   proc { |ability,user,target,move,mults,baseDmg,type|
@@ -1458,6 +1474,13 @@ BattleHandlers::DamageCalcUserAbility.add(:WINTERSPIRIT,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:OVERCHARGED,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if type != :ELECTRIC
+    mults[:base_damage_multiplier] *= 1 + (user.effects[PBEffects::Overcharged] * 0.15)
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -1615,6 +1638,13 @@ BattleHandlers::DamageCalcTargetAbility.add(:VINECOILSTYLE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if !move.pbContactMove?(user)
     mults[:base_damage_multiplier] *= 0.7
+  }
+)
+
+BattleHandlers::DamageCalcTargetAbility.add(:REFLECTIVE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if !move.pbSpecialMove?(user)
+    mults[:base_damage_multiplier] *= 0.5
   }
 )
 
@@ -2821,6 +2851,24 @@ BattleHandlers::UserAbilityEndOfMove.add(:WONDERHARP,
       end
     end
     battle.pbHideAbilitySplash(user)
+  }
+)
+
+BattleHandlers::UserAbilityEndOfMove.add(:OVERCHARGED,
+  proc { |ability,user,targets,move,battle|
+    if move.calcType == :ELECTRIC && move.pbDamagingMove?
+      if user.effects[PBEffects::Overcharged] > 0
+        user.effects[PBEffects::Overcharged] = 0
+        battle.pbShowAbilitySplash(user)
+        battle.pbDisplay(_INTL("{1} discharged its stored up energy!", user.pbThis))
+        battle.pbHideAbilitySplash(user)
+      end
+    elsif user.effects[PBEffects::Overcharged] < 3
+      user.effects[PBEffects::Overcharged] += 1
+      battle.pbShowAbilitySplash(user)
+      battle.pbDisplay(_INTL("{1} stored up energy!", user.pbThis))
+      battle.pbHideAbilitySplash(user)
+    end
   }
 )
 

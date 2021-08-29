@@ -183,7 +183,11 @@ end
 #===============================================================================
 class PokeBattle_Move_08A < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-    return [((255-user.happiness)*2/5).floor,1].max
+	dmg = [((255-user.happiness)*2/5).floor,1].max
+	if user.hasActiveItem?(:AWFULCOLLAR)
+		dmg *= 1.2
+	end
+    return dmg
   end
 end
 

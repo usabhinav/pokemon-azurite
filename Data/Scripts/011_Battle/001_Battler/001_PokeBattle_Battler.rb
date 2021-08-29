@@ -563,7 +563,7 @@ class PokeBattle_Battler
     return true if hasActiveAbility?(:LIGHTNINGROD)
     return false if pbHasType?(:ELECTRIC)
     return false if hasActiveAbility?([:WEATHERBENEFIT])
-	return false if hasActiveItem?(:IRONSHELL)
+	  return false if hasActiveItem?(:IRONSHELL)
     return true
   end
 

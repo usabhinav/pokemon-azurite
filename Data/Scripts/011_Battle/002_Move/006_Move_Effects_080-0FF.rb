@@ -167,13 +167,12 @@ class PokeBattle_Move_089 < PokeBattle_Move
   def pbAdditionalEffect(user,target)
     return if target.damageState.substitute
     return if !user.hasActiveItem?(:FRIENDLYCOLLAR)
-	chance = pbAdditionalEffectChance(user,target,30)
+	  chance = pbAdditionalEffectChance(user,target,30)
     return if chance==0
     if @battle.pbRandom(100)<chance
-    	target.pbAttract(user) if target.pbCanAttract?(user,false)
-	end
+      target.pbAttract(user) if target.pbCanAttract?(user,false)
+	  end
   end
-
 end
 
 
@@ -183,10 +182,10 @@ end
 #===============================================================================
 class PokeBattle_Move_08A < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-	dmg = [((255-user.happiness)*2/5).floor,1].max
-	if user.hasActiveItem?(:AWFULCOLLAR)
-		dmg *= 1.2
-	end
+    dmg = [((255-user.happiness)*2/5).floor,1].max
+    if user.hasActiveItem?(:AWFULCOLLAR)
+      dmg *= 1.2
+    end
     return dmg
   end
 end

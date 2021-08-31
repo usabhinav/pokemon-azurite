@@ -583,6 +583,13 @@ BattleHandlers::PriorityChangeAbility.add(:RAPIDSTREAM,
   }
 )
 
+# Lowest possible bracket
+BattleHandlers::PriorityChangeAbility.add(:IMMOVABLE,
+  proc { |ability,battler,move,pri|
+    next -7
+  }
+)
+
 #===============================================================================
 # PriorityBracketChangeAbility handlers
 #===============================================================================
@@ -592,6 +599,9 @@ BattleHandlers::PriorityBracketChangeAbility.add(:STALL,
     next -1 if subPri==0
   }
 )
+
+# Last within bracket
+BattleHandlers::PriorityBracketChangeAbility.copy(:STALL, :IMMOVABLE)
 
 #===============================================================================
 # PriorityBracketUseAbility handlers
@@ -852,7 +862,7 @@ BattleHandlers::MoveImmunityTargetAbility.add(:WINTERSPIRIT,
       battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
         target.pbThis,target.abilityName,move.name))
     end
-    if user.pbCanFreeze?(target, false)
+    if user.pbCanFreeze?(target, false) && user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
       user.pbFreeze
     end
     battle.pbHideAbilitySplash(target)
@@ -2266,7 +2276,9 @@ BattleHandlers::TargetAbilityOnHit.add(:FRAGRANCE,
     next if battle.pbRandom(100) >= 30
     atk_stat = move.pbSpecialMove?(user) ? :SPECIAL_ATTACK : :ATTACK
     next if !user.pbCanLowerStatStage?(atk_stat, target)
-    user.pbLowerStatStageByAbility(atk_stat, 1, target)
+    if user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
+      user.pbLowerStatStageByAbility(atk_stat, 1, target)
+    end
   }
 )
 
@@ -4073,6 +4085,31 @@ BattleHandlers::AbilityOnSwitchIn.add(:CHILLING,
       b.pbItemOnIntimidatedCheck # Copied from Intimidate
     end
     battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:IMMOVABLE,
+  proc { |ability,battler,battle|
+    battle.pbShowAbilitySplash(battler)
+    if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
+      battler.pbRaiseStatStageByAbility(:DEFENSE, 3, battler, false)
+    end
+    if battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
+      battler.pbRaiseStatStageByAbility(:SPECIAL_DEFENSE, 3, battler, false)
+    end
+    if battler.pbCanLowerStatStage?(:SPEED, battler)
+      battler.pbLowerStatStageByAbility(:SPEED, 3, battler, false)
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:LAVAFLOOR,
+  proc { |ability,battler,battle|
+    next if battle.field.terrain == :Lava
+    battle.pbShowAbilitySplash(battler)
+    battle.pbStartTerrain(battler, :Lava)
+    # NOTE: The ability splash is hidden again in def pbStartTerrain.
   }
 )
 

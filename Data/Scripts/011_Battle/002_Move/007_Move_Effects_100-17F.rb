@@ -407,6 +407,9 @@ class PokeBattle_Move_110 < PokeBattle_Move
     if user.pbOwnSide.effects[PBEffects::VoltSpikes]>0
       user.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
       @battle.pbDisplay(_INTL("{1} blew away volt spikes!",user.pbThis))
+      if target.pbCanParalyze?(user, false)
+        target.pbParalyze(user, _INTL("{1} was paralyzed by the volt spikes!", target.pbThis))
+      end
     end
     if user.pbOwnSide.effects[PBEffects::StickyWeb]
       user.pbOwnSide.effects[PBEffects::StickyWeb] = false

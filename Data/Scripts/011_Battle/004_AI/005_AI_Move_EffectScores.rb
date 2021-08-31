@@ -1367,6 +1367,8 @@ class PokeBattle_AI
           new_type = :FAIRY if GameData::Type.exists?(:FAIRY)
         when :Psychic
           new_type = :PSYCHIC if GameData::Type.exists?(:PSYCHIC)
+        when :Lava
+          new_type = :FIRE if GameData::Type.exists?(:FIRE)
         end
         if !new_type
           envtypes = {

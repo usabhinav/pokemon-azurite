@@ -930,6 +930,8 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
       @secretPower = 3   # Fairy Wind, lower Sp. Atk by 1
     when :Psychic
       @secretPower = 4   # Confusion, lower Speed by 1
+    when :Lava
+      @secretPower = 10   # (Same as Volcano environment)
     else
       case @battle.environment
       when :Grass, :TallGrass, :Forest, :ForestGrass
@@ -1371,6 +1373,8 @@ class PokeBattle_Move_0B3 < PokeBattle_Move
       @npMove = :MOONBLAST if GameData::Move.exists?(:MOONBLAST)
     when :Psychic
       @npMove = :PSYCHIC if GameData::Move.exists?(:PSYCHIC)
+    when :Lava
+      @npMove = :LAVAPLUME if GameData::Move.exists?(:LAVAPLUME)
     else
       case @battle.environment
       when :Grass, :TallGrass, :Forest, :ForestGrass

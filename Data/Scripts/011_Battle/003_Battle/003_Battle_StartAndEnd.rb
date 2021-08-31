@@ -297,6 +297,8 @@ class PokeBattle_Battle
       pbDisplay(_INTL("Mist swirls about the battlefield!"))
     when :Psychic
       pbDisplay(_INTL("The battlefield is weird!"))
+    when :Lava
+      pbDisplay(_INTL("Lava is covering the battlefield!"))
     end
     # Abilities upon entering battle
     pbOnActiveAll

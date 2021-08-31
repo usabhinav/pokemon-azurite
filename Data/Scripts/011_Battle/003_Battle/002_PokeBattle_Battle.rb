@@ -730,6 +730,8 @@ class PokeBattle_Battle
       pbDisplay(_INTL("Mist swirled about the battlefield!"))
     when :Psychic
       pbDisplay(_INTL("The battlefield got weird!"))
+    when :Lava
+      pbDisplay(_INTL("Lava appeared on the battlefield!"))
     end
     # Check for terrain seeds that boost stats in a terrain
     eachBattler { |b| b.pbItemTerrainStatBoostCheck }

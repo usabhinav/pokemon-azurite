@@ -1357,6 +1357,8 @@ class PokeBattle_Move_049 < PokeBattle_TargetStatDownMove
         @battle.pbDisplay(_INTL("The mist disappeared from the battlefield."))
       when :Psychic
         @battle.pbDisplay(_INTL("The weirdness disappeared from the battlefield."))
+      when :Lava
+        @battle.pbDisplay(_INTL("The lava disappeared from the battlefield."))
       end
       @battle.field.terrain = :None
     end
@@ -1893,6 +1895,11 @@ class PokeBattle_Move_060 < PokeBattle_Move
     when :Psychic
       if GameData::Type.exists?(:PSYCHIC)
         @newType = :PSYCHIC
+        checkedTerrain = true
+      end
+    when :Lava
+      if GameData::Type.exists?(:FIRE)
+        @newType = :FIRE
         checkedTerrain = true
       end
     end

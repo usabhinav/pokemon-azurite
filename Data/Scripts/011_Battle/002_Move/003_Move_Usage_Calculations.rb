@@ -430,6 +430,8 @@ class PokeBattle_Move
       multipliers[:base_damage_multiplier] *= 1.5 if type == :PSYCHIC && user.affectedByTerrain?
     when :Misty
       multipliers[:base_damage_multiplier] /= 2 if type == :DRAGON && target.affectedByTerrain?
+    when :Lava
+      multipliers[:base_damage_multiplier] *= 1.3 if type == :FIRE && user.affectedByTerrain?
     end
     # Badge multipliers
     if @battle.internalBattle

@@ -56,3 +56,9 @@ GameData::BattleTerrain.register({
   :name      => _INTL("Psychic"),
   :animation => "PsychicTerrain"
 })
+
+GameData::BattleTerrain.register({
+  :id        => :Lava,
+  :name      => _INTL("Lava"),
+  :animation => "LavaTerrain"
+})

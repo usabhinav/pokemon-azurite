@@ -1491,6 +1491,16 @@ BattleHandlers::DamageCalcUserAbility.add(:OVERCHARGED,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:BERSERKER,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    next if user.totalhp <= 1 # Probably not possible but just in case
+    # User hp range is 1..totalhp
+    # Mult should be 1x at full hp, and 2x at 1 HP
+    berserkerRatio = (1 - ((user.hp.to_f - 1) / (user.totalhp - 1)))
+    mults[:final_damage_multiplier] *= 1 + berserkerRatio
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -3357,6 +3367,41 @@ BattleHandlers::EOREffectAbility.add(:COUNTERPARRY,
   }
 )
 
+BattleHandlers::EOREffectAbility.add(:SOULABSORB,
+  proc { |ability,battler,battle|
+    next if !battler.canHeal?
+    # Get number of affected battlers
+    battlerCount = 0
+    battle.eachBattler do |b|
+      next if b.index == battler.index
+      next if !b.takesIndirectDamage?
+      battlerCount += 1
+    end
+    # Calculate hp drain per battler
+    totalHPDrain = battle.singleBattle? ? battler.totalhp/4 : battler.totalhp/2
+    hpDrain = totalHPDrain / battlerCount
+    # Do damage and heal ability user
+    battle.pbShowAbilitySplash(battler)
+    battle.eachBattler do |b|
+      next if b.index == battler.index
+      next if !b.takesIndirectDamage?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
+      oldHP = b.hp
+      b.pbReduceHP(hpDrain)
+      battler.pbRecoverHP(hpDrain) if battler.canHeal?
+      if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1} absorbed {2}'s HP!",battler.pbThis,b.pbThis(true)))
+      else
+        battle.pbDisplay(_INTL("{1} absorbed {2}'s HP with {3}!",battler.pbThis,
+           b.pbThis(true),battler.abilityName))
+      end
+      b.pbItemHPHealCheck
+      b.pbAbilitiesOnDamageTaken(oldHP)
+      b.pbFaint if b.fainted?
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # EORGainItemAbility handlers
 #===============================================================================
@@ -4110,6 +4155,27 @@ BattleHandlers::AbilityOnSwitchIn.add(:LAVAFLOOR,
     battle.pbShowAbilitySplash(battler)
     battle.pbStartTerrain(battler, :Lava)
     # NOTE: The ability splash is hidden again in def pbStartTerrain.
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:HIVEMIND,
+  proc { |ability,battler,battle|
+    party = battle.pbParty(battler.index)
+    bugCount = 0
+    party.each_with_index do |pkmn, i|
+      next if battler.pokemonIndex == i
+      next if !pkmn.hasType?(:BUG)
+      bugCount += 1
+    end
+    next if bugCount == 0
+    battle.pbShowAbilitySplash(battler)
+    if battler.pbCanRaiseStatStage?(:ATTACK, battler)
+      battler.pbRaiseStatStageByAbility(:ATTACK, bugCount, battler, false)
+    end
+    if battler.pbCanRaiseStatStage?(:SPECIAL_ATTACK, battler)
+      battler.pbRaiseStatStageByAbility(:SPECIAL_ATTACK, bugCount, battler, false)
+    end
+    battle.pbHideAbilitySplash(battler)
   }
 )
 

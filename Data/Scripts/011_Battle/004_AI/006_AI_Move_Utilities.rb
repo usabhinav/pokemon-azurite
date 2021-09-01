@@ -542,9 +542,9 @@ class PokeBattle_AI
         end
       end
       # Monarch
-      for pkmn in @battle.pbParty(user.index)
+      @battle.pbParty(user.index).each_with_index do |pkmn, i|
         next if @battle.moldBreaker
-        next if pkmn == user.pokemon
+        next if user.pokemonIndex == i
         next if pkmn.fainted?
         if pkmn.hasAbility?(:MONARCH) && pkmn.types.intersection(user.pokemon.types).length > 0
           multipliers[:final_damage_multiplier] *= 1.25

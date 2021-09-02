@@ -1501,6 +1501,13 @@ BattleHandlers::DamageCalcUserAbility.add(:BERSERKER,
   }
 )
 
+BattleHandlers::DamageCalcUserAbility.add(:EXPLOSIVEEXHAUST,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    # Recoil move or move function for Explosion (or Self-Destruct), Final Gambit, or Mind Blown
+    mults[:base_damage_multiplier] *= 1.5 if move.recoilMove? || ["0E0", "0E1", "170"].include?(move.function)
+  }
+)
+
 #===============================================================================
 # DamageCalcUserAllyAbility handlers
 #===============================================================================
@@ -3402,6 +3409,23 @@ BattleHandlers::EOREffectAbility.add(:SOULABSORB,
   }
 )
 
+BattleHandlers::EOREffectAbility.add(:GLEAMINGGLARE,
+  proc { |ability,battler,battle|
+    next if battle.pbRandom(100) >= 10
+    # Validate if any opponents can be paralyzed
+    targets = []
+    battler.eachOpposing do |b|
+      targets.push(b) if b.pbCanParalyze?(battler, false)
+    end
+    next if targets.length == 0
+    # Paralyze a random foe
+    paralyzedBattler = targets[battle.pbRandom(targets.length)]
+    battle.pbShowAbilitySplash(battler)
+    paralyzedBattler.pbParalyze(battler)
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # EORGainItemAbility handlers
 #===============================================================================
@@ -4175,6 +4199,63 @@ BattleHandlers::AbilityOnSwitchIn.add(:HIVEMIND,
     if battler.pbCanRaiseStatStage?(:SPECIAL_ATTACK, battler)
       battler.pbRaiseStatStageByAbility(:SPECIAL_ATTACK, bugCount, battler, false)
     end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:OMNIGENE,
+  proc { |ability,battler,battle|
+    # Item type map copied from Judgment move function (09F)
+    itemTypes = {
+      :FISTPLATE   => :FIGHTING,
+      :SKYPLATE    => :FLYING,
+      :TOXICPLATE  => :POISON,
+      :EARTHPLATE  => :GROUND,
+      :STONEPLATE  => :ROCK,
+      :INSECTPLATE => :BUG,
+      :SPOOKYPLATE => :GHOST,
+      :IRONPLATE   => :STEEL,
+      :FLAMEPLATE  => :FIRE,
+      :SPLASHPLATE => :WATER,
+      :MEADOWPLATE => :GRASS,
+      :ZAPPLATE    => :ELECTRIC,
+      :MINDPLATE   => :PSYCHIC,
+      :ICICLEPLATE => :ICE,
+      :DRACOPLATE  => :DRAGON,
+      :DREADPLATE  => :DARK,
+      :PIXIEPLATE  => :FAIRY
+    }
+    newType = nil
+    if battler.itemActive?
+      itemTypes.each do |item, itemType|
+        next if battler.item != item
+        newType = itemType if GameData::Type.exists?(itemType)
+        break
+      end
+    end
+    if newType
+      battle.pbShowAbilitySplash(battler)
+      battler.pbChangeTypes(newType)
+      battle.pbDisplay(_INTL("{1} used its {2} to change into the {3} type!",battler.pbThis,battler.itemName,GameData::Type.get(newType).name))
+      battle.pbHideAbilitySplash(battler)
+    end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:CLAIRVOYANT,
+  proc { |ability,battler,battle|
+    # Validate that any opponents don't already have a Future Sight counter active
+    targets = []
+    battler.eachOpposing do |b|
+      next if b.fainted?
+      next if battle.positions[b.index].effects[PBEffects::FutureSightCounter]>0
+      targets.push(b)
+    end
+    next if targets.length == 0
+    # Do Future Sight attack
+    randTarget = targets[battle.pbRandom(targets.length)]
+    battle.pbShowAbilitySplash(battler)
+    battler.pbUseMoveExtra(:FUTURESIGHT, randTarget.index)
     battle.pbHideAbilitySplash(battler)
   }
 )

@@ -535,7 +535,7 @@ class PokeBattle_AI
     # STAB
     if skill>=PBTrainerAI.mediumSkill
       if type && user.pbHasType?(type)
-        if user.hasActiveAbility?(:ADAPTABILITY)
+        if user.hasActiveAbility?([:ADAPTABILITY, :OMNIGENE])
           multipliers[:final_damage_multiplier] *= 2
         else
           multipliers[:final_damage_multiplier] *= 1.5

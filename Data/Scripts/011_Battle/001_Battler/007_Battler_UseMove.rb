@@ -424,7 +424,7 @@ class PokeBattle_Battler
       end
     end
     # Protean or Omnigene
-    if (user.hasActiveAbility?(:PROTEAN) || user.hasActiveAbility?(:OMNIGENE)) && !move.callsAnotherMove? && !move.snatched
+    if (user.hasActiveAbility?([:PROTEAN, :OMNIGENE])) && !move.callsAnotherMove? && !move.snatched
       if user.pbHasOtherType?(move.calcType) && !GameData::Type.get(move.calcType).pseudo_type
         @battle.pbShowAbilitySplash(user)
         user.pbChangeTypes(move.calcType)

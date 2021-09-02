@@ -3007,7 +3007,9 @@ class PokeBattle_Move_257 < PokeBattle_RecoilMove
   end
   
   def pbRecoilDamage(user,target)
-    return user.totalhp/2
+    recoilDmg = user.totalhp / 2
+    recoilDmg = (recoilDmg * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoilDmg
   end
 end
 #===============================================================================
@@ -3262,7 +3264,9 @@ end
 #===============================================================================
 class PokeBattle_Move_300 < PokeBattle_RecoilMove
   def pbRecoilDamage(user,target)
-    return user.hp/2
+    recoilDmg = user.hp / 2
+    recoilDmg = (recoilDmg * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoilDmg
   end
 end
 #===============================================================================

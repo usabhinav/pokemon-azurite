@@ -426,3 +426,5 @@
 424,LASTBASTION,Last Bastion,"Raises Attack, Defense, SpAtk, and SpDef by 1 stage when it is the last unfainted Pokémon left in the party."
 425,MINDTRICK,Mind Trick,"Psychic-type moves become Mystic-type and power up."
 426,GALAXYBRAIN,Galaxy Brain,"Psychic-type moves become Cosmic-type and power up."
+427,STANCESHIFT,Stance Shift,"Switches to Blade form when using physical attacks. Switches to Shield form for any other attack."
+428,MAGICSHOW,Magic Show,"Keeps Magic Room up while the user is on the field."

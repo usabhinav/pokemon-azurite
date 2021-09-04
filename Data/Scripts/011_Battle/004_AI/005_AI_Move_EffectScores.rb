@@ -2118,7 +2118,7 @@ class PokeBattle_AI
       score -= 90 if target.effects[PBEffects::Embargo]>0
     #---------------------------------------------------------------------------
     when "0F9"
-      if @battle.field.effects[PBEffects::MagicRoom]>0
+      if @battle.field.effects[PBEffects::MagicRoom]>0 || @battle.pbCheckGlobalAbility(:MAGICSHOW)
         score -= 90
       else
         score += 30 if !user.item && target.item

@@ -228,31 +228,6 @@ class PokeBattle_Battle
   # Actually performs the recalling and sending out in all situations.
   def pbRecallAndReplace(idxBattler,idxParty,randomReplacement=false,batonPass=false)
     @scene.pbRecall(idxBattler) if !@battlers[idxBattler].fainted?
-    oldpoke = @battlers[idxBattler]
-    # Shed Spikes Armor
-    if oldpoke.effects[PBEffects::SpikesArmor] > 0
-      oldpoke.pbOwnSide.effects[PBEffects::Spikes] += [oldpoke.effects[PBEffects::SpikesArmor], 3].min
-      oldpoke.effects[PBEffects::SpikesArmor] = 0
-      pbDisplay(_INTL("{1} shed its Spikes Armor!", oldpoke.pbThis))
-    end
-    # Shed Toxic Spikes Armor
-    if oldpoke.effects[PBEffects::ToxicSpikesArmor] > 0
-      oldpoke.pbOwnSide.effects[PBEffects::ToxicSpikes] += [oldpoke.effects[PBEffects::ToxicSpikesArmor], 2].min
-      oldpoke.effects[PBEffects::ToxicSpikesArmor] = 0
-      pbDisplay(_INTL("{1} shed its Toxic Spikes Armor!", oldpoke.pbThis))
-    end
-    # Shed Stealth Rock Armor
-    if oldpoke.effects[PBEffects::StealthRockArmor]
-      oldpoke.pbOwnSide.effects[PBEffects::StealthRock] = true
-      oldpoke.effects[PBEffects::StealthRockArmor] = false
-      pbDisplay(_INTL("{1} shed its Stealth Rock Armor!", oldpoke.pbThis))
-    end
-    # Shed Volt Spikes Armor
-    if oldpoke.effects[PBEffects::VoltSpikesArmor] > 0
-      oldpoke.pbOwnSide.effects[PBEffects::VoltSpikes] += [oldpoke.effects[PBEffects::VoltSpikesArmor], 2].min
-      oldpoke.effects[PBEffects::VoltSpikesArmor] = 0
-      pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", oldpoke.pbThis))
-    end
     @battlers[idxBattler].pbAbilitiesOnSwitchOut   # Inc. primordial weather check
     @scene.pbShowPartyLineup(idxBattler&1) if pbSideSize(idxBattler)==1
     pbMessagesOnReplace(idxBattler,idxParty) if !randomReplacement

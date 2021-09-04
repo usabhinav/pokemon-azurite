@@ -392,6 +392,7 @@ class PokeBattle_Battler
       :SCHOOLING,
       :SHIELDSDOWN,
       :STANCECHANGE,
+      :STANCESHIFT,
       :ZENMODE,
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
@@ -416,6 +417,7 @@ class PokeBattle_Battler
       :SCHOOLING,
       :SHIELDSDOWN,
       :STANCECHANGE,
+      :STANCESHIFT,
       :ZENMODE,
       # Appearance-changing abilities
       :ILLUSION,
@@ -431,6 +433,7 @@ class PokeBattle_Battler
     return false if fainted? && !ignoreFainted
     return false if @effects[PBEffects::Embargo]>0
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
+    return false if @battle.pbCheckGlobalAbility(:MAGICSHOW)
     return false if hasActiveAbility?(:KLUTZ,ignoreFainted)
     return true
   end

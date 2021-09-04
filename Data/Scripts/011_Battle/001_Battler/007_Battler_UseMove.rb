@@ -245,6 +245,15 @@ class PokeBattle_Battler
         pbChangeForm(0,_INTL("{1} changed to Shield Forme!",pbThis))
       end
     end
+    # Stance Shift
+    if isSpecies?(:AEGISLASH) && self.ability == :STANCESHIFT
+      # Kurian forms
+      if move.pbPhysicalMove?(self)
+        pbChangeForm(3,_INTL("{1} changed to Blade Forme!",pbThis))
+      else
+        pbChangeForm(2,_INTL("{1} changed to Shield Forme!",pbThis))
+      end
+    end
     #===========================================================================
     # Formula Shift
     # note: not made by me! Credits to Lucidious89 - Sincerely, ShadowSear

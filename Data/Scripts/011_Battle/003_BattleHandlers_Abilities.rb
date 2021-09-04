@@ -3235,9 +3235,6 @@ BattleHandlers::EORHealingAbility.add(:ADDITION,
     end
     battle.pbShowAbilitySplash(battler)
     healmult = hasSubtraction ? 0.3 : 0.1
-
-    echoln healmult
-
     battle.eachSameSideBattler(battler.index) do |b|
       next if !b.canHeal?
       b.pbRecoverHP(b.totalhp * healmult)
@@ -4260,6 +4257,41 @@ BattleHandlers::AbilityOnSwitchIn.add(:CLAIRVOYANT,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:CLOAKCONTROL,
+  proc { |ability,battler,battle|
+    next if battler.opposes?
+    next if !battler.pbOwnedByPlayer?
+    types = []
+    typeNames = []
+    GameData::Type.each do |i|
+      if i != :QMARKS
+        types.push(i)
+        typeNames.push(GameData::Type.get(i).name)
+      end
+    end
+    loop do
+      index = battle.pbShowCommands(_INTL("Which type should {1} take?",battler.pbThis), typeNames, false)
+      newType = types[index]
+      newTypeName = typeNames[index]
+      if index >= 0 && battle.pbDisplayConfirm(_INTL("{1} will become the {2} type. Is this OK?", battler.pbThis, newTypeName))
+        battle.pbShowAbilitySplash(battler)
+        battle.pbDisplay(_INTL("{1} changed into the {2} type!",battler.pbThis,newTypeName))
+        battler.pbChangeTypes(newType)
+        battle.pbHideAbilitySplash(battler)
+        break
+      end
+    end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:MAGICSHOW,
+  proc { |ability,battler,battle|
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} created a bizarre area in which Pokémon's held items lose their effects!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # AbilityOnSwitchOut handlers
 #===============================================================================
@@ -4276,6 +4308,36 @@ BattleHandlers::AbilityOnSwitchOut.add(:REGENERATOR,
     next if endOfBattle
     PBDebug.log("[Ability triggered] #{battler.pbThis}'s #{battler.abilityName}")
     battler.pbRecoverHP(battler.totalhp/3,false,false)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchOut.add(:DEBRISARMOR,
+  proc { |ability,battler,endOfBattle|
+    next if endOfBattle
+    # Shed Spikes Armor
+    if battler.effects[PBEffects::SpikesArmor] > 0
+      battler.pbOwnSide.effects[PBEffects::Spikes] += [battler.effects[PBEffects::SpikesArmor], 3].min
+      battler.effects[PBEffects::SpikesArmor] = 0
+      battler.battle.pbDisplay(_INTL("{1} shed its Spikes Armor!", battler.pbThis))
+    end
+    # Shed Toxic Spikes Armor
+    if battler.effects[PBEffects::ToxicSpikesArmor] > 0
+      battler.pbOwnSide.effects[PBEffects::ToxicSpikes] += [battler.effects[PBEffects::ToxicSpikesArmor], 2].min
+      battler.effects[PBEffects::ToxicSpikesArmor] = 0
+      battler.battle.pbDisplay(_INTL("{1} shed its Toxic Spikes Armor!", battler.pbThis))
+    end
+    # Shed Stealth Rock Armor
+    if battler.effects[PBEffects::StealthRockArmor]
+      battler.pbOwnSide.effects[PBEffects::StealthRock] = true
+      battler.effects[PBEffects::StealthRockArmor] = false
+      battler.battle.pbDisplay(_INTL("{1} shed its Stealth Rock Armor!", battler.pbThis))
+    end
+    # Shed Volt Spikes Armor
+    if battler.effects[PBEffects::VoltSpikesArmor] > 0
+      battler.pbOwnSide.effects[PBEffects::VoltSpikes] += [battler.effects[PBEffects::VoltSpikesArmor], 2].min
+      battler.effects[PBEffects::VoltSpikesArmor] = 0
+      battler.battle.pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", battler.pbThis))
+    end
   }
 )
 

@@ -2477,12 +2477,14 @@ FormName = Kurian Aegislash (Shield Form)
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,50,140,110,120,40
+Abilities = STANCESHIFT
 #-------------------------------
 [AEGISLASH,3]
 FormName = Kurian Aegislash (Blade Form)
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,140,80,80,70,90
+Abilities = STANCESHIFT
 #-------------------------------
 [CLAUNCHER,1]
 FormName = Kurian Clauncher

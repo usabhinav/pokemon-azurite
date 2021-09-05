@@ -334,6 +334,17 @@ class PokeBattle_Battle
       userLastMoveFailed = moveUser.lastMoveFailed
       @futureSight = true
       moveUser.pbUseMoveSimple(move,idxPos)
+      # Second Sight
+      if move == :FUTURESIGHT
+        if moveUser.dummy
+          # Cannot use moveUser.ability because it is not initialized in pbInitDummyPokemon
+          if moveUser.pokemon.ability_id == :SECONDSIGHT
+            moveUser.pbUseMoveSimple(move,idxPos)
+          end
+        elsif moveUser.hasActiveAbility?(:SECONDSIGHT)
+          moveUser.pbUseMoveSimple(move,idxPos)
+        end
+      end
       @futureSight = false
       moveUser.lastMoveFailed = userLastMoveFailed
       @battlers[idxPos].pbFaint if @battlers[idxPos].fainted?

@@ -4270,7 +4270,9 @@ BattleHandlers::AbilityOnSwitchIn.add(:CLOAKCONTROL,
       end
     end
     loop do
-      index = battle.pbShowCommands(_INTL("Which type should {1} take?",battler.pbThis), typeNames, false)
+      battle.scene.pbHideAllDataboxes
+      index = battle.scene.pbShowCommands_ebdx(_INTL("Which type should {1} take?",battler.pbThis), typeNames, -1)
+      battle.scene.pbShowAllDataboxes
       newType = types[index]
       newTypeName = typeNames[index]
       if index >= 0 && battle.pbDisplayConfirm(_INTL("{1} will become the {2} type. Is this OK?", battler.pbThis, newTypeName))

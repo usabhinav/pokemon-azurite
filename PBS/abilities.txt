@@ -386,7 +386,7 @@
 384,GLEAMINGGLARE,Gleaming Glare,"Has a 10% chance to paralyze one of its opponents every turn."
 385,CLOAKCONTROL,Cloak Control,"Allows user to choose its type upon switch-in."
 386,ROLLUP,Rollup,"Rolling moves deal double damage."
-387,SECONDSIGHT,Second Sight,"If this Pokémon uses Future Sight, it will roll twice for damage and choose the higher of the two."
+387,SECONDSIGHT,Second Sight,"Future Sight will hit twice."
 388,OMNIPOTENT,Omnipotent,"This Pokémon evades all moves and always lands critical hits, like a true god."
 389,BALLFETCH,Ball Fetch,"Fetches the Poké Ball from the first failed throw."
 390,COTTONDOWN,Cotton Down,"Lowers everyone else's Speed when hit by an attack."

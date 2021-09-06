@@ -590,6 +590,12 @@ BattleHandlers::PriorityChangeAbility.add(:IMMOVABLE,
   }
 )
 
+BattleHandlers::PriorityChangeAbility.add(:QUICKBLADE,
+  proc { |ability,battler,move,pri|
+    next pri+1 if move.slashingMove?
+  }
+)
+
 #===============================================================================
 # PriorityBracketChangeAbility handlers
 #===============================================================================
@@ -864,6 +870,21 @@ BattleHandlers::MoveImmunityTargetAbility.add(:WINTERSPIRIT,
     end
     if user.pbCanFreeze?(target, false) && user.affectedByContactEffect?(PokeBattle_SceneConstants::USE_ABILITY_SPLASH)
       user.pbFreeze
+    end
+    battle.pbHideAbilitySplash(target)
+    next true
+  }
+)
+
+BattleHandlers::MoveImmunityTargetAbility.add(:FIRMLYPLANTED,
+  proc { |ability,user,target,move,type,battle|
+    next false if !move.throwingMove?
+    battle.pbShowAbilitySplash(target)
+    if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("{1} stayed firmly planted!",target.pbThis(true)))
+    else
+      battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+        target.pbThis,target.abilityName,move.name))
     end
     battle.pbHideAbilitySplash(target)
     next true
@@ -1505,6 +1526,24 @@ BattleHandlers::DamageCalcUserAbility.add(:EXPLOSIVEEXHAUST,
   proc { |ability,user,target,move,mults,baseDmg,type|
     # Recoil move or move function for Explosion (or Self-Destruct), Final Gambit, or Mind Blown
     mults[:base_damage_multiplier] *= 1.5 if move.recoilMove? || ["0E0", "0E1", "170"].include?(move.function)
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:IRONKICK,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:base_damage_multiplier] *= 1.2 if move.kickingMove?
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:STRONGSKULL,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:base_damage_multiplier] *= 1.5 if move.headBasedMove?
+  }
+)
+
+BattleHandlers::DamageCalcUserAbility.add(:ROLLUP,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:base_damage_multiplier] *= 1.5 if move.ballRollingMove?
   }
 )
 

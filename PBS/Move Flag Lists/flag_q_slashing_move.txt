@@ -5,3 +5,4 @@
 
 Moves with flag q:
 
+Slash

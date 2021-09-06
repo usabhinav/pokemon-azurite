@@ -74,6 +74,10 @@ class PokeBattle_AI
     if user.hasActiveAbility?(:CRYSTALOVERGROW) && moveType == :GRASS
       ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
     end
+    # Crystal Aura (aura/pulse moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALAURA) && pulseMove?
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
     # Deceptive (moves are at most neutral effective except fire/water/grass)
     if target.hasActiveAbility?(:DECEPTIVE)
       if ![:FIRE, :WATER, :GRASS].include?(moveType)

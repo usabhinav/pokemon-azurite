@@ -125,12 +125,12 @@ class PokeBattle_Battler
     @hp = value.to_i
     @pokemon.hp = value.to_i if @pokemon
     # Girafarig (Stand Watch)
-    if @pokemon && @hp == 0 && isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH
+    if @pokemon && @hp == 0 && isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH && self.pokemon.form_simple == 1
       # Turn around if tail faints
-      # if self.pokemon.form_simple == 1
-        pbChangeFormStandWatch(0,_INTL("{1} turned around!",pbThis))
-        @hp = @pokemon.hp
-      # end
+      @battle.pbShowAbilitySplash(self)
+      pbChangeFormStandWatch(0,_INTL("{1} turned around!",pbThis))
+      @battle.pbHideAbilitySplash(self)
+      @hp = @pokemon.hp
     end
   end
 
@@ -148,16 +148,17 @@ class PokeBattle_Battler
       # Girafarig - turns around
       if isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH
         if value == :SLEEP
-          # if self.pokemon.form_simple != 1 && self.pokemon.standwatchhp > 0
-          if self.pokemon.standwatchhp > 0
+          if self.pokemon.form_simple == 0 && self.pokemon.standwatchhp > 0
+            @battle.pbShowAbilitySplash(self)
             pbChangeForm(1,_INTL("{1} turned around!",pbThis))
             @hp = @pokemon.hp
+            @battle.pbHideAbilitySplash(self)
           end
-        else
-          # if self.pokemon.form_simple != 0
-            pbChangeForm(0,_INTL("{1} turned around!",pbThis))
-            @hp = @pokemon.hp
-          # end
+        elsif self.pokemon.form_simple == 1
+          @battle.pbShowAbilitySplash(self)
+          pbChangeForm(0,_INTL("{1} turned around!",pbThis))
+          @hp = @pokemon.hp
+          @battle.pbHideAbilitySplash(self)
         end
       end
     end

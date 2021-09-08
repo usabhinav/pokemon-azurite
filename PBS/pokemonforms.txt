@@ -3151,3 +3151,8 @@ HiddenAbility = MEGALAUNCHER
 Compatibility = Undiscovered
 Kind = Augmented
 Pokedex = An attempt of bringing the softened Kurian Hydreigon back to their former glory. It flies at high speeds and shoots down its target with powerful beams from either its armcannons or its mouth.
+#-------------------------------
+[GIRAFARIG,1]
+Type1 = NORMAL
+Type2 = DARK
+BaseStats = 70,75,65,90,105,65

@@ -18,6 +18,8 @@ class Pokemon
   attr_accessor :steps_to_hatch
   # @return [Integer] the current HP
   attr_reader   :hp
+  # @return [Integer] Girafarig's Stand Watch HP
+  attr_accessor :standwatchhp
   # @return [Symbol] this Pokémon's current status (see GameData::Status)
   attr_reader   :status
   # @return [Integer] sleep count / toxic flag / 0:
@@ -263,6 +265,7 @@ class Pokemon
   def heal_HP
     return if egg?
     @hp = @totalhp
+    @standwatchhp = @hp
   end
 
   # Heals the status problem of this Pokémon.
@@ -1129,6 +1132,7 @@ class Pokemon
     @hp               = 1
     @totalhp          = 1
     calc_stats
+    @standwatchhp     = @hp
     if @form == 0 && recheck_form
       f = MultipleForms.call("getFormOnCreation", self)
       if f

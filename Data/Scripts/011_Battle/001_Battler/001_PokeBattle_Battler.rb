@@ -124,6 +124,14 @@ class PokeBattle_Battler
   def hp=(value)
     @hp = value.to_i
     @pokemon.hp = value.to_i if @pokemon
+    # Girafarig (Stand Watch)
+    if @pokemon && @hp == 0 && isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH
+      # Turn around if tail faints
+      # if self.pokemon.form_simple == 1
+        pbChangeFormStandWatch(0,_INTL("{1} turned around!",pbThis))
+        @hp = @pokemon.hp
+      # end
+    end
   end
 
   def fainted?; return @hp<=0; end
@@ -136,6 +144,23 @@ class PokeBattle_Battler
     @effects[PBEffects::Toxic]  = 0 if value != :POISON
     @status = value
     @pokemon.status = value if @pokemon
+    if @pokemon
+      # Girafarig - turns around
+      if isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH
+        if value == :SLEEP
+          # if self.pokemon.form_simple != 1 && self.pokemon.standwatchhp > 0
+          if self.pokemon.standwatchhp > 0
+            pbChangeForm(1,_INTL("{1} turned around!",pbThis))
+            @hp = @pokemon.hp
+          end
+        else
+          # if self.pokemon.form_simple != 0
+            pbChangeForm(0,_INTL("{1} turned around!",pbThis))
+            @hp = @pokemon.hp
+          # end
+        end
+      end
+    end
     self.statusCount = 0 if value != :POISON && value != :SLEEP
     @battle.scene.pbRefreshOne(@index)
   end

@@ -488,6 +488,10 @@ class PokeBattle_Battle
       if pkmn.fainted? && pkmn.hasAbility?(:PHOENIXFIRE)
         pkmn.hp = (pkmn.totalhp/2.0).round
       end
+      if pkmn.isSpecies?(:KINDESHU) && pkmn.hasAbility?(:EFFULGE)
+        pkmn.hp = (pkmn.totalhp/4) + 1 if pkmn.hp <= pkmn.totalhp/4
+        pkmn.form = 0
+      end
     end
     return @decision
   end

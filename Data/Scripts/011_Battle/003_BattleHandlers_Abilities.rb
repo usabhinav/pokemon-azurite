@@ -4436,6 +4436,20 @@ BattleHandlers::AbilityOnBattlerFainting.add(:LASTBASTION,
   }
 )
 
+BattleHandlers::AbilityOnBattlerFainting.add(:EFFULGE,
+  proc { |ability,battler,fainted,battle|
+    next if !battler.isSpecies?(:KINDESHU)
+    next if !battler.opposes?(fainted)
+    hp_gain = (battler.totalhp/4) + 1 - battler.hp
+    next if hp_gain <= 0
+    battle.pbShowAbilitySplash(battler)
+    battler.pbRecoverHP(hp_gain)
+    battler.pbChangeForm(0, nil)
+    battle.pbDisplay(_INTL("{1} fed off of {2}'s light energy and recovered HP!", battler.pbThis, fainted.pbThis(true)))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # RunFromBattleAbility handlers
 #===============================================================================

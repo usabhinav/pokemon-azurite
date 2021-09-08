@@ -3158,7 +3158,20 @@ Type2 = DARK
 BaseStats = 70,75,65,90,105,65
 #-------------------------------
 [KINDESHU,1]
+FormName = Light Kindeshu
 BaseStats = 61,80,70,92,132,70
 EffortPoints = 0,0,0,0,2,0
 Height = 0.9
 Weight = 7.0
+Pokedex = Kindeshu reveal themselves only when they are threatened or are about to feast on light energy. They are bright enough to blind you in an instant.
+#-------------------------------
+[NOCTOA,1]
+FormName = Night Noctoa
+Type1 = GHOST
+Type2 = DARK
+BaseStats = 63,105,50,104,60,50
+Pokedex = Noctoa at night are very different from the Noctoa during the day. It's almost as if it's an entirely different Pokémon.
+#-------------------------------
+[NEBULANIAN,1]
+BaseStats = 90,144,85,144,132,85
+EffortPoints = 0,2,0,1,1,0

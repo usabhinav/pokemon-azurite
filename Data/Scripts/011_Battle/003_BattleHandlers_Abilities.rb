@@ -64,6 +64,13 @@ BattleHandlers::SpeedCalcAbility.add(:PRODIGY,
   }
 )
 
+BattleHandlers::SpeedCalcAbility.add(:DARKDUALITY,
+  proc { |ability,battler,mult|
+    next mult * 2 if battler.isSpecies?(:NOCTOA) && battler.form == 1
+    next mult
+  }
+)
+
 #===============================================================================
 # WeightCalcAbility handlers
 #===============================================================================
@@ -881,7 +888,23 @@ BattleHandlers::MoveImmunityTargetAbility.add(:FIRMLYPLANTED,
     next false if !move.throwingMove?
     battle.pbShowAbilitySplash(target)
     if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
-      battle.pbDisplay(_INTL("{1} stayed firmly planted!",target.pbThis(true)))
+      battle.pbDisplay(_INTL("{1} stayed firmly planted!",target.pbThis))
+    else
+      battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
+        target.pbThis,target.abilityName,move.name))
+    end
+    battle.pbHideAbilitySplash(target)
+    next true
+  }
+)
+
+BattleHandlers::MoveImmunityTargetAbility.add(:DARKDUALITY,
+  proc { |ability,user,target,move,type,battle|
+    next false if !target.isSpecies?(:NOCTOA) || target.form != 1
+    next false if type != :GHOST
+    battle.pbShowAbilitySplash(target)
+    if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
     else
       battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!",
         target.pbThis,target.abilityName,move.name))
@@ -2342,6 +2365,16 @@ BattleHandlers::TargetAbilityOnHit.add(:COUNTERPARRY,
   proc { |ability,user,target,move,battle|
     next if !move.pbPhysicalMove?(user)
     target.effects[PBEffects::CounterParry] = true
+  }
+)
+
+BattleHandlers::TargetAbilityOnHit.add(:DELIRIUM,
+  proc { |ability,user,target,move,battle|
+    next if !target.isSpecies?(:NEBULANIAN) || target.form == 1
+    next if !Effectiveness.super_effective?(target.damageState.typeMod)
+    battle.pbShowAbilitySplash(target)
+    target.pbChangeForm(1, _INTL("{1} became angry!", target.pbThis))
+    battle.pbHideAbilitySplash(target)
   }
 )
 

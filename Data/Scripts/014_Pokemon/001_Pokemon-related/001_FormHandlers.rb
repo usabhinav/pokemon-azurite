@@ -295,6 +295,18 @@ MultipleForms.register(:GIRAFARIG,{
   }
 })
 
+MultipleForms.register(:NOCTOA,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0 if pkmn.fainted? || endBattle
+  }
+})
+
+MultipleForms.register(:NEBULANIAN,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0 if pkmn.fainted? || endBattle
+  }
+})
+
 MultipleForms.register(:ARCEUS,{
   "getForm" => proc { |pkmn|
     next nil if !pkmn.hasAbility?(:MULTITYPE)

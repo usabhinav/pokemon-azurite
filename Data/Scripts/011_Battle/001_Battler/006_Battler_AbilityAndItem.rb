@@ -128,6 +128,20 @@ class PokeBattle_Battler
         @battle.pbHideAbilitySplash(self)
       end
     end
+    # Noctoa's Dark Duality
+    if isSpecies?(:NOCTOA) && self.ability == :DARKDUALITY
+      if PBDayNight.isNight? || @battle.field.effects[PBEffects::Darkened]
+        if self.form == 0
+          @battle.pbShowAbilitySplash(self)
+          pbChangeForm(1, _INTL("{1} became possessed!", pbThis))
+          @battle.pbHideAbilitySplash(self)
+        end
+      elsif self.form == 1
+        @battle.pbShowAbilitySplash(self)
+        pbChangeForm(0, _INTL("{1} turned back to normal.", pbThis))
+        @battle.pbHideAbilitySplash(self)
+      end
+    end
   end
 
   #=============================================================================

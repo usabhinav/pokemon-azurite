@@ -3156,3 +3156,9 @@ Pokedex = An attempt of bringing the softened Kurian Hydreigon back to their for
 Type1 = NORMAL
 Type2 = DARK
 BaseStats = 70,75,65,90,105,65
+#-------------------------------
+[KINDESHU,1]
+BaseStats = 61,80,70,92,132,70
+EffortPoints = 0,0,0,0,2,0
+Height = 0.9
+Weight = 7.0

@@ -42,7 +42,7 @@ class PokeBattle_Battler
     end
     # Choice Band
     if @effects[PBEffects::ChoiceBand]
-      if hasActiveItem?([:CHOICEBAND,:CHOICESPECS,:CHOICESCARF,:CHOICESCOPE]) &&
+      if hasActiveItem?([:CHOICEBAND,:CHOICESPECS,:CHOICESCARF]) &&
          pbHasMove?(@effects[PBEffects::ChoiceBand])
         if move.id!=@effects[PBEffects::ChoiceBand]
           if showMessages

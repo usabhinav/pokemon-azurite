@@ -67,6 +67,10 @@ class PokeBattle_Move
     if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
       ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     end
+	# Crystal Hammer
+	if user.hasActiveItem?(:CRYSTALHAMMER)
+      ret = Effectiveness::SUPER_EFFECTIVE_ONE if defType == :CRYSTAL
+    end
     # Crystal Torrent (water moves are at least neutral effective against target)
     if user.hasActiveAbility?(:CRYSTALTORRENT) && moveType == :WATER
       ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max

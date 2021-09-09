@@ -182,6 +182,8 @@ class PokeBattle_Battle
         pbDisplay(_INTL("The mist disappeared from the battlefield!"))
       when :Psychic
         pbDisplay(_INTL("The weirdness disappeared from the battlefield!"))
+      when :Lava
+        pbDisplay(_INTL("The lava disappeared from the battlefield!"))
       end
       @field.terrain = :None
       # Start up the default terrain
@@ -196,6 +198,37 @@ class PokeBattle_Battle
     when :Grassy   then pbDisplay(_INTL("Grass is covering the battlefield."))
     when :Misty    then pbDisplay(_INTL("Mist is swirling about the battlefield."))
     when :Psychic  then pbDisplay(_INTL("The battlefield is weird."))
+    when :Lava     then pbDisplay(_INTL("Lava is covering the battlefield!"))
+    end
+    # Lava terrain passive damage
+    if @field.terrain == :Lava
+      priority = pbPriority
+      priority.each do |b|
+        next if !b.affectedByTerrain?
+        next if b.fainted?
+        next if b.pbHasType?(:FLYING) || b.pbHasType?(:COSMIC) || b.pbHasType?(:GROUND)
+        if b.pbHasType?(:FIRE)
+          if b.canHeal?
+            b.pbRecoverHP(b.totalhp/16)
+            pbDisplay(_INTL("{1} was healed by the Lava Terrain!", b.pbThis))
+          end
+        elsif !Effectiveness.ineffective_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+          oldHP = b.hp
+          @scene.pbDamageAnimation(b)
+          if Effectiveness.normal_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+            b.pbReduceHP(b.totalhp/14)
+          elsif Effectiveness.super_effective_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+            b.pbReduceHP(b.totalhp/7)
+          else
+            b.pbReduceHP(b.totalhp/28)
+          end
+          pbDisplay(_INTL("{1} was damaged by the Lava Terrain!", b.pbThis))
+          b.pbItemHPHealCheck
+          if b.pbAbilitiesOnDamageTaken(oldHP)   # Switched out
+            return pbOnActiveOne(b)   # For replacement battler
+          end
+        end
+      end
     end
   end
 
@@ -301,6 +334,17 @@ class PokeBattle_Battle
       userLastMoveFailed = moveUser.lastMoveFailed
       @futureSight = true
       moveUser.pbUseMoveSimple(move,idxPos)
+      # Second Sight
+      if move == :FUTURESIGHT
+        if moveUser.dummy
+          # Cannot use moveUser.ability because it is not initialized in pbInitDummyPokemon
+          if moveUser.pokemon.ability_id == :SECONDSIGHT
+            moveUser.pbUseMoveSimple(move,idxPos)
+          end
+        elsif moveUser.hasActiveAbility?(:SECONDSIGHT)
+          moveUser.pbUseMoveSimple(move,idxPos)
+        end
+      end
       @futureSight = false
       moveUser.lastMoveFailed = userLastMoveFailed
       @battlers[idxPos].pbFaint if @battlers[idxPos].fainted?

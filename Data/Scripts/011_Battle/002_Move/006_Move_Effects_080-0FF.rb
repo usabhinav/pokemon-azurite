@@ -167,13 +167,12 @@ class PokeBattle_Move_089 < PokeBattle_Move
   def pbAdditionalEffect(user,target)
     return if target.damageState.substitute
     return if !user.hasActiveItem?(:FRIENDLYCOLLAR)
-	chance = pbAdditionalEffectChance(user,target,30)
+	  chance = pbAdditionalEffectChance(user,target,30)
     return if chance==0
     if @battle.pbRandom(100)<chance
-    	target.pbAttract(user) if target.pbCanAttract?(user,false)
-	end
+      target.pbAttract(user) if target.pbCanAttract?(user,false)
+	  end
   end
-
 end
 
 
@@ -183,10 +182,10 @@ end
 #===============================================================================
 class PokeBattle_Move_08A < PokeBattle_Move
   def pbBaseDamage(baseDmg,user,target)
-	dmg = [((255-user.happiness)*2/5).floor,1].max
-	if user.hasActiveItem?(:AWFULCOLLAR)
-		dmg *= 1.2
-	end
+    dmg = [((255-user.happiness)*2/5).floor,1].max
+    if user.hasActiveItem?(:AWFULCOLLAR)
+      dmg *= 1.2
+    end
     return dmg
   end
 end
@@ -931,6 +930,8 @@ class PokeBattle_Move_0A4 < PokeBattle_Move
       @secretPower = 3   # Fairy Wind, lower Sp. Atk by 1
     when :Psychic
       @secretPower = 4   # Confusion, lower Speed by 1
+    when :Lava
+      @secretPower = 10   # (Same as Volcano environment)
     else
       case @battle.environment
       when :Grass, :TallGrass, :Forest, :ForestGrass
@@ -1372,6 +1373,8 @@ class PokeBattle_Move_0B3 < PokeBattle_Move
       @npMove = :MOONBLAST if GameData::Move.exists?(:MOONBLAST)
     when :Psychic
       @npMove = :PSYCHIC if GameData::Move.exists?(:PSYCHIC)
+    when :Lava
+      @npMove = :LAVAPLUME if GameData::Move.exists?(:LAVAPLUME)
     else
       case @battle.environment
       when :Grass, :TallGrass, :Forest, :ForestGrass
@@ -3701,6 +3704,10 @@ class PokeBattle_Move_0F9 < PokeBattle_Move
     if @battle.field.effects[PBEffects::MagicRoom]>0
       @battle.field.effects[PBEffects::MagicRoom] = 0
       @battle.pbDisplay(_INTL("The area returned to normal!"))
+      magicShowUser = @battle.pbCheckGlobalAbility(:MAGICSHOW)
+      if magicShowUser
+        @battle.pbDisplay(_INTL("{1}'s {2} still kept Magic Room up!", magicShowUser.pbThis, magicShowUser.abilityName))
+      end
     else
       @battle.field.effects[PBEffects::MagicRoom] = 5
       @battle.pbDisplay(_INTL("It created a bizarre area in which Pokémon's held items lose their effects!"))

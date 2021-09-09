@@ -438,6 +438,7 @@ ItemHandlers::BattleUseOnPokemon.add(:FULLRESTORE,proc { |item,pokemon,battler,c
 ItemHandlers::BattleUseOnPokemon.add(:REVIVE,proc { |item,pokemon,battler,choices,scene|
   pokemon.hp = pokemon.totalhp/2
   pokemon.hp = 1 if pokemon.hp<=0
+  pokemon.standwatchhp = pokemon.hp
   pokemon.heal_status
   scene.pbRefresh
   scene.pbDisplay(_INTL("{1} recovered from fainting!",pokemon.name))

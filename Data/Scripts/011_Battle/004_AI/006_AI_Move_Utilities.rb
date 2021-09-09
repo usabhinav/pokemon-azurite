@@ -74,6 +74,10 @@ class PokeBattle_AI
     if user.hasActiveAbility?(:CRYSTALOVERGROW) && moveType == :GRASS
       ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
     end
+    # Crystal Aura (aura/pulse moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALAURA) && pulseMove?
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
     # Deceptive (moves are at most neutral effective except fire/water/grass)
     if target.hasActiveAbility?(:DECEPTIVE)
       if ![:FIRE, :WATER, :GRASS].include?(moveType)
@@ -483,6 +487,8 @@ class PokeBattle_AI
         multipliers[:base_damage_multiplier] *= 1.5 if type == :PSYCHIC && user.affectedByTerrain?
       when :Misty
         multipliers[:base_damage_multiplier] /= 2 if type == :DRAGON && target.affectedByTerrain?
+      when :Lava
+        multipliers[:base_damage_multiplier] *= 1.3 if type == :FIRE && user.affectedByTerrain?
       end
     end
     # Badge multipliers
@@ -533,16 +539,16 @@ class PokeBattle_AI
     # STAB
     if skill>=PBTrainerAI.mediumSkill
       if type && user.pbHasType?(type)
-        if user.hasActiveAbility?(:ADAPTABILITY)
+        if user.hasActiveAbility?([:ADAPTABILITY, :OMNIGENE])
           multipliers[:final_damage_multiplier] *= 2
         else
           multipliers[:final_damage_multiplier] *= 1.5
         end
       end
       # Monarch
-      for pkmn in @battle.pbParty(user.index)
+      @battle.pbParty(user.index).each_with_index do |pkmn, i|
         next if @battle.moldBreaker
-        next if pkmn == user.pokemon
+        next if user.pokemonIndex == i
         next if pkmn.fainted?
         if pkmn.hasAbility?(:MONARCH) && pkmn.types.intersection(user.pokemon.types).length > 0
           multipliers[:final_damage_multiplier] *= 1.25

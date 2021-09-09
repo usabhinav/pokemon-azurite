@@ -276,6 +276,37 @@ MultipleForms.register(:SHAYMIN,{
   }
 })
 
+MultipleForms.register(:GIRAFARIG,{
+  "getForm" => proc { |pkmn|
+    if pkmn.hasAbility?(:STANDWATCH)
+      next 0 if pkmn.fainted?
+      if pkmn.status == :SLEEP
+        next 1 if (pkmn.form_simple == 0 && pkmn.standwatchhp > 0) || pkmn.form_simple == 1
+      end
+      next 0
+    end
+    next 0
+  },
+  "onSetForm" => proc { |pkmn, form, oldForm|
+    next if form == oldForm
+    old_hp = pkmn.hp
+    pkmn.hp = pkmn.standwatchhp
+    pkmn.standwatchhp = old_hp
+  }
+})
+
+MultipleForms.register(:NOCTOA,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0 if pkmn.fainted? || endBattle
+  }
+})
+
+MultipleForms.register(:NEBULANIAN,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0 if pkmn.fainted? || endBattle
+  }
+})
+
 MultipleForms.register(:ARCEUS,{
   "getForm" => proc { |pkmn|
     next nil if !pkmn.hasAbility?(:MULTITYPE)
@@ -430,6 +461,7 @@ MultipleForms.copy(:ESPURR,:MEOWSTIC)
 
 MultipleForms.register(:AEGISLASH,{
   "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next pkmn.form if pkmn.form == 2 || pkmn.form == 3 # Kurian forms
     next 0
   }
 })

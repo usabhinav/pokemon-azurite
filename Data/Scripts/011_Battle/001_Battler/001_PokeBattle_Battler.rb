@@ -124,6 +124,14 @@ class PokeBattle_Battler
   def hp=(value)
     @hp = value.to_i
     @pokemon.hp = value.to_i if @pokemon
+    # Girafarig (Stand Watch)
+    if @pokemon && @hp == 0 && isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH && self.pokemon.form_simple == 1
+      # Turn around if tail faints
+      @battle.pbShowAbilitySplash(self)
+      pbChangeFormStandWatch(0,_INTL("{1} turned around!",pbThis))
+      @battle.pbHideAbilitySplash(self)
+      @hp = @pokemon.hp
+    end
   end
 
   def fainted?; return @hp<=0; end
@@ -136,6 +144,24 @@ class PokeBattle_Battler
     @effects[PBEffects::Toxic]  = 0 if value != :POISON
     @status = value
     @pokemon.status = value if @pokemon
+    if @pokemon
+      # Girafarig - turns around
+      if isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH
+        if value == :SLEEP
+          if self.pokemon.form_simple == 0 && self.pokemon.standwatchhp > 0
+            @battle.pbShowAbilitySplash(self)
+            pbChangeForm(1,_INTL("{1} turned around!",pbThis))
+            @hp = @pokemon.hp
+            @battle.pbHideAbilitySplash(self)
+          end
+        elsif self.pokemon.form_simple == 1
+          @battle.pbShowAbilitySplash(self)
+          pbChangeForm(0,_INTL("{1} turned around!",pbThis))
+          @hp = @pokemon.hp
+          @battle.pbHideAbilitySplash(self)
+        end
+      end
+    end
     self.statusCount = 0 if value != :POISON && value != :SLEEP
     @battle.scene.pbRefreshOne(@index)
   end
@@ -392,6 +418,7 @@ class PokeBattle_Battler
       :SCHOOLING,
       :SHIELDSDOWN,
       :STANCECHANGE,
+      :STANCESHIFT,
       :ZENMODE,
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
@@ -416,6 +443,7 @@ class PokeBattle_Battler
       :SCHOOLING,
       :SHIELDSDOWN,
       :STANCECHANGE,
+      :STANCESHIFT,
       :ZENMODE,
       # Appearance-changing abilities
       :ILLUSION,
@@ -431,6 +459,7 @@ class PokeBattle_Battler
     return false if fainted? && !ignoreFainted
     return false if @effects[PBEffects::Embargo]>0
     return false if @battle.field.effects[PBEffects::MagicRoom]>0
+    return false if @battle.pbCheckGlobalAbility(:MAGICSHOW)
     return false if hasActiveAbility?(:KLUTZ,ignoreFainted)
     return true
   end
@@ -500,6 +529,7 @@ class PokeBattle_Battler
   def airborne?
     return false if hasActiveItem?(:IRONBALL)
     return false if @effects[PBEffects::Ingrain]
+    return false if hasActiveAbility?(:FIRMLYPLANTED) && !@battle.moldBreaker
     return false if @effects[PBEffects::SmackDown]
     return false if @battle.field.effects[PBEffects::Gravity] > 0
     return true if pbHasType?(:FLYING)
@@ -563,7 +593,7 @@ class PokeBattle_Battler
     return true if hasActiveAbility?(:LIGHTNINGROD)
     return false if pbHasType?(:ELECTRIC)
     return false if hasActiveAbility?([:WEATHERBENEFIT])
-	return false if hasActiveItem?(:IRONSHELL)
+	  return false if hasActiveItem?(:IRONSHELL)
     return true
   end
 

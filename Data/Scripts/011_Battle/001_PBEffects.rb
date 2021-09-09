@@ -132,6 +132,7 @@ begin
     StealthRockArmor    = 126
     VoltSpikesArmor     = 127
     CounterParry        = 128
+    Overcharged         = 129
 
     #===========================================================================
     # These effects apply to a battler position

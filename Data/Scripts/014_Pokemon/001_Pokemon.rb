@@ -18,6 +18,8 @@ class Pokemon
   attr_accessor :steps_to_hatch
   # @return [Integer] the current HP
   attr_reader   :hp
+  # @return [Integer] Girafarig's Stand Watch HP
+  attr_accessor :standwatchhp
   # @return [Symbol] this Pokémon's current status (see GameData::Status)
   attr_reader   :status
   # @return [Integer] sleep count / toxic flag / 0:
@@ -263,6 +265,7 @@ class Pokemon
   def heal_HP
     return if egg?
     @hp = @totalhp
+    @standwatchhp = @hp
   end
 
   # Heals the status problem of this Pokémon.
@@ -521,7 +524,7 @@ class Pokemon
   def item=(value)
     return if value && !GameData::Item.exists?(value)
     @item = (value) ? GameData::Item.get(value).id : value
-	if hasItem?(:AWFULCOLLAR)
+	  if hasItem?(:AWFULCOLLAR)
       @happiness = 0
     end
   end
@@ -872,7 +875,7 @@ class Pokemon
   # Changes the happiness of this Pokémon depending on what happened to change it.
   # @param method [String] the happiness changing method (e.g. 'walking')
   def changeHappiness(method)
-	if hasItem?(:AWFULCOLLAR)
+	  if hasItem?(:AWFULCOLLAR)
       method = ":("
     end
     gain = 0
@@ -902,9 +905,9 @@ class Pokemon
       gain = [-10, -10, -15][happiness_range]
     when "revivalherb"
       gain = [-15, -15, -20][happiness_range]
-	when ":("
+	  when ":("
       @happiness = 0
-	  return
+	    return
     else
       raise _INTL("Unknown happiness-changing method: {1}", method.to_s)
     end
@@ -912,7 +915,7 @@ class Pokemon
       gain += 1 if @obtain_map == $game_map.map_id
       gain += 1 if @poke_ball == :LUXURYBALL
       gain = (gain * 1.5).floor if hasItem?(:SOOTHEBELL)
-	  gain = (gain * 2) if hasItem?(:FRIENDLYCOLLAR)
+	    gain = (gain * 2) if hasItem?(:FRIENDLYCOLLAR)
     end
     @happiness = (@happiness + gain).clamp(0, 255)
   end
@@ -1129,6 +1132,7 @@ class Pokemon
     @hp               = 1
     @totalhp          = 1
     calc_stats
+    @standwatchhp     = @hp
     if @form == 0 && recheck_form
       f = MultipleForms.call("getFormOnCreation", self)
       if f

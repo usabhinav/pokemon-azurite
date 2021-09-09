@@ -170,6 +170,22 @@ class PokeBattle_Battler
     @battle.pbSetSeen(self)
   end
 
+  # Same as pbChangeForm but without fainted? check
+  def pbChangeFormStandWatch(newForm,msg)
+    return if @effects[PBEffects::Transform] || @form==newForm
+    oldForm = @form
+    oldDmg = @totalhp-@hp
+    self.form = newForm
+    pbUpdate(true)
+    @hp = @totalhp-oldDmg
+    @effects[PBEffects::WeightChange] = 0 if Settings::MECHANICS_GENERATION >= 6
+    @battle.scene.pbChangePokemon(self,@pokemon)
+    @battle.scene.pbRefreshOne(@index)
+    @battle.pbDisplay(msg) if msg && msg!=""
+    PBDebug.log("[Form changed] #{pbThis} changed from form #{oldForm} to form #{newForm}")
+    @battle.pbSetSeen(self)
+  end
+
   def pbCheckFormOnStatusChange
     return if fainted? || @effects[PBEffects::Transform]
     # Shaymin - reverts if frozen

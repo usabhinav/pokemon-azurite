@@ -205,6 +205,10 @@ class PokeBattle_Battler
       if @statusCount<=0
         pbCureStatus
       else
+        # Girafarig's tail can use moves while asleep
+        if isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH && self.form == 1
+          return true
+        end
         pbContinueStatus
         if !move.usableWhenAsleep?   # Snore/Sleep Talk
           @lastMoveFailed = true

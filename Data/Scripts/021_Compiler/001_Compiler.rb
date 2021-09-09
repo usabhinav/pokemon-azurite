@@ -724,6 +724,8 @@ module Compiler
     compile_trainer_events(mustCompile)
     yield(_INTL("Compiling apparel"))
     compile_apparel                # Depends on Apparel
+    yield(_INTL("Generating move flag lists"))
+    generate_move_flag_lists       # Depends on Move
     yield(_INTL("Saving messages"))
     pbSetTextMessages
     MessageTypes.saveMessages

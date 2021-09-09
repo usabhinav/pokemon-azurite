@@ -105,6 +105,43 @@ class PokeBattle_Battler
         end
       end
     end
+    # Kindeshu's Effulge
+    if isSpecies?(:KINDESHU) && self.ability == :EFFULGE
+      threatened = self.hp <= self.totalhp / 4
+      threatenedOpponent = nil
+      self.eachOpposing do |b|
+        next if b.hp > b.totalhp / 4
+        threatenedOpponent = b
+        break
+      end
+      if (threatened || threatenedOpponent != nil) && self.form == 0
+        @battle.pbShowAbilitySplash(self)
+        if threatened
+          pbChangeForm(1, _INTL("{1} revealed its true form!", pbThis))
+        else
+          pbChangeForm(1, _INTL("{1} is ready to feed off of {2}'s light energy!", pbThis, threatenedOpponent.pbThis(true)))
+        end
+        @battle.pbHideAbilitySplash(self)
+      elsif !threatened && threatenedOpponent.nil? && self.form == 1
+        @battle.pbShowAbilitySplash(self)
+        pbChangeForm(0, _INTL("{1} reverted to its base form.", pbThis))
+        @battle.pbHideAbilitySplash(self)
+      end
+    end
+    # Noctoa's Dark Duality
+    if isSpecies?(:NOCTOA) && self.ability == :DARKDUALITY
+      if PBDayNight.isNight? || @battle.field.effects[PBEffects::Darkened]
+        if self.form == 0
+          @battle.pbShowAbilitySplash(self)
+          pbChangeForm(1, _INTL("{1} became possessed!", pbThis))
+          @battle.pbHideAbilitySplash(self)
+        end
+      elsif self.form == 1
+        @battle.pbShowAbilitySplash(self)
+        pbChangeForm(0, _INTL("{1} turned back to normal.", pbThis))
+        @battle.pbHideAbilitySplash(self)
+      end
+    end
   end
 
   #=============================================================================

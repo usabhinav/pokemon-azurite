@@ -245,6 +245,15 @@ class PokeBattle_Battler
         pbChangeForm(0,_INTL("{1} changed to Shield Forme!",pbThis))
       end
     end
+    # Stance Shift
+    if isSpecies?(:AEGISLASH) && self.ability == :STANCESHIFT
+      # Kurian forms
+      if move.pbPhysicalMove?(self)
+        pbChangeForm(3,_INTL("{1} changed to Blade Forme!",pbThis))
+      else
+        pbChangeForm(2,_INTL("{1} changed to Shield Forme!",pbThis))
+      end
+    end
     #===========================================================================
     # Formula Shift
     # note: not made by me! Credits to Lucidious89 - Sincerely, ShadowSear
@@ -424,7 +433,7 @@ class PokeBattle_Battler
       end
     end
     # Protean or Omnigene
-    if (user.hasActiveAbility?(:PROTEAN) || user.hasActiveAbility?(:OMNIGENE)) && !move.callsAnotherMove? && !move.snatched
+    if (user.hasActiveAbility?([:PROTEAN, :OMNIGENE])) && !move.callsAnotherMove? && !move.snatched
       if user.pbHasOtherType?(move.calcType) && !GameData::Type.get(move.calcType).pseudo_type
         @battle.pbShowAbilitySplash(user)
         user.pbChangeTypes(move.calcType)

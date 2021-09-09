@@ -297,6 +297,8 @@ class PokeBattle_Battle
       pbDisplay(_INTL("Mist swirls about the battlefield!"))
     when :Psychic
       pbDisplay(_INTL("The battlefield is weird!"))
+    when :Lava
+      pbDisplay(_INTL("Lava is covering the battlefield!"))
     end
     # Abilities upon entering battle
     pbOnActiveAll
@@ -485,6 +487,10 @@ class PokeBattle_Battle
       pkmn.item = @initialItems[0][i]
       if pkmn.fainted? && pkmn.hasAbility?(:PHOENIXFIRE)
         pkmn.hp = (pkmn.totalhp/2.0).round
+      end
+      if pkmn.isSpecies?(:KINDESHU) && pkmn.hasAbility?(:EFFULGE)
+        pkmn.hp = (pkmn.totalhp/4) + 1 if pkmn.hp <= pkmn.totalhp/4
+        pkmn.form = 0
       end
     end
     return @decision

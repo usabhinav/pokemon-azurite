@@ -505,6 +505,7 @@ ItemHandlers::UseOnPokemon.add(:REVIVE,proc { |item,pkmn,scene|
   end
   pkmn.hp = (pkmn.totalhp/2).floor
   pkmn.hp = 1 if pkmn.hp<=0
+  pkmn.standwatchhp = pkmn.hp
   pkmn.heal_status
   scene.pbRefresh
   scene.pbDisplay(_INTL("{1}'s HP was restored.",pkmn.name))

@@ -1010,11 +1010,6 @@ BattleHandlers::DamageCalcTargetItem.add(:YACHEBERRY,
 # CriticalCalcUserItem handlers
 #===============================================================================
 
-BattleHandlers::CriticalCalcUserItem.add(:CHOICESCOPE,
-  proc { |item,user,target,c|
-    next c+1
-  }
-)
 
 BattleHandlers::CriticalCalcUserItem.add(:LUCKYPUNCH,
   proc { |item,user,target,c|

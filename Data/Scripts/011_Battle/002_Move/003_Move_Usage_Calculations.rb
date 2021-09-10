@@ -160,12 +160,7 @@ class PokeBattle_Move
   #=============================================================================
   # Accuracy check
   #=============================================================================
-  def pbBaseAccuracy(user,target) 
-	if user.hasActiveItem?(:CHOICESCOPE)
-      return @accuracy + 30
-    else
-      return @accuracy 
-  end
+  def pbBaseAccuracy(user,target); return @accuracy; end 
 
   # Accuracy calculations for one-hit KO moves and "always hit" moves are
   # handled elsewhere.
@@ -282,7 +277,7 @@ class PokeBattle_Move
     return true if user.effects[PBEffects::LaserFocus]>0
     c += 1 if highCriticalRate?
     c += user.effects[PBEffects::FocusEnergy]
-	c += 1 if user.hasActiveItem?(:CHOICESCOPE)
+	c += 1 if user.hasActiveItem?(:CHOICESCOPE) && (self.accuracy == 0 || self.accuracy == 100)
     c += 1 if user.inHyperMode? && @type == :SHADOW
     c = ratios.length-1 if c>=ratios.length
     # Calculation

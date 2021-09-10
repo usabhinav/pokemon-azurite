@@ -439,6 +439,12 @@ BattleHandlers::AccuracyCalcUserItem.add(:IRONSHELL,
   }
 )
 
+BattleHandlers::AccuracyCalcUserItem.add(:CHOICESCOPE,
+  proc { |item,mods,user,target,move,type|
+    mods[:accuracy_multiplier] *= 1.3
+  }
+)
+
 BattleHandlers::AccuracyCalcUserItem.add(:ZOOMLENS,
   proc { |item,mods,user,target,move,type|
     if (target.battle.choices[target.index][0]!=:UseMove &&

@@ -307,6 +307,15 @@ MultipleForms.register(:NEBULANIAN,{
   }
 })
 
+MultipleForms.register(:RABLIN,{
+  "getForm" => proc { |pkmn|
+    if pkmn.hasAbility?(:HEAVYEYED)
+      next (pkmn.status == :SLEEP) ? 0 : 1
+    end
+    next 0
+  }
+})
+
 MultipleForms.register(:ARCEUS,{
   "getForm" => proc { |pkmn|
     next nil if !pkmn.hasAbility?(:MULTITYPE)

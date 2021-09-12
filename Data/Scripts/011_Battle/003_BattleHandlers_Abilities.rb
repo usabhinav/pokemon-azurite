@@ -4366,6 +4366,14 @@ BattleHandlers::AbilityOnSwitchIn.add(:MAGICSHOW,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:HEAVYEYED,
+  proc { |ability,battler,battle|
+    next if !battler.isSpecies?(:RABLIN) || battler.form == 0
+    next if !battler.pbCanSleep?(battler, false)
+    battler.pbSleepSelf
+  }
+)
+
 #===============================================================================
 # AbilityOnSwitchOut handlers
 #===============================================================================

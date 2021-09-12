@@ -161,6 +161,20 @@ class PokeBattle_Battler
           @battle.pbHideAbilitySplash(self)
         end
       end
+      # Rablin
+      if isSpecies?(:RABLIN) && self.ability == :HEAVYEYED
+        if value == :SLEEP
+          if self.form == 1
+            @battle.pbShowAbilitySplash(self)
+            pbChangeForm(0, nil)
+            @battle.pbHideAbilitySplash(self)
+          end
+        elsif self.form == 0
+          @battle.pbShowAbilitySplash(self)
+          pbChangeForm(1,_INTL("{1} got an evil look in its eyes!",pbThis))
+          @battle.pbHideAbilitySplash(self)
+        end
+      end
     end
     self.statusCount = 0 if value != :POISON && value != :SLEEP
     @battle.scene.pbRefreshOne(@index)

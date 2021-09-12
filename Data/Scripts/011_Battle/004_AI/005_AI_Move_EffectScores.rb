@@ -2075,7 +2075,7 @@ class PokeBattle_AI
       elsif skill>=PBTrainerAI.highSkill && target.hasActiveAbility?(:STICKYHOLD)
         score -= 90
       elsif user.hasActiveItem?([:FLAMEORB,:TOXICORB,:STICKYBARB,:IRONBALL,
-                                 :CHOICEBAND,:CHOICESCARF,:CHOICESPECS])
+                                 :CHOICEBAND,:CHOICESCARF,:CHOICESPECS,:CHOICESCOPE])
         score += 50
       elsif !user.item && target.item
         score -= 30 if user.lastMoveUsed &&
@@ -2087,7 +2087,7 @@ class PokeBattle_AI
         score -= 90
       else
         if user.hasActiveItem?([:FLAMEORB,:TOXICORB,:STICKYBARB,:IRONBALL,
-                                :CHOICEBAND,:CHOICESCARF,:CHOICESPECS])
+                                :CHOICEBAND,:CHOICESCARF,:CHOICESPECS,:CHOICESCOPE])
           score += 50
         else
           score -= 80

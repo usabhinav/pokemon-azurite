@@ -3181,3 +3181,10 @@ FormName = Awake Rablin
 BaseStats = 65,75,95,80,75,95
 EffortPoints = 0,1,0,0,1,0
 Pokedex = Rablin are very innocent and friendly when they are awake. But when they fall asleep they start to act maliciously as if its a different entity entirely.
+#-------------------------------
+[PHANTITUTE,1]
+BaseStats = 80,120,40,115,120,40
+EffortPoints = 0,1,0,0,1,0
+Height = 1.1
+Weight = 9.9
+Color = Purple

@@ -67,6 +67,10 @@ class PokeBattle_Move
     if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
       ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     end
+	# Crystal Hammer
+	if user.hasActiveItem?(:CRYSTALHAMMER)
+      ret = Effectiveness::SUPER_EFFECTIVE_ONE if defType == :CRYSTAL
+    end
     # Crystal Torrent (water moves are at least neutral effective against target)
     if user.hasActiveAbility?(:CRYSTALTORRENT) && moveType == :WATER
       ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
@@ -156,7 +160,7 @@ class PokeBattle_Move
   #=============================================================================
   # Accuracy check
   #=============================================================================
-  def pbBaseAccuracy(user,target); return @accuracy; end
+  def pbBaseAccuracy(user,target); return @accuracy; end 
 
   # Accuracy calculations for one-hit KO moves and "always hit" moves are
   # handled elsewhere.
@@ -273,6 +277,7 @@ class PokeBattle_Move
     return true if user.effects[PBEffects::LaserFocus]>0
     c += 1 if highCriticalRate?
     c += user.effects[PBEffects::FocusEnergy]
+	c += 1 if user.hasActiveItem?(:CHOICESCOPE) && (self.accuracy == 0 || self.accuracy == 100)
     c += 1 if user.inHyperMode? && @type == :SHADOW
     c = ratios.length-1 if c>=ratios.length
     # Calculation

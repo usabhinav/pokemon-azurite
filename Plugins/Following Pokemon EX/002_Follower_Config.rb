@@ -245,7 +245,7 @@ Events.OnTalkToFollower += proc {|pkmn,x,y,random_val|
 
 # Rain specific message for multiple types
 Events.OnTalkToFollower += proc {|pkmn,x,y,random_val|
-  if [:Rain,:HeavyRain].include?($game_screen.weather_type)
+  if [:Rain,:HeavyRain,:Thunderstorm].include?($game_screen.weather_type)
     if pkmn.hasType?(:FIRE) || pkmn.hasType?(:GROUND) || pkmn.hasType?(:ROCK)
       $scene.spriteset.addUserAnimation(FollowerSettings::Emo_Hate,x,y)
       pbMoveRoute($game_player,[PBMoveRoute::Wait,20])

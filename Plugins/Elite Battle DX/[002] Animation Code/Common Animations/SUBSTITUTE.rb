@@ -6,6 +6,7 @@ EliteBattle.defineCommonAnimation(:SUBSTITUTE) do | targets, set |
   #  transition sprites
   8.times do
     for t in targets
+      next if @battle.battlers[t].isSpecies?(:PHANTITUTE) && @battle.battlers[t].ability == :PROXY
       @sprites["pokemon_#{t}"].x += ((t%2==0) ? -6 : 3)
       @sprites["pokemon_#{t}"].y -= ((t%2==0) ? -4 : 2)
       @sprites["pokemon_#{t}"].opacity -= 32
@@ -15,6 +16,7 @@ EliteBattle.defineCommonAnimation(:SUBSTITUTE) do | targets, set |
   #-----------------------------------------------------------------------------
   #  change sprites
   for t in targets
+    next if @battle.battlers[t].isSpecies?(:PHANTITUTE) && @battle.battlers[t].ability == :PROXY
     if (@battle.battlers[t].effects[PBEffects::Substitute] > 0 && !@sprites["pokemon_#{t}"].isSub) || set
       @sprites["pokemon_#{t}"].setSubstitute
     else
@@ -25,6 +27,7 @@ EliteBattle.defineCommonAnimation(:SUBSTITUTE) do | targets, set |
   #  transition sprites
   8.times do
     for t in targets
+      next if @battle.battlers[t].isSpecies?(:PHANTITUTE) && @battle.battlers[t].ability == :PROXY
       @sprites["pokemon_#{t}"].x -= ((t%2 == 0) ? -6 : 3)
       @sprites["pokemon_#{t}"].y += ((t%2 == 0) ? -4 : 2)
       @sprites["pokemon_#{t}"].opacity += 32

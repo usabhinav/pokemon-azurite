@@ -316,6 +316,12 @@ MultipleForms.register(:RABLIN,{
   }
 })
 
+MultipleForms.register(:PHANTITUTE,{
+  "getFormOnLeavingBattle" => proc { |pkmn,battle,usedInBattle,endBattle|
+    next 0
+  }
+})
+
 MultipleForms.register(:ARCEUS,{
   "getForm" => proc { |pkmn|
     next nil if !pkmn.hasAbility?(:MULTITYPE)

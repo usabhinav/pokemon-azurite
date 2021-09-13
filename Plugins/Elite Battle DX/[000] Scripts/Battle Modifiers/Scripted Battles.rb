@@ -49,6 +49,18 @@ class PokeBattle_Battle
     return pbMegaEvolve_ebdx(index)
   end
   #-----------------------------------------------------------------------------
+  #  shows message before Crystallization
+  #-----------------------------------------------------------------------------
+  alias pbCrystallize_ebdx pbCrystallize unless self.method_defined?(:pbCrystallize_ebdx)
+  def pbCrystallize(index)
+    return if !@battlers[index] || !@battlers[index].pokemon
+    return if !(@battlers[index].hasCrystal? rescue false)
+    return if (@battlers[index].isCrystal? rescue true)
+    # displays trainer dialogue if applicable
+    @scene.pbTrainerBattleSpeech(playerBattler?(@battlers[index]) ? "crystal" : "crystalOpp")
+    return pbCrystallize_ebdx(index)
+  end
+  #-----------------------------------------------------------------------------
 end
 #===============================================================================
 #

@@ -65,7 +65,7 @@ class PokeBattle_Scene
   #=============================================================================
   # The player chooses a move for a Pokémon to use
   #=============================================================================
-  def pbFightMenu(idxBattler,megaEvoPossible=false)
+  def pbFightMenu(idxBattler,megaEvoPossible=false,crystalEvoPossible=false)
     battler = @battle.battlers[idxBattler]
     cw = @sprites["fightWindow"]
     cw.battler = battler
@@ -74,7 +74,7 @@ class PokeBattle_Scene
       moveIndex = @lastMove[idxBattler]
     end
     cw.shiftMode = (@battle.pbCanShift?(idxBattler)) ? 1 : 0
-    cw.setIndexAndMode(moveIndex,(megaEvoPossible) ? 1 : 0)
+    cw.setIndexAndMode(moveIndex,(megaEvoPossible || crystalEvoPossible) ? 1 : 0)
     needFullRefresh = true
     needRefresh = false
     loop do
@@ -86,7 +86,7 @@ class PokeBattle_Scene
       end
       if needRefresh
         if megaEvoPossible
-          newMode = (@battle.pbRegisteredMegaEvolution?(idxBattler)) ? 2 : 1
+          newMode = (@battle.pbRegisteredMegaEvolution?(idxBattler) || @battle.pbRegisteredCrystallization?(idxBattler)) ? 2 : 1
           cw.mode = newMode if newMode!=cw.mode
         end
         needRefresh = false
@@ -120,7 +120,7 @@ class PokeBattle_Scene
         break if yield -1
         needRefresh = true
       elsif Input.trigger?(Input::ACTION)   # Toggle Mega Evolution
-        if megaEvoPossible
+        if megaEvoPossible || crystalEvoPossible
           pbPlayDecisionSE
           break if yield -2
           needRefresh = true

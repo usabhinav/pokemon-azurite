@@ -57,6 +57,18 @@ class PokeBattle_AI
   end
 
   #=============================================================================
+  # Decide whether the opponent should Crystallize their Pokémon
+  #=============================================================================
+  def pbEnemyShouldCrystallize?(idxBattler)
+    battler = @battle.battlers[idxBattler]
+    if @battle.pbCanCrystallize?(idxBattler)   # Simple "always should if possible"
+      PBDebug.log("[AI] #{battler.pbThis} (#{idxBattler}) will Crystallize")
+      return true
+    end
+    return false
+  end
+
+  #=============================================================================
   # Choose an action
   #=============================================================================
   def pbDefaultChooseEnemyCommand(idxBattler)
@@ -64,6 +76,7 @@ class PokeBattle_AI
     return if pbEnemyShouldWithdraw?(idxBattler)
     return if @battle.pbAutoFightMenu(idxBattler)
     @battle.pbRegisterMegaEvolution(idxBattler) if pbEnemyShouldMegaEvolve?(idxBattler)
+    @battle.pbRegisterCrystallization(idxBattler) if pbEnemyShouldCrystallize?(idxBattler)
     pbChooseMoves(idxBattler)
   end
 end

@@ -36,6 +36,9 @@ class PokeBattle_FakeBattler
   def hasMega?;       return false; end
   def mega?;          return false; end
   alias isMega? mega?
+  def hasCrystal?;    return false; end
+  def crystal?;       return false; end
+  alias isCrystal? crystal?
   def hasPrimal?;     return false; end
   def primal?;        return false; end
   alias isPrimal? primal?

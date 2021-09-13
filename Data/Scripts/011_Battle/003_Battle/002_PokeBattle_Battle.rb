@@ -70,6 +70,7 @@ class PokeBattle_Battle
   attr_accessor :rules
   attr_accessor :choices          # Choices made by each Pokémon this round
   attr_accessor :megaEvolution    # Battle index of each trainer's Pokémon to Mega Evolve
+  attr_accessor :crystallization  # Battle index of each trainer's Pokémon to Crystallize
   attr_reader   :initialItems
   attr_reader   :recycleItems
   attr_reader   :belch
@@ -140,6 +141,10 @@ class PokeBattle_Battle
     @priorityTrickRoom = false
     @choices           = []
     @megaEvolution     = [
+       [-1] * (@player ? @player.length : 1),
+       [-1] * (@opponent ? @opponent.length : 1)
+    ]
+    @crystallization   = [
        [-1] * (@player ? @player.length : 1),
        [-1] * (@opponent ? @opponent.length : 1)
     ]

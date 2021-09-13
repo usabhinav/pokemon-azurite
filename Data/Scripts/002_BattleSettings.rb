@@ -49,6 +49,9 @@ module Settings
   # The Game Switch which, while ON, prevents all Pokémon in battle from Mega
   # Evolving even if they otherwise could.
   NO_MEGA_EVOLUTION = 34
+  # An array of items which act as Crystallization triggers for Pokemon with
+  # Crystal forms.
+  CRYSTALLIZATION_ITEMS = [:CRYSTALFRAGMENT]
 
   #=============================================================================
 

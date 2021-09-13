@@ -302,6 +302,8 @@ class DataBoxEBDX  <  SpriteWrapper
     pbSetSmallFont(@sprites["textHP"].bitmap)
 
     @megaBmp = pbBitmap(@path + "symMega")
+    # TODO: Make graphic "symCrystal"
+    @crystalBmp = pbBitmap(@path + "symMega")
     @prKyogre = pbBitmap("Graphics/Pictures/Battle/icon_primal_Kyogre")
     @prGroudon = pbBitmap("Graphics/Pictures/Battle/icon_primal_Groudon")
   end
@@ -426,9 +428,11 @@ class DataBoxEBDX  <  SpriteWrapper
     # writes the Pokemon's level
     str = "Lv.#{@battler.level}"
     pbDrawOutlineText(@sprites["textName"].bitmap,18+o,3,@sprites["textName"].bitmap.width-40,@sprites["textName"].bitmap.height,str,Color.white,Color.new(0,0,0,125),2)
-    # changes the Mega symbol graphics (depending on Mega or Primal)
+    # changes the Mega symbol graphics (depending on Mega, Crystal, or Primal)
     if @battler.mega?
       @sprites["mega"].bitmap = @megaBmp.clone
+    elsif @battler.crystal?
+      @sprites["mega"].bitmap = @crystalBmp.clone
     elsif @battler.primal?
       @sprites["mega"].bitmap = @prKyogre.clone if @battler.isSpecies?(:KYOGRE)
       @sprites["mega"].bitmap = @prGroudon.clone if @battler.isSpecies?(:GROUDON)

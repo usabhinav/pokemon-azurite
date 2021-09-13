@@ -18,6 +18,8 @@ class PokeBattle_Battle
     end
     # If idxBattler chose to Mega Evolve, cancel it
     pbUnregisterMegaEvolution(idxBattler)
+    # If idxBattler chose to Crystallize, cancel it
+    pbUnregisterCrystallization(idxBattler)
     # Clear idxBattler's choice
     pbClearChoice(idxBattler)
   end
@@ -65,14 +67,20 @@ class PokeBattle_Battle
     return true if pbAutoFightMenu(idxBattler)
     # Regular move selection
     ret = false
-    @scene.pbFightMenu(idxBattler,pbCanMegaEvolve?(idxBattler)) { |cmd|
+    @scene.pbFightMenu(idxBattler,pbCanMegaEvolve?(idxBattler),pbCanCrystallize?(idxBattler)) { |cmd|
       case cmd
       when -1   # Cancel
-      when -2   # Toggle Mega Evolution
-        pbToggleRegisteredMegaEvolution(idxBattler)
+      when -2   # Toggle Mega Evolution or Crystallization
+        # Both should not be toggled at the same time
+        if pbCanMegaEvolve?(idxBattler) || @battlers[idxBattler].mega?
+          pbToggleRegisteredMegaEvolution(idxBattler)
+        else
+          pbToggleRegisteredCrystallization(idxBattler)
+        end
         next false
       when -3   # Shift
         pbUnregisterMegaEvolution(idxBattler)
+        pbUnregisterCrystallization(idxBattler)
         pbRegisterShift(idxBattler)
         ret = true
       else      # Chose a move to use
@@ -176,6 +184,12 @@ class PokeBattle_Battle
     for side in 0...2
       @megaEvolution[side].each_with_index do |megaEvo,i|
         @megaEvolution[side][i] = -1 if megaEvo>=0
+      end
+    end
+    # Reset choices to perform Crystallization if it wasn't done somehow
+    for side in 0...2
+      @crystallization[side].each_with_index do |crystalEvo,i|
+        @crystallization[side][i] = -1 if crystalEvo>=0
       end
     end
     # Choose actions for the round (player first, then AI)

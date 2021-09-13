@@ -161,6 +161,94 @@ class PokeBattle_Battle
   end
 
   #=============================================================================
+  # Choosing to Crystallize a battler
+  #=============================================================================
+  def pbHasCrystalData?(idxBattler)
+    return true if !pbOwnedByPlayer?(idxBattler)   # Assume AI trainer has the crystal data
+    # TODO: Implement crystal recorder data
+    return true
+    # return false
+  end
+
+  def pbCanCrystallize?(idxBattler)
+    return false if $game_switches[Settings::NO_MEGA_EVOLUTION]
+    return false if !@battlers[idxBattler].hasCrystal?
+    return false if wildBattle? && opposes?(idxBattler)
+    return true if $DEBUG && Input.press?(Input::CTRL)
+    return false if @battlers[idxBattler].effects[PBEffects::SkyDrop]>=0
+    return false if !pbHasCrystalData?(idxBattler)
+    side  = @battlers[idxBattler].idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    return @crystallization[side][owner]==-1
+  end
+
+  def pbRegisterCrystallization(idxBattler)
+    side  = @battlers[idxBattler].idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    @crystallization[side][owner] = idxBattler
+  end
+
+  def pbUnregisterCrystallization(idxBattler)
+    side  = @battlers[idxBattler].idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    @crystallization[side][owner] = -1 if @crystallization[side][owner]==idxBattler
+  end
+
+  def pbToggleRegisteredCrystallization(idxBattler)
+    side  = @battlers[idxBattler].idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    if @crystallization[side][owner]==idxBattler
+      @crystallization[side][owner] = -1
+    else
+      @crystallization[side][owner] = idxBattler
+    end
+  end
+
+  def pbRegisteredCrystallization?(idxBattler)
+    side  = @battlers[idxBattler].idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    return @crystallization[side][owner]==idxBattler
+  end
+
+  #=============================================================================
+  # Crystallizing a battler
+  #=============================================================================
+  def pbCrystallize(idxBattler)
+    battler = @battlers[idxBattler]
+    return if !battler || !battler.pokemon
+    return if !battler.hasCrystal? || battler.crystal?
+    trainerName = pbGetOwnerName(idxBattler)
+    # Break Illusion
+    if battler.hasActiveAbility?(:ILLUSION)
+      BattleHandlers.triggerTargetAbilityOnHit(battler.ability,nil,battler,nil,self)
+    end
+    # Crystallize
+    case battler.pokemon.megaMessage
+    when 1   # Rayquaza
+      pbDisplay(_INTL("{1}'s fervent wish has reached {2}!",trainerName,battler.pbThis))
+    else
+      pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s crystal data!",
+         battler.pbThis,battler.itemName,trainerName,))
+    end
+    pbCommonAnimation("MegaEvolution",battler)
+    battler.pokemon.makeCrystal
+    battler.form = battler.pokemon.form
+    battler.pbUpdate(true)
+    @scene.pbChangePokemon(battler,battler.pokemon)
+    @scene.pbRefreshOne(idxBattler)
+    pbCommonAnimation("MegaEvolution2",battler)
+    megaName = battler.pokemon.megaName
+    megaName = _INTL("Crystal {1}", battler.pokemon.speciesName) if nil_or_empty?(megaName)
+    pbDisplay(_INTL("{1} has Crystallized into {2}!",battler.pbThis,megaName))
+    side  = battler.idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    @crystallization[side][owner] = -2
+    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
+    # Trigger ability
+    battler.pbEffectsOnSwitchIn
+  end
+
+  #=============================================================================
   # Primal Reverting a battler
   #=============================================================================
   def pbPrimalReversion(idxBattler)

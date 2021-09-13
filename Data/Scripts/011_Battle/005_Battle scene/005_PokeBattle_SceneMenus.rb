@@ -414,6 +414,14 @@ class FightMenuDisplay < BattleMenuBase
 
   def refreshMegaEvolutionButton
     return if !USE_GRAPHICS
+    if @battler && (@battler.hasCrystal? || @battler.crystal?)
+      @megaEvoBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_crystal"))
+    else
+      @megaEvoBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_mega"))
+    end
+    @megaButton.bitmap = @megaEvoBitmap.bitmap
+    @megaButton.y      = self.y-@megaEvoBitmap.height/2
+    @megaButton.src_rect.height = @megaEvoBitmap.height/2
     @megaButton.src_rect.y    = (@mode - 1) * @megaEvoBitmap.height / 2
     @megaButton.x             = self.x + ((@shiftMode > 0) ? 204 : 120)
     @megaButton.z             = self.z - 1

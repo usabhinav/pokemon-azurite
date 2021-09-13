@@ -821,7 +821,7 @@
 791,ZIRCONIASFRAGMENT,Zirconia's Fragment,Zirconia's Fragments,8,0,"A fragment of Zirconia.",0,0,6
 792,DAHLIASFRAGMENT,Dahlia's Fragment,Dahlia's Fragments,8,0,"A fragment of Dahlia.",0,0,6
 793,MEGADEX,Mega Dex,Mega Dexes,8,0,"A Pokédex specifically for Mega Evolutions.",2,0,6
-794,MEGAKEYSTONE,Mega Keystone,Mega Keystones,8,0,"Allows you to use Mega Evolution.",0,0,6
+794,MEGAKEYSTONE,Mega Keystone,Mega Keystones,8,0,"This keystone contains an untold power that somehow enables Pokémon carrying Mega Stones to Mega Evolve.",0,0,6
 795,ENIGMACHAINRED,Enigma Chain Red,Enigma Chains Red,8,0,"Obtained from Cryoberus.",0,0,6
 796,ENIGMACHAINBLUE,Enigma Chain Blue,Enigma Chains Blue,8,0,"Obtained from Caldimis.",0,0,6
 797,ENIGMACHAINYELLOW,Enigma Chain Yellow,Enigma Chains Yellow,8,0,"Obtained from Pontremor.",0,0,6

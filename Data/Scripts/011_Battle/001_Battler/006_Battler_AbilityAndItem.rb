@@ -142,6 +142,47 @@ class PokeBattle_Battler
         @battle.pbHideAbilitySplash(self)
       end
     end
+    # Negation
+    if hasActiveAbility?(:NEGATION) && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
+      # Revert battlers on field
+      @battle.eachBattler do |b|
+        next if b.index == self.index
+        if b.mega?
+          @battle.pbUnMegaEvolve(b.index)
+        elsif b.crystal?
+          @battle.pbUnCrystallize(b.index)
+        elsif b.primal?
+          @battle.pbPrimalUnReversion(b.index)
+        elsif b.isSpecies?(:GRENINJA) && b.form == 2
+          @battle.battleBond[b.index&1][b.pokemonIndex] = false
+          b.pbChangeForm(1,_INTL("{1} reverted to its base form.", b.pbThis))
+        elsif b.isSpecies?(:KOSURITE) && b.form == 1
+          b.pbChangeForm(0,_INTL("{1} reverted to its encased form.", b.pbThis))
+        end
+      end
+      # Revert player side Pokemon
+      @battle.pbParty(0).each do |pkmn|
+        pkmn.makeUnmega
+        pkmn.makeUncrystal
+        pkmn.makeUnprimal
+        if pkmn.isSpecies?(:GRENINJA) && pkmn.form == 2
+          pkmn.form = 1
+        elsif pkmn.isSpecies?(:KOSURITE) && pkmn.form == 1
+          pkmn.form = 0
+        end
+      end
+      # Revert opponent side Pokemon
+      @battle.pbParty(1).each do |pkmn|
+        pkmn.makeUnmega
+        pkmn.makeUncrystal
+        pkmn.makeUnprimal
+        if pkmn.isSpecies?(:GRENINJA) && pkmn.form == 2
+          pkmn.form = 1
+        elsif pkmn.isSpecies?(:KOSURITE) && pkmn.form == 1
+          pkmn.form = 0
+        end
+      end
+    end
   end
 
   #=============================================================================

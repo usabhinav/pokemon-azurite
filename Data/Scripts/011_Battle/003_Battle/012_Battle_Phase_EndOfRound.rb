@@ -721,6 +721,18 @@ class PokeBattle_Battle
       # Harvest, Pickup
       BattleHandlers.triggerEORGainItemAbility(b.ability,b,self) if b.abilityActive?
     end
+    # Crystal Energy and Negation messages
+    if pbCheckGlobalAbility(:CRYSTALENERGY)
+      b = pbCheckGlobalAbility(:CRYSTALENERGY)
+      pbShowAbilitySplash(b)
+      pbDisplay(_INTL("{1}'s crystal energy is radiating throughout the field.",b.pbThis))
+      pbHideAbilitySplash(b)
+    elsif pbCheckGlobalAbility(:NEGATION)
+      b = pbCheckGlobalAbility(:NEGATION)
+      pbShowAbilitySplash(b)
+      pbDisplay(_INTL("{1} is suppressing all power transformations.",b.pbThis))
+      pbHideAbilitySplash(b)
+    end
     # Incomprehensible
     # NOTE: Put this near the very end of pbEndOfRoundPhase so that ability effects
     # don't get triggered immediately after Incomprehensible effect switches ability

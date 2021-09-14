@@ -152,7 +152,8 @@ class PokeBattle_Battler
     end
     # Greninja - Battle Bond
     if !user.fainted? && !user.effects[PBEffects::Transform] &&
-       user.isSpecies?(:GRENINJA) && user.ability == :BATTLEBOND
+       user.isSpecies?(:GRENINJA) && user.ability == :BATTLEBOND &&
+       (!@battle.pbCheckGlobalAbility(:NEGATION) || @battle.pbCheckGlobalAbility(:CRYSTALENERGY))
       if !@battle.pbAllFainted?(user.idxOpposingSide) &&
          !@battle.battleBond[user.index&1][user.pokemonIndex]
         numFainted = 0

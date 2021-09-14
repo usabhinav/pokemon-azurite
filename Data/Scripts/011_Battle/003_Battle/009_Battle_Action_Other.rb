@@ -86,6 +86,7 @@ class PokeBattle_Battle
     return true if $DEBUG && Input.press?(Input::CTRL)
     return false if @battlers[idxBattler].effects[PBEffects::SkyDrop]>=0
     return false if !pbHasMegaRing?(idxBattler)
+    return false if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     return @megaEvolution[side][owner]==-1
@@ -126,6 +127,7 @@ class PokeBattle_Battle
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
     return if !battler.hasMega? || battler.mega?
+    return if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
@@ -161,6 +163,33 @@ class PokeBattle_Battle
   end
 
   #=============================================================================
+  # Un-Mega-Evolving a battler
+  #=============================================================================
+  def pbUnMegaEvolve(idxBattler)
+    battler = @battlers[idxBattler]
+    return if !battler || !battler.pokemon
+    return if !battler.mega?
+    return if pbCheckGlobalAbility(:CRYSTALENERGY)
+    trainerName = pbGetOwnerName(idxBattler)
+    # Break Illusion
+    if battler.hasActiveAbility?(:ILLUSION)
+      BattleHandlers.triggerTargetAbilityOnHit(battler.ability,nil,battler,nil,self)
+    end
+    pbCommonAnimation("MegaEvolution",battler)
+    battler.pokemon.makeUnmega
+    battler.form = battler.pokemon.form
+    battler.pbUpdate(true)
+    @scene.pbChangePokemon(battler,battler.pokemon)
+    @scene.pbRefreshOne(idxBattler)
+    pbCommonAnimation("MegaEvolution2",battler)
+    pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
+    side  = battler.idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    @megaEvolution[side][owner] = -1
+    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
+  end
+
+  #=============================================================================
   # Choosing to Crystallize a battler
   #=============================================================================
   def pbHasCrystalData?(idxBattler)
@@ -177,6 +206,7 @@ class PokeBattle_Battle
     return true if $DEBUG && Input.press?(Input::CTRL)
     return false if @battlers[idxBattler].effects[PBEffects::SkyDrop]>=0
     return false if !pbHasCrystalData?(idxBattler)
+    return false if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     return @crystallization[side][owner]==-1
@@ -217,6 +247,7 @@ class PokeBattle_Battle
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
     return if !battler.hasCrystal? || battler.crystal?
+    return if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
@@ -249,12 +280,40 @@ class PokeBattle_Battle
   end
 
   #=============================================================================
+  # Uncrystallizing a battler
+  #=============================================================================
+  def pbUnCrystallize(idxBattler)
+    battler = @battlers[idxBattler]
+    return if !battler || !battler.pokemon
+    return if !battler.crystal?
+    return if pbCheckGlobalAbility(:CRYSTALENERGY)
+    trainerName = pbGetOwnerName(idxBattler)
+    # Break Illusion
+    if battler.hasActiveAbility?(:ILLUSION)
+      BattleHandlers.triggerTargetAbilityOnHit(battler.ability,nil,battler,nil,self)
+    end
+    pbCommonAnimation("MegaEvolution",battler)
+    battler.pokemon.makeUncrystal
+    battler.form = battler.pokemon.form
+    battler.pbUpdate(true)
+    @scene.pbChangePokemon(battler,battler.pokemon)
+    @scene.pbRefreshOne(idxBattler)
+    pbCommonAnimation("MegaEvolution2",battler)
+    pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
+    side  = battler.idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    @crystallization[side][owner] = -1
+    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
+  end
+
+  #=============================================================================
   # Primal Reverting a battler
   #=============================================================================
   def pbPrimalReversion(idxBattler)
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
     return if !battler.hasPrimal? || battler.primal?
+    return if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     if battler.isSpecies?(:KYOGRE)
       pbCommonAnimation("PrimalKyogre",battler)
     elsif battler.isSpecies?(:GROUDON)
@@ -271,5 +330,31 @@ class PokeBattle_Battle
       pbCommonAnimation("PrimalGroudon2",battler)
     end
     pbDisplay(_INTL("{1}'s Primal Reversion!\nIt reverted to its primal form!",battler.pbThis))
+  end
+
+  #=============================================================================
+  # Primal Un-Reverting a battler
+  #=============================================================================
+  def pbPrimalUnReversion(idxBattler)
+    battler = @battlers[idxBattler]
+    return if !battler || !battler.pokemon
+    return if !battler.primal?
+    return if pbCheckGlobalAbility(:CRYSTALENERGY)
+    if battler.isSpecies?(:KYOGRE)
+      pbCommonAnimation("PrimalKyogre",battler)
+    elsif battler.isSpecies?(:GROUDON)
+      pbCommonAnimation("PrimalGroudon",battler)
+    end
+    battler.pokemon.makeUnprimal
+    battler.form = battler.pokemon.form
+    battler.pbUpdate(true)
+    @scene.pbChangePokemon(battler,battler.pokemon)
+    @scene.pbRefreshOne(idxBattler)
+    if battler.isSpecies?(:KYOGRE)
+      pbCommonAnimation("PrimalKyogre2",battler)
+    elsif battler.isSpecies?(:GROUDON)
+      pbCommonAnimation("PrimalGroudon2",battler)
+    end
+    pbDisplay(_INTL("{1} went back to its regular form!",battler.pbThis))
   end
 end

@@ -4404,6 +4404,15 @@ BattleHandlers::AbilityOnSwitchIn.add(:PROXY,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:NEGATION,
+  proc { |ability,battler,battle|
+    next if battle.pbCheckGlobalAbility(:CRYSTALENERGY)
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} is suppressing all power transformations!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # AbilityOnSwitchOut handlers
 #===============================================================================

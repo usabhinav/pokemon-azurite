@@ -3188,3 +3188,11 @@ EffortPoints = 0,1,0,0,1,0
 Height = 1.1
 Weight = 9.9
 Color = Purple
+#-------------------------------
+[KOSURITE,1]
+Type1 = CRYSTAL
+Type2 = COSMIC
+#-------------------------------
+[KAIZURE,1]
+EffortPoints = 4,4,4,4,4,4
+Height = 0.4

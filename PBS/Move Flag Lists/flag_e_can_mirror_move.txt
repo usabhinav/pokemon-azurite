@@ -583,7 +583,7 @@ Beatbox
 Rhythm Beat
 Ring Through
 Dirty Beat
-Vaporwave
+Vapor Wave
 Supersound
 Searing Meteor
 Kick Shower
@@ -845,3 +845,18 @@ Surging Strikes
 Flip Turn
 Heat Wave
 Stare
+Armor Pierce
+Powder Storm
+Volt Storm
+Cute Fang
+Pixie Dust
+Whimsy Tackle
+Suplex
+Luminous Gust
+Swoop In
+Tornado Tackle
+Color Sphere
+Mystic Edge
+Counter Shield
+Bassquake
+Steel Smite

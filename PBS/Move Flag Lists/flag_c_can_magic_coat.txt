@@ -123,3 +123,4 @@ Fireworks
 Magic Powder
 Tar Shot
 Stare
+Charged Spikes

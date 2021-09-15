@@ -3338,3 +3338,16 @@ class PokeBattle_Move_VoltSpikes < PokeBattle_Move
        user.pbOpposingTeam(true)))
   end
 end
+#===============================================================================
+# Powder Storm
+#===============================================================================
+class PokeBattle_Move_PowderStorm < PokeBattle_Move
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(3)
+    when 0; target.pbParalyze(user) if target.pbCanParalyze?(user,false,self)
+    when 1; target.pbPoison(user) if target.pbCanPoison?(user,false,self)
+    when 2; target.pbSleep if target.pbCanSleep?(user,false,self)
+    end
+  end
+end

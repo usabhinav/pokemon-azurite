@@ -363,6 +363,43 @@ class PokeBattle_Battle
     return ret
   end
 
+  # Returns list [[Symbol]]
+  # Returns list of type lists for each party member, taking into account if each member is in battle or not
+  def pbGetTypeListsOfBattlersAndParty(idxBattler)
+    battlersAndParty = pbGetBattlersAndParty(idxBattler)
+    type_lists = []
+    for battler in battlersAndParty[0]
+      type_lists.push(battler.pbTypes(true))
+    end
+    for pkmn in battlersAndParty[1]
+      type_lists.push(pkmn.types)
+    end
+    return type_lists
+  end
+
+  # Returns list [[PokeBattle_Battler], [Pokemon]]
+  # Returns PokeBattle_Battler objects for party members in battle (first array) and
+  # Pokemon objects for party members not in battle (second array)
+  # Excludes the given battler idxBattler
+  def pbGetBattlersAndParty(idxBattler)
+    battler = @battlers[idxBattler]
+    battlers = []
+    party = []
+    # Stores information if each party Pokemon is on the field or not
+    ally_indices = Array.new(Settings::MAX_PARTY_SIZE, -1)
+    battler.eachAlly do |b|
+      next if pbGetOwnerIndexFromBattlerIndex(b) != pbGetOwnerIndexFromBattlerIndex(battler)
+      ally_indices[b.pokemonIndex] = b.index # Stores value >= 0 at same index as party index
+      battlers.push(b)
+    end
+    battle.pbParty(battler.index).each_with_index { |pkmn, i|
+      next if battler.index == i # Excludes self
+      next if ally_indices[i] >= 0 # Already counted in above loop as a battler
+      party.push(pkmn)
+    }
+    return [battlers, party]
+  end
+
   #=============================================================================
   # Get team information (a team is only the Pokémon owned by a particular
   # trainer)

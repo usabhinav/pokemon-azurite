@@ -1302,7 +1302,7 @@ BattleHandlers::UserItemAfterMoveUse.add(:CRUSHINGHAMMER,
         t.pbSetPP(m,m.pp-reduction)
         battle.pbDisplay(_INTL("It reduced the PP of {1}'s {2} by {3}!",
            t.pbThis(true),m.name,reduction))
-        user.pbConsumeItem
+        user.pbConsumeItem if user.item
         break
       end
     end

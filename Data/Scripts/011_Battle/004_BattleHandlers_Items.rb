@@ -1291,6 +1291,18 @@ BattleHandlers::TargetItemAfterMoveUse.add(:REDCARD,
 #===============================================================================
 # UserItemAfterMoveUse handlers
 #===============================================================================
+BattleHandlers::UserItemAfterMoveUse.add(:CRUSHINGHAMMER,
+  proc { |item,user,targets,move,numHits,battle|
+    targets.eachMove do |m|
+      next if m.id!=targets.lastRegularMoveUsed
+      reduction = [4,m.pp].min
+      targets.pbSetPP(m,m.pp-reduction)
+      battle.pbDisplay(_INTL("It reduced the PP of {1}'s {2} by {3}!",
+         targets.pbThis(true),m.name,reduction))
+      break
+    end
+  }
+)
 
 BattleHandlers::UserItemAfterMoveUse.add(:LIFEORB,
   proc { |item,user,targets,move,numHits,battle|

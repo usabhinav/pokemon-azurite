@@ -1293,13 +1293,18 @@ BattleHandlers::TargetItemAfterMoveUse.add(:REDCARD,
 #===============================================================================
 BattleHandlers::UserItemAfterMoveUse.add(:CRUSHINGHAMMER,
   proc { |item,user,targets,move,numHits,battle|
-    targets.eachMove do |m|
-      next if m.id!=targets.lastRegularMoveUsed
-      reduction = [4,m.pp].min
-      targets.pbSetPP(m,m.pp-reduction)
-      battle.pbDisplay(_INTL("It reduced the PP of {1}'s {2} by {3}!",
-         targets.pbThis(true),m.name,reduction))
-      break
+    next if !move.pbDamagingMove? || numHits==0
+    targets.each do |t|
+      next if t.damageState.unaffected || t.damageState.substitute
+      t.eachMove do |m|
+        next if m.id!=t.lastRegularMoveUsed
+        reduction = [4,m.pp].min
+        t.pbSetPP(m,m.pp-reduction)
+        battle.pbDisplay(_INTL("It reduced the PP of {1}'s {2} by {3}!",
+           t.pbThis(true),m.name,reduction))
+        user.pbConsumeItem
+        break
+      end
     end
   }
 )

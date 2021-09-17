@@ -305,6 +305,9 @@ class PokeBattle_Move
     end
     if target.damageState.substitute && target.effects[PBEffects::Substitute]==0
       target.effects[PBEffects::Substitute] = 0
+      if target.isSpecies?(:PHANTITUTE) && target.ability == :PROXY
+        target.pbChangeForm(0, nil)
+      end
       @battle.pbDisplay(_INTL("{1}'s substitute faded!",target.pbThis))
     end
   end

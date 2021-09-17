@@ -548,6 +548,7 @@ def pbAfterBattle(decision,canLose)
     pkmn.statusCount = 0 if pkmn.status == :POISON   # Bad poison becomes regular
     pkmn.makeUnmega
     pkmn.makeUnprimal
+    pkmn.makeUncrystal
   end
   if $PokemonGlobal.partner
     $Trainer.heal_party
@@ -555,6 +556,7 @@ def pbAfterBattle(decision,canLose)
       pkmn.heal
       pkmn.makeUnmega
       pkmn.makeUnprimal
+      pkmn.makeUncrystal
     end
   end
   if decision==2 || decision==5   # if loss or draw

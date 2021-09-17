@@ -603,6 +603,12 @@ BattleHandlers::PriorityChangeAbility.add(:QUICKBLADE,
   }
 )
 
+BattleHandlers::PriorityChangeAbility.add(:PROXY,
+  proc { |ability,battler,move,pri|
+    next pri+1 if battler.isSpecies?(:PHANTITUTE) && move.id == :SUBSTITUTE
+  }
+)
+
 #===============================================================================
 # PriorityBracketChangeAbility handlers
 #===============================================================================
@@ -2973,6 +2979,14 @@ BattleHandlers::UserAbilityEndOfMove.add(:OVERCHARGED,
   }
 )
 
+BattleHandlers::UserAbilityEndOfMove.add(:PROXY,
+  proc { |ability,user,targets,move,battle|
+    next if !user.isSpecies?(:PHANTITUTE)
+    next if move.pp == 0
+    move.pp -= 1
+  }
+)
+
 #===============================================================================
 # TargetAbilityAfterMoveUse handlers
 #===============================================================================
@@ -4366,6 +4380,39 @@ BattleHandlers::AbilityOnSwitchIn.add(:MAGICSHOW,
   }
 )
 
+BattleHandlers::AbilityOnSwitchIn.add(:HEAVYEYED,
+  proc { |ability,battler,battle|
+    next if !battler.isSpecies?(:RABLIN) || battler.form == 0
+    next if !battler.pbCanSleep?(battler, false)
+    battler.pbSleepSelf
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:PROXY,
+  proc { |ability,battler,battle|
+    next if !battler.isSpecies?(:PHANTITUTE) || battler.form == 1
+    next if battler.effects[PBEffects::Substitute] == 0
+    battle.pbShowAbilitySplash(battler)
+    battler.pbChangeForm(1, _INTL("{1} revealed its true form!", battler.pbThis))
+    if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
+      battler.pbRaiseStatStageByAbility(:DEFENSE, 1, battler, false)
+    end
+    if battler.pbCanLowerStatStage?(:SPEED, battler)
+      battler.pbLowerStatStageByAbility(:SPEED, 1, battler, false)
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:NEGATION,
+  proc { |ability,battler,battle|
+    next if battle.pbCheckGlobalAbility(:CRYSTALENERGY)
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} is suppressing all power transformations!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # AbilityOnSwitchOut handlers
 #===============================================================================
@@ -4412,6 +4459,15 @@ BattleHandlers::AbilityOnSwitchOut.add(:DEBRISARMOR,
       battler.effects[PBEffects::VoltSpikesArmor] = 0
       battler.battle.pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", battler.pbThis))
     end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchOut.add(:PROXY,
+  proc { |ability,battler,endOfBattle|
+    next if endOfBattle
+    next if !battler.isSpecies?(:PHANTITUTE)
+    # Ensures that Substitute cannot be Baton Passed to another Pokemon
+    battler.effects[PBEffects::Substitute] = 0
   }
 )
 

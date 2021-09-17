@@ -1723,6 +1723,11 @@ class PokemonStorageScreen
             p.time_form_set = nil
             p.form          = 0 if p.isSpecies?(:SHAYMIN)
             p.heal
+            if p.isSpecies?(:RABLIN) && p.hasAbility?(:HEAVYEYED)
+              p.status = :SLEEP
+              p.statusCount = 3
+              p.form = 0
+            end
           end
           @scene.pbStore(selected,heldpoke,destbox,firstfree)
           if heldpoke
@@ -1770,6 +1775,11 @@ class PokemonStorageScreen
       @heldpkmn.time_form_set = nil
       @heldpkmn.form          = 0 if @heldpkmn.isSpecies?(:SHAYMIN)
       @heldpkmn.heal
+      if @heldpkmn.isSpecies?(:RABLIN) && @heldpkmn.hasAbility?(:HEAVYEYED)
+        @heldpkmn.status = :SLEEP
+        @heldpkmn.statusCount = 3
+        @heldpkmn.form = 0
+      end
     end
     @scene.pbPlace(selected,@heldpkmn)
     @storage[box,index] = @heldpkmn
@@ -1799,6 +1809,11 @@ class PokemonStorageScreen
       @heldpkmn.time_form_set = nil
       @heldpkmn.form          = 0 if @heldpkmn.isSpecies?(:SHAYMIN)
       @heldpkmn.heal
+      if @heldpkmn.isSpecies?(:RABLIN) && @heldpkmn.hasAbility?(:HEAVYEYED)
+        @heldpkmn.status = :SLEEP
+        @heldpkmn.statusCount = 3
+        @heldpkmn.form = 0
+      end
     end
     @scene.pbSwap(selected,@heldpkmn)
     tmp = @storage[box,index]

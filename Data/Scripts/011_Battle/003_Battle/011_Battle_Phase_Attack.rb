@@ -36,6 +36,7 @@ class PokeBattle_Battle
       if !wildBattle? || !b.opposes?
         owner = pbGetOwnerIndexFromBattlerIndex(b.index)
         pbMegaEvolve(b.index) if @megaEvolution[b.idxOwnSide][owner]==b.index
+        pbCrystallize(b.index) if @crystallization[b.idxOwnSide][owner]==b.index
       end
       # Use Pursuit
       @choices[b.index][3] = idxSwitcher   # Change Pursuit's target
@@ -92,8 +93,11 @@ class PokeBattle_Battle
       next if wildBattle? && b.opposes?
       next unless @choices[b.index][0]==:UseMove && !b.fainted?
       owner = pbGetOwnerIndexFromBattlerIndex(b.index)
-      next if @megaEvolution[b.idxOwnSide][owner]!=b.index
-      pbMegaEvolve(b.index)
+      if @megaEvolution[b.idxOwnSide][owner]==b.index
+        pbMegaEvolve(b.index)
+      elsif @crystallization[b.idxOwnSide][owner]==b.index
+        pbCrystallize(b.index)
+      end
     end
   end
 

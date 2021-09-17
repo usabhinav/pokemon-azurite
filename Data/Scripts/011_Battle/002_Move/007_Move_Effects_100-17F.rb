@@ -228,6 +228,7 @@ class PokeBattle_Move_10C < PokeBattle_Move
       return true
     end
     @subLife = user.totalhp/4
+    @subLife = user.totalhp/2 if user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY
     @subLife = 1 if @subLife<1
     if user.hp<=@subLife
       @battle.pbDisplay(_INTL("But it does not have enough HP left to make a substitute!"))
@@ -245,7 +246,19 @@ class PokeBattle_Move_10C < PokeBattle_Move
     user.effects[PBEffects::Trapping]     = 0
     user.effects[PBEffects::TrappingMove] = nil
     user.effects[PBEffects::Substitute]   = @subLife
-    @battle.pbDisplay(_INTL("{1} put in a substitute!",user.pbThis))
+    if user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY
+      @battle.pbShowAbilitySplash(user)
+      user.pbChangeForm(1, _INTL("{1} revealed its true form!", user.pbThis))
+      if user.pbCanRaiseStatStage?(:DEFENSE, user)
+        user.pbRaiseStatStageByAbility(:DEFENSE, 1, user, false)
+      end
+      if user.pbCanLowerStatStage?(:SPEED, user)
+        user.pbLowerStatStageByAbility(:SPEED, 1, user, false)
+      end
+      @battle.pbHideAbilitySplash(user)
+    else
+      @battle.pbDisplay(_INTL("{1} put in a substitute!",user.pbThis))
+    end
   end
 end
 
@@ -3323,5 +3336,18 @@ class PokeBattle_Move_VoltSpikes < PokeBattle_Move
     user.pbOpposingSide.effects[PBEffects::VoltSpikes] += 1
     @battle.pbDisplay(_INTL("Electric spikes were scattered all around {1}'s feet!",
        user.pbOpposingTeam(true)))
+  end
+end
+#===============================================================================
+# Powder Storm
+#===============================================================================
+class PokeBattle_Move_PowderStorm < PokeBattle_Move
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(3)
+    when 0; target.pbParalyze(user) if target.pbCanParalyze?(user,false,self)
+    when 1; target.pbPoison(user) if target.pbCanPoison?(user,false,self)
+    when 2; target.pbSleep if target.pbCanSleep?(user,false,self)
+    end
   end
 end

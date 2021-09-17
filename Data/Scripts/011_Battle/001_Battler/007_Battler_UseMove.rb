@@ -108,7 +108,7 @@ class PokeBattle_Battler
   def pbEndTurn(_choice)
     @lastRoundMoved = @battle.turnCount   # Done something this round
     if !@effects[PBEffects::ChoiceBand] &&
-       hasActiveItem?([:CHOICEBAND,:CHOICESPECS,:CHOICESCARF])
+       hasActiveItem?([:CHOICEBAND,:CHOICESPECS,:CHOICESCARF,:CHOICESCOPE])
       if @lastMoveUsed && pbHasMove?(@lastMoveUsed)
         @effects[PBEffects::ChoiceBand] = @lastMoveUsed
       elsif @lastRegularMoveUsed && pbHasMove?(@lastRegularMoveUsed)
@@ -259,41 +259,24 @@ class PokeBattle_Battler
     # note: not made by me! Credits to Lucidious89 - Sincerely, ShadowSear
     #===========================================================================
     if isSpecies?(:DEOXYS) && hasActiveAbility?(:FORMULASHIFT)
-      speedmoves   = [:AGILITY,:EXTREMESPEED,:SWIFT,:PURSUIT,:DOUBLETEAM,:TAUNT,
-                      :TRICK,:SNATCH,:TORMENT,:TELEPORT,:ALLYSWITCH,:ROLEPLAY,
-                      :SKILLSWAP,:PSYCHUP,:SWAGGER,:THUNDERWAVE,:SUBSTITUTE,
-                      :SUNNYDAY,:RAINDANCE,:LASERFOCUS,:TELEKINESIS,:FLING,:FLASH,
-                      :PSYCHOSHIFT,:TRICKROOM,:WONDERROOM,:RECYCLE,:THROATCHOP]
-
-      defensemoves = [:RECOVER,:REST,:AMNESIA,:IRONDEFENSE,:CALMMIND,:COSMICPOWER,
-                      :REFLECT,:LIGHTSCREEN,:SAFEGUARD,:PROTECT,:DETECT,:MAGICCOAT,
-                      :MIRRORCOAT,:COUNTER,:SPIKES,:STEALTHROCK,:GRAVITY,:ENDURE,:SNORE,
-                      :SLEEPTALK,:NIGHTSHADE,:KNOCKOFF,:TOXIC,:DREAMEATER,:SEISMICTOSS,
-                      :DRAINPUNCH]
-      
-      speedform = speedmoves.include?(move.id)
-      defenseform = defensemoves.include?(move.id)
-
-      if speedform
-        if form!=3
+      if move.speedMove?
+        if self.form != 3
           @battle.pbShowAbilitySplash(self,true)
           pbChangeForm(3,_INTL("{1} shifted into Speed Forme!",pbThis))
         end
-      elsif defenseform
-        if form!=2
+      elsif move.defenseMove?
+        if self.form != 2
           @battle.pbShowAbilitySplash(self,true)
           pbChangeForm(2,_INTL("{1} shifted into Defense Forme!",pbThis))
         end
       elsif move.damagingMove?
-        if form!=1
+        if self.form != 1
           @battle.pbShowAbilitySplash(self,true)
           pbChangeForm(1,_INTL("{1} shifted into Attack Forme!",pbThis))
         end
-      else
-        if form!=0
-          @battle.pbShowAbilitySplash(self,true)
-          pbChangeForm(0,_INTL("{1} reverted into Normal Forme!",pbThis))
-        end
+      elsif self.form != 0
+        @battle.pbShowAbilitySplash(self,true)
+        pbChangeForm(0,_INTL("{1} reverted into Normal Forme!",pbThis))
       end
       @battle.pbHideAbilitySplash(self)
     end

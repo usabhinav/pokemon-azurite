@@ -192,6 +192,11 @@ class PokemonStorage
       pkmn.time_form_set = nil
       pkmn.form          = 0 if pkmn.isSpecies?(:SHAYMIN)
       pkmn.heal
+      if pkmn.isSpecies?(:RABLIN) && pkmn.hasAbility?(:HEAVYEYED)
+        pkmn.status = :SLEEP
+        pkmn.statusCount = 3
+        pkmn.form = 0
+      end
       self[boxDst,indexDst] = pkmn
     end
     return true
@@ -215,6 +220,11 @@ class PokemonStorage
           pkmn.time_form_set = nil if pkmn.time_form_set
           pkmn.form          = 0 if pkmn.isSpecies?(:SHAYMIN)
           pkmn.heal
+          if pkmn.isSpecies?(:RABLIN) && pkmn.hasAbility?(:HEAVYEYED)
+            pkmn.status = :SLEEP
+            pkmn.statusCount = 3
+            pkmn.form = 0
+          end
         end
         self[box,i] = pkmn
         return true
@@ -228,6 +238,11 @@ class PokemonStorage
       pkmn.time_form_set = nil
       pkmn.form          = 0 if pkmn.isSpecies?(:SHAYMIN)
       pkmn.heal
+      if pkmn.isSpecies?(:RABLIN) && pkmn.hasAbility?(:HEAVYEYED)
+        pkmn.status = :SLEEP
+        pkmn.statusCount = 3
+        pkmn.form = 0
+      end
     end
     for i in 0...maxPokemon(@currentBox)
       if self[@currentBox,i]==nil

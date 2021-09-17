@@ -116,6 +116,21 @@ Events.onStepTakenTransferPossible += proc { |_sender,e|
   end
 }
 
+# Put Rablin to sleep every few steps
+Events.onStepTakenTransferPossible += proc { |_sender,e|
+  handled = e[0]
+  next if handled[0]
+  if $PokemonGlobal.stepcount%4==0
+    for i in $Trainer.able_party
+      if i.isSpecies?(:RABLIN) && i.hasAbility?(:HEAVYEYED) && i.status != :SLEEP
+        i.status = :SLEEP
+        i.statusCount = 3
+        i.form = 0
+      end
+    end
+  end
+}
+
 def pbCheckAllFainted
   if $Trainer.able_pokemon_count == 0
     pbMessage(_INTL("You have no more Pokémon that can fight!\1"))

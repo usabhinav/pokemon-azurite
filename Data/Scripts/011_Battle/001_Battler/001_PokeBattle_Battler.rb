@@ -161,6 +161,20 @@ class PokeBattle_Battler
           @battle.pbHideAbilitySplash(self)
         end
       end
+      # Rablin
+      if isSpecies?(:RABLIN) && self.ability == :HEAVYEYED
+        if value == :SLEEP
+          if self.form == 1
+            @battle.pbShowAbilitySplash(self)
+            pbChangeForm(0, nil)
+            @battle.pbHideAbilitySplash(self)
+          end
+        elsif self.form == 0
+          @battle.pbShowAbilitySplash(self)
+          pbChangeForm(1,_INTL("{1} got an evil look in its eyes!",pbThis))
+          @battle.pbHideAbilitySplash(self)
+        end
+      end
     end
     self.statusCount = 0 if value != :POISON && value != :SLEEP
     @battle.scene.pbRefreshOne(@index)
@@ -182,7 +196,7 @@ class PokeBattle_Battler
   def pokerusStage; return @pokemon ? @pokemon.pokerusStage : 0; end
 
   #=============================================================================
-  # Mega Evolution, Primal Reversion, Shadow Pokémon
+  # Mega Evolution, Crystallization, Primal Reversion, Shadow Pokémon
   #=============================================================================
   def hasMega?
     return false if @effects[PBEffects::Transform]
@@ -191,6 +205,14 @@ class PokeBattle_Battler
 
   def mega?; return @pokemon && @pokemon.mega?; end
   alias isMega? mega?
+
+  def hasCrystal?
+    return false if @effects[PBEffects::Transform]
+    return @pokemon && @pokemon.hasCrystalForm?
+  end
+
+  def crystal?; return @pokemon && @pokemon.crystal?; end
+  alias isCrystal? crystal?
 
   def hasPrimal?
     return false if @effects[PBEffects::Transform]
@@ -477,9 +499,9 @@ class PokeBattle_Battler
     return true if GameData::Item.get(check_item).is_mail?
     return false if @effects[PBEffects::Transform]
     # Items that change a Pokémon's form
-    if mega?   # Check if item was needed for this Mega Evolution
+    if mega? || crystal?   # Check if item was needed for this Mega Evolution or Crystallization
       return true if @pokemon.species_data.mega_stone == check_item
-    else   # Check if item could cause a Mega Evolution
+    else   # Check if item could cause a Mega Evolution or Crystallization
       GameData::Species.each do |data|
         next if data.species != @species || data.unmega_form != @form
         return true if data.mega_stone == check_item

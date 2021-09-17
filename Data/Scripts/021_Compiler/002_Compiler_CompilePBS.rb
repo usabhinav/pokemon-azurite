@@ -300,7 +300,7 @@ module Compiler
 
   def generate_move_flag_lists(folder = "PBS/Move Flag Lists")
     Dir.mkdir(folder) if !(Dir.chdir(folder){true} rescue false)
-    flags = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u"]
+    flags = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w"]
     flag_list_filenames = [
       "flag_a_contact_move.txt",
       "flag_b_can_protect_against.txt",
@@ -322,7 +322,9 @@ module Compiler
       "flag_r_head_based_move.txt",
       "flag_s_ball_rolling_move.txt",
       "flag_t_projectile_move.txt",
-      "flag_u_throwing_move.txt"
+      "flag_u_throwing_move.txt",
+      "flag_v_speed_move.txt",
+      "flag_w_defense_move.txt"
     ]
     for i in 0...flag_list_filenames.length
       flag = flags[i]

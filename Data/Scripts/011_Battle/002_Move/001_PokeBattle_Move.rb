@@ -133,6 +133,8 @@ class PokeBattle_Move
   def ballRollingMove?;   return @flags[/s/]; end
   def projectileMove?;    return @flags[/t/]; end
   def throwingMove?;      return @flags[/u/]; end
+  def speedMove?;         return @flags[/v/]; end
+  def defenseMove?;       return @flags[/w/]; end
 
   # Causes perfect accuracy (param=1) and double damage (param=2).
   def tramplesMinimize?(_param=1); return false; end

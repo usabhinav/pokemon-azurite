@@ -7,7 +7,7 @@ class Pokemon
     ret = 0
     GameData::Species.each do |data|
       next if data.species != @species || data.unmega_form != form_simple
-      if data.mega_stone && hasItem?(data.mega_stone)
+      if data.mega_stone && hasItem?(data.mega_stone) && !Settings::CRYSTALLIZATION_ITEMS.include?(data.mega_stone)
         ret = data.form
         break
       elsif data.mega_move && hasMove?(data.mega_move)
@@ -28,7 +28,7 @@ class Pokemon
   end
 
   def mega?
-    return (species_data.mega_stone || species_data.mega_move) ? true : false
+    return ((species_data.mega_stone && !Settings::CRYSTALLIZATION_ITEMS.include?(species_data.mega_stone)) || species_data.mega_move) ? true : false
   end
 
   def makeMega
@@ -49,6 +49,56 @@ class Pokemon
   def megaMessage   # 0=default message, 1=Rayquaza message
     megaForm = self.getMegaForm
     message_number = GameData::Species.get_species_form(@species, megaForm)&.mega_message
+    return message_number || 0
+  end
+
+  #=============================================================================
+  # Crystallization
+  # NOTE: These are treated as form changes in Essentials.
+  #=============================================================================
+  def getCrystalForm
+    ret = 0
+    GameData::Species.each do |data|
+      next if data.species != @species || data.unmega_form != form_simple
+      if data.mega_stone && hasItem?(data.mega_stone) && Settings::CRYSTALLIZATION_ITEMS.include?(data.mega_stone)
+        ret = data.form
+        break
+      end
+    end
+    return ret   # form number, or 0 if no accessible Crystal form
+  end
+
+  def getUncrystalForm
+    return (crystal?) ? species_data.unmega_form : -1
+  end
+
+  def hasCrystalForm?
+    crystalForm = self.getCrystalForm
+    return crystalForm > 0 && crystalForm != form_simple
+  end
+
+  def crystal?
+    return (species_data.mega_stone && Settings::CRYSTALLIZATION_ITEMS.include?(species_data.mega_stone)) ? true : false
+  end
+
+  def makeCrystal
+    crystalForm = self.getCrystalForm
+    self.form = crystalForm if crystalForm > 0
+  end
+
+  def makeUncrystal
+    uncrystalForm = self.getUncrystalForm
+    self.form = uncrystalForm if uncrystalForm >= 0
+  end
+
+  def crystalName
+    formName = species_data.form_name
+    return (formName && !formName.empty?) ? formName : _INTL("Crystal {1}", species_data.name)
+  end
+
+  def crystalMessage   # 0=default message, 1=Rayquaza message
+    crystalForm = self.getCrystalForm
+    message_number = GameData::Species.get_species_form(@species, crystalForm)&.mega_message
     return message_number || 0
   end
 

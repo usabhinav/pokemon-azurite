@@ -45,10 +45,13 @@ module Settings
 
   # An array of items which act as Mega Rings for the player (NPCs don't need a
   # Mega Ring item, just a Mega Stone held by their Pokémon).
-  MEGA_RINGS        = [:MEGARING, :MEGABRACELET, :MEGACUFF, :MEGACHARM]
+  MEGA_RINGS        = [:MEGARING, :MEGABRACELET, :MEGACUFF, :MEGACHARM, :MEGAKEYSTONE]
   # The Game Switch which, while ON, prevents all Pokémon in battle from Mega
   # Evolving even if they otherwise could.
   NO_MEGA_EVOLUTION = 34
+  # An array of items which act as Crystallization triggers for Pokemon with
+  # Crystal forms.
+  CRYSTALLIZATION_ITEMS = [:CRYSTALFRAGMENT]
 
   #=============================================================================
 

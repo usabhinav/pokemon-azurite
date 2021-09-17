@@ -44,7 +44,7 @@ Rhythm Beat
 Ring Through
 Sound Test
 Dirty Beat
-Vaporwave
+Vapor Wave
 Supersound
 Vibration Punch
 Screech Slash
@@ -60,3 +60,4 @@ Cymbal Clap
 Cadenza
 War Cry
 Clangorous Soul
+Bassquake

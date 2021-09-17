@@ -352,3 +352,10 @@ Steel Roller
 Fishious Rend
 Surging Strikes
 Flip Turn
+Armor Pierce
+Cute Fang
+Whimsy Tackle
+Suplex
+Swoop In
+Tornado Tackle
+Mystic Edge

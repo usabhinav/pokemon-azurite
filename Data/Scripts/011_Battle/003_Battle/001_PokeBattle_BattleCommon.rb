@@ -143,6 +143,7 @@ module PokeBattle_BattleCommon
       pkmn.poke_ball = ball
       pkmn.makeUnmega if pkmn.mega?
       pkmn.makeUnprimal
+      pkmn.makeUncrystal if pkmn.crystal?
       pkmn.update_shadow_moves if pkmn.shadowPokemon?
       pkmn.record_first_moves
       # Reset form

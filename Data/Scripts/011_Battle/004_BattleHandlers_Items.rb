@@ -1010,7 +1010,6 @@ BattleHandlers::DamageCalcTargetItem.add(:YACHEBERRY,
 # CriticalCalcUserItem handlers
 #===============================================================================
 
-
 BattleHandlers::CriticalCalcUserItem.add(:LUCKYPUNCH,
   proc { |item,user,target,c|
     next c+2 if user.isSpecies?(:CHANSEY)

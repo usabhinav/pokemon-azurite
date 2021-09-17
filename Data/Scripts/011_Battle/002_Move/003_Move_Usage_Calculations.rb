@@ -499,11 +499,13 @@ class PokeBattle_Move
     end
     # STAB
     if type && user.pbHasType?(type)
-      if user.hasActiveAbility?([:ADAPTABILITY, :OMNIGENE])
+      if user.hasActiveAbility?([:ADAPTABILITY, :OMNIGENE]) || user.hasActiveItem?(:FOCUSBELT)
         multipliers[:final_damage_multiplier] *= 2
       else
         multipliers[:final_damage_multiplier] *= 1.5
       end
+	elsif user.hasActiveItem?(:FOCUSBELT)
+      multipliers[:final_damage_multiplier] *= 0.7
     end
     # Monarch
     @battle.pbParty(user.index).each_with_index do |pkmn, i|

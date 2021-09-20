@@ -25,6 +25,10 @@ EliteBattle.configProcess(:UI) do
           options[key.downcase] = { :x => metrics[section][key]['XYZ'][0], :y => metrics[section][key]['XYZ'][1], :z => metrics[section][key]['XYZ'][2]}
         end
       end
+      # Enemy databox Y
+      options[:Y] = 15 if section.upcase == "ENEMYDATABOX" && !EliteBattle::USE_NEW_UI
+      # Player databox Y
+      options[:Y] = 200 if section.upcase == "PLAYERDATABOX" && !EliteBattle::USE_NEW_UI
       # register options
       EliteBattle.add_data(section.upcase.to_sym, :METRICS, options)
     # configure command menu

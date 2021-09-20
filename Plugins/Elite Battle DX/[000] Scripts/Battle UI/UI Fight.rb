@@ -5,7 +5,12 @@ class PokeBattle_Scene
   #-----------------------------------------------------------------------------
   #  main fight menu override
   #-----------------------------------------------------------------------------
-  def pbFightMenu(idxBattler, megaEvoPossible = false, crystalEvoPossible = false)
+  alias pbFightMenu_ebdx pbFightMenu unless self.method_defined?(:pbFightMenu_ebdx)
+  def pbFightMenu(idxBattler, megaEvoPossible = false, crystalEvoPossible = false, &block)
+    if !EliteBattle::USE_NEW_UI
+      pbFightMenu_ebdx(idxBattler, megaEvoPossible, crystalEvoPossible, &block)
+      return
+    end
     # refresh current UI
     battler = @battle.battlers[idxBattler]
     self.clearMessageWindow
@@ -62,10 +67,10 @@ class PokeBattle_Scene
         break if yield -1
       elsif Input.trigger?(Input::A)                                            # Toggle Mega Evolution
         if megaEvoPossible || crystalEvoPossible
-            @fightWindow.megaButtonTrigger
-            pbSEPlay("EBDX/SE_Select3")
-          end
+          @fightWindow.megaButtonTrigger
+          pbSEPlay("EBDX/SE_Select3")
           break if yield -2
+        end
       end
     end
     # reset parameters
@@ -172,8 +177,6 @@ class FightWindowEBDX
     @typImg = "types"
     @catImg = "category"
     @megaImg = "megaButton"
-    # TODO: Add graphic "megaCrystal"
-    @megaImg = "megaButton" if @battler && (@battle.pbCanCrystallize?(@battler.index) || @battler.crystal?)
     @barImg = nil
     @showTypeAdvantage = false
     # looks up next cached metrics first

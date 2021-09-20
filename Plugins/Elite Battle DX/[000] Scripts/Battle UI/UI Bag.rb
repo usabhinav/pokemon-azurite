@@ -671,6 +671,10 @@ class PokeBattle_Scene
   #-----------------------------------------------------------------------------
   alias pbItemMenu_ebdx pbItemMenu unless self.method_defined?(:pbItemMenu_ebdx)
   def pbItemMenu(idxBattler, firstAction)
+    if !EliteBattle::USE_NEW_UI
+      pbItemMenu_ebdx(idxBattler, firstAction)
+      return
+    end
     # reset system variables
     @idleTimer = -1
     @vector.reset; @vector.inc = 0.2

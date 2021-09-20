@@ -44,6 +44,7 @@ class DataBoxEBDX  <  SpriteWrapper
     @expBarWidth = 100
     @hpBarWidth = 168
     @baseBitmap = "dataBox"
+    @baseBitmap = "battleFoeDataboxDouble" if !EliteBattle::USE_NEW_UI
     @colors = "barColors"
     @containerBmp = "containers"
     @expandDouble = false
@@ -98,6 +99,7 @@ class DataBoxEBDX  <  SpriteWrapper
         @expandDouble = data[:EXPANDINDOUBLES] == true ? true : false if data.has_key?(:EXPANDINDOUBLES)
         @showexp = true if @expandDouble && @playerpoke && @battler.pbOwnedByPlayer?
         @showhp = true if @expandDouble && @playerpoke
+        @baseBitmap = "battlePlayerDataboxSingle" if @showexp && !EliteBattle::USE_NEW_UI
         # applies a set of possible modifier keys
         for key in data.keys
           next if !key.is_a?(String) || !@data.has_key?(key) || !data[key].is_a?(Hash)
@@ -265,7 +267,9 @@ class DataBoxEBDX  <  SpriteWrapper
     @sprites["container"].bitmap = pbBitmap(@path + @containerBmp)
     @sprites["container"].z = self.getMetric("container", :z)
     @sprites["container"].src_rect.height = @showexp ? 26 : 14
+    @sprites["container"].src_rect.height = @showexp ? 50 : 14 if !EliteBattle::USE_NEW_UI
     @sprites["container"].ex = self.getMetric("container", :x)
+    @sprites["container"].ex += 18 if @showexp && !EliteBattle::USE_NEW_UI
     @sprites["container"].ey = self.getMetric("container", :y)
 
     @sprites["hp"] = Sprite.new(@viewport)
@@ -302,8 +306,7 @@ class DataBoxEBDX  <  SpriteWrapper
     pbSetSmallFont(@sprites["textHP"].bitmap)
 
     @megaBmp = pbBitmap(@path + "symMega")
-    # TODO: Make graphic "symCrystal"
-    @crystalBmp = pbBitmap(@path + "symMega")
+    @crystalBmp = pbBitmap(@path + "symCrystal")
     @prKyogre = pbBitmap("Graphics/Pictures/Battle/icon_primal_Kyogre")
     @prGroudon = pbBitmap("Graphics/Pictures/Battle/icon_primal_Groudon")
   end

@@ -193,6 +193,7 @@ class PokeBattle_Battler
     @effects[PBEffects::FuryCutter]          = 0
     @effects[PBEffects::GemConsumed]         = nil
     @effects[PBEffects::Grudge]              = false
+	@effects[PBEffects::GreatShield]         = false
     @effects[PBEffects::HelpingHand]         = false
     @effects[PBEffects::HyperBeam]           = 0
     @effects[PBEffects::Illusion]            = nil

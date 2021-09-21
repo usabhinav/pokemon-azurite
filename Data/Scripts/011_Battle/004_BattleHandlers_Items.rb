@@ -1309,6 +1309,15 @@ BattleHandlers::UserItemAfterMoveUse.add(:CRUSHINGHAMMER,
   }
 )
 
+BattleHandlers::UserItemAfterMoveUse.add(:GREATSHIELD,
+  proc { |item,user,targets,move,numHits,battle|
+    next if move.name != "Protect"
+    next if user.effects[PBEffects::GreatShield]
+    user.effects[PBEffects::ProtectRate] = 1
+    user.effects[PBEffects::GreatShield] = true
+  }
+)
+
 BattleHandlers::UserItemAfterMoveUse.add(:LIFEORB,
   proc { |item,user,targets,move,numHits,battle|
     next if !user.takesIndirectDamage?

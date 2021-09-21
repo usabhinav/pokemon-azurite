@@ -48,10 +48,14 @@ class PokeBattle_Scene
     @sprites["messageWindow"].viewport = @msgview
     @sprites["messageWindow"].z = @sprites["messageBox"].z + 1
     # old command elements
-    @sprites["commandWindow"] = CommandMenuDisplay.new(@msgview, 0) # Retained for compatibility
+    @sprites["commandWindow"] = CommandMenuDisplay.new(@msgview, EliteBattle::USE_NEW_UI ? 0 : 200) # Retained for compatibility
     @sprites["commandWindow"].visible = false # Retained for compatibility
-    @sprites["fightWindow"] = FightMenuDisplay.new(@msgview, 0) # Retained for compatibility
+    @sprites["fightWindow"] = FightMenuDisplay.new(@msgview, EliteBattle::USE_NEW_UI ? 0 : 200) # Retained for compatibility
     @sprites["fightWindow"].visible = false # Retained for compatibility
+    if !EliteBattle::USE_NEW_UI
+      @sprites["targetWindow"] = TargetMenuDisplay.new(@msgview,200,@battle.sideSizes) # Retained for compatibility
+      @sprites["targetWindow"].visible = false # Retained for compatibility
+    end
     # new command and fight menu UI
     @commandWindow = CommandWindowEBDX.new(@msgview, @battle, self, @safaribattle)
     @fightWindow = FightWindowEBDX.new(@msgview, @battle, self)

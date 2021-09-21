@@ -85,7 +85,7 @@ class PokeBattle_Scene
         needFullRefresh = false
       end
       if needRefresh
-        if megaEvoPossible
+        if (megaEvoPossible || crystalEvoPossible)
           newMode = (@battle.pbRegisteredMegaEvolution?(idxBattler) || @battle.pbRegisteredCrystallization?(idxBattler)) ? 2 : 1
           cw.mode = newMode if newMode!=cw.mode
         end

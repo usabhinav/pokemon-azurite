@@ -16,6 +16,9 @@ class PokeBattle_Scene
   #-----------------------------------------------------------------------------
   alias pbCommandMenuEx_ebdx pbCommandMenuEx unless self.method_defined?(:pbCommandMenuEx_ebdx)
   def pbCommandMenuEx(idxBattler, texts, mode = 0)
+    if !EliteBattle::USE_NEW_UI
+      return pbCommandMenuEx_ebdx(idxBattler, texts, mode)
+    end
     self.clearMessageWindow
     # set starting variables
     @ret = 0; @vector.reset; @inCMx = true

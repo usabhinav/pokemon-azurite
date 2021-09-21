@@ -54,6 +54,9 @@ module EliteBattle
   # add EBDX debug menu
   SHOW_DEBUG_FEATURES = false
 
+  # CUSTOM: use default EBDX UI or custom
+  USE_NEW_UI = false
+
 end
 #-------------------------------------------------------------------------------
 # Adds additional "camera" vectors for when the camera is idling

@@ -157,6 +157,9 @@ class PokeBattle_Scene
   #-----------------------------------------------------------------------------
   alias pbChooseTarget_ebdx pbChooseTarget unless self.method_defined?(:pbChooseTarget_ebdx)
   def pbChooseTarget(idxBattler, target_data, visibleSprites = nil)
+    if !EliteBattle::USE_NEW_UI
+      return pbChooseTarget_ebdx(idxBattler, target_data, visibleSprites)
+    end
     # hide fight menu
     @fightWindow.hidePlay
     # Create an array of battler names (only valid targets are named)

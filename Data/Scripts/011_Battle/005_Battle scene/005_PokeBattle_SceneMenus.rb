@@ -116,20 +116,25 @@ class CommandMenuDisplay < BattleMenuBase
     super(viewport)
     self.x = 0
     self.y = Graphics.height-96
+    # Create message background
+    @messageBG = SpriteWrapper.new(viewport)
+    @messageBG.bitmap = Bitmap.new("Graphics/Pictures/Battle/battleMenuBG")
+    @messageBG.y = Graphics.height - @messageBG.bitmap.height
+    addSprite("messageBG",@messageBG)
     # Create message box (shows "What will X do?")
     @msgBox = Window_UnformattedTextPokemon.newWithSize("",
        self.x+16,self.y+2,220,Graphics.height-self.y,viewport)
-    @msgBox.baseColor   = TEXT_BASE_COLOR
-    @msgBox.shadowColor = TEXT_SHADOW_COLOR
+    @msgBox.baseColor   = Color.white
+    @msgBox.shadowColor = Color.black
     @msgBox.windowskin  = nil
     addSprite("msgBox",@msgBox)
     if USE_GRAPHICS
       # Create background graphic
       background = IconSprite.new(self.x,self.y,viewport)
-      background.setBitmap("Graphics/Pictures/Battle/overlay_command")
+      background.setBitmap("Graphics/Pictures/Battle/battleCommandBG")
       addSprite("background",background)
       # Create bitmaps
-      @buttonBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_command"))
+      @buttonBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/battleCommandButtons"))
       # Create action buttons
       @buttons = Array.new(4) do |i|   # 4 command options, therefore 4 buttons
         button = SpriteWrapper.new(viewport)
@@ -210,17 +215,18 @@ class FightMenuDisplay < BattleMenuBase
   #     pbShowWindow to make the graphic appear while the command menu is being
   #     displayed.
   USE_GRAPHICS     = true
-  TYPE_ICON_HEIGHT = 28
+  TYPE_ICON_HEIGHT = 27
   # Text colours of PP of selected move
   PP_COLORS = [
      Color.new(248,72,72),Color.new(136,48,48),    # Red, zero PP
      Color.new(248,136,32),Color.new(144,72,24),   # Orange, 1/4 of total PP or less
      Color.new(248,192,0),Color.new(144,104,0),    # Yellow, 1/2 of total PP or less
-     TEXT_BASE_COLOR,TEXT_SHADOW_COLOR             # Black, more than 1/2 of total PP
+     Color.new(255,255,255),Color.new(0,0,0)       # White, more than 1/2 of total PP
   ]
 
   def initialize(viewport,z)
     super(viewport)
+    @realframes = 0
     self.x = 0
     self.y = Graphics.height-96
     @battler   = nil
@@ -228,14 +234,19 @@ class FightMenuDisplay < BattleMenuBase
     # NOTE: @mode is for the display of the Mega Evolution button.
     #       0=don't show, 1=show unpressed, 2=show pressed
     if USE_GRAPHICS
+      # Create message background
+      @messageBG = SpriteWrapper.new(viewport)
+      @messageBG.bitmap = Bitmap.new("Graphics/Pictures/Battle/battleMenuBG")
+      @messageBG.y = Graphics.height - @messageBG.bitmap.height
+      addSprite("messageBG",@messageBG)
       # Create bitmaps
-      @buttonBitmap  = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_fight"))
+      @buttonBitmap  = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/battleFightButtons"))
       @typeBitmap    = AnimatedBitmap.new(_INTL("Graphics/Pictures/types"))
-      @megaEvoBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_mega"))
+      @megaEvoBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/battleMegaButtons"))
       @shiftBitmap   = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_shift"))
       # Create background graphic
       background = IconSprite.new(0,Graphics.height-96,viewport)
-      background.setBitmap("Graphics/Pictures/Battle/overlay_fight")
+      background.setBitmap("Graphics/Pictures/Battle/battleFightBG")
       addSprite("background",background)
       # Create move buttons
       @buttons = Array.new(Pokemon::MAX_MOVES) do |i|
@@ -272,9 +283,10 @@ class FightMenuDisplay < BattleMenuBase
       # Create Mega Evolution button
       @megaButton = SpriteWrapper.new(viewport)
       @megaButton.bitmap = @megaEvoBitmap.bitmap
-      @megaButton.x      = self.x+120
-      @megaButton.y      = self.y-@megaEvoBitmap.height/2
-      @megaButton.src_rect.height = @megaEvoBitmap.height/2
+      @megaButton.x      = self.x + 4 + @buttonBitmap.width/2 - (@megaEvoBitmap.width/5)/2
+      @megaButton.y      = self.y + 6 + BUTTON_HEIGHT - (@megaEvoBitmap.width/4)/2
+      @megaButton.src_rect.width = @megaEvoBitmap.width/5
+      @megaButton.src_rect.height = @megaEvoBitmap.height/4
       addSprite("megaButton",@megaButton)
       # Create Shift button
       @shiftButton = SpriteWrapper.new(viewport)
@@ -415,16 +427,11 @@ class FightMenuDisplay < BattleMenuBase
   def refreshMegaEvolutionButton
     return if !USE_GRAPHICS
     if @battler && (@battler.hasCrystal? || @battler.crystal?)
-      @megaEvoBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_crystal"))
+      @megaButton.src_rect.y = ((@mode == 1) ? 2 : 3) * @megaEvoBitmap.height/4
     else
-      @megaEvoBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_mega"))
+      @megaButton.src_rect.y = ((@mode == 1) ? 0 : 1) * @megaEvoBitmap.height/4
     end
-    @megaButton.bitmap = @megaEvoBitmap.bitmap
-    @megaButton.y      = self.y-@megaEvoBitmap.height/2
-    @megaButton.src_rect.height = @megaEvoBitmap.height/2
-    @megaButton.src_rect.y    = (@mode - 1) * @megaEvoBitmap.height / 2
-    @megaButton.x             = self.x + ((@shiftMode > 0) ? 204 : 120)
-    @megaButton.z             = self.z - 1
+    @megaButton.z             = self.z + 4
     @visibility["megaButton"] = (@mode > 0)
   end
 
@@ -440,6 +447,17 @@ class FightMenuDisplay < BattleMenuBase
     refreshSelection
     refreshMegaEvolutionButton
     refreshShiftButton
+  end
+
+  def update
+    super
+    return if !@megaButton
+    @realframes += 1
+    if @realframes % 8 == 0
+      @realframes = 0
+      @megaButton.src_rect.x += @megaEvoBitmap.width/5
+      @megaButton.src_rect.x = 0 if @megaButton.src_rect.x >= @megaEvoBitmap.width
+    end
   end
 end
 

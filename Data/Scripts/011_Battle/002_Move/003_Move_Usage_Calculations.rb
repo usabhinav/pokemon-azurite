@@ -504,7 +504,7 @@ class PokeBattle_Move
       else
         multipliers[:final_damage_multiplier] *= 1.5
       end
-	elsif user.hasActiveItem?(:FOCUSBELT)
+	  elsif user.hasActiveItem?(:FOCUSBELT)
       multipliers[:final_damage_multiplier] *= 0.7
     end
     # Monarch

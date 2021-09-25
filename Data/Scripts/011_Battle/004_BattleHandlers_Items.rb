@@ -1311,7 +1311,7 @@ BattleHandlers::UserItemAfterMoveUse.add(:CRUSHINGHAMMER,
 
 BattleHandlers::UserItemAfterMoveUse.add(:GREATSHIELD,
   proc { |item,user,targets,move,numHits,battle|
-    next if move.name != "Protect"
+    next if move.id != :PROTECT
     next if user.effects[PBEffects::GreatShield]
     user.effects[PBEffects::ProtectRate] = 1
     user.effects[PBEffects::GreatShield] = true

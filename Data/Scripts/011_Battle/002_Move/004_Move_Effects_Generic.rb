@@ -550,8 +550,10 @@ class PokeBattle_ProtectMove < PokeBattle_Move
 
   def pbChangeUsageCounters(user,specialUsage)
     oldVal = user.effects[PBEffects::ProtectRate]
+    gsval = user.effects[PBEffects::GreatShield]
     super
     user.effects[PBEffects::ProtectRate] = oldVal
+    user.effects[PBEffects::GreatShield] = gsval
   end
 
   def pbMoveFailed?(user,targets)

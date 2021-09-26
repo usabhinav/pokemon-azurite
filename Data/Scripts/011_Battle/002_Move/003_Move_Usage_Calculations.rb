@@ -507,6 +507,10 @@ class PokeBattle_Move
 	  elsif user.hasActiveItem?(:FOCUSBELT)
       multipliers[:final_damage_multiplier] *= 0.7
     end
+    # Crystal Moves
+    if type == :CRYSTAL && user.pbHasType?(type) == false
+        multipliers[:final_damage_multiplier] *= 0.5
+    end
     # Monarch
     @battle.pbParty(user.index).each_with_index do |pkmn, i|
       next if @battle.moldBreaker

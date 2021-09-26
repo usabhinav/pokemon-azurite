@@ -550,19 +550,23 @@ class PokeBattle_ProtectMove < PokeBattle_Move
 
   def pbChangeUsageCounters(user,specialUsage)
     oldVal = user.effects[PBEffects::ProtectRate]
+    gsval = user.effects[PBEffects::GreatShield]
     super
     user.effects[PBEffects::ProtectRate] = oldVal
+    user.effects[PBEffects::GreatShield] = gsval
   end
 
   def pbMoveFailed?(user,targets)
     if @sidedEffect
       if user.pbOwnSide.effects[@effect]
         user.effects[PBEffects::ProtectRate] = 1
+		user.effects[PBEffects::GreatShield] = false
         @battle.pbDisplay(_INTL("But it failed!"))
         return true
       end
     elsif user.effects[@effect]
       user.effects[PBEffects::ProtectRate] = 1
+	  user.effects[PBEffects::GreatShield] = false
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -570,11 +574,13 @@ class PokeBattle_ProtectMove < PokeBattle_Move
        user.effects[PBEffects::ProtectRate]>1 &&
        @battle.pbRandom(user.effects[PBEffects::ProtectRate])!=0
       user.effects[PBEffects::ProtectRate] = 1
+	  user.effects[PBEffects::GreatShield] = false
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
     if pbMoveFailedLastInRound?(user)
       user.effects[PBEffects::ProtectRate] = 1
+	  user.effects[PBEffects::GreatShield] = false
       return true
     end
     return false

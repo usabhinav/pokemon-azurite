@@ -40,7 +40,7 @@ begin
     GastroAcid          = 34
     GemConsumed         = 35
     Grudge              = 36
-	GreatShield			= 37
+	  GreatShield		    	= 37
     HealBlock           = 38
     HelpingHand         = 39
     HyperBeam           = 40

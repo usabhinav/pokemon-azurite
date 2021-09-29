@@ -2830,6 +2830,24 @@ class PokeBattle_Move_19F < PokeBattle_Move
   end
 end
 #===============================================================================
+# Crystal Overload
+#===============================================================================
+class PokeBattle_Move_20A < PokeBattle_Move
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg *= 2 if target.pbHasType?(:CRYSTAL)
+    return baseDmg
+  end
+end
+#===============================================================================
+# Crystallized Beam
+#===============================================================================
+class PokeBattle_Move_20C < PokeBattle_Move
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::HyperBeam] = 4
+    user.currentMove = @id
+  end
+end
+#===============================================================================
 # Magical Roots
 #===============================================================================
 class PokeBattle_Move_201 < PokeBattle_Move

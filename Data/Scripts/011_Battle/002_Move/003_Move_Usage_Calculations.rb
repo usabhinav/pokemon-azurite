@@ -150,6 +150,10 @@ class PokeBattle_Move
     if target.hasActiveAbility?(:DECEPTIVE) && [:FIRE, :WATER, :GRASS].include?(moveType)
       ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
     end
+    # Crystal Energy
+    if @battle.pbCheckGlobalAbility(:CRYSTALENERGY) && target.pbHasType?(:CRYSTAL)
+      ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
           user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&

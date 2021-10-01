@@ -211,6 +211,17 @@ class PokeBattle_Battler
     return @pokemon && @pokemon.hasCrystalForm?
   end
 
+  def hasCrystalWithoutItemCheck?
+    return false if @effects[PBEffects::Transform]
+    # If mega, crystal check needs to be against Pokemon of base species, not against the mega form
+    if @pokemon && @pokemon.mega?
+      dup_poke = Marshal.load(Marshal.dump(@pokemon))
+      dup_poke.makeUnmega
+      return dup_poke && dup_poke.hasCrystalFormWithoutItemCheck?
+    end
+    return @pokemon && @pokemon.hasCrystalFormWithoutItemCheck?
+  end
+
   def crystal?; return @pokemon && @pokemon.crystal?; end
   alias isCrystal? crystal?
 
@@ -444,7 +455,8 @@ class PokeBattle_Battler
       :ZENMODE,
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
-      :RKSSYSTEM
+      :RKSSYSTEM,
+      :CRYSTALENERGY                                      # Having Crystal Energy be stoppable is annoying to work with
     ]
     return ability_blacklist.include?(abil.id)
   end

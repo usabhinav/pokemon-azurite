@@ -2846,6 +2846,10 @@ class PokeBattle_Move_20C < PokeBattle_Move
     user.effects[PBEffects::HyperBeam] = 4
     user.currentMove = @id
   end
+
+  def rollingBasedMove?
+    return true
+  end
 end
 #===============================================================================
 # Magical Roots

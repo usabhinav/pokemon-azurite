@@ -7,6 +7,12 @@ class PokeBattle_Battler
     @battle.pbOnActiveOne(self) if switchIn
     # Primal Revert upon entering battle
     @battle.pbPrimalReversion(@index) if !fainted?
+    # Crystal Energy switch in message
+    if hasActiveAbility?(:CRYSTALENERGY)
+      @battle.pbShowAbilitySplash(self)
+      @battle.pbDisplay(_INTL("{1} is exuding a powerful crystal energy on the field!", self.pbThis))
+      @battle.pbHideAbilitySplash(self)
+    end
     # Ending primordial weather, checking Trace
     pbContinualAbilityChecks(true)
     # Incomprehensible
@@ -54,6 +60,24 @@ class PokeBattle_Battler
     @fainted = true
     # Check for end of primordial weather
     @battle.pbEndPrimordialWeather
+    # Crystal Energy
+    # Check if any other battler still has Crystal Energy active
+    if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
+      # Revert battlers on field
+      @battle.eachBattler do |b|
+        if b.crystal?
+          @battle.pbUnCrystallize(b.index)
+        end
+      end
+      # Revert player side Pokemon
+      @battle.pbParty(0).each do |pkmn|
+        pkmn.makeUncrystal
+      end
+      # Revert opponent side Pokemon
+      @battle.pbParty(1).each do |pkmn|
+        pkmn.makeUncrystal
+      end
+    end
   end
 
   def pbAbilitiesOnFainting
@@ -65,6 +89,24 @@ class PokeBattle_Battler
     @battle.pbPriority(true).each do |b|
       next if !b || !b.abilityActive?
       BattleHandlers.triggerAbilityOnBattlerFainting(b.ability,b,self,@battle)
+    end
+    # Crystal Energy
+    # Check if any other battler still has Crystal Energy active
+    if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
+      # Revert battlers on field
+      @battle.eachBattler do |b|
+        if b.crystal?
+          @battle.pbUnCrystallize(b.index)
+        end
+      end
+      # Revert player side Pokemon
+      @battle.pbParty(0).each do |pkmn|
+        pkmn.makeUncrystal
+      end
+      # Revert opponent side Pokemon
+      @battle.pbParty(1).each do |pkmn|
+        pkmn.makeUncrystal
+      end
     end
   end
 
@@ -180,6 +222,43 @@ class PokeBattle_Battler
           pkmn.form = 1
         elsif pkmn.isSpecies?(:KOSURITE) && pkmn.form == 1
           pkmn.form = 0
+        end
+      end
+    end
+    # Crystal Energy
+    if hasActiveAbility?(:CRYSTALENERGY)
+      # Crystallize battlers on field
+      @battle.eachBattler do |b|
+        if b.hasCrystalWithoutItemCheck? && !b.crystal?
+          if b.mega?
+            side  = self.idxOwnSide
+            owner = @battle.pbGetOwnerIndexFromBattlerIndex(b.index)
+            @battle.megaEvolution[side][owner] = -1
+            @battle.pbUnMegaEvolve(b.index)
+          end
+          @battle.pbCrystallizeWithoutItemCheck(b.index)
+        end
+      end
+      # Crystallize player side Pokemon
+      @battle.pbParty(0).each_with_index do |pkmn, i|
+        if pkmn.hasCrystalFormWithoutItemCheck? && !pkmn.crystal?
+          if pkmn.mega?
+            owner = @battle.pbGetOwnerIndexFromPartyIndex(0, i)
+            @battle.megaEvolution[0][owner] = -1
+            pkmn.makeUnmega
+          end
+          pkmn.makeCrystalWithoutItemCheck
+        end
+      end
+      # Crystallize opponent side Pokemon
+      @battle.pbParty(1).each_with_index do |pkmn, i|
+        if pkmn.hasCrystalFormWithoutItemCheck? && !pkmn.crystal?
+          if pkmn.mega?
+            owner = @battle.pbGetOwnerIndexFromPartyIndex(1, i)
+            @battle.megaEvolution[1][owner] = -1
+            pkmn.makeUnmega
+          end
+          pkmn.makeCrystalWithoutItemCheck
         end
       end
     end

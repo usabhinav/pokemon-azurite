@@ -1,3 +1,43 @@
+module GameData
+	class ApparelBase
+		attr_reader :id # Constant? TODO: Should probably match file name.
+		attr_reader :id_number 
+		attr_reader :layer # Equivalent of 'pocket' in item.
+		attr_reader :real_name
+		#attr_reader :real_name_plural # Probably not needed?
+
+	end
+	class ApparelSpecial
+		include ApparelBase
+	 
+		attr_reader :price
+		attr_reader :real_color
+		attr_reader :real_description
+	
+	end
+	class ApparelRegular
+		include ApparelSpecial
+
+		attr_reader :type
+		attr_reader :class
+		attr_reader :swimsuit # TRUE - Can be worn in water. FALSE - Cannot be worn in water.
+		attr_reader :conflicts
+		attr_reader :variants
+	end
+	class ApparelClass
+		include ApparelBase
+		
+		attr_reader :layer_list
+	end
+	class ApparelType
+		include ApparelBase
+		
+		attr_reader :layer
+	end
+end
+
+
+=begin 
 module CSVCONST
   
   # Constants that dictate the order of data inside the recrods written to .dat
@@ -91,3 +131,4 @@ def pbGetApparelVariants(layer, apparelId)
   end
   
 end
+=end

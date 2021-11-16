@@ -392,6 +392,112 @@ module Compiler
     Graphics.update
   end
 
+  def compile_apparel(directory = "PBS/Apparel")
+    GameData::Apparel::DATA.clear
+    apparel_names = []
+    
+    txts_no_extension = Marshal.load(Marshal.dump($LAYER_NAMES)) # Creates a copy of $LAYER_NAMES.
+    txts_no_extension.push("Bike")
+    txts_no_extension.push("Rod")
+    txts_no_extension.push("Type")
+    txts_no_extension.push("Class")
+    
+    for txt_no_extension in txts_no_extension
+      if(txt_no_extension == "Base" || txt_no_extension == "Class")
+        pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
+          line = pbGetCsvRecord(line,lineno,[0,"vns"])
+          apparel_number = line[0]
+          apparel_symbol = line[1].to_sym
+          if GameData::Apparel
+          
+          record[CSVCONST::APPARELID] = linerecord[0]
+          record[CSVCONST::APPARELNAME] = linerecord[2]
+          constant=linerecord[1]
+          constants+="#{constant}=#{record[0]}\r\n"
+          apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
+          maxValue=[maxValue,record[CSVCONST::APPARELID]].max
+          records.push(record)
+        }
+      elsif(txt_no_extension == "Bike" || txt_no_extension == "Rod")
+          pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
+          linerecord=pbGetCsvRecord(line,lineno,[0,"vnsvSs"])
+          record=SerialRecord.new
+          record[CSVCONST::APPARELID] = linerecord[0]
+          record[CSVCONST::APPARELNAME] = linerecord[2]
+          record[CSVCONST::APPARELPRICE] = linerecord[3]
+          if linerecord[4] == "" || linerecord[4] == nil
+            record[CSVCONST::APPARELCOLORS] = "Default"
+          else
+            record[CSVCONST::APPARELCOLORS] = linerecord[4]
+          end
+          record[CSVCONST::APPARELDESC] = linerecord[5]
+          constant=linerecord[1]
+          constants+="#{constant}=#{record[0]}\r\n"
+          apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
+          appareldescs[record[CSVCONST::APPARELID]] = linerecord[5]
+          maxValue=[maxValue,record[CSVCONST::APPARELID]].max
+          records.push(record)
+        }
+      elsif(txt_no_extension == "Type")
+          pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
+          linerecord=pbGetCsvRecord(line,lineno,[0,"vnss"])
+          record=SerialRecord.new
+          record[CSVCONST::APPARELID] = linerecord[0]
+          record[CSVCONST::APPARELNAME] = linerecord[2]
+          record[2] = linerecord[3] # Layer Name
+          constant=linerecord[1]
+          constants+="#{constant}=#{record[0]}\r\n"
+          apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
+          maxValue=[maxValue,record[CSVCONST::APPARELID]].max
+          records.push(record)
+        }
+      else
+
+        pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
+          linerecord=pbGetCsvRecord(line,lineno,[0,"vnsvSsvUbSS"])
+          record=SerialRecord.new
+          # Add the .txt record values into the .dat record
+          record[CSVCONST::APPARELID] = linerecord[0]
+          record[CSVCONST::APPARELNAME] = linerecord[2]
+          record[CSVCONST::APPARELPRICE] = linerecord[3]
+          if linerecord[4] == "" || linerecord[4] == nil
+            record[CSVCONST::APPARELCOLORS] = "Default"
+          else
+            record[CSVCONST::APPARELCOLORS] = linerecord[4]
+            echo txt_no_extension + " Color linerecord: " + linerecord[4]
+          end
+          record[CSVCONST::APPARELDESC] = linerecord[5]
+          record[CSVCONST::APPARELTYPE] = linerecord[6]
+          record[CSVCONST::APPARELCLASS] = linerecord[7]
+          record[CSVCONST::APPARELSWIMSUIT] = linerecord[8]
+          record[CSVCONST::APPARELCONFLICTS] = linerecord[9]
+          record[CSVCONST::APPARELVARIANTS] = linerecord[10]
+          
+          # Add the 
+          constant=linerecord[1]
+          constants+="#{constant}=#{record[0]}\r\n"
+          apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
+          appareldescs[record[CSVCONST::APPARELID]] = linerecord[5]
+          maxValue=[maxValue,record[CSVCONST::APPARELID]].max
+          records.push(record)
+        }
+      end
+      #echo "Names : " + apparelnames.to_s + " " + apparelnames.length.to_s + "\n"
+      writeSerialRecords("Data/Apparel/" + txt_no_extension + ".dat" , records)
+      MessageTypes.setMessages(MessageTypes::ApparelNames,apparelnames) if apparelnames.length > 0
+      MessageTypes.setMessages(MessageTypes::ApparelDescs,appareldescs) if appareldescs.length > 0
+      code="class PBApparel" + txt_no_extension + "\r\n#{constants}"
+      code+="\r\ndef PBApparel" + txt_no_extension + ".getName(id)\r\nreturn pbGetMessage(MessageTypes::ApparelNames,id)\r\nend\r\n" if apparelnames.length > 0
+      code+="\r\ndef PBApparel" + txt_no_extension + ".getCount\r\nreturn #{records.length}\r\nend\r\n"
+      code+="\r\ndef PBApparel" + txt_no_extension + ".maxValue\r\nreturn #{maxValue}\r\nend" if maxValue > 0
+      code+="\r\nend"
+      eval(code)
+      pbAddScript(code, "PBApparel" + txt_no_extension)
+      Graphics.update
+    end
+
+  end
+
   #=============================================================================
   # Compile berry plant data
   #=============================================================================

@@ -1,10 +1,29 @@
 module GameData
+  class ApparelLayer 
+    
+    extend ClassMethods
+    include InstanceMethods
+    
+    
+  end
 	class ApparelBase
 		attr_reader :id # Constant? TODO: Should probably match file name.
 		attr_reader :id_number 
-		attr_reader :layer # Equivalent of 'pocket' in item.
 		attr_reader :real_name
 		#attr_reader :real_name_plural # Probably not needed?
+    
+    DATA = {}
+    DATA_FILENAME = ""
+    
+    extend ClassMethods
+    include InstanceMethods
+    
+    def initialize(hash, data_filename)
+      @id                 = hash[:id]
+      @id_number          = hash[:id_number]   || -1
+      @real_name          = hash[:name]        || "Unnamed"
+      self::DATA_FILENAME = data_filename
+    end
 
 	end
 	class ApparelSpecial
@@ -13,16 +32,33 @@ module GameData
 		attr_reader :price
 		attr_reader :real_color
 		attr_reader :real_description
-	
+    
+    def initialize(hash, data_filename)
+      super(hash, data_filename)
+      @price              = hash[:price]       || 0
+      @real_color         = hash[:color]       || "Default"
+      @real_description   = hash[:description] || ""
+    end
+    
 	end
 	class ApparelRegular
 		include ApparelSpecial
 
-		attr_reader :type
-		attr_reader :class
+		attr_reader :type_id
+		attr_reader :class_id
 		attr_reader :swimsuit # TRUE - Can be worn in water. FALSE - Cannot be worn in water.
 		attr_reader :conflicts
 		attr_reader :variants
+
+    def initialize(hash, data_filename)
+      super(hash, data_filename)
+      @type_id            = hash[:type_id]     || 0 # 0 Means no type got assigned to this apparel piece.
+      @class_id           = hash[:class_id]    || 0 # 0 Means no class got assigned to this apparel piece.
+      @swimsuit           = hash[:swimsuit]    || true
+      @conflicts          = hash[:conflicts]   || []
+      @variants           = hash[:variants]    || []
+    end
+
 	end
 	class ApparelClass
 		include ApparelBase

@@ -393,6 +393,7 @@ module Compiler
   end
 
   def compile_apparel(directory = "PBS/Apparel")
+    return
     GameData::Apparel::DATA.clear
     apparel_names = []
     
@@ -408,7 +409,6 @@ module Compiler
           line = pbGetCsvRecord(line,lineno,[0,"vns"])
           apparel_number = line[0]
           apparel_symbol = line[1].to_sym
-          if GameData::Apparel
           
           record[CSVCONST::APPARELID] = linerecord[0]
           record[CSVCONST::APPARELNAME] = linerecord[2]

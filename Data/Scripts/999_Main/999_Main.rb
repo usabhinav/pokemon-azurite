@@ -1,6 +1,6 @@
 $DEBUG = true
 
-#Console::setup_console
+
 
 # Create .dat apparel files in case they don't exist. Without this the compiler is unable to write into them. 
 for layer in $LAYER_NAMES
@@ -44,14 +44,51 @@ def mainFunctionDebug
     Game.set_up_system
     Graphics.update
     Graphics.freeze
+    
+    Console::setup_console
+    testywesty 
+    
     $scene = pbCallTitle
     $scene.main until $scene.nil?
     Graphics.transition(20)
+    
   rescue Hangup
     pbPrintException($!) if !$DEBUG
     pbEmergencySave
     raise
   end
+end
+
+def testywesty
+
+  ashash = {:id => :YEET,
+         :id_number => 1,
+         :name => "Yeet",
+         :type_id => 0,
+         :class_id => 0
+        }
+
+  as = GameData::ApparelSocks.new( 
+        {:id => :YEET,
+         :id_number => 1,
+         :name => "Yeet",
+         :type_id => 0,
+         :class_id => 0
+        })
+  al = GameData::ApparelLegs.new( 
+        {:id => :YAYEET,
+         :id_number => 1,
+         :name => "Yayeet",
+         :type_id => 0,
+         :class_id => 0
+        })
+        
+  GameData::ApparelSocks.register(ashash)
+  echoln GameData::ApparelLegs::DATA.to_s
+  echoln GameData::ApparelSocks::DATA.to_s
+
+  GameData::ApparelSocks
+  
 end
 
 loop do

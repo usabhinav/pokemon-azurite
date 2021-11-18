@@ -629,6 +629,8 @@ module MessageTypes
   RibbonDescriptions = 26
   ApparelNames       = 27
   ApparelDescs       = 28
+  ApparelColors      = 29
+  
   @@messages         = Messages.new
   @@messagesFallback = Messages.new("Data/messages.dat",true)
 

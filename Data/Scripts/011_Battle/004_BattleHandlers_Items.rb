@@ -1130,6 +1130,14 @@ BattleHandlers::TargetItemOnHit.add(:MARANGABERRY,
   }
 )
 
+BattleHandlers::TargetItemOnHit.add(:REVENGEBELT,
+  proc { |item,user,target,move,battle|
+    next if !target.damageState.critical
+    target.effects[PBEffects::RevengeBelt] = true
+    target.pbHeldItemTriggered(item)
+  }
+)
+
 BattleHandlers::TargetItemOnHit.add(:ROCKYHELMET,
   proc { |item,user,target,move,battle|
     next if !move.pbContactMove?(user) || !user.affectedByContactEffect?
@@ -1635,6 +1643,24 @@ BattleHandlers::ItemOnSwitchIn.add(:AIRBALLOON,
   proc { |item,battler,battle|
     battle.pbDisplay(_INTL("{1} floats in the air with its {2}!",
        battler.pbThis,battler.itemName))
+  }
+)
+
+BattleHandlers::ItemOnSwitchIn.add(:PECULIARMIRROR,
+  proc { |item,battler,battle|
+    choices = []
+    battle.eachOtherSideBattler(@index) do |b|
+      next if b.ungainableAbility? ||
+              [:POWEROFALCHEMY, :RECEIVER, :TRACE].include?(b.ability_id)
+      choices.push(b)
+    end
+    if choices.length>0
+      choice = choices[battle.pbRandom(choices.length)]
+      battle.pbCommonAnimation("UseItem",battler)
+      battler.pbConsumeItem
+      battler.ability = choice.ability
+      battle.pbDisplay(_INTL("{1} traced {2}'s {3}!",battler.pbThis,choice.pbThis(true),choice.abilityName))
+    end
   }
 )
 

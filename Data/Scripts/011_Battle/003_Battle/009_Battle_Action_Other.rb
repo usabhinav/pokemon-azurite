@@ -169,7 +169,6 @@ class PokeBattle_Battle
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
     return if !battler.mega?
-    return if pbCheckGlobalAbility(:CRYSTALENERGY)
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
@@ -204,9 +203,10 @@ class PokeBattle_Battle
     return false if !@battlers[idxBattler].hasCrystal?
     return false if wildBattle? && opposes?(idxBattler)
     return true if $DEBUG && Input.press?(Input::CTRL)
+    return true if pbCheckGlobalAbility(:CRYSTALENERGY)
     return false if @battlers[idxBattler].effects[PBEffects::SkyDrop]>=0
     return false if !pbHasCrystalData?(idxBattler)
-    return false if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
+    return false if pbCheckGlobalAbility(:NEGATION)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     return @crystallization[side][owner]==-1
@@ -259,10 +259,45 @@ class PokeBattle_Battle
       pbDisplay(_INTL("{1}'s fervent wish has reached {2}!",trainerName,battler.pbThis))
     else
       pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s crystal data!",
-         battler.pbThis,battler.itemName,trainerName,))
+         battler.pbThis,battler.itemName,trainerName))
     end
     pbCommonAnimation("MegaEvolution",battler)
     battler.pokemon.makeCrystal
+    battler.form = battler.pokemon.form
+    battler.pbUpdate(true)
+    @scene.pbChangePokemon(battler,battler.pokemon)
+    @scene.pbRefreshOne(idxBattler)
+    pbCommonAnimation("MegaEvolution2",battler)
+    megaName = battler.pokemon.megaName
+    megaName = _INTL("Crystal {1}", battler.pokemon.speciesName) if nil_or_empty?(megaName)
+    pbDisplay(_INTL("{1} has Crystallized into {2}!",battler.pbThis,megaName))
+    side  = battler.idxOwnSide
+    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    @crystallization[side][owner] = -2
+    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
+    # Trigger ability
+    battler.pbEffectsOnSwitchIn
+  end
+
+  def pbCrystallizeWithoutItemCheck(idxBattler)
+    battler = @battlers[idxBattler]
+    return if !battler || !battler.pokemon
+    return if !battler.hasCrystalWithoutItemCheck? || battler.crystal?
+    return if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
+    trainerName = pbGetOwnerName(idxBattler)
+    # Break Illusion
+    if battler.hasActiveAbility?(:ILLUSION)
+      BattleHandlers.triggerTargetAbilityOnHit(battler.ability,nil,battler,nil,self)
+    end
+    # Crystallize
+    case battler.pokemon.megaMessage
+    when 1   # Rayquaza
+      pbDisplay(_INTL("{1}'s fervent wish has reached {2}!",trainerName,battler.pbThis))
+    else
+      pbDisplay(_INTL("{1} is crystallizing!", battler.pbThis))
+    end
+    pbCommonAnimation("MegaEvolution",battler)
+    battler.pokemon.makeCrystalWithoutItemCheck
     battler.form = battler.pokemon.form
     battler.pbUpdate(true)
     @scene.pbChangePokemon(battler,battler.pokemon)
@@ -339,7 +374,6 @@ class PokeBattle_Battle
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
     return if !battler.primal?
-    return if pbCheckGlobalAbility(:CRYSTALENERGY)
     if battler.isSpecies?(:KYOGRE)
       pbCommonAnimation("PrimalKyogre",battler)
     elsif battler.isSpecies?(:GROUDON)

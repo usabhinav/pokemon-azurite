@@ -68,6 +68,18 @@ class Pokemon
     return ret   # form number, or 0 if no accessible Crystal form
   end
 
+  def getCrystalFormWithoutItemCheck
+    ret = 0
+    GameData::Species.each do |data|
+      next if data.species != @species || data.unmega_form != form_simple
+      if data.mega_stone && Settings::CRYSTALLIZATION_ITEMS.include?(data.mega_stone)
+        ret = data.form
+        break
+      end
+    end
+    return ret   # form number, or 0 if no accessible Crystal form
+  end
+
   def getUncrystalForm
     return (crystal?) ? species_data.unmega_form : -1
   end
@@ -77,12 +89,34 @@ class Pokemon
     return crystalForm > 0 && crystalForm != form_simple
   end
 
+  def hasCrystalFormWithoutItemCheck?
+    crystalForm = self.getCrystalFormWithoutItemCheck
+    # If mega, crystal check needs to be against Pokemon of base species, not against the mega form
+    if self.mega?
+      dup_poke = Marshal.load(Marshal.dump(self))
+      dup_poke.makeUnmega
+      crystalForm = dup_poke.getCrystalFormWithoutItemCheck
+    end
+    return crystalForm > 0 && crystalForm != form_simple
+  end
+
   def crystal?
     return (species_data.mega_stone && Settings::CRYSTALLIZATION_ITEMS.include?(species_data.mega_stone)) ? true : false
   end
 
   def makeCrystal
     crystalForm = self.getCrystalForm
+    self.form = crystalForm if crystalForm > 0
+  end
+
+  def makeCrystalWithoutItemCheck
+    crystalForm = self.getCrystalFormWithoutItemCheck
+    # If mega, crystal check needs to be against Pokemon of base species, not against the mega form
+    if self.mega?
+      dup_poke = Marshal.load(Marshal.dump(self))
+      dup_poke.makeUnmega
+      crystalForm = dup_poke.getCrystalFormWithoutItemCheck
+    end
     self.form = crystalForm if crystalForm > 0
   end
 

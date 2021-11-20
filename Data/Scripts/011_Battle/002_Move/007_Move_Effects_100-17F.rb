@@ -3373,3 +3373,101 @@ class PokeBattle_Move_PowderStorm < PokeBattle_Move
     end
   end
 end
+     
+#===============================================================================
+# Grav Apple
+#===============================================================================
+class PokeBattle_Move_GravApple < PokeBattle_TargetStatDownMove
+  def initialize(battle,move)
+    super
+    @statDown = [:DEFENSE,1]
+  end
+
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg = baseDmg * 3 / 2 if @battle.field.effects[PBEffects::Gravity] > 0
+    return baseDmg
+  end
+end
+      
+#===============================================================================
+# Surging Strikes
+#===============================================================================
+class PokeBattle_Move_SurgingStrikes < PokeBattle_Move
+  def multiHitMove?;                   return true; end
+  def pbNumHits(user, targets);        return 3;    end
+  def pbCritialOverride(user, target); return 1;    end
+end
+      
+#===============================================================================
+# BurningJealousy
+#===============================================================================
+class PokeBattle_Move_BurningJealousy < PokeBattle_BurnMove
+  def pbEffectAgainstTarget(user, target)
+    super if target.statsRaised
+  end
+end
+
+
+
+#===============================================================================
+# Grassy Glide
+#===============================================================================
+class PokeBattle_Move_GrassyGlide < PokeBattle_Move
+  def priority
+    ret = super
+    ret += 1 if @battle.field.terrain == :Electric
+    return ret
+  end
+end
+
+#===============================================================================
+# Expanding Force
+#===============================================================================
+class PokeBattle_Move_ExpandingForce < PokeBattle_Move
+  def pbTarget(user)
+    if @battle.field.terrain == :Psychic && user.affectedByTerrain?
+      return GameData::Target.get(:AllNearFoes)
+    end
+    return super
+  end
+
+  def pbBaseDamage(baseDmg,user,target)
+    if @battle.field.terrain == :Psychic && user.affectedByTerrain?
+      baseDmg = baseDmg * 3 / 2
+    end
+    return baseDmg
+  end
+end
+
+
+
+#===============================================================================
+# Meteor Beam
+#===============================================================================
+class PokeBattle_Move_MeteorBeam < PokeBattle_TwoTurnMove
+  def pbChargingTurnMessage(user,targets)
+    @battle.pbDisplay(_INTL("{1} is overflowing with space power!",user.pbThis))
+  end
+
+  def pbChargingTurnEffect(user,target)
+    if user.pbCanRaiseStatStage?(:SPECIAL_ATTACK,user,self)
+      user.pbRaiseStatStage(:SPECIAL_ATTACK,1,user)
+    end
+  end
+end
+
+
+
+#===============================================================================
+# Poltergeist
+#===============================================================================
+class PokeBattle_Move_Poltergeist < PokeBattle_Move
+  def pbFailsAgainstTarget?(user,target)
+    if !target.item || !target.itemActive?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    @battle.pbDisplay(_INTL("{1} is about to be attacked by its {2}!", target.pbThis, target.itemName))
+    return false
+  end
+end

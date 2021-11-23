@@ -1649,7 +1649,7 @@ BattleHandlers::ItemOnSwitchIn.add(:AIRBALLOON,
 BattleHandlers::ItemOnSwitchIn.add(:PECULIARMIRROR,
   proc { |item,battler,battle|
     choices = []
-    battle.eachOtherSideBattler(@index) do |b|
+    battle.eachOtherSideBattler(battler.index) do |b|
       next if b.ungainableAbility? ||
               [:POWEROFALCHEMY, :RECEIVER, :TRACE].include?(b.ability_id)
       choices.push(b)

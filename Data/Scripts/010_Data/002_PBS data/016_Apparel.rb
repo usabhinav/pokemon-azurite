@@ -31,7 +31,7 @@ module GameData
   Apparel.setup_apparel
 =end
   
-	module ApparelBaseModel
+	class ApparelBaseModel
 		attr_reader :id # Constant? TODO: Should probably match file name.
 		attr_reader :id_number 
     attr_reader :id_unique # Another ID that is unique for every apparel item regardless of layer.
@@ -46,27 +46,40 @@ module GameData
     def initialize(hash)
       @id                 = hash[:id]
       @id_number          = hash[:id_number]   || -1
+      @id_unique          = hash[:id_unique]   || -1
       @real_name          = hash[:name]        || "Unnamed"
     end
 
+    # Helper method used only by the compiler to complete class specific creation of an apparel hash.
+    # Needs to be re-implemented/extended for every class that deviates from its superclass in terms of data.
+    def self.completeHash(apparel_hash, line)
+      apparel_hash[:name] = line[2]
+    end
+
 	end
-	module ApparelSpecialModel
-		include ApparelBaseModel
-	 
+	class ApparelSpecialModel < ApparelBaseModel
+  
 		attr_reader :price
 		attr_reader :real_color
 		attr_reader :real_description
     
     def initialize(hash)
-      super(hash, )
+      super(hash)
       @price              = hash[:price]       || 0
       @real_color         = hash[:color]       || "Default"
-      @real_description   = hash[:description] || ""
+      @real_description   = hash[:description] || "This is an apparel piece."
+    end
+    
+    
+    def self.completeHash(apparel_hash, line)
+      super(apparel_hash, line)
+      apparel_hash[:price] = line[3]
+      apparel_hash[:color] = line[4]
+      apparel_hash[:description] = line[5]
     end
     
 	end
-	module ApparelRegularModel
-		include ApparelSpecialModel
+	class ApparelRegularModel < ApparelSpecialModel
 
 		attr_reader :type_id
 		attr_reader :class_id
@@ -82,6 +95,15 @@ module GameData
       @conflicts          = hash[:conflicts]   || []
       @variants           = hash[:variants]    || []
     end
+    
+    def self.completeHash(apparel_hash, line)
+      super(apparel_hash, line)
+      apparel_hash[:type_id] = line[6]
+      apparel_hash[:class_id] = line[7]
+      apparel_hash[:swimsuit] = line[8]
+      apparel_hash[:conflicts] = line[9]
+      apparel_hash[:variants] = line[10]
+    end
 
 	end
   
@@ -89,77 +111,112 @@ module GameData
     LAYER_NAMES = ["Base", "Socks", "Legs", "Shoes", "Torso", "LowerFace", 
     "UpperFace", "Hair", "Hat", "Eyes"]
   
-  class ApparelBase
+  class ApparelBase < ApparelBaseModel
     extend ClassMethods
-    include ApparelBaseModel
+    #include ApparelBaseModel
+    DATA_FILENAME = "base.dat"
     DATA = {}
   end
-  class ApparelSocks
+  class ApparelSocks < ApparelRegularModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "socks.dat"
     DATA = {}
   end
-  class ApparelLegs
+  class ApparelLegs < ApparelRegularModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "legs.dat"
     DATA = {}
   end
-  class ApparelShoes
+  class ApparelShoes < ApparelRegularModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "shoes.dat"
     DATA = {}
   end
-  class ApparelTorso
+  class ApparelTorso < ApparelRegularModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "torso.dat"
     DATA = {}
   end
-  class ApparelLowerFace
+  class ApparelLowerFace < ApparelRegularModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "lowerface.dat"
     DATA = {}
   end
-  class ApparelUpperFace
+  class ApparelUpperFace < ApparelRegularModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "upperface.dat"
     DATA = {}
   end
-  class ApparelHair
+  class ApparelHair < ApparelRegularModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "hair.dat"
+    DATA = {}
+  end 
+  class ApparelHat < ApparelRegularModel
+    extend ClassMethods
+    DATA_FILENAME = "hat.dat"
     DATA = {}
   end
-  class ApparelHat
+  class ApparelEyes < ApparelRegularModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "eyes.dat"
     DATA = {}
   end
-  class ApparelEyes
+  class ApparelBike < ApparelSpecialModel
     extend ClassMethods
-    include ApparelRegularModel
+    DATA_FILENAME = "bike.dat"
     DATA = {}
   end
-  class ApparelBike
+  class ApparelRod < ApparelSpecialModel
     extend ClassMethods
-    include ApparelSpecialModel
-    DATA = {}
-  end
-  class ApparelRod
-    extend ClassMethods
-    include ApparelSpecialModel
+    DATA_FILENAME = "rod.dat"
     DATA = {}
   end
   
-	class ApparelClass
+	class ApparelClass < ApparelBaseModel
 		extend ClassMethods
-    include ApparelBaseModel
+    DATA_FILENAME = "class.dat"
     DATA = {}
 	end
-	class ApparelType
+	class ApparelType < ApparelBaseModel
 		extend ClassMethods
-    include ApparelBaseModel
+    DATA_FILENAME = "type.dat"
     DATA = {}
 	end
+  module Apparel
+    
+    # Current Animation Sheets: Walking, Running, Bicycle, Surfing, Diving.
+    LAYER_NAMES = ["Base", "Socks", "Legs", "Shoes", "Torso", "LowerFace", 
+    "UpperFace", "Hair", "Hat", "Eyes"]
+
+    # Convert LAYER_NAMES to symbols.
+    LAYER_NAMES_SYMS = LAYER_NAMES.map { |name| name.to_sym }
+
+    # Collection of all the names for .dat and .txt files that are used.
+    PBS_NAMES = ["Base", "Socks", "Legs", "Shoes", "Torso", "LowerFace", 
+    "UpperFace", "Hair", "Hat", "Eyes", "Bike", "Rod", "Type", "Class"]
+    
+    PBS_NAMES_SYMS = PBS_NAMES.map { |name| name.to_sym }
+    
+    # A hash containing all class names for apparel for easy access with loops.
+    @@class_hash = PBS_NAMES.map { |name| [name.to_sym, Object.const_get(self.to_s + name)] }.to_h
+    
+    # Should be treated as a constant and only set by the compiler once.
+    # Contains a list of all colors that have been found while compiling.
+    COLORS = []
+    
+    COLORCSV = 4
+    
+    # Return class with the corresponding pbs name.
+    def self.get(name)
+      validate name => [String, Symbol]
+      # Make sure name is a symbol.
+      name = name.to_sym if name.is_a?(String)
+      return @@class_hash[name]
+    end
+  
+  end
+  
 end
 
 

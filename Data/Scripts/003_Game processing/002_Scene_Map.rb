@@ -220,6 +220,9 @@ class Scene_Map
       update
       break if $scene != self
     end
+    
+    
+
     Graphics.freeze
     disposeSpritesets
     if $game_temp.to_title

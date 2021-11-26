@@ -392,110 +392,62 @@ module Compiler
     Graphics.update
   end
 
-  def compile_apparel(directory = "PBS/Apparel")
-    return
-    GameData::Apparel::DATA.clear
+  def compile_apparel(directory = "PBS/Apparel/")
+    
     apparel_names = []
+    apparel_descriptions = []
+    apparel_colors = Set.new # Collects every color found during compilation.
+    apparel_id_unique = 1
     
-    txts_no_extension = Marshal.load(Marshal.dump($LAYER_NAMES)) # Creates a copy of $LAYER_NAMES.
-    txts_no_extension.push("Bike")
-    txts_no_extension.push("Rod")
-    txts_no_extension.push("Type")
-    txts_no_extension.push("Class")
+    pbs_names = GameData::Apparel::PBS_NAMES_SYMS
     
-    for txt_no_extension in txts_no_extension
-      if(txt_no_extension == "Base" || txt_no_extension == "Class")
-        pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
-          line = pbGetCsvRecord(line,lineno,[0,"vns"])
+    for pbs_name in pbs_names
+    
+      apparel_class = GameData::Apparel.get(pbs_name) 
+    
+      if apparel_class.superclass == GameData::ApparelRegularModel
+        regex = "vnsvSsvUbSS"
+      elsif apparel_class.superclass == GameData::ApparelSpecialModel
+        regex = "vnsvSs"
+      elsif apparel_class == GameData::ApparelType
+        regex = "vnss"
+      elsif apparel_class == GameData::ApparelBase || apparel_class == GameData::ApparelClass
+        regex = "vns"
+      else
+        raise InvalidValueError, "GameData::Apparel::PBS_NAMES_SYMS contains a symbol tied to a class type that is not known to the PBS compiler. Please remove this symbol or define compiler behaviour for this class."
+      end
+      
+      pbCompilerEachCommentedLine(directory + pbs_name.to_s + ".txt"){|line, lineno|
+        line = pbGetCsvRecord(line, lineno, [0, regex])
+        
+          
           apparel_number = line[0]
           apparel_symbol = line[1].to_sym
+          # Construct apparel hash.
+          apparel_hash = {
+            :id_number   => apparel_number,
+            :id          => apparel_symbol,
+            :id_unique   => apparel_id_unique,
+          }
+          # Complete hash and message data.
+          apparel_class.completeHash(apparel_hash, line)
+          apparel_names[apparel_id_unique]        = apparel_hash[:name]
+          apparel_descriptions[apparel_id_unique] = apparel_hash[:name_plural]
+          apparel_colors.add(line[GameData::Apparel::COLORCSV])
+          GameData::Apparel.get(pbs_name).register(apparel_hash)
           
-          record[CSVCONST::APPARELID] = linerecord[0]
-          record[CSVCONST::APPARELNAME] = linerecord[2]
-          constant=linerecord[1]
-          constants+="#{constant}=#{record[0]}\r\n"
-          apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
-          maxValue=[maxValue,record[CSVCONST::APPARELID]].max
-          records.push(record)
-        }
-      elsif(txt_no_extension == "Bike" || txt_no_extension == "Rod")
-          pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
-          linerecord=pbGetCsvRecord(line,lineno,[0,"vnsvSs"])
-          record=SerialRecord.new
-          record[CSVCONST::APPARELID] = linerecord[0]
-          record[CSVCONST::APPARELNAME] = linerecord[2]
-          record[CSVCONST::APPARELPRICE] = linerecord[3]
-          if linerecord[4] == "" || linerecord[4] == nil
-            record[CSVCONST::APPARELCOLORS] = "Default"
-          else
-            record[CSVCONST::APPARELCOLORS] = linerecord[4]
-          end
-          record[CSVCONST::APPARELDESC] = linerecord[5]
-          constant=linerecord[1]
-          constants+="#{constant}=#{record[0]}\r\n"
-          apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
-          appareldescs[record[CSVCONST::APPARELID]] = linerecord[5]
-          maxValue=[maxValue,record[CSVCONST::APPARELID]].max
-          records.push(record)
-        }
-      elsif(txt_no_extension == "Type")
-          pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
-          linerecord=pbGetCsvRecord(line,lineno,[0,"vnss"])
-          record=SerialRecord.new
-          record[CSVCONST::APPARELID] = linerecord[0]
-          record[CSVCONST::APPARELNAME] = linerecord[2]
-          record[2] = linerecord[3] # Layer Name
-          constant=linerecord[1]
-          constants+="#{constant}=#{record[0]}\r\n"
-          apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
-          maxValue=[maxValue,record[CSVCONST::APPARELID]].max
-          records.push(record)
-        }
-      else
-
-        pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
-          linerecord=pbGetCsvRecord(line,lineno,[0,"vnsvSsvUbSS"])
-          record=SerialRecord.new
-          # Add the .txt record values into the .dat record
-          record[CSVCONST::APPARELID] = linerecord[0]
-          record[CSVCONST::APPARELNAME] = linerecord[2]
-          record[CSVCONST::APPARELPRICE] = linerecord[3]
-          if linerecord[4] == "" || linerecord[4] == nil
-            record[CSVCONST::APPARELCOLORS] = "Default"
-          else
-            record[CSVCONST::APPARELCOLORS] = linerecord[4]
-            echo txt_no_extension + " Color linerecord: " + linerecord[4]
-          end
-          record[CSVCONST::APPARELDESC] = linerecord[5]
-          record[CSVCONST::APPARELTYPE] = linerecord[6]
-          record[CSVCONST::APPARELCLASS] = linerecord[7]
-          record[CSVCONST::APPARELSWIMSUIT] = linerecord[8]
-          record[CSVCONST::APPARELCONFLICTS] = linerecord[9]
-          record[CSVCONST::APPARELVARIANTS] = linerecord[10]
-          
-          # Add the 
-          constant=linerecord[1]
-          constants+="#{constant}=#{record[0]}\r\n"
-          apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
-          appareldescs[record[CSVCONST::APPARELID]] = linerecord[5]
-          maxValue=[maxValue,record[CSVCONST::APPARELID]].max
-          records.push(record)
-        }
-      end
-      #echo "Names : " + apparelnames.to_s + " " + apparelnames.length.to_s + "\n"
-      writeSerialRecords("Data/Apparel/" + txt_no_extension + ".dat" , records)
-      MessageTypes.setMessages(MessageTypes::ApparelNames,apparelnames) if apparelnames.length > 0
-      MessageTypes.setMessages(MessageTypes::ApparelDescs,appareldescs) if appareldescs.length > 0
-      code="class PBApparel" + txt_no_extension + "\r\n#{constants}"
-      code+="\r\ndef PBApparel" + txt_no_extension + ".getName(id)\r\nreturn pbGetMessage(MessageTypes::ApparelNames,id)\r\nend\r\n" if apparelnames.length > 0
-      code+="\r\ndef PBApparel" + txt_no_extension + ".getCount\r\nreturn #{records.length}\r\nend\r\n"
-      code+="\r\ndef PBApparel" + txt_no_extension + ".maxValue\r\nreturn #{maxValue}\r\nend" if maxValue > 0
-      code+="\r\nend"
-      eval(code)
-      pbAddScript(code, "PBApparel" + txt_no_extension)
+          apparel_id_unique += 1
+      }
+      # Set localizable messages for names and descs. Colors come later.
+      MessageTypes.setMessages(MessageTypes::ApparelNames, apparel_names)
+      MessageTypes.setMessages(MessageTypes::ApparelDescs, apparel_descriptions)
+      # Create .dat file.
+      apparel_class.save
       Graphics.update
     end
-
+    # Set the constant containing all possible colors and also set them as localizable messages.
+    GameData::Apparel::COLORS.concat(apparel_colors.to_a)
+    MessageTypes.setMessages(MessageTypes::ApparelColors, GameData::Apparel::COLORS)
   end
 
   #=============================================================================
@@ -1825,113 +1777,4 @@ def readItemList(filename)
      end
   }
   return ret
-end
-
-#===============================================================================
-# Compile apparel
-#===============================================================================
-def compile_apparel
-  txts_no_extension = Marshal.load(Marshal.dump($LAYER_NAMES)) # creates a copy 
-  txts_no_extension.push("Bike")
-  txts_no_extension.push("Rod")
-  txts_no_extension.push("Type")
-  txts_no_extension.push("Class")
-  
-  for txt_no_extension in txts_no_extension
-    records=[]
-    constants=""
-    apparelnames=[]
-    appareldescs=[]
-    maxValue=0
-    
-    if(txt_no_extension == "Base" || txt_no_extension == "Class")
-      pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
-        linerecord=pbGetCsvRecord(line,lineno,[0,"vns"])
-        record=SerialRecord.new
-        record[CSVCONST::APPARELID] = linerecord[0]
-        record[CSVCONST::APPARELNAME] = linerecord[2]
-        constant=linerecord[1]
-        constants+="#{constant}=#{record[0]}\r\n"
-        apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
-        maxValue=[maxValue,record[CSVCONST::APPARELID]].max
-        records.push(record)
-      }
-    elsif(txt_no_extension == "Bike" || txt_no_extension == "Rod")
-        pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
-        linerecord=pbGetCsvRecord(line,lineno,[0,"vnsvSs"])
-        record=SerialRecord.new
-        record[CSVCONST::APPARELID] = linerecord[0]
-        record[CSVCONST::APPARELNAME] = linerecord[2]
-        record[CSVCONST::APPARELPRICE] = linerecord[3]
-        if linerecord[4] == "" || linerecord[4] == nil
-          record[CSVCONST::APPARELCOLORS] = "Default"
-        else
-          record[CSVCONST::APPARELCOLORS] = linerecord[4]
-        end
-        record[CSVCONST::APPARELDESC] = linerecord[5]
-        constant=linerecord[1]
-        constants+="#{constant}=#{record[0]}\r\n"
-        apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
-        appareldescs[record[CSVCONST::APPARELID]] = linerecord[5]
-        maxValue=[maxValue,record[CSVCONST::APPARELID]].max
-        records.push(record)
-      }
-    elsif(txt_no_extension == "Type")
-        pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
-        linerecord=pbGetCsvRecord(line,lineno,[0,"vnss"])
-        record=SerialRecord.new
-        record[CSVCONST::APPARELID] = linerecord[0]
-        record[CSVCONST::APPARELNAME] = linerecord[2]
-        record[2] = linerecord[3] # Layer Name
-        constant=linerecord[1]
-        constants+="#{constant}=#{record[0]}\r\n"
-        apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
-        maxValue=[maxValue,record[CSVCONST::APPARELID]].max
-        records.push(record)
-      }
-    else
-
-      pbCompilerEachCommentedLine("PBS/Apparel/" + txt_no_extension + ".txt"){|line,lineno|
-        linerecord=pbGetCsvRecord(line,lineno,[0,"vnsvSsvUbSS"])
-        record=SerialRecord.new
-        # Add the .txt record values into the .dat record
-        record[CSVCONST::APPARELID] = linerecord[0]
-        record[CSVCONST::APPARELNAME] = linerecord[2]
-        record[CSVCONST::APPARELPRICE] = linerecord[3]
-        if linerecord[4] == "" || linerecord[4] == nil
-          record[CSVCONST::APPARELCOLORS] = "Default"
-        else
-          record[CSVCONST::APPARELCOLORS] = linerecord[4]
-          echo txt_no_extension + " Color linerecord: " + linerecord[4]
-        end
-        record[CSVCONST::APPARELDESC] = linerecord[5]
-        record[CSVCONST::APPARELTYPE] = linerecord[6]
-        record[CSVCONST::APPARELCLASS] = linerecord[7]
-        record[CSVCONST::APPARELSWIMSUIT] = linerecord[8]
-        record[CSVCONST::APPARELCONFLICTS] = linerecord[9]
-        record[CSVCONST::APPARELVARIANTS] = linerecord[10]
-        
-        # Add the 
-        constant=linerecord[1]
-        constants+="#{constant}=#{record[0]}\r\n"
-        apparelnames[record[CSVCONST::APPARELID]] = linerecord[2]
-        appareldescs[record[CSVCONST::APPARELID]] = linerecord[5]
-        maxValue=[maxValue,record[CSVCONST::APPARELID]].max
-        records.push(record)
-      }
-    end
-    #echo "Names : " + apparelnames.to_s + " " + apparelnames.length.to_s + "\n"
-    writeSerialRecords("Data/Apparel/" + txt_no_extension + ".dat" , records)
-    MessageTypes.setMessages(MessageTypes::ApparelNames,apparelnames) if apparelnames.length > 0
-    MessageTypes.setMessages(MessageTypes::ApparelDescs,appareldescs) if appareldescs.length > 0
-    code="class PBApparel" + txt_no_extension + "\r\n#{constants}"
-    code+="\r\ndef PBApparel" + txt_no_extension + ".getName(id)\r\nreturn pbGetMessage(MessageTypes::ApparelNames,id)\r\nend\r\n" if apparelnames.length > 0
-    code+="\r\ndef PBApparel" + txt_no_extension + ".getCount\r\nreturn #{records.length}\r\nend\r\n"
-    code+="\r\ndef PBApparel" + txt_no_extension + ".maxValue\r\nreturn #{maxValue}\r\nend" if maxValue > 0
-    code+="\r\nend"
-    eval(code)
-    pbAddScript(code, "PBApparel" + txt_no_extension)
-    Graphics.update
-  end
-    
 end

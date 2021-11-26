@@ -46,7 +46,9 @@ def mainFunctionDebug
     Graphics.freeze
     
     Console::setup_console
-    testywesty 
+    Compiler::compile_apparel
+
+    a = [:testy, :westy]
     
     $scene = pbCallTitle
     $scene.main until $scene.nil?
@@ -82,12 +84,21 @@ def testywesty
          :type_id => 0,
          :class_id => 0
         })
-        
-  GameData::ApparelSocks.register(ashash)
-  echoln GameData::ApparelLegs::DATA.to_s
-  echoln GameData::ApparelSocks::DATA.to_s
-
-  GameData::ApparelSocks
+   
+  
+  # echoln Object.const_get("GameData::ApparelSocks")
+  #GameData::ApparelSocks.register(ashash)
+  # GameData::ApparelSocks.send(:register,ashash)
+  # echoln GameData::ApparelLegs::DATA.to_s
+  # echoln GameData::ApparelSocks::DATA.to_s
+  # echoln :Bep.to_s
+  # echoln :bep.to_s
+  # echoln GameData::ApparelLegs.superclass.to_s
+  
+  MessageTypes.setMessagesAsHash(MessageTypes::ApparelColors, ["Socks3", "Cocks"])
+  echoln pbGetMessageFromHash(MessageTypes::ApparelColors, "Socks3")
+  
+  echoln Messages.stringToKey("Socks3")
   
 end
 

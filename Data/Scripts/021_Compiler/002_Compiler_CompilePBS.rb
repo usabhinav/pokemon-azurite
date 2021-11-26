@@ -405,6 +405,8 @@ module Compiler
     
       apparel_class = GameData::Apparel.get(pbs_name) 
     
+      apparel_class::DATA.clear
+    
       if apparel_class.superclass == GameData::ApparelRegularModel
         regex = "vnsvSsvUbSS"
       elsif apparel_class.superclass == GameData::ApparelSpecialModel

@@ -750,6 +750,14 @@ BattleHandlers::DamageCalcUserItem.add(:SHARPBEAK,
 
 BattleHandlers::DamageCalcUserItem.copy(:SHARPBEAK,:SKYPLATE)
 
+BattleHandlers::DamageCalcUserItem.add(:SHODDYSLINGSHOT,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    next if !move.projectileBasedMove?
+    target.pbFlinch
+    user.pbConsumeItem
+  }
+)
+
 BattleHandlers::DamageCalcUserItem.add(:SILKSCARF,
   proc { |item,user,target,move,mults,baseDmg,type|
     mults[:base_damage_multiplier] *= 1.2 if type == :NORMAL
@@ -887,6 +895,12 @@ BattleHandlers::DamageCalcTargetItem.add(:COBABERRY,
 BattleHandlers::DamageCalcTargetItem.add(:COLBURBERRY,
   proc { |item,user,target,move,mults,baseDmg,type|
     pbBattleTypeWeakingBerry(:DARK,type,target,mults)
+  }
+)
+
+BattleHandlers::DamageCalcTargetItem.add(:CRACKEDMULTIPLATE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:final_damage_multiplier] /= 2 if target.hp == target.totalhp
   }
 )
 
@@ -1068,6 +1082,7 @@ BattleHandlers::TargetItemOnHit.add(:CELLBATTERY,
   }
 )
 
+
 BattleHandlers::TargetItemOnHit.add(:ENIGMABERRY,
   proc { |item,user,target,move,battle|
     next if target.damageState.substitute || target.damageState.disguise
@@ -1134,7 +1149,6 @@ BattleHandlers::TargetItemOnHit.add(:REVENGEBELT,
   proc { |item,user,target,move,battle|
     next if !target.damageState.critical
     target.effects[PBEffects::RevengeBelt] = true
-    target.pbHeldItemTriggered(item)
   }
 )
 

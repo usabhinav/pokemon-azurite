@@ -1075,7 +1075,7 @@ BattleHandlers::TargetItemOnHit.add(:CELLBATTERY,
 )
 
 BattleHandlers::TargetItemOnHit.add(:CRACKEDMULTIPLATE,
-  proc { |item,user,target,move,mults,baseDmg,type|
+  proc { |item,user,target,move,battle|
     battle.pbDisplay(_INTL("{1}'s {2} fell apart!",target.pbThis,target.itemName))
     target.pbConsumeItem
     target.pbSymbiosis

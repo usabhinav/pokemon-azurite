@@ -750,14 +750,6 @@ BattleHandlers::DamageCalcUserItem.add(:SHARPBEAK,
 
 BattleHandlers::DamageCalcUserItem.copy(:SHARPBEAK,:SKYPLATE)
 
-BattleHandlers::DamageCalcUserItem.add(:SHODDYSLINGSHOT,
-  proc { |item,user,target,move,mults,baseDmg,type|
-    next if !move.projectileBasedMove?
-    target.pbFlinch
-    user.pbConsumeItem
-  }
-)
-
 BattleHandlers::DamageCalcUserItem.add(:SILKSCARF,
   proc { |item,user,target,move,mults,baseDmg,type|
     mults[:base_damage_multiplier] *= 1.2 if type == :NORMAL
@@ -899,7 +891,7 @@ BattleHandlers::DamageCalcTargetItem.add(:COLBURBERRY,
 )
 
 BattleHandlers::DamageCalcTargetItem.add(:CRACKEDMULTIPLATE,
-  proc { |ability,user,target,move,mults,baseDmg,type|
+  proc { |item,user,target,move,mults,baseDmg,type|
     mults[:final_damage_multiplier] /= 2 if target.hp == target.totalhp
   }
 )
@@ -1079,6 +1071,14 @@ BattleHandlers::TargetItemOnHit.add(:CELLBATTERY,
     battle.pbCommonAnimation("UseItem",target)
     target.pbRaiseStatStageByCause(:ATTACK,1,target,target.itemName)
     target.pbHeldItemTriggered(item)
+  }
+)
+
+BattleHandlers::TargetItemOnHit.add(:CRACKEDMULTIPLATE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mbattle.pbDisplay(_INTL("{1}'s {2} fell apart!",target.pbThis,target.itemName))
+    target.pbConsumeItem(false,true)
+    target.pbSymbiosis
   }
 )
 
@@ -1367,6 +1367,17 @@ BattleHandlers::UserItemAfterMoveUse.add(:SHELLBELL,
     user.pbRecoverHP(totalDamage/8)
     battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
        user.pbThis,user.itemName))
+  }
+)
+
+BattleHandlers::UserItemAfterMoveUse.add(:SHODDYSLINGSHOT,
+  proc { |item,user,targets,move,numHits,battle|
+	next if !move.pbDamagingMove? || numHits==0
+	targets.each do |b|
+		next if b.damageState.unaffected || b.damageState.substitute
+		next if !move.projectileBasedMove?
+    	target.pbFlinch
+    	user.pbConsumeItem
   }
 )
 

@@ -1075,9 +1075,9 @@ BattleHandlers::TargetItemOnHit.add(:CELLBATTERY,
 )
 
 BattleHandlers::TargetItemOnHit.add(:CRACKEDMULTIPLATE,
-  proc { |ability,user,target,move,mults,baseDmg,type|
-    mbattle.pbDisplay(_INTL("{1}'s {2} fell apart!",target.pbThis,target.itemName))
-    target.pbConsumeItem(false,true)
+  proc { |item,user,target,move,mults,baseDmg,type|
+    battle.pbDisplay(_INTL("{1}'s {2} fell apart!",target.pbThis,target.itemName))
+    target.pbConsumeItem
     target.pbSymbiosis
   }
 )
@@ -1376,8 +1376,9 @@ BattleHandlers::UserItemAfterMoveUse.add(:SHODDYSLINGSHOT,
 	targets.each do |b|
 		next if b.damageState.unaffected || b.damageState.substitute
 		next if !move.projectileBasedMove?
-    	target.pbFlinch
+    	b.pbFlinch
     	user.pbConsumeItem
+	end
   }
 )
 

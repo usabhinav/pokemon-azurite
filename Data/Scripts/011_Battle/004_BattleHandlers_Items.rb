@@ -890,6 +890,12 @@ BattleHandlers::DamageCalcTargetItem.add(:COLBURBERRY,
   }
 )
 
+BattleHandlers::DamageCalcTargetItem.add(:CRACKEDMULTIPLATE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    mults[:final_damage_multiplier] /= 2 if target.hp == target.totalhp
+  }
+)
+
 BattleHandlers::DamageCalcTargetItem.add(:DEEPSEASCALE,
   proc { |item,user,target,move,mults,baseDmg,type|
     if target.isSpecies?(:CLAMPERL) && move.pbSpecialMove?(user)
@@ -1068,6 +1074,15 @@ BattleHandlers::TargetItemOnHit.add(:CELLBATTERY,
   }
 )
 
+BattleHandlers::TargetItemOnHit.add(:CRACKEDMULTIPLATE,
+  proc { |item,user,target,move,battle|
+    battle.pbDisplay(_INTL("{1}'s {2} fell apart!",target.pbThis,target.itemName))
+    target.pbConsumeItem
+    target.pbSymbiosis
+  }
+)
+
+
 BattleHandlers::TargetItemOnHit.add(:ENIGMABERRY,
   proc { |item,user,target,move,battle|
     next if target.damageState.substitute || target.damageState.disguise
@@ -1134,7 +1149,6 @@ BattleHandlers::TargetItemOnHit.add(:REVENGEBELT,
   proc { |item,user,target,move,battle|
     next if !target.damageState.critical
     target.effects[PBEffects::RevengeBelt] = true
-    target.pbHeldItemTriggered(item)
   }
 )
 
@@ -1353,6 +1367,18 @@ BattleHandlers::UserItemAfterMoveUse.add(:SHELLBELL,
     user.pbRecoverHP(totalDamage/8)
     battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
        user.pbThis,user.itemName))
+  }
+)
+
+BattleHandlers::UserItemAfterMoveUse.add(:SHODDYSLINGSHOT,
+  proc { |item,user,targets,move,numHits,battle|
+	next if !move.pbDamagingMove? || numHits==0
+	targets.each do |b|
+		next if b.damageState.unaffected || b.damageState.substitute
+		next if !move.projectileBasedMove?
+    	b.pbFlinch
+    	user.pbConsumeItem
+	end
   }
 )
 

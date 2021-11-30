@@ -428,6 +428,13 @@ class PokeBattle_Battler
       @battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
       return false
     end
+	if move.pbDamagingMove? && move.calcType == :ELECTRIC && target.hasActiveItem?(:INTERCEPTOR)
+	  PBDebug.log("[Target immune] #{target.pbThis}'s type immunity")
+	  @battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
+	  @battle.pbDisplay(_INTL("{1}'s {2} fell apart!",target.pbThis,target.itemName))
+	  target.pbConsumeItem
+	  return false
+	end
     # Dark-type immunity to moves made faster by Prankster
     if Settings::MECHANICS_GENERATION >= 7 && user.effects[PBEffects::Prankster] &&
        target.pbHasType?(:DARK) && target.opposes?(user)

@@ -8,13 +8,9 @@ class PokeBattle_Battler
 
   def pbCanRaiseStatStage?(stat,user=nil,move=nil,showFailMsg=false,ignoreContrary=false)
     return false if fainted?
-    # Contrary
-    if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
+    # Contrary and Reversal Herb
+    if (hasActiveAbility?(:CONTRARY) || hasActiveItem?(:REVERSALHERB)) && !ignoreContrary && !@battle.moldBreaker
       return pbCanLowerStatStage?(stat,user,move,showFailMsg,true)
-    end
-	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
-      return pbLowerStatStage?(stat,user,move,showFailMsg,true)
     end
     # Check the stat stage
     if statStageAtMax?(stat)
@@ -137,12 +133,8 @@ class PokeBattle_Battler
 
   def pbCanLowerStatStage?(stat,user=nil,move=nil,showFailMsg=false,ignoreContrary=false)
     return false if fainted?
-    # Contrary
-    if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
-      return pbCanRaiseStatStage?(stat,user,move,showFailMsg,true)
-    end
-	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
+    # Contrary and Reversal Herb
+    if (hasActiveAbility?(:CONTRARY) || hasActiveItem?(:REVERSALHERB)) && !ignoreContrary && !@battle.moldBreaker
       return pbCanRaiseStatStage?(stat,user,move,showFailMsg,true)
     end
     if !user || user.index!=@index   # Not self-inflicted

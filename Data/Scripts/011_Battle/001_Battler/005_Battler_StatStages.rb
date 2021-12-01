@@ -9,7 +9,7 @@ class PokeBattle_Battler
   def pbCanRaiseStatStage?(stat,user=nil,move=nil,showFailMsg=false,ignoreContrary=false)
     return false if fainted?
     # Contrary and Reversal Herb
-    if (hasActiveAbility?(:CONTRARY) && !@battle.moldBreaker) || hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
+    if ((hasActiveAbility?(:CONTRARY) && !@battle.moldBreaker) || hasActiveItem?(:REVERSALHERB)) && !ignoreContrary
       return pbCanLowerStatStage?(stat,user,move,showFailMsg,true)
     end
     # Check the stat stage
@@ -48,11 +48,11 @@ class PokeBattle_Battler
 
   def pbRaiseStatStage(stat,increment,user,showAnim=true,ignoreContrary=false)
     # Contrary
-    if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
+    if hasActiveAbility?(:CONTRARY) && !ignoreContrary
       return pbLowerStatStage(stat,increment,user,showAnim,true)
     end
 	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
+	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
 	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
 	  pbConsumeItem
       return pbLowerStatStage(stat,increment,user,showAnim,true)
@@ -76,11 +76,11 @@ class PokeBattle_Battler
 
   def pbRaiseStatStageByCause(stat,increment,user,cause,showAnim=true,ignoreContrary=false)
     # Contrary
-    if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
+    if hasActiveAbility?(:CONTRARY) && !ignoreContrary
       return pbLowerStatStageByCause(stat,increment,user,cause,showAnim,true)
     end
 	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
+	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
 	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
 	  pbConsumeItem
       return pbLowerStatStageByCause(stat,increment,user,cause,showAnim,true)
@@ -134,7 +134,7 @@ class PokeBattle_Battler
   def pbCanLowerStatStage?(stat,user=nil,move=nil,showFailMsg=false,ignoreContrary=false)
     return false if fainted?
     # Contrary and Reversal Herb
-    if (hasActiveAbility?(:CONTRARY) && !@battle.moldBreaker) || hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
+    if ((hasActiveAbility?(:CONTRARY) && !@battle.moldBreaker) || hasActiveItem?(:REVERSALHERB)) && !ignoreContrary
       return pbCanRaiseStatStage?(stat,user,move,showFailMsg,true)
     end
     if !user || user.index!=@index   # Not self-inflicted

@@ -9,7 +9,7 @@ class PokeBattle_Battler
   def pbCanRaiseStatStage?(stat,user=nil,move=nil,showFailMsg=false,ignoreContrary=false)
     return false if fainted?
     # Contrary and Reversal Herb
-    if (hasActiveAbility?(:CONTRARY) || hasActiveItem?(:REVERSALHERB)) && !ignoreContrary && !@battle.moldBreaker
+    if (hasActiveAbility?(:CONTRARY) && !@battle.moldBreaker) || hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
       return pbCanLowerStatStage?(stat,user,move,showFailMsg,true)
     end
     # Check the stat stage
@@ -27,13 +27,13 @@ class PokeBattle_Battler
       if hasActiveAbility?(:CONTRARY) && !ignoreContrary
         return pbLowerStatStageBasic(stat,increment,true)
       end
-	  # Reversal Herb
-	  if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
-	    pbConsumeItem
-        return pbLowerStatStageBasic(stat,increment,user,cause,showAnim,true)
-      end
       # Simple
       increment *= 2 if hasActiveAbility?(:SIMPLE)
+    end
+	 # Reversal Herb
+	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+	  pbConsumeItem
+      return pbLowerStatStageBasic(stat,increment,true)
     end
     # Change the stat stage
     increment = [increment,6-@stages[stat]].min
@@ -55,7 +55,7 @@ class PokeBattle_Battler
 	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
 	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
 	  pbConsumeItem
-      return pbLowerStatStage(stat,increment,user,cause,showAnim,true)
+      return pbLowerStatStage(stat,increment,user,showAnim,true)
     end
     # Perform the stat stage change
     increment = pbRaiseStatStageBasic(stat,increment,ignoreContrary)
@@ -134,7 +134,7 @@ class PokeBattle_Battler
   def pbCanLowerStatStage?(stat,user=nil,move=nil,showFailMsg=false,ignoreContrary=false)
     return false if fainted?
     # Contrary and Reversal Herb
-    if (hasActiveAbility?(:CONTRARY) || hasActiveItem?(:REVERSALHERB)) && !ignoreContrary && !@battle.moldBreaker
+    if (hasActiveAbility?(:CONTRARY) && !@battle.moldBreaker) || hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
       return pbCanRaiseStatStage?(stat,user,move,showFailMsg,true)
     end
     if !user || user.index!=@index   # Not self-inflicted
@@ -176,13 +176,13 @@ class PokeBattle_Battler
       if hasActiveAbility?(:CONTRARY) && !ignoreContrary
         return pbRaiseStatStageBasic(stat,increment,true)
       end
-	  # Reversal Herb
-	  if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
-	    pbConsumeItem
-        return pbRaiseStatStageBasic(stat,increment,true)
-      end
       # Simple
       increment *= 2 if hasActiveAbility?(:SIMPLE)
+    end
+	# Reversal Herb
+	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+	  pbConsumeItem
+      return pbRaiseStatStageBasic(stat,increment,true)
     end
     # Change the stat stage
     increment = [increment,6+@stages[stat]].min
@@ -201,7 +201,7 @@ class PokeBattle_Battler
       return pbRaiseStatStage(stat,increment,user,showAnim,true)
     end
 	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
+	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
 	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
 	  pbConsumeItem
       return pbRaiseStatStage(stat,increment,user,showAnim,true)
@@ -229,7 +229,7 @@ class PokeBattle_Battler
       return pbRaiseStatStageByCause(stat,increment,user,cause,showAnim,true)
     end
 	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary && !@battle.moldBreaker
+	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
 	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
 	  pbConsumeItem
       return pbRaiseStatStageByCause(stat,increment,user,cause,showAnim,true)
@@ -291,7 +291,7 @@ class PokeBattle_Battler
     # NOTE: These checks exist to ensure appropriate messages are shown if
     #       Intimidate is blocked somehow (i.e. the messages should mention the
     #       Intimidate ability by name).
-    if !hasActiveAbility?(:CONTRARY) || !hasActiveItem?(:REVERSALHERB)
+    if !hasActiveAbility?(:CONTRARY) && !hasActiveItem?(:REVERSALHERB)
       if pbOwnSide.effects[PBEffects::Mist]>0
         @battle.pbDisplay(_INTL("{1} is protected from {2}'s {3} by Mist!",
            pbThis,user.pbThis(true),user.abilityName))
@@ -337,7 +337,7 @@ class PokeBattle_Battler
     # NOTE: These checks exist to ensure appropriate messages are shown if
     #       Chilling is blocked somehow (i.e. the messages should mention the
     #       Chilling ability by name).
-    if !hasActiveAbility?(:CONTRARY) || !hasActiveItem?(:REVERSALHERB)
+    if !hasActiveAbility?(:CONTRARY) && !hasActiveItem?(:REVERSALHERB)
       if pbOwnSide.effects[PBEffects::Mist]>0
         @battle.pbDisplay(_INTL("{1} is protected from {2}'s {3} by Mist!",
            pbThis,user.pbThis(true),user.abilityName))

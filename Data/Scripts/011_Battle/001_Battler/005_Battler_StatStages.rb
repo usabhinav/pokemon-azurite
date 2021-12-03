@@ -48,7 +48,7 @@ class PokeBattle_Battler
 
   def pbRaiseStatStage(stat,increment,user,showAnim=true,ignoreContrary=false)
     # Contrary
-    if hasActiveAbility?(:CONTRARY) && !ignoreContrary
+    if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
       return pbLowerStatStage(stat,increment,user,showAnim,true)
     end
 	# Reversal Herb
@@ -76,7 +76,7 @@ class PokeBattle_Battler
 
   def pbRaiseStatStageByCause(stat,increment,user,cause,showAnim=true,ignoreContrary=false)
     # Contrary
-    if hasActiveAbility?(:CONTRARY) && !ignoreContrary
+    if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
       return pbLowerStatStageByCause(stat,increment,user,cause,showAnim,true)
     end
 	# Reversal Herb

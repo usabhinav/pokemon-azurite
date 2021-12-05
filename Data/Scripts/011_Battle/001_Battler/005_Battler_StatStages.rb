@@ -30,9 +30,9 @@ class PokeBattle_Battler
       # Simple
       increment *= 2 if hasActiveAbility?(:SIMPLE)
     end
-	 # Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
-	  pbConsumeItem
+	  # Reversal Herb
+	  if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+	    pbConsumeItem
       return pbLowerStatStageBasic(stat,increment,true)
     end
     # Change the stat stage
@@ -51,10 +51,10 @@ class PokeBattle_Battler
     if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
       return pbLowerStatStage(stat,increment,user,showAnim,true)
     end
-	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
-	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
-	  pbConsumeItem
+	  # Reversal Herb
+	  if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+	    @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
+	    pbConsumeItem
       return pbLowerStatStage(stat,increment,user,showAnim,true)
     end
     # Perform the stat stage change
@@ -79,10 +79,10 @@ class PokeBattle_Battler
     if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
       return pbLowerStatStageByCause(stat,increment,user,cause,showAnim,true)
     end
-	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
-	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
-	  pbConsumeItem
+    # Reversal Herb
+    if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+      @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
+      pbConsumeItem
       return pbLowerStatStageByCause(stat,increment,user,cause,showAnim,true)
     end
     # Perform the stat stage change
@@ -179,9 +179,9 @@ class PokeBattle_Battler
       # Simple
       increment *= 2 if hasActiveAbility?(:SIMPLE)
     end
-	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
-	  pbConsumeItem
+    # Reversal Herb
+    if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+      pbConsumeItem
       return pbRaiseStatStageBasic(stat,increment,true)
     end
     # Change the stat stage
@@ -200,10 +200,10 @@ class PokeBattle_Battler
     if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
       return pbRaiseStatStage(stat,increment,user,showAnim,true)
     end
-	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
-	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
-	  pbConsumeItem
+    # Reversal Herb
+    if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+      @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
+      pbConsumeItem
       return pbRaiseStatStage(stat,increment,user,showAnim,true)
     end
     # Perform the stat stage change
@@ -228,10 +228,10 @@ class PokeBattle_Battler
     if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
       return pbRaiseStatStageByCause(stat,increment,user,cause,showAnim,true)
     end
-	# Reversal Herb
-	if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
-	  @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
-	  pbConsumeItem
+    # Reversal Herb
+    if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+      @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!",self.pbThis,self.itemName))
+      pbConsumeItem
       return pbRaiseStatStageByCause(stat,increment,user,cause,showAnim,true)
     end
     # Perform the stat stage change

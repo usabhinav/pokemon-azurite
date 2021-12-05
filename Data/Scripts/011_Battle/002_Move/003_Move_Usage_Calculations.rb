@@ -270,7 +270,7 @@ class PokeBattle_Move
     if c>=0 && target.itemActive?
       c = BattleHandlers.triggerCriticalCalcTargetItem(target.item,user,target,c)
     end
-	if user.effects[PBEffects::RevengeBelt] && user.itemActive?
+	  if user.effects[PBEffects::RevengeBelt] && user.itemActive?
       user.effects[PBEffects::RevengeBelt] = false
       return true
     end

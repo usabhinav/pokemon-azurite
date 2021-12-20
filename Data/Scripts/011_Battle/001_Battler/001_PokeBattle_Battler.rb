@@ -484,7 +484,8 @@ class PokeBattle_Battler
       :IMPOSTER,
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
-      :RKSSYSTEM
+      :RKSSYSTEM,
+      :CRYSTALENERGY                                      # Having Crystal Energy be gainable is annoying to work with
     ]
     return ability_blacklist.include?(abil.id)
   end

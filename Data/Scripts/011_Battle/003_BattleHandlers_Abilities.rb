@@ -4411,10 +4411,10 @@ BattleHandlers::AbilityOnSwitchIn.add(:NEGATION,
 
 BattleHandlers::AbilityOnSwitchIn.add(:ADDITION,
   proc { |ability,battler,battle|
+    next if battle.initialSwitchIn && battle.subtractionMessageDisplayed[battler.index % 2]
     # Display message if side has both Addition and Subtraction users
     subtractionUser = battle.pbCheckAllyAbility(:SUBTRACTION, battler.index)
     if subtractionUser
-      next if battle.initialSwitchIn && battle.subtractionMessageDisplayed[battler.index % 2]
       battle.pbShowAbilitySplash(subtractionUser)
       battle.pbShowAbilitySplash(battler)
       battle.pbDisplay(_INTL("{1} and {2} unite to remove all type weaknesses from its side!", subtractionUser.pbThis, battler.pbThis(true)))
@@ -4427,10 +4427,10 @@ BattleHandlers::AbilityOnSwitchIn.add(:ADDITION,
 
 BattleHandlers::AbilityOnSwitchIn.add(:SUBTRACTION,
   proc { |ability,battler,battle|
+    next if battle.initialSwitchIn && battle.subtractionMessageDisplayed[battler.index % 2]
     # Display message if side has both Addition and Subtraction users
     additionUser = battle.pbCheckAllyAbility(:ADDITION, battler.index)
     if additionUser
-      next if battle.initialSwitchIn && battle.subtractionMessageDisplayed[battler.index % 2]
       battle.pbShowAbilitySplash(additionUser)
       battle.pbShowAbilitySplash(battler)
       battle.pbDisplay(_INTL("{1} and {2} unite to remove all type weaknesses from its side!", additionUser.pbThis, battler.pbThis(true)))
@@ -4452,6 +4452,7 @@ BattleHandlers::AbilityOnSwitchIn.add(:SUBTRACTION,
       end
     end
     battle.pbHideAbilitySplash(battler)
+    battle.subtractionMessageDisplayed[battler.index % 2] = true
   }
 )
 

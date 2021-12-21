@@ -35,6 +35,16 @@ class PokeBattle_Battler
     if (!fainted? && unstoppableAbility?) || abilityActive?
       BattleHandlers.triggerAbilityOnSwitchIn(self.ability,self,@battle)
     end
+    # Subtraction message for non-Subtraction users
+    if switchIn && !@battle.initialSwitchIn && @battle.pbCheckAllyAbility(:SUBTRACTION, @index) &&
+       !hasActiveAbility?(:SUBTRACTION) && !@battle.pbCheckAllyAbility(:ADDITION, @index)
+      subtractionCount = 0
+      @battle.eachSameSideBattler(@index) do |b|
+        subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+      end
+      typeListString = @effects[PBEffects::SubtractionTypes][0...subtractionCount].join(", ")
+      @battle.pbDisplay(_INTL("{1} lost its weakness(es) to the following type(s): {2}", pbThis, typeListString))
+    end
     # Check for end of primordial weather
     @battle.pbEndPrimordialWeather
     # Items that trigger upon switching in (Air Balloon message)

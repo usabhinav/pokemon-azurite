@@ -3315,12 +3315,8 @@ BattleHandlers::EORHealingAbility.add(:ADDITION,
     end
     next if !canHealAnyBattler
     # Ability effect
-    hasSubtraction = false
-    battle.eachSameSideBattler(battler.index) do |b|
-      hasSubtraction = true if b.hasActiveAbility?(:SUBTRACTION)
-    end
     battle.pbShowAbilitySplash(battler)
-    healmult = hasSubtraction ? 0.3 : 0.1
+    healmult = battle.pbCheckAllyAbility(:SUBTRACTION, battler.index) ? 0.3 : 0.1
     battle.eachSameSideBattler(battler.index) do |b|
       next if !b.canHeal?
       b.pbRecoverHP(b.totalhp * healmult)
@@ -4409,6 +4405,52 @@ BattleHandlers::AbilityOnSwitchIn.add(:NEGATION,
     next if battle.pbCheckGlobalAbility(:CRYSTALENERGY)
     battle.pbShowAbilitySplash(battler)
     battle.pbDisplay(_INTL("{1} is suppressing all power transformations!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:ADDITION,
+  proc { |ability,battler,battle|
+    # Display message if side has both Addition and Subtraction users
+    subtractionUser = battle.pbCheckAllyAbility(:SUBTRACTION, battler.index)
+    if subtractionUser
+      next if battle.initialSwitchIn && battle.subtractionMessageDisplayed[battler.index % 2]
+      battle.pbShowAbilitySplash(subtractionUser)
+      battle.pbShowAbilitySplash(battler)
+      battle.pbDisplay(_INTL("{1} and {2} unite to remove all type weaknesses from its side!", subtractionUser.pbThis, battler.pbThis(true)))
+      battle.pbHideAbilitySplash(battler)
+      battle.pbHideAbilitySplash(subtractionUser)
+      battle.subtractionMessageDisplayed[battler.index % 2] = true
+    end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SUBTRACTION,
+  proc { |ability,battler,battle|
+    # Display message if side has both Addition and Subtraction users
+    additionUser = battle.pbCheckAllyAbility(:ADDITION, battler.index)
+    if additionUser
+      next if battle.initialSwitchIn && battle.subtractionMessageDisplayed[battler.index % 2]
+      battle.pbShowAbilitySplash(additionUser)
+      battle.pbShowAbilitySplash(battler)
+      battle.pbDisplay(_INTL("{1} and {2} unite to remove all type weaknesses from its side!", additionUser.pbThis, battler.pbThis(true)))
+      battle.pbHideAbilitySplash(battler)
+      battle.pbHideAbilitySplash(additionUser)
+      battle.subtractionMessageDisplayed[battler.index % 2] = true
+      next
+    end
+    # Display message for each Pokemon losing a weakness
+    subtractionCount = 0
+    battle.eachSameSideBattler(battler.index) do |b|
+      subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+    end
+    battle.pbShowAbilitySplash(battler)
+    battle.eachSameSideBattler(battler.index) do |b|
+      if subtractionCount <= b.effects[PBEffects::SubtractionTypes].length
+        typeListString = b.effects[PBEffects::SubtractionTypes][0...subtractionCount].join(", ")
+        battle.pbDisplay(_INTL("{1} lost its weakness(es) to the following type(s): {2}", b.pbThis, typeListString))
+      end
+    end
     battle.pbHideAbilitySplash(battler)
   }
 )

@@ -50,6 +50,8 @@ class PokeBattle_Battle
   attr_accessor :time             # Time of day (0=day, 1=eve, 2=night)
   attr_accessor :environment      # Battle surroundings (for mechanics purposes)
   attr_reader   :turnCount
+  attr_reader   :initialSwitchIn  # Flag that is set to true during very first call of pbEffectsOnSwitchIn
+  attr_reader   :subtractionMessageDisplayed # Ensures Subtraction messages are displayed only once per side at start of battle
   attr_accessor :decision         # Decision: 0=undecided; 1=win; 2=loss; 3=escaped; 4=caught
   attr_reader   :player           # Player trainer (or array of trainers)
   attr_reader   :opponent         # Opponent trainer (or array of trainers)
@@ -112,6 +114,8 @@ class PokeBattle_Battle
     @time              = 0
     @environment       = :None   # e.g. Tall grass, cave, still water
     @turnCount         = 0
+    @initialSwitchIn   = false
+    @subtractionMessageDisplayed = [false, false]
     @decision          = 0
     @caughtPokemon     = []
     player   = [player] if !player.nil? && !player.is_a?(Array)
@@ -495,6 +499,14 @@ class PokeBattle_Battle
 
   def pbCheckGlobalAbility(abil)
     eachBattler { |b| return b if b.hasActiveAbility?(abil) }
+    return nil
+  end
+
+  def pbCheckAllyAbility(abil,idxBattler=0,includeSelf=true)
+    eachSameSideBattler(idxBattler) do |b|
+      next if !includeSelf && b.index == idxBattler
+      return b if b.hasActiveAbility?(abil)
+    end
     return nil
   end
 

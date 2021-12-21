@@ -135,6 +135,7 @@ begin
     CounterParry        = 129
     Overcharged         = 130
     RevengeBelt         = 131
+    SubtractionTypes    = 132
 
     #===========================================================================
     # These effects apply to a battler position

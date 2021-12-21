@@ -93,6 +93,16 @@ class PokeBattle_Move
         ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].min
       end
     end
+    # Subtraction (target loses certain weaknesses, or all weaknesses if one of its allies has Addition)
+    subtractionCount = 0
+    @battle.eachSameSideBattler(target.index) do |b|
+      subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+    end
+    if subtractionCount > 0
+      if @battle.pbCheckAllyAbility(:ADDITION, target.index) || target.effects[PBEffects::SubtractionTypes][0...subtractionCount].include?(moveType)
+        ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].min
+      end
+    end
     return ret
   end
 

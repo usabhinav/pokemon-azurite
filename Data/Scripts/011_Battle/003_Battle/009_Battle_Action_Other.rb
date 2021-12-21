@@ -184,7 +184,6 @@ class PokeBattle_Battle
     pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    @megaEvolution[side][owner] = -1
     pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
   end
 
@@ -337,7 +336,6 @@ class PokeBattle_Battle
     pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    @crystallization[side][owner] = -1
     pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
   end
 

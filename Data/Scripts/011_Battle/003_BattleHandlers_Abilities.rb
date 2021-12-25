@@ -4384,22 +4384,6 @@ BattleHandlers::AbilityOnSwitchIn.add(:HEAVYEYED,
   }
 )
 
-BattleHandlers::AbilityOnSwitchIn.add(:PROXY,
-  proc { |ability,battler,battle|
-    next if !battler.isSpecies?(:PHANTITUTE) || battler.form == 1
-    next if battler.effects[PBEffects::Substitute] == 0
-    battle.pbShowAbilitySplash(battler)
-    battler.pbChangeForm(1, _INTL("{1} revealed its true form!", battler.pbThis))
-    if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
-      battler.pbRaiseStatStageByAbility(:DEFENSE, 1, battler, false)
-    end
-    if battler.pbCanLowerStatStage?(:SPEED, battler)
-      battler.pbLowerStatStageByAbility(:SPEED, 1, battler, false)
-    end
-    battle.pbHideAbilitySplash(battler)
-  }
-)
-
 BattleHandlers::AbilityOnSwitchIn.add(:NEGATION,
   proc { |ability,battler,battle|
     next if battle.pbCheckGlobalAbility(:CRYSTALENERGY)
@@ -4502,15 +4486,6 @@ BattleHandlers::AbilityOnSwitchOut.add(:DEBRISARMOR,
       battler.effects[PBEffects::VoltSpikesArmor] = 0
       battler.battle.pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", battler.pbThis))
     end
-  }
-)
-
-BattleHandlers::AbilityOnSwitchOut.add(:PROXY,
-  proc { |ability,battler,endOfBattle|
-    next if endOfBattle
-    next if !battler.isSpecies?(:PHANTITUTE)
-    # Ensures that Substitute cannot be Baton Passed to another Pokemon
-    battler.effects[PBEffects::Substitute] = 0
   }
 )
 

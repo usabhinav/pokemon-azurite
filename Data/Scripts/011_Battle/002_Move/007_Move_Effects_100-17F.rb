@@ -228,7 +228,7 @@ class PokeBattle_Move_10C < PokeBattle_Move
       return true
     end
     @subLife = user.totalhp/4
-    @subLife = user.totalhp/2 if user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY
+    @subLife = user.totalhp/2 if user.isSpecies?(:PHANTITUTE) && user.hasActiveAbility?(:PROXY)
     @subLife = 1 if @subLife<1
     if user.hp<=@subLife
       @battle.pbDisplay(_INTL("But it does not have enough HP left to make a substitute!"))
@@ -247,15 +247,20 @@ class PokeBattle_Move_10C < PokeBattle_Move
     user.effects[PBEffects::TrappingMove] = nil
     user.effects[PBEffects::Substitute]   = @subLife
     if user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY
-      @battle.pbShowAbilitySplash(user)
-      user.pbChangeForm(1, _INTL("{1} revealed its true form!", user.pbThis))
-      if user.pbCanRaiseStatStage?(:DEFENSE, user)
-        user.pbRaiseStatStageByAbility(:DEFENSE, 1, user, false)
+      # In case of Gastro Acid, Phantitute still changes forms but does not gain Def/Speed
+      if user.hasActiveAbility?(:PROXY)
+        @battle.pbShowAbilitySplash(user)
+        user.pbChangeForm(1, _INTL("{1} revealed its true form!", user.pbThis))
+        if user.pbCanRaiseStatStage?(:DEFENSE, user)
+          user.pbRaiseStatStageByAbility(:DEFENSE, 1, user, false)
+        end
+        if user.pbCanLowerStatStage?(:SPEED, user)
+          user.pbLowerStatStageByAbility(:SPEED, 1, user, false)
+        end
+        @battle.pbHideAbilitySplash(user)
+      else
+        user.pbChangeForm(1, _INTL("{1} revealed its true form!", user.pbThis))
       end
-      if user.pbCanLowerStatStage?(:SPEED, user)
-        user.pbLowerStatStageByAbility(:SPEED, 1, user, false)
-      end
-      @battle.pbHideAbilitySplash(user)
     else
       @battle.pbDisplay(_INTL("{1} put in a substitute!",user.pbThis))
     end

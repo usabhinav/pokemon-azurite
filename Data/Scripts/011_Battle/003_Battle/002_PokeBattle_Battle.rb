@@ -78,6 +78,7 @@ class PokeBattle_Battle
   attr_reader   :belch
   attr_reader   :battleBond
   attr_reader   :usedInBattle     # Whether each Pokémon was used in battle (for Burmy)
+  attr_reader   :powerWithin      # Countdown for each Pokemon with the Power Within ability
   attr_reader   :successStates    # Success states
   attr_accessor :lastMoveUsed     # Last move used
   attr_accessor :lastMoveUser     # Last move user
@@ -160,6 +161,7 @@ class PokeBattle_Battle
     @belch             = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
     @battleBond        = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
     @usedInBattle      = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
+    @powerWithin       = [Array.new(@party1.length, -1), Array.new(@party2.length, -1)]
     @successStates     = []
     @lastMoveUsed      = nil
     @lastMoveUser      = -1

@@ -81,40 +81,48 @@ class PokeBattle_Battler
     @pokemon.item = @item_id if @pokemon
   end
 
-  # Stat readers/writers modified for Dynamic Power ability
+  # Stat readers/writers modified for Dynamic Power and Power Within abilities
 
   def attack
-    return @attack + @effects[PBEffects::DynamicPower]
+    atk_stat = @attack + @effects[PBEffects::DynamicPower]
+    atk_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    return atk_stat
   end
 
   attr_writer :attack
 
   def defense
-    if @battle.field.effects[PBEffects::WonderRoom]>0
-      return @spdef + @effects[PBEffects::DynamicPower]
-    end
-    return @defense + @effects[PBEffects::DynamicPower]
+    def_stat = @defense
+    def_stat = @spdef if @battle.field.effects[PBEffects::WonderRoom]>0
+    def_stat += @effects[PBEffects::DynamicPower]
+    def_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    return def_stat
   end
 
   attr_writer :defense
 
   def spatk
-    return @spatk + @effects[PBEffects::DynamicPower]
+    spatk_stat = @spatk + @effects[PBEffects::DynamicPower]
+    spatk_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    return spatk_stat
   end
 
   attr_writer :spatk
 
   def spdef
-    if @battle.field.effects[PBEffects::WonderRoom]>0
-      return @defense + @effects[PBEffects::DynamicPower]
-    end
-    return @spdef + @effects[PBEffects::DynamicPower]
+    spdef_stat = @spdef
+    spdef_stat = @defense if @battle.field.effects[PBEffects::WonderRoom]>0
+    spdef_stat += @effects[PBEffects::DynamicPower]
+    spdef_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    return spdef_stat
   end
 
   attr_writer :spdef
 
   def speed
-    return @speed + @effects[PBEffects::DynamicPower]
+    speed_stat = @speed + @effects[PBEffects::DynamicPower]
+    speed_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    return speed_stat
   end
 
   attr_writer :speed
@@ -443,15 +451,22 @@ class PokeBattle_Battler
     ability_blacklist = [
       # Form-changing abilities
       :BATTLEBOND,
+#      :DARKDUALITY,                                       # This can be stopped
+      :DELIRIUM,
       :DISGUISE,
+      :EFFULGE,
 #      :FLOWERGIFT,                                        # This can be stopped
 #      :FORECAST,                                          # This can be stopped
+      :HEAVYEYED,
       :MULTITYPE,
       :POWERCONSTRUCT,
+#      :POWERWITHIN,                                       # This can be stopped
+#      :PROXY,                                             # This can be stopped
       :SCHOOLING,
       :SHIELDSDOWN,
       :STANCECHANGE,
       :STANCESHIFT,
+      :STANDWATCH,
       :ZENMODE,
       # Abilities intended to be inherent properties of a certain species
       :COMATOSE,
@@ -469,15 +484,22 @@ class PokeBattle_Battler
     ability_blacklist = [
       # Form-changing abilities
       :BATTLEBOND,
+      :DARKDUALITY,
+      :DELIRIUM,
       :DISGUISE,
+      :EFFULGE,
       :FLOWERGIFT,
       :FORECAST,
+      :HEAVYEYED,
       :MULTITYPE,
       :POWERCONSTRUCT,
+      :POWERWITHIN,
+      :PROXY,
       :SCHOOLING,
       :SHIELDSDOWN,
       :STANCECHANGE,
       :STANCESHIFT,
+      :STANDWATCH,
       :ZENMODE,
       # Appearance-changing abilities
       :ILLUSION,

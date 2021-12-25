@@ -63,6 +63,10 @@ class PokeBattle_Battler
     if abilityActive?
       BattleHandlers.triggerAbilityOnSwitchOut(self.ability,self,false)
     end
+    # Phantitute with Proxy cannot pass Substitute with Baton Pass
+    if isSpecies?(:PHANTITUTE) && self.ability == :PROXY
+      @effects[PBEffects::Substitute] = 0
+    end
     # Reset form
     @battle.peer.pbOnLeavingBattle(@battle,@pokemon,@battle.usedInBattle[idxOwnSide][@index/2])
     # Treat self as fainted

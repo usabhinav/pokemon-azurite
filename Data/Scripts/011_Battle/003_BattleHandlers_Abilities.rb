@@ -4058,20 +4058,17 @@ BattleHandlers::AbilityOnSwitchIn.add(:LASTBASTION,
 
 BattleHandlers::AbilityOnSwitchIn.add(:ALIGNED,
   proc { |ability,battler,battle|
-    next if battle.wildBattle? && battler.opposes?
-    party = battle.pbParty(battler.index)
     # Calculate number of stat stages to increase
     numStatIncrease = 0
-    party.each_with_index { |p, i|
+    battlersAndParty = battle.pbGetBattlersAndParty(battler.index)
+    for b in battlersAndParty[0]
+      next if b.fainted?
+      numStatIncrease += 1 if battler.pbTypes(true).intersection(b.pbTypes(true)).length > 0
+    end
+    for p in battlersAndParty[1]
       next if !p || p.egg? || p.fainted?
-      next if battler.pokemonIndex == i
-      battler.pbTypes.each do |t|
-        if p.hasType?(t)
-          numStatIncrease += 1
-          break
-        end
-      end
-    }
+      numStatIncrease += 1 if battler.pbTypes(true).intersection(p.types).length > 0
+    end
     next if numStatIncrease == 0
     battle.pbShowAbilitySplash(battler)
     # Increase a random stat one-by-one
@@ -4263,12 +4260,10 @@ BattleHandlers::AbilityOnSwitchIn.add(:LAVAFLOOR,
 
 BattleHandlers::AbilityOnSwitchIn.add(:HIVEMIND,
   proc { |ability,battler,battle|
-    party = battle.pbParty(battler.index)
     bugCount = 0
-    party.each_with_index do |pkmn, i|
-      next if battler.pokemonIndex == i
-      next if !pkmn.hasType?(:BUG)
-      bugCount += 1
+    type_lists = battle.pbGetTypeListsOfBattlersAndParty(battler.index)
+    for tl in type_lists
+      bugCount += 1 if tl.include?(:BUG)
     end
     next if bugCount == 0
     battle.pbShowAbilitySplash(battler)

@@ -570,12 +570,19 @@ class PokeBattle_AI
         multipliers[:final_damage_multiplier] *= 0.5
       end
       # Monarch
-      @battle.pbParty(user.index).each_with_index do |pkmn, i|
-        next if @battle.moldBreaker
-        next if user.pokemonIndex == i
-        next if pkmn.fainted?
-        if pkmn.hasAbility?(:MONARCH) && pkmn.types.intersection(user.pokemon.types).length > 0
-          multipliers[:final_damage_multiplier] *= 1.25
+      if !@battle.moldBreaker
+        battlersAndParty = @battle.pbGetBattlersAndParty(user.index)
+        for b in battlersAndParty[0]
+          next if b.fainted?
+          if b.hasActiveAbility?(:MONARCH) && user.pbTypes(true).intersection(b.pbTypes(true)).length > 0
+            multipliers[:final_damage_multiplier] *= 1.25
+          end
+        end
+        for p in battlersAndParty[1]
+          next if !p || p.egg? || p.fainted?
+          if p.hasAbility?(:MONARCH) && user.pbTypes(true).intersection(p.types).length > 0
+            multipliers[:final_damage_multiplier] *= 1.25
+          end
         end
       end
     end

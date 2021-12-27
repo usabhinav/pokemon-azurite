@@ -398,8 +398,8 @@ class PokeBattle_Battle
       ally_indices[b.pokemonIndex] = b.index # Stores value >= 0 at same index as party index
       battlers.push(b)
     end
-    battle.pbParty(battler.index).each_with_index { |pkmn, i|
-      next if battler.index == i # Excludes self
+    pbParty(battler.index).each_with_index { |pkmn, i|
+      next if battler.pokemonIndex == i # Excludes self
       next if ally_indices[i] >= 0 # Already counted in above loop as a battler
       party.push(pkmn)
     }

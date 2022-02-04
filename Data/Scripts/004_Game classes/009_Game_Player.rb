@@ -327,43 +327,49 @@ class Game_Player < Game_Character
 	if Input.press?(Input::ALT) && $DEBUG
 	  for layer_name in $LAYER_NAMES
 
-		# Get the highest possible apparel ID for the current layer
-		getIDCountCode = "PBApparel" + layer_name + ".maxValue"
-		maxValue = eval(getIDCountCode)
+      # Get the highest possible apparel ID for the current layer
+      #getIDCountCode = "PBApparel" + layer_name + ".maxValue"
+      #maxValue = eval(getIDCountCode)
+      maxValue = pbGetMaxApparelID(layer_name)
+      
+        
+      apparelId = 0
 		  
-		apparelId = 0
-		  
-		while apparelId == 0
-		  # Generate a random apparel ID
-		  apparelId = rand(maxValue) + 1
-			
-		  # Repeat this if apparel ID does not exist
-		  if $ApparelData[layer_name][apparelId] == nil
-			apparelId = 0
-		  # Select the apparel
-		  else
-			# Select a random color out of the for the apparel available ones
-			if layer_name != "Base"
-			  colors = pbGetApparelColors(layer_name, apparelId)
+      while apparelId == 0
+        # Generate a random apparel ID
+        apparelId = rand(maxValue) + 1
+        
+        #echoln GameData::Apparel.get(layer_name)::DATA.to_s
+        
+        # Repeat this if apparel ID does not exist
+        #if $ApparelData[layer_name][apparelId] == nil
+        if GameData::Apparel.get(layer_name).get(apparelId) == nil
+          apparelId = 0
+        # Select the apparel
+        else
+        # Select a random color out of the for the apparel available ones
+          if layer_name != "Base"
+            colors = pbGetApparelColors(layer_name, apparelId)
+            
+            #echo "For apparel " + layer_name + apparelId.to_s + " " + colors.inspect + "\n"
+            
+            color = colors[rand(colors.length)]
+            
+            #echo "Working combination of arguments: " + layer_name + ", " + apparelId.to_s + ", " + color + "\n"
+            
+            # Add the outfit to the bag
+            $ApparelBag.pbStoreApparel(layer_name, apparelId, color)
+          
+          else
+            color = nil
+          end
 			  
-			  #echo "For apparel " + layer_name + apparelId.to_s + " " + colors.inspect + "\n"
-			  
-			  color = colors[rand(colors.length)]
-			  
-			  #echo "Working combination of arguments: " + layer_name + ", " + apparelId.to_s + ", " + color + "\n"
-				
-			  # Add the outfit to the bag
-			  $ApparelBag.pbStoreApparel(layer_name, apparelId, color)
-			else
-			  color = nil
-			end
-			  
-			# Set the outfit layer part
-			$Trainer.outfitstate.setDryLayerPart(layer_name, apparelId, color)
-		  end
-		end
-	  end
-	end
+          # Set the outfit layer part
+          $Trainer.outfitstate.setDryLayerPart(layer_name, apparelId, color)
+          end
+        end
+      end
+    end
   end
 
   def update_command_new

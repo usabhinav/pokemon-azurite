@@ -108,17 +108,17 @@ class OutfitState
   
   # Sets the apparel for a layer state of the regular outfit
   def setDryLayerPart(layer_name, apparel_id, color=nil)
-    setOutfitStateLayerPart(CSVCONST::DRYOUTFIT, layer_name, apparel_id, color)
+    setOutfitStateLayerPart(GameData::Apparel::DRYOUTFIT, layer_name, apparel_id, color)
   end
   
   # Sets the apparel for a layer state of the swimsuit
   def setWetLayerPart(layer_name, apparel_id, color=nil)
-    setOutfitStateLayerPart(CSVCONST::WETOUTFIT, layer_name, apparel_id, color)
+    setOutfitStateLayerPart(GameData::Apparel::WETOUTFIT, layer_name, apparel_id, color)
   end
   
   def setOutfitStateLayerPart(outfitstate_constant, layer_name, apparel_id, color=nil)
     
-    if outfitstate_constant == CSVCONST::DRYOUTFIT
+    if outfitstate_constant == GameData::Apparel::DRYOUTFIT
       layer_states = @dry_layer_states
     else
       layer_states = @wet_layer_states
@@ -135,17 +135,19 @@ class OutfitState
     end
         
     # De-select the apparel for every layer that interferes with the newly
-    # selected part
-    layer_conflicts = pbGetApparelConflicts(layer_name, apparel_id)
-    for conflict in layer_conflicts
-      layer_states[conflict].selected_part = 0
-      layer_states[conflict].occupied_by = layer_name
-        #echo "Setting occupied conflict layer as " + layer_name + "\n"
+    # selected part.
+    if pbHasApparelConflicts?(layer_name)
+      layer_conflicts = pbGetApparelConflicts(layer_name, apparel_id)
+      for conflict in layer_conflicts
+        layer_states[conflict].selected_part = 0
+        layer_states[conflict].occupied_by = layer_name
+          #echo "Setting occupied conflict layer as " + layer_name + "\n"
+      end
     end
     
     if color!=nil
       # Apply the color to the layer state before it gets refreshed graphically
-      if outfitstate_constant == CSVCONST::DRYOUTFIT
+      if outfitstate_constant == GameData::Apparel::DRYOUTFIT
         setDryLayerColor(layer_name, color)
       else
         setWetLayerColor(layer_name, color)
@@ -174,7 +176,7 @@ class OutfitState
   
   # Finds out which layer the given layer is occupied by
   def occupiedBy(outfitstate_constant, layer_name)
-    if outfitstate_constant == CSVCONST::DRYOUTFIT
+    if outfitstate_constant == GameData::Apparel::DRYOUTFIT
       return @dry_layer_states[layer_name].occupied_by
     else
       return @wet_layer_states[layer_name].occupied_by

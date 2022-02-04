@@ -407,6 +407,8 @@ module Compiler
     
       apparel_class::DATA.clear
     
+      maxApparelID = 1
+    
       if apparel_class.superclass == GameData::ApparelRegularModel
         regex = "vnsvSsvUbSS"
       elsif apparel_class.superclass == GameData::ApparelSpecialModel
@@ -439,10 +441,17 @@ module Compiler
           GameData::Apparel.get(pbs_name).register(apparel_hash)
           
           apparel_id_unique += 1
+          
+          # Keep track of highest apparel ID to add to the apparel class later.
+          maxApparelID = apparel_number
       }
       # Set localizable messages for names and descs. Colors come later.
       MessageTypes.setMessages(MessageTypes::ApparelNames, apparel_names)
       MessageTypes.setMessages(MessageTypes::ApparelDescs, apparel_descriptions)
+      
+      # Set maxApparelID value.
+      apparel_class.maxApparelID = maxApparelID;
+      
       # Create .dat file.
       apparel_class.save
       Graphics.update

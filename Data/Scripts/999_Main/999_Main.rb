@@ -48,6 +48,7 @@ def mainFunctionDebug
     Console::setup_console
     Compiler::compile_apparel
 
+    echoln GameData::Apparel.get("Socks").get(1).variants.to_s
     a = [:testy, :westy]
     
     $scene = pbCallTitle
@@ -98,7 +99,7 @@ def testywesty
   MessageTypes.setMessagesAsHash(MessageTypes::ApparelColors, ["Socks3", "Cocks"])
   echoln pbGetMessageFromHash(MessageTypes::ApparelColors, "Socks3")
   
-  echoln Messages.stringToKey("Socks3")
+  
   
 end
 

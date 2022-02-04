@@ -55,18 +55,23 @@ module GameData
     def self.completeHash(apparel_hash, line)
       apparel_hash[:name] = line[2]
     end
+    
+    # This is a class level instance variable and not a class variable? That's pretty neat.
+    class << self
+      attr_accessor :maxApparelID
+    end
 
 	end
 	class ApparelSpecialModel < ApparelBaseModel
   
 		attr_reader :price
-		attr_reader :real_color
+		attr_reader :real_colors
 		attr_reader :real_description
     
     def initialize(hash)
       super(hash)
       @price              = hash[:price]       || 0
-      @real_color         = hash[:color]       || "Default"
+      @real_colors        = hash[:colors]      || "Default"
       @real_description   = hash[:description] || "This is an apparel piece."
     end
     
@@ -74,7 +79,7 @@ module GameData
     def self.completeHash(apparel_hash, line)
       super(apparel_hash, line)
       apparel_hash[:price] = line[3]
-      apparel_hash[:color] = line[4]
+      apparel_hash[:colors] = line[4]
       apparel_hash[:description] = line[5]
     end
     
@@ -94,6 +99,7 @@ module GameData
       @swimsuit           = hash[:swimsuit]    || true
       @conflicts          = hash[:conflicts]   || []
       @variants           = hash[:variants]    || []
+      #echoln self.conflicts.class.to_s
     end
     
     def self.completeHash(apparel_hash, line)
@@ -101,7 +107,7 @@ module GameData
       apparel_hash[:type_id] = line[6]
       apparel_hash[:class_id] = line[7]
       apparel_hash[:swimsuit] = line[8]
-      apparel_hash[:conflicts] = line[9]
+      apparel_hash[:conflicts] = line[9]      
       apparel_hash[:variants] = line[10]
     end
 
@@ -116,6 +122,8 @@ module GameData
     #include ApparelBaseModel
     DATA_FILENAME = "base.dat"
     DATA = {}
+    
+    
   end
   class ApparelSocks < ApparelRegularModel
     extend ClassMethods
@@ -130,7 +138,7 @@ module GameData
   class ApparelShoes < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "shoes.dat"
-    DATA = {}
+    DATA = {} 
   end
   class ApparelTorso < ApparelRegularModel
     extend ClassMethods
@@ -185,6 +193,13 @@ module GameData
 	end
   module Apparel
     
+    COLORCSV = 4
+    
+    DRYOUTFIT = 0
+    WETOUTFIT = 1
+    
+    DELIMITER = ";"
+    
     # Current Animation Sheets: Walking, Running, Bicycle, Surfing, Diving.
     LAYER_NAMES = ["Base", "Socks", "Legs", "Shoes", "Torso", "LowerFace", 
     "UpperFace", "Hair", "Hat", "Eyes"]
@@ -205,14 +220,16 @@ module GameData
     # Contains a list of all colors that have been found while compiling.
     COLORS = []
     
-    COLORCSV = 4
-    
     # Return class with the corresponding pbs name.
     def self.get(name)
       validate name => [String, Symbol]
       # Make sure name is a symbol.
       name = name.to_sym if name.is_a?(String)
       return @@class_hash[name]
+    end
+  
+    def self.load
+      
     end
   
   end
@@ -243,21 +260,30 @@ module CSVCONST
   
 end
 
-$APPAREL_DELIMITER = ";"
+
+=end
 
 def pbGetApparelName(layer, apparelId)
-  echo "Inspect: " + $ApparelData.inspect + "\n"
-  return $ApparelData[layer][apparelId][CSVCONST::APPARELNAME]
+  #echo "Inspect: " + $ApparelData.inspect + "\n"
+  #return $ApparelData[layer][apparelId][CSVCONST::APPARELNAME]
+  return GameData::Apparel.get(layer).get(apparelId).real_name
 end
 
 def pbGetApparelDesc(layer, apparelId)
-  return $ApparelData[layer][apparelId][CSVCONST::APPARELDESC]
+  #return $ApparelData[layer][apparelId][CSVCONST::APPARELDESC]
+  return GameData::Apparel.get(layer).get(apparelId).real_description
 end
 
 def pbGetApparelConflicts(layer, apparelId)
-  conflicts = $ApparelData[layer][apparelId][CSVCONST::APPARELCONFLICTS]
-  if conflicts != nil
-    return conflicts.split($APPAREL_DELIMITER)
+  conflicts = GameData::Apparel.get(layer).get(apparelId).conflicts
+  
+  #echoln "GameData::Apparel.get(layer).get(apparelID) = " + GameData::Apparel.get(layer).get(apparelId).to_s
+  if conflicts != nil && conflicts != []
+    echoln "CONFLICTS CLASS: " + GameData::Apparel.get(layer).get(apparelId).conflicts.class.to_s
+    echoln "CONFLICTS: " + GameData::Apparel.get(layer).get(apparelId).conflicts.to_s
+    echoln "CONFLICTS SPLIT: " + conflicts.split(GameData::Apparel::DELIMITER).to_s
+
+    return conflicts.split(GameData::Apparel::DELIMITER)
   else
     return []
   end
@@ -265,16 +291,18 @@ end
 
 def pbGetApparelColors(layer, apparelId)
   #echo $ApparelData.inspect
-  colors = $ApparelData[layer][apparelId][CSVCONST::APPARELCOLORS]
+  #colors = $ApparelData[layer][apparelId][CSVCONST::APPARELCOLORS]
+  colors = GameData::Apparel.get(layer).get(apparelId).real_colors
   if colors != nil && colors != ""
-    return colors.split($APPAREL_DELIMITER)
+    return colors.split(GameData::Apparel::DELIMITER)
   else
     return ["Default"]
   end
 end
 
 def pbCanSwimWithApparel?(layer, apparelId)
-  return $ApparelData[layer][apparelId][CSVCONST::APPARELSWIMSUIT]
+  #return $ApparelData[layer][apparelId][CSVCONST::APPARELSWIMSUIT]
+  return GameData::Apparel.get(layer).get(apparelId).swimsuit
 end
 
 def pbCanPlayerSwim?
@@ -284,7 +312,7 @@ def pbCanPlayerSwim?
 
   
   # Check if the leg layer is occupied
-  if $Trainer.outfitstate.occupiedBy(CSVCONST::WETOUTFIT, "Legs") != ""
+  if $Trainer.outfitstate.occupiedBy(GameData::Apparel::WETOUTFIT, "Legs") != ""
     
     # Only legs have to be occupied for male trainers
     if $Trainer.outfitstate.gender == "Male"
@@ -292,7 +320,7 @@ def pbCanPlayerSwim?
     else
       
       # If trainer is not male, check if torso layer is also occupied
-      if $Trainer.outfitstate.occupiedBy(CSVCONST::WETOUTFIT, "Torso") != ""
+      if $Trainer.outfitstate.occupiedBy(GameData::Apparel::WETOUTFIT, "Torso") != ""
         return true
       else
         return false
@@ -306,12 +334,21 @@ def pbGetApparelVariants(layer, apparelId)
     return []
   end
   
-  variants = $ApparelData[layer][apparelId][CSVCONST::APPARELVARIANTS]
+  variants = GameData::Apparel.get(layer).get(apparelId).variants
   if variants != nil
-    return variants.split($APPAREL_DELIMITER)
+    return variants.split(GameData::Apparel::DELIMITER)
   else
     return []
   end
   
 end
-=end
+
+# Checks if a layer can have conflicts with other layers.
+def pbHasApparelConflicts?(layer)
+  apparel_class = GameData::Apparel.get(layer)
+  return apparel_class.superclass == GameData::ApparelRegularModel
+end
+
+def pbGetMaxApparelID(layer)
+  return GameData::Apparel.get(layer).maxApparelID
+end

@@ -43,6 +43,9 @@ class PokemonApparelMenu_Screen
         end
       end
       
+      # Empty update to refresh animations.
+      @scene.update(self, GenericChangeEvent.new("", nil))
+      
       Input.update
       Graphics.update
       

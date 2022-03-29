@@ -2,8 +2,14 @@ class PokemonApparelMenu_Scene
 
   def pbStartScene(menumodel, outfitstate)
     @menumodel = menumodel
+    
+    # Outfit state of the player.
     @outfitstate = outfitstate
-
+    
+    # Outfit state for the preview. Changes by moving the cursor to other items.
+    @p_outfitstate = pbDeepCopy(outfitstate)
+    # Previous outfit state for the preview. Only changes when an item change gets applied.
+    @prevp_outfitstate = pbDeepCopy(outfitstate)
 
     # The index of the cursor, stays the same per (normal) tab
     @cursor_index = 0
@@ -33,14 +39,6 @@ class PokemonApparelMenu_Scene
     @itembox_h = 280
     @ibviewport = Viewport.new(@itembox_x, @itembox_y, @itembox_w, @itembox_h)
     @ibviewport.z = 99999
-    
-    # The outfit preview space.
-    @preview_x = 10
-    @preview_y = 88
-    @preview_w = 272
-    @preview_h = 280
-    @pviewport = Viewport.new(@preview_x, @preview_y, @preview_w, @preview_h)
-    @pviewport.z = 99999
 
     # The amount of items that can be displayed
     @displayable_items = 9
@@ -64,11 +62,28 @@ class PokemonApparelMenu_Scene
     # in case enough apparel exists in a tab to scroll down
     @cursor_lock_threshhold = 3
 
+    # The outfit preview space.
+    @preview_x = 305
+    @preview_y = 74
+    @preview_w = 512
+    @preview_h = 226
+    @pviewport = Viewport.new(@preview_x, @preview_y, @preview_w, @preview_h)
+    @pviewport.z = 99999
+    
+    # Outfit preview image.
+    @sprites["preview"] = AnimatedSprite.new("Graphics/Pictures/Apparel/Base.png", 16, 64, 64, 10, @pviewport)
+    @sprites["preview"].x = 72
+    @sprites["preview"].y = 36
+    @sprites["preview"].visible = true
+    @sprites["preview"].frame = 0
+    @sprites["preview"].start
+    @p_outfitstate.applyToOverworldBitmap(@sprites["preview"].bitmap)
+
     # Initialize the cursor.
     @sprites["cursor"] = IconSprite.new(0,0, @ibviewport)
     @sprites["cursor"].setBitmap("Graphics/Pictures/Apparel/Cursor.png")
     
-    update(self, GenericChangeEvent.new("", nil))
+    update(self, GenericChangeEvent.new(APPCONST_EVENT::InitMenu, nil))
   end
   
   def updateTabs(event)
@@ -123,13 +138,7 @@ class PokemonApparelMenu_Scene
 
   def updateCursor(event)
 
-
-    # Which cursor to update depends on which tab we are in.
-    if @menumodel.selected_tab == APPCONST_TAB::SWITCH
-    
-      
-    
-    else # Generic item selection tab.
+    if @menumodel.selected_tab != APPCONST_TAB::SWITCH # Generic item selection tab.
       if event.label == APPCONST_EVENT::SelectedItemChange
         # Points to which item the cursor is selecting currently
         cursor_selection = @cursor_index + @scroll_index
@@ -173,9 +182,9 @@ class PokemonApparelMenu_Scene
         end
       elsif event.label == APPCONST_EVENT::TabChange
         
-        if @menumodel.selected_tab == APPCONST_TAB::SEARCH
-          @displayable_items = 8
-        end
+        # Reset cursor and scroll index.
+        @cursor_index = 0
+        @scroll_index = 0
         
       end
     end
@@ -199,6 +208,41 @@ class PokemonApparelMenu_Scene
     
   end
   
+  def updatePreview(event)
+  
+    case event.label
+      when APPCONST_EVENT::TabChange
+        
+        if @menumodel.selected_tab == APPCONST_TAB::SWITCH
+          # Don't display preview on the switch tab.
+          @sprites["preview"].visible = false
+        else
+          # Reset the preview. (De-select unapplied item from previous tab)
+          @p_outfitstate = pbDeepCopy(@prevp_outfitstate)
+          # Apply the newly selected item (due to the tab change) to the preview.
+          @menumodel.selectApparel(@p_outfitstate, false)
+          
+          @sprites["preview"].visible = true
+        end
+      when APPCONST_EVENT::SelectedItemChange
+        # Set the selected item to be visible on the preview.
+        @menumodel.selectApparel(@p_outfitstate, false)
+        
+      when APPCONST_EVENT::ApplySelectedItem
+        # Update the preview outfit.
+        #@menumodel.selectApparel(@p_outfitstate, false) # Not really needed
+        @menumodel.selectApparel(@prevp_outfitstate, false)
+      when APPCONST_EVENT::OutfitModeChange
+        # Toggle the preview outfit states' outfit modes.
+        @p_outfitstate.toggleActiveLayerStates
+        @prevp_outfitstate.toggleActiveLayerStates
+    end
+  
+    # Apply preview outfit changes.
+    @p_outfitstate.applyToOverworldBitmap(@sprites["preview"].bitmap)
+  
+  end
+  
   def update(observer, event)
 
     case event.label
@@ -207,15 +251,27 @@ class PokemonApparelMenu_Scene
         # Depending on the tab the cursor might need to change shape or adjust
         # it's position
         updateCursor(event)
+        updatePreview(event)
       when APPCONST_EVENT::SelectedItemChange
         updateCursor(event)
+        # Set the newly selected item onto the preview.
+        updatePreview(event)
+        # TODO: Do this to hover over items.
       when APPCONST_EVENT::OutfitModeChange
         updateOutfitMode(event)
-      else
+        # Change the outfit used 
+        updatePreview(event)
+      when APPCONST_EVENT::InitMenu
         updateCursor(GenericChangeEvent.new(APPCONST_EVENT::SelectedItemChange, @menumodel.selected_item))
         updateTabs(GenericChangeEvent.new(APPCONST_EVENT::TabChange, @menumodel.selected_tab))
         updateOutfitMode(GenericChangeEvent.new(APPCONST_EVENT::OutfitModeChange, @menumodel.outfit_mode))
+        updatePreview(event)
+      when APPCONST_EVENT::ApplySelectedItem
+        updatePreview(event)
     end
+    
+    #$Trainer.outfitstate.applyToOverworldBitmap(@sprites["preview"].bitmap)
+
 
     # if event.instance_of? TabChangeEvent
       # updateTabs(event)

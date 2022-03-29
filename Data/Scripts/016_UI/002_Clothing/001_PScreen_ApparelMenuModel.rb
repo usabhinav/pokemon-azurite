@@ -15,6 +15,8 @@ module APPCONST_EVENT
   SelectedItemChange = "SelectedItemChangeEvent"
   TabChange = "TabChangeEvent"
   OutfitModeChange = "OutfitModeChangeEvent"
+  InitMenu = "InitializeMenuEvent"
+  ApplySelectedItem = "ApplySelectedItemEvent"
 end
 
 module APPCONST_OUTFITMODE # These correspond to the prefix of the menu image filenames.
@@ -75,10 +77,11 @@ class PokemonApparelMenu
 
 
 
-    selected_item = 0
+    @selected_item = 0
     # @scroll_index = 0
 
     notify(GenericChangeEvent.new(APPCONST_EVENT::TabChange, @selected_tab))
+    #notify(GenericChangeEvent.new(APPCONST_EVENT::SelectedItemChange, @selected_item))
   end
 
   def toggleOutfitMode
@@ -173,7 +176,16 @@ class PokemonApparelMenu
     @outfit_mode = APPCONST_OUTFITMODE::DRYSUIT
   end
 
-  def selectApparel(outfitstate)
+  def selectApparel(outfitstate, doNotify = true)
+
+    echoln "Selected Tab: " + @selected_tab.to_s 
+
+    # Ignore some tabs for now.
+    if @selected_tab == APPCONST_TAB::SEARCH || 
+       @selected_tab == APPCONST_TAB::FAVOURITES
+      echoln "Returning now?"
+      return
+    end
 
     tab_name = pbGetApparelTabName(@selected_tab)
     item_data = @apparel_tabs[tab_name][@selected_item].split("-") # + @scroll_index].split("-")
@@ -199,7 +211,16 @@ class PokemonApparelMenu
     elsif @outfit_mode ==  APPCONST_OUTFITMODE::SWIMSUIT
       outfitstate.setWetLayerPart(layer_name, apparel_id, apparel_color)
     end
+    
+    if doNotify
+      notify(GenericChangeEvent.new(APPCONST_EVENT::ApplySelectedItem, outfitstate))
+    end
+  
+  end
 
+  def getSelectedItemData()
+    tab_name = pbGetApparelTabName(@selected_tab)
+    return @apparel_tabs[tab_name][@selected_item].split("-")
   end
 
   class << self
@@ -218,6 +239,7 @@ end
 
 # Only really relevant to access item values from the tab hash. (TODO: Change this to the ItemData model)
 def pbGetApparelTabName(index)
+
   return PokemonApparelMenu.getTabName(index)
 end
 

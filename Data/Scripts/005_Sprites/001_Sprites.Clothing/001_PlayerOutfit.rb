@@ -451,13 +451,21 @@ class ObservableOutfitState
     @outfitstate.occupiedBy(outfitstate_constant, layer_name)
   end
   
+  def toggleActiveLayerStates
+    @outfitstate.toggleActiveLayerStates
+  end
+
+  # I think these two functions were the only reason I made this wrapper class.
   def marshal_dump
     [@outfitstate]
   end
-  
   def marshal_load array
     initialize(array[0])
   end
+
+
+
+
     
 end
 

@@ -96,7 +96,7 @@ module GameData
       super(hash)
       @type_id            = hash[:type_id]     || 0 # 0 Means no type got assigned to this apparel piece.
       @class_id           = hash[:class_id]    || 0 # 0 Means no class got assigned to this apparel piece.
-      @swimsuit           = hash[:swimsuit]    # || true # DO not do this for boolean values.
+      @swimsuit           = hash[:swimsuit]    # || true DO not do this for boolean values.
       @conflicts          = hash[:conflicts]   || []
       @variants           = hash[:variants]    || []
       #echoln self.conflicts.class.to_s

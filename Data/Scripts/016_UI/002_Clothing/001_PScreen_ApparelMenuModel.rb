@@ -11,13 +11,24 @@ module APPCONST_TAB
   SWITCH = 9
 end
 
+module APPCONST_EVENT
+  SelectedItemChange = "SelectedItemChangeEvent"
+  TabChange = "TabChangeEvent"
+  OutfitModeChange = "OutfitModeChangeEvent"
+end
+
+module APPCONST_OUTFITMODE # These correspond to the prefix of the menu image filenames.
+  DRYSUIT = "Clothing"
+  SWIMSUIT = "Swimsuit"
+end
+
 class PokemonApparelMenu
 
   include Observable
 
   @@TAB_NAMES = ["Favourites", "Hat", "Hair", "Face", "Torso", "Legs", "Shoes", "Misc", "Search", "Switch"]
 
-  # The index
+
   attr_accessor :selected_item #:cursor_index
   attr_reader :apparel
 #  attr_reader :item_amount # Moved over to Scene
@@ -36,12 +47,16 @@ class PokemonApparelMenu
   def selected_tab
     return @selected_tab
   end
+  
+  def outfit_mode
+    return @outfit_mode
+  end
 
   def selected_item=(value)
-    # Only allow a change if it stays within bounds
-    if (value >= 0) && (value < @apparel_tabs[pbGetApparelTabName(@selected_tab)].length)
+    # Only allow a change if it stays within bounds. Don't allow it unless we are in an apparel selection tab.
+    if @selected_tab != APPCONST_TAB::SWITCH && (value >= 0) && (value < @apparel_tabs[pbGetApparelTabName(@selected_tab)].length) 
       @selected_item = value
-      notify(SelectedItemChangeEvent.new(@selected_item))
+      notify(GenericChangeEvent.new(APPCONST_EVENT::SelectedItemChange, @selected_item))
     end
   end
 
@@ -63,8 +78,18 @@ class PokemonApparelMenu
     selected_item = 0
     # @scroll_index = 0
 
-    notify(TabChangeEvent.new(@selected_tab))
+    notify(GenericChangeEvent.new(APPCONST_EVENT::TabChange, @selected_tab))
+  end
 
+  def toggleOutfitMode
+    
+    if @outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
+      @outfit_mode = APPCONST_OUTFITMODE::SWIMSUIT
+    else
+      @outfit_mode = APPCONST_OUTFITMODE::DRYSUIT
+    end
+    
+    notify(GenericChangeEvent.new(APPCONST_EVENT::OutfitModeChange, @outfit_mode))
   end
 
   alias old_initialize initialize
@@ -145,7 +170,7 @@ class PokemonApparelMenu
     # Set the starting tab to Hairstyles
     @selected_tab = 2
 
-    @outfit_mode = "Clothing"
+    @outfit_mode = APPCONST_OUTFITMODE::DRYSUIT
   end
 
   def selectApparel(outfitstate)
@@ -169,9 +194,9 @@ class PokemonApparelMenu
       apparel_color = item_data[2]
     end
 
-    if @outfit_mode == "Clothing"
+    if @outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
       outfitstate.setDryLayerPart(layer_name, apparel_id, apparel_color)
-    elsif @outfit_mode == "Swimming"
+    elsif @outfit_mode ==  APPCONST_OUTFITMODE::SWIMSUIT
       outfitstate.setWetLayerPart(layer_name, apparel_id, apparel_color)
     end
 
@@ -191,9 +216,12 @@ class PokemonApparelMenu
 
 end
 
+# Only really relevant to access item values from the tab hash. (TODO: Change this to the ItemData model)
 def pbGetApparelTabName(index)
   return PokemonApparelMenu.getTabName(index)
 end
+
+
 
 #===============================================================================
 # EVENTS DEFINED FOR UPDATING THE SCENE
@@ -213,4 +241,24 @@ class SelectedItemChangeEvent
   def initialize(new_selected_item)
     @new_selected_item = new_selected_item
   end
+end
+
+class OutfitModeChangeEvent
+  attr_accessor :new_selected_item
+
+  def initialize(new_selected_item)
+    @new_selected_item = new_selected_item
+  end
+end
+
+class GenericChangeEvent
+
+  attr_reader :label
+  attr_reader :value
+  
+  def initialize(label, value)
+    @label = label
+    @value = value
+  end
+
 end

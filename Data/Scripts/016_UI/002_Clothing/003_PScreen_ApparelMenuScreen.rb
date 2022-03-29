@@ -11,26 +11,42 @@ class PokemonApparelMenu_Screen
   def pbStartScreen
     @scene.pbStartScene(@model, @outfitstate)
     loop do
-
+      
+      # Input behaviour for every tab.
       if Input.trigger?(Input::RIGHT)
         @model.selected_tab += 1
       elsif Input.trigger?(Input::LEFT)
         @model.selected_tab -= 1
       elsif Input.trigger?(Input::B)
         break
-      elsif Input.trigger?(Input::DOWN)
-        @model.selected_item += 1
-      elsif Input.trigger?(Input::UP)
-        @model.selected_item -= 1
-      elsif Input.trigger?(Input::C)
-        echo "A was pressed!"
-        @model.selectApparel($Trainer.outfitstate)
-      end
+      
+      # Input behaviour for specific tabs.
+      else
+        case @model.selected_tab
+          when APPCONST_TAB::SWITCH # Input behaviour for outfit mode toggle tab.
+            
+            if Input.trigger?(Input::C)
+              echoln "A was pressed! Toggling!"
+              @model.toggleOutfitMode
+            end
+            
+          else # Input behaviour for generic apparel selection.
 
+            if Input.trigger?(Input::DOWN)
+              @model.selected_item += 1
+            elsif Input.trigger?(Input::UP)
+              @model.selected_item -= 1
+            elsif Input.trigger?(Input::C)
+              echoln "A was pressed!"
+              @model.selectApparel($Trainer.outfitstate)
+            end
+        end
+      end
+      
       Input.update
       Graphics.update
+      
     end
     @scene.pbEndScene
   end
-
 end

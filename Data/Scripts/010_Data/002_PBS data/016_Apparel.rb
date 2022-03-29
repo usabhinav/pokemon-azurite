@@ -96,7 +96,7 @@ module GameData
       super(hash)
       @type_id            = hash[:type_id]     || 0 # 0 Means no type got assigned to this apparel piece.
       @class_id           = hash[:class_id]    || 0 # 0 Means no class got assigned to this apparel piece.
-      @swimsuit           = hash[:swimsuit]    || true
+      @swimsuit           = hash[:swimsuit]    # || true # DO not do this for boolean values.
       @conflicts          = hash[:conflicts]   || []
       @variants           = hash[:variants]    || []
       #echoln self.conflicts.class.to_s
@@ -107,6 +107,7 @@ module GameData
       apparel_hash[:type_id] = line[6]
       apparel_hash[:class_id] = line[7]
       apparel_hash[:swimsuit] = line[8]
+      #echoln "SWIMSUIT VALUE: " + line[8].to_s
       apparel_hash[:conflicts] = line[9]      
       apparel_hash[:variants] = line[10]
     end
@@ -194,6 +195,18 @@ module GameData
   module Apparel
     
     COLORCSV = 4
+    
+    ID    = 0
+    CONST = 1
+    NAME  = 2
+    PRICE = 3
+    COLORS = 4
+    DESC  = 5
+    TYPE  = 6
+    CLASS = 7
+    SWIMSUIT = 8
+    CONFLICTS = 9
+    VARIANTS = 10
     
     DRYOUTFIT = 0
     WETOUTFIT = 1
@@ -300,7 +313,7 @@ def pbGetApparelColors(layer, apparelId)
   end
 end
 
-def pbCanSwimWithApparel?(layer, apparelId)
+def pbCanSwimWith(layer, apparelId)
   #return $ApparelData[layer][apparelId][CSVCONST::APPARELSWIMSUIT]
   return GameData::Apparel.get(layer).get(apparelId).swimsuit
 end

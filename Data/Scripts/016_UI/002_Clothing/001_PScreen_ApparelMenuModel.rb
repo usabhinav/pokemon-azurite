@@ -206,6 +206,8 @@ class PokemonApparelMenu
       apparel_color = item_data[2]
     end
 
+    echoln "LAYERNAME: " + layer_name + " COLOR: " + apparel_color
+
     if @outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
       outfitstate.setDryLayerPart(layer_name, apparel_id, apparel_color)
     elsif @outfit_mode ==  APPCONST_OUTFITMODE::SWIMSUIT

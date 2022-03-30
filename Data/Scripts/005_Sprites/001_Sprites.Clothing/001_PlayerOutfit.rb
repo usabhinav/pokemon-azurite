@@ -386,7 +386,7 @@ class ObservableOutfitState
   end
   
   def setWetLayerPart(layer_name, apparel_id, color=nil)
-    @outfitstate.setWetLayerPart(layer_name, apparel_id)
+    @outfitstate.setWetLayerPart(layer_name, apparel_id, color)
     notify
   end
   

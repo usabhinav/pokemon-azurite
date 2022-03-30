@@ -99,6 +99,7 @@ module GameData
       @swimsuit           = hash[:swimsuit]    # || true DO not do this for boolean values.
       @conflicts          = hash[:conflicts]   || []
       @variants           = hash[:variants]    || []
+      #echoln "NAME " + @real_name + "VARIANTS: " + @variants.to_s
       #echoln self.conflicts.class.to_s
     end
     
@@ -343,12 +344,17 @@ def pbCanPlayerSwim?
 end
 
 def pbGetApparelVariants(layer, apparelId)
-  if apparelId = 0
+  
+  # The index 0 corresponds to this layer being empty, so there are no variants for it.
+  # Additionally, only regular apparel layers have variants.
+  if apparelId == 0 || GameData::Apparel.get(layer).superclass != GameData::ApparelRegularModel
     return []
   end
   
   variants = GameData::Apparel.get(layer).get(apparelId).variants
-  if variants != nil
+  echoln "VARIANTS: " + variants.to_s
+  
+  if variants != nil && variants != []
     return variants.split(GameData::Apparel::DELIMITER)
   else
     return []

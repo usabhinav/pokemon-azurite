@@ -1,15 +1,37 @@
+# Will maybe be used instead of the strings in the future.
+class ApparelBagItem
+  attr_accessor :layer
+  attr_accessor :id
+  attr_accessor :id_unique
+  attr_accessor :color
+  
+  def initialize(layer, id, color)
+    @layer = layer
+    @id = id
+    @color = color
+  end
+  
+  
+end
+
 class ApparelBag
 
   # Contains all the apparel that the player acquired
   attr_reader :apparel
+  # Only contains apparel acquired and wearable in water. 
+  # Used for the menu to identify that easier.
+  attr_reader :swimsuit_apparel
 
   def initialize
     # Initialize an empty Array for every layer, except for Base
     @apparel = Hash.new
     for layer_name in $LAYER_NAMES
       next if layer_name == "Base"
-      # Arrays will hold Strings with ID + color, representing colored apparel
+      # Arrays will hold Strings with ID + color, representing colored apparel (not anymore,
+      # now it is unique id + color and an array).
+      # (will maybe change if I feel like it)
       @apparel[layer_name] = []
+      @swimsuit_apparel = Set.new
     end
     # Include Rod and Bike as extras.
     @apparel["Bike"] = []
@@ -44,11 +66,11 @@ class ApparelBag
 
   # Created this so the first pbStoreApparel can call this and make it uncrashable
   def pbStoreApparel(layer, apparel_piece, color="Default")
-	begin
-	  pbStoreApparel_safe(layer, apparel_piece, color)
-	rescue
-	  echo "Error: Couldn't add apparel piece: " + layer + "-" + apparel_piece.to_s + "-" + color + "\n"
-	end
+    begin
+      pbStoreApparel_safe(layer, apparel_piece, color)
+    rescue
+      echo "Error: Couldn't add apparel piece: " + layer + "-" + apparel_piece.to_s + "-" + color + "\n"
+    end
   end
   
   def pbStoreApparel_safe(layer, apparel_piece, color="Default")
@@ -71,12 +93,12 @@ class ApparelBag
       return false # False means nothing was added
     else
       # Add the layer and return true for successfully adding it
-      @apparel[layer].push(apparel_piece.to_s + "-" + color)
+      @apparel[layer].push(ApparelBag.toBagData(layer, apparel_piece, color))
 
       # Additionally add it to the swimsuit apparel list if possible
-      #if pbCanSwimWithApparel?(apparel_piece)
-      #  @swimsuit_apparel[layer].push(apparel_piece.to_s + color)
-      #end
+      # if pbCanSwimWith(layer, apparel_piece)
+        # @swimsuit_apparel[layer].push(layer + "-" + apparel_piece.to_s + "-" + color)
+      # end
 
       return true
     end
@@ -85,7 +107,29 @@ class ApparelBag
 
   def pbHasApparel?(layer, apparel_piece, color="Default")
     apparel_piece = convertToApparelId(layer, apparel_piece)
-    return @apparel[layer].include?(apparel_piece.to_s + "-" + color)
+    return @apparel[layer].include?(ApparelBag.toBagData(layer, apparel_piece, color))
+  end
+  
+  # Just in case the format changes again. 
+  def self.toBagData(layer, apparel_id, color)
+    #return layer + "-" + apparel_id.to_s + "-" + color
+    item = GameData::Apparel.get(layer).get(apparel_id)
+    #return item.id_unique.to_s + "-" + color
+    return [item.id_unique, color]
+  end
+  
+  def self.fetchItem(stored_apparel)
+    return GameData::Apparel.getItem(stored_apparel[0])
   end
 
+  def self.fetchColor(stored_apparel)
+    return stored_apparel[1]
+  end
+
+end
+
+
+# Returns an item object from an apparel bag value.
+def pbConvertFromApparelBag(stored_data)
+  
 end

@@ -48,8 +48,17 @@ def mainFunctionDebug
     Console::setup_console
     Compiler::compile_apparel
 
-    echoln GameData::Apparel.get("Socks").get(1).variants.to_s
+    #echoln GameData::Apparel.get("Socks").get(1).variants.to_s
     a = [:testy, :westy]
+    
+    teststr = "UppyWuppy-4-Default"
+    
+    test = ["a", "b"]
+    test2 = [["a", "b"], 1]
+    
+    echoln "INCLUDE? :" + test2.include?(test).to_s
+    
+    echoln teststr.scan(/\d/).to_s;
     
     $scene = pbCallTitle
     $scene.main until $scene.nil?

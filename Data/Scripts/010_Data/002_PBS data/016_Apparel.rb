@@ -34,7 +34,8 @@ module GameData
 	class ApparelBaseModel
 		attr_reader :id # Constant? TODO: Should probably match file name.
 		attr_reader :id_number 
-    attr_reader :id_unique # Another ID that is unique for every apparel item regardless of layer.
+    attr_reader :id_unique # Another ID that is unique for every apparel item regardless of layer .
+                           # (but not color, which is a bit misleading).
                            # Can be used to store and retrieve e.g. messages. 
                            # Can be used any time it is impossible or inconvenient to use
                            # 'layer' + 'id_number' or 'id' as identification.
@@ -48,6 +49,7 @@ module GameData
       @id_number          = hash[:id_number]   || -1
       @id_unique          = hash[:id_unique]   || -1
       @real_name          = hash[:name]        || "Unnamed"
+      echoln "UNIQUE ID: " + id_unique.to_s
     end
 
     # Helper method used only by the compiler to complete class specific creation of an apparel hash.
@@ -123,53 +125,63 @@ module GameData
     extend ClassMethods
     #include ApparelBaseModel
     DATA_FILENAME = "base.dat"
+    LAYER = "Base"
     DATA = {}
-    
+   
     
   end
   class ApparelSocks < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "socks.dat"
+    LAYER = "Socks"
     DATA = {}
   end
   class ApparelLegs < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "legs.dat"
+    LAYER = "Legs"
     DATA = {}
   end
   class ApparelShoes < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "shoes.dat"
+    LAYER = "Shoes"
     DATA = {} 
   end
   class ApparelTorso < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "torso.dat"
+    LAYER = "Torso"
     DATA = {}
   end
   class ApparelLowerFace < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "lowerface.dat"
+    LAYER = "LowerFace"
     DATA = {}
   end
   class ApparelUpperFace < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "upperface.dat"
+    LAYER = "UpperFace"
     DATA = {}
   end
   class ApparelHair < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "hair.dat"
+    LAYER = "Hair"
     DATA = {}
   end 
   class ApparelHat < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "hat.dat"
+    LAYER = "Hat"
     DATA = {}
   end
   class ApparelEyes < ApparelRegularModel
     extend ClassMethods
     DATA_FILENAME = "eyes.dat"
+    LAYER = "Eyes"
     DATA = {}
   end
   class ApparelBike < ApparelSpecialModel
@@ -193,6 +205,10 @@ module GameData
     DATA_FILENAME = "type.dat"
     DATA = {}
 	end
+  
+  # Helper module for working with the compiled/deserialized apparel data.
+  # Not designed to be save and deserialized but instead to calculate
+  # static data on startup (e.g., a different representation of apparel data).
   module Apparel
     
     COLORCSV = 4
@@ -230,22 +246,50 @@ module GameData
     # A hash containing all class names for apparel for easy access with loops.
     @@class_hash = PBS_NAMES.map { |name| [name.to_sym, Object.const_get(self.to_s + name)] }.to_h
     
+    echoln "CLASS HASH: " + @@class_hash.to_s
+    echoln "ONE CLASS OBJ: " + @@class_hash[:Base]::DATA.to_s
+    
+    # A one dimensional list containing all apparel items indexed by their unique id.
+    @@all_apparel = {}
+    
+    
     # Should be treated as a constant and only set by the compiler once.
     # Contains a list of all colors that have been found while compiling.
     COLORS = []
     
     # Return class with the corresponding pbs name.
-    def self.get(name)
-      validate name => [String, Symbol]
+    def self.get(layer_name)
+      validate layer_name => [String, Symbol]
       # Make sure name is a symbol.
-      name = name.to_sym if name.is_a?(String)
-      return @@class_hash[name]
+      layer_name = layer_name.to_sym if layer_name.is_a?(String)
+      return @@class_hash[layer_name]
+    end
+  
+    # Return apparel object corresponding to its unique id.
+    def self.getItem(id_unique)
+      return @@all_apparel[id_unique]
     end
   
     def self.load
+      # Load the apparel game data.
+      for pbs_name_sym in PBS_NAMES_SYMS
+        @@class_hash[pbs_name_sym].load
+      end
       
+      all_apparel_list = []
+      
+      # Compute @@all_apparel
+      for pbs_name_sym in PBS_NAMES_SYMS
+        #echoln "DATA HASH: " + @@class_hash[pbs_name_sym]::DATA.to_s
+        
+        all_apparel_list.concat( @@class_hash[pbs_name_sym]::DATA.map{ |apparel_id, apparel_obj| [apparel_obj.id_unique, apparel_obj]})
+        
+        #echoln "WARNING: Collision of unique_id's for apparel. Expect problems."
+        #echo "ALL APPAREL: " + @@class_hash[pbs_name_sym]::DATA.map{ |apparel_id, apparel_obj|  [apparel_obj.id_unique, apparel_obj]}.to_h.to_s #@@all_apparel.to_s
+        #echo all_apparel_list.to_h.to_s
+        @@all_apparel = all_apparel_list.to_h
+      end
     end
-  
   end
   
 end

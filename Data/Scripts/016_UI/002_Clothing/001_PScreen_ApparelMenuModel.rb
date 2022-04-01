@@ -92,6 +92,9 @@ class PokemonApparelMenu
       @outfit_mode = APPCONST_OUTFITMODE::DRYSUIT
     end
     
+    # Different outfit modes have different apparel pieces available.
+    updateTabs
+    
     notify(GenericChangeEvent.new(APPCONST_EVENT::OutfitModeChange, @outfit_mode))
   end
 
@@ -109,60 +112,7 @@ class PokemonApparelMenu
     # multiple elements due to their multi-layered nature (for example Face
     # contains UpperFace and LowerFace apparel)
     @apparel_tabs = Hash.new
-    # Make the hash point to the correct lists, leave out the multi-layered ones
-    # out for later.
-    @apparel_tabs["Hat"] = @apparel_bag["Hat"]
-    @apparel_tabs["Hair"] = @apparel_bag["Hair"]
-    @apparel_tabs["Torso"] = @apparel_bag["Torso"]
-    @apparel_tabs["Legs"] = @apparel_bag["Legs"]
-    @apparel_tabs["Shoes"] = @apparel_bag["Shoes"]
-    # Construct the multilayered parts of the list
-    # TODO: Only update this when new items get added
-    @apparel_tabs["Face"] = []
-    for apparel in @apparel_bag["UpperFace"]
-      @apparel_tabs["Face"].push("UpperFace-" + apparel)
-=begin
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "1-Default")
-      @apparel_tabs["Face"].push("UpperFace-" + "2-Default")
-=end
-
-    end
-    for apparel in @apparel_bag["LowerFace"]
-      @apparel_tabs["Face"].push("LowerFace-" + apparel)
-    end
-    for apparel in @apparel_bag["Eyes"]
-      @apparel_tabs["Face"].push("Eyes-" + apparel)
-    end
-    # Todo: Sort the list afterwards
-    @apparel_tabs["Misc"] = []
-    for apparel in @apparel_bag["Socks"]
-      @apparel_tabs["Misc"].push("Socks-" + apparel)
-    end
-    for apparel in @apparel_bag["Bike"]
-      @apparel_tabs["Face"].push("Bike-" + apparel)
-    end
-    for apparel in @apparel_bag["Rod"]
-      @apparel_tabs["Face"].push("Rod-" + apparel)
-    end
-
+    
     #@item_amount = item_amount
 
     @selected_item = 0
@@ -174,11 +124,80 @@ class PokemonApparelMenu
     @selected_tab = 2
 
     @outfit_mode = APPCONST_OUTFITMODE::DRYSUIT
+    
+    updateTabs
   end
 
-  def selectApparel(outfitstate, doNotify = true)
+  def updateTabs
+    # CONSTRUCT:
+    # Fill the tabs with items from the apparel bag. Don't use a direct reference but
+    # instead copy it, so that we can sort and filter the tabs without changing
+    # the bag (duplicating should be enough, since we don't change the values themselves,
+    # which also should be strings anyway unless I changed it, 
+    # but change to pbDeepCopy if needed in the future).
+    @apparel_tabs["Hat"] = @apparel_bag["Hat"].dup
+    @apparel_tabs["Hair"] = @apparel_bag["Hair"].dup
+    @apparel_tabs["Torso"] = @apparel_bag["Torso"].dup
+    @apparel_tabs["Legs"] = @apparel_bag["Legs"].dup
+    
+    
+    # Construct the multilayered tabs. (Same thing applies to here with pbDeepCopy before concatenating)
+    @apparel_tabs["Face"] = []
+    @apparel_tabs["Face"].concat(@apparel_bag["UpperFace"])
+    @apparel_tabs["Face"].concat(@apparel_bag["LowerFace"])
+    @apparel_tabs["Face"].concat(@apparel_bag["Eyes"])
+    @apparel_tabs["Face"].concat(@apparel_bag["UpperFace"])
+    
+    # Mix the socks in with the shoes for now.
+    @apparel_tabs["Shoes"] = @apparel_bag["Shoes"].dup
+    @apparel_tabs["Shoes"].concat(@apparel_bag["Socks"])
+    
+    @apparel_tabs["Misc"] = []
+    @apparel_tabs["Misc"].concat(@apparel_bag["Rod"])
+    @apparel_tabs["Misc"].concat(@apparel_bag["Bike"])
+    
+    @apparel_tabs["Favourites"] = []
+    @apparel_tabs["Search"] = []
+    @apparel_tabs["Switch"] = [] # Not needed but still here so iterating through the tabs is less painful.
+    
+    echoln "1: THIS IS THE TAB HASH " + @apparel_tabs.to_s
+    echoln "AND THIS IS THE APPAREL BAG HASH: " + @apparel_bag.to_s
+    
+    # FILTER:
+    # If we are in swimsuit mode, remove some items.
+    if(outfit_mode == APPCONST_OUTFITMODE::SWIMSUIT)
+      @apparel_tabs.each do |tab, apparel_list|
+        # Use delete_if instead of select here so we don't waste
+        # more memory.
+        apparel_list.delete_if { |bag_item_data| 
+          item = ApparelBag.fetchItem(bag_item_data)
+        
+          # Don't include the item if it's not a regular apparel piece.
+          ret = false
+          if(item.class.superclass == GameData::ApparelRegularModel)
+            # Now we can check for the swimsuit flag (only regular apparel has that).
+            ret = item.swimsuit
+          end
+          
+          #echoln "BAG ITEM DATA: " + bag_item_data.to_s
+          #echoln "SUPERCLASS: " + item.class.to_s
+          #echoln "RET = :" + ret.to_s
+          
+          # Is ret true, it means that this item is wearable in water. Therefore, we do
+          # not want to delete it.
+          !ret
+        }
+        
+      end
+    end
+    
+    echoln "2: THIS IS THE TAB HASH " + @apparel_tabs.to_s
+    
+    # SORT: (to be continued!)
+  end
+  
 
-    echoln "Selected Tab: " + @selected_tab.to_s 
+  def selectApparel(outfitstate, doNotify = true)
 
     # Ignore some tabs for now.
     if @selected_tab == APPCONST_TAB::SEARCH || 
@@ -188,35 +207,27 @@ class PokemonApparelMenu
     end
 
     tab_name = pbGetApparelTabName(@selected_tab)
-    item_data = @apparel_tabs[tab_name][@selected_item].split("-") # + @scroll_index].split("-")
-    # If result has the length of two:
-    # item[0] = ID of apparel piece
-    # item[1] = Color of apparel piece
-    if item_data.length == 2
-      layer_name = tab_name
-      apparel_id = item_data[0].to_i
-      apparel_color = item_data[1]
-    # If result is longer than two:
-    # item[0] = Layer of apparel piece
-    # item[1] = ID of apparel piece
-    # item[2] = Color of apparel piece
-    else
-      layer_name = item_data[0]
-      apparel_id = item_data[1].to_i
-      apparel_color = item_data[2]
-    end
+    bag_item_data = @apparel_tabs[tab_name][@selected_item] # + @scroll_index].split("-")
+    
+    if(bag_item_data != nil)
+      item = ApparelBag.fetchItem(bag_item_data)
+      layer = item.class::LAYER
+      color = ApparelBag.fetchColor(bag_item_data)
 
-    echoln "LAYERNAME: " + layer_name + " COLOR: " + apparel_color
+      #echoln "LAYERNAME: " + layer_name + " COLOR: " + apparel_color
 
-    if @outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
-      outfitstate.setDryLayerPart(layer_name, apparel_id, apparel_color)
-    elsif @outfit_mode ==  APPCONST_OUTFITMODE::SWIMSUIT
-      outfitstate.setWetLayerPart(layer_name, apparel_id, apparel_color)
+      if @outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
+        outfitstate.setDryLayerPart(layer, item.id_number, color)
+      elsif @outfit_mode ==  APPCONST_OUTFITMODE::SWIMSUIT
+        outfitstate.setWetLayerPart(layer, item.id_number, color)
+      end
+      
+      if doNotify
+        notify(GenericChangeEvent.new(APPCONST_EVENT::ApplySelectedItem, outfitstate))
+      end
     end
     
-    if doNotify
-      notify(GenericChangeEvent.new(APPCONST_EVENT::ApplySelectedItem, outfitstate))
-    end
+    
   
   end
 

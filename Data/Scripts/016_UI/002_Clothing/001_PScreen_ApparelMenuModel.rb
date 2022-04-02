@@ -12,11 +12,12 @@ module APPCONST_TAB
 end
 
 module APPCONST_EVENT
-  SelectedItemChange = "SelectedItemChangeEvent"
-  TabChange = "TabChangeEvent"
-  OutfitModeChange = "OutfitModeChangeEvent"
-  InitMenu = "InitializeMenuEvent"
-  ApplySelectedItem = "ApplySelectedItemEvent"
+  SelectedItemChange  = "SelectedItemChangeEvent"
+  TabChange           = "TabChangeEvent"
+  OutfitModeChange    = "OutfitModeChangeEvent"
+  InitMenu            = "InitializeMenuEvent"
+  ApplySelectedItem   = "ApplySelectedItemEvent"
+  UnselectItem        = "UnselectItemEvent"
 end
 
 module APPCONST_OUTFITMODE # These correspond to the prefix of the menu image filenames.
@@ -197,7 +198,7 @@ class PokemonApparelMenu
   end
   
 
-  def selectApparel(outfitstate, doNotify = true)
+  def applyTo(outfitstate, doNotify = true)
 
     # Ignore some tabs for now.
     if @selected_tab == APPCONST_TAB::SEARCH || 
@@ -217,9 +218,9 @@ class PokemonApparelMenu
       #echoln "LAYERNAME: " + layer_name + " COLOR: " + apparel_color
 
       if @outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
-        outfitstate.setDryLayerPart(layer, item.id_number, color)
+        outfitstate.setDryLayerState(layer, item.id_number, color)
       elsif @outfit_mode ==  APPCONST_OUTFITMODE::SWIMSUIT
-        outfitstate.setWetLayerPart(layer, item.id_number, color)
+        outfitstate.setWetLayerState(layer, item.id_number, color)
       end
       
       if doNotify
@@ -231,9 +232,9 @@ class PokemonApparelMenu
   
   end
 
-  def getSelectedItemData()
+  def getSelectedItemData
     tab_name = pbGetApparelTabName(@selected_tab)
-    return @apparel_tabs[tab_name][@selected_item].split("-")
+    return @apparel_tabs[tab_name][@selected_item]
   end
 
   class << self
@@ -291,7 +292,7 @@ class GenericChangeEvent
   attr_reader :label
   attr_reader :value
   
-  def initialize(label, value)
+  def initialize(label, value=nil)
     @label = label
     @value = value
   end

@@ -365,7 +365,7 @@ class Game_Player < Game_Character
           end
 			  
           # Set the outfit layer part
-          $Trainer.outfitstate.setDryLayerPart(layer_name, apparelId, color)
+          $Trainer.outfitstate.setDryLayerState(layer_name, apparelId, color)
           end
         end
       end

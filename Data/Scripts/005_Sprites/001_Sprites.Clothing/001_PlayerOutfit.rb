@@ -107,16 +107,26 @@ class OutfitState
   end
   
   # Sets the apparel for a layer state of the regular outfit
-  def setDryLayerPart(layer_name, apparel_id, color=nil)
-    setOutfitStateLayerPart(GameData::Apparel::DRYOUTFIT, layer_name, apparel_id, color)
+  def setDryLayerState(layer_name, apparel_id, color=nil)
+    setLayerState(GameData::Apparel::DRYOUTFIT, layer_name, apparel_id, color)
   end
   
   # Sets the apparel for a layer state of the swimsuit
-  def setWetLayerPart(layer_name, apparel_id, color=nil)
-    setOutfitStateLayerPart(GameData::Apparel::WETOUTFIT, layer_name, apparel_id, color)
+  def setWetLayerState(layer_name, apparel_id, color=nil)
+    setLayerState(GameData::Apparel::WETOUTFIT, layer_name, apparel_id, color)
   end
   
-  def setOutfitStateLayerPart(outfitstate_constant, layer_name, apparel_id, color=nil)
+  def getLayerState(outfitstate_constant, layer_name)
+    if outfitstate_constant == GameData::Apparel::DRYOUTFIT
+      layer_states = @dry_layer_states
+    else
+      layer_states = @wet_layer_states
+    end
+    
+    return layer_states[layer_name]
+  end
+  
+  def setLayerState(outfitstate_constant, layer_name, apparel_id, color=nil)
     
     if outfitstate_constant == GameData::Apparel::DRYOUTFIT
       layer_states = @dry_layer_states
@@ -360,12 +370,33 @@ class ObservableOutfitState
     @outfitstate = outfitstate
   end
   
+  def dry_layer_states
+    return @outfitstate.dry_layer_states
+  end
+  
+  def wet_layer_states
+    return @outfitstate.wet_layer_states
+  end
+  
+  def gender=(value)
+    @outfitstate.gender = value
+    notify
+  end
+  
+  def gender
+    return @outfitstate.gender
+  end
+  
+  def occupiedBy(outfitstate_constant, layer_name)
+    @outfitstate.occupiedBy(outfitstate_constant, layer_name)
+  end
+  
   def setSpriteCharacter(sprite_character)
     @sprite_character = sprite_character
   end
   
-  def setDryLayerPart(layer_name, apparel_id, color=nil)
-    @outfitstate.setDryLayerPart(layer_name, apparel_id, color)
+  def setDryLayerState(layer_name, apparel_id, color=nil)
+    @outfitstate.setDryLayerState(layer_name, apparel_id, color)
     #DEBUG
 =begin
     if $Trainer
@@ -385,8 +416,8 @@ class ObservableOutfitState
     notify
   end
   
-  def setWetLayerPart(layer_name, apparel_id, color=nil)
-    @outfitstate.setWetLayerPart(layer_name, apparel_id, color)
+  def setWetLayerState(layer_name, apparel_id, color=nil)
+    @outfitstate.setWetLayerState(layer_name, apparel_id, color)
     notify
   end
   
@@ -398,6 +429,14 @@ class ObservableOutfitState
   def setWetLayerColor(layer_name, color)
     @outfitstate.setWetLayerColor(layer_name, color)
     notify
+  end
+  
+  def setLayerState(outfit_mode, layer, number_id, color=nil)
+    @outfitstate.setLayerState(outfit_mode, layer, number_id, color)
+  end
+  
+  def getLayerState(outfit_mode, layer)
+    return @outfitstate.getLayerState(outfit_mode, layer)
   end
   
   def animation
@@ -437,18 +476,12 @@ class ObservableOutfitState
     return @outfitstate.applyToMugshotBitmap(bitmap)
   end
   
-  def gender=(value)
-    @outfitstate.gender = value
-    notify
+  def getOutfitStateLayerPart(outfit_mode, layer)
+    return @outfitstate.getOutfitStateLayerPart(outfit_mode, layer)
   end
   
-  def gender
-    return @outfitstate.gender
-  end
-  
-  
-  def occupiedBy(outfitstate_constant, layer_name)
-    @outfitstate.occupiedBy(outfitstate_constant, layer_name)
+  def setOutfitStateLayerPart(outfit_mode, layer, number_id, color=nil)
+    @outfitstate.setOutfitStateLayerPart(outfit_mode, layer, number_id, color)
   end
   
   def toggleActiveLayerStates
@@ -567,25 +600,25 @@ class Sprite_Character
 end
 
 
-def pbSetWetLayerPart(layer_name, apparel_id, color="Default")
+def pbsetWetLayerState(layer_name, apparel_id, color="Default")
   if $DEBUG
     $ApparelBag.pbStoreApparel(layer_name, apparel_id, color)
   end
 	
   if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
-    $Trainer.outfitstate.setWetLayerPart(layer_name, apparel_id, color)
+    $Trainer.outfitstate.setWetLayerState(layer_name, apparel_id, color)
   else
     #echo "Doesnt have apparel\n" 
   end
 end
 
-def pbSetDryLayerPart(layer_name, apparel_id, color="Default")
+def pbsetDryLayerState(layer_name, apparel_id, color="Default")
   if $DEBUG
     $ApparelBag.pbStoreApparel(layer_name, apparel_id, color)
   end
 
   if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
-    $Trainer.outfitstate.setDryLayerPart(layer_name, apparel_id, color)
+    $Trainer.outfitstate.setDryLayerState(layer_name, apparel_id, color)
   else
     #echo "Doesnt have apparel\n"
   end

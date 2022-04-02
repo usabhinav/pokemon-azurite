@@ -116,7 +116,7 @@ class Player < Trainer
     @outfit                = 0
     # Initialize trainer outfit state.
     @outfitstate = ObservableOutfitState.new(OutfitState.new(trainer_type, "Walking"))
-    @outfitstate.setDryLayerPart("Base", 1)
-    @outfitstate.setWetLayerPart("Base", 1)
+    @outfitstate.setDryLayerState("Base", 1)
+    @outfitstate.setWetLayerState("Base", 1)
   end
 end

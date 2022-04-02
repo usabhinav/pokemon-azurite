@@ -38,7 +38,35 @@ class PokemonApparelMenu_Screen
               @model.selected_item -= 1
             elsif Input.trigger?(Input::C)
               echoln "A was pressed!"
-              @model.selectApparel($Trainer.outfitstate)
+              
+              selected_bag_data = @model.getSelectedItemData
+              item = ApparelBag.fetchItem(selected_bag_data)
+              color = ApparelBag.fetchColor(selected_bag_data)
+              layer = item.class::LAYER
+            
+              # if @model.outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
+                # current_layer_parts = @outfitstate.dry_layer_parts
+              # else
+                # current_layer_parts = @outfitstate.wet_layer_parts
+              # end
+              
+              layer_state = @outfitstate.getLayerState(@model.outfit_mode, layer)
+              
+              # If we select the same item that is already selected, simply unselect
+              # it (if possible).
+              echoln "SELECTED_PART_ID: " + layer_state.selected_part.to_s + ", ITEM_ID_NUMBER: " + item.id_number.to_s
+              
+              if(layer_state.selected_part == item.id_number &&
+                 layer_state.color == color)
+                @outfitstate.setLayerState(@model.outfit_mode, layer, 0)
+                @scene.updatePreview(GenericChangeEvent.new(APPCONST_EVENT::UnselectItem))
+                echoln "UNAPPLY"
+              else # Otherwise, we apply the menu model to the outfit.
+                @model.applyTo(@outfitstate)
+                echoln "APPLY"
+              end
+            
+              
             end
         end
       end

@@ -220,22 +220,29 @@ class PokemonApparelMenu_Scene
           # Reset the preview. (De-select unapplied item from previous tab)
           @p_outfitstate = pbDeepCopy(@prevp_outfitstate)
           # Apply the newly selected item (due to the tab change) to the preview.
-          @menumodel.selectApparel(@p_outfitstate, false)
+          @menumodel.applyTo(@p_outfitstate, false)
           
           @sprites["preview"].visible = true
         end
       when APPCONST_EVENT::SelectedItemChange
         # Set the selected item to be visible on the preview.
-        @menumodel.selectApparel(@p_outfitstate, false)
+        @menumodel.applyTo(@p_outfitstate, false)
         
       when APPCONST_EVENT::ApplySelectedItem
         # Update the preview outfit.
-        #@menumodel.selectApparel(@p_outfitstate, false) # Not really needed
-        @menumodel.selectApparel(@prevp_outfitstate, false)
+        #@menumodel.applyTo(@p_outfitstate, false) # Not really needed
+        @menumodel.applyTo(@prevp_outfitstate, false)
       when APPCONST_EVENT::OutfitModeChange
         # Toggle the preview outfit states' outfit modes.
         @p_outfitstate.toggleActiveLayerStates
         @prevp_outfitstate.toggleActiveLayerStates
+      when APPCONST_EVENT::UnselectItem
+        # This assumes that the unselecting already took place.
+        # This is different from ApplySelectedItem, because we can't
+        # infer whether or not an item has been unselected from
+        # the selected_item value.
+        @p_outfitstate = pbDeepCopy(@outfitstate)
+        @prevp_outfitstate = pbDeepCopy(@outfitstate)
     end
   
     # Apply preview outfit changes.

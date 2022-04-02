@@ -225,8 +225,8 @@ module GameData
     CONFLICTS = 9
     VARIANTS = 10
     
-    DRYOUTFIT = 0
-    WETOUTFIT = 1
+    DRYOUTFIT = "Clothing"
+    WETOUTFIT = "Swimsuit"
     
     DELIMITER = ";"
     
@@ -333,6 +333,11 @@ def pbGetApparelDesc(layer, apparelId)
 end
 
 def pbGetApparelConflicts(layer, apparelId)
+  if(apparelId == 0)
+    echoln "WARNING: Calling pbGetApparelConflicts with ID of 0."
+    return []
+  end
+  
   conflicts = GameData::Apparel.get(layer).get(apparelId).conflicts
   
   #echoln "GameData::Apparel.get(layer).get(apparelID) = " + GameData::Apparel.get(layer).get(apparelId).to_s

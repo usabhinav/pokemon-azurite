@@ -489,17 +489,14 @@ class ObservableOutfitState
   end
 
   # I think these two functions were the only reason I made this wrapper class.
+  # Basically saving and loading the outfit still works normally, but any information  
+  # about observers will be lost (which makes sense as the observers don't exist anymore).
   def marshal_dump
     [@outfitstate]
   end
   def marshal_load array
     initialize(array[0])
   end
-
-
-
-
-    
 end
 
 

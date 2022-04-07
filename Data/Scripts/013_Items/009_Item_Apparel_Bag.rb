@@ -18,9 +18,13 @@ class ApparelBag
 
   # Contains all the apparel that the player acquired
   attr_reader :apparel
+  
+  # Apparel sets for the menu. Format: 2D Hash. OutfitMode->SetName->OutfitState.
+  attr_accessor :sets
+  
   # Only contains apparel acquired and wearable in water. 
   # Used for the menu to identify that easier.
-  attr_reader :swimsuit_apparel
+  #attr_reader :swimsuit_apparel
 
   def initialize
     # Initialize an empty Array for every layer, except for Base
@@ -37,6 +41,9 @@ class ApparelBag
     @apparel["Bike"] = []
     @apparel["Rod"] = []
 
+    @sets = Hash.new
+    @sets[APPCONST_OUTFITMODE::DRYSUIT] = Hash.new
+    @sets[APPCONST_OUTFITMODE::SWIMSUIT] = Hash.new
   end
 
   # Clears the entire apparel list.

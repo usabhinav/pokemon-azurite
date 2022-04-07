@@ -85,6 +85,21 @@ class PokemonApparelMenu
     #notify(GenericChangeEvent.new(APPCONST_EVENT::SelectedItemChange, @selected_item))
   end
 
+  def createSet(set_name, outfitstate)
+    # Add it to the bag so it gets saved.
+    $ApparelBag.sets[outfit_mode][set_name] = outfitstate
+    # Add it to the sets tab.
+    @apparel_tabs["Favourites"].push(set_name)
+  end
+  
+  def getSet(set_name)
+    return $ApparelBag.sets[@outfit_mode][set_name]
+  end
+  
+  def hasSet(set_name)
+    return $ApparelBag.sets[@outfit_mode].has_key?(set_name)
+  end 
+  
   def toggleOutfitMode
     
     if @outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
@@ -157,7 +172,7 @@ class PokemonApparelMenu
     @apparel_tabs["Misc"].concat(@apparel_bag["Rod"])
     @apparel_tabs["Misc"].concat(@apparel_bag["Bike"])
     
-    @apparel_tabs["Favourites"] = []
+    @apparel_tabs["Favourites"] = $ApparelBag.sets[@outfit_mode].keys
     @apparel_tabs["Search"] = []
     @apparel_tabs["Switch"] = [] # Not needed but still here so iterating through the tabs is less painful.
     
@@ -227,9 +242,6 @@ class PokemonApparelMenu
         notify(GenericChangeEvent.new(APPCONST_EVENT::ApplySelectedItem, outfitstate))
       end
     end
-    
-    
-  
   end
 
   def getSelectedItemData

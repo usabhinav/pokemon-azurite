@@ -33,7 +33,7 @@
 
       # Skip an element if we are in swimsuit mode and the apparel piece cannot be worn in water.
       # Also make sure we still progress the list.
-      # if @menumodel.outfit_mode == APPCONST_OUTFITMODE::SWIMSUIT &&
+      # if @model.outfit_mode == APPCONST_OUTFITMODE::SWIMSUIT &&
           # !pbCanSwimWith(layername, apparel_id)
           
           # list_i += 1

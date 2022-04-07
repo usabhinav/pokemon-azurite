@@ -1,7 +1,7 @@
 class PokemonApparelMenu_Scene
 
   def pbStartScene(menumodel, outfitstate)
-    @menumodel = menumodel
+    @model = menumodel
     
     # Outfit state of the player.
     @outfitstate = outfitstate
@@ -100,8 +100,8 @@ class PokemonApparelMenu_Scene
     
       # Set the correct background displaying the selected tab
       @sprites["background"].setBitmap("Graphics/Pictures/Apparel/" +
-        @menumodel.outfit_mode +
-        PokemonApparelMenu.getTabName(@menumodel.selected_tab))
+        @model.outfit_mode +
+        PokemonApparelMenu.getTabName(@model.selected_tab))
 
       # Clear all rows
       i = 0
@@ -111,23 +111,24 @@ class PokemonApparelMenu_Scene
       end
 
       # Display the items depending on which tab is selected
-      case @menumodel.selected_tab
+      case @model.selected_tab
       when 0 # Favourites
+        constructRows("Favourites", @model.apparel_tabs)
       when 1 # Hat
-        constructRows("Hat", @menumodel.apparel_tabs)
+        constructRows("Hat", @model.apparel_tabs)
       when 2 # Hair 
-        constructRows("Hair", @menumodel.apparel_tabs)
+        constructRows("Hair", @model.apparel_tabs)
       when 3 # Face
-        constructRows("Face", @menumodel.apparel_tabs)
+        constructRows("Face", @model.apparel_tabs)
       when 4 # Torso
-        constructRows("Torso", @menumodel.apparel_tabs)
+        constructRows("Torso", @model.apparel_tabs)
       when 5 # Legs
-        constructRows("Legs", @menumodel.apparel_tabs)
+        constructRows("Legs", @model.apparel_tabs)
       when 6 # Shoes
-        constructRows("Shoes", @menumodel.apparel_tabs)
+        constructRows("Shoes", @model.apparel_tabs)
       when 7 # Misc
         # TODO: Only update this when new items get added
-        constructRows("Misc", @menumodel.apparel_tabs)
+        constructRows("Misc", @model.apparel_tabs)
       when 8 # Search
       when 9 # Switch
       end
@@ -138,7 +139,7 @@ class PokemonApparelMenu_Scene
 
   def updateCursor(event)
 
-    if @menumodel.selected_tab != APPCONST_TAB::SWITCH # Generic item selection tab.
+    if @model.selected_tab != APPCONST_TAB::SWITCH # Generic item selection tab.
       if event.label == APPCONST_EVENT::SelectedItemChange
         # Points to which item the cursor is selecting currently
         cursor_selection = @cursor_index + @scroll_index
@@ -164,7 +165,7 @@ class PokemonApparelMenu_Scene
           end
         elsif(cursor_selection < event.value) # New selected item is further down
     
-          apparel_amount = @menumodel.apparel_tabs[pbGetApparelTabName(@menumodel.selected_tab)].length
+          apparel_amount = @model.apparel_tabs[pbGetApparelTabName(@model.selected_tab)].length
     
           # Do we have to scroll down or move the cursor down?
           # Check if cursor reached the cursor lock threshhold from the bottom side,
@@ -200,8 +201,8 @@ class PokemonApparelMenu_Scene
     if event.label == APPCONST_EVENT::OutfitModeChange
       # Set the correct background displaying the selected tab
       @sprites["background"].setBitmap("Graphics/Pictures/Apparel/" +
-        @menumodel.outfit_mode +
-        PokemonApparelMenu.getTabName(@menumodel.selected_tab))
+        @model.outfit_mode +
+        PokemonApparelMenu.getTabName(@model.selected_tab))
     end
 
     pbUpdateSpriteHash(@sprites)
@@ -213,41 +214,70 @@ class PokemonApparelMenu_Scene
     case event.label
       when APPCONST_EVENT::TabChange
         
-        if @menumodel.selected_tab == APPCONST_TAB::SWITCH
+        if @model.selected_tab == APPCONST_TAB::SWITCH
           # Don't display preview on the switch tab.
           @sprites["preview"].visible = false
         else
           # Reset the preview. (De-select unapplied item from previous tab)
           @p_outfitstate = pbDeepCopy(@prevp_outfitstate)
+          
           # Apply the newly selected item (due to the tab change) to the preview.
-          @menumodel.applyTo(@p_outfitstate, false)
+          updatePOutfitState
           
           @sprites["preview"].visible = true
         end
       when APPCONST_EVENT::SelectedItemChange
         # Set the selected item to be visible on the preview.
-        @menumodel.applyTo(@p_outfitstate, false)
+        #@menu.applyTo(@p_outfitstate, false)
+        updatePOutfitState
         
       when APPCONST_EVENT::ApplySelectedItem
         # Update the preview outfit.
-        #@menumodel.applyTo(@p_outfitstate, false) # Not really needed
-        @menumodel.applyTo(@prevp_outfitstate, false)
+        #@menu.applyTo(@p_outfitstate, false) # Not really needed
+        #@menu.applyTo(@prevp_outfitstate, false)
+        updatePrevPOutfitState
+        
       when APPCONST_EVENT::OutfitModeChange
         # Toggle the preview outfit states' outfit modes.
         @p_outfitstate.toggleActiveLayerStates
         @prevp_outfitstate.toggleActiveLayerStates
+        
+        
       when APPCONST_EVENT::UnselectItem
-        # This assumes that the unselecting already took place.
-        # This is different from ApplySelectedItem, because we can't
-        # infer whether or not an item has been unselected from
-        # the selected_item value.
-        @p_outfitstate = pbDeepCopy(@outfitstate)
-        @prevp_outfitstate = pbDeepCopy(@outfitstate)
+        if(@model.selected_tab != APPCONST_TAB::FAVOURITES) # Can't unselect entire sets.
+          # This assumes that the unselecting already took place.
+          # This is different from ApplySelectedItem, because we can't
+          # infer whether or not an item has been unselected from
+          # the selected_item value.
+          @p_outfitstate = pbDeepCopy(@outfitstate)
+          @prevp_outfitstate = pbDeepCopy(@outfitstate)
+        end
     end
   
     # Apply preview outfit changes.
     @p_outfitstate.applyToOverworldBitmap(@sprites["preview"].bitmap)
   
+  end
+  
+  def updatePOutfitState
+  
+  echoln "Updating Preview Outfit State"
+  
+    if @model.selected_tab == APPCONST_TAB::FAVOURITES
+      set_name = @model.apparel_tabs["Favourites"][@model.selected_item]
+      @p_outfitstate = pbDeepCopy(@model.getSet(set_name))
+    else
+      @model.applyTo(@p_outfitstate, false)
+    end
+  end
+  
+  def updatePrevPOutfitState
+    if @model.selected_tab == APPCONST_TAB::FAVOURITES
+      set_name = @model.apparel_tabs["Favourites"][@model.selected_item]
+      @prevp_outfitstate = pbDeepCopy(@model.getSet(set_name))
+    else
+      @model.applyTo(@prevp_outfitstate, false)
+    end
   end
   
   def update(observer, event)
@@ -269,9 +299,9 @@ class PokemonApparelMenu_Scene
         # Change the outfit used 
         updatePreview(event)
       when APPCONST_EVENT::InitMenu
-        updateCursor(GenericChangeEvent.new(APPCONST_EVENT::SelectedItemChange, @menumodel.selected_item))
-        updateTabs(GenericChangeEvent.new(APPCONST_EVENT::TabChange, @menumodel.selected_tab))
-        updateOutfitMode(GenericChangeEvent.new(APPCONST_EVENT::OutfitModeChange, @menumodel.outfit_mode))
+        updateCursor(GenericChangeEvent.new(APPCONST_EVENT::SelectedItemChange, @model.selected_item))
+        updateTabs(GenericChangeEvent.new(APPCONST_EVENT::TabChange, @model.selected_tab))
+        updateOutfitMode(GenericChangeEvent.new(APPCONST_EVENT::OutfitModeChange, @model.outfit_mode))
         updatePreview(event)
       when APPCONST_EVENT::ApplySelectedItem
         updatePreview(event)
@@ -288,8 +318,8 @@ class PokemonApparelMenu_Scene
     # elsif event.instance_of? SelectedItemChangeEvent
       # updateCursor(event)
     # else # Last possibility is nil class, in that case just update everything
-      # updateCursor(SelectedItemChangeEvent.new(@menumodel.selected_item))
-      # updateTabs(TabChangeEvent.new(@menumodel.selected_tab))
+      # updateCursor(SelectedItemChangeEvent.new(@menu.selected_item))
+      # updateTabs(TabChangeEvent.new(@menu.selected_tab))
     # end
 
     #@sprites["item1"].bitmap = BitmapWrapper.new(@item_w, @item_h)
@@ -308,28 +338,33 @@ class PokemonApparelMenu_Scene
 
   private
   
-  def constructRows(tabname, apparellist)
+  def constructRows(tab_name, apparel_list)
 
     # Index of displayed item.
     item_i = 0
   
-    while item_i < @displayable_items &&  item_i < apparellist[tabname].length
-      # Get data about the current item
-      bag_item_data = apparellist[tabname][item_i + @scroll_index]
-      item = ApparelBag.fetchItem(bag_item_data)
-      color = ApparelBag.fetchColor(bag_item_data)
+    while item_i < @displayable_items && item_i < apparel_list[tab_name].length
+      
+      if(tab_name == "Favourites")
+        item_text = apparel_list[tab_name][item_i + @scroll_index]
+      else
+        # Get data about the current item
+        bag_item_data = apparel_list[tab_name][item_i + @scroll_index]
+        item = ApparelBag.fetchItem(bag_item_data)
+        color = ApparelBag.fetchColor(bag_item_data)
 
-      # Construct the text for our item
-      item_text = ""
-      # Put the color in front of the apparel name if it has one
-      if color != "Default"
-        item_text += color + " "
+        # Construct the text for our item
+        item_text = ""
+        # Put the color in front of the apparel name if it has one
+        if color != "Default"
+          item_text += color + " "
+        end
+        # Add the apparel name
+
+        #echo "\n\n" +layername +" " + apparel_id.to_s + "\n\n"
+
+        item_text += item.real_name
       end
-      # Add the apparel name
-
-      #echo "\n\n" +layername +" " + apparel_id.to_s + "\n\n"
-
-      item_text += item.real_name
 
       @sprites["item" + item_i.to_s].bitmap.clear
       @sprites["item" + item_i.to_s].bitmap.draw_text(10,2, 270, 20, item_text)
@@ -341,9 +376,9 @@ class PokemonApparelMenu_Scene
   # Tab types: Regular, Search, Swimsuit selection
   # Based on what type of tab is active, the correct value is returned
   def returnValueBasedOnTabType(val1, val2, val3)
-    if @menumodel.selected_tab == 8 # Search
+    if @model.selected_tab == 8 # Search
       return val2
-    elsif @menumodel.selected_tab == 9 # Switch
+    elsif @model.selected_tab == 9 # Switch
       return val3
     else # Regular
       return val1

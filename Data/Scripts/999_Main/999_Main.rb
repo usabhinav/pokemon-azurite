@@ -45,21 +45,12 @@ def mainFunctionDebug
     Graphics.update
     Graphics.freeze
     
+    outfit = OutfitState.new(1, "Walking")
+    echoln outfit.instance_variables.to_s
+    
     Console::setup_console
     Compiler::compile_apparel
 
-    #echoln GameData::Apparel.get("Socks").get(1).variants.to_s
-    a = [:testy, :westy]
-    
-    teststr = "UppyWuppy-4-Default"
-    
-    test = ["a", "b"]
-    test2 = [["a", "b"], 1]
-    
-    echoln "INCLUDE? :" + test2.include?(test).to_s
-    
-    echoln teststr.scan(/\d/).to_s;
-    
     $scene = pbCallTitle
     $scene.main until $scene.nil?
     Graphics.transition(20)
@@ -69,6 +60,23 @@ def mainFunctionDebug
     pbEmergencySave
     raise
   end
+end
+
+# Conclusion: .itself doesnt exist in this ruby version.
+def pointerExperiment
+  outfit1 = OutfitState.new(1, "Walking")
+  outfit2 = OutfitState.new(1, "Walking")
+  
+  outfit1.gender = "Male"
+  outfit2.gender = "Female"
+  
+  outfit1_pointer = outfit1
+  
+  
+  outfit1_pointer.itself = pbDeepCopy(outfit2)
+  
+  echoln "OUTFIT1: " + outfit1.gender
+  
 end
 
 def testywesty

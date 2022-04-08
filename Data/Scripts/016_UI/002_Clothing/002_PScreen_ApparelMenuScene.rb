@@ -1,7 +1,7 @@
 class PokemonApparelMenu_Scene
 
-  def pbStartScene(menumodel, outfitstate)
-    @model = menumodel
+  def pbStartScene(model, outfitstate)
+    @model = model
     
     # Outfit state of the player.
     @outfitstate = outfitstate
@@ -222,20 +222,21 @@ class PokemonApparelMenu_Scene
           @p_outfitstate = pbDeepCopy(@prevp_outfitstate)
           
           # Apply the newly selected item (due to the tab change) to the preview.
-          updatePOutfitState
+          #updatePOutfitState
+          @model.applyTo(@p_outfitstate, false)
           
           @sprites["preview"].visible = true
         end
       when APPCONST_EVENT::SelectedItemChange
         # Set the selected item to be visible on the preview.
-        #@menu.applyTo(@p_outfitstate, false)
-        updatePOutfitState
+        @model.applyTo(@p_outfitstate, false)
+        #updatePOutfitState
         
       when APPCONST_EVENT::ApplySelectedItem
         # Update the preview outfit.
-        #@menu.applyTo(@p_outfitstate, false) # Not really needed
-        #@menu.applyTo(@prevp_outfitstate, false)
-        updatePrevPOutfitState
+        @model.applyTo(@p_outfitstate, false) # YES needed, or else it won't update after unselecting # Not really needed
+        @model.applyTo(@prevp_outfitstate, false)
+        #updatePrevPOutfitState
         
       when APPCONST_EVENT::OutfitModeChange
         # Toggle the preview outfit states' outfit modes.
@@ -259,26 +260,7 @@ class PokemonApparelMenu_Scene
   
   end
   
-  def updatePOutfitState
-  
-  echoln "Updating Preview Outfit State"
-  
-    if @model.selected_tab == APPCONST_TAB::FAVOURITES
-      set_name = @model.apparel_tabs["Favourites"][@model.selected_item]
-      @p_outfitstate = pbDeepCopy(@model.getSet(set_name))
-    else
-      @model.applyTo(@p_outfitstate, false)
-    end
-  end
-  
-  def updatePrevPOutfitState
-    if @model.selected_tab == APPCONST_TAB::FAVOURITES
-      set_name = @model.apparel_tabs["Favourites"][@model.selected_item]
-      @prevp_outfitstate = pbDeepCopy(@model.getSet(set_name))
-    else
-      @model.applyTo(@prevp_outfitstate, false)
-    end
-  end
+
   
   def update(observer, event)
 
@@ -318,8 +300,8 @@ class PokemonApparelMenu_Scene
     # elsif event.instance_of? SelectedItemChangeEvent
       # updateCursor(event)
     # else # Last possibility is nil class, in that case just update everything
-      # updateCursor(SelectedItemChangeEvent.new(@menu.selected_item))
-      # updateTabs(TabChangeEvent.new(@menu.selected_tab))
+      # updateCursor(SelectedItemChangeEvent.new(@model.selected_item))
+      # updateTabs(TabChangeEvent.new(@model.selected_tab))
     # end
 
     #@sprites["item1"].bitmap = BitmapWrapper.new(@item_w, @item_h)

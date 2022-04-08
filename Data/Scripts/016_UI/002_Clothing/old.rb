@@ -104,3 +104,27 @@
     # for apparel in @apparel_bag["Rod"]
       # @apparel_tabs["Face"].push(apparel)
     # end
+    
+    
+    
+    
+      # def updatePOutfitState
+  
+  # echoln "Updating Preview Outfit State"
+  
+    # if @model.selected_tab == APPCONST_TAB::FAVOURITES
+      # set_name = @model.apparel_tabs["Favourites"][@model.selected_item]
+      # @p_outfitstate = pbDeepCopy(@model.getSet(set_name))
+    # else
+      # @model.applyTo(@p_outfitstate, false)
+    # end
+  # end
+  
+  # def updatePrevPOutfitState
+    # if @model.selected_tab == APPCONST_TAB::FAVOURITES
+      # set_name = @model.apparel_tabs["Favourites"][@model.selected_item]
+      # @prevp_outfitstate = pbDeepCopy(@model.getSet(set_name))
+    # else
+      # @model.applyTo(@prevp_outfitstate, false)
+    # end
+  # end

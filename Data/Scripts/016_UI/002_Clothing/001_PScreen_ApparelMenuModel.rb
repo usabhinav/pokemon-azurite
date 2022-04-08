@@ -75,9 +75,7 @@ class PokemonApparelMenu
 
     # Adjust the item amount for different tab types
     # @item_amount = returnValueBasedOnTabType(9, 8, 2)
-
-
-
+    
     @selected_item = 0
     # @scroll_index = 0
 
@@ -87,7 +85,8 @@ class PokemonApparelMenu
 
   def createSet(set_name, outfitstate)
     # Add it to the bag so it gets saved.
-    $ApparelBag.sets[outfit_mode][set_name] = outfitstate
+    $ApparelBag.sets[@outfit_mode][set_name] = pbDeepCopy(outfitstate.getLayerStates(@outfit_mode))
+    
     # Add it to the sets tab.
     @apparel_tabs["Favourites"].push(set_name)
   end
@@ -183,27 +182,30 @@ class PokemonApparelMenu
     # If we are in swimsuit mode, remove some items.
     if(outfit_mode == APPCONST_OUTFITMODE::SWIMSUIT)
       @apparel_tabs.each do |tab, apparel_list|
-        # Use delete_if instead of select here so we don't waste
-        # more memory.
-        apparel_list.delete_if { |bag_item_data| 
-          item = ApparelBag.fetchItem(bag_item_data)
-        
-          # Don't include the item if it's not a regular apparel piece.
-          ret = false
-          if(item.class.superclass == GameData::ApparelRegularModel)
-            # Now we can check for the swimsuit flag (only regular apparel has that).
-            ret = item.swimsuit
-          end
+
+        # Don't apply this filter to the favourites tab.
+        if tab != "Favourites"
+          # Use delete_if instead of select here so we don't waste
+          # more memory.
+          apparel_list.delete_if { |bag_item_data| 
+            item = ApparelBag.fetchItem(bag_item_data)
           
-          #echoln "BAG ITEM DATA: " + bag_item_data.to_s
-          #echoln "SUPERCLASS: " + item.class.to_s
-          #echoln "RET = :" + ret.to_s
-          
-          # Is ret true, it means that this item is wearable in water. Therefore, we do
-          # not want to delete it.
-          !ret
-        }
-        
+            # Don't include the item if it's not a regular apparel piece.
+            ret = false
+            if(item.class.superclass == GameData::ApparelRegularModel)
+              # Now we can check for the swimsuit flag (only regular apparel has that).
+              ret = item.swimsuit
+            end
+            
+            #echoln "BAG ITEM DATA: " + bag_item_data.to_s
+            #echoln "SUPERCLASS: " + item.class.to_s
+            #echoln "RET = :" + ret.to_s
+            
+            # Is ret true, it means that this item is wearable in water. Therefore, we do
+            # not want to delete it.
+            !ret
+          }
+        end
       end
     end
     
@@ -212,36 +214,45 @@ class PokemonApparelMenu
     # SORT: (to be continued!)
   end
   
-
   def applyTo(outfitstate, doNotify = true)
-
+  
     # Ignore some tabs for now.
-    if @selected_tab == APPCONST_TAB::SEARCH || 
-       @selected_tab == APPCONST_TAB::FAVOURITES
+    if @selected_tab == APPCONST_TAB::SEARCH
       echoln "Returning now?"
       return
-    end
-
-    tab_name = pbGetApparelTabName(@selected_tab)
-    bag_item_data = @apparel_tabs[tab_name][@selected_item] # + @scroll_index].split("-")
-    
-    if(bag_item_data != nil)
-      item = ApparelBag.fetchItem(bag_item_data)
-      layer = item.class::LAYER
-      color = ApparelBag.fetchColor(bag_item_data)
-
-      #echoln "LAYERNAME: " + layer_name + " COLOR: " + apparel_color
-
-      if @outfit_mode == APPCONST_OUTFITMODE::DRYSUIT
-        outfitstate.setDryLayerState(layer, item.id_number, color)
-      elsif @outfit_mode ==  APPCONST_OUTFITMODE::SWIMSUIT
-        outfitstate.setWetLayerState(layer, item.id_number, color)
-      end
+    elsif @selected_tab == APPCONST_TAB::FAVOURITES
+      set_name = apparel_tabs["Favourites"][selected_item]
       
-      if doNotify
-        notify(GenericChangeEvent.new(APPCONST_EVENT::ApplySelectedItem, outfitstate))
+      # Cancel the update in case the selected item didn't point to anything.
+      if set_name != nil
+        new_outfitstate = getSet(set_name)
+
+        outfitstate.setLayerStates(@outfit_mode, getSet(set_name))
+      end
+
+    else
+      tab_name = pbGetApparelTabName(@selected_tab)
+      bag_item_data = @apparel_tabs[tab_name][@selected_item] # + @scroll_index].split("-")
+      
+      if(bag_item_data != nil)
+        item = ApparelBag.fetchItem(bag_item_data)
+        layer = item.class::LAYER
+        color = ApparelBag.fetchColor(bag_item_data)
+
+        #echoln "LAYERNAME: " + layer_name + " COLOR: " + apparel_color
+
+        echoln "SETTING LAYER STATE" 
+        #outfitstate.setLayerState(@outfit_mode, layer, item.id_number, color)
+        echoln "OUTFIT MODE EQUALS: " + @outfit_mode
+        outfitstate.setLayerState(GameData::Apparel::DRYOUTFIT, layer, item.id_number, color)
       end
     end
+
+    if doNotify
+      notify(GenericChangeEvent.new(APPCONST_EVENT::ApplySelectedItem, outfitstate))
+    end
+    
+    
   end
 
   def getSelectedItemData

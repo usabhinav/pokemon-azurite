@@ -45,6 +45,7 @@ class OutfitState
   
   attr_reader   :dry_layer_states # The regular outfit
   attr_reader   :wet_layer_states # The swimming outfit
+  #attr_reader   :active_layer_states # Whichever outfit is active at the moment.
   attr_accessor :gender
   attr_accessor :surfing_species  # A string with the species you surf on + an s or a at the end for shiny/albino 
   
@@ -128,7 +129,7 @@ class OutfitState
   
   def setLayerState(outfitstate_constant, layer_name, apparel_id, color=nil)
     
-    if outfitstate_constant == GameData::Apparel::DRYOUTFIT
+    if outfitstate_constant == APPCONST_OUTFITMODE::DRYSUIT
       layer_states = @dry_layer_states
     else
       layer_states = @wet_layer_states
@@ -165,6 +166,33 @@ class OutfitState
     end
   end
   
+  # To keep any references and avoid future headaches, purposefully do not
+  # use pbDeepCopy but instead copy everything over by hand. Trust me, this
+  # is for the best.
+  def setLayerStates(outfit_mode, new_layer_states)
+    
+    if(outfit_mode == APPCONST_OUTFITMODE::DRYSUIT)
+      layer_states = @dry_layer_states
+    else
+      layer_states = @wet_layer_states
+    end
+    
+    new_layer_states.each do |layer, new_state|
+      layer_states[layer].selected_part = new_state.selected_part
+      layer_states[layer].color = new_state.color
+      layer_states[layer].occupied_by = new_state.occupied_by
+    end
+    
+  end
+    
+  def getLayerStates(outfit_mode)
+    if(outfit_mode == APPCONST_OUTFITMODE::DRYSUIT)
+      return @dry_layer_states
+    else
+      return @wet_layer_states
+    end
+  end
+
   # Swaps the active layer state
   def toggleActiveLayerStates
     if @active_layer_states == @dry_layer_states
@@ -356,12 +384,15 @@ end
 
 #===============================================================================
 # Wraps around an instance of OutfitState to notify other objects of changes 
-# made to it.
+# made to it. A neat side effect is that we can change the reference of the
+# internal outfit state without having to change the wrapper's reference.
 # - Baustein
 #===============================================================================
 class ObservableOutfitState
 
   include Observable
+  
+  #attr_accessor :outfitstate
   
   alias old_initialize initialize
   
@@ -372,6 +403,10 @@ class ObservableOutfitState
   
   def dry_layer_states
     return @outfitstate.dry_layer_states
+  end
+  
+  def active_layer_states
+    return @outfitstate.active_layer_states
   end
   
   def wet_layer_states
@@ -433,10 +468,20 @@ class ObservableOutfitState
   
   def setLayerState(outfit_mode, layer, number_id, color=nil)
     @outfitstate.setLayerState(outfit_mode, layer, number_id, color)
+    notify
   end
   
   def getLayerState(outfit_mode, layer)
     return @outfitstate.getLayerState(outfit_mode, layer)
+  end
+  
+  def setLayerStates(outfit_mode, new_layer_states)
+    @outfitstate.setLayerStates(outfit_mode, new_layer_states)
+    notify
+  end
+  
+  def getLayerStates(outfit_mode)
+    return @outfitstate.getLayerStates(outfit_mode)
   end
   
   def animation
@@ -488,8 +533,7 @@ class ObservableOutfitState
     @outfitstate.toggleActiveLayerStates
   end
 
-  # I think these two functions were the only reason I made this wrapper class.
-  # Basically saving and loading the outfit still works normally, but any information  
+  # Saving and loading the outfit still works normally, but any information  
   # about observers will be lost (which makes sense as the observers don't exist anymore).
   def marshal_dump
     [@outfitstate]

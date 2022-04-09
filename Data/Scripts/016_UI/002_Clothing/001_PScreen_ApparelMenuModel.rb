@@ -244,7 +244,7 @@ class PokemonApparelMenu
         echoln "SETTING LAYER STATE" 
         #outfitstate.setLayerState(@outfit_mode, layer, item.id_number, color)
         echoln "OUTFIT MODE EQUALS: " + @outfit_mode
-        outfitstate.setLayerState(GameData::Apparel::DRYOUTFIT, layer, item.id_number, color)
+        outfitstate.setLayerState(@outfit_mode, layer, item.id_number, color)
       end
     end
 

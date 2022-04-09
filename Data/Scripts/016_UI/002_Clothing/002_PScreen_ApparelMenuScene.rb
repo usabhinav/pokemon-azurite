@@ -1,5 +1,8 @@
 class PokemonApparelMenu_Scene
 
+  attr_reader :p_outfitstate
+  attr_reader :prevp_outfitstate
+
   def pbStartScene(model, outfitstate)
     @model = model
     
@@ -196,7 +199,7 @@ class PokemonApparelMenu_Scene
   
   def updateOutfitMode(event)
     
-    echo "UPDATING OUTFITMODE"
+    echoln "UPDATING OUTFITMODE"
     
     if event.label == APPCONST_EVENT::OutfitModeChange
       # Set the correct background displaying the selected tab
@@ -239,6 +242,9 @@ class PokemonApparelMenu_Scene
         #updatePrevPOutfitState
         
       when APPCONST_EVENT::OutfitModeChange
+      
+        echoln "CHANGING OUTFIT MODE"
+      
         # Toggle the preview outfit states' outfit modes.
         @p_outfitstate.toggleActiveLayerStates
         @prevp_outfitstate.toggleActiveLayerStates

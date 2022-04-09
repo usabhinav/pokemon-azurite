@@ -45,7 +45,7 @@ class OutfitState
   
   attr_reader   :dry_layer_states # The regular outfit
   attr_reader   :wet_layer_states # The swimming outfit
-  #attr_reader   :active_layer_states # Whichever outfit is active at the moment.
+  attr_reader   :active_layer_states # Whichever outfit is active at the moment.
   attr_accessor :gender
   attr_accessor :surfing_species  # A string with the species you surf on + an s or a at the end for shiny/albino 
   
@@ -197,8 +197,10 @@ class OutfitState
   def toggleActiveLayerStates
     if @active_layer_states == @dry_layer_states
       @active_layer_states = @wet_layer_states
+      echoln "WE WET AND RECKLESS NOW"
     else
       @active_layer_states = @dry_layer_states
+      echoln "WE DRY NOW"
     end
   end
   

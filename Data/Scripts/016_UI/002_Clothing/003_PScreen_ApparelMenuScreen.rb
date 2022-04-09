@@ -87,7 +87,10 @@ class PokemonApparelMenu_Screen
               end
             
             elsif Input.trigger?(Input::ALT) # Alter Set
-              echoln $Trainer.outfitstate.active_layer_states["Hair"].selected_part.to_s
+              echoln "Active Layer Hair ID: " + $Trainer.outfitstate.active_layer_states["Hair"].selected_part.to_s
+              echoln "Model outfit mode: " + @model.outfit_mode
+              echoln "Outfit Preview Animation: " + @scene.p_outfitstate.animation 
+              echoln "Outfit Preview Active Layer Hair ID: " + @scene.p_outfitstate.active_layer_states["Hair"].selected_part.to_s
             elsif Input.trigger?(Input::CTRL) # Delete Set
             end
         end

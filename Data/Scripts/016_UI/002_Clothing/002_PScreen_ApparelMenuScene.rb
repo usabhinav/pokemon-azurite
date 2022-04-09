@@ -65,6 +65,25 @@ class PokemonApparelMenu_Scene
     # in case enough apparel exists in a tab to scroll down
     @cursor_lock_threshhold = 3
 
+    # Item description
+    
+    @description_x = 285
+    @description_y = 243
+    @description_w = 250
+    @description_h = 150
+    @dviewport = Viewport.new(@description_x,@description_y,@description_w,@description_h)
+    @dviewport.z = 99999
+    @sprites["description"] = Window_AdvancedTextPokemon.newWithSize("asdasd",0,0,@description_w,@description_h,@dviewport)
+    @sprites["description"].lineHeight(14)
+    @sprites["description"].baseColor   = ItemStorage_Scene::ITEMTEXTBASECOLOR
+    @sprites["description"].shadowColor = Color.new(64, 64, 64, 255)
+    @sprites["description"].windowskin  = nil
+    @sprites["description"].visible     = true
+    @sprites["description"].contents.font.size = 22
+    @sprites["description"].setText("Descriptive Description with multiple lines. Very cool. A. A. A. A. . . . .  A A A A A A A A A A. Wow, so much Space!")
+    #@sprites["description"].refresh
+    
+
     # The outfit preview space.
     @preview_x = 305
     @preview_y = 74
@@ -91,26 +110,26 @@ class PokemonApparelMenu_Scene
   
   def updateTabs(event)
   
+    # Set the correct background displaying the selected tab
+    @sprites["background"].setBitmap("Graphics/Pictures/Apparel/" +
+      @model.outfit_mode +
+      PokemonApparelMenu.getTabName(@model.selected_tab))
+
+    # Clear all rows
+    i = 0
+    while i < @displayable_items
+      @sprites["item" + i.to_s].bitmap.clear
+      i += 1
+    end
+  
     echo "Label: " + event.label.to_s + ", TabChange: " + APPCONST_EVENT::TabChange
-    if event.label == APPCONST_EVENT::TabChange
-      
+    case event.label
+    when APPCONST_EVENT::TabChange
       # Check whether or not to display the cursor.
       if event.value == APPCONST_TAB::SWITCH
         @sprites["cursor"].visible = false
       else
         @sprites["cursor"].visible = true
-      end
-    
-      # Set the correct background displaying the selected tab
-      @sprites["background"].setBitmap("Graphics/Pictures/Apparel/" +
-        @model.outfit_mode +
-        PokemonApparelMenu.getTabName(@model.selected_tab))
-
-      # Clear all rows
-      i = 0
-      while i < @displayable_items
-        @sprites["item" + i.to_s].bitmap.clear
-        i += 1
       end
 
       # Display the items depending on which tab is selected
@@ -135,15 +154,27 @@ class PokemonApparelMenu_Scene
       when 8 # Search
       when 9 # Switch
       end
+    # If we are in the sets tab, reconstruct in case a new set gets added or removed.
+    when APPCONST_EVENT::AddingSet 
+      if @model.selected_tab == APPCONST_TAB::FAVOURITES
+        constructRows("Favourites", @model.apparel_tabs)
+      end
+    when APPCONST_EVENT::RemovingSet
+      if @model.selected_tab == APPCONST_TAB::FAVOURITES
+        constructRows("Favourites", @model.apparel_tabs)
+      end
     end
-
-
   end
 
   def updateCursor(event)
 
     if @model.selected_tab != APPCONST_TAB::SWITCH # Generic item selection tab.
-      if event.label == APPCONST_EVENT::SelectedItemChange
+      case event.label 
+      when APPCONST_EVENT::SelectedItemChange
+        
+        # Save the old scroll_index so we know if the rows need to be reconstructed.
+        old_scroll_index = @scroll_index
+        
         # Points to which item the cursor is selecting currently
         cursor_selection = @cursor_index + @scroll_index
     
@@ -184,12 +215,33 @@ class PokemonApparelMenu_Scene
             end
           end
         end
-      elsif event.label == APPCONST_EVENT::TabChange
+        
+        if old_scroll_index != @scroll_index
+          updateTabs(GenericChangeEvent.new(APPCONST_EVENT::TabChange, nil))
+        end
+        
+      when APPCONST_EVENT::TabChange
         
         # Reset cursor and scroll index.
         @cursor_index = 0
         @scroll_index = 0
+      
+      #when APPCONST_EVENT::AddingSet
+        # In case we happen to be in the sets tab and our cursor
+        # isn't selecting anything, make it select the newly added
+        # tab and become visible.
+        # TODO:
+
         
+      # when APPCONST_EVENT::RemovingSet
+        # In case we happen to be in the sets tab and the cursor would
+        # land on an empty spot after removal, set the cursor position
+        # back by one. Additionally, if we removed the only existing set,
+        # mark this as unselected and go invisible. TODO: Move this into screen logic.
+
+        # if(@model.selected_item > 0 && @model.getSelectedItemData == nil)
+          # @cursor_index -= 1
+        # end
       end
     end
     
@@ -220,6 +272,7 @@ class PokemonApparelMenu_Scene
         if @model.selected_tab == APPCONST_TAB::SWITCH
           # Don't display preview on the switch tab.
           @sprites["preview"].visible = false
+          @sprites["description"].visible = false
         else
           # Reset the preview. (De-select unapplied item from previous tab)
           @p_outfitstate = pbDeepCopy(@prevp_outfitstate)
@@ -229,6 +282,7 @@ class PokemonApparelMenu_Scene
           @model.applyTo(@p_outfitstate, false)
           
           @sprites["preview"].visible = true
+          @sprites["description"].visible = true  
         end
       when APPCONST_EVENT::SelectedItemChange
         # Set the selected item to be visible on the preview.
@@ -270,12 +324,14 @@ class PokemonApparelMenu_Scene
   
   def update(observer, event)
 
+
+
     case event.label
       when APPCONST_EVENT::TabChange
-        updateTabs(event)
         # Depending on the tab the cursor might need to change shape or adjust
         # it's position
         updateCursor(event)
+        updateTabs(event)
         updatePreview(event)
       when APPCONST_EVENT::SelectedItemChange
         updateCursor(event)
@@ -293,6 +349,10 @@ class PokemonApparelMenu_Scene
         updatePreview(event)
       when APPCONST_EVENT::ApplySelectedItem
         updatePreview(event)
+      when APPCONST_EVENT::RemovingSet
+        updateTabs(event)
+      when APPCONST_EVENT::AddingSet
+        updateTabs(event)
     end
     
     #$Trainer.outfitstate.applyToOverworldBitmap(@sprites["preview"].bitmap)

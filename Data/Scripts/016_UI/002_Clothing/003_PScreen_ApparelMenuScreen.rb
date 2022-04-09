@@ -15,8 +15,10 @@ class PokemonApparelMenu_Screen
       # Input behaviour for every tab.
       if Input.trigger?(Input::RIGHT)
         @model.selected_tab += 1
+        pbPlayCursorSE()
       elsif Input.trigger?(Input::LEFT)
         @model.selected_tab -= 1
+        pbPlayCursorSE()
       elsif Input.trigger?(Input::B)
         break
       
@@ -33,9 +35,9 @@ class PokemonApparelMenu_Screen
           else # Input behaviour for generic apparel selection.
 
             if Input.trigger?(Input::DOWN)
-              @model.selected_item += 1
+              moveCursor(1)
             elsif Input.trigger?(Input::UP)
-              @model.selected_item -= 1
+              moveCursor(-1)
             elsif Input.trigger?(Input::C)
               if @model.selected_tab != APPCONST_TAB::FAVOURITES
                 selected_bag_data = @model.getSelectedItemData
@@ -77,10 +79,11 @@ class PokemonApparelMenu_Screen
               end
                 
             elsif Input.trigger?(Input::SHIFT) # Add Set
+              
               set_name = pbMessageFreeText(_INTL("Now enter the set's name."), "", false, 30)
                 
               if(@model.hasSet(set_name)) # Don't add if set name exists already.
-
+                pbMessage(_INTL("That set name already exists."))
               else
                 new_outfitstate = pbDeepCopy($Trainer.outfitstate)
                 @model.createSet(set_name, new_outfitstate)
@@ -92,6 +95,16 @@ class PokemonApparelMenu_Screen
               echoln "Outfit Preview Animation: " + @scene.p_outfitstate.animation 
               echoln "Outfit Preview Active Layer Hair ID: " + @scene.p_outfitstate.active_layer_states["Hair"].selected_part.to_s
             elsif Input.trigger?(Input::CTRL) # Delete Set
+              # Are we in the sets tab?
+              if(@model.selected_tab == APPCONST_TAB::FAVOURITES)
+                # Is a set selected?
+                if(@model.getSelectedItemData != nil)
+                  # Did the player say yes to deleting the set?
+                    if(pbConfirmMessage(_INTL("Would you like to delete this set?")))
+                      @model.deleteSelectedSet
+                    end
+                end
+              end
             end
         end
       end
@@ -105,4 +118,14 @@ class PokemonApparelMenu_Screen
     end
     @scene.pbEndScene
   end
+  
+  def moveCursor(value)
+    old_index = @model.selected_item
+    @model.selected_item += value
+    
+    if old_index != @model.selected_item
+      pbPlayCursorSE()
+    end
+  end
+  
 end

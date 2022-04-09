@@ -18,6 +18,8 @@ module APPCONST_EVENT
   InitMenu            = "InitializeMenuEvent"
   ApplySelectedItem   = "ApplySelectedItemEvent"
   UnselectItem        = "UnselectItemEvent"
+  AddingSet           = "AddingSetEvent"
+  RemovingSet         = "RemovingSetEvent"
 end
 
 module APPCONST_OUTFITMODE # These correspond to the prefix of the menu image filenames.
@@ -84,11 +86,14 @@ class PokemonApparelMenu
   end
 
   def createSet(set_name, outfitstate)
-    # Add it to the bag so it gets saved.
+    
+    # Add it to the bag so it is saved after closing the game.
     $ApparelBag.sets[@outfit_mode][set_name] = pbDeepCopy(outfitstate.getLayerStates(@outfit_mode))
     
     # Add it to the sets tab.
     @apparel_tabs["Favourites"].push(set_name)
+    
+    notify(GenericChangeEvent.new(APPCONST_EVENT::AddingSet, @outfit_mode))
   end
   
   def getSet(set_name)
@@ -98,6 +103,28 @@ class PokemonApparelMenu
   def hasSet(set_name)
     return $ApparelBag.sets[@outfit_mode].has_key?(set_name)
   end 
+  
+  def deleteSelectedSet
+    
+    # Can't delete something that doesn't exist to begin with.
+    if (@apparel_tabs["Favourites"][@selected_item] != nil)
+      
+      # Remove it from the bag.
+      set_name = @apparel_tabs["Favourites"][@selected_item]
+      $ApparelBag.sets[@outfit_mode].delete(set_name)
+      
+      # Remove it from the tab.
+      @apparel_tabs["Favourites"].delete_at(@selected_item)
+      
+      # Move selected item back if needed.
+      if(@selected_item > 0)
+        @selected_item -= 1
+        notify(GenericChangeEvent.new(APPCONST_EVENT::SelectedItemChange, @selected_item))
+      end
+      
+      notify(GenericChangeEvent.new(APPCONST_EVENT::RemovingSet, nil))
+    end
+  end
   
   def toggleOutfitMode
     
@@ -116,6 +143,7 @@ class PokemonApparelMenu
   alias old_initialize initialize
 
   def initialize(apparel_bag)#, item_amount=9)
+    
     # First call the init method obtained from including Observable
     old_initialize
 
@@ -254,6 +282,8 @@ class PokemonApparelMenu
     
     
   end
+  
+  
 
   def getSelectedItemData
     tab_name = pbGetApparelTabName(@selected_tab)

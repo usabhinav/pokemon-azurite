@@ -339,11 +339,11 @@ class Game_Player < Game_Character
         # Generate a random apparel ID
         apparelId = rand(maxValue) + 1
         
-        #echoln GameData::Apparel.get(layer_name)::DATA.to_s
+        #echoln GameData::Apparel.getClass(layer_name)::DATA.to_s
         
         # Repeat this if apparel ID does not exist
         #if $ApparelData[layer_name][apparelId] == nil
-        if GameData::Apparel.get(layer_name).get(apparelId) == nil
+        if GameData::Apparel.getClass(layer_name).get(apparelId) == nil
           apparelId = 0
         # Select the apparel
         else

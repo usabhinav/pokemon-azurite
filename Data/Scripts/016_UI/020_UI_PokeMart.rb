@@ -81,6 +81,71 @@ class PokemonMartAdapter
   end
 end
 
+# Methods that stayed the same: getMoney, getMoneyString,
+# setMoney
+class ApparelMartAdapter < PokemonMartAdapter
+  
+  def getInventory
+    return $ApparelBag
+  end
+
+  def getName(item)
+    return GameData::Apparel.get(item).real_name
+  end
+
+  def getDisplayName(item)
+    item_name = getName(item)
+    return item_name
+  end
+
+  def getDescription(item)
+    return GameData::Apparel.get(item).description
+  end
+
+  def getItemIcon(item)
+    echoln "Getting item icon?"
+    return (item) ? GameData::Apparel.icon_filename(item) : nil
+  end
+
+  def getQuantity(item)
+    item_data = GameData::Apparel.get(item)
+    return $ApparelBag.pbHasApparel?(item_data.class::LAYER, item_data.id_number) ? 1 : 0
+  end
+
+  def showQuantity?(item)
+    return 1
+  end
+
+  def getPrice(item, selling = false)
+    if $game_temp.mart_prices && $game_temp.mart_prices[item]
+      if selling
+        return $game_temp.mart_prices[item][1] if $game_temp.mart_prices[item][1] >= 0
+      else
+        return $game_temp.mart_prices[item][0] if $game_temp.mart_prices[item][0] > 0
+      end
+    end
+    return GameData::Apparel.get(item).price
+  end
+
+  def getDisplayPrice(item, selling = false)
+    price = getPrice(item, selling).to_s_formatted
+    return _INTL("$ {1}", price)
+  end
+
+  def canSell?(item)
+    return false
+  end
+
+  def addItem(item)
+    item_data = GameData::Apparel.get(item)
+    return $ApparelBag.pbStoreApparel(item_data.class::LAYER, item_data.id_number)
+  end
+
+  def removeItem(item)
+    return false
+  end
+end
+
 #===============================================================================
 # Buy and Sell adapters
 #===============================================================================
@@ -146,6 +211,7 @@ class Window_PokemonMart < Window_DrawableCommand
   end
 
   def item
+    ret = (self.index >= @stock.length) ? nil : @stock[self.index]
     return (self.index >= @stock.length) ? nil : @stock[self.index]
   end
 
@@ -190,7 +256,7 @@ class PokemonMart_Scene
     @sprites["moneywindow"].text = _INTL("Money:\r\n<r>{1}", @adapter.getMoneyString)
   end
 
-  def pbStartBuyOrSellScene(buying, stock, adapter)
+  def pbStartBuyOrSellScene(buying, stock, adapter, apparel_mart=false)
     # Scroll right before showing screen
     pbScrollMap(6, 5, 5)
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
@@ -200,7 +266,7 @@ class PokemonMart_Scene
     @sprites = {}
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
     @sprites["background"].setBitmap("Graphics/Pictures/martScreen")
-    @sprites["icon"] = ItemIconSprite.new(36, Graphics.height - 50, nil, @viewport)
+    @sprites["icon"] = ItemIconSprite.new(36, Graphics.height - 50, nil, @viewport, apparel_mart)
     winAdapter = buying ? BuyAdapter.new(adapter) : SellAdapter.new(adapter)
     @sprites["itemwindow"] = Window_PokemonMart.new(stock, winAdapter,
        Graphics.width - 316 - 16, 12, 330 + 16, Graphics.height - 126)
@@ -235,8 +301,8 @@ class PokemonMart_Scene
     Graphics.frame_reset
   end
 
-  def pbStartBuyScene(stock, adapter)
-    pbStartBuyOrSellScene(true, stock, adapter)
+  def pbStartBuyScene(stock, adapter, apparel_mart=false)
+    pbStartBuyOrSellScene(true, stock, adapter, apparel_mart)
   end
 
   def pbStartSellScene(bag, adapter)
@@ -520,10 +586,19 @@ end
 #
 #===============================================================================
 class PokemonMartScreen
-  def initialize(scene,stock)
+  def initialize(scene,stock,apparel_mart=false)
     @scene=scene
     @stock=stock
-    @adapter=PokemonMartAdapter.new
+    
+    @apparel_mart = apparel_mart # Tells this class how the stock entries need to be interpreted.
+    if apparel_mart
+      @adapter=ApparelMartAdapter.new
+      @gamedata_class = GameData::Apparel
+    else
+      @adapter=PokemonMartAdapter.new
+      @gamedata_class = GameData::Item
+    end
+    
   end
 
   def pbConfirm(msg)
@@ -539,7 +614,7 @@ class PokemonMartScreen
   end
 
   def pbBuyScreen
-    @scene.pbStartBuyScene(@stock,@adapter)
+    @scene.pbStartBuyScene(@stock,@adapter,@apparel_mart)
     item=nil
     loop do
       item=@scene.pbChooseBuyItem
@@ -551,7 +626,7 @@ class PokemonMartScreen
         pbDisplayPaused(_INTL("You don't have enough money."))
         next
       end
-      if GameData::Item.get(item).is_important?
+      if !@apparel_mart && @gamedata_class.get(item).is_important?
         if !pbConfirm(_INTL("Certainly. You want {1}. That will be ${2}. OK?",
            itemname,price.to_s_formatted))
           next
@@ -588,16 +663,25 @@ class PokemonMartScreen
       else
         @adapter.setMoney(@adapter.getMoney-price)
         for i in 0...@stock.length
-          if GameData::Item.get(@stock[i]).is_important? && $PokemonBag.pbHasItem?(@stock[i])
-            @stock[i]=nil
+          if @apparel_mart # Don't include apparel that was bought already.
+            item_data = GameData::Apparel.get(@stock[i])
+            if $ApparelBag.pbHasApparel?(item_data.class::LAYER, item_data.id_number)
+              @stock[i]=nil
+            end
+          else
+            if GameData::Item.get(@stock[i]).is_important? && $PokemonBag.pbHasItem?(@stock[i])
+              @stock[i]=nil
+            end
           end
         end
         @stock.compact!
         pbDisplayPaused(_INTL("Here you are! Thank you!")) { pbSEPlay("Mart buy item") }
-        if $PokemonBag
-          if quantity>=10 && GameData::Item.get(item).is_poke_ball? && GameData::Item.exists?(:PREMIERBALL)
-            if @adapter.addItem(GameData::Item.get(:PREMIERBALL))
-              pbDisplayPaused(_INTL("I'll throw in a Premier Ball, too."))
+        if !@apparel_mart
+          if $PokemonBag
+            if quantity>=10 && GameData::Item.get(item).is_poke_ball? && GameData::Item.exists?(:PREMIERBALL)
+              if @adapter.addItem(GameData::Item.get(:PREMIERBALL))
+                pbDisplayPaused(_INTL("I'll throw in a Premier Ball, too."))
+              end
             end
           end
         end
@@ -644,6 +728,48 @@ class PokemonMartScreen
   end
 end
 
+def pbGetGameDataClass(apparel_mart)
+  if apparel_mart
+    return GameData::Apparel
+  else
+    return GameData::Item
+  end
+end
+
+def pbApparelMart(stock,speech=nil)
+  commands = []
+  cmdStyles  = -1
+  cmdDye = -1
+  cmdLength = -1
+  cmdEyeContacts  = -1
+  cmdQuit = -1
+  commands[cmdStyles = commands.length]  = _INTL("Styles")
+  commands[cmdDye = commands.length] = _INTL("Dye")
+  commands[cmdLength = commands.length]  = _INTL("Length")
+  commands[cmdEyeContacts = commands.length]  = _INTL("Eye Contacts")
+  commands[cmdQuit = commands.length] = _INTL("Quit")
+  cmd = pbMessage(
+     speech ? speech : _INTL("Welcome! How may I serve you?"),
+     commands,cmdQuit+1)
+  loop do
+    if cmdStyles>=0 && cmd==cmdStyles
+      scene = PokemonMart_Scene.new
+      screen = PokemonMartScreen.new(scene,stock,true)
+      screen.pbBuyScreen
+    elsif cmdDye>=0 && cmd==cmdDye
+      scene = PokemonMart_Scene.new
+      screen = PokemonMartScreen.new(scene,stock,true)
+      screen.pbBuyScreen
+    else
+      pbMessage(_INTL("Please come again!"))
+      break
+    end
+    cmd = pbMessage(_INTL("Is there anything else I can help you with?"),
+       commands,cmdQuit+1)
+  end
+  $game_temp.clear_mart_prices
+end
+
 #===============================================================================
 #
 #===============================================================================
@@ -652,6 +778,7 @@ def pbPokemonMart(stock,speech=nil,cantsell=false)
     stock[i] = GameData::Item.get(stock[i]).id
     stock[i] = nil if GameData::Item.get(stock[i]).is_important? && $PokemonBag.pbHasItem?(stock[i])
   end
+
   stock.compact!
   commands = []
   cmdBuy  = -1

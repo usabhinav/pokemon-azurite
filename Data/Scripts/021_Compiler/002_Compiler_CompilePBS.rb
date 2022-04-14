@@ -403,7 +403,7 @@ module Compiler
     
     for pbs_name in pbs_names
     
-      apparel_class = GameData::Apparel.get(pbs_name) 
+      apparel_class = GameData::Apparel.getClass(pbs_name) 
     
       apparel_class::DATA.clear
     
@@ -438,7 +438,7 @@ module Compiler
           apparel_names[apparel_id_unique]        = apparel_hash[:name]
           apparel_descriptions[apparel_id_unique] = apparel_hash[:name_plural]
           apparel_colors.add(line[GameData::Apparel::COLORCSV])
-          GameData::Apparel.get(pbs_name).register(apparel_hash)
+          GameData::Apparel.getClass(pbs_name).register(apparel_hash)
           
           apparel_id_unique += 1
           

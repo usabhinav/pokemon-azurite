@@ -76,13 +76,12 @@ class PokemonApparelMenu_Scene
     @sprites["description"] = Window_AdvancedTextPokemon.newWithSize("asdasd",0,0,@description_w,@description_h,@dviewport)
     @sprites["description"].lineHeight(14)
     @sprites["description"].baseColor   = ItemStorage_Scene::ITEMTEXTBASECOLOR
-    @sprites["description"].shadowColor = Color.new(64, 64, 64, 255)
+    #@sprites["description"].shadowColor = ItemStorage_Scene::ITEMTEXTBASECOLOR # Color.new(64, 64, 64, 255)
     @sprites["description"].windowskin  = nil
     @sprites["description"].visible     = true
-    @sprites["description"].contents.font.size = 22
+    @sprites["description"].contents.font.size = 24
     @sprites["description"].setText("Descriptive Description with multiple lines. Very cool. A. A. A. A. . . . .  A A A A A A A A A A. Wow, so much Space!")
     #@sprites["description"].refresh
-    
 
     # The outfit preview space.
     @preview_x = 305

@@ -74,7 +74,7 @@ class ApparelBag
   # Created this so the first pbStoreApparel can call this and make it uncrashable
   def pbStoreApparel(layer, apparel_piece, color="Default")
     begin
-      pbStoreApparel_safe(layer, apparel_piece, color)
+      return pbStoreApparel_safe(layer, apparel_piece, color)
     rescue
       echo "Error: Couldn't add apparel piece: " + layer + "-" + apparel_piece.to_s + "-" + color + "\n"
     end
@@ -82,6 +82,11 @@ class ApparelBag
   
   def pbStoreApparel_safe(layer, apparel_piece, color="Default")
     apparel_piece = convertToApparelId(layer, apparel_piece)
+
+    if color == "Default"
+      item_data = GameData::Apparel.getClass(layer).get(apparel_piece)
+      color = pbGetApparelColors(layer, apparel_piece)[0]
+    end
 
     # Check if the apparel ID is valid.
     if !apparel_piece || apparel_piece<1
@@ -120,13 +125,13 @@ class ApparelBag
   # Just in case the format changes again. 
   def self.toBagData(layer, apparel_id, color)
     #return layer + "-" + apparel_id.to_s + "-" + color
-    item = GameData::Apparel.get(layer).get(apparel_id)
+    item = GameData::Apparel.getClass(layer).get(apparel_id)
     #return item.id_unique.to_s + "-" + color
     return [item.id_unique, color]
   end
   
   def self.fetchItem(stored_apparel)
-    return GameData::Apparel.getItem(stored_apparel[0])
+    return GameData::Apparel.get(stored_apparel[0])
   end
 
   def self.fetchColor(stored_apparel)

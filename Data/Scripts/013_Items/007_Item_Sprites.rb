@@ -6,8 +6,14 @@ class ItemIconSprite < SpriteWrapper
   ANIM_ICON_SIZE   = 48
   FRAMES_PER_CYCLE = Graphics.frame_rate
 
-  def initialize(x,y,item,viewport=nil)
+  def initialize(x,y,item,viewport=nil,apparel_mart=false)
     super(viewport)
+    @apparel_mart = apparel_mart
+    if apparel_mart
+      @gamedata_class = GameData::Apparel
+    else 
+      @gamedata_class = GameData::Item
+    end
     @animbitmap = nil
     @animframe = 0
     @numframes = 1
@@ -72,7 +78,7 @@ class ItemIconSprite < SpriteWrapper
     @animbitmap.dispose if @animbitmap
     @animbitmap = nil
     if @item || !@blankzero
-      @animbitmap = AnimatedBitmap.new(GameData::Item.icon_filename(@item))
+      @animbitmap = AnimatedBitmap.new(@gamedata_class.icon_filename(@item))
       self.bitmap = @animbitmap.bitmap
       if self.bitmap.height==ANIM_ICON_SIZE
         @numframes = [(self.bitmap.width/ANIM_ICON_SIZE).floor,1].max

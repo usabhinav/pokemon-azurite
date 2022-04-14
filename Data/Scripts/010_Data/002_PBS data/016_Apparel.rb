@@ -52,6 +52,14 @@ module GameData
       echoln "UNIQUE ID: " + id_unique.to_s
     end
 
+    def name
+      return real_name
+    end
+    
+    def description
+      return real_description
+    end
+
     # Helper method used only by the compiler to complete class specific creation of an apparel hash.
     # Needs to be re-implemented/extended for every class that deviates from its superclass in terms of data.
     def self.completeHash(apparel_hash, line)
@@ -77,6 +85,9 @@ module GameData
       @real_description   = hash[:description] || "This is an apparel piece."
     end
     
+    def colors
+      return @real_colors
+    end
     
     def self.completeHash(apparel_hash, line)
       super(apparel_hash, line)
@@ -187,11 +198,13 @@ module GameData
   class ApparelBike < ApparelSpecialModel
     extend ClassMethods
     DATA_FILENAME = "bike.dat"
+    LAYER = "Bike"
     DATA = {}
   end
   class ApparelRod < ApparelSpecialModel
     extend ClassMethods
     DATA_FILENAME = "rod.dat"
+    LAYER = "Rod"
     DATA = {}
   end
   
@@ -245,6 +258,7 @@ module GameData
     
     # A hash containing all class names for apparel for easy access with loops.
     @@class_hash = PBS_NAMES.map { |name| [name.to_sym, Object.const_get(self.to_s + name)] }.to_h
+    @@inverted_class_hash = @@class_hash.invert
     
     echoln "CLASS HASH: " + @@class_hash.to_s
     echoln "ONE CLASS OBJ: " + @@class_hash[:Base]::DATA.to_s
@@ -258,17 +272,20 @@ module GameData
     COLORS = []
     
     # Return class with the corresponding pbs name.
-    def self.get(layer_name)
+    def self.getClass(layer_name)
       validate layer_name => [String, Symbol]
       # Make sure name is a symbol.
       layer_name = layer_name.to_sym if layer_name.is_a?(String)
       return @@class_hash[layer_name]
     end
   
-    # Return apparel object corresponding to its unique id.
-    def self.getItem(id_unique)
-      return @@all_apparel[id_unique]
+    # Return apparel object corresponding to its unique id (or its constant).
+    def self.get(id)
+      echoln "NERF POLYMORPH"
+      id = id.to_sym if id.is_a?(String)
+      return @@all_apparel[id]
     end
+  
   
     def self.load
       # Load the apparel game data.
@@ -283,13 +300,34 @@ module GameData
         #echoln "DATA HASH: " + @@class_hash[pbs_name_sym]::DATA.to_s
         
         all_apparel_list.concat( @@class_hash[pbs_name_sym]::DATA.map{ |apparel_id, apparel_obj| [apparel_obj.id_unique, apparel_obj]})
-        
+        all_apparel_list.concat( @@class_hash[pbs_name_sym]::DATA.map{ |apparel_id, apparel_obj| [apparel_obj.id, apparel_obj]})
+
         #echoln "WARNING: Collision of unique_id's for apparel. Expect problems."
         #echo "ALL APPAREL: " + @@class_hash[pbs_name_sym]::DATA.map{ |apparel_id, apparel_obj|  [apparel_obj.id_unique, apparel_obj]}.to_h.to_s #@@all_apparel.to_s
         #echo all_apparel_list.to_h.to_s
         @@all_apparel = all_apparel_list.to_h
+        
+        echo "ALL_APPAREL: " + @@all_apparel.to_s
       end
     end
+    
+    def self.icon_filename(item)
+      
+      return "Graphics/Items/back" if item.nil?
+      item_data = self.get(item)
+      return "Graphics/Items/000" if item_data.nil?
+      
+      colors = pbGetApparelColors(item_data.class::LAYER, item_data.id_number)
+      
+      if item_data.class.superclass == GameData::ApparelRegularModel
+        ret = "Graphics/Characters/Apparel/TrainerID/" + item_data.class::LAYER + "/" + colors[0] + "/" + item_data.class::LAYER + item_data.id_number.to_s + ".png"
+      else
+        ret = "Graphics/Characters/Apparel/" + item_data.class::LAYER + "/" + item_data.class::LAYER + item_data.id_number.to_s + ".png"
+      end
+      echoln "PATH STRING: " + ret
+      return ret
+    end
+    
   end
   
 end
@@ -324,12 +362,12 @@ end
 def pbGetApparelName(layer, apparelId)
   #echo "Inspect: " + $ApparelData.inspect + "\n"
   #return $ApparelData[layer][apparelId][CSVCONST::APPARELNAME]
-  return GameData::Apparel.get(layer).get(apparelId).real_name
+  return GameData::Apparel.getClass(layer).get(apparelId).real_name
 end
 
 def pbGetApparelDesc(layer, apparelId)
   #return $ApparelData[layer][apparelId][CSVCONST::APPARELDESC]
-  return GameData::Apparel.get(layer).get(apparelId).real_description
+  return GameData::Apparel.getClass(layer).get(apparelId).real_description
 end
 
 def pbGetApparelConflicts(layer, apparelId)
@@ -338,12 +376,12 @@ def pbGetApparelConflicts(layer, apparelId)
     return []
   end
   
-  conflicts = GameData::Apparel.get(layer).get(apparelId).conflicts
+  conflicts = GameData::Apparel.getClass(layer).get(apparelId).conflicts
   
-  #echoln "GameData::Apparel.get(layer).get(apparelID) = " + GameData::Apparel.get(layer).get(apparelId).to_s
+  #echoln "GameData::Apparel.getClass(layer).get(apparelID) = " + GameData::Apparel.getClass(layer).get(apparelId).to_s
   if conflicts != nil && conflicts != []
-    echoln "CONFLICTS CLASS: " + GameData::Apparel.get(layer).get(apparelId).conflicts.class.to_s
-    echoln "CONFLICTS: " + GameData::Apparel.get(layer).get(apparelId).conflicts.to_s
+    echoln "CONFLICTS CLASS: " + GameData::Apparel.getClass(layer).get(apparelId).conflicts.class.to_s
+    echoln "CONFLICTS: " + GameData::Apparel.getClass(layer).get(apparelId).conflicts.to_s
     echoln "CONFLICTS SPLIT: " + conflicts.split(GameData::Apparel::DELIMITER).to_s
 
     return conflicts.split(GameData::Apparel::DELIMITER)
@@ -355,7 +393,7 @@ end
 def pbGetApparelColors(layer, apparelId)
   #echo $ApparelData.inspect
   #colors = $ApparelData[layer][apparelId][CSVCONST::APPARELCOLORS]
-  colors = GameData::Apparel.get(layer).get(apparelId).real_colors
+  colors = GameData::Apparel.getClass(layer).get(apparelId).real_colors
   if colors != nil && colors != ""
     return colors.split(GameData::Apparel::DELIMITER)
   else
@@ -365,7 +403,7 @@ end
 
 def pbCanSwimWith(layer, apparelId)
   #return $ApparelData[layer][apparelId][CSVCONST::APPARELSWIMSUIT]
-  return GameData::Apparel.get(layer).get(apparelId).swimsuit
+  return GameData::Apparel.getClass(layer).get(apparelId).swimsuit
 end
 
 def pbCanPlayerSwim?
@@ -396,11 +434,11 @@ def pbGetApparelVariants(layer, apparelId)
   
   # The index 0 corresponds to this layer being empty, so there are no variants for it.
   # Additionally, only regular apparel layers have variants.
-  if apparelId == 0 || GameData::Apparel.get(layer).superclass != GameData::ApparelRegularModel
+  if apparelId == 0 || GameData::Apparel.getClass(layer).superclass != GameData::ApparelRegularModel
     return []
   end
   
-  variants = GameData::Apparel.get(layer).get(apparelId).variants
+  variants = GameData::Apparel.getClass(layer).get(apparelId).variants
   echoln "VARIANTS: " + variants.to_s
   
   if variants != nil && variants != []
@@ -413,10 +451,10 @@ end
 
 # Checks if a layer can have conflicts with other layers.
 def pbHasApparelConflicts?(layer)
-  apparel_class = GameData::Apparel.get(layer)
+  apparel_class = GameData::Apparel.getClass(layer)
   return apparel_class.superclass == GameData::ApparelRegularModel
 end
 
 def pbGetMaxApparelID(layer)
-  return GameData::Apparel.get(layer).maxApparelID
+  return GameData::Apparel.getClass(layer).maxApparelID
 end

@@ -131,8 +131,10 @@ class PokemonLoad_Scene
 
   def pbUpdate
     oldi = @sprites["cmdwindow"].index rescue 0
+    echo "OLDI: " + oldi.to_s
     pbUpdateSpriteHash(@sprites)
     newi = @sprites["cmdwindow"].index rescue 0
+    echo "NEWI: " + newi.to_s
     if oldi!=newi
       @sprites["panel#{oldi}"].selected = false
       @sprites["panel#{oldi}"].pbRefresh
@@ -277,7 +279,8 @@ class PokemonLoadScreen
   end
 
   def pbStartLoadScreen
-    commands = []
+    commands     = []
+    buttonFormat = [] # Dictates which sprite the scene will use for each command button.
     cmd_continue     = -1
     cmd_new_game     = -1
     cmd_options      = -1
@@ -286,17 +289,53 @@ class PokemonLoadScreen
     cmd_debug        = -1
     cmd_quit         = -1
     show_continue = !@save_data.empty?
+    
     if show_continue
       commands[cmd_continue = commands.length] = _INTL('Continue')
+      commands[cmd_new_game = commands.length]  = _INTL('New Journey')
       if @save_data[:player].mystery_gift_unlocked
         commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
       end
+      #commands[cmd_language = commands.length]  = _INTL('Language') if Settings::LANGUAGES.length >= 2
+      commands[cmd_options = commands.length]   = _INTL('Options')
+      commands[cmd_quit = commands.length]      = _INTL('Quit Game')
+      commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
+      buttonFormat[cmd_continue] = LoadMenu_Model::BTN_CONTINUE
+    else
+      commands[cmd_new_game = commands.length]  = _INTL('Start The Journey')
+      commands[cmd_new_game = commands.length]  = _INTL('Settings')
+      commands[cmd_new_game = commands.length]  = _INTL('Quit Game')
     end
-    commands[cmd_new_game = commands.length]  = _INTL('New Game')
-    commands[cmd_options = commands.length]   = _INTL('Options')
-    commands[cmd_language = commands.length]  = _INTL('Language') if Settings::LANGUAGES.length >= 2
-    commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
-    commands[cmd_quit = commands.length]      = _INTL('Quit Game')
+ 
+    # testScene = LoadMenu_Scene.new
+    # testScene.pbStartScene
+    windows = Window_Segmented.new
+ 
+    upperCmd = Window_CommandPokemon.new([])
+    lowerCmd = Window_CommandPokemon.new([])
+    upperCmd.visible = false
+    lowerCmd.visible = false
+    upperCmd.commands = commands
+    lowerCmd.commands = commands
+    lowerCmd.columns = 2
+    
+    windows.addSegment(upperCmd)
+    windows.addSegment(lowerCmd)
+ 
+    loop do
+      Graphics.update
+      Input.update
+      
+      #upperCmd.update
+      echoln "UPPERCMD: " + upperCmd.index.to_s
+      
+      #lowerCmd.update
+      echoln "LOWERCMD: " + lowerCmd.index.to_s
+      
+      windows.update
+      echoln "SEGMENTED: " + windows.index.to_s
+    end
+
     map_id = show_continue ? @save_data[:map_factory].map.map_id : 0
     @scene.pbStartScene(commands, show_continue, @save_data[:player],
                         @save_data[:frame_count] || 0, map_id)
@@ -343,5 +382,32 @@ class PokemonLoadScreen
         pbPlayBuzzerSE
       end
     end
+  end
+end
+
+# Decouple these constants from the Scene and Screen.
+module LoadMenu_Model
+  BTN_NORMAL = 0
+  BTN_CONTINUE = 1
+  BTN_LEFT_UP = 2
+  BTN_LEFT_DOWN = 3
+  BTN_RIGHT_UP = 4
+  BTN_RIGHT_DOWN = 5
+end
+
+class LoadMenu_Scene
+
+  def pbStartScene
+    @sprites = {}
+    @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+    @viewport.z = 99998
+    
+    @commands = ["A", "B", "C", "D", "E", "F"]
+    
+    @sprites["cmdwindow"] = Window_CommandPokemon.new([])
+    @sprites["cmdwindow"].viewport = @viewport
+    @sprites["cmdwindow"].visible  = true
+    @sprites["cmdwindow"].commands = @commands
+    @sprites["cmdwindow"].columns = 2
   end
 end

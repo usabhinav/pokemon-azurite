@@ -855,6 +855,7 @@ class SpriteWindow_Selectable < SpriteWindow_Base
           end
         end
       elsif Input.repeat?(Input::DOWN)
+        echoln "DOWNDOWNDOWNDOWN"
         if @index < @item_max - @column_max ||
            (Input.trigger?(Input::DOWN) && (@item_max % @column_max)==0)
           oldindex = @index
@@ -865,6 +866,7 @@ class SpriteWindow_Selectable < SpriteWindow_Base
           end
         end
       elsif Input.repeat?(Input::LEFT)
+        echoln "LEFTLEFTLEFTLEFT"
         if @column_max >= 2 && @index > 0
           oldindex = @index
           @index -= 1
@@ -1356,7 +1358,57 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
   end
 end
 
+#===============================================================================
+# A window that is made up of different windows. The index is the sum of all
+# window indices and there is always only one active window. Helpful if you
+# want to for instance create a menu with sections that have different
+# amounts of columns.
+# - Baustein
+#===============================================================================
+class Window_Segmented
+  
+  def initialize
+    @segments = []
+    @index = 0
+    @active_segment_index = 0
+  end
+  
+  def addSegment(segment)
+    @segments.push(segment)
+  end
+  
+  def index
+    return @index
+  end
+  
+  def update
+    active_segment = @segments[@active_segment_index]
+    if active_segment != nil
+      
 
+      # Update which segment is active.
+      # If the index reaches it's limit, switch to the next or
+      # previous segment. Otherwise just update normally.
+      if Input.repeat?(Input::UP) && active_segment.index == 0
+        @active_segment_index -= 1 if @active_segment_index > 0
+      elsif Input.repeat?(Input::DOWN) && active_segment.index == active_segment.itemCount-1
+        @active_segment_index += 1 if @active_segment_index < @segments.length-1
+      else
+        active_segment.update
+      end
+
+      # Re-count the index.
+      @index = 0
+      # All items for previous segments count towards the index.
+      for i in 0...@active_segment_index
+        @index += @segments[i].itemCount
+      end
+      # Lastly, add the current segment's index on top.
+      @index += active_segment.index
+     
+    end
+  end
+end
 
 #===============================================================================
 #

@@ -303,6 +303,24 @@ class PokeBattle_Battler
         pbChangeForm(newForm,_INTL("{1} transformed into its Complete Forme!",pbThis))
       end
     end
+    # Phantitute - Proxy
+    if isSpecies?(:PHANTITUTE) && self.ability == :PROXY && !endOfRound
+      if @effects[PBEffects::Substitute] > 0
+        if @form != 1
+          @battle.pbShowAbilitySplash(self)
+          pbChangeForm(1, _INTL("{1} revealed its true form!", pbThis))
+          if pbCanRaiseStatStage?(:DEFENSE, self)
+            pbRaiseStatStageByAbility(:DEFENSE, 1, self, false)
+          end
+          if pbCanLowerStatStage?(:SPEED, self)
+            pbLowerStatStageByAbility(:SPEED, 1, self, false)
+          end
+          @battle.pbHideAbilitySplash(self)
+        end
+      elsif @form != 0
+        pbChangeForm(0,nil)
+      end
+    end
   end
 
   def pbTransform(target)

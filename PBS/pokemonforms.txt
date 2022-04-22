@@ -2931,6 +2931,7 @@ FormName = Crystal Infernape
 Type1 = FIRE
 Type2 = CRYSTAL
 BaseStats = 76,144,71,128,144,71
+Abilities = POWERWITHIN
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [EMPOLEON,1]

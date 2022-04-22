@@ -1028,7 +1028,7 @@ class PokeBattle_Move_03A < PokeBattle_Move
   def pbEffectGeneral(user)
     hpLoss = [user.totalhp/2,1].max
     user.pbReduceHP(hpLoss,false)
-    if user.hasActiveAbility?(:CONTRARY)
+    if user.hasActiveAbility?(:CONTRARY) || user.hasActiveItem?(:REVERSALHERB)
       user.stages[:ATTACK] = -6
       @battle.pbCommonAnimation("StatDown",user)
       @battle.pbDisplay(_INTL("{1} cut its own HP and minimized its Attack!",user.pbThis))

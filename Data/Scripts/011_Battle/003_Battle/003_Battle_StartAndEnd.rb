@@ -301,7 +301,9 @@ class PokeBattle_Battle
       pbDisplay(_INTL("Lava is covering the battlefield!"))
     end
     # Abilities upon entering battle
+    @initialSwitchIn = true
     pbOnActiveAll
+    @initialSwitchIn = false
     # Main battle loop
     pbBattleLoop
   end

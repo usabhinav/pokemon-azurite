@@ -363,23 +363,16 @@ class OutfitState
     
     #echo layer_bitmap_path + " " + bitmap.inspect + "\n\n"
     
-    if $DEBUG
-	  begin
-	    layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
-	    #layer_bitmap = BitmapCache.load_bitmap(layer_bitmap_path)
-        #width = [bitmap.width, layer_bitmap.width].max
-        #height = [bitmap.height, layer_bitmap.height].max
-        #bitmap.width = width
-        #bitmap.height = height
-        bitmap.blt(0,0, layer_bitmap, Rect.new(0,0,bitmap.width, bitmap.width))
-	  rescue
-		  echo "Error: Couldnt apply layer to bitmap: " + layer_bitmap_path + "\n"
-	  end
-	else
-		layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
-	end
-    
-    
+  begin
+    layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
+    #layer_bitmap = BitmapCache.load_bitmap(layer_bitmap_path)
+      #width = [bitmap.width, layer_bitmap.width].max
+      #height = [bitmap.height, layer_bitmap.height].max
+      #bitmap.width = width
+      #bitmap.height = height
+      bitmap.blt(0,0, layer_bitmap, Rect.new(0,0,bitmap.width, bitmap.height))
+  rescue
+    echo "Error: Couldnt apply layer to bitmap: " + layer_bitmap_path + "\n"
   end
   
 end

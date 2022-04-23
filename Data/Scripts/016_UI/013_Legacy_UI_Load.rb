@@ -174,6 +174,7 @@ class PokemonLoad_Scene
       @sprites["player"].x        = 56*2-charwidth/8
       @sprites["player"].y        = 56*2-charheight/8
       @sprites["player"].src_rect = Rect.new(0,0,charwidth/4,charheight/4)
+      @sprites["player"].animspeed(1)
       trainer.outfitstate.applyToMugshotBitmap(@sprites["player"].bitmap)
     end
     for i in 0...trainer.party.length

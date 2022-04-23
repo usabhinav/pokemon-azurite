@@ -11,7 +11,7 @@ class PokemonLoadPanel < SpriteWrapper
   FEMALETEXTCOLOR       = Color.new(240,72,88)
   FEMALETEXTSHADOWCOLOR = Color.new(160,64,64)
 
-  def initialize(index,title,isContinue,trainer,framecount,mapid,viewport=nil)
+  def initialize(index,title,isContinue,trainer,framecount,mapid,btn_type,viewport=nil)
     super(viewport)
     @index = index
     @title = title
@@ -20,7 +20,12 @@ class PokemonLoadPanel < SpriteWrapper
     @totalsec = (framecount || 0) / Graphics.frame_rate
     @mapid = mapid
     @selected = (index==0)
-    @bgbitmap = AnimatedBitmap.new("Graphics/Pictures/loadPanels")
+    
+    # Choose image based on button type.
+    @btn_type = btn_type
+
+    #@bgbitmap = AnimatedBitmap.new("Graphics/Pictures/loadPanels")
+    
     @refreshBitmap = true
     @refreshing = false
     refresh
@@ -48,18 +53,34 @@ class PokemonLoadPanel < SpriteWrapper
     return if @refreshing
     return if disposed?
     @refreshing = true
+    
+    # Load the correct graphic. The image names start with sel for selected or unsel
+    # for not selected and follow up with a number corresponding to the constants
+    # inside LoadMenu_Model.
+    bmp_path = "Graphics/Pictures/Load Menu/"
+    if @selected
+      bmp_path += "sel"
+    else
+      bmp_path += "unsel"
+    end
+    bmp_path += @btn_type.to_s
+    bmp_path += ".png"
+    bgbitmap = AnimatedBitmap.new(bmp_path)
+    
     if !self.bitmap || self.bitmap.disposed?
-      self.bitmap = BitmapWrapper.new(@bgbitmap.width,111*2)
+      self.bitmap = BitmapWrapper.new(bgbitmap.width, bgbitmap.height)
       pbSetSystemFont(self.bitmap)
     end
     if @refreshBitmap
       @refreshBitmap = false
       self.bitmap.clear if self.bitmap
-      if @isContinue
-        self.bitmap.blt(0,0,@bgbitmap.bitmap,Rect.new(0,(@selected) ? 111*2 : 0,@bgbitmap.width,111*2))
-      else
-        self.bitmap.blt(0,0,@bgbitmap.bitmap,Rect.new(0,111*2*2+((@selected) ? 23*2 : 0),@bgbitmap.width,23*2))
-      end
+      
+      self.bitmap.blt(0, 0, bgbitmap.bitmap, Rect.new(0, 0, bgbitmap.width, bgbitmap.height))
+      # if @isContinue
+        # self.bitmap.blt(0,0,bgbitmap.bitmap,Rect.new(0,(@selected) ? 111*2 : 0,bgbitmap.width,111*2))
+      # else
+        # self.bitmap.blt(0,0,bgbitmap.bitmap,Rect.new(0,111*2*2+((@selected) ? 23*2 : 0),bgbitmap.width,23*2))
+      # end
       textpos = []
       if @isContinue
         textpos.push([@title,16*2,2*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
@@ -98,16 +119,17 @@ end
 #
 #===============================================================================
 class PokemonLoad_Scene
-  def pbStartScene(commands, show_continue, trainer, frame_count, map_id)
+  def pbStartScene(commands, show_continue, trainer, frame_count, map_id, buttonFormats)
     @commands = commands
+    @buttonFormats = buttonFormats
     @sprites = {}
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99998
-    addBackgroundOrColoredPlane(@sprites,"background","loadbg",Color.new(248,248,248),@viewport)
+    addBackgroundOrColoredPlane(@sprites,"background","Load Menu/opMenuBack.png",Color.new(248,248,248),@viewport)
     y = 16*2
     for i in 0...commands.length
       @sprites["panel#{i}"] = PokemonLoadPanel.new(i,commands[i],
-         (show_continue) ? (i==0) : false,trainer,frame_count,map_id,@viewport)
+         (show_continue) ? (i==0) : false,trainer,frame_count,map_id,buttonFormats[i],@viewport)
       @sprites["panel#{i}"].x = 24*2
       @sprites["panel#{i}"].y = y
       @sprites["panel#{i}"].pbRefresh
@@ -126,15 +148,13 @@ class PokemonLoad_Scene
     @sprites = {}
     @viewport = Viewport.new(0,0,Graphics.width,Graphics.height)
     @viewport.z = 99998
-    addBackgroundOrColoredPlane(@sprites,"background","loadbg",Color.new(248,248,248),@viewport)
+    addBackgroundOrColoredPlane(@sprites,"background","Load Menu/opMenuBack.png",Color.new(248,248,248),@viewport)
   end
 
   def pbUpdate
     oldi = @sprites["cmdwindow"].index rescue 0
-    echo "OLDI: " + oldi.to_s
     pbUpdateSpriteHash(@sprites)
     newi = @sprites["cmdwindow"].index rescue 0
-    echo "NEWI: " + newi.to_s
     if oldi!=newi
       @sprites["panel#{oldi}"].selected = false
       @sprites["panel#{oldi}"].pbRefresh
@@ -168,14 +188,22 @@ class PokemonLoad_Scene
     meta = GameData::Metadata.get_player(trainer.character_ID)
     if meta
       # TODO: Make this draw a mughsot based on the saved outfit state instead
-      filename = pbGetPlayerCharset(meta,1,trainer,true)
-      @sprites["player"] = TrainerWalkingCharSprite.new(filename,@viewport)
+      # filename = pbGetPlayerCharset(meta,1,trainer,true)
+      # @sprites["player"] = TrainerWalkingCharSprite.new(filename,@viewport)
+      # charwidth  = @sprites["player"].bitmap.width
+      # charheight = @sprites["player"].bitmap.height
+      # @sprites["player"].x        = 56*2-charwidth/8
+      # @sprites["player"].y        = 56*2-charheight/8
+      # @sprites["player"].src_rect = Rect.new(0,0,charwidth/4,charheight/4)
+      @sprites["player"] = IconSprite.new(0,0, @viewport)
+      @sprites["player"].setBitmap("Graphics/Characters/Apparel/TrainerID/Base/Base1.png")
       charwidth  = @sprites["player"].bitmap.width
       charheight = @sprites["player"].bitmap.height
-      @sprites["player"].x        = 56*2-charwidth/8
-      @sprites["player"].y        = 56*2-charheight/8
-      @sprites["player"].src_rect = Rect.new(0,0,charwidth/4,charheight/4)
-      trainer.outfitstate.applyToMugshotBitmap(@sprites["player"].bitmap)
+      @sprites["player"].x        = 100
+      @sprites["player"].y        = 100
+      
+      #@sprites["player"].src_rect = Rect.new(0,0,charwidth,charheight)
+      trainer.outfitstate.applyToIdBitmap(@sprites["player"].bitmap)
     end
     for i in 0...trainer.party.length
       @sprites["party#{i}"] = PokemonIconSprite.new(trainer.party[i],@viewport)
@@ -295,16 +323,30 @@ class PokemonLoadScreen
       commands[cmd_new_game = commands.length]  = _INTL('New Journey')
       if @save_data[:player].mystery_gift_unlocked
         commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
+        buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_LEFT_UP
+        buttonFormat[cmd_mystery_gift] = LoadMenu_Model::BTN_RIGHT_UP
+      else
+        buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
       end
       #commands[cmd_language = commands.length]  = _INTL('Language') if Settings::LANGUAGES.length >= 2
       commands[cmd_options = commands.length]   = _INTL('Options')
       commands[cmd_quit = commands.length]      = _INTL('Quit Game')
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
+      
       buttonFormat[cmd_continue] = LoadMenu_Model::BTN_CONTINUE
+      buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
+      buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
+      buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
     else
       commands[cmd_new_game = commands.length]  = _INTL('Start The Journey')
-      commands[cmd_new_game = commands.length]  = _INTL('Settings')
-      commands[cmd_new_game = commands.length]  = _INTL('Quit Game')
+      commands[cmd_options = commands.length]  = _INTL('Settings')
+      commands[cmd_quit = commands.length]  = _INTL('Quit Game')
+      commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
+
+      buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
+      buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
+      buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
+      buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
     end
  
     # testScene = LoadMenu_Scene.new
@@ -322,23 +364,23 @@ class PokemonLoadScreen
     windows.addSegment(upperCmd)
     windows.addSegment(lowerCmd)
  
-    loop do
-      Graphics.update
-      Input.update
+    # loop do
+      # Graphics.update
+      # Input.update
       
-      #upperCmd.update
-      echoln "UPPERCMD: " + upperCmd.index.to_s
+      # #upperCmd.update
+      # echoln "UPPERCMD: " + upperCmd.index.to_s
       
-      #lowerCmd.update
-      echoln "LOWERCMD: " + lowerCmd.index.to_s
+      # #lowerCmd.update
+      # echoln "LOWERCMD: " + lowerCmd.index.to_s
       
-      windows.update
-      echoln "SEGMENTED: " + windows.index.to_s
-    end
+      # windows.update
+      # echoln "SEGMENTED: " + windows.index.to_s
+    # end
 
     map_id = show_continue ? @save_data[:map_factory].map.map_id : 0
     @scene.pbStartScene(commands, show_continue, @save_data[:player],
-                        @save_data[:frame_count] || 0, map_id)
+                        @save_data[:frame_count] || 0, map_id, buttonFormat)
     @scene.pbSetParty(@save_data[:player]) if show_continue
     @scene.pbStartScene2
     loop do
@@ -387,12 +429,22 @@ end
 
 # Decouple these constants from the Scene and Screen.
 module LoadMenu_Model
-  BTN_NORMAL = 0
-  BTN_CONTINUE = 1
-  BTN_LEFT_UP = 2
-  BTN_LEFT_DOWN = 3
-  BTN_RIGHT_UP = 4
-  BTN_RIGHT_DOWN = 5
+  BTN_CONTINUE      = 0
+  BTN_NORMAL_BIG    = 1
+  BTN_LEFT_UP       = 2
+  BTN_RIGHT_UP      = 3
+  BTN_NORMAL_SMALL  = 4
+  BTN_LEFT_DOWN     = 5
+  BTN_RIGHT_DOWN    = 6
+  
+  def self.isSmall?(button_constant)
+    if(button_constant == BTN_CONTINUE || button_constant == BTN_NORMAL_BIG)
+      return false
+    else
+      return true
+    end
+  end
+  
 end
 
 class LoadMenu_Scene

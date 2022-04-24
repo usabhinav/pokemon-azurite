@@ -4,6 +4,8 @@
 #                https://github.com/Maruno17/pokemon-essentials                #
 #==============================================================================#
 
+# This is the Settings module. I know it's obvious, but I didn't know what other
+# additional comment to add, so now you're stuck looking at this useless one.
 module Settings
   # The version of your game. It has to adhere to the MAJOR.MINOR.PATCH format.
   GAME_VERSION = '1.0.0'

@@ -108,6 +108,23 @@ class Pokemon
     if this_nature
       this_nature.stat_changes.each { |change| nature_mod[change[0]] += change[1] }
     end
+
+    # In case of Equalizer forms, find the highest stats.
+    # Highest +40 > +30 > +20 > +10:
+    if (@form == Settings::EQUALIZER_M_FORM || @form == Settings::EQUALIZER_C_FORM)
+      stat_sorting = base_stats.to_a.sort {|a,b| b[1] <=> a[1]}
+
+      # Iterating though the sorted array to modify the base stats:
+      modifier = 40
+      stat_sorting.each { |s|
+        if s[0] != :HP
+          base_stats[s[0]] = base_stats[s[0]] + modifier
+          echoln "#{s[0]}, #{base_stats[s[0]]}"
+          modifier = (modifier > 0) ? (modifier - 10) : 0
+        end
+      }
+    end
+
     # Calculate stats
     stats = {}; i = 0
     GameData::Stat.each_main do |s|

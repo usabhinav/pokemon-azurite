@@ -5,6 +5,10 @@ class Pokemon
   #=============================================================================
   def getMegaForm
     ret = 0
+    # In case of Equalizer, ignore the form check.
+    return Settings::EQUALIZER_M_FORM if hasItem?(:EQUALIZERM)
+
+    # Check for forms in the species data.
     GameData::Species.each do |data|
       next if data.species != @species || data.unmega_form != form_simple
       if data.mega_stone && hasItem?(data.mega_stone) && !Settings::CRYSTALLIZATION_ITEMS.include?(data.mega_stone)
@@ -58,6 +62,10 @@ class Pokemon
   #=============================================================================
   def getCrystalForm
     ret = 0
+    # In case of Equalizer, ignore the form check.
+    return Settings::EQUALIZER_C_FORM if hasItem?(:EQUALIZERC)
+
+    # Check for forms in the species data.
     GameData::Species.each do |data|
       next if data.species != @species || data.unmega_form != form_simple
       if data.mega_stone && hasItem?(data.mega_stone) && Settings::CRYSTALLIZATION_ITEMS.include?(data.mega_stone)

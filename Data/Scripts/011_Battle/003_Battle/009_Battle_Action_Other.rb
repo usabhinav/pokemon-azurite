@@ -145,6 +145,19 @@ class PokeBattle_Battle
     battler.pokemon.makeMega
     battler.form = battler.pokemon.form
     battler.pbUpdate(true)
+
+    # In case of Equalizers, message displayed is different and Pokémon doesn't change visually:
+    if (battler.form == Settings::EQUALIZER_M_FORM)
+      pbCommonAnimation("MegaEvolution2",battler)
+      pbDisplay(_INTL("{1} has acquired the power of Mega Evolution!",battler.pbThis))
+      side  = battler.idxOwnSide
+      owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+      @megaEvolution[side][owner] = -2
+      pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
+      return
+    end
+
+    # Regular mega-evolution:
     @scene.pbChangePokemon(battler,battler.pokemon)
     @scene.pbRefreshOne(idxBattler)
     pbCommonAnimation("MegaEvolution2",battler)
@@ -264,6 +277,20 @@ class PokeBattle_Battle
     battler.pokemon.makeCrystal
     battler.form = battler.pokemon.form
     battler.pbUpdate(true)
+
+    # In case of Equalizers, message displayed is different and Pokémon doesn't change visually:
+    if (battler.form == Settings::EQUALIZER_C_FORM)
+      pbCommonAnimation("MegaEvolution2",battler)
+      pbDisplay(_INTL("{1} has acquired the power of Crystallization!",battler.pbThis))
+      side  = battler.idxOwnSide
+      owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+      @crystallization[side][owner] = -2
+      @powerWithin[battler.index&1][battler.pokemonIndex] = 4 if battler.ability == :POWERWITHIN
+      pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
+      return
+    end
+
+    # Regular Crystallization
     @scene.pbChangePokemon(battler,battler.pokemon)
     @scene.pbRefreshOne(idxBattler)
     pbCommonAnimation("MegaEvolution2",battler)

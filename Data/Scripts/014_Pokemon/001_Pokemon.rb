@@ -9,6 +9,9 @@ class Pokemon
   # handler tries to say otherwise.
   # @return [Integer, nil] this Pokémon's form
   attr_accessor :forced_form
+  # Keeps track of the old form the Pokémon had assigned, mostly used for
+  # Equalizers.
+  attr_accessor :old_form
   # If defined, is the time (in Integer form) when this Pokémon's form was set.
   # @return [Integer, nil] the time this Pokémon's form was set
   attr_accessor :time_form_set
@@ -109,7 +112,9 @@ class Pokemon
   end
 
   def species_data
-    return GameData::Species.get_species_form(@species, form_simple)
+    # If the current form is the Equalizer Form, read the old form stats to change them.
+    form_to_read = (form_simple == Settings::EQUALIZER_M_FORM || form_simple == Settings::EQUALIZER_C_FORM) ? @old_form : form_simple
+    return GameData::Species.get_species_form(@species, form_to_read)
   end
 
   #=============================================================================
@@ -124,6 +129,7 @@ class Pokemon
     @species     = new_species_data.species
     @form        = new_species_data.form if new_species_data.form != 0
     @forced_form = nil
+    @old_form    = nil
     @level       = nil   # In case growth rate is different for the new species
     @ability     = nil
     calc_stats
@@ -150,6 +156,9 @@ class Pokemon
 
   def form=(value)
     oldForm = @form
+    if value != @form
+      @old_form = @form.dup
+    end
     @form = value
     @ability = nil
     MultipleForms.call("onSetForm", self, value, oldForm)
@@ -162,6 +171,9 @@ class Pokemon
   # which may have its own messages, e.g. learning a move.
   def setForm(value)
     oldForm = @form
+    if value != @form
+      @old_form = @form.dup
+    end
     @form = value
     @ability = nil
     yield if block_given?
@@ -308,6 +320,12 @@ class Pokemon
   # @return [Symbol] this Pokémon's second type, or the first type if none is defined
   def type2
     sp_data = species_data
+
+    # If the Pokémon is under Equalizer C, change its second typing to Crystal:
+    if @form == Settings::EQUALIZER_C_FORM
+      return :CRYSTAL
+    end
+
     return sp_data.type2 || sp_data.type1
   end
 
@@ -1024,12 +1042,29 @@ class Pokemon
     if this_nature
       this_nature.stat_changes.each { |change| nature_mod[change[0]] += change[1] }
     end
+    # In case of Equalizer forms, find the highest stats.
+    # Highest +40 > +30 > +20 > +10:
+    if (@form == Settings::EQUALIZER_M_FORM || @form == Settings::EQUALIZER_C_FORM)
+      stat_sorting = base_stats.to_a.sort {|a,b| a[1] <=> b[1]}
+
+      # Iterating though the sorted array to modify the base stats:
+      modifier = 40
+      stat_sorting.each { |s|
+        if s[0] != :HP
+          base_stats[s[0]] = base_stats[s[0]] + modifier
+          echoln "#{s[0]}, #{base_stats[s[0]]}"
+          modifier = (modifier > 0) ? (modifier - 10) : 0
+        end
+      }
+    end
+
     # Calculate stats
     stats = {}
     GameData::Stat.each_main do |s|
       if s.id == :HP
         stats[s.id] = calcHP(base_stats[s.id], this_level, this_IV[s.id], @ev[s.id])
       else
+        echoln "#{s.id}, #{base_stats[s.id]}"
         stats[s.id] = calcStat(base_stats[s.id], this_level, this_IV[s.id], @ev[s.id], nature_mod[s.id])
       end
     end
@@ -1077,6 +1112,7 @@ class Pokemon
     species_data = GameData::Species.get(species)
     @species          = species_data.species
     @form             = species_data.form
+    @old_form         = nil
     @forced_form      = nil
     @time_form_set    = nil
     self.level        = level

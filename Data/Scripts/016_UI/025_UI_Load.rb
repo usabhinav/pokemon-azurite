@@ -1,25 +1,30 @@
+require 'date'
+
 #===============================================================================
 #
 #===============================================================================
 class PokemonLoadPanel < SpriteWrapper
   attr_reader :selected
+  attr_reader :btn_type
 
-  TEXTCOLOR             = Color.new(232,232,232)
-  TEXTSHADOWCOLOR       = Color.new(136,136,136)
+  TEXTCOLOR             = Color.new(255,255,255)
+  TEXTSHADOWCOLOR       = Color.new(66,66,81)
   MALETEXTCOLOR         = Color.new(56,160,248)
   MALETEXTSHADOWCOLOR   = Color.new(56,104,168)
   FEMALETEXTCOLOR       = Color.new(240,72,88)
   FEMALETEXTSHADOWCOLOR = Color.new(160,64,64)
 
-  def initialize(index,title,isContinue,trainer,framecount,mapid,btn_type,viewport=nil)
+  def initialize(index,title,isContinue,trainer,pokemon_global,framecount,mapid,btn_type,viewport=nil,text_align=-1)
     super(viewport)
     @index = index
     @title = title
     @isContinue = isContinue
     @trainer = trainer
+    @pokemon_global = pokemon_global
     @totalsec = (framecount || 0) / Graphics.frame_rate
     @mapid = mapid
     @selected = (index==0)
+    @text_align = text_align
     
     # Choose image based on button type.
     @btn_type = btn_type
@@ -61,21 +66,23 @@ class PokemonLoadPanel < SpriteWrapper
     if @selected
       bmp_path += "sel"
     else
-      bmp_path += "unsel"
+      bmp_path += "unsel" 
     end
     bmp_path += @btn_type.to_s
     bmp_path += ".png"
-    bgbitmap = AnimatedBitmap.new(bmp_path)
+    @bgbitmap = AnimatedBitmap.new(bmp_path)
     
     if !self.bitmap || self.bitmap.disposed?
-      self.bitmap = BitmapWrapper.new(bgbitmap.width, bgbitmap.height)
-      pbSetSystemFont(self.bitmap)
+      self.bitmap = BitmapWrapper.new(@bgbitmap.width, @bgbitmap.height)
+      pbSetSmallFont(self.bitmap)
+      #self.bitmap.font.size = 29
+      
     end
     if @refreshBitmap
       @refreshBitmap = false
       self.bitmap.clear if self.bitmap
       
-      self.bitmap.blt(0, 0, bgbitmap.bitmap, Rect.new(0, 0, bgbitmap.width, bgbitmap.height))
+      self.bitmap.blt(0, 0, @bgbitmap.bitmap, Rect.new(0, 0, @bgbitmap.width, @bgbitmap.height))
       # if @isContinue
         # self.bitmap.blt(0,0,bgbitmap.bitmap,Rect.new(0,(@selected) ? 111*2 : 0,bgbitmap.width,111*2))
       # else
@@ -83,31 +90,77 @@ class PokemonLoadPanel < SpriteWrapper
       # end
       textpos = []
       if @isContinue
-        textpos.push([@title,16*2,2*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
-        textpos.push([_INTL("Badges:"),16*2,53*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
-        textpos.push([@trainer.badge_count.to_s,103*2,53*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
-        textpos.push([_INTL("Pokédex:"),16*2,69*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
-        textpos.push([@trainer.pokedex.seen_count.to_s,103*2,69*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
-        textpos.push([_INTL("Time:"),16*2,85*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
+        # Standard format for now.
+        date_format = "%Y/%m/%d"
+        # Draw last time saved.
+        if @pokemon_global.savedate != nil
+          date = @pokemon_global.savedate
+          date_str = date.strftime(date_format + "   %H:%M")
+          textpos.push([date_str,185,54,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        end
+        
+        # Draw map name.
+        mapname = pbGetMapNameFromId(@mapid)
+        mapname.gsub!(/\\PN/,@trainer.name)
+        textpos.push([mapname,197,90,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        
+        #textpos.push([@title,16*2,2*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
+        # textpos.push([_INTL("Badges:"),16*2,53*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
+        # textpos.push([@trainer.badge_count.to_s,103*2,53*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
+        
+        # Draw playtime.
+        textpos.push([_INTL("Playtime"),220,126,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         hour = @totalsec / 60 / 60
         min  = @totalsec / 60 % 60
         if hour>0
-          textpos.push([_INTL("{1}h {2}m",hour,min),103*2,85*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
+          textpos.push([_INTL("{1}h {2}m",hour,min),275,126,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         else
-          textpos.push([_INTL("{1}m",min),103*2,85*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
+          textpos.push([_INTL("{1}m",min),275,126,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         end
-        if @trainer.male?
-          textpos.push([@trainer.name,56*2,29*2,0,MALETEXTCOLOR,MALETEXTSHADOWCOLOR])
-        elsif @trainer.female?
-          textpos.push([@trainer.name,56*2,29*2,0,FEMALETEXTCOLOR,FEMALETEXTSHADOWCOLOR])
-        else
-          textpos.push([@trainer.name,56*2,29*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
-        end
-        mapname = pbGetMapNameFromId(@mapid)
-        mapname.gsub!(/\\PN/,@trainer.name)
-        textpos.push([mapname,193*2,2*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
+        
+        # Draw amount of seen pokemon.
+        textpos.push([_INTL("Seen"),209,162,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@trainer.pokedex.seen_count.to_s,275,162,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        
+        # Draw amount of caught pokemon.
+        textpos.push([_INTL("Caught"),193,196,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@trainer.pokedex.owned_count.to_s,275,196,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+
+        
+        #textpos.push([@trainer.pokedex.seen_count.to_s,300,159,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        # if @trainer.male?
+          # textpos.push([@trainer.name,56*2,29*2,0,MALETEXTCOLOR,MALETEXTSHADOWCOLOR])
+        # elsif @trainer.female?
+          # textpos.push([@trainer.name,56*2,29*2,0,FEMALETEXTCOLOR,FEMALETEXTSHADOWCOLOR])
+        # else
+        
+        # Draw trainer name.
+        textpos.push([@trainer.name,92,10,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        
+        # end
       else
-        textpos.push([@title,16*2,1*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
+        # Draw the button text.
+        # Position and alignment depends on the button type.
+        if @btn_type == LoadMenu_Model::BTN_NORMAL_BIG || 
+           @btn_type == LoadMenu_Model::BTN_NORMAL_SMALL
+          text_x = 181
+          alignment = 2
+        elsif @btn_type == LoadMenu_Model::BTN_LEFT_DOWN ||
+              @btn_type == LoadMenu_Model::BTN_LEFT_UP
+          text_x = 158
+          alignment = 1
+        elsif @btn_type == LoadMenu_Model::BTN_RIGHT_DOWN ||
+              @btn_type == LoadMenu_Model::BTN_RIGHT_UP 
+          text_x = 17
+          alignment = 3
+        else
+          text_x = 86
+          alignment = 2
+        end
+        # Overwrite specified text alignment if given.
+        alignment = @text_align if @text_align > -1
+        
+        textpos.push([@title,text_x,10,alignment,TEXTCOLOR,TEXTSHADOWCOLOR,1])
       end
       pbDrawTextPositions(self.bitmap,textpos)
     end
@@ -119,21 +172,70 @@ end
 #
 #===============================================================================
 class PokemonLoad_Scene
-  def pbStartScene(commands, show_continue, trainer, frame_count, map_id, buttonFormats)
+  def pbStartScene(commands, show_continue, trainer, pokemon_global, frame_count, map_id, buttonFormats)
     @commands = commands
     @buttonFormats = buttonFormats
     @sprites = {}
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99998
     addBackgroundOrColoredPlane(@sprites,"background","Load Menu/opMenuBack.png",Color.new(248,248,248),@viewport)
-    y = 16*2
+    
     for i in 0...commands.length
-      @sprites["panel#{i}"] = PokemonLoadPanel.new(i,commands[i],
-         (show_continue) ? (i==0) : false,trainer,frame_count,map_id,buttonFormats[i],@viewport)
-      @sprites["panel#{i}"].x = 24*2
-      @sprites["panel#{i}"].y = y
+     btn_type = buttonFormats[i]
+     
+     echoln "BUTTON: " + commands[i].to_s + " ," + buttonFormats[i].to_s
+     
+     @sprites["panel#{i}"] = PokemonLoadPanel.new(i,commands[i],
+         (show_continue) ? (i==0) : false,trainer,pokemon_global,frame_count,map_id,btn_type,@viewport)
+      
+      # The x positions of the non-continue buttons.
+      left_btn_x = 75
+      right_btn_x = 264
+      
+      # # Determine x position based on button type.
+      # if btn_type == LoadMenu_Model::BTN_CONTINUE
+        # panel_x = 48
+      # elsif btn_type == LoadMenu_Model::BTN_LEFT_DOWN ||
+                        # LoadMenu_Model::BTN_LEFT_UP ||
+                        # LoadMenu_Model::BTN_NORMAL_BIG
+        # panel_x = left_btn_x
+      # elsif btn_type == LoadMenu_Model::BTN_RIGHT_DOWN ||
+                        # LoadMenu_Model::BTN_RIGHT_UP
+        # panel_x = right_btn_x
+      # else # The small normal button case. 
+        
+      # end
+      
+      if i > 0
+        
+        # Take the opposite x position of the previous button, unless it is a big button.
+        # Also increase y position.
+        previous_btn = @sprites["panel#{i-1}"]
+        if previous_btn.btn_type != LoadMenu_Model::BTN_CONTINUE &&
+           previous_btn.btn_type != LoadMenu_Model::BTN_NORMAL_BIG &&
+           previous_btn.x == left_btn_x
+        
+        panel_x = right_btn_x
+        
+        else 
+          panel_x = left_btn_x
+          if previous_btn.btn_type == LoadMenu_Model::BTN_CONTINUE
+            panel_y += 248 
+          else
+            panel_y += 56
+          end
+          
+          
+        end
+      else # Continue button case.
+        panel_x = 48
+        panel_y = 32
+      end
+      
+      @sprites["panel#{i}"].x = panel_x
+      @sprites["panel#{i}"].y = panel_y
       @sprites["panel#{i}"].pbRefresh
-      y += (show_continue && i==0) ? 112*2 : 24*2
+      #y += (show_continue && i==0) ? 112*2 : 24*2
     end
     @sprites["cmdwindow"] = Window_CommandPokemon.new([])
     @sprites["cmdwindow"].viewport = @viewport
@@ -199,8 +301,10 @@ class PokemonLoad_Scene
       @sprites["player"].setBitmap("Graphics/Characters/Apparel/TrainerID/Base/Base1.png")
       charwidth  = @sprites["player"].bitmap.width
       charheight = @sprites["player"].bitmap.height
-      @sprites["player"].x        = 100
-      @sprites["player"].y        = 100
+      @sprites["player"].x        = 110
+      @sprites["player"].y        = 95
+      @sprites["player"].zoom_x   = 1.8
+      @sprites["player"].zoom_y   = 1.8
       
       #@sprites["player"].src_rect = Rect.new(0,0,charwidth,charheight)
       trainer.outfitstate.applyToIdBitmap(@sprites["player"].bitmap)
@@ -380,7 +484,9 @@ class PokemonLoadScreen
 
     map_id = show_continue ? @save_data[:map_factory].map.map_id : 0
     @scene.pbStartScene(commands, show_continue, @save_data[:player],
-                        @save_data[:frame_count] || 0, map_id, buttonFormat)
+                        @save_data[:global_metadata],
+                        @save_data[:frame_count] || 0, 
+                        map_id, buttonFormat)
     @scene.pbSetParty(@save_data[:player]) if show_continue
     @scene.pbStartScene2
     loop do

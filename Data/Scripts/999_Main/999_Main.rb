@@ -1,7 +1,5 @@
 $DEBUG = true
 
-
-
 # Create .dat apparel files in case they don't exist. Without this the compiler is unable to write into them. 
 for layer in $LAYER_NAMES
   File.open("Data/Apparel/" + layer + ".dat", "w") if !safeExists?("Data/Apparel/" + layer + ".dat")
@@ -44,10 +42,7 @@ def mainFunctionDebug
     Game.set_up_system
     Graphics.update
     Graphics.freeze
-    
-    outfit = OutfitState.new(1, "Walking")
-    echoln outfit.instance_variables.to_s
-    
+
     Console::setup_console
     Compiler::compile_apparel
 
@@ -71,7 +66,7 @@ def pointerExperiment
   outfit2.gender = "Female"
   
   outfit1_pointer = outfit1
-  
+ 
   
   outfit1_pointer.itself = pbDeepCopy(outfit2)
   

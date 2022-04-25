@@ -49,7 +49,6 @@ module GameData
       @id_number          = hash[:id_number]   || -1
       @id_unique          = hash[:id_unique]   || -1
       @real_name          = hash[:name]        || "Unnamed"
-      echoln "UNIQUE ID: " + id_unique.to_s
     end
 
     def name
@@ -260,8 +259,8 @@ module GameData
     @@class_hash = PBS_NAMES.map { |name| [name.to_sym, Object.const_get(self.to_s + name)] }.to_h
     @@inverted_class_hash = @@class_hash.invert
     
-    echoln "CLASS HASH: " + @@class_hash.to_s
-    echoln "ONE CLASS OBJ: " + @@class_hash[:Base]::DATA.to_s
+    #echoln "CLASS HASH: " + @@class_hash.to_s
+    #echoln "ONE CLASS OBJ: " + @@class_hash[:Base]::DATA.to_s
     
     # A one dimensional list containing all apparel items indexed by their unique id.
     @@all_apparel = {}
@@ -281,7 +280,6 @@ module GameData
   
     # Return apparel object corresponding to its unique id (or its constant).
     def self.get(id)
-      echoln "NERF POLYMORPH"
       id = id.to_sym if id.is_a?(String)
       return @@all_apparel[id]
     end
@@ -324,7 +322,7 @@ module GameData
       else
         ret = "Graphics/Characters/Apparel/" + item_data.class::LAYER + "/" + item_data.class::LAYER + item_data.id_number.to_s + ".png"
       end
-      echoln "PATH STRING: " + ret
+      #echoln "PATH STRING: " + ret
       return ret
     end
     
@@ -439,7 +437,7 @@ def pbGetApparelVariants(layer, apparelId)
   end
   
   variants = GameData::Apparel.getClass(layer).get(apparelId).variants
-  echoln "VARIANTS: " + variants.to_s
+  #echoln "VARIANTS: " + variants.to_s
   
   if variants != nil && variants != []
     return variants.split(GameData::Apparel::DELIMITER)

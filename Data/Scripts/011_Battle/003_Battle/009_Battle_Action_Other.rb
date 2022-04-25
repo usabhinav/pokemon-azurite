@@ -143,11 +143,10 @@ class PokeBattle_Battle
     end
     pbCommonAnimation("MegaEvolution",battler)
     battler.pokemon.makeMega
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
 
     # In case of Equalizers, message displayed is different and Pokémon doesn't change visually:
-    if (battler.form == Settings::EQUALIZER_M_FORM)
+    if (battler.pokemon.hasItem?(:EQUALIZERM))
+      battler.pbUpdate(true)
       pbCommonAnimation("MegaEvolution2",battler)
       pbDisplay(_INTL("{1} has acquired the power of Mega Evolution!",battler.pbThis))
       side  = battler.idxOwnSide
@@ -158,6 +157,8 @@ class PokeBattle_Battle
     end
 
     # Regular mega-evolution:
+    battler.form = battler.pokemon.form
+    battler.pbUpdate(true)
     @scene.pbChangePokemon(battler,battler.pokemon)
     @scene.pbRefreshOne(idxBattler)
     pbCommonAnimation("MegaEvolution2",battler)
@@ -189,10 +190,14 @@ class PokeBattle_Battle
     end
     pbCommonAnimation("MegaEvolution",battler)
     battler.pokemon.makeUnmega
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
-    @scene.pbChangePokemon(battler,battler.pokemon)
-    @scene.pbRefreshOne(idxBattler)
+
+    if !battler.pokemon.hasItem?(:EQUALIZERM)
+      battler.form = battler.pokemon.form
+      battler.pbUpdate(true)
+      @scene.pbChangePokemon(battler,battler.pokemon)
+      @scene.pbRefreshOne(idxBattler)
+    end
+    
     pbCommonAnimation("MegaEvolution2",battler)
     pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
     side  = battler.idxOwnSide
@@ -275,11 +280,10 @@ class PokeBattle_Battle
     end
     pbCommonAnimation("MegaEvolution",battler)
     battler.pokemon.makeCrystal
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
 
     # In case of Equalizers, message displayed is different and Pokémon doesn't change visually:
-    if (battler.form == Settings::EQUALIZER_C_FORM)
+    if (battler.pokemon.hasItem?(:EQUALIZERC))
+      battler.pbUpdate(true)
       pbCommonAnimation("MegaEvolution2",battler)
       pbDisplay(_INTL("{1} has acquired the power of Crystallization!",battler.pbThis))
       side  = battler.idxOwnSide
@@ -291,6 +295,8 @@ class PokeBattle_Battle
     end
 
     # Regular Crystallization
+    battler.form = battler.pokemon.form
+    battler.pbUpdate(true)
     @scene.pbChangePokemon(battler,battler.pokemon)
     @scene.pbRefreshOne(idxBattler)
     pbCommonAnimation("MegaEvolution2",battler)
@@ -357,10 +363,14 @@ class PokeBattle_Battle
     end
     pbCommonAnimation("MegaEvolution",battler)
     battler.pokemon.makeUncrystal
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
-    @scene.pbChangePokemon(battler,battler.pokemon)
-    @scene.pbRefreshOne(idxBattler)
+
+    if !battler.pokemon.hasItem?(:EQUALIZERC)
+      battler.form = battler.pokemon.form
+      battler.pbUpdate(true)
+      @scene.pbChangePokemon(battler,battler.pokemon)
+      @scene.pbRefreshOne(idxBattler)
+    end
+
     pbCommonAnimation("MegaEvolution2",battler)
     pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
     side  = battler.idxOwnSide

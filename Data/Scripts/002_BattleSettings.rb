@@ -54,8 +54,6 @@ module Settings
   CRYSTALLIZATION_ITEMS = [:CRYSTALFRAGMENT]
   # Controls the form number of equalizer forms, necessary in order to create
   # "artificial" forms for every Pokémon with which to transform them.
-  EQUALIZER_M_FORM = 99
-  EQUALIZER_C_FORM = 100
 
   #=============================================================================
 

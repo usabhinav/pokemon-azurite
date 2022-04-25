@@ -5,8 +5,6 @@ class Pokemon
   #=============================================================================
   def getMegaForm
     ret = 0
-    # In case of Equalizer, ignore the form check.
-    return Settings::EQUALIZER_M_FORM if hasItem?(:EQUALIZERM)
 
     # Check for forms in the species data.
     GameData::Species.each do |data|
@@ -27,6 +25,8 @@ class Pokemon
   end
 
   def hasMegaForm?
+    # In case of Equalizers, no need to check for forms.
+    return hasItem?(:EQUALIZERM)
     megaForm = self.getMegaForm
     return megaForm > 0 && megaForm != form_simple
   end
@@ -36,11 +36,23 @@ class Pokemon
   end
 
   def makeMega
+    # In case of equalizer, doesn't change form.
+    if hasItem?(:EQUALIZERM)
+      self.equalizedm = true
+      return
+    end
+
     megaForm = self.getMegaForm
     self.form = megaForm if megaForm > 0
   end
 
   def makeUnmega
+    # In case of equalizer, doesn't change form.
+    if hasItem?(:EQUALIZERM)
+      self.equalizedm = false
+      return
+    end
+
     unmegaForm = self.getUnmegaForm
     self.form = unmegaForm if unmegaForm >= 0
   end
@@ -62,9 +74,6 @@ class Pokemon
   #=============================================================================
   def getCrystalForm
     ret = 0
-    # In case of Equalizer, ignore the form check.
-    return Settings::EQUALIZER_C_FORM if hasItem?(:EQUALIZERC)
-
     # Check for forms in the species data.
     GameData::Species.each do |data|
       next if data.species != @species || data.unmega_form != form_simple
@@ -93,6 +102,8 @@ class Pokemon
   end
 
   def hasCrystalForm?
+    # In case of Equalizers, no need to check for forms.
+    return hasItem?(:EQUALIZERC)
     crystalForm = self.getCrystalForm
     return crystalForm > 0 && crystalForm != form_simple
   end
@@ -113,6 +124,12 @@ class Pokemon
   end
 
   def makeCrystal
+    # In case of equalizer, doesn't change form.
+    if hasItem?(:EQUALIZERC)
+      self.equalizedc = true
+      return
+    end
+
     crystalForm = self.getCrystalForm
     self.form = crystalForm if crystalForm > 0
   end
@@ -129,6 +146,12 @@ class Pokemon
   end
 
   def makeUncrystal
+    # In case of equalizer, doesn't change form.
+    if hasItem?(:EQUALIZERC)
+      self.equalizedc = false
+      return
+    end
+
     uncrystalForm = self.getUncrystalForm
     self.form = uncrystalForm if uncrystalForm >= 0
   end

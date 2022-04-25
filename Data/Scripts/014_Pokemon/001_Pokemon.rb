@@ -85,6 +85,9 @@ class Pokemon
   attr_accessor :fused
   # @return [Integer] this Pokémon's personal ID
   attr_accessor :personalID
+  # Keep track of whether or not the Pokémon is equalized:
+  attr_accessor :equalizedm
+  attr_accessor :equalizedc
 
   # Max total IVs
   IV_STAT_LIMIT = 31
@@ -113,8 +116,7 @@ class Pokemon
 
   def species_data
     # If the current form is the Equalizer Form, read the old form stats to change them.
-    form_to_read = (form_simple == Settings::EQUALIZER_M_FORM || form_simple == Settings::EQUALIZER_C_FORM) ? @old_form : form_simple
-    return GameData::Species.get_species_form(@species, form_to_read)
+    return GameData::Species.get_species_form(@species, form_simple)
   end
 
   #=============================================================================
@@ -322,7 +324,7 @@ class Pokemon
     sp_data = species_data
 
     # If the Pokémon is under Equalizer C, change its second typing to Crystal:
-    if @form == Settings::EQUALIZER_C_FORM
+    if @equalizedc
       return :CRYSTAL
     end
 
@@ -1044,7 +1046,7 @@ class Pokemon
     end
     # In case of Equalizer forms, find the highest stats.
     # Highest +40 > +30 > +20 > +10:
-    if (@form == Settings::EQUALIZER_M_FORM || @form == Settings::EQUALIZER_C_FORM)
+    if (@equalizedc || @equalizedm)
       stat_sorting = base_stats.to_a.sort {|a,b| a[1] <=> b[1]}
 
       # Iterating though the sorted array to modify the base stats:
@@ -1052,7 +1054,6 @@ class Pokemon
       stat_sorting.each { |s|
         if s[0] != :HP
           base_stats[s[0]] = base_stats[s[0]] + modifier
-          echoln "#{s[0]}, #{base_stats[s[0]]}"
           modifier = (modifier > 0) ? (modifier - 10) : 0
         end
       }
@@ -1064,7 +1065,6 @@ class Pokemon
       if s.id == :HP
         stats[s.id] = calcHP(base_stats[s.id], this_level, this_IV[s.id], @ev[s.id])
       else
-        echoln "#{s.id}, #{base_stats[s.id]}"
         stats[s.id] = calcStat(base_stats[s.id], this_level, this_IV[s.id], @ev[s.id], nature_mod[s.id])
       end
     end
@@ -1112,6 +1112,8 @@ class Pokemon
     species_data = GameData::Species.get(species)
     @species          = species_data.species
     @form             = species_data.form
+    @equalizedc       = false
+    @equalizedm       = false
     @old_form         = nil
     @forced_form      = nil
     @time_form_set    = nil

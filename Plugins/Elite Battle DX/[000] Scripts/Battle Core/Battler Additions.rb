@@ -111,7 +111,7 @@ class Pokemon
 
     # In case of Equalizer forms, find the highest stats.
     # Highest +40 > +30 > +20 > +10:
-    if (@form == Settings::EQUALIZER_M_FORM || @form == Settings::EQUALIZER_C_FORM)
+    if (@equalizedc || @equalizedm)
       stat_sorting = base_stats.to_a.sort {|a,b| b[1] <=> a[1]}
 
       # Iterating though the sorted array to modify the base stats:

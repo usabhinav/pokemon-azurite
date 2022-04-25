@@ -634,6 +634,8 @@ class PokemonSummary_Scene
     overlay = @sprites["overlay"].bitmap
     base   = Color.new(248,248,248)
     shadow = Color.new(104,104,104)
+    # Calulate stats again just to make sure:
+    @pokemon.calc_stats
     # Determine which stats are boosted and lowered by the Pokémon's nature
     statshadows = {}
     GameData::Stat.each_main { |s| statshadows[s.id] = shadow }

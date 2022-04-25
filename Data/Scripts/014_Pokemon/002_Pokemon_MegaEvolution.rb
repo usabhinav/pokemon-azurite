@@ -26,7 +26,7 @@ class Pokemon
 
   def hasMegaForm?
     # In case of Equalizers, no need to check for forms.
-    return hasItem?(:EQUALIZERM)
+    return true if hasItem?(:EQUALIZERM)
     megaForm = self.getMegaForm
     return megaForm > 0 && megaForm != form_simple
   end
@@ -103,7 +103,7 @@ class Pokemon
 
   def hasCrystalForm?
     # In case of Equalizers, no need to check for forms.
-    return hasItem?(:EQUALIZERC)
+    return true if hasItem?(:EQUALIZERC)
     crystalForm = self.getCrystalForm
     return crystalForm > 0 && crystalForm != form_simple
   end

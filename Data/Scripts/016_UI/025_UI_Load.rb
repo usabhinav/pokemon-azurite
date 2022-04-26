@@ -227,8 +227,12 @@ class PokemonLoad_Scene
           
           
         end
-      else # Continue button case.
-        panel_x = 48
+      else # Starting point.
+        if @sprites["panel#{i}"].btn_type == LoadMenu_Model::BTN_CONTINUE
+          panel_x = 48
+        else
+          panel_x = left_btn_x
+        end
         panel_y = 32
       end
       
@@ -478,6 +482,7 @@ class PokemonLoadScreen
     buttonFormat = [] # Dictates which sprite the scene will use for each command button.
     cmd_continue     = -1
     cmd_new_game     = -1
+    cmd_new_nuzlocke = -1
     cmd_options      = -1
     cmd_language     = -1
     cmd_mystery_gift = -1
@@ -488,7 +493,7 @@ class PokemonLoadScreen
     if show_continue
       commands[cmd_continue = commands.length] = _INTL('Continue')
       commands[cmd_new_game = commands.length]  = _INTL('New Journey')
-      if @save_data[:player].mystery_gift_unlocked
+      if @save_data[:player].mystery_gift_unlocked || true
         commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
         buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_LEFT_UP
         buttonFormat[cmd_mystery_gift] = LoadMenu_Model::BTN_RIGHT_UP
@@ -506,11 +511,13 @@ class PokemonLoadScreen
       buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
     else
       commands[cmd_new_game = commands.length]  = _INTL('Start The Journey')
+      commands[cmd_new_nuzlocke = commands.length]  = _INTL('Start The Dangerous Journey')
       commands[cmd_options = commands.length]  = _INTL('Settings')
       commands[cmd_quit = commands.length]  = _INTL('Quit Game')
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
 
       buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
+      buttonFormat[cmd_new_nuzlocke] = LoadMenu_Model::BTN_NORMAL_BIG
       buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
       buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
       buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG

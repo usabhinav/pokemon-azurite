@@ -190,6 +190,13 @@ class PokeBattle_Scene
     sendoutDustAnim(sendOuts, heavy, dust, alt)
     # shiny animation upon entry
     sendoutShinyPkmn(sendOuts)
+
+    # play aura animations, if any:
+    sendOuts.each_with_index do |b, m|
+      battler = @battlers[b[0]]; i = battler.index
+      @sprites["pokemon_#{i}"].setAuraVisible(true)
+    end
+    
     # done
     @firstsendout = false
     return true

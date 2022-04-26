@@ -58,6 +58,7 @@ end
 class DynamicPokemonSprite
   attr_accessor :shadow, :sprite, :index
   attr_accessor :showshadow, :hidden, :fainted, :isShadow, :charged, :noshadow
+  attr_accessor :aura_type, :auraSprite, :aura_status
   attr_accessor :status, :anim, :dynamax, :scale_y, :legacy_anim
   attr_reader :loaded, :selected, :isSub, :pulse
   attr_reader :viewport, :pokemon, :species, :form
@@ -76,7 +77,7 @@ class DynamicPokemonSprite
   def initialize(doublebattle, index, viewport = nil, battle = nil)
     @viewport = viewport
     @selected = 0
-    @frame = 0; @frame2 = 0; @frame3 = 0; @frame4 = 0
+    @frame = 0; @frame2 = 0; @frame3 = 0; @frame4 = 0; @frame5 = 0
     # additional process variables
     @status = 0
     @form = 0
@@ -97,6 +98,7 @@ class DynamicPokemonSprite
     @sprite = Sprite.new(@viewport)
     @substitute = BitmapEBDX.new("Graphics/EBDX/Battlers/"+((@index%2 == 0) ? "substitute_back" : "substitute"), EliteBattle::FRONT_SPRITE_SCALE)
     @overlay = Sprite.new(@viewport)
+    @auraSprite = Sprite.new(@viewport)
     # additional process variables
     @isSub = false
     @lock = false
@@ -107,6 +109,8 @@ class DynamicPokemonSprite
     @anim = false
     @isShadow = false
     @charged = false
+    @aura_type = :no_aura
+    @aura_status = nil
     @species = nil
     @anchor = nil
     @legacy_anim = false
@@ -160,6 +164,7 @@ class DynamicPokemonSprite
   def height; return @bitmap.height; end
   def tone; return @sprite.tone; end
   def bitmap; return @bitmap.bitmap.clone; end
+  def auraBitmap; return @auraBitmap.bitmap.clone; end
   def actualBitmap; return @bitmap; end
   def disposed?; return @sprite.disposed?; end
   def color; return @sprite.color; end
@@ -189,6 +194,12 @@ class DynamicPokemonSprite
   #-----------------------------------------------------------------------------
   def bitmap=(val)
     @bitmap.bitmap = val
+  end
+  #-----------------------------------------------------------------------------
+  # force set bitmap
+  #-----------------------------------------------------------------------------
+  def auraBitmap=(val)
+    @auraBitmap.bitmap = val
   end
   #-----------------------------------------------------------------------------
   # sets X value for sprite
@@ -327,6 +338,7 @@ class DynamicPokemonSprite
   #-----------------------------------------------------------------------------
   def dispose
     @sprite.dispose
+    @auraSprite.dispose
     @shadow.dispose
     @overlay.dispose
     @substitute.dispose if @substitute
@@ -388,6 +400,16 @@ class DynamicPokemonSprite
     # assigns bitmap to sprite
     @sprite.bitmap = @bitmap.bitmap.clone
     @shadow.bitmap = @bitmap.bitmap.clone
+
+    # Check for aura conditions:
+    if @pokemon.mega? || pokemon.equalizedm
+      setBitmapAura(:mega_aura)
+    elsif @pokemon.crystal? || pokemon.equalizedc
+      setBitmapAura(:crystal_aura)
+    else
+      setBitmapAura(:no_aura)
+    end
+
     # applies battler positioning on screen
     self.refreshMetrics
     # refreshes process variables
@@ -400,6 +422,50 @@ class DynamicPokemonSprite
     # formats battler shadow
     self.formatShadow
   end
+
+  #-----------------------------------------------------------------------------
+  # loads aura bitmap based on type
+  #-----------------------------------------------------------------------------
+  def setBitmapAura(aura, shadow = false, status = "on", visible = false)
+    if aura == :blue_aura
+      file = "Graphics/EBDX/Animations/Auras/ab_#{status}.png"
+    elsif aura == :crystal_aura
+      file = "Graphics/EBDX/Animations/Auras/ac_#{status}.png"
+    elsif aura == :enigma_aura
+      file = "Graphics/EBDX/Animations/Auras/ae_#{status}.png"
+    elsif aura == :mega_aura
+      file = "Graphics/EBDX/Animations/Auras/am_#{status}.png"
+    elsif aura == :red_aura
+      file = "Graphics/EBDX/Animations/Auras/ar_#{status}.png"
+    elsif aura == :yellow_aura
+      file = "Graphics/EBDX/Animations/Auras/ay_#{status}.png"
+    else
+      @aura_type = :no_aura
+      @aura_status = nil
+      @auraSprite.visible = visible
+      return
+    end
+
+    # loads plain bitmap (new bitmap wrapper)
+    @auraBitmap = BitmapEBDX.new(file, 1)
+    @auraBitmap.setSpeed(2)
+    # applies bitmap to sprite
+    @auraSprite.bitmap = @auraBitmap.bitmap.clone
+    @auraSprite.visible = visible
+    @aura_status = status
+    @aura_type = aura
+
+    echoln "Pokémon bitmap sprite: #{@sprite.bitmap.width}, #{@sprite.bitmap.height}; Aura bitmap sprite: #{@auraSprite.bitmap.width}, #{@auraSprite.bitmap.height}"
+    echoln "Pokémon position: #{@sprite.x}, #{@sprite.y}, #{@sprite.ox}, #{@sprite.oy}, #{@sprite.zoom_x}, #{@sprite.zoom_y}"
+  end
+
+  #-----------------------------------------------------------------------------
+  # Change Aura visibility:
+  #-----------------------------------------------------------------------------
+  def setAuraVisible(visible)
+    @auraSprite.visible = visible
+  end
+
   #-----------------------------------------------------------------------------
   # resets additional animation particles to original state
   #-----------------------------------------------------------------------------
@@ -479,8 +545,19 @@ class DynamicPokemonSprite
   #-----------------------------------------------------------------------------
   def clear
     @sprite.bitmap.clear
+    @auraSprite.bitmap.clear
     @bitmap.dispose
+    @auraBitmap.dispose
   end
+
+  #-----------------------------------------------------------------------------
+  # clears aura bitmap
+  #-----------------------------------------------------------------------------
+  def clearAura
+    @auraSprite.bitmap.clear
+    @auraBitmap.dispose
+  end
+
   #-----------------------------------------------------------------------------
   # formates the shadow skew and opacity
   #-----------------------------------------------------------------------------
@@ -570,6 +647,42 @@ class DynamicPokemonSprite
     self.formatShadow
   end
   #-----------------------------------------------------------------------------
+  # Updating the Aura Sprite:
+  #-----------------------------------------------------------------------------
+  def auraEffectUpdate
+    return if !@loaded
+    return if self.disposed? || @bitmap.disposed?
+    return if !@auraSprite.visible || @hidden
+    if @aura_type != :no_aura
+      # Update status of the aura (if on the "on" animation):
+      if (@aura_status == "on" && @auraBitmap.finished?)
+        setBitmapAura(@aura_type, false, "loop", true)
+      end
+
+      # Update status of the aura (if on the "off" animation):
+      if (@aura_status == "off" && @auraBitmap.finished?)
+        setBitmapAura(:no_aura)
+      end
+
+      # Update the sprite/bitmap of the aura.
+      @auraBitmap.update
+      @auraSprite.bitmap = @auraBitmap.bitmap.clone
+
+      # Change properties of the aura sprite:
+      @auraSprite.x = (self.getCenter[0]) 
+      @auraSprite.y = (self.getCenter[1]) 
+      @auraSprite.ox = 120
+      @auraSprite.oy = 125
+      @auraSprite.zoom_x = @sprite.zoom_x * @scale * 0.7
+      @auraSprite.zoom_y = @sprite.zoom_y * @scale * 0.7
+      @auraSprite.opacity = 166
+      @auraSprite.z = @sprite.z - 1
+      @frame5 += 1
+      @frame5 = 0 if @frame5 > 256
+    end
+  end
+
+  #-----------------------------------------------------------------------------
   # adds smokey shadow effects to battlers
   #-----------------------------------------------------------------------------
   def shadowUpdate
@@ -602,6 +715,7 @@ class DynamicPokemonSprite
     end
     @frame2 += 1 if @frame2 < 128
   end
+
   #-----------------------------------------------------------------------------
   # adds charged particle animation (for Aura)
   #-----------------------------------------------------------------------------

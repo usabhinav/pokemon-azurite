@@ -66,6 +66,7 @@ class PokeBattle_Scene
           @sprites["pokemon_#{i}"].shadowUpdate
           @sprites["pokemon_#{i}"].chargedUpdate
           @sprites["pokemon_#{i}"].energyUpdate
+          @sprites["pokemon_#{i}"].auraEffectUpdate
           @sprites["dataBox_#{i}"].update if @sprites["dataBox_#{i}"] && @sprites["pokemon_#{i}"].loaded
         end
         if !@orgPos.nil? && @idleTimer > (@lastMotion.nil? ? EliteBattle::BATTLE_MOTION_TIMER*Graphics.frame_rate : EliteBattle::BATTLE_MOTION_TIMER*Graphics.frame_rate*0.5) && @vector.finished? && !@safaribattle

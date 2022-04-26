@@ -184,5 +184,7 @@ EliteBattle.defineCommonAnimation(:MEGAEVOLUTION2) do
   fp["impact"].dispose
   @vector.reset
   @scene.wait(16, true)
+  @targetSprite.setAuraVisible(true)
+  echoln "End of mega-evolution animation."
   #-----------------------------------------------------------------------------
 end

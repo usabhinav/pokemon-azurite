@@ -10,6 +10,17 @@ class PokeBattle_Scene
     balltype = @battle.battlers[battlerindex].pokemon.poke_ball
     poke = @sprites["pokemon_#{battlerindex}"]
     return if poke.fainted
+
+    # Turn off aura, if any:
+    poke.setBitmapAura(poke.aura_type, false, "off", true)
+    if poke.aura_type != :no_aura
+      for i in 0...32
+        poke.update
+        poke.auraEffectUpdate
+        self.wait
+      end
+    end
+
     poke.resetParticles
     pbSEPlay("Battle recall") if !@sprites["pokemon_#{battlerindex}"].hidden
     zoom = poke.zoom_x/20.0

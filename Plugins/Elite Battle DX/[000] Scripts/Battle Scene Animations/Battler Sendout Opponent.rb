@@ -112,6 +112,9 @@ class PokeBattle_Scene
         @sprites["pokemon_#{i}"].tone.red -= 51 if @sprites["pokemon_#{i}"].tone.red > 0
         @sprites["pokemon_#{i}"].tone.green -= 51 if @sprites["pokemon_#{i}"].tone.green > 0
         @sprites["pokemon_#{i}"].tone.blue -= 51 if @sprites["pokemon_#{i}"].tone.blue > 0
+
+        # play aura animation, if any:
+        @sprites["pokemon_#{i}"].setAuraVisible(true)
       end
       self.wait
     end
@@ -124,6 +127,12 @@ class PokeBattle_Scene
     sendoutDustAnim(sendOuts, heavy, dust, alt)
     # shiny animation upon entry
     sendoutShinyPkmn(sendOuts)
+
+    # play aura animations, if any:
+    sendOuts.each_with_index do |b, m|
+      battler = @battlers[b[0]]; i = battler.index
+      @sprites["pokemon_#{i}"].setAuraVisible(true)
+    end
     # done
     @sendingOut = false
     return true

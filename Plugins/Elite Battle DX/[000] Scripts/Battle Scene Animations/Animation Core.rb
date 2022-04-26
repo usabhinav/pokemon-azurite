@@ -219,6 +219,17 @@ class PokeBattle_Scene
     @vector.reset
     # setup objects
     poke = @sprites["pokemon_#{pkmn.index}"]
+
+    # Turn off aura, if any:
+    poke.setBitmapAura(poke.aura_type, false, "off", true)
+    if poke.aura_type != :no_aura
+      for i in 0...32
+        poke.update
+        poke.auraEffectUpdate
+        self.wait
+      end
+    end
+
     poke.resetParticles
     databox = @sprites["dataBox_#{pkmn.index}"]
     # play cry

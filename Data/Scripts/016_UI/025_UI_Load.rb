@@ -172,18 +172,18 @@ end
 #
 #===============================================================================
 class PokemonLoad_Scene
-  def pbStartScene(commands, show_continue, trainer, pokemon_global, frame_count, map_id, buttonFormats)
+  def pbStartScene(commands, show_continue, trainer, pokemon_global, frame_count, map_id, btn_types)
     @commands = commands
-    @buttonFormats = buttonFormats
+    @btn_types = btn_types
     @sprites = {}
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99998
     addBackgroundOrColoredPlane(@sprites,"background","Load Menu/opMenuBack.png",Color.new(248,248,248),@viewport)
     
     for i in 0...commands.length
-     btn_type = buttonFormats[i]
+     btn_type = btn_types[i]
      
-     echoln "BUTTON: " + commands[i].to_s + " ," + buttonFormats[i].to_s
+     echoln "BUTTON: " + commands[i].to_s + " ," + btn_types[i].to_s
      
      @sprites["panel#{i}"] = PokemonLoadPanel.new(i,commands[i],
          (show_continue) ? (i==0) : false,trainer,pokemon_global,frame_count,map_id,btn_type,@viewport)
@@ -237,9 +237,69 @@ class PokemonLoad_Scene
       @sprites["panel#{i}"].pbRefresh
       #y += (show_continue && i==0) ? 112*2 : 24*2
     end
-    @sprites["cmdwindow"] = Window_CommandPokemon.new([])
-    @sprites["cmdwindow"].viewport = @viewport
-    @sprites["cmdwindow"].visible  = false
+    # Create multiple cmd windows based on how often we need to switch
+    # between column amount per row.
+    # Initialization: We start off with a single cmd window
+    # and try to find out whether or not it will have one or
+    # two columns. Two columns are of course needed for sections
+    # where there are two buttons per row, so that you can use the
+    # LEFT and RIGHT arrow keys to move to them.
+    @seg_window = Window_Segmented.new
+    cmdwindows = []
+    first_cmdwindow = Window_CommandPokemon.new([])
+    if(@btn_types[0] == LoadMenu_Model::BTN_CONTINUE ||
+       @btn_types[0] == LoadMenu_Model::BTN_NORMAL_BIG)
+      first_cmdwindow.columns = 1
+    else
+      first_cmdwindow.columns = 2
+    end
+    #first_cmdwindow.commands = [commands[0]]
+    first_cmdwindow.viewport = @viewport
+    first_cmdwindow.visible = false
+    cmdwindows.push(first_cmdwindow)
+    cmdwindow_commands = [commands[0]] # Get added at the end.
+    
+    # For the rest of the commands, we either put them in the previous current
+    # cmd window or create a new one with different column amount if needed.
+    for i in 1...@btn_types.length
+      previous_btn = @btn_types[i-1]
+      current_btn = @btn_types[i]
+      
+      # Case 1: The current button fits into the current cmdwindow which has one column.
+      if ((current_btn == LoadMenu_Model::BTN_CONTINUE ||
+           current_btn == LoadMenu_Model::BTN_NORMAL_BIG) &&
+           cmdwindows.last.columns == 1)
+        
+        cmdwindow_commands.push(@commands[i])
+        
+        
+      # Case 2: The current button fits into the current cmdwindow which has one column.
+      elsif ((current_btn != LoadMenu_Model::BTN_CONTINUE &&
+              current_btn != LoadMenu_Model::BTN_NORMAL_BIG) &&
+              cmdwindows.last.columns == 2)
+        
+        cmdwindow_commands.push(@commands[i])
+      
+      # Case 3: The current button does not fit into the current cmdwindow.
+      else
+        # Create a new cmdwindow with opposite column amount 
+        # and put the next command in as its first.
+        new_cmdwindow = Window_CommandPokemon.new([])
+        new_cmdwindow.columns = (cmdwindows.last.columns == 1) ? 2 : 1
+        new_cmdwindow.viewport = @viewport
+        new_cmdwindow.visible = false
+        cmdwindows.last.commands = cmdwindow_commands
+        cmdwindows.push(new_cmdwindow)
+        cmdwindow_commands = [commands[i]]
+      end
+    end
+    cmdwindows.last.commands = cmdwindow_commands
+    @seg_window.addSegments(cmdwindows)
+    
+    # @sprites["cmdwindow"] = Window_CommandPokemon.new([])
+    # @sprites["cmdwindow"].viewport = @viewport
+    # @sprites["cmdwindow"].visible  = false
+    # @sprites["cmdwindow"].commands = commands
   end
 
   def pbStartScene2
@@ -254,10 +314,13 @@ class PokemonLoad_Scene
   end
 
   def pbUpdate
-    oldi = @sprites["cmdwindow"].index rescue 0
+    oldi = @seg_window.index rescue 0
     pbUpdateSpriteHash(@sprites)
-    newi = @sprites["cmdwindow"].index rescue 0
+    @seg_window.update
+    newi = @seg_window.index rescue 0
     if oldi!=newi
+      echoln "OLDI: " + oldi.to_s
+      echoln "NEWI: " + newi.to_s
       @sprites["panel#{oldi}"].selected = false
       @sprites["panel#{oldi}"].pbRefresh
       @sprites["panel#{newi}"].selected = true
@@ -319,13 +382,13 @@ class PokemonLoad_Scene
   end
 
   def pbChoose(commands)
-    @sprites["cmdwindow"].commands = commands
+    #@sprites["cmdwindow"].commands = commands # Moved to pbStartScene because why tf would this be in here.
     loop do
       Graphics.update
       Input.update
       pbUpdate
       if Input.trigger?(Input::USE)
-        return @sprites["cmdwindow"].index
+        return @seg_window.index
       end
     end
   end

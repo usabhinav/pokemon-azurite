@@ -1377,24 +1377,37 @@ class Window_Segmented
     @segments.push(segment)
   end
   
+  def addSegments(segments)
+    @segments.concat(segments)
+    echoln "AMOUNT OF SEGMENTS: " + @segments.length.to_s
+    for segment in @segments
+      echoln "Commands: " + segment.commands.to_s
+    end
+  end
+  
   def index
     return @index
   end
   
   def update
-    active_segment = @segments[@active_segment_index]
-    if active_segment != nil
+  
+    
+    if @segments[@active_segment_index] != nil
+      #echoln "ACTIVE SEGMENT NOT NULL"
+     
       
-
       # Update which segment is active.
-      # If the index reaches it's limit, switch to the next or
+      # If the index reaches its limit, switch to the next or
       # previous segment. Otherwise just update normally.
-      if Input.repeat?(Input::UP) && active_segment.index == 0
+      active_segment = @segments[@active_segment_index] # To make this if statement more readable.
+      if Input.repeat?(Input::UP) && 
+         active_segment.index - active_segment.columns < 0
         @active_segment_index -= 1 if @active_segment_index > 0
-      elsif Input.repeat?(Input::DOWN) && active_segment.index == active_segment.itemCount-1
+      elsif Input.repeat?(Input::DOWN) && 
+            active_segment.index >= active_segment.itemCount - active_segment.columns
         @active_segment_index += 1 if @active_segment_index < @segments.length-1
       else
-        active_segment.update
+        @segments[@active_segment_index].update
       end
 
       # Re-count the index.
@@ -1404,9 +1417,10 @@ class Window_Segmented
         @index += @segments[i].itemCount
       end
       # Lastly, add the current segment's index on top.
-      @index += active_segment.index
+      @index += @segments[@active_segment_index].index
      
     end
+    
   end
 end
 

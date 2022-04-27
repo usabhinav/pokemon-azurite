@@ -3315,12 +3315,8 @@ BattleHandlers::EORHealingAbility.add(:ADDITION,
     end
     next if !canHealAnyBattler
     # Ability effect
-    hasSubtraction = false
-    battle.eachSameSideBattler(battler.index) do |b|
-      hasSubtraction = true if b.hasActiveAbility?(:SUBTRACTION)
-    end
     battle.pbShowAbilitySplash(battler)
-    healmult = hasSubtraction ? 0.3 : 0.1
+    healmult = battle.pbCheckAllyAbility(:SUBTRACTION, battler.index) ? 0.3 : 0.1
     battle.eachSameSideBattler(battler.index) do |b|
       next if !b.canHeal?
       b.pbRecoverHP(b.totalhp * healmult)
@@ -4062,20 +4058,17 @@ BattleHandlers::AbilityOnSwitchIn.add(:LASTBASTION,
 
 BattleHandlers::AbilityOnSwitchIn.add(:ALIGNED,
   proc { |ability,battler,battle|
-    next if battle.wildBattle? && battler.opposes?
-    party = battle.pbParty(battler.index)
     # Calculate number of stat stages to increase
     numStatIncrease = 0
-    party.each_with_index { |p, i|
+    battlersAndParty = battle.pbGetBattlersAndParty(battler.index)
+    for b in battlersAndParty[0]
+      next if b.fainted?
+      numStatIncrease += 1 if battler.pbTypes(true).intersection(b.pbTypes(true)).length > 0
+    end
+    for p in battlersAndParty[1]
       next if !p || p.egg? || p.fainted?
-      next if battler.pokemonIndex == i
-      battler.pbTypes.each do |t|
-        if p.hasType?(t)
-          numStatIncrease += 1
-          break
-        end
-      end
-    }
+      numStatIncrease += 1 if battler.pbTypes(true).intersection(p.types).length > 0
+    end
     next if numStatIncrease == 0
     battle.pbShowAbilitySplash(battler)
     # Increase a random stat one-by-one
@@ -4267,12 +4260,10 @@ BattleHandlers::AbilityOnSwitchIn.add(:LAVAFLOOR,
 
 BattleHandlers::AbilityOnSwitchIn.add(:HIVEMIND,
   proc { |ability,battler,battle|
-    party = battle.pbParty(battler.index)
     bugCount = 0
-    party.each_with_index do |pkmn, i|
-      next if battler.pokemonIndex == i
-      next if !pkmn.hasType?(:BUG)
-      bugCount += 1
+    type_lists = battle.pbGetTypeListsOfBattlersAndParty(battler.index)
+    for tl in type_lists
+      bugCount += 1 if tl.include?(:BUG)
     end
     next if bugCount == 0
     battle.pbShowAbilitySplash(battler)
@@ -4388,28 +4379,59 @@ BattleHandlers::AbilityOnSwitchIn.add(:HEAVYEYED,
   }
 )
 
-BattleHandlers::AbilityOnSwitchIn.add(:PROXY,
-  proc { |ability,battler,battle|
-    next if !battler.isSpecies?(:PHANTITUTE) || battler.form == 1
-    next if battler.effects[PBEffects::Substitute] == 0
-    battle.pbShowAbilitySplash(battler)
-    battler.pbChangeForm(1, _INTL("{1} revealed its true form!", battler.pbThis))
-    if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
-      battler.pbRaiseStatStageByAbility(:DEFENSE, 1, battler, false)
-    end
-    if battler.pbCanLowerStatStage?(:SPEED, battler)
-      battler.pbLowerStatStageByAbility(:SPEED, 1, battler, false)
-    end
-    battle.pbHideAbilitySplash(battler)
-  }
-)
-
 BattleHandlers::AbilityOnSwitchIn.add(:NEGATION,
   proc { |ability,battler,battle|
     next if battle.pbCheckGlobalAbility(:CRYSTALENERGY)
     battle.pbShowAbilitySplash(battler)
     battle.pbDisplay(_INTL("{1} is suppressing all power transformations!", battler.pbThis))
     battle.pbHideAbilitySplash(battler)
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:ADDITION,
+  proc { |ability,battler,battle|
+    next if battle.initialSwitchIn && battle.subtractionMessageDisplayed[battler.index % 2]
+    # Display message if side has both Addition and Subtraction users
+    subtractionUser = battle.pbCheckAllyAbility(:SUBTRACTION, battler.index)
+    if subtractionUser
+      battle.pbShowAbilitySplash(subtractionUser)
+      battle.pbShowAbilitySplash(battler)
+      battle.pbDisplay(_INTL("{1} and {2} unite to remove all type weaknesses from its side!", subtractionUser.pbThis, battler.pbThis(true)))
+      battle.pbHideAbilitySplash(battler)
+      battle.pbHideAbilitySplash(subtractionUser)
+      battle.subtractionMessageDisplayed[battler.index % 2] = true
+    end
+  }
+)
+
+BattleHandlers::AbilityOnSwitchIn.add(:SUBTRACTION,
+  proc { |ability,battler,battle|
+    next if battle.initialSwitchIn && battle.subtractionMessageDisplayed[battler.index % 2]
+    # Display message if side has both Addition and Subtraction users
+    additionUser = battle.pbCheckAllyAbility(:ADDITION, battler.index)
+    if additionUser
+      battle.pbShowAbilitySplash(additionUser)
+      battle.pbShowAbilitySplash(battler)
+      battle.pbDisplay(_INTL("{1} and {2} unite to remove all type weaknesses from its side!", additionUser.pbThis, battler.pbThis(true)))
+      battle.pbHideAbilitySplash(battler)
+      battle.pbHideAbilitySplash(additionUser)
+      battle.subtractionMessageDisplayed[battler.index % 2] = true
+      next
+    end
+    # Display message for each Pokemon losing a weakness
+    subtractionCount = 0
+    battle.eachSameSideBattler(battler.index) do |b|
+      subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+    end
+    battle.pbShowAbilitySplash(battler)
+    battle.eachSameSideBattler(battler.index) do |b|
+      if subtractionCount <= b.effects[PBEffects::SubtractionTypes].length
+        typeListString = b.effects[PBEffects::SubtractionTypes][0...subtractionCount].join(", ")
+        battle.pbDisplay(_INTL("{1} lost its weakness(es) to the following type(s): {2}", b.pbThis, typeListString))
+      end
+    end
+    battle.pbHideAbilitySplash(battler)
+    battle.subtractionMessageDisplayed[battler.index % 2] = true
   }
 )
 
@@ -4459,15 +4481,6 @@ BattleHandlers::AbilityOnSwitchOut.add(:DEBRISARMOR,
       battler.effects[PBEffects::VoltSpikesArmor] = 0
       battler.battle.pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", battler.pbThis))
     end
-  }
-)
-
-BattleHandlers::AbilityOnSwitchOut.add(:PROXY,
-  proc { |ability,battler,endOfBattle|
-    next if endOfBattle
-    next if !battler.isSpecies?(:PHANTITUTE)
-    # Ensures that Substitute cannot be Baton Passed to another Pokemon
-    battler.effects[PBEffects::Substitute] = 0
   }
 )
 

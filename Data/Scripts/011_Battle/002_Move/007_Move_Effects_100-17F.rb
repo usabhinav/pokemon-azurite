@@ -228,7 +228,7 @@ class PokeBattle_Move_10C < PokeBattle_Move
       return true
     end
     @subLife = user.totalhp/4
-    @subLife = user.totalhp/2 if user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY
+    @subLife = user.totalhp/2 if user.isSpecies?(:PHANTITUTE) && user.hasActiveAbility?(:PROXY)
     @subLife = 1 if @subLife<1
     if user.hp<=@subLife
       @battle.pbDisplay(_INTL("But it does not have enough HP left to make a substitute!"))
@@ -247,15 +247,20 @@ class PokeBattle_Move_10C < PokeBattle_Move
     user.effects[PBEffects::TrappingMove] = nil
     user.effects[PBEffects::Substitute]   = @subLife
     if user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY
-      @battle.pbShowAbilitySplash(user)
-      user.pbChangeForm(1, _INTL("{1} revealed its true form!", user.pbThis))
-      if user.pbCanRaiseStatStage?(:DEFENSE, user)
-        user.pbRaiseStatStageByAbility(:DEFENSE, 1, user, false)
+      # In case of Gastro Acid, Phantitute still changes forms but does not gain Def/Speed
+      if user.hasActiveAbility?(:PROXY)
+        @battle.pbShowAbilitySplash(user)
+        user.pbChangeForm(1, _INTL("{1} revealed its true form!", user.pbThis))
+        if user.pbCanRaiseStatStage?(:DEFENSE, user)
+          user.pbRaiseStatStageByAbility(:DEFENSE, 1, user, false)
+        end
+        if user.pbCanLowerStatStage?(:SPEED, user)
+          user.pbLowerStatStageByAbility(:SPEED, 1, user, false)
+        end
+        @battle.pbHideAbilitySplash(user)
+      else
+        user.pbChangeForm(1, _INTL("{1} revealed its true form!", user.pbThis))
       end
-      if user.pbCanLowerStatStage?(:SPEED, user)
-        user.pbLowerStatStageByAbility(:SPEED, 1, user, false)
-      end
-      @battle.pbHideAbilitySplash(user)
     else
       @battle.pbDisplay(_INTL("{1} put in a substitute!",user.pbThis))
     end
@@ -2082,7 +2087,7 @@ class PokeBattle_Move_160 < PokeBattle_Move
     #       has Contrary and is at +6" check too for symmetry. This move still
     #       works even if the stat stage cannot be changed due to an ability or
     #       other effect.
-    if !@battle.moldBreaker && target.hasActiveAbility?(:CONTRARY) &&
+    if ((!@battle.moldBreaker && target.hasActiveAbility?(:CONTRARY)) || target.hasActiveItem?(:REVERSALHERB)) &&
        target.statStageAtMax?(:ATTACK)
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
@@ -3371,5 +3376,103 @@ class PokeBattle_Move_PowderStorm < PokeBattle_Move
     when 1; target.pbPoison(user) if target.pbCanPoison?(user,false,self)
     when 2; target.pbSleep if target.pbCanSleep?(user,false,self)
     end
+  end
+end
+     
+#===============================================================================
+# Grav Apple
+#===============================================================================
+class PokeBattle_Move_GravApple < PokeBattle_TargetStatDownMove
+  def initialize(battle,move)
+    super
+    @statDown = [:DEFENSE,1]
+  end
+
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg = baseDmg * 3 / 2 if @battle.field.effects[PBEffects::Gravity] > 0
+    return baseDmg
+  end
+end
+      
+#===============================================================================
+# Surging Strikes
+#===============================================================================
+class PokeBattle_Move_SurgingStrikes < PokeBattle_Move
+  def multiHitMove?;                   return true; end
+  def pbNumHits(user, targets);        return 3;    end
+  def pbCritialOverride(user, target); return 1;    end
+end
+      
+#===============================================================================
+# BurningJealousy
+#===============================================================================
+class PokeBattle_Move_BurningJealousy < PokeBattle_BurnMove
+  def pbEffectAgainstTarget(user, target)
+    super if target.statsRaised
+  end
+end
+
+
+
+#===============================================================================
+# Grassy Glide
+#===============================================================================
+class PokeBattle_Move_GrassyGlide < PokeBattle_Move
+  def priority
+    ret = super
+    ret += 1 if @battle.field.terrain == :Electric
+    return ret
+  end
+end
+
+#===============================================================================
+# Expanding Force
+#===============================================================================
+class PokeBattle_Move_ExpandingForce < PokeBattle_Move
+  def pbTarget(user)
+    if @battle.field.terrain == :Psychic && user.affectedByTerrain?
+      return GameData::Target.get(:AllNearFoes)
+    end
+    return super
+  end
+
+  def pbBaseDamage(baseDmg,user,target)
+    if @battle.field.terrain == :Psychic && user.affectedByTerrain?
+      baseDmg = baseDmg * 3 / 2
+    end
+    return baseDmg
+  end
+end
+
+
+
+#===============================================================================
+# Meteor Beam
+#===============================================================================
+class PokeBattle_Move_MeteorBeam < PokeBattle_TwoTurnMove
+  def pbChargingTurnMessage(user,targets)
+    @battle.pbDisplay(_INTL("{1} is overflowing with space power!",user.pbThis))
+  end
+
+  def pbChargingTurnEffect(user,target)
+    if user.pbCanRaiseStatStage?(:SPECIAL_ATTACK,user,self)
+      user.pbRaiseStatStage(:SPECIAL_ATTACK,1,user)
+    end
+  end
+end
+
+
+
+#===============================================================================
+# Poltergeist
+#===============================================================================
+class PokeBattle_Move_Poltergeist < PokeBattle_Move
+  def pbFailsAgainstTarget?(user,target)
+    if !target.item || !target.itemActive?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    @battle.pbDisplay(_INTL("{1} is about to be attacked by its {2}!", target.pbThis, target.itemName))
+    return false
   end
 end

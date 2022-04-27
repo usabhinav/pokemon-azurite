@@ -733,6 +733,35 @@ class PokeBattle_Battle
       pbDisplay(_INTL("{1} is suppressing all power transformations.",b.pbThis))
       pbHideAbilitySplash(b)
     end
+    # Power Within
+    # Check each party
+    for side in 0...2
+      next if pbCheckGlobalAbility(:CRYSTALENERGY)
+      party = pbParty(side)
+      for i in 0...party.length
+        pkmn = party[i]
+        # Must be Crystal Infernape
+        if pkmn.isSpecies?(:INFERNAPE) && pkmn.crystal? && pkmn.hasAbility?(:POWERWITHIN)
+          @powerWithin[side][i] -= 1
+          # Uncrystallize after 4 turns
+          if @powerWithin[side][i] <= 0
+            # If Pokemon is on field, uncrystallize with animation, else uncrystallize silently
+            find_battler = nil
+            eachSameSideBattler(side) do |b|
+              find_battler = b if b.pokemonIndex == i
+            end
+            if find_battler
+              pbShowAbilitySplash(find_battler)
+              pbUnCrystallize(find_battler.index)
+              pbHideAbilitySplash(find_battler)
+            else
+              pkmn.makeUncrystal
+            end
+            @powerWithin[side][i] = -1
+          end
+        end
+      end
+    end
     # Incomprehensible
     # NOTE: Put this near the very end of pbEndOfRoundPhase so that ability effects
     # don't get triggered immediately after Incomprehensible effect switches ability

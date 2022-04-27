@@ -35,6 +35,16 @@ class PokeBattle_Battler
     if (!fainted? && unstoppableAbility?) || abilityActive?
       BattleHandlers.triggerAbilityOnSwitchIn(self.ability,self,@battle)
     end
+    # Subtraction message for non-Subtraction users
+    if switchIn && !@battle.initialSwitchIn && @battle.pbCheckAllyAbility(:SUBTRACTION, @index) &&
+       !hasActiveAbility?(:SUBTRACTION) && !@battle.pbCheckAllyAbility(:ADDITION, @index)
+      subtractionCount = 0
+      @battle.eachSameSideBattler(@index) do |b|
+        subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+      end
+      typeListString = @effects[PBEffects::SubtractionTypes][0...subtractionCount].join(", ")
+      @battle.pbDisplay(_INTL("{1} lost its weakness(es) to the following type(s): {2}", pbThis, typeListString))
+    end
     # Check for end of primordial weather
     @battle.pbEndPrimordialWeather
     # Items that trigger upon switching in (Air Balloon message)
@@ -52,6 +62,10 @@ class PokeBattle_Battler
   def pbAbilitiesOnSwitchOut
     if abilityActive?
       BattleHandlers.triggerAbilityOnSwitchOut(self.ability,self,false)
+    end
+    # Phantitute with Proxy cannot pass Substitute with Baton Pass
+    if isSpecies?(:PHANTITUTE) && self.ability == :PROXY
+      @effects[PBEffects::Substitute] = 0
     end
     # Reset form
     @battle.peer.pbOnLeavingBattle(@battle,@pokemon,@battle.usedInBattle[idxOwnSide][@index/2])

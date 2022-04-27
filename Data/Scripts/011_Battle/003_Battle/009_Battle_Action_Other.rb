@@ -184,7 +184,6 @@ class PokeBattle_Battle
     pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    @megaEvolution[side][owner] = -1
     pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
   end
 
@@ -274,6 +273,7 @@ class PokeBattle_Battle
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     @crystallization[side][owner] = -2
+    @powerWithin[battler.index&1][battler.pokemonIndex] = 4 if battler.ability == :POWERWITHIN
     pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
     # Trigger ability
     battler.pbEffectsOnSwitchIn
@@ -309,6 +309,7 @@ class PokeBattle_Battle
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     @crystallization[side][owner] = -2
+    @powerWithin[battler.index&1][battler.pokemonIndex] = 4 if battler.ability == :POWERWITHIN
     pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
     # Trigger ability
     battler.pbEffectsOnSwitchIn
@@ -337,7 +338,7 @@ class PokeBattle_Battle
     pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    @crystallization[side][owner] = -1
+    @powerWithin[battler.index&1][battler.pokemonIndex] = -1
     pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
   end
 

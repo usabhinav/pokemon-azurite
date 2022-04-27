@@ -282,6 +282,7 @@ class PokeBattle_Battler
     @effects[PBEffects::Yawn]                = 0
     @effects[PBEffects::ShedBody]            = false
     @effects[PBEffects::ReverbDamage]        = 0
+    @effects[PBEffects::RevengeBelt]         = false
     @effects[PBEffects::BlastUsers]          = []
     @effects[PBEffects::CrystalAdaptation]   = {} # Hash for type resistances
     @effects[PBEffects::TypeModsI]           = nil
@@ -297,6 +298,13 @@ class PokeBattle_Battler
     @effects[PBEffects::VoltSpikesArmor]     = 0
     @effects[PBEffects::CounterParry]        = false
     @effects[PBEffects::Overcharged]         = 0
+    @effects[PBEffects::SubtractionTypes]    = []
+    GameData::Type.each do |t|
+      if @type1 && Effectiveness.super_effective_type?(t.id, @type1, @type2, @effects[PBEffects::Type3])
+        @effects[PBEffects::SubtractionTypes].push(t.id)
+      end
+    end
+    @effects[PBEffects::SubtractionTypes].shuffle!
   end
 
   #=============================================================================

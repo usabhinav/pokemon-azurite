@@ -21,8 +21,13 @@ def pbGetSurfablePkmn
     end
   end
   
+  if $DEBUG 
+    return Pokemon.new(321, 1)
+  else
+    # No Surfable Pokmeon found in party
+    return nil
+  end
   
-  # No Surfable Pokmeon found in party
-  return nil
+
   
 end

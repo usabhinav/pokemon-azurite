@@ -727,6 +727,18 @@ def pbStartSurfing
   $game_player.check_event_trigger_here([1,2])
 end
 
+def pbStartSwimming()
+  pbCancelVehicles
+  $PokemonEncounters.reset_step_count
+  $PokemonGlobal.swimming = true
+  pbUpdateVehicle
+  $PokemonTemp.surfJump = $MapFactory.getFacingCoords($game_player.x,$game_player.y,$game_player.direction)
+  pbJumpToward
+  $PokemonTemp.surfJump = nil
+  #pbUpdateVehicle
+  $game_player.check_event_trigger_here([1,2])
+end
+
 def pbEndSurf(_xOffset,_yOffset)
   return false if !$PokemonGlobal.surfing
   x = $game_player.x
@@ -755,6 +767,41 @@ def pbTransferSurfing(mapid,xcoord,ycoord,direction=$game_player.direction)
     $game_map.autoplay
     $game_map.refresh
   }
+end
+
+# Called for terrain that is either swimmable or surfable
+def pbSwimOrSurf
+  echo "SWIM OR SURF\n"
+  canswim = pbCanPlayerSwim?
+  cansurf = pbCanPlayerSurf?
+  
+  if pbCanPlayerSwim? && pbCanPlayerSurf?
+    # Ask the player if they want to either swim or surf
+    #TODO: Implement this
+    commands = [_INTL("Swim"), _INTL("Surf")]
+    surfbgm = GameData::Metadata.get.surf_BGM
+    pbCueBGM(surfbgm,0.5) if surfbgm
+  elsif pbCanPlayerSwim? 
+    Kernel.pbSwim # Ask the player if they want to swim
+  elsif pbCanPlayerSurf?
+    Kernel.pbSurf # Ask the player if they want to surf
+  end
+      
+end
+
+def pbSwim
+  if $game_player.pbHasDependentEvents? && !$game_switches[Following_Activated_Switch]
+    return false
+  end
+  if pbConfirmMessage(_INTL("The water is dyed a deep blue...  Would you like to swim?"))
+    surfbgm=pbGetMetadata(0,MetadataSurfBGM)
+    $PokemonTemp.dependentEvents.check_surf(true)
+    if surfbgm
+      pbCueBGM(surfbgm,0.5)
+    end
+    pbStartSwimming()
+    return true
+  end
 end
 
 Events.onAction += proc { |_sender,_e|

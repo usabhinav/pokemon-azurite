@@ -82,10 +82,10 @@ class OutfitState
       
       @surfing_species = pkmn.species.to_s
       
-      if pkmn.isShiny?
+      if pkmn.shiny?
         @surfing_species += "s"
-      elsif pkmn.isAlbino?
-        @surfing_species += "a"
+      #elsif pkmn.isAlbino?
+      #  @surfing_species += "a"
       end
       
     else
@@ -605,8 +605,8 @@ class Sprite_Character
         updateproc = Proc.new{|event|
           if event.is_a? AnimationChangeEvent
             @charbitmap.dispose
-            @charbitmap.setBitmapFile("Graphics/Characters/Apparel/" + event.animation_name + "/Base/Base1.png")
-            #@charbitmap = AnimatedBitmap.new("Graphics/Characters/Apparel/" + event.animation_name + "/Base/Base1.png")
+            #@charbitmap.setBitmapFile("Graphics/Characters/Apparel/" + event.animation_name + "/Base/Base1.png")
+            @charbitmap = AnimatedBitmap.new("Graphics/Characters/Apparel/" + event.animation_name + "/Base/Base1.png")
             #echo "Animation Change Event: " + event.animation_name + "\n"
             #echo @charbitmap.bitmap.width.to_s + ", " + @charbitmap.bitmap.height.to_s
             #displayCharbitmapReference
@@ -637,7 +637,7 @@ class Sprite_Character
 end
 
 
-def pbsetWetLayerState(layer_name, apparel_id, color="Default")
+def pbSetWetLayerState(layer_name, apparel_id, color="Default")
   if $DEBUG
     $ApparelBag.pbStoreApparel(layer_name, apparel_id, color)
   end
@@ -649,7 +649,7 @@ def pbsetWetLayerState(layer_name, apparel_id, color="Default")
   end
 end
 
-def pbsetDryLayerState(layer_name, apparel_id, color="Default")
+def pbSetDryLayerState(layer_name, apparel_id, color="Default")
   if $DEBUG
     $ApparelBag.pbStoreApparel(layer_name, apparel_id, color)
   end

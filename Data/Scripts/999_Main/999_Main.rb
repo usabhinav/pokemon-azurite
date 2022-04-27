@@ -69,9 +69,7 @@ def pointerExperiment
  
   
   outfit1_pointer.itself = pbDeepCopy(outfit2)
-  
-  echoln "OUTFIT1: " + outfit1.gender
-  
+    
 end
 
 def testywesty
@@ -109,7 +107,7 @@ def testywesty
   # echoln GameData::ApparelLegs.superclass.to_s
   
   MessageTypes.setMessagesAsHash(MessageTypes::ApparelColors, ["Socks3", "Cocks"])
-  echoln pbGetMessageFromHash(MessageTypes::ApparelColors, "Socks3")
+  #echoln pbGetMessageFromHash(MessageTypes::ApparelColors, "Socks3")
   
   
   

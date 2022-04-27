@@ -855,7 +855,6 @@ class SpriteWindow_Selectable < SpriteWindow_Base
           end
         end
       elsif Input.repeat?(Input::DOWN)
-        echoln "DOWNDOWNDOWNDOWN"
         if @index < @item_max - @column_max ||
            (Input.trigger?(Input::DOWN) && (@item_max % @column_max)==0)
           oldindex = @index
@@ -866,7 +865,6 @@ class SpriteWindow_Selectable < SpriteWindow_Base
           end
         end
       elsif Input.repeat?(Input::LEFT)
-        echoln "LEFTLEFTLEFTLEFT"
         if @column_max >= 2 && @index > 0
           oldindex = @index
           @index -= 1
@@ -1368,21 +1366,17 @@ end
 class Window_Segmented
   
   def initialize
-    @segments = []
+    @segs = []
     @index = 0
-    @active_segment_index = 0
+    @curr_seg_i = 0
   end
   
-  def addSegment(segment)
-    @segments.push(segment)
+  def addSegment(seg)
+    @segs.push(seg)
   end
   
-  def addSegments(segments)
-    @segments.concat(segments)
-    echoln "AMOUNT OF SEGMENTS: " + @segments.length.to_s
-    for segment in @segments
-      echoln "Commands: " + segment.commands.to_s
-    end
+  def addSegments(segs)
+    @segs.concat(segs)
   end
   
   def index
@@ -1391,33 +1385,53 @@ class Window_Segmented
   
   def update
   
-    
-    if @segments[@active_segment_index] != nil
-      #echoln "ACTIVE SEGMENT NOT NULL"
-     
-      
+    if @segs[@curr_seg_i] != nil      
       # Update which segment is active.
       # If the index reaches its limit, switch to the next or
       # previous segment. Otherwise just update normally.
-      active_segment = @segments[@active_segment_index] # To make this if statement more readable.
-      if Input.repeat?(Input::UP) && 
-         active_segment.index - active_segment.columns < 0
-        @active_segment_index -= 1 if @active_segment_index > 0
-      elsif Input.repeat?(Input::DOWN) && 
-            active_segment.index >= active_segment.itemCount - active_segment.columns
-        @active_segment_index += 1 if @active_segment_index < @segments.length-1
+      active_segment = @segs[@curr_seg_i]
+      if Input.repeat?(Input::UP) && active_segment.index - active_segment.columns < 0
+        if @curr_seg_i > 0 
+          # Go to the last row of the previous segment. 
+          @curr_seg_i -= 1
+          
+          # Set the active segment index to last row and the column that was
+          # selected before leaving the active segment previously.
+          prev_col = @segs[@curr_seg_i].index % @segs[@curr_seg_i].columns
+          @segs[@curr_seg_i].index = @segs[@curr_seg_i].itemCount - @segs[@curr_seg_i].columns + prev_col
+        else
+          # Select the very last item.
+          @curr_seg_i = @segs.length-1
+          active_segment.index = active_segment.itemCount-1
+        end
+      elsif Input.repeat?(Input::DOWN) && active_segment.index >= active_segment.itemCount - active_segment.columns
+        if @curr_seg_i < @segs.length-1
+          # Select the first row of the next segment.
+          @curr_seg_i += 1 
+
+          # Set the active segment index to first row and the column that was
+          # selected before leaving the active segment previously.
+          prev_col = @segs[@curr_seg_i].index % @segs[@curr_seg_i].columns
+          @segs[@curr_seg_i].index = 0
+          @segs[@curr_seg_i].index += prev_col
+        else
+          # Select the very first item.
+          @curr_seg_i = 0
+          active_segment.index = 0
+        end
+        
       else
-        @segments[@active_segment_index].update
+        @segs[@curr_seg_i].update
       end
 
       # Re-count the index.
       @index = 0
       # All items for previous segments count towards the index.
-      for i in 0...@active_segment_index
-        @index += @segments[i].itemCount
+      for i in 0...@curr_seg_i
+        @index += @segs[i].itemCount
       end
       # Lastly, add the current segment's index on top.
-      @index += @segments[@active_segment_index].index
+      @index += @segs[@curr_seg_i].index
      
     end
     

@@ -49,6 +49,7 @@ module GameData
       @id_number          = hash[:id_number]   || -1
       @id_unique          = hash[:id_unique]   || -1
       @real_name          = hash[:name]        || "Unnamed"
+      
     end
 
     def name
@@ -65,8 +66,9 @@ module GameData
       apparel_hash[:name] = line[2]
     end
     
-    # This is a class level instance variable and not a class variable? That's pretty neat.
+    
     class << self
+      # This is a class level instance variable and not a class variable? That's pretty neat.
       attr_accessor :maxApparelID
     end
 
@@ -259,12 +261,8 @@ module GameData
     @@class_hash = PBS_NAMES.map { |name| [name.to_sym, Object.const_get(self.to_s + name)] }.to_h
     @@inverted_class_hash = @@class_hash.invert
     
-    #echoln "CLASS HASH: " + @@class_hash.to_s
-    #echoln "ONE CLASS OBJ: " + @@class_hash[:Base]::DATA.to_s
-    
     # A one dimensional list containing all apparel items indexed by their unique id.
     @@all_apparel = {}
-    
     
     # Should be treated as a constant and only set by the compiler once.
     # Contains a list of all colors that have been found while compiling.
@@ -286,6 +284,15 @@ module GameData
   
   
     def self.load
+      # If any .dat files are missing just re-compile apparel (if in debug).
+      # May want to remove this code at later stages.
+      @@class_hash.each_value { |classname|
+        if !File.exists?(classname::DATA_FILENAME) && $DEBUG
+          Compiler::compile_apparel
+          break
+        end
+      }
+    
       # Load the apparel game data.
       for pbs_name_sym in PBS_NAMES_SYMS
         @@class_hash[pbs_name_sym].load
@@ -295,17 +302,9 @@ module GameData
       
       # Compute @@all_apparel
       for pbs_name_sym in PBS_NAMES_SYMS
-        #echoln "DATA HASH: " + @@class_hash[pbs_name_sym]::DATA.to_s
-        
         all_apparel_list.concat( @@class_hash[pbs_name_sym]::DATA.map{ |apparel_id, apparel_obj| [apparel_obj.id_unique, apparel_obj]})
         all_apparel_list.concat( @@class_hash[pbs_name_sym]::DATA.map{ |apparel_id, apparel_obj| [apparel_obj.id, apparel_obj]})
-
-        #echoln "WARNING: Collision of unique_id's for apparel. Expect problems."
-        #echo "ALL APPAREL: " + @@class_hash[pbs_name_sym]::DATA.map{ |apparel_id, apparel_obj|  [apparel_obj.id_unique, apparel_obj]}.to_h.to_s #@@all_apparel.to_s
-        #echo all_apparel_list.to_h.to_s
         @@all_apparel = all_apparel_list.to_h
-        
-        echo "ALL_APPAREL: " + @@all_apparel.to_s
       end
     end
     
@@ -322,7 +321,7 @@ module GameData
       else
         ret = "Graphics/Characters/Apparel/" + item_data.class::LAYER + "/" + item_data.class::LAYER + item_data.id_number.to_s + ".png"
       end
-      #echoln "PATH STRING: " + ret
+
       return ret
     end
     
@@ -378,9 +377,9 @@ def pbGetApparelConflicts(layer, apparelId)
   
   #echoln "GameData::Apparel.getClass(layer).get(apparelID) = " + GameData::Apparel.getClass(layer).get(apparelId).to_s
   if conflicts != nil && conflicts != []
-    echoln "CONFLICTS CLASS: " + GameData::Apparel.getClass(layer).get(apparelId).conflicts.class.to_s
-    echoln "CONFLICTS: " + GameData::Apparel.getClass(layer).get(apparelId).conflicts.to_s
-    echoln "CONFLICTS SPLIT: " + conflicts.split(GameData::Apparel::DELIMITER).to_s
+    #echoln "CONFLICTS CLASS: " + GameData::Apparel.getClass(layer).get(apparelId).conflicts.class.to_s
+    #echoln "CONFLICTS: " + GameData::Apparel.getClass(layer).get(apparelId).conflicts.to_s
+    #echoln "CONFLICTS SPLIT: " + conflicts.split(GameData::Apparel::DELIMITER).to_s
 
     return conflicts.split(GameData::Apparel::DELIMITER)
   else

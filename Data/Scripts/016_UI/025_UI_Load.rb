@@ -1,5 +1,4 @@
 # Check if lib folder exists that is needed for require 'date'
-
 if File.exists?("lib")
   #echoln "Exists."
 else
@@ -92,11 +91,6 @@ class PokemonLoadPanel < SpriteWrapper
       self.bitmap.clear if self.bitmap
       
       self.bitmap.blt(0, 0, @bgbitmap.bitmap, Rect.new(0, 0, @bgbitmap.width, @bgbitmap.height))
-      # if @isContinue
-        # self.bitmap.blt(0,0,bgbitmap.bitmap,Rect.new(0,(@selected) ? 111*2 : 0,bgbitmap.width,111*2))
-      # else
-        # self.bitmap.blt(0,0,bgbitmap.bitmap,Rect.new(0,111*2*2+((@selected) ? 23*2 : 0),bgbitmap.width,23*2))
-      # end
       textpos = []
       if @isContinue
         # Standard format for now.
@@ -112,10 +106,6 @@ class PokemonLoadPanel < SpriteWrapper
         mapname = pbGetMapNameFromId(@mapid)
         mapname.gsub!(/\\PN/,@trainer.name)
         textpos.push([mapname,197,90,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        
-        #textpos.push([@title,16*2,2*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
-        # textpos.push([_INTL("Badges:"),16*2,53*2,0,TEXTCOLOR,TEXTSHADOWCOLOR])
-        # textpos.push([@trainer.badge_count.to_s,103*2,53*2,1,TEXTCOLOR,TEXTSHADOWCOLOR])
         
         # Draw playtime.
         textpos.push([_INTL("Playtime"),220,126,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
@@ -135,14 +125,6 @@ class PokemonLoadPanel < SpriteWrapper
         textpos.push([_INTL("Caught"),193,196,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         textpos.push([@trainer.pokedex.owned_count.to_s,275,196,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
 
-        
-        #textpos.push([@trainer.pokedex.seen_count.to_s,300,159,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        # if @trainer.male?
-          # textpos.push([@trainer.name,56*2,29*2,0,MALETEXTCOLOR,MALETEXTSHADOWCOLOR])
-        # elsif @trainer.female?
-          # textpos.push([@trainer.name,56*2,29*2,0,FEMALETEXTCOLOR,FEMALETEXTSHADOWCOLOR])
-        # else
-        
         # Draw trainer name.
         textpos.push([@trainer.name,92,10,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         
@@ -191,9 +173,7 @@ class PokemonLoad_Scene
     
     for i in 0...commands.length
      btn_type = btn_types[i]
-     
-     echoln "BUTTON: " + commands[i].to_s + " ," + btn_types[i].to_s
-     
+          
      @sprites["panel#{i}"] = PokemonLoadPanel.new(i,commands[i],
          (show_continue) ? (i==0) : false,trainer,pokemon_global,frame_count,map_id,btn_type,@viewport)
       
@@ -201,22 +181,8 @@ class PokemonLoad_Scene
       left_btn_x = 75
       right_btn_x = 264
       
-      # # Determine x position based on button type.
-      # if btn_type == LoadMenu_Model::BTN_CONTINUE
-        # panel_x = 48
-      # elsif btn_type == LoadMenu_Model::BTN_LEFT_DOWN ||
-                        # LoadMenu_Model::BTN_LEFT_UP ||
-                        # LoadMenu_Model::BTN_NORMAL_BIG
-        # panel_x = left_btn_x
-      # elsif btn_type == LoadMenu_Model::BTN_RIGHT_DOWN ||
-                        # LoadMenu_Model::BTN_RIGHT_UP
-        # panel_x = right_btn_x
-      # else # The small normal button case. 
-        
-      # end
-      
+      # Determine button positioning based on the previous button.
       if i > 0
-        
         # Take the opposite x position of the previous button, unless it is a big button.
         # Also increase y position.
         previous_btn = @sprites["panel#{i-1}"]
@@ -233,10 +199,8 @@ class PokemonLoad_Scene
           else
             panel_y += 56
           end
-          
-          
         end
-      else # Starting point.
+      else # Starting point, there was no previous button yet.
         if @sprites["panel#{i}"].btn_type == LoadMenu_Model::BTN_CONTINUE
           panel_x = 48
         else
@@ -266,7 +230,6 @@ class PokemonLoad_Scene
     else
       first_cmdwindow.columns = 2
     end
-    #first_cmdwindow.commands = [commands[0]]
     first_cmdwindow.viewport = @viewport
     first_cmdwindow.visible = false
     cmdwindows.push(first_cmdwindow)
@@ -308,11 +271,6 @@ class PokemonLoad_Scene
     end
     cmdwindows.last.commands = cmdwindow_commands
     @seg_window.addSegments(cmdwindows)
-    
-    # @sprites["cmdwindow"] = Window_CommandPokemon.new([])
-    # @sprites["cmdwindow"].viewport = @viewport
-    # @sprites["cmdwindow"].visible  = false
-    # @sprites["cmdwindow"].commands = commands
   end
 
   def pbStartScene2
@@ -332,8 +290,6 @@ class PokemonLoad_Scene
     @seg_window.update
     newi = @seg_window.index rescue 0
     if oldi!=newi
-      echoln "OLDI: " + oldi.to_s
-      echoln "NEWI: " + newi.to_s
       @sprites["panel#{oldi}"].selected = false
       @sprites["panel#{oldi}"].pbRefresh
       @sprites["panel#{newi}"].selected = true
@@ -365,14 +321,7 @@ class PokemonLoad_Scene
     return if !trainer || !trainer.party
     meta = GameData::Metadata.get_player(trainer.character_ID)
     if meta
-      # TODO: Make this draw a mughsot based on the saved outfit state instead
-      # filename = pbGetPlayerCharset(meta,1,trainer,true)
-      # @sprites["player"] = TrainerWalkingCharSprite.new(filename,@viewport)
-      # charwidth  = @sprites["player"].bitmap.width
-      # charheight = @sprites["player"].bitmap.height
-      # @sprites["player"].x        = 56*2-charwidth/8
-      # @sprites["player"].y        = 56*2-charheight/8
-      # @sprites["player"].src_rect = Rect.new(0,0,charwidth/4,charheight/4)
+
       @sprites["player"] = IconSprite.new(0,0, @viewport)
       @sprites["player"].setBitmap("Graphics/Characters/Apparel/TrainerID/Base/Base1.png")
       charwidth  = @sprites["player"].bitmap.width
@@ -385,13 +334,14 @@ class PokemonLoad_Scene
       #@sprites["player"].src_rect = Rect.new(0,0,charwidth,charheight)
       trainer.outfitstate.applyToIdBitmap(@sprites["player"].bitmap)
     end
-    for i in 0...trainer.party.length
-      @sprites["party#{i}"] = PokemonIconSprite.new(trainer.party[i],@viewport)
-      @sprites["party#{i}"].setOffset(PictureOrigin::Center)
-      @sprites["party#{i}"].x = (167+33*(i%2))*2
-      @sprites["party#{i}"].y = (56+25*(i/2))*2
-      @sprites["party#{i}"].z = 99999
-    end
+    # Drawing your party is disabled (for now, maybe forever).
+    # for i in 0...trainer.party.length
+      # @sprites["party#{i}"] = PokemonIconSprite.new(trainer.party[i],@viewport)
+      # @sprites["party#{i}"].setOffset(PictureOrigin::Center)
+      # @sprites["party#{i}"].x = (167+33*(i%2))*2
+      # @sprites["party#{i}"].y = (56+25*(i/2))*2
+      # @sprites["party#{i}"].z = 99999
+    # end
   end
 
   def pbChoose(commands)

@@ -20,6 +20,8 @@ RGSS*.dll
 .vscode/
 *.code-workspace
 .idea/
+/.vs/ProjectSettings.json
+/.vs/slnx.sqlite
 
 # Operating system generated files & folders
 .DS_Store
@@ -42,3 +44,4 @@ Maps/Candelle Residential.png
 traceback.log
 Game.yaml
 *.ttf
+

@@ -1,16 +1,5 @@
 $DEBUG = true
 
-#Console::setup_console
-
-# Create .dat apparel files in case they don't exist. Without this the compiler is unable to write into them. 
-for layer in $LAYER_NAMES
-  File.open("Data/Apparel/" + layer + ".dat", "w") if !safeExists?("Data/Apparel/" + layer + ".dat")
-end
-File.open("Data/Apparel/Type.dat", "w") if !safeExists?("Data/Apparel/Type.dat")
-File.open("Data/Apparel/Class.dat", "w") if !safeExists?("Data/Apparel/Cype.dat")
-
-# pbCompiler
-
 class Scene_DebugIntro
   def main
     Graphics.transition(0)
@@ -44,9 +33,13 @@ def mainFunctionDebug
     Game.set_up_system
     Graphics.update
     Graphics.freeze
+
+    Console::setup_console
+
     $scene = pbCallTitle
     $scene.main until $scene.nil?
     Graphics.transition(20)
+    
   rescue Hangup
     pbPrintException($!) if !$DEBUG
     pbEmergencySave

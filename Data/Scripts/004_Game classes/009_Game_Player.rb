@@ -327,44 +327,49 @@ class Game_Player < Game_Character
 	if Input.press?(Input::ALT) && $DEBUG
 	  for layer_name in $LAYER_NAMES
 
-		# Get the highest possible apparel ID for the current layer
-		getIDCountCode = "PBApparel" + layer_name + ".maxValue"
-		maxValue = eval(getIDCountCode)
+      # Get the highest possible apparel ID for the current layer
+      #getIDCountCode = "PBApparel" + layer_name + ".maxValue"
+      #maxValue = eval(getIDCountCode)
+      maxValue = pbGetMaxApparelID(layer_name)
+      
+        
+      apparelId = 0
 		  
-		apparelId = 0
-		  
-		while apparelId == 0
-		  # Generate a random apparel ID
-		  apparelId = rand(maxValue) + 1
-			
-		  # Repeat this if apparel ID does not exist
-		  if $ApparelData[layer_name][apparelId] == nil
-			apparelId = 0
-		  # Select the apparel
-		  else
-			# Select a random color out of the for the apparel available ones
-			if layer_name != "Base"
-			  colors = pbGetApparelColors(layer_name, apparelId)
+      while apparelId == 0
+        # Generate a random apparel ID
+        apparelId = rand(maxValue) + 1
+        
+        #echoln GameData::Apparel.getClass(layer_name)::DATA.to_s
+        
+        # Repeat this if apparel ID does not exist
+        #if $ApparelData[layer_name][apparelId] == nil
+        if GameData::Apparel.getClass(layer_name).get(apparelId) == nil
+          apparelId = 0
+        # Select the apparel
+        else
+        # Select a random color out of the for the apparel available ones
+          if layer_name != "Base"
+            colors = pbGetApparelColors(layer_name, apparelId)
+            
+            #echo "For apparel " + layer_name + apparelId.to_s + " " + colors.inspect + "\n"
+            
+            color = colors[rand(colors.length)]
+            
+            #echo "Working combination of arguments: " + layer_name + ", " + apparelId.to_s + ", " + color + "\n"
+            
+            # Add the outfit to the bag
+            $ApparelBag.pbStoreApparel(layer_name, apparelId, color)
+          
+          else
+            color = nil
+          end
 			  
-			  #echo "For apparel " + layer_name + apparelId.to_s + " " + colors.inspect + "\n"
-			  
-			  color = colors[rand(colors.length)]
-			  
-			  #echo "Working combination of arguments: " + layer_name + ", " + apparelId.to_s + ", " + color + "\n"
-				
-			  # Add the outfit to the bag
-			  $ApparelBag.pbStoreApparel(layer_name, apparelId, color)
-			else
-			  color = nil
-			end
-			  
-			# Set the outfit layer part
-      # OUTFIT DISABLED
-			# $Trainer.outfitstate.setDryLayerPart(layer_name, apparelId, color)
-		  end
-		end
-	  end
-	end
+          # Set the outfit layer part
+          $Trainer.outfitstate.setDryLayerState(layer_name, apparelId, color)
+          end
+        end
+      end
+    end
   end
 
   def update_command_new
@@ -454,19 +459,15 @@ def pbUpdateVehicle
 =end
 	if $PokemonGlobal.diving
       #$game_player.character_name=pbGetPlayerCharset(meta,5) # Diving graphic
-      # OUTFIT DISABLED
-      # $Trainer.outfitstate.animation = "Diving"
+      $Trainer.outfitstate.animation = "Diving"
     elsif $PokemonGlobal.surfing
       #$game_player.character_name=pbGetPlayerCharset(meta,3) # Surfing graphic
-      # OUTFIT DISABLED
-      # $Trainer.outfitstate.animation = "Surfing"
+      $Trainer.outfitstate.animation = "Surfing"
     elsif $PokemonGlobal.bicycle
       #$game_player.character_name=pbGetPlayerCharset(meta,2) # Bicycle graphic
-      # OUTFIT DISABLED
-      # $Trainer.outfitstate.animation = "Bicycle"
+      $Trainer.outfitstate.animation = "Bicycle"
     elsif $PokemonGlobal.swimming
-      # OUTFIT DISABLED
-      # $Trainer.outfitstate.animation = "Swimming"            # Swimming animation
+      $Trainer.outfitstate.animation = "Swimming"            # Swimming animation
     else
       #$game_player.character_name=pbGetPlayerCharset(meta,1) # Regular graphic
     end

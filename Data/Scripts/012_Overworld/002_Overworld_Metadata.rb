@@ -55,6 +55,7 @@ class PokemonGlobalMetadata
   attr_accessor :pokerusTime
   # Save file
   attr_accessor :safesave
+  attr_accessor :savedate # Remembers when the last save took place. (Datatype is Time)
 
   def initialize
     # Movement

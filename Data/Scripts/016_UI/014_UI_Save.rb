@@ -18,12 +18,30 @@ def pbEmergencySave
       end
     end
   end
+  
+  # Update save date.
+  old_value = pbUpdateSaveDate(Time.now)
+  
   if Game.save
     pbMessage(_INTL("\\se[]The game was saved.\\me[GUI save game] The previous save file has been backed up.\\wtnp[30]"))
   else
     pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
+    
+    # Roll back changes to save date.
+    pbUpdateSaveDate(old_value)
   end
   $scene = oldscene
+end
+
+#===============================================================================
+# Updates save date in metadata. Returns the old value in case a rollback
+# is needed.
+# - Baustein
+#===============================================================================
+def pbUpdateSaveDate(new_value)
+  old_value = $PokemonGlobal.savedate
+  $PokemonGlobal.savedate = new_value
+  return old_value
 end
 
 #===============================================================================
@@ -102,12 +120,19 @@ class PokemonSaveScreen
       end
       $PokemonTemp.begunNewGame = false
       pbSEPlay('GUI save choice')
+      
+      # Update save date.
+      old_value = pbUpdateSaveDate(Time.now)
+      
       if Game.save
         pbMessage(_INTL("\\se[]{1} saved the game.\\me[GUI save game]\\wtnp[30]", $Trainer.name))
         ret = true
       else
         pbMessage(_INTL("\\se[]Save failed.\\wtnp[30]"))
         ret = false
+        
+        # Roll back changes to save date.
+        pbUpdateSaveDate(old_value)
       end
     else
       pbSEPlay('GUI save choice')

@@ -235,8 +235,7 @@ def pbChangePlayer(id)
   return false if !meta
   $Trainer.character_ID = id
   $Trainer.trainer_type = meta[0]
-  # OUTFIT DISABLED
-  #$Trainer.outfitstate.gender = pbGetTrainerTypeGenderString(id)
+  $Trainer.outfitstate.gender = pbGetTrainerTypeGenderString(id)
   $game_player.character_name = meta[1]
 end
 
@@ -254,7 +253,7 @@ def pbTrainerName(name = nil, outfit = 0)
   $Trainer.name   = name
   $Trainer.outfit = outfit
   $PokemonTemp.begunNewGame = true
-  $ApparelBag=ApparelBag.new
+  #$ApparelBag=ApparelBag.new
 end
 
 def pbSuggestTrainerName(gender)

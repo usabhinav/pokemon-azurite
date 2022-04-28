@@ -45,6 +45,7 @@ class OutfitState
   
   attr_reader   :dry_layer_states # The regular outfit
   attr_reader   :wet_layer_states # The swimming outfit
+  attr_reader   :active_layer_states # Whichever outfit is active at the moment.
   attr_accessor :gender
   attr_accessor :surfing_species  # A string with the species you surf on + an s or a at the end for shiny/albino 
   
@@ -81,10 +82,10 @@ class OutfitState
       
       @surfing_species = pkmn.species.to_s
       
-      if pkmn.isShiny?
+      if pkmn.shiny?
         @surfing_species += "s"
-      elsif pkmn.isAlbino?
-        @surfing_species += "a"
+      #elsif pkmn.isAlbino?
+      #  @surfing_species += "a"
       end
       
     else
@@ -107,18 +108,28 @@ class OutfitState
   end
   
   # Sets the apparel for a layer state of the regular outfit
-  def setDryLayerPart(layer_name, apparel_id, color=nil)
-    setOutfitStateLayerPart(CSVCONST::DRYOUTFIT, layer_name, apparel_id, color)
+  def setDryLayerState(layer_name, apparel_id, color=nil)
+    setLayerState(GameData::Apparel::DRYOUTFIT, layer_name, apparel_id, color)
   end
   
   # Sets the apparel for a layer state of the swimsuit
-  def setWetLayerPart(layer_name, apparel_id, color=nil)
-    setOutfitStateLayerPart(CSVCONST::WETOUTFIT, layer_name, apparel_id, color)
+  def setWetLayerState(layer_name, apparel_id, color=nil)
+    setLayerState(GameData::Apparel::WETOUTFIT, layer_name, apparel_id, color)
   end
   
-  def setOutfitStateLayerPart(outfitstate_constant, layer_name, apparel_id, color=nil)
+  def getLayerState(outfitstate_constant, layer_name)
+    if outfitstate_constant == GameData::Apparel::DRYOUTFIT
+      layer_states = @dry_layer_states
+    else
+      layer_states = @wet_layer_states
+    end
     
-    if outfitstate_constant == CSVCONST::DRYOUTFIT
+    return layer_states[layer_name]
+  end
+  
+  def setLayerState(outfitstate_constant, layer_name, apparel_id, color=nil)
+    
+    if outfitstate_constant == APPCONST_OUTFITMODE::DRYSUIT
       layer_states = @dry_layer_states
     else
       layer_states = @wet_layer_states
@@ -135,17 +146,19 @@ class OutfitState
     end
         
     # De-select the apparel for every layer that interferes with the newly
-    # selected part
-    layer_conflicts = pbGetApparelConflicts(layer_name, apparel_id)
-    for conflict in layer_conflicts
-      layer_states[conflict].selected_part = 0
-      layer_states[conflict].occupied_by = layer_name
-        #echo "Setting occupied conflict layer as " + layer_name + "\n"
+    # selected part.
+    if pbHasApparelConflicts?(layer_name)
+      layer_conflicts = pbGetApparelConflicts(layer_name, apparel_id)
+      for conflict in layer_conflicts
+        layer_states[conflict].selected_part = 0
+        layer_states[conflict].occupied_by = layer_name
+          #echo "Setting occupied conflict layer as " + layer_name + "\n"
+      end
     end
     
     if color!=nil
       # Apply the color to the layer state before it gets refreshed graphically
-      if outfitstate_constant == CSVCONST::DRYOUTFIT
+      if outfitstate_constant == GameData::Apparel::DRYOUTFIT
         setDryLayerColor(layer_name, color)
       else
         setWetLayerColor(layer_name, color)
@@ -153,12 +166,41 @@ class OutfitState
     end
   end
   
+  # To keep any references and avoid future headaches, purposefully do not
+  # use pbDeepCopy but instead copy everything over by hand. Trust me, this
+  # is for the best.
+  def setLayerStates(outfit_mode, new_layer_states)
+    
+    if(outfit_mode == APPCONST_OUTFITMODE::DRYSUIT)
+      layer_states = @dry_layer_states
+    else
+      layer_states = @wet_layer_states
+    end
+    
+    new_layer_states.each do |layer, new_state|
+      layer_states[layer].selected_part = new_state.selected_part
+      layer_states[layer].color = new_state.color
+      layer_states[layer].occupied_by = new_state.occupied_by
+    end
+    
+  end
+    
+  def getLayerStates(outfit_mode)
+    if(outfit_mode == APPCONST_OUTFITMODE::DRYSUIT)
+      return @dry_layer_states
+    else
+      return @wet_layer_states
+    end
+  end
+
   # Swaps the active layer state
   def toggleActiveLayerStates
     if @active_layer_states == @dry_layer_states
       @active_layer_states = @wet_layer_states
+      echoln "WE WET AND RECKLESS NOW"
     else
       @active_layer_states = @dry_layer_states
+      echoln "WE DRY NOW"
     end
   end
   
@@ -174,7 +216,7 @@ class OutfitState
   
   # Finds out which layer the given layer is occupied by
   def occupiedBy(outfitstate_constant, layer_name)
-    if outfitstate_constant == CSVCONST::DRYOUTFIT
+    if outfitstate_constant == GameData::Apparel::DRYOUTFIT
       return @dry_layer_states[layer_name].occupied_by
     else
       return @wet_layer_states[layer_name].occupied_by
@@ -321,35 +363,32 @@ class OutfitState
     
     #echo layer_bitmap_path + " " + bitmap.inspect + "\n\n"
     
-    if $DEBUG
-	  begin
-	    layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
-	    #layer_bitmap = BitmapCache.load_bitmap(layer_bitmap_path)
+    begin
+      layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
+      #layer_bitmap = BitmapCache.load_bitmap(layer_bitmap_path)
         #width = [bitmap.width, layer_bitmap.width].max
         #height = [bitmap.height, layer_bitmap.height].max
         #bitmap.width = width
         #bitmap.height = height
-        bitmap.blt(0,0, layer_bitmap, Rect.new(0,0,bitmap.width, bitmap.width))
-	  rescue
-		  echo "Error: Couldnt apply layer to bitmap: " + layer_bitmap_path + "\n"
-	  end
-	else
-		layer_bitmap = BitmapWrapper.new(layer_bitmap_path)
-	end
-    
-    
+        bitmap.blt(0,0, layer_bitmap, Rect.new(0,0,bitmap.width, bitmap.height))
+    rescue
+      echo "Error: Couldnt apply layer to bitmap: " + layer_bitmap_path + "\n"
+    end
   end
   
 end
 
 #===============================================================================
 # Wraps around an instance of OutfitState to notify other objects of changes 
-# made to it.
+# made to it. A neat side effect is that we can change the reference of the
+# internal outfit state without having to change the wrapper's reference.
 # - Baustein
 #===============================================================================
 class ObservableOutfitState
 
   include Observable
+  
+  #attr_accessor :outfitstate
   
   alias old_initialize initialize
   
@@ -358,12 +397,37 @@ class ObservableOutfitState
     @outfitstate = outfitstate
   end
   
+  def dry_layer_states
+    return @outfitstate.dry_layer_states
+  end
+  
+  def active_layer_states
+    return @outfitstate.active_layer_states
+  end
+  
+  def wet_layer_states
+    return @outfitstate.wet_layer_states
+  end
+  
+  def gender=(value)
+    @outfitstate.gender = value
+    notify
+  end
+  
+  def gender
+    return @outfitstate.gender
+  end
+  
+  def occupiedBy(outfitstate_constant, layer_name)
+    @outfitstate.occupiedBy(outfitstate_constant, layer_name)
+  end
+  
   def setSpriteCharacter(sprite_character)
     @sprite_character = sprite_character
   end
   
-  def setDryLayerPart(layer_name, apparel_id, color=nil)
-    @outfitstate.setDryLayerPart(layer_name, apparel_id, color)
+  def setDryLayerState(layer_name, apparel_id, color=nil)
+    @outfitstate.setDryLayerState(layer_name, apparel_id, color)
     #DEBUG
 =begin
     if $Trainer
@@ -383,8 +447,8 @@ class ObservableOutfitState
     notify
   end
   
-  def setWetLayerPart(layer_name, apparel_id, color=nil)
-    @outfitstate.setWetLayerPart(layer_name, apparel_id)
+  def setWetLayerState(layer_name, apparel_id, color=nil)
+    @outfitstate.setWetLayerState(layer_name, apparel_id, color)
     notify
   end
   
@@ -396,6 +460,24 @@ class ObservableOutfitState
   def setWetLayerColor(layer_name, color)
     @outfitstate.setWetLayerColor(layer_name, color)
     notify
+  end
+  
+  def setLayerState(outfit_mode, layer, number_id, color=nil)
+    @outfitstate.setLayerState(outfit_mode, layer, number_id, color)
+    notify
+  end
+  
+  def getLayerState(outfit_mode, layer)
+    return @outfitstate.getLayerState(outfit_mode, layer)
+  end
+  
+  def setLayerStates(outfit_mode, new_layer_states)
+    @outfitstate.setLayerStates(outfit_mode, new_layer_states)
+    notify
+  end
+  
+  def getLayerStates(outfit_mode)
+    return @outfitstate.getLayerStates(outfit_mode)
   end
   
   def animation
@@ -435,28 +517,26 @@ class ObservableOutfitState
     return @outfitstate.applyToMugshotBitmap(bitmap)
   end
   
-  def gender=(value)
-    @outfitstate.gender = value
-    notify
+  def getOutfitStateLayerPart(outfit_mode, layer)
+    return @outfitstate.getOutfitStateLayerPart(outfit_mode, layer)
   end
   
-  def gender
-    return @outfitstate.gender
+  def setOutfitStateLayerPart(outfit_mode, layer, number_id, color=nil)
+    @outfitstate.setOutfitStateLayerPart(outfit_mode, layer, number_id, color)
   end
   
-  
-  def occupiedBy(outfitstate_constant, layer_name)
-    @outfitstate.occupiedBy(outfitstate_constant, layer_name)
+  def toggleActiveLayerStates
+    @outfitstate.toggleActiveLayerStates
   end
-  
+
+  # Saving and loading the outfit still works normally, but any information  
+  # about observers will be lost (which makes sense as the observers don't exist anymore).
   def marshal_dump
     [@outfitstate]
   end
-  
   def marshal_load array
     initialize(array[0])
   end
-    
 end
 
 
@@ -480,8 +560,7 @@ class Sprite_Player_Updater
     #else
       #echo "Not an Animation Change Event:\n"
     end
-    # OUTFIT DISABLED
-    #@outfitstate.applyToOverworldBitmap(@sprite_character.charbitmap.bitmap)
+    @outfitstate.applyToOverworldBitmap(@sprite_character.charbitmap.bitmap)
   end
   
 end
@@ -526,8 +605,8 @@ class Sprite_Character
         updateproc = Proc.new{|event|
           if event.is_a? AnimationChangeEvent
             @charbitmap.dispose
-            @charbitmap.setBitmapFile("Graphics/Characters/Apparel/" + event.animation_name + "/Base/Base1.png")
-            #@charbitmap = AnimatedBitmap.new("Graphics/Characters/Apparel/" + event.animation_name + "/Base/Base1.png")
+            #@charbitmap.setBitmapFile("Graphics/Characters/Apparel/" + event.animation_name + "/Base/Base1.png")
+            @charbitmap = AnimatedBitmap.new("Graphics/Characters/Apparel/" + event.animation_name + "/Base/Base1.png")
             #echo "Animation Change Event: " + event.animation_name + "\n"
             #echo @charbitmap.bitmap.width.to_s + ", " + @charbitmap.bitmap.height.to_s
             #displayCharbitmapReference
@@ -535,14 +614,11 @@ class Sprite_Character
             @ch = @charbitmap.height / 4
           end
           #$Trainer.outfitstate..applyToOverworldBitmap(@sprite_character.charbitmap.bitmap)
-          # OUTFIT DISABLED
-          #$Trainer.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap)
+          $Trainer.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap)
         }
         @player_outfit_sprite_updater = Updater.new(updateproc)
-        # OUTFIT DISABLED
-        #$Trainer.outfitstate.attach(@player_outfit_sprite_updater)
-        # OUTFIT DISABLED
-        #$Trainer.outfitstate.setSpriteCharacter(self)
+        $Trainer.outfitstate.attach(@player_outfit_sprite_updater)
+        $Trainer.outfitstate.setSpriteCharacter(self)
 
       end
     end
@@ -555,32 +631,31 @@ class Sprite_Character
   alias old_dispose dispose
   def dispose
     old_dispose
-    # OUTFIT DISABLED
-    # $Trainer.outfitstate.detach(@player_outfit_sprite_updater)
+    $Trainer.outfitstate.detach(@player_outfit_sprite_updater)
   end
   
 end
 
 
-def pbSetWetLayerPart(layer_name, apparel_id, color="Default")
+def pbSetWetLayerState(layer_name, apparel_id, color="Default")
   if $DEBUG
     $ApparelBag.pbStoreApparel(layer_name, apparel_id, color)
   end
 	
   if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
-    $Trainer.outfitstate.setWetLayerPart(layer_name, apparel_id, color)
+    $Trainer.outfitstate.setWetLayerState(layer_name, apparel_id, color)
   else
     #echo "Doesnt have apparel\n" 
   end
 end
 
-def pbSetDryLayerPart(layer_name, apparel_id, color="Default")
+def pbSetDryLayerState(layer_name, apparel_id, color="Default")
   if $DEBUG
     $ApparelBag.pbStoreApparel(layer_name, apparel_id, color)
   end
 
   if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
-    $Trainer.outfitstate.setDryLayerPart(layer_name, apparel_id, color)
+    $Trainer.outfitstate.setDryLayerState(layer_name, apparel_id, color)
   else
     #echo "Doesnt have apparel\n"
   end

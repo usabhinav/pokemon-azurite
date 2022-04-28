@@ -126,6 +126,15 @@ SaveData.register(:essentials_version) do
   from_old_format { |old_format| old_format[15] }
 end
 
+SaveData.register(:apparel_bag) do
+  ensure_class :ApparelBag
+  save_value { $ApparelBag }
+  load_value { |value| $ApparelBag = value }
+  new_game_value { ApparelBag.new }
+  # Do we need this?
+  #from_old_format { |old_format| old_format[16] }
+end
+
 SaveData.register(:game_version) do
   load_in_bootup
   ensure_class :String

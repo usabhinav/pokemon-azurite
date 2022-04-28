@@ -1356,7 +1356,87 @@ class Window_AdvancedCommandPokemon < Window_DrawableCommand
   end
 end
 
+#===============================================================================
+# A window that is made up of different windows. The index is the sum of all
+# window indices and there is always only one active window. Helpful if you
+# want to for instance create a menu with sections that have different
+# amounts of columns.
+# - Baustein
+#===============================================================================
+class Window_Segmented
+  
+  def initialize
+    @segs = []
+    @index = 0
+    @curr_seg_i = 0
+  end
+  
+  def addSegment(seg)
+    @segs.push(seg)
+  end
+  
+  def addSegments(segs)
+    @segs.concat(segs)
+  end
+  
+  def index
+    return @index
+  end
+  
+  def update
+  
+    if @segs[@curr_seg_i] != nil      
+      # Update which segment is active.
+      # If the index reaches its limit, switch to the next or
+      # previous segment. Otherwise just update normally.
+      active_segment = @segs[@curr_seg_i]
+      if Input.repeat?(Input::UP) && active_segment.index - active_segment.columns < 0
+        if @curr_seg_i > 0 
+          # Go to the last row of the previous segment. 
+          @curr_seg_i -= 1
+          
+          # Set the active segment index to last row and the column that was
+          # selected before leaving the active segment previously.
+          prev_col = @segs[@curr_seg_i].index % @segs[@curr_seg_i].columns
+          @segs[@curr_seg_i].index = @segs[@curr_seg_i].itemCount - @segs[@curr_seg_i].columns + prev_col
+        else
+          # Select the very last item.
+          @curr_seg_i = @segs.length-1
+          active_segment.index = active_segment.itemCount-1
+        end
+      elsif Input.repeat?(Input::DOWN) && active_segment.index >= active_segment.itemCount - active_segment.columns
+        if @curr_seg_i < @segs.length-1
+          # Select the first row of the next segment.
+          @curr_seg_i += 1 
 
+          # Set the active segment index to first row and the column that was
+          # selected before leaving the active segment previously.
+          prev_col = @segs[@curr_seg_i].index % @segs[@curr_seg_i].columns
+          @segs[@curr_seg_i].index = 0
+          @segs[@curr_seg_i].index += prev_col
+        else
+          # Select the very first item.
+          @curr_seg_i = 0
+          active_segment.index = 0
+        end
+        
+      else
+        @segs[@curr_seg_i].update
+      end
+
+      # Re-count the index.
+      @index = 0
+      # All items for previous segments count towards the index.
+      for i in 0...@curr_seg_i
+        @index += @segs[i].itemCount
+      end
+      # Lastly, add the current segment's index on top.
+      @index += @segs[@curr_seg_i].index
+     
+    end
+    
+  end
+end
 
 #===============================================================================
 #

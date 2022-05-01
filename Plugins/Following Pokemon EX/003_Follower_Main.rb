@@ -284,8 +284,11 @@ end
 module GameData
   class Species
     def self.ow_sprite_filename(species, form = 0, gender = 0, shiny = false, shadow = false)
-      ret = self.check_graphic_file("Graphics/Characters/", species, form, gender, shiny, shadow, "Followers")
-      ret = "Graphics/Characters/Followers/000" if nil_or_empty?(ret)
+      # ret = self.check_graphic_file("Graphics/Characters/", species, form, gender, shiny, shadow, "Followers")
+      # ret = "Graphics/Characters/Followers/000" if nil_or_empty?(ret)
+      # TODO: change this method's shiny check to account for albino and glossy
+      ret = self.check_graphic_file("Graphics/Characters/", species, form, gender, shiny, shadow, shiny ? "Followers" : "")
+      ret = "Graphics/Characters/000" if nil_or_empty?(ret)
 	  return ret
     end
   end

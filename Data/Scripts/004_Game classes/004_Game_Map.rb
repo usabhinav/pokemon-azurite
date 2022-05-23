@@ -383,6 +383,10 @@ class Game_Map
   end
 
   def refresh
+  	#Dr. Planky's heartbeat function call
+  	#work in progress, uncomment
+  	#the below line for testing/development.
+    #heartbeat(map_id.to_s)
     for event in @events.values
       event.refresh
     end

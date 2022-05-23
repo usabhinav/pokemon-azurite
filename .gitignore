@@ -22,6 +22,7 @@ RGSS*.dll
 .idea/
 /.vs/ProjectSettings.json
 /.vs/slnx.sqlite
+*.mkproj
 
 # Operating system generated files & folders
 .DS_Store

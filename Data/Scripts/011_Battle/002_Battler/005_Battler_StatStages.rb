@@ -8,8 +8,8 @@ class Battle::Battler
 
   def pbCanRaiseStatStage?(stat, user = nil, move = nil, showFailMsg = false, ignoreContrary = false)
     return false if fainted?
-    # Contrary
-    if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
+    # Contrary and Reversal Herb
+    if ((hasActiveAbility?(:CONTRARY) && !@battle.moldBreaker) || hasActiveItem?(:REVERSALHERB)) && !ignoreContrary
       return pbCanLowerStatStage?(stat, user, move, showFailMsg, true)
     end
     # Check the stat stage
@@ -49,6 +49,12 @@ class Battle::Battler
     if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
       return pbLowerStatStage(stat, increment, user, showAnim, true)
     end
+    # Reversal Herb
+	  if hasActiveItem?(:REVERSALHERB) && !ignoreContrary	
+	    @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!", self.pbThis, self.itemName))	
+	    pbConsumeItem	
+      return pbLowerStatStage(stat, increment, user, showAnim, true)
+    end
     # Perform the stat stage change
     increment = pbRaiseStatStageBasic(stat, increment, ignoreContrary)
     return false if increment <= 0
@@ -71,6 +77,12 @@ class Battle::Battler
     # Contrary
     if hasActiveAbility?(:CONTRARY) && !ignoreContrary && !@battle.moldBreaker
       return pbLowerStatStageByCause(stat, increment, user, cause, showAnim, true)
+    end
+    # Reversal Herb	
+    if hasActiveItem?(:REVERSALHERB) && !ignoreContrary	
+      @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!", self.pbThis, self.itemName))	
+      pbConsumeItem	
+      return pbLowerStatStageByCause(stat, increment, user, cause, showAnim, true)	
     end
     # Perform the stat stage change
     increment = pbRaiseStatStageBasic(stat, increment, ignoreContrary)
@@ -133,6 +145,10 @@ class Battle::Battler
          user && user.index != @index && !statStageAtMin?(stat)
         return true
       end
+    end
+    # Reversal Herb
+    if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+      return pbCanRaiseStatStage?(stat, user, move, showFailMsg, true)
     end
     if !user || user.index != @index   # Not self-inflicted
       if @effects[PBEffects::Substitute] > 0 &&
@@ -202,6 +218,12 @@ class Battle::Battler
       if hasActiveAbility?(:CONTRARY) && !ignoreContrary
         return pbRaiseStatStage(stat, increment, user, showAnim, true)
       end
+      # Reversal Herb	
+      if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+        @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!", self.pbThis, self.itemName))	
+        pbConsumeItem	
+        return pbRaiseStatStage(stat, increment, user, showAnim, true)
+      end
       # Mirror Armor
       if hasActiveAbility?(:MIRRORARMOR) && !ignoreMirrorArmor &&
          user && user.index != @index && !statStageAtMin?(stat)
@@ -258,6 +280,12 @@ class Battle::Battler
         @battle.pbHideAbilitySplash(self)
         return ret
       end
+    end
+    # Reversal Herb
+    if hasActiveItem?(:REVERSALHERB) && !ignoreContrary
+      @battle.pbDisplay(_INTL("{1}'s {2} reversed stat boosts!", self.pbThis, self.itemName))	
+      pbConsumeItem	
+      return pbRaiseStatStageByCause(stat, increment, user, cause, showAnim, true)
     end
     # Perform the stat stage change
     increment = pbLowerStatStageBasic(stat, increment, ignoreContrary)
@@ -329,7 +357,7 @@ class Battle::Battler
     # NOTE: These checks exist to ensure appropriate messages are shown if
     #       Intimidate is blocked somehow (i.e. the messages should mention the
     #       Intimidate ability by name).
-    if !hasActiveAbility?(:CONTRARY)
+    if !hasActiveAbility?(:CONTRARY) && !hasActiveItem?(:REVERSALHERB)
       if pbOwnSide.effects[PBEffects::Mist] > 0
         @battle.pbDisplay(_INTL("{1} is protected from {2}'s {3} by Mist!",
                                 pbThis, user.pbThis(true), user.abilityName))
@@ -353,6 +381,62 @@ class Battle::Battler
     end
     return false if !pbCanLowerStatStage?(:ATTACK, user)
     return pbLowerStatStageByCause(:ATTACK, 1, user, user.abilityName)
+  end
+
+  # Copied from pbLowerAttackStatStageIntimidate
+  def pbLowerSpecialAttackStatStageChilling(user)
+    return false if fainted?
+    # NOTE: Substitute intentionally blocks Intimidate even if self has Contrary.
+    if @effects[PBEffects::Substitute] > 0
+      if Battle::Scene::USE_ABILITY_SPLASH
+        @battle.pbDisplay(_INTL("{1} is protected by its substitute!", pbThis))
+      else
+        @battle.pbDisplay(_INTL("{1}'s substitute protected it from {2}'s {3}!",
+                                pbThis, user.pbThis(true), user.abilityName))
+      end
+      return false
+    end
+    if Settings::MECHANICS_GENERATION >= 8 && hasActiveAbility?([:OBLIVIOUS, :OWNTEMPO, :INNERFOCUS, :SCRAPPY])
+      @battle.pbShowAbilitySplash(self)
+      if Battle::Scene::USE_ABILITY_SPLASH
+        @battle.pbDisplay(_INTL("{1}'s {2} cannot be lowered!", pbThis, GameData::Stat.get(:SPECIAL_ATTACK).name))
+      else
+        @battle.pbDisplay(_INTL("{1}'s {2} prevents {3} loss!", pbThis, abilityName,
+                                GameData::Stat.get(:SPECIAL_ATTACK).name))
+      end
+      @battle.pbHideAbilitySplash(self)
+      return false
+    end
+    if Battle::Scene::USE_ABILITY_SPLASH
+      return pbLowerStatStageByAbility(:SPECIAL_ATTACK, 1, user, false)
+    end
+    # NOTE: These checks exist to ensure appropriate messages are shown if
+    #       Intimidate is blocked somehow (i.e. the messages should mention the
+    #       Intimidate ability by name).
+    if !hasActiveAbility?(:CONTRARY) && !hasActiveItem?(:REVERSALHERB)
+      if pbOwnSide.effects[PBEffects::Mist] > 0
+        @battle.pbDisplay(_INTL("{1} is protected from {2}'s {3} by Mist!",
+                                pbThis, user.pbThis(true), user.abilityName))
+        return false
+      end
+      if abilityActive? &&
+         (Battle::AbilityEffects.triggerStatLossImmunity(self.ability, self, :SPECIAL_ATTACK, @battle, false) ||
+          Battle::AbilityEffects.triggerStatLossImmunityNonIgnorable(self.ability, self, :SPECIAL_ATTACK, @battle, false))
+        @battle.pbDisplay(_INTL("{1}'s {2} prevented {3}'s {4} from working!",
+                                pbThis, abilityName, user.pbThis(true), user.abilityName))
+        return false
+      end
+      allAllies.each do |b|
+        next if !b.abilityActive?
+        if Battle::AbilityEffects.triggerStatLossImmunityFromAlly(b.ability, b, self, :SPECIAL_ATTACK, @battle, false)
+          @battle.pbDisplay(_INTL("{1} is protected from {2}'s {3} by {4}'s {5}!",
+                                  pbThis, user.pbThis(true), user.abilityName, b.pbThis(true), b.abilityName))
+          return false
+        end
+      end
+    end
+    return false if !pbCanLowerStatStage?(:SPECIAL_ATTACK, user)
+    return pbLowerStatStageByCause(:SPECIAL_ATTACK, 1, user, user.abilityName)
   end
 
   #=============================================================================

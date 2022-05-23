@@ -42,6 +42,63 @@ class Battle::Battler
         Battle::ItemEffects.triggerOnBeingHit(target.item, user, target, move, @battle)
         user.pbItemHPHealCheck if user.hp < oldHP
       end
+      # Spikes Armor damage
+      if target.effects[PBEffects::SpikesArmor] > 0 && !user.fainted? && move.pbContactMove?(user)
+        mult = 1 + target.effects[PBEffects::SpikesArmor]
+        @battle.scene.pbDamageAnimation(user)
+        user.pbReduceHP((user.totalhp*mult/16).round)
+        @battle.pbDisplay(_INTL("{1} was hurt by {2}'s Spikes Armor!", user.pbThis, target.pbThis(true)))
+        user.pbItemHPHealCheck
+      end
+      # Toxic Spikes Armor poison
+      if target.effects[PBEffects::ToxicSpikesArmor] > 0 && !user.fainted? &&
+         user.pbCanPoison?(target, false) && move.pbContactMove?(user)
+        if target.effects[PBEffects::ToxicSpikesArmor] == 1
+          user.pbPoison(target, _INTL("{1} was poisoned by {2}'s Toxic Spikes Armor!", user.pbThis, target.pbThis(true)))
+        else
+          user.pbPoison(target, _INTL("{1} was badly poisoned by {2}'s Toxic Spikes Armor!", user.pbThis, target.pbThis(true)), true)
+        end
+      end
+      # Stealth Rock Armor damage
+      if target.effects[PBEffects::StealthRockArmor] && !user.fainted? && move.pbContactMove?(user)
+        @battle.pbDisplay(_INTL("{1}'s Stealth Rock Armor exploded!", target.pbThis))
+        target.eachOpposing do |b|
+          next if b.fainted?
+          bTypes = b.pbTypes(true)
+          eff = Effectiveness.calculate(:ROCK, bTypes[0], bTypes[1], bTypes[2])
+          if !Effectiveness.ineffective?(eff)
+            eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+            oldHP = b.hp
+            @battle.scene.pbDamageAnimation(b)
+            b.pbReduceHP(b.totalhp*eff/8, false)
+            @battle.pbDisplay(_INTL("{1} was blasted by the shrapnel!", b.pbThis))
+            b.pbItemHPHealCheck
+            if b.pbAbilitiesOnDamageTaken(oldHP)   # Switched out
+              return @battle.pbOnActiveOne(b)   # For replacement battler
+            end
+          end
+        end
+        target.effects[PBEffects::StealthRockArmor] = false
+      end
+      # Volt Spikes Armor damage
+      if target.effects[PBEffects::VoltSpikesArmor] > 0 && !user.isFainted? && move.pbContactMove?(user)
+        bTypes = user.pbTypes(true)
+        eff = Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2])
+        if !Effectiveness.ineffective?(eff)
+          eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+          oldHP = user.hp
+          @battle.scene.pbDamageAnimation(user)
+          user.pbReduceHP(user.totalhp*eff*target.effects[PBEffects::VoltSpikesArmor]/16,false)
+          @battle.pbDisplay(_INTL("{1} was shocked by {2}'s Volt Spikes Armor!", user.pbThis, target.pbThis(true)))
+          user.pbItemHPHealCheck
+          if user.pbAbilitiesOnDamageTaken(oldHP)   # Switched out
+            return @battle.pbOnActiveOne(user)   # For replacement battler
+          end
+          if target.effects[PBEffects::VoltSpikesArmor] == 2 && user.pbCanParalyze?(target, false)
+            user.pbParalyze(target, _INTL("{1} was paralyzed by {2}'s Volt Spikes Armor!", user.pbThis, target.pbThis(true)))
+          end
+        end        
+      end
     end
     if target.opposes?(user)
       # Rage
@@ -116,7 +173,8 @@ class Battle::Battler
        !@battle.pbAllFainted?(user.idxOpposingSide)
       # Greninja - Battle Bond
       if user.isSpecies?(:GRENINJA) && user.ability == :BATTLEBOND &&
-         !@battle.battleBond[user.index & 1][user.pokemonIndex]
+         !@battle.battleBond[user.index & 1][user.pokemonIndex] &&
+         (!@battle.pbCheckGlobalAbility(:NEGATION) || @battle.pbCheckGlobalAbility(:CRYSTALENERGY))
         numFainted = 0
         targets.each { |b| numFainted += 1 if b.damageState.fainted }
         if numFainted > 0 && user.form == 1
@@ -154,7 +212,7 @@ class Battle::Battler
     # Target switching caused by Roar, Whirlwind, Circle Throw, Dragon Tail
     move.pbSwitchOutTargetEffect(user, targets, numHits, switched_battlers)
     # Target's item, user's item, target's ability (all negated by Sheer Force)
-    if !(user.hasActiveAbility?(:SHEERFORCE) && move.addlEffect > 0)
+    if !(user.hasActiveAbility?([:SHEERFORCE, :MORALPACT]) && move.addlEffect > 0)
       pbEffectsAfterMove2(user, targets, move, numHits, switched_battlers)
     end
     # Some move effects that need to happen here, i.e. user switching caused by

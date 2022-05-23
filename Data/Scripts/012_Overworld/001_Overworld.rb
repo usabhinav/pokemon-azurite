@@ -121,7 +121,7 @@ Events.onStepTakenTransferPossible += proc { |_sender,e|
   handled = e[0]
   next if handled[0]
   if $PokemonGlobal.stepcount%4==0
-    for i in $Trainer.able_party
+    for i in $player.able_party
       if i.isSpecies?(:RABLIN) && i.hasAbility?(:HEAVYEYED) && i.status != :SLEEP
         i.status = :SLEEP
         i.statusCount = 3

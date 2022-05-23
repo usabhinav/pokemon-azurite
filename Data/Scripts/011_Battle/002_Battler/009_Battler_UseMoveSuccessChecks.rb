@@ -33,7 +33,7 @@ class Battle::Battler
       return false
     end
     # Throat Chop
-    if @effects[PBEffects::ThroatChop] > 0 && move.soundMove?
+    if @effects[PBEffects::ThroatChop] > 0 && move.pbSoundMove?(user)
       if showMessages
         msg = _INTL("{1} can't use {2} because of Throat Chop!", pbThis, move.name)
         (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -44,7 +44,7 @@ class Battle::Battler
     @effects[PBEffects::ChoiceBand] = nil if !pbHasMove?(@effects[PBEffects::ChoiceBand])
     if @effects[PBEffects::ChoiceBand] && move.id != @effects[PBEffects::ChoiceBand]
       choiced_move_name = GameData::Move.get(@effects[PBEffects::ChoiceBand]).name
-      if hasActiveItem?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF])
+      if hasActiveItem?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF, :CHOICESCOPE])
         if showMessages
           msg = _INTL("The {1} only allows the use of {2}!", itemName, choiced_move_name)
           (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -85,7 +85,7 @@ class Battle::Battler
     end
     # Assault Vest (prevents choosing status moves but doesn't prevent
     # executing them)
-    if hasActiveItem?(:ASSAULTVEST) && move.statusMove? && move.id != :MEFIRST && commandPhase
+    if hasActiveItem?([:ASSAULTVEST, :PLATEBODY]) && move.statusMove? && move.id != :MEFIRST && commandPhase
       if showMessages
         msg = _INTL("The effects of the {1} prevent status moves from being used!", itemName)
         (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -208,6 +208,10 @@ class Battle::Battler
       if @statusCount <= 0
         pbCureStatus
       else
+        # Girafarig's tail can use moves while asleep
+        if isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH && self.form == 1
+          return true
+        end
         pbContinueStatus
         if !move.usableWhenAsleep?   # Snore/Sleep Talk
           @lastMoveFailed = true
@@ -249,7 +253,7 @@ class Battle::Battler
     end
     # Confusion
     if @effects[PBEffects::Confusion] > 0
-      @effects[PBEffects::Confusion] -= 1
+      @effects[PBEffects::Confusion] -= 1 if !hasActiveAbility?(:ROUNDRECORD)
       if @effects[PBEffects::Confusion] <= 0
         pbCureConfusion
         @battle.pbDisplay(_INTL("{1} snapped out of its confusion.", pbThis))
@@ -430,6 +434,17 @@ class Battle::Battler
         return false
       end
     end
+    # Ungrounded
+    if user.hasActiveAbility?(:UNGROUNDED) && move.pbContactMove?(user) && !@battle.moldBreaker
+      return true
+    end
+    # Immaterial (To prevent user from making contact moves)
+    if move.pbContactMove?(user) && user.hasActiveAbility?(:IMMATERIAL) && !@battle.moldBreaker
+      @battle.pbShowAbilitySplash(user)
+      @battle.pbDisplay(_INTL("But it failed!"))
+      @battle.pbHideAbilitySplash(user)
+      return false
+    end
     # Immunity because of ability (intentionally before type immunity check)
     return false if move.pbImmunityByAbility(user, target, show_message)
     # Type immunity
@@ -458,6 +473,17 @@ class Battle::Battler
           end
           @battle.pbHideAbilitySplash(target)
         end
+        return false
+      end
+      zeroGravUser = @battle.pbCheckGlobalAbility(:ZEROGRAVITY)
+      if zeroGravUser && !@battle.moldBreaker
+        @battle.pbShowAbilitySplash(zeroGravUser)
+        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+          @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))
+        else
+          @battle.pbDisplay(_INTL("{1} avoided the attack with {2}'s {3}!",target.pbThis,zeroGravUser.pbThis(true),target.abilityName))
+        end
+        @battle.pbHideAbilitySplash(zeroGravUser)
         return false
       end
       if target.hasActiveItem?(:AIRBALLOON)

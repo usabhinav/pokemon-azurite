@@ -120,6 +120,26 @@ module PBEffects
   WaterSport          = 110
   WeightChange        = 111
   Yawn                = 112
+  GreatShield         = 113
+  ShedBody            = 114
+  ReverbDamage        = 115
+  BlastUsers          = 116
+  CrystalAdaptation   = 117
+  TypeModsI           = 118
+  HungryItems         = 119
+  VictoryRush         = 120
+  Stare               = 121
+  DynamicPower        = 122
+  Incomprehensible    = 123
+  SelfInflictedConfusion = 124
+  SpikesArmor         = 125
+  ToxicSpikesArmor    = 126
+  StealthRockArmor    = 127
+  VoltSpikesArmor     = 128
+  CounterParry        = 129
+  Overcharged         = 130
+  RevengeBelt         = 131
+  SubtractionTypes    = 132
 
   #=============================================================================
   # These effects apply to a battler position
@@ -159,6 +179,7 @@ module PBEffects
   Tailwind           = 19
   ToxicSpikes        = 20
   WideGuard          = 21
+  VoltSpikes         = 22
 
   #=============================================================================
   # These effects apply to the battle (i.e. both sides)
@@ -176,4 +197,5 @@ module PBEffects
   TrickRoom       = 10
   WaterSportField = 11
   WonderRoom      = 12
+  Darkened        = 13
 end

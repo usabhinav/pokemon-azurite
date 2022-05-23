@@ -6,6 +6,10 @@ class Battle::Battler
     if abilityActive?
       Battle::AbilityEffects.triggerOnSwitchOut(self.ability, self, false)
     end
+    # Phantitute with Proxy cannot pass Substitute with Baton Pass
+    if isSpecies?(:PHANTITUTE) && self.ability == :PROXY
+      @effects[PBEffects::Substitute] = 0
+    end
     # Reset form
     @battle.peer.pbOnLeavingBattle(@battle, @pokemon, @battle.usedInBattle[idxOwnSide][@index / 2])
     # Treat self as fainted
@@ -16,6 +20,24 @@ class Battle::Battler
     pbItemsOnUnnerveEnding if hasActiveAbility?(:UNNERVE, true)
     # Check for end of primordial weather
     @battle.pbEndPrimordialWeather
+    # Crystal Energy
+    # Check if any other battler still has Crystal Energy active
+    if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
+      # Revert battlers on field
+      @battle.eachBattler do |b|
+        if b.crystal?
+          @battle.pbUnCrystallize(b.index)
+        end
+      end
+      # Revert player side Pokemon
+      @battle.pbParty(0).each do |pkmn|
+        pkmn.makeUncrystal
+      end
+      # Revert opponent side Pokemon
+      @battle.pbParty(1).each do |pkmn|
+        pkmn.makeUncrystal
+      end
+    end
   end
 
   def pbAbilitiesOnFainting
@@ -30,6 +52,24 @@ class Battle::Battler
     end
     pbAbilitiesOnNeutralizingGasEnding if hasActiveAbility?(:NEUTRALIZINGGAS, true)
     pbItemsOnUnnerveEnding if hasActiveAbility?(:UNNERVE, true)
+    # Crystal Energy
+    # Check if any other battler still has Crystal Energy active
+    if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
+      # Revert battlers on field
+      @battle.eachBattler do |b|
+        if b.crystal?
+          @battle.pbUnCrystallize(b.index)
+        end
+      end
+      # Revert player side Pokemon
+      @battle.pbParty(0).each do |pkmn|
+        pkmn.makeUncrystal
+      end
+      # Revert opponent side Pokemon
+      @battle.pbParty(1).each do |pkmn|
+        pkmn.makeUncrystal
+      end
+    end
   end
 
   # Used for Emergency Exit/Wimp Out. Returns whether self has switched out.
@@ -64,8 +104,40 @@ class Battle::Battler
   # Called when a Pokémon (self) enters battle, at the end of each move used,
   # and at the end of each round.
   def pbContinualAbilityChecks(onSwitchIn = false)
+    # Crystal Energy switch in message
+    if hasActiveAbility?(:CRYSTALENERGY)
+      @battle.pbShowAbilitySplash(self)
+      @battle.pbDisplay(_INTL("{1} is exuding a powerful crystal energy on the field!", self.pbThis))
+      @battle.pbHideAbilitySplash(self)
+    end
     # Check for end of primordial weather
     @battle.pbEndPrimordialWeather
+    # Incomprehensible	
+    if hasActiveAbility?(:INCOMPREHENSIBLE)	
+      abilityList = []	
+      GameData::Ability.each { |a|	
+        next if ungainableAbility?(a.id) || a.id == self.ability ||
+                [:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(a.id)	
+        abilityList.push(a.id)	
+      }	
+      newAbil = abilityList[@battle.pbRandom(abilityList.length)]	
+      @battle.pbShowAbilitySplash(self)	
+      @battle.pbDisplay(_INTL("{1} gained the ability {2}!", pbThis, GameData::Ability.get(newAbil).name))	
+      @battle.pbHideAbilitySplash(self)	
+      self.ability = newAbil	
+      # Lets this battler switch abilities every turn
+      @effects[PBEffects::Incomprehensible] = true	
+    end
+    # Subtraction message for non-Subtraction users
+    if switchIn && !@battle.initialSwitchIn && @battle.pbCheckAllyAbility(:SUBTRACTION, @index) &&
+      !hasActiveAbility?(:SUBTRACTION) && !@battle.pbCheckAllyAbility(:ADDITION, @index)
+      subtractionCount = 0
+      @battle.eachSameSideBattler(@index) do |b|
+       subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+      end
+      typeListString = @effects[PBEffects::SubtractionTypes][0...subtractionCount].join(", ")
+      @battle.pbDisplay(_INTL("{1} lost its weakness(es) to the following type(s): {2}", pbThis, typeListString))
+    end
     # Trace
     if hasActiveAbility?(:TRACE)
       # NOTE: In Gen 5 only, Trace only triggers upon the Trace bearer switching
@@ -74,7 +146,7 @@ class Battle::Battler
       #       whenever it can even in Gen 5 battle mechanics.
       choices = @battle.allOtherSideBattlers(@index).select { |b|
         next !b.ungainableAbility? &&
-             ![:POWEROFALCHEMY, :RECEIVER, :TRACE].include?(b.ability_id)
+             ![:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(b.ability_id)
       }
       if choices.length > 0
         choice = choices[@battle.pbRandom(choices.length)]
@@ -84,6 +156,121 @@ class Battle::Battler
         @battle.pbHideAbilitySplash(self)
         if !onSwitchIn && (unstoppableAbility? || abilityActive?)
           Battle::AbilityEffects.triggerOnSwitchIn(self.ability, self, @battle)
+        end
+      end
+    end
+    # Kindeshu's Effulge
+    if isSpecies?(:KINDESHU) && self.ability == :EFFULGE
+      threatened = self.hp <= self.totalhp / 4
+      threatenedOpponent = nil
+      self.eachOpposing do |b|
+        next if b.hp > b.totalhp / 4
+        threatenedOpponent = b
+        break
+      end
+      if (threatened || threatenedOpponent != nil) && self.form == 0
+        @battle.pbShowAbilitySplash(self)
+        if threatened
+          pbChangeForm(1, _INTL("{1} revealed its true form!", pbThis))
+        else
+          pbChangeForm(1, _INTL("{1} is ready to feed off of {2}'s light energy!", pbThis, threatenedOpponent.pbThis(true)))
+        end
+        @battle.pbHideAbilitySplash(self)
+      elsif !threatened && threatenedOpponent.nil? && self.form == 1
+        @battle.pbShowAbilitySplash(self)
+        pbChangeForm(0, _INTL("{1} reverted to its base form.", pbThis))
+        @battle.pbHideAbilitySplash(self)
+      end
+    end
+    # Noctoa's Dark Duality
+    if isSpecies?(:NOCTOA) && self.ability == :DARKDUALITY
+      if PBDayNight.isNight? || @battle.field.effects[PBEffects::Darkened]
+        if self.form == 0
+          @battle.pbShowAbilitySplash(self)
+          pbChangeForm(1, _INTL("{1} became possessed!", pbThis))
+          @battle.pbHideAbilitySplash(self)
+        end
+      elsif self.form == 1
+        @battle.pbShowAbilitySplash(self)
+        pbChangeForm(0, _INTL("{1} turned back to normal.", pbThis))
+        @battle.pbHideAbilitySplash(self)
+      end
+    end
+    # Negation
+    if hasActiveAbility?(:NEGATION) && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
+      # Revert battlers on field
+      @battle.eachBattler do |b|
+        next if b.index == self.index
+        if b.mega?
+          @battle.pbUnMegaEvolve(b.index)
+        elsif b.crystal?
+          @battle.pbUnCrystallize(b.index)
+        elsif b.primal?
+          @battle.pbPrimalUnReversion(b.index)
+        elsif b.isSpecies?(:GRENINJA) && b.form == 2
+          @battle.battleBond[b.index&1][b.pokemonIndex] = false
+          b.pbChangeForm(1,_INTL("{1} reverted to its base form.", b.pbThis))
+        elsif b.isSpecies?(:KOSURITE) && b.form == 1
+          b.pbChangeForm(0,_INTL("{1} reverted to its encased form.", b.pbThis))
+        end
+      end
+      # Revert player side Pokemon
+      @battle.pbParty(0).each do |pkmn|
+        pkmn.makeUnmega
+        pkmn.makeUncrystal
+        pkmn.makeUnprimal
+        if pkmn.isSpecies?(:GRENINJA) && pkmn.form == 2
+          pkmn.form = 1
+        elsif pkmn.isSpecies?(:KOSURITE) && pkmn.form == 1
+          pkmn.form = 0
+        end
+      end
+      # Revert opponent side Pokemon
+      @battle.pbParty(1).each do |pkmn|
+        pkmn.makeUnmega
+        pkmn.makeUncrystal
+        pkmn.makeUnprimal
+        if pkmn.isSpecies?(:GRENINJA) && pkmn.form == 2
+          pkmn.form = 1
+        elsif pkmn.isSpecies?(:KOSURITE) && pkmn.form == 1
+          pkmn.form = 0
+        end
+      end
+    end
+    # Crystal Energy
+    if hasActiveAbility?(:CRYSTALENERGY)
+      # Crystallize battlers on field
+      @battle.eachBattler do |b|
+        if b.hasCrystalWithoutItemCheck? && !b.crystal?
+          if b.mega?
+            side  = self.idxOwnSide
+            owner = @battle.pbGetOwnerIndexFromBattlerIndex(b.index)
+            @battle.megaEvolution[side][owner] = -1
+            @battle.pbUnMegaEvolve(b.index)
+          end
+          @battle.pbCrystallizeWithoutItemCheck(b.index)
+        end
+      end
+      # Crystallize player side Pokemon
+      @battle.pbParty(0).each_with_index do |pkmn, i|
+        if pkmn.hasCrystalFormWithoutItemCheck? && !pkmn.crystal?
+          if pkmn.mega?
+            owner = @battle.pbGetOwnerIndexFromPartyIndex(0, i)
+            @battle.megaEvolution[0][owner] = -1
+            pkmn.makeUnmega
+          end
+          pkmn.makeCrystalWithoutItemCheck
+        end
+      end
+      # Crystallize opponent side Pokemon
+      @battle.pbParty(1).each_with_index do |pkmn, i|
+        if pkmn.hasCrystalFormWithoutItemCheck? && !pkmn.crystal?
+          if pkmn.mega?
+            owner = @battle.pbGetOwnerIndexFromPartyIndex(1, i)
+            @battle.megaEvolution[1][owner] = -1
+            pkmn.makeUnmega
+          end
+          pkmn.makeCrystalWithoutItemCheck
         end
       end
     end
@@ -172,6 +359,7 @@ class Battle::Battler
         @battle.pbSetSeen(self)
       end
     end
+    @effects[PBEffects::Incomprehensible] = false
     @effects[PBEffects::GastroAcid] = false if unstoppableAbility?
     @effects[PBEffects::SlowStart]  = 0 if self.ability != :SLOWSTART
     @effects[PBEffects::Truant]     = false if self.ability != :TRUANT

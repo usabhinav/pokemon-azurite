@@ -28,6 +28,15 @@ class Battle::AI
   #=============================================================================
   def pbCalcTypeModSingle(moveType, defType, user, target)
     ret = Effectiveness.calculate_one(moveType, defType)
+    # Crystal Adaptation (MUST go be first in list of type modifier effects in this function)
+    # Allows all other abilities/items/moves to override this effect
+    if target.hasActiveAbility?(:CRYSTALADAPTATION) && target.effects[PBEffects::TypeModsI]
+      ret = target.effects[PBEffects::TypeModsI]
+    end
+    # Crystal Surge (MUST be second in list of type modifier effects in this function)
+    if @battle.pbCheckGlobalAbility(:CRYSTALSURGE)
+      ret = Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
     if Effectiveness.ineffective_type?(moveType, defType)
       # Ring Target
       if target.hasActiveItem?(:RINGTARGET)
@@ -52,6 +61,46 @@ class Battle::AI
     if !target.airborne? && defType == :FLYING && moveType == :GROUND
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE
     end
+    # Entersphere
+    if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
+      ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Crystal Hammer
+    if user.hasActiveItem?(:CRYSTALHAMMER)
+      ret = Effectiveness::SUPER_EFFECTIVE_ONE if defType == :CRYSTAL
+    end
+    # Crystal Torrent (water moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALTORRENT) && moveType == :WATER
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Blaze (fire moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALBLAZE) && moveType == :FIRE
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Overgrow (grass moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALOVERGROW) && moveType == :GRASS
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Aura (aura/pulse moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALAURA) && pulseMove?
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Deceptive (moves are at most neutral effective except fire/water/grass)
+    if target.hasActiveAbility?(:DECEPTIVE)
+      if ![:FIRE, :WATER, :GRASS].include?(moveType)
+        ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].min
+      end
+    end
+    # Subtraction (target loses certain weaknesses, or all weaknesses if one of its allies has Addition)
+    subtractionCount = 0
+    @battle.eachSameSideBattler(target.index) do |b|
+      subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+    end
+    if subtractionCount > 0
+      if @battle.pbCheckAllyAbility(:ADDITION, target.index) || target.effects[PBEffects::SubtractionTypes][0...subtractionCount].include?(moveType)
+        ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].min
+      end
+    end
     return ret
   end
 
@@ -64,6 +113,17 @@ class Battle::AI
     tTypes = target.pbTypes(true)
     # Get effectivenesses
     typeMods = [Effectiveness::NORMAL_EFFECTIVE_ONE] * 3   # 3 types max
+    # Crystal Adaptation
+    # Values are used in pbCalcTypeModSingle
+    res = target.effects[PBEffects::CrystalAdaptation]
+    if target.hasActiveAbility?(:CRYSTALADAPTATION) && res[moveType]
+      if res[moveType] < Effectiveness::NORMAL_EFFECTIVE
+        typeMods[0] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      end
+      if res[moveType] < Effectiveness::NORMAL_EFFECTIVE/2
+        typeMods[1] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      end
+    end
     if moveType == :SHADOW
       if target.shadowPokemon?
         typeMods[0] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
@@ -72,12 +132,41 @@ class Battle::AI
       end
     else
       tTypes.each_with_index do |type, i|
+        target.effects[PBEffects::TypeModsI] = typeMods[i]
         typeMods[i] = pbCalcTypeModSingle(moveType, type, user, target)
+        target.effects[PBEffects::TypeModsI] = nil
       end
     end
     # Multiply all effectivenesses together
     ret = 1
     typeMods.each { |m| ret *= m }
+    # Unholy
+    if target.hasActiveAbility?(:UNHOLY) && [:LIGHT, :GHOST, :FAIRY].include?(moveType)
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Spice Tank
+    if target.hasActiveAbility?(:SPICETANK) && [:FIRE, :ICE].include?(moveType)
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Flytrap
+    if target.hasActiveAbility?(:FLYTRAP) && moveType == :BUG
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Deceptive (fire/water/grass moves are super-effective)
+    # Placed here and not in pbCalcTypeModSingle because multi-typed Pokemon shouldn't get stacked
+    # weakness type mods. If it did, then a dual-type Pokemon would receive 4x damage instead of
+    # only 2x.
+    if target.hasActiveAbility?(:DECEPTIVE) && [:FIRE, :WATER, :GRASS].include?(moveType)
+      ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Crystal Energy
+    if @battle.pbCheckGlobalAbility(:CRYSTALENERGY) && target.pbHasType?(:CRYSTAL)
+      ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
+          user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
+    return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&
+          user.hasActiveAbility?(:DARKLIGHT) && ret == Effectiveness::INEFFECTIVE && target.pbHasType?(:DARK)
     return ret
   end
 
@@ -121,7 +210,7 @@ class Battle::AI
                      target.hasActiveAbility?(:TELEPATHY)
       return true if move.statusMove? && move.canMagicCoat? && target.hasActiveAbility?(:MAGICBOUNCE) &&
                      target.opposes?(user)
-      return true if move.soundMove? && target.hasActiveAbility?(:SOUNDPROOF)
+      return true if move.pbSoundMove?(user) && target.hasActiveAbility?(:SOUNDPROOF)
       return true if move.bombMove? && target.hasActiveAbility?(:BULLETPROOF)
       if move.powderMove?
         return true if target.pbHasType?(:GRASS)
@@ -316,7 +405,10 @@ class Battle::AI
     end
     ##### Calculate target's defense stat #####
     defense = pbRoughStat(target, :DEFENSE, skill)
-    if move.specialMove?(type) && move.function != "UseTargetDefenseInsteadOfTargetSpDef"   # Psyshock
+    if move.pbSpecialMove?(user, type) && move.function != "UseTargetDefenseInsteadOfTargetSpDef"   # Psyshock
+      defense = pbRoughStat(target, :SPECIAL_DEFENSE, skill)
+    end
+    if move.pbContactMove?(user) && user.hasActiveAbility?(:CACOPHONY)	
       defense = pbRoughStat(target, :SPECIAL_DEFENSE, skill)
     end
     ##### Calculate all multiplier effects #####
@@ -451,13 +543,15 @@ class Battle::AI
         multipliers[:base_damage_multiplier] *= 1.5 if type == :PSYCHIC && user.affectedByTerrain?
       when :Misty
         multipliers[:base_damage_multiplier] /= 2 if type == :DRAGON && target.affectedByTerrain?
+      when :Lava	
+        multipliers[:base_damage_multiplier] *= 1.3 if type == :FIRE && user.affectedByTerrain?
       end
     end
     # Badge multipliers
     if skill >= PBTrainerAI.highSkill && @battle.internalBattle && target.pbOwnedByPlayer?
-      if move.physicalMove?(type) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_DEFENSE
+      if move.pbPhysicalMove?(user, type) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_DEFENSE
         multipliers[:defense_multiplier] *= 1.1
-      elsif move.specialMove?(type) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPDEF
+      elsif move.pbSpecialMove?(user, type) && @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPDEF
         multipliers[:defense_multiplier] *= 1.1
       end
     end
@@ -475,15 +569,17 @@ class Battle::AI
         when :WATER
           multipliers[:final_damage_multiplier] /= 2
         end
-      when :Rain, :HeavyRain
+      when :Rain, :HeavyRain, :Thunderstorm
         case type
         when :FIRE
           multipliers[:final_damage_multiplier] /= 2
         when :WATER
           multipliers[:final_damage_multiplier] *= 1.5
+        when :ELECTRIC
+          multipliers[:final_damage_multiplier] *= 1.5 if user.effectiveWeather == :Thunderstorm
         end
       when :Sandstorm
-        if target.pbHasType?(:ROCK) && move.specialMove?(type) &&
+        if target.pbHasType?(:ROCK) && move.pbSpecialMove?(user, type) &&
            move.function != "UseTargetDefenseInsteadOfTargetSpDef"   # Psyshock
           multipliers[:defense_multiplier] *= 1.5
         end
@@ -493,10 +589,34 @@ class Battle::AI
     # Random variance - n/a
     # STAB
     if skill >= PBTrainerAI.mediumSkill && type && user.pbHasType?(type)
-      if user.hasActiveAbility?(:ADAPTABILITY)
+      if user.hasActiveAbility?([:ADAPTABILITY, :OMNIGENE]) || user.hasActiveItem?(:FOCUSBELT)
         multipliers[:final_damage_multiplier] *= 2
       else
         multipliers[:final_damage_multiplier] *= 1.5
+      end
+    end
+    # Focus Belt (non-STAB)
+    if skill >= PBTrainerAI.mediumSkill && user.hasActiveItem?(:FOCUSBELT) && !(type && user.pbHasType?(type))
+      multipliers[:final_damage_multiplier] *= 0.7
+    end
+    # Crystal Moves
+    if skill >= PBTrainerAI.mediumSkill && type == :CRYSTAL && !user.pbHasType?(type)
+      multipliers[:final_damage_multiplier] *= 0.5
+    end
+    # Monarch
+    if skill >= PBTrainerAI.mediumSkill && !@battle.moldBreaker
+      battlersAndParty = @battle.pbGetBattlersAndParty(user.index)
+      for b in battlersAndParty[0]
+        next if b.fainted?
+        if b.hasActiveAbility?(:MONARCH) && user.pbTypes(true).intersection(b.pbTypes(true)).length > 0
+          multipliers[:final_damage_multiplier] *= 1.25
+        end
+      end
+      for p in battlersAndParty[1]
+        next if !p || p.egg? || p.fainted?
+        if p.hasAbility?(:MONARCH) && user.pbTypes(true).intersection(p.types).length > 0
+          multipliers[:final_damage_multiplier] *= 1.25
+        end
       end
     end
     # Type effectiveness
@@ -505,7 +625,7 @@ class Battle::AI
       multipliers[:final_damage_multiplier] *= typemod.to_f / Effectiveness::NORMAL_EFFECTIVE
     end
     # Burn
-    if skill >= PBTrainerAI.highSkill && move.physicalMove?(type) &&
+    if skill >= PBTrainerAI.highSkill && move.pbPhysicalMove?(user, type) &&
        user.status == :BURN && !user.hasActiveAbility?(:GUTS) &&
        !(Settings::MECHANICS_GENERATION >= 6 &&
          move.function == "DoublePowerIfUserPoisonedBurnedParalyzed")   # Facade
@@ -519,13 +639,13 @@ class Battle::AI
         else
           multipliers[:final_damage_multiplier] /= 2
         end
-      elsif target.pbOwnSide.effects[PBEffects::Reflect] > 0 && move.physicalMove?(type)
+      elsif target.pbOwnSide.effects[PBEffects::Reflect] > 0 && move.pbPhysicalMove?(user, type)
         if @battle.pbSideBattlerCount(target) > 1
           multipliers[:final_damage_multiplier] *= 2 / 3.0
         else
           multipliers[:final_damage_multiplier] /= 2
         end
-      elsif target.pbOwnSide.effects[PBEffects::LightScreen] > 0 && move.specialMove?(type)
+      elsif target.pbOwnSide.effects[PBEffects::LightScreen] > 0 && move.pbSpecialMove?(user, type)
         if @battle.pbSideBattlerCount(target) > 1
           multipliers[:final_damage_multiplier] *= 2 / 3.0
         else

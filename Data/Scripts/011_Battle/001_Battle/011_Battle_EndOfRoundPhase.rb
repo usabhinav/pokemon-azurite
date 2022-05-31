@@ -15,6 +15,8 @@ class Battle
       when :Sandstorm then pbDisplay(_INTL("The sandstorm subsided."))
       when :Hail      then pbDisplay(_INTL("The hail stopped."))
       when :ShadowSky then pbDisplay(_INTL("The shadow sky faded."))
+      when :Thunderstorm then pbDisplay(_INTL("The thunderstorm subsided."))	
+      when :Windstorm then pbDisplay(_INTL("The windstorm subsided."))
       end
       @field.weather = :None
       # Check for form changes caused by the weather changing
@@ -35,6 +37,8 @@ class Battle
 #    when :HeavyRain   then pbDisplay(_INTL("It is raining heavily."))
 #    when :StrongWinds then pbDisplay(_INTL("The wind is strong."))
     when :ShadowSky   then pbDisplay(_INTL("The shadow sky continues."))
+    when :Thunderstorm then pbDisplay(_INTL("Thunder is booming in the sky."))	
+    when :Windstorm   then pbDisplay(_INTL("The windstorm is raging."))
     end
     # Effects due to weather
     priority.each do |battler|
@@ -45,6 +49,66 @@ class Battle
       end
       # Weather damage
       pbEORWeatherDamage(battler)
+    end
+    # Thunderstorm damage
+    if @battle.pbWeather == :Thunderstorm && pbRandom(100) < 25
+      # Collect eligible targets
+      targets = []
+      target = nil
+      priority.each do |b|
+        next if !b.takesThunderstormDamage?
+        if b.hasActiveAbility?(:LIGHTNINGROD)
+          target = b
+          break
+        else
+          targets.push(b)
+        end
+      end
+      # No Pokemon with Lightningrod, choose another Pokemon
+      if target.nil? && targets.length > 0
+        target = targets[pbRandom(targets.length)]
+      end
+      # If target is found
+      if target
+        # Lightningrod user can absorb attack
+        if target.hasActiveAbility?(:LIGHTNINGROD)
+          pbShowAbilitySplash(target)
+          if target.pbCanRaiseStatStage?(:SPECIAL_ATTACK,target)
+            if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+              target.pbRaiseStatStage(:SPECIAL_ATTACK,1,target)
+            else
+              target.pbRaiseStatStageByCause(:SPECIAL_ATTACK,1,target,target.abilityName)
+            end
+          else
+            if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+              battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
+            else
+              battle.pbDisplay(_INTL("{1}'s {2} made the lightning strike ineffective!",
+                target.pbThis,target.abilityName))
+            end
+          end
+          pbHideAbilitySplash(target)
+        else
+          # Deal Electric-type damage
+          bTypes = target.pbTypes(true)
+          eff = Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2])
+          if !Effectiveness.ineffective?(eff)
+            # Choose weak or strong
+            strongAttack = pbRandom(25) < 5
+            div = strongAttack ? 8 : 16
+            eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+            @scene.pbDamageAnimation(target)
+            target.pbReduceHP(target.totalhp*eff/div)
+            if strongAttack
+              pbDisplay(_INTL("{1} was struck directly by heavy lightning!", target.pbThis))
+            else
+              pbDisplay(_INTL("{1} was struck by lightning!", target.pbThis))
+            end
+            target.pbItemHPHealCheck
+            target.pbFaint if target.fainted?
+          end
+        end
+      end
     end
   end
 
@@ -105,6 +169,17 @@ class Battle
     userLastMoveFailed = moveUser.lastMoveFailed
     @futureSight = true
     moveUser.pbUseMoveSimple(move, idxPos)
+    # Second Sight	
+    if move == :FUTURESIGHT
+      if moveUser.dummy
+        # Cannot use moveUser.ability because it is not initialized in pbInitDummyPokemon
+        if moveUser.pokemon.ability_id == :SECONDSIGHT
+          moveUser.pbUseMoveSimple(move, idxPos)
+        end
+      elsif moveUser.hasActiveAbility?(:SECONDSIGHT)
+        moveUser.pbUseMoveSimple(move, idxPos)
+      end
+    end
     @futureSight = false
     moveUser.lastMoveFailed = userLastMoveFailed
     @battlers[position_index].pbFaint if @battlers[position_index].fainted?
@@ -267,6 +342,31 @@ class Battle
       battler.pbTakeEffectDamage(battler.totalhp / 4) { |hp_lost|
         pbDisplay(_INTL("{1} is afflicted by the curse!", battler.pbThis))
       }
+    end
+    # Scorching Coat	
+    priority.each do |b|	
+      next if !b.hasActiveAbility?(:SCORCHINGCOAT)	
+      priority.each do |j|	
+        next if j.pbHasType?(:FIRE) || j.hasActiveAbility?(:SCORCHINGCOAT)	
+        pbShowAbilitySplash(b)	
+        pbDisplay(_INTL("{1} was burned!",j.pbThis))	
+        @scene.pbDamageAnimation(j)	
+        j.pbReduceHP(j.totalhp/16)	
+        j.pbFaint if j.fainted?	
+        pbHideAbilitySplash(b)	
+      end	
+    end	
+    # Blast	
+    priority.each do |b|	
+      for j in b.effects[PBEffects::BlastUsers]	
+        pbShowAbilitySplash(j)	
+        pbDisplay(_INTL("{1} blasted {2}!", j.pbThis, b.pbThis(true)))	
+        @scene.pbDamageAnimation(b)	
+        b.pbReduceHP(b.hp/8) # Yes, not total hp, just remaining hp	
+        b.pbFaint if b.fainted?	
+        pbHideAbilitySplash(j)	
+      end	
+      b.effects[PBEffects::BlastUsers].clear	
     end
   end
 
@@ -480,6 +580,8 @@ class Battle
         pbDisplay(_INTL("The mist disappeared from the battlefield!"))
       when :Psychic
         pbDisplay(_INTL("The weirdness disappeared from the battlefield!"))
+      when :Lava	
+        pbDisplay(_INTL("The lava disappeared from the battlefield!"))
       end
       @field.terrain = :None
       allBattlers.each { |battler| battler.pbAbilityOnTerrainChange }
@@ -499,6 +601,37 @@ class Battle
     when :Grassy   then pbDisplay(_INTL("Grass is covering the battlefield."))
     when :Misty    then pbDisplay(_INTL("Mist is swirling about the battlefield."))
     when :Psychic  then pbDisplay(_INTL("The battlefield is weird."))
+    when :Lava     then pbDisplay(_INTL("Lava is covering the battlefield!"))
+    end
+    # Lava terrain passive damage
+    if @field.terrain == :Lava
+      priority = pbPriority
+      priority.each do |b|
+        next if !b.affectedByTerrain?
+        next if b.fainted?
+        next if b.pbHasType?(:FLYING) || b.pbHasType?(:COSMIC) || b.pbHasType?(:GROUND)
+        if b.pbHasType?(:FIRE)
+          if b.canHeal?
+            b.pbRecoverHP(b.totalhp/16)
+            pbDisplay(_INTL("{1} was healed by the Lava Terrain!", b.pbThis))
+          end
+        elsif !Effectiveness.ineffective_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+          oldHP = b.hp
+          @scene.pbDamageAnimation(b)
+          if Effectiveness.normal_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+            b.pbReduceHP(b.totalhp/14)
+          elsif Effectiveness.super_effective_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+            b.pbReduceHP(b.totalhp/7)
+          else
+            b.pbReduceHP(b.totalhp/28)
+          end
+          pbDisplay(_INTL("{1} was damaged by the Lava Terrain!", b.pbThis))
+          b.pbItemHPHealCheck
+          if b.pbAbilitiesOnDamageTaken(oldHP)   # Switched out
+            return pbOnActiveOne(b)   # For replacement battler
+          end
+        end
+      end
     end
   end
 
@@ -695,6 +828,78 @@ class Battle
         Battle::AbilityEffects.triggerEndOfRoundGainItem(battler.ability, battler, self)
       end
     end
+    # Crystal Energy and Negation messages
+    if pbCheckGlobalAbility(:CRYSTALENERGY)
+      b = pbCheckGlobalAbility(:CRYSTALENERGY)
+      pbShowAbilitySplash(b)
+      pbDisplay(_INTL("{1}'s crystal energy is radiating throughout the field.",b.pbThis))
+      pbHideAbilitySplash(b)
+    elsif pbCheckGlobalAbility(:NEGATION)
+      b = pbCheckGlobalAbility(:NEGATION)
+      pbShowAbilitySplash(b)
+      pbDisplay(_INTL("{1} is suppressing all power transformations.",b.pbThis))
+      pbHideAbilitySplash(b)
+    end
+    # Power Within
+    # Check each party
+    for side in 0...2
+      next if pbCheckGlobalAbility(:CRYSTALENERGY)
+      party = pbParty(side)
+      for i in 0...party.length
+        pkmn = party[i]
+        # Must be Crystal Infernape
+        if pkmn.isSpecies?(:INFERNAPE) && pkmn.crystal? && pkmn.hasAbility?(:POWERWITHIN)
+          @powerWithin[side][i] -= 1
+          # Uncrystallize after 4 turns
+          if @powerWithin[side][i] <= 0
+            # If Pokemon is on field, uncrystallize with animation, else uncrystallize silently
+            find_battler = nil
+            eachSameSideBattler(side) do |b|
+              find_battler = b if b.pokemonIndex == i
+            end
+            if find_battler
+              pbShowAbilitySplash(find_battler)
+              pbUnCrystallize(find_battler.index)
+              pbHideAbilitySplash(find_battler)
+            else
+              pkmn.makeUncrystal
+            end
+            @powerWithin[side][i] = -1
+          end
+        end
+      end
+    end
+    # Incomprehensible
+    # NOTE: Put this near the very end of pbEndOfRoundPhase so that ability effects
+    # don't get triggered immediately after Incomprehensible effect switches ability
+    priority.each do |b|
+      next if b.fainted?
+      if b.effects[PBEffects::Incomprehensible] && b.abilityActive?
+        oldAbil = b.ability
+        abilityList = []
+        GameData::Ability.each { |a|
+          next if b.ungainableAbility?(a.id) || a.id == oldAbil
+                  [:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(a.id)
+          abilityList.push(a.id)
+        }
+        newAbil = abilityList[pbRandom(abilityList.length)]
+        b.ability = :INCOMPREHENSIBLE
+        pbShowAbilitySplash(b)
+        pbDisplay(_INTL("{1}'s ability changed to {2}!", b.pbThis, GameData::Ability.get(newAbil).name))
+        pbHideAbilitySplash(b)
+        b.ability = newAbil
+        b.pbOnAbilityChanged(oldAbil)
+        b.effects[PBEffects::Incomprehensible] = true
+        b.pbEffectsOnSwitchIn
+      end
+    end
+    # Stare
+    # NOTE: Put this near the very end of pbEndOfRoundPhase so that ability effects
+    # don't get triggered immediately after Stare effect ends
+    pbEORCountDownBattlerEffect(priority,PBEffects::Stare) { |battler|
+      pbDisplay(_INTL("{1} was freed from the stare!", battler.pbThis))
+      battler.pbEffectsOnSwitchIn if !battler.unstoppableAbility?
+    }
     pbGainExp
     return if @decision > 0
     # Form checks

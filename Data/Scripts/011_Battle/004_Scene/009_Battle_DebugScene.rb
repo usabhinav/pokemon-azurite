@@ -67,7 +67,7 @@ class Battle::DebugSceneNoLogging
     return 0                    # Fight
   end
 
-  def pbFightMenu(idxBattler, megaEvoPossible = false)
+  def pbFightMenu(idxBattler, megaEvoPossible = false, crystalEvoPossible = false)
     battler = @battle.battlers[idxBattler]
     50.times do
       break if yield rand(battler.move.length)

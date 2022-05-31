@@ -52,6 +52,8 @@ class Battle
     # Check whether battler can switch out
     battler = @battlers[idxBattler]
     return true if battler.fainted?
+    # Unstable	
+    return true if battler.hasActiveAbility?(:UNSTABLE) && !self.moldBreaker
     # Ability/item effects that allow switching no matter what
     if battler.abilityActive? &&
        Battle::AbilityEffects.triggerCertainSwitching(battler.ability, battler, self)
@@ -425,7 +427,8 @@ class Battle
     battler_side = battler.pbOwnSide
     # Stealth Rock
     if battler_side.effects[PBEffects::StealthRock] && battler.takesIndirectDamage? &&
-       GameData::Type.exists?(:ROCK) && !battler.hasActiveItem?(:HEAVYDUTYBOOTS)
+       GameData::Type.exists?(:ROCK) && !battler.hasActiveItem?([:HEAVYDUTYBOOTS, :IRONSHELL]) &&
+       !battler.hasActiveAbility?(:DEBRISARMOR)
       bTypes = battler.pbTypes(true)
       eff = Effectiveness.calculate(:ROCK, bTypes[0], bTypes[1], bTypes[2])
       if !Effectiveness.ineffective?(eff)
@@ -437,7 +440,8 @@ class Battle
     end
     # Spikes
     if battler_side.effects[PBEffects::Spikes] > 0 && battler.takesIndirectDamage? &&
-       !battler.airborne? && !battler.hasActiveItem?(:HEAVYDUTYBOOTS)
+       !battler.airborne? && !battler.hasActiveItem?([:HEAVYDUTYBOOTS, :IRONSHELL]) &&
+       !battler.hasActiveAbility?(:DEBRISARMOR)
       spikesDiv = [8, 6, 4][battler_side.effects[PBEffects::Spikes] - 1]
       battler.pbReduceHP(battler.totalhp / spikesDiv, false)
       pbDisplay(_INTL("{1} is hurt by the spikes!", battler.pbThis))
@@ -448,7 +452,8 @@ class Battle
       if battler.pbHasType?(:POISON)
         battler_side.effects[PBEffects::ToxicSpikes] = 0
         pbDisplay(_INTL("{1} absorbed the poison spikes!", battler.pbThis))
-      elsif battler.pbCanPoison?(nil, false) && !battler.hasActiveItem?(:HEAVYDUTYBOOTS)
+      elsif battler.pbCanPoison?(nil, false) && !battler.hasActiveItem?([:HEAVYDUTYBOOTS, :IRONSHELL]) &&
+            !battler.hasActiveAbility?(:DEBRISARMOR)
         if battler_side.effects[PBEffects::ToxicSpikes] == 2
           battler.pbPoison(nil, _INTL("{1} was badly poisoned by the poison spikes!", battler.pbThis), true)
         else
@@ -456,9 +461,21 @@ class Battle
         end
       end
     end
+    # Volt Spikes
+    if battler.pbOwnSide.effects[PBEffects::VoltSpikes]>0 && battler.takesIndirectDamage? &&
+      !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?([:IRONSHELL, :HEAVYDUTYBOOTS])
+      bTypes = battler.pbTypes(true)
+      eff = Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2])
+      if !Effectiveness.ineffective?(eff)
+        eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+        battler.pbReduceHP(battler.totalhp * eff * battler.pbOwnSide.effects[PBEffects::VoltSpikes] / 16, false)
+        pbDisplay(_INTL("{1} was shocked by the volt spikes!", battler.pbThis))
+        battler.pbItemHPHealCheck
+      end
+    end
     # Sticky Web
     if battler_side.effects[PBEffects::StickyWeb] && !battler.fainted? && !battler.airborne? &&
-       !battler.hasActiveItem?(:HEAVYDUTYBOOTS)
+       !battler.hasActiveItem?([:HEAVYDUTYBOOTS, :IRONSHELL])
       pbDisplay(_INTL("{1} was caught in a sticky web!", battler.pbThis))
       if battler.pbCanLowerStatStage?(:SPEED)
         battler.pbLowerStatStage(:SPEED, 1, nil)

@@ -153,7 +153,7 @@ class Battle::Battler
         @battle.pbShowAbilitySplash(b)
         targets.clear
         pbAddTarget(targets,user,b,move,nearOnly)
-        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        if Battle::Scene::USE_ABILITY_SPLASH
           @battle.pbDisplay(_INTL("{1} took the attack!",b.pbThis))
         else
           @battle.pbDisplay(_INTL("{1} took the attack with its {2}!",b.pbThis,b.abilityName))

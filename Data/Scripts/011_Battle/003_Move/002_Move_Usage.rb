@@ -351,7 +351,7 @@ class Battle::Move
     if target.damageState.disguise
       if target.effects[PBEffects::ShedBody]
         @battle.pbShowAbilitySplash(target)
-        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        if Battle::Scene::USE_ABILITY_SPLASH
           @battle.pbDisplay(_INTL("It shed its body and took no damage!"))
         else
           @battle.pbDisplay(_INTL("{1} {2}'s prevented it from taking damage!", target.pbThis, target.abilityName))

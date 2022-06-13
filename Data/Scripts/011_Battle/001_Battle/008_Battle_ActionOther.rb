@@ -181,7 +181,7 @@ class Battle
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
-      BattleHandlers.triggerTargetAbilityOnHit(battler.ability,nil,battler,nil,self)
+      Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     pbCommonAnimation("MegaEvolution",battler)
     battler.pokemon.makeUnmega
@@ -259,7 +259,7 @@ class Battle
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
-      BattleHandlers.triggerTargetAbilityOnHit(battler.ability,nil,battler,nil,self)
+      Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     # Crystallize
     case battler.pokemon.megaMessage
@@ -296,7 +296,7 @@ class Battle
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
-      BattleHandlers.triggerTargetAbilityOnHit(battler.ability,nil,battler,nil,self)
+      Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     # Crystallize
     case battler.pokemon.megaMessage
@@ -335,7 +335,7 @@ class Battle
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
-      BattleHandlers.triggerTargetAbilityOnHit(battler.ability,nil,battler,nil,self)
+      Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     pbCommonAnimation("MegaEvolution",battler)
     battler.pokemon.makeUncrystal

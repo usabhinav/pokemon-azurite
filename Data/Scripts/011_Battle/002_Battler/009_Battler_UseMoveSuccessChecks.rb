@@ -478,7 +478,7 @@ class Battle::Battler
       zeroGravUser = @battle.pbCheckGlobalAbility(:ZEROGRAVITY)
       if zeroGravUser && !@battle.moldBreaker
         @battle.pbShowAbilitySplash(zeroGravUser)
-        if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+        if Battle::Scene::USE_ABILITY_SPLASH
           @battle.pbDisplay(_INTL("{1} avoided the attack!",target.pbThis))
         else
           @battle.pbDisplay(_INTL("{1} avoided the attack with {2}'s {3}!",target.pbThis,zeroGravUser.pbThis(true),target.abilityName))

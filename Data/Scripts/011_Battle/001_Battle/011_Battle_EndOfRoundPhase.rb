@@ -74,13 +74,13 @@ class Battle
         if target.hasActiveAbility?(:LIGHTNINGROD)
           pbShowAbilitySplash(target)
           if target.pbCanRaiseStatStage?(:SPECIAL_ATTACK,target)
-            if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+            if Battle::Scene::USE_ABILITY_SPLASH
               target.pbRaiseStatStage(:SPECIAL_ATTACK,1,target)
             else
               target.pbRaiseStatStageByCause(:SPECIAL_ATTACK,1,target,target.abilityName)
             end
           else
-            if PokeBattle_SceneConstants::USE_ABILITY_SPLASH
+            if Battle::Scene::USE_ABILITY_SPLASH
               battle.pbDisplay(_INTL("It doesn't affect {1}...",target.pbThis(true)))
             else
               battle.pbDisplay(_INTL("{1}'s {2} made the lightning strike ineffective!",

@@ -405,8 +405,8 @@ class Battle
     return type_lists
   end
 
-  # Returns list [[PokeBattle_Battler], [Pokemon]]
-  # Returns PokeBattle_Battler objects for party members in battle (first array) and
+  # Returns list [[Battle::Battler], [Pokemon]]
+  # Returns Battle::Battler objects for party members in battle (first array) and
   # Pokemon objects for party members not in battle (second array)
   # Excludes the given battler idxBattler
   def pbGetBattlersAndParty(idxBattler)

@@ -350,9 +350,8 @@ class Battle
         next if j.pbHasType?(:FIRE) || j.hasActiveAbility?(:SCORCHINGCOAT)	
         pbShowAbilitySplash(b)	
         pbDisplay(_INTL("{1} was burned!",j.pbThis))	
-        @scene.pbDamageAnimation(j)	
-        j.pbReduceHP(j.totalhp/16)	
-        j.pbFaint if j.fainted?	
+        @scene.pbDamageAnimation(j)
+        j.pbTakeEffectDamage(j.totalhp/16)
         pbHideAbilitySplash(b)	
       end	
     end	
@@ -362,8 +361,7 @@ class Battle
         pbShowAbilitySplash(j)	
         pbDisplay(_INTL("{1} blasted {2}!", j.pbThis, b.pbThis(true)))	
         @scene.pbDamageAnimation(b)	
-        b.pbReduceHP(b.hp/8) # Yes, not total hp, just remaining hp	
-        b.pbFaint if b.fainted?	
+        b.pbTakeEffectDamage(b.hp/8) # Yes, not total hp, just remaining hp	
         pbHideAbilitySplash(j)	
       end	
       b.effects[PBEffects::BlastUsers].clear	

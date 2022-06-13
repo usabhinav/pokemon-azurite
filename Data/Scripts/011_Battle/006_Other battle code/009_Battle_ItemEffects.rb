@@ -519,13 +519,18 @@ Battle::ItemEffects::StatusCure.add(:LUMBERRY,
     next false if !forced && !battler.canConsumeBerry?
     next false if battler.status == :NONE &&
                   battler.effects[PBEffects::Confusion] == 0
+    next false if battler.hasActiveAbility?(:ROUNDRECORD) && battler.status == :NONE
     itemName = GameData::Item.get(item).name
     PBDebug.log("[Item triggered] #{battler.pbThis}'s #{itemName}") if forced
     battle.pbCommonAnimation("EatBerry", battler) if !forced
     oldStatus = battler.status
     oldConfusion = (battler.effects[PBEffects::Confusion] > 0)
     battler.pbCureStatus(forced)
-    battler.pbCureConfusion
+    if battler.hasActiveAbility?(:ROUNDRECORD)
+      oldConfusion = false
+    else
+      battler.pbCureConfusion
+    end
     if forced
       battle.pbDisplay(_INTL("{1} snapped out of its confusion.", battler.pbThis)) if oldConfusion
     else
@@ -601,6 +606,7 @@ Battle::ItemEffects::StatusCure.add(:PERSIMBERRY,
   proc { |item, battler, battle, forced|
     next false if !forced && !battler.canConsumeBerry?
     next false if battler.effects[PBEffects::Confusion] == 0
+    next false if battler.hasActiveAbility?(:ROUNDRECORD)
     itemName = GameData::Item.get(item).name
     PBDebug.log("[Item triggered] #{battler.pbThis}'s #{itemName}") if forced
     battle.pbCommonAnimation("EatBerry", battler) if !forced
@@ -625,6 +631,18 @@ Battle::ItemEffects::StatusCure.add(:RAWSTBERRY,
     battler.pbCureStatus(forced)
     battle.pbDisplay(_INTL("{1}'s {2} healed its burn!", battler.pbThis, itemName)) if !forced
     next true
+  }
+)
+
+Battle::ItemEffects::StatusCure.add(:DIZZYSPECS,
+  proc { |item,battler,battle,forced|
+    next false if battler.effects[PBEffects::Confusion] == 0
+    next false if battler.effects[PBEffects::SelfInflictedConfusion]
+    next false if battler.hasActiveAbility?(:ROUNDRECORD)
+    battle.pbCommonAnimation("UseItem", battler)
+    battler.pbCureConfusion
+    battle.pbDisplay(_INTL("{1}'s {2} snapped it out of its confusion!", battler.pbThis, GameData::Item.get(item).name))
+    next false
   }
 )
 
@@ -707,6 +725,18 @@ Battle::ItemEffects::AccuracyCalcFromUser.add(:ZOOMLENS,
   }
 )
 
+Battle::ItemEffects::AccuracyCalcFromUser.add(:IRONSHELL,
+  proc { |item, mods, user, target, move, type|
+    mods[:evasion_multiplier] *= 0.5
+  }
+)
+
+Battle::ItemEffects::AccuracyCalcFromUser.add(:CHOICESCOPE,
+  proc { |item, mods, user, target, move, type|
+    mods[:accuracy_multiplier] *= 1.3
+  }
+)
+
 #===============================================================================
 # AccuracyCalcFromTarget handlers
 #===============================================================================
@@ -763,13 +793,13 @@ Battle::ItemEffects::DamageCalcFromUser.copy(:CHARCOAL, :FLAMEPLATE)
 
 Battle::ItemEffects::DamageCalcFromUser.add(:CHOICEBAND,
   proc { |item, user, target, move, mults, baseDmg, type|
-    mults[:base_damage_multiplier] *= 1.5 if move.physicalMove?
+    mults[:base_damage_multiplier] *= 1.5 if move.pbPhysicalMove?(user)
   }
 )
 
 Battle::ItemEffects::DamageCalcFromUser.add(:CHOICESPECS,
   proc { |item, user, target, move, mults, baseDmg, type|
-    mults[:base_damage_multiplier] *= 1.5 if move.specialMove?
+    mults[:base_damage_multiplier] *= 1.5 if move.pbSpecialMove?(user)
   }
 )
 
@@ -781,7 +811,7 @@ Battle::ItemEffects::DamageCalcFromUser.add(:DARKGEM,
 
 Battle::ItemEffects::DamageCalcFromUser.add(:DEEPSEATOOTH,
   proc { |item, user, target, move, mults, baseDmg, type|
-    if user.isSpecies?(:CLAMPERL) && move.specialMove?
+    if user.isSpecies?(:CLAMPERL) && move.pbSpecialMove?(user)
       mults[:attack_multiplier] *= 2
     end
   }
@@ -936,7 +966,7 @@ Battle::ItemEffects::DamageCalcFromUser.copy(:MIRACLESEED, :MEADOWPLATE, :ROSEIN
 
 Battle::ItemEffects::DamageCalcFromUser.add(:MUSCLEBAND,
   proc { |item, user, target, move, mults, baseDmg, type|
-    mults[:base_damage_multiplier] *= 1.1 if move.physicalMove?
+    mults[:base_damage_multiplier] *= 1.1 if move.pbPhysicalMove?(user)
   }
 )
 
@@ -1029,7 +1059,7 @@ Battle::ItemEffects::DamageCalcFromUser.add(:SOULDEW,
     next if !user.isSpecies?(:LATIAS) && !user.isSpecies?(:LATIOS)
     if Settings::SOUL_DEW_POWERS_UP_TYPES
       mults[:final_damage_multiplier] *= 1.2 if [:DRAGON, :PSYCHIC].include?(type)
-    elsif move.specialMove? && !user.battle.rules["souldewclause"]
+    elsif move.pbSpecialMove?(user) && !user.battle.rules["souldewclause"]
       mults[:attack_multiplier] *= 1.5
     end
   }
@@ -1051,7 +1081,7 @@ Battle::ItemEffects::DamageCalcFromUser.add(:STEELGEM,
 
 Battle::ItemEffects::DamageCalcFromUser.add(:THICKCLUB,
   proc { |item, user, target, move, mults, baseDmg, type|
-    if (user.isSpecies?(:CUBONE) || user.isSpecies?(:MAROWAK)) && move.physicalMove?
+    if (user.isSpecies?(:CUBONE) || user.isSpecies?(:MAROWAK)) && move.pbPhysicalMove?(user)
       mults[:attack_multiplier] *= 2
     end
   }
@@ -1073,7 +1103,22 @@ Battle::ItemEffects::DamageCalcFromUser.add(:WATERGEM,
 
 Battle::ItemEffects::DamageCalcFromUser.add(:WISEGLASSES,
   proc { |item, user, target, move, mults, baseDmg, type|
-    mults[:base_damage_multiplier] *= 1.1 if move.specialMove?
+    mults[:base_damage_multiplier] *= 1.1 if move.pbSpecialMove?(user)
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromUser.add(:EONGENE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    species_list = [:EEVEE, :VAPOREON, :JOLTEON, :FLAREON, :ESPEON, :UMBREON, :LEAFEON, :GLACEON, :SYLVEON, :TYPHEON, :SHYNEON, :ILLUSEON, :ASTREON, :ICHEON, :FULGEON]
+    isSpecies = false
+    for species_sym in species_list
+      isSpecies = true if user.isSpecies?(species_sym)
+    end
+    if isSpecies && type>=0 && user.pbHasType?(type)
+      mults[:final_damage_multiplier] *= 2
+    else
+      mults[:final_damage_multiplier] *= 0.5
+    end
   }
 )
 
@@ -1086,7 +1131,7 @@ Battle::ItemEffects::DamageCalcFromUser.add(:WISEGLASSES,
 
 Battle::ItemEffects::DamageCalcFromTarget.add(:ASSAULTVEST,
   proc { |item, user, target, move, mults, baseDmg, type|
-    mults[:defense_multiplier] *= 1.5 if move.specialMove?
+    mults[:defense_multiplier] *= 1.5 if move.pbSpecialMove?(user)
   }
 )
 
@@ -1128,7 +1173,7 @@ Battle::ItemEffects::DamageCalcFromTarget.add(:COLBURBERRY,
 
 Battle::ItemEffects::DamageCalcFromTarget.add(:DEEPSEASCALE,
   proc { |item, user, target, move, mults, baseDmg, type|
-    if target.isSpecies?(:CLAMPERL) && move.specialMove?
+    if target.isSpecies?(:CLAMPERL) && move.pbSpecialMove?(user)
       mults[:defense_multiplier] *= 2
     end
   }
@@ -1212,7 +1257,7 @@ Battle::ItemEffects::DamageCalcFromTarget.add(:SOULDEW,
   proc { |item, user, target, move, mults, baseDmg, type|
     next if Settings::SOUL_DEW_POWERS_UP_TYPES
     next if !target.isSpecies?(:LATIAS) && !target.isSpecies?(:LATIOS)
-    if move.specialMove? && !user.battle.rules["souldewclause"]
+    if move.pbSpecialMove?(user) && !user.battle.rules["souldewclause"]
       mults[:defense_multiplier] *= 1.5
     end
   }
@@ -1233,6 +1278,18 @@ Battle::ItemEffects::DamageCalcFromTarget.add(:WACANBERRY,
 Battle::ItemEffects::DamageCalcFromTarget.add(:YACHEBERRY,
   proc { |item, user, target, move, mults, baseDmg, type|
     target.pbMoveTypeWeakeningBerry(:ICE, type, mults)
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromTarget.add(:CRACKEDMULTIPLATE,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    mults[:final_damage_multiplier] /= 2 if target.hp == target.totalhp
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromTarget.add(:PLATEBODY,
+  proc { |item,user,target,move,mults,baseDmg,type|
+    mults[:defense_multiplier] *= 1.5 if move.pbPhysicalMove?(user)
   }
 )
 
@@ -1314,7 +1371,7 @@ Battle::ItemEffects::OnBeingHit.add(:ENIGMABERRY,
 Battle::ItemEffects::OnBeingHit.add(:JABOCABERRY,
   proc { |item, user, target, move, battle|
     next if !target.canConsumeBerry?
-    next if !move.physicalMove?
+    next if !move.pbPhysicalMove?(user)
     next if !user.takesIndirectDamage?
     amt = user.totalhp / 8
     ripening = false
@@ -1340,7 +1397,7 @@ Battle::ItemEffects::OnBeingHit.add(:JABOCABERRY,
 #       effect that later changed and wasn't noticed.
 Battle::ItemEffects::OnBeingHit.add(:KEEBERRY,
   proc { |item, user, target, move, battle|
-    next if !move.physicalMove?
+    next if !move.pbPhysicalMove?(user)
     if Battle::ItemEffects.triggerOnBeingHitPositiveBerry(item, target, battle, false)
       target.pbHeldItemTriggered(item)
     end
@@ -1364,7 +1421,7 @@ Battle::ItemEffects::OnBeingHit.add(:LUMINOUSMOSS,
 #       effect that later changed and wasn't noticed.
 Battle::ItemEffects::OnBeingHit.add(:MARANGABERRY,
   proc { |item, user, target, move, battle|
-    next if !move.specialMove?
+    next if !move.pbSpecialMove?(user)
     if Battle::ItemEffects.triggerOnBeingHitPositiveBerry(item, target, battle, false)
       target.pbHeldItemTriggered(item)
     end
@@ -1384,7 +1441,7 @@ Battle::ItemEffects::OnBeingHit.add(:ROCKYHELMET,
 Battle::ItemEffects::OnBeingHit.add(:ROWAPBERRY,
   proc { |item, user, target, move, battle|
     next if !target.canConsumeBerry?
-    next if !move.specialMove?
+    next if !move.pbSpecialMove?(user)
     next if !user.takesIndirectDamage?
     amt = user.totalhp / 8
     ripening = false
@@ -1447,6 +1504,21 @@ Battle::ItemEffects::OnBeingHit.add(:WEAKNESSPOLICY,
     end
     battle.pbDisplay(_INTL("The {1} was used up...", target.itemName))
     target.pbHeldItemTriggered(item)
+  }
+)
+
+Battle::ItemEffects::OnBeingHit.add(:CRACKEDMULTIPLATE,
+  proc { |item,user,target,move,battle|
+    battle.pbDisplay(_INTL("{1}'s {2} fell apart!",target.pbThis,target.itemName))
+    target.pbConsumeItem
+    target.pbSymbiosis
+  }
+)
+
+Battle::ItemEffects::OnBeingHit.add(:REVENGEBELT,
+  proc { |item,user,target,move,battle|
+    next if !target.damageState.critical
+    target.effects[PBEffects::RevengeBelt] = true
   }
 )
 
@@ -1624,6 +1696,45 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:THROATSPRAY,
   }
 )
 
+Battle::ItemEffects::AfterMoveUseFromUser.add(:CRUSHINGHAMMER,
+  proc { |item,user,targets,move,numHits,battle|
+    next if !move.pbDamagingMove? || numHits==0
+    targets.each do |t|
+      next if t.damageState.unaffected || t.damageState.substitute
+      t.eachMove do |m|
+        next if m.id!=t.lastRegularMoveUsed
+        reduction = [4,m.pp].min
+        t.pbSetPP(m,m.pp-reduction)
+        battle.pbDisplay(_INTL("It reduced the PP of {1}'s {2} by {3}!",
+           t.pbThis(true),m.name,reduction))
+        user.pbConsumeItem if user.item
+        break
+      end
+    end
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:GREATSHIELD,
+  proc { |item,user,targets,move,numHits,battle|
+    next if move.id != :PROTECT
+    next if user.effects[PBEffects::GreatShield]
+    user.effects[PBEffects::ProtectRate] = 1
+    user.effects[PBEffects::GreatShield] = true
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:SHODDYSLINGSHOT,
+  proc { |item,user,targets,move,numHits,battle|
+	next if !move.pbDamagingMove? || numHits==0
+	targets.each do |b|
+		next if b.damageState.unaffected || b.damageState.substitute
+		next if !move.projectileBasedMove?
+    	b.pbFlinch
+    	user.pbConsumeItem
+	end
+  }
+)
+
 #===============================================================================
 # OnEndOfUsingMove handlers
 #===============================================================================
@@ -1754,7 +1865,7 @@ Battle::ItemEffects::EVGainModifier.add(:POWERWEIGHT,
 
 Battle::ItemEffects::WeatherExtender.add(:DAMPROCK,
   proc { |item, weather, duration, battler, battle|
-    next 8 if weather == :Rain
+    next 8 if weather == :Rain || weather == :Thunderstorm
   }
 )
 
@@ -1924,6 +2035,24 @@ Battle::ItemEffects::OnSwitchIn.add(:ROOMSERVICE,
     battle.pbCommonAnimation("UseItem", battler)
     battler.pbLowerStatStage(:SPEED, 1, nil)
     battler.pbConsumeItem
+  }
+)
+
+Battle::ItemEffects::OnSwitchIn.add(:PECULIARMIRROR,
+  proc { |item,battler,battle|
+    choices = []
+    battle.eachOtherSideBattler(battler.index) do |b|
+      next if b.ungainableAbility? ||
+              [:POWEROFALCHEMY, :RECEIVER, :TRACE].include?(b.ability_id)
+      choices.push(b)
+    end
+    if choices.length>0
+      choice = choices[battle.pbRandom(choices.length)]
+      battle.pbCommonAnimation("UseItem",battler)
+      battler.pbConsumeItem
+      battler.ability = choice.ability
+      battle.pbDisplay(_INTL("{1} traced {2}'s {3}!",battler.pbThis,choice.pbThis(true),choice.abilityName))
+    end
   }
 )
 

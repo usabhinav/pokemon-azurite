@@ -129,7 +129,7 @@ class Battle::Battler
       @effects[PBEffects::Incomprehensible] = true	
     end
     # Subtraction message for non-Subtraction users
-    if switchIn && !@battle.initialSwitchIn && @battle.pbCheckAllyAbility(:SUBTRACTION, @index) &&
+    if onSwitchIn && !@battle.initialSwitchIn && @battle.pbCheckAllyAbility(:SUBTRACTION, @index) &&
       !hasActiveAbility?(:SUBTRACTION) && !@battle.pbCheckAllyAbility(:ADDITION, @index)
       subtractionCount = 0
       @battle.eachSameSideBattler(@index) do |b|

@@ -651,7 +651,7 @@ class Battle::Battler
     return false if inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground",
                                      "TwoTurnAttackInvulnerableUnderwater")
     return false if hasActiveAbility?([:OVERCOAT, :SANDFORCE, :SANDRUSH, :SANDVEIL, :WEATHERBENEFIT])
-    return false if hasActiveItem?([:SAFETYGOGGLES. :IRONSHELL])
+    return false if hasActiveItem?([:SAFETYGOGGLES, :IRONSHELL])
     return true
   end
 

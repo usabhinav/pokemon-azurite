@@ -117,19 +117,20 @@ EventHandlers.add(:on_player_step_taken_can_transfer, :poison_party,
 )
 
 # Put Rablin to sleep every few steps
-Events.onStepTakenTransferPossible += proc { |_sender,e|
-  handled = e[0]
-  next if handled[0]
-  if $PokemonGlobal.stepcount%4==0
-    for i in $player.able_party
-      if i.isSpecies?(:RABLIN) && i.hasAbility?(:HEAVYEYED) && i.status != :SLEEP
-        i.status = :SLEEP
-        i.statusCount = 3
-        i.form = 0
+EventHandlers.add(:on_player_step_taken_can_transfer, :rablin_sleep,
+  proc { |handled|
+    next if handled[0]
+    if $PokemonGlobal.stepcount%4==0
+      for i in $player.able_party
+        if i.isSpecies?(:RABLIN) && i.hasAbility?(:HEAVYEYED) && i.status != :SLEEP
+          i.status = :SLEEP
+          i.statusCount = 3
+          i.form = 0
+        end
       end
     end
-  end
-}
+  }
+)
 
 def pbCheckAllFainted
   if $player.able_pokemon_count == 0

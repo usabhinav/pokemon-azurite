@@ -180,7 +180,7 @@ class Battle::Move::ParalyzeTargetAlwaysHitsInRainHitsTargetInSky < Battle::Move
     case target.effectiveWeather
     when :Sun, :HarshSun
       return 50
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       return 0
     end
     return super
@@ -615,7 +615,7 @@ class Battle::Move::ConfuseTargetAlwaysHitsInRainHitsTargetInSky < Battle::Move:
     case target.effectiveWeather
     when :Sun, :HarshSun
       return 50
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       return 0
     end
     return super

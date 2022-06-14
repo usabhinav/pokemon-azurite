@@ -517,7 +517,7 @@ class Battle::Move
       when :WATER
         multipliers[:final_damage_multiplier] /= 2
       end
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       case type
       when :FIRE
         multipliers[:final_damage_multiplier] /= 2

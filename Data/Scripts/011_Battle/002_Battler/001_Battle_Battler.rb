@@ -684,7 +684,7 @@ class Battle::Battler
 
   def effectiveWeather
     ret = @battle.pbWeather
-    ret = :None if [:Sun, :Rain, :HarshSun, :HeavyRain].include?(ret) && hasActiveItem?(:UTILITYUMBRELLA)
+    ret = :None if [:Sun, :Rain, :HarshSun, :HeavyRain, :Thunderstorm].include?(ret) && hasActiveItem?(:UTILITYUMBRELLA)
     return ret
   end
 

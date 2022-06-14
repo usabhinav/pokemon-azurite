@@ -1555,7 +1555,7 @@ class Battle::Move::TypeAndPowerDependOnWeather < Battle::Move
     case user.effectiveWeather
     when :Sun, :HarshSun
       ret = :FIRE if GameData::Type.exists?(:FIRE)
-    when :Rain, :HeavyRain
+    when :Rain, :HeavyRain, :Thunderstorm
       ret = :WATER if GameData::Type.exists?(:WATER)
     when :Sandstorm
       ret = :ROCK if GameData::Type.exists?(:ROCK)

@@ -479,7 +479,7 @@ class Game_Player < Game_Character
           end
 			  
           # Set the outfit layer part
-          $Trainer.outfitstate.setDryLayerState(layer_name, apparelId, color)
+          $player.outfitstate.setDryLayerState(layer_name, apparelId, color)
           end
         end
       end
@@ -649,15 +649,15 @@ def pbUpdateVehicle
 =end
   if $PokemonGlobal&.diving
     $game_player.set_movement_type(:diving)
-    $Trainer.outfitstate.animation = "Diving"
+    $player.outfitstate.animation = "Diving"
   elsif $PokemonGlobal&.surfing
     $game_player.set_movement_type(:surfing)
-    $Trainer.outfitstate.animation = "Surfing"
+    $player.outfitstate.animation = "Surfing"
   elsif $PokemonGlobal&.bicycle
     $game_player.set_movement_type(:cycling)
-    $Trainer.outfitstate.animation = "Bicycle"
+    $player.outfitstate.animation = "Bicycle"
   elsif $PokemonGlobal&.swimming
-    $Trainer.outfitstate.animation = "Swimming"
+    $player.outfitstate.animation = "Swimming"
   else
     $game_player.set_movement_type(:walking)
   end

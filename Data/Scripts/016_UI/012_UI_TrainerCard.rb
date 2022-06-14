@@ -28,7 +28,7 @@ class PokemonTrainerCard_Scene
     @sprites["trainer"] = IconSprite.new(336, 112, @viewport)
     @sprites["trainer"].setBitmap(GameData::TrainerType.player_front_sprite_filename($player.trainer_type))
     # Apply the trainer's outfitstate to the trainer ID bitmap
-	  $Trainer.outfitstate.applyToIdBitmap(@sprites["trainer"].bitmap)
+	  $player.outfitstate.applyToIdBitmap(@sprites["trainer"].bitmap)
     @sprites["trainer"].x -= (@sprites["trainer"].bitmap.width - 128) / 2
     @sprites["trainer"].y -= (@sprites["trainer"].bitmap.height - 128)
     @sprites["trainer"].z = 2

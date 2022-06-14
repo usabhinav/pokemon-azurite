@@ -410,15 +410,15 @@ def pbCanPlayerSwim?
 
   
   # Check if the leg layer is occupied
-  if $Trainer.outfitstate.occupiedBy(GameData::Apparel::WETOUTFIT, "Legs") != ""
+  if $player.outfitstate.occupiedBy(GameData::Apparel::WETOUTFIT, "Legs") != ""
     
     # Only legs have to be occupied for male trainers
-    if $Trainer.outfitstate.gender == "Male"
+    if $player.outfitstate.gender == "Male"
       return true
     else
       
       # If trainer is not male, check if torso layer is also occupied
-      if $Trainer.outfitstate.occupiedBy(GameData::Apparel::WETOUTFIT, "Torso") != ""
+      if $player.outfitstate.occupiedBy(GameData::Apparel::WETOUTFIT, "Torso") != ""
         return true
       else
         return false

@@ -2594,7 +2594,7 @@ Battle::AbilityEffects::OnBeingHit.add(:WATERCOMPACTION,
 
 Battle::AbilityEffects::OnBeingHit.add(:WEAKARMOR,
   proc { |ability, user, target, move, battle|
-    next if !move.physicalMove?
+    next if !move.pbPhysicalMove?(user)
     next if !target.pbCanLowerStatStage?(:DEFENSE, target) &&
             !target.pbCanRaiseStatStage?(:SPEED, target)
     battle.pbShowAbilitySplash(target)

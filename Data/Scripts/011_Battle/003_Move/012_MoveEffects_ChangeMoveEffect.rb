@@ -705,6 +705,8 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
       "UseRandomMove",                                     # Metronome
+      "UseRandomCosmicMove",                               # Astronomy
+      "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
       "StealAndUseBeneficialStatusMove",                   # Snatch
@@ -930,6 +932,8 @@ class Battle::Move::UseRandomMove < Battle::Move
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
       "UseRandomMove",                                     # Metronome
+      "UseRandomCosmicMove",                               # Astronomy
+      "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
       "StealAndUseBeneficialStatusMove",                   # Snatch
@@ -1019,6 +1023,8 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
       "UseRandomMove",                                     # Metronome
+      "UseRandomCosmicMove",                               # Astronomy
+      "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
       "StealAndUseBeneficialStatusMove",                   # Snatch
@@ -1118,6 +1124,8 @@ class Battle::Move::UseRandomUserMoveIfAsleep < Battle::Move
       "UseRandomUserMoveIfAsleep",                       # Sleep Talk
       "UseRandomMoveFromUserParty",                      # Assist
       "UseRandomMove",                                   # Metronome
+      "UseRandomCosmicMove",                             # Astronomy
+      "UseRandomMysticMove",                             # Wild Magic
       # Two-turn attacks
       "TwoTurnAttack",                                   # Razor Wind
       "TwoTurnAttackOneTurnInSun",                       # Solar Beam, Solar Blade
@@ -1282,5 +1290,57 @@ class Battle::Move::ReplaceMoveWithTargetLastMoveUsed < Battle::Move
       user.pbCheckFormOnMovesetChange
       break
     end
+  end
+end
+
+#===============================================================================
+# Uses a random cosmic move that exists. (Astronomy)
+#===============================================================================
+class Battle::Move::UseRandomCosmicMove < Battle::Move::UseRandomMove
+  def pbMoveFailed?(user, targets)
+    @metronomeMove = nil
+    move_keys = GameData::Move.keys
+    # NOTE: You could be really unlucky and roll blacklisted moves 1000 times in
+    #       a row. This is too unlikely to care about, though.
+    1000.times do
+      move_id = move_keys[@battle.pbRandom(move_keys.length)]
+      move_data = GameData::Move.get(move_id)
+      next if @moveBlacklist.include?(move_data.function_code)
+      next if move_data.has_flag?("CannotMetronome")
+      next if move_data.type != :COSMIC
+      @metronomeMove = move_data.id
+      break
+    end
+    if !@metronomeMove
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+end
+
+#===============================================================================
+# Uses a random cosmic move that exists. (Wild Magic)
+#===============================================================================
+class Battle::Move::UseRandomMysticMove < Battle::Move::UseRandomMove
+  def pbMoveFailed?(user, targets)
+    @metronomeMove = nil
+    move_keys = GameData::Move.keys
+    # NOTE: You could be really unlucky and roll blacklisted moves 1000 times in
+    #       a row. This is too unlikely to care about, though.
+    1000.times do
+      move_id = move_keys[@battle.pbRandom(move_keys.length)]
+      move_data = GameData::Move.get(move_id)
+      next if @moveBlacklist.include?(move_data.function_code)
+      next if move_data.has_flag?("CannotMetronome")
+      next if move_data.type != :MYSTIC
+      @metronomeMove = move_data.id
+      break
+    end
+    if !@metronomeMove
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
   end
 end

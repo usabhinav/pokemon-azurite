@@ -1214,7 +1214,7 @@ end
 #===============================================================================
 class Battle::Move::UseTargetAttackInsteadOfUserAttack < Battle::Move
   def pbGetAttackStats(user, target)
-    if specialMove?
+    if pbSpecialMove?(user)
       return target.spatk, target.stages[:SPECIAL_ATTACK] + 6
     end
     return target.attack, target.stages[:ATTACK] + 6
@@ -1288,7 +1288,7 @@ class Battle::Move::IgnoreTargetDefSpDefEvaStatStages < Battle::Move
 end
 
 #===============================================================================
-# This move's type is the same as the user's first type. (Revelation Dance)
+# This move's type is the same as the user's first type. (Revelation Dance, Kamikaze)
 #===============================================================================
 class Battle::Move::TypeIsUserFirstType < Battle::Move
   def pbBaseType(user)
@@ -1648,5 +1648,187 @@ class Battle::Move::NormalMovesBecomeElectric < Battle::Move
     return if @battle.field.effects[PBEffects::IonDeluge]
     @battle.field.effects[PBEffects::IonDeluge] = true
     @battle.pbDisplay(_INTL("A deluge of ions showers the battlefield!"))
+  end
+end
+
+#===============================================================================
+# Flash Kick
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetHasDarkType < Battle::Move
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg *= 2 if target.pbHasType?(:DARK)
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Sound Pulse
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetEvasionAtLeastOne < Battle::Move
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg *= 2 if target.stages[:EVASION]>=1
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Noise Ripple
+#===============================================================================
+class Battle::Move::EffectivenessIncludesWaterType < Battle::Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    ret = super(moveType,defType,user,target)
+    waterEff = Effectiveness.calculate_one(:WATER, defType)
+    ret *= waterEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    return ret
+  end
+end
+
+#===============================================================================
+# Ring Through
+#===============================================================================
+class Battle::Move::PowerDependsOnTargetDefenseStats < Battle::Move
+  def pbBaseDamage(baseDmg,user,target)
+    if target.defense > target.spdef
+      return target.defense
+    else
+      return target.spdef
+    end
+  end
+end
+
+#===============================================================================
+# Searing Meteor
+#===============================================================================
+class Battle::Move::EffectivenessIncludesFireType < Battle::Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    ret = super(moveType,defType,user,target)
+    fireEff = Effectiveness.calculate_one(:FIRE, defType)
+    ret *= fireEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    return ret
+  end
+end
+
+#===============================================================================
+# Crystal Overload
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetHasCrystalType < Battle::Move
+  def pbBaseDamage(baseDmg,user,target)
+    baseDmg *= 2 if target.pbHasType?(:CRYSTAL)
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Magical Roots
+#===============================================================================
+class Battle::Move::EffectivenessIncludesGrassType < Battle::Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    ret = super(moveType,defType,user,target)
+    grassEff = Effectiveness.calculate_one(:GRASS, defType)
+    ret *= grassEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    return ret
+  end
+end
+
+#===============================================================================
+# Energy Bomb
+#===============================================================================
+class Battle::Move::EnergyBomb < Battle::Move::RecoilMove
+  def pbMoveFailed?(user,targets)
+    if user.hp<=user.totalhp/2
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+  
+  def pbRecoilDamage(user,target)
+    recoilDmg = user.totalhp / 2
+    recoilDmg = (recoilDmg * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoilDmg
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 1/3 of the damage this move dealt.
+# May freeze the target. (Frost Blitz)
+#===============================================================================
+class Battle::Move::RecoilThirdOfDamageDealtFreezeTarget < Battle::Move::RecoilMove
+  def pbRecoilDamage(user, target)
+    return (target.damageState.totalHPLost / 3.0).round
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    target.pbFreeze(user) if target.pbCanFreeze?(user, false, self)
+  end
+end
+
+#===============================================================================
+# Gleam Beam
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetSharesTypeWithUser < Battle::Move
+  def pbBaseDamage(baseDmg,user,target)
+    userTypes = user.pbTypes(true)
+    targetTypes = target.pbTypes(true)
+    sharesType = false
+    userTypes.each do |t|
+      next if !targetTypes.include?(t)
+      sharesType = true
+      break
+    end
+    baseDmg *= 2 if sharesType
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Target's Special Defense is used instead of its Defense for this move's
+# calculations. (Arcane Strike)
+#===============================================================================
+class Battle::Move::UseTargetDefenseInsteadOfTargetSpDef < Battle::Move
+  def pbGetDefenseStats(user, target)
+    return target.spdef, target.stages[:SPECIAL_DEFENSE] + 6
+  end
+end
+
+#===============================================================================
+# Boil
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetIsBurnedNoSubstitute < Battle::Move
+  def pbBaseDamage(baseDmg,user,target)
+    if target.burned? && (target.effects[PBEffects::Substitute]==0 || ignoresSubstitute?(user))
+      baseDmg *= 2
+    end
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Flash Strike
+#===============================================================================
+class Battle::Move::DoublePowerIfNoBattlersActed < Battle::Move
+  def pbBaseDamage(baseDmg,user,target)
+    noneMoved = true
+    @battle.eachBattler do |b|
+      next if b.index==user.index
+      next if @battle.choices[b.index][0]!=:UseMove && @battle.choices[b.index][0]!=:Shift
+      next if !b.movedThisRound?
+      noneMoved = false
+      break
+    end
+    baseDmg *= 2 if noneMoved
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Sunder Surge
+#===============================================================================
+class Battle::Move::RecoilHalfOfUserHP < Battle::Move::RecoilMove
+  def pbRecoilDamage(user,target)
+    recoilDmg = user.totalhp / 2
+    recoilDmg = (recoilDmg * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoilDmg
   end
 end

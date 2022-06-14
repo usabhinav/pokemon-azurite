@@ -134,12 +134,21 @@ class Battle::Move
   def danceMove?;         return @flags.any? { |f| f[/^Dance$/i] };               end
   # Causes perfect accuracy and double damage if target used Minimize. Perfect accuracy only with Gen 6+ mechanics.
   def tramplesMinimize?;  return @flags.any? { |f| f[/^TramplesMinimize$/i] };    end
+  def kickingMove?;       return @flags.any? { |f| f[/^Kicking$/i] };             end
+  def slashingMove?;      return @flags.any? { |f| f[/^Slashing$/i] };            end
+  def headBasedMove?;     return @flags.any? { |f| f[/^HeadBased$/i] };           end
+  def ballRollingMove?;   return @flags.any? { |f| f[/^BallRolling$/i] };         end
+  def projectileMove?;    return @flags.any? { |f| f[/^Projectile$/i] };          end
+  def throwingMove?;      return @flags.any? { |f| f[/^Throwing$/i] };            end
+  def speedMove?;         return @flags.any? { |f| f[/^Speed$/i] };               end
+  def defenseMove?;       return @flags.any? { |f| f[/^Defense$/i] };             end
 
   def nonLethal?(_user, _target); return false; end   # For False Swipe
 
   def ignoresSubstitute?(user)   # user is the Pokémon using this move
     if Settings::MECHANICS_GENERATION >= 6
-      return true if soundMove?
+      return true if user && pbSoundMove?(user)
+      return true if !user && soundMove?
       return true if user&.hasActiveAbility?(:INFILTRATOR)
     end
     return false

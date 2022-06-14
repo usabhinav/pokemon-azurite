@@ -709,7 +709,7 @@ end
 
 #===============================================================================
 # Decreases the user's Defense and Special Defense by 1 stage each.
-# (Close Combat, Dragon Ascent)
+# (Close Combat, Dragon Ascent, Azure Scream)
 #===============================================================================
 class Battle::Move::LowerUserDefSpDef1 < Battle::Move::StatDownMove
   def initialize(battle, move)
@@ -1298,7 +1298,7 @@ class Battle::Move::LowerTargetEvasion2 < Battle::Move::TargetStatDownMove
 end
 
 #===============================================================================
-# Decreases the target's evasion by 3 stages.
+# Decreases the target's evasion by 3 stages. (Light Show)
 #===============================================================================
 class Battle::Move::LowerTargetEvasion3 < Battle::Move::TargetStatDownMove
   def initialize(battle, move)
@@ -1924,5 +1924,36 @@ class Battle::Move::StartSwapAllBattlersBaseDefensiveStats < Battle::Move
   def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
     return if @battle.field.effects[PBEffects::WonderRoom] > 0   # No animation
     super
+  end
+end
+
+#===============================================================================
+# Decreases the target's Sp. Atk or Sp. Def by 1 stage. (Relic Wave)
+#===============================================================================
+class Battle::Move::LowerTargetSpAtkOrSpDef < Battle::Move::TargetStatDownMove
+  def initialize(battle, move)
+    super
+    case @battle.pbRandom(2)
+    when 0; @statDown = [:SPECIAL_ATTACK,1]
+    when 1; @statDown = [:SPECIAL_DEFENSE,1]
+    end
+  end
+end
+
+#===============================================================================
+# Decreases any of the target's stats by 1 stage. (Secret Pulse)
+#===============================================================================
+class Battle::Move::LowerRandomTargetStat < Battle::Move::TargetStatDownMove
+  def initialize(battle, move)
+    super
+    case @battle.pbRandom(7)
+    when 0; @statDown = [:SPECIAL_ATTACK,1]
+    when 1; @statDown = [:SPECIAL_DEFENSE,1]
+    when 2; @statDown = [:ATTACK,1]
+    when 3; @statDown = [:DEFENSE,1]
+    when 4; @statDown = [:SPEED,1]
+    when 5; @statDown = [:EVASION,1]
+    when 6; @statDown = [:ACCURACY,1]
+    end
   end
 end

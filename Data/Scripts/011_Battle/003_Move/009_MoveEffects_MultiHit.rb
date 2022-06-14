@@ -617,3 +617,17 @@ class Battle::Move::MultiTurnAttackBideThenReturnDoubleDamage < Battle::Move::Fi
     super
   end
 end
+
+#===============================================================================
+# Attacks first turn, skips three turns (if successful).
+#===============================================================================
+class Battle::Move::AttackAndSkipThreeTurns < Battle::Move
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::HyperBeam] = 4
+    user.currentMove = @id
+  end
+
+  def rollingBasedMove?
+    return true
+  end
+end

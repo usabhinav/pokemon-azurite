@@ -1371,3 +1371,134 @@ class Battle::Move::TransformUserIntoTarget < Battle::Move
     @battle.scene.pbChangePokemon(user, targets[0].pokemon)
   end
 end
+
+#===============================================================================
+# Vapor Wave
+#===============================================================================
+class Battle::Move::SuperEffectiveAgainstFireRockGround < Battle::Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    if [:FIRE, :ROCK, :GROUND].include?(defType)
+      return Effectiveness::SUPER_EFFECTIVE_ONE
+    end
+    return super
+  end
+end
+
+#===============================================================================
+# Warp Storm
+#===============================================================================
+class Battle::Move::BurnOrFreezeTarget < Battle::Move
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(2)
+    when 0; target.pbBurn(user) if target.pbCanBurn?(user,false,self)
+    when 1; target.pbFreeze if target.pbCanFreeze?(user,false,self)
+    end
+  end
+end
+
+#===============================================================================
+# Magic Fang
+#===============================================================================
+class Battle::Move::ConfuseAndOrFlinchTarget < Battle::Move
+  def flinchingMove?; return true; end
+
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    chance = pbAdditionalEffectChance(user,target,10)
+    return if chance==0
+    if @battle.pbRandom(100)<chance
+      target.pbConfuse(user) if target.pbCanConfuse?(user,false,self)
+    end
+    target.pbFlinch(user) if @battle.pbRandom(100)<chance
+  end
+end
+
+#===============================================================================
+# Inflicts a random status on the target. (Magic Dust, Strange Powder)
+#===============================================================================
+class Battle::Move::InflictRandomStatusOnTarget < Battle::Move
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(6)
+    when 0; target.pbBurn(user) if target.pbCanBurn?(user,false,self)
+    when 1; target.pbParalyze(user) if target.pbCanParalyze?(user,false,self)
+    when 2; target.pbPoison(user) if target.pbCanPoison?(user,false,self)
+    when 3; target.pbSleep if target.pbCanSleep?(user,false,self)
+    when 4; target.pbConfuse if target.pbCanConfuse?(user,false,self)
+    when 5; target.pbAttract if target.pbCanAttract?(user,false,self)
+    end
+  end
+end
+
+#===============================================================================
+# Dream Dance
+#===============================================================================
+class Battle::Move::SleepTargetAndUser < Battle::Move::SleepTarget
+  def pbMoveFailed?(user,targets)
+    if user.asleep?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return true if !user.pbCanSleep?(user,true,self,true)
+    return true if super
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbSleepSelf(_INTL("{1} and it's target both fell asleep",user.pbThis),3)
+    super
+  end
+end
+
+#===============================================================================
+# Luminous Gust
+#===============================================================================
+class Battle::Move::SuperEffectiveAgainstDarkGhostFlying < Battle::Move
+  def pbCalcTypeModSingle(moveType,defType,user,target)
+    if [:DARK, :GHOST, :FLYING].include?(defType)
+      return Effectiveness::SUPER_EFFECTIVE_ONE
+    end
+    return super
+  end
+end
+
+#===============================================================================
+# Stare
+#===============================================================================
+class Battle::Move::NegateTargetAbilityForThreeTurns < Battle::Move
+  def pbFailsAgainstTarget?(user, target)
+    if target.fainted? || target.damageState.substitute || target.unstoppableAbility?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    if target.effects[PBEffects::Stare] > 0
+      @battle.pbDisplay(_INTL("{1} is already being stared at!", target.pbThis))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    # Set trapping effect duration and info
+    target.effects[PBEffects::Stare] = 3
+    target.effects[PBEffects::Truant] = false
+    # Message
+    @battle.pbDisplay(_INTL("{1} is scared and can no longer use its ability!", target.pbThis))
+    target.pbOnAbilityChanged(target.ability)
+  end
+end
+
+#===============================================================================
+# Paralyzes, poisons, or sleeps the target. (Powder Storm)
+#===============================================================================
+class Battle::Move::ParalyzePoisonOrSleepTarget < Battle::Move
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(3)
+    when 0; target.pbParalyze(user) if target.pbCanParalyze?(user,false,self)
+    when 1; target.pbPoison(user) if target.pbCanPoison?(user,false,self)
+    when 2; target.pbSleep if target.pbCanSleep?(user,false,self)
+    end
+  end
+end

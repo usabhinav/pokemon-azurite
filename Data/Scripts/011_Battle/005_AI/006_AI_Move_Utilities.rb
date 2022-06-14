@@ -396,7 +396,7 @@ class Battle::AI
       atk = pbRoughStat(target, :ATTACK, skill)
     elsif move.function == "UseUserBaseDefenseInsteadOfUserBaseAttack"   # Body Press
       atk = pbRoughStat(user, :DEFENSE, skill)
-    elsif move.specialMove?(type)
+    elsif move.pbSpecialMove?(user, type)
       if move.function == "UseTargetAttackInsteadOfUserAttack"   # Foul Play
         atk = pbRoughStat(target, :SPECIAL_ATTACK, skill)
       else

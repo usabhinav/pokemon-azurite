@@ -688,3 +688,68 @@ class Battle::Move::BurnAttackerBeforeUserActs < Battle::Move
     @battle.pbDisplay(_INTL("{1} started heating up its beak!", user.pbThis))
   end
 end
+
+################################################################################
+# Envelops the field in darkness. (Darken)
+################################################################################
+class Battle::Move::StartDarkenedEffect < Battle::Move
+  def pbMoveFailed?(user,targets)
+    if @battle.field.effects[PBEffects::Darkened]
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbDisplay(_INTL("Darkness shrouded the battlefield!"))
+    @battle.field.effects[PBEffects::Darkened] = true
+  end
+end
+
+#===============================================================================
+# If attack misses, user takes crash damage equal to its speed.
+# (Crash Landing)
+#===============================================================================
+class Battle::Move::CrashDamageWithSpeedIfFailsUnusableInGravity < Battle::Move
+  def recoilMove?;        return true; end
+  def unusableInGravity?; return true; end
+
+  def pbCrashDamage(user)
+    return if !user.takesIndirectDamage?
+    @battle.pbDisplay(_INTL("{1} kept going and crashed!", user.pbThis))
+    @battle.scene.pbDamageAnimation(user)
+    user.pbReduceHP(user.speed, false)
+    user.pbItemHPHealCheck
+    user.pbFaint if user.fainted?
+  end
+end
+
+#===============================================================================
+# Used for extra effect moves. (Forest Fire, thunderstorm weather)
+#===============================================================================
+class Battle::Move::ExtraEffect < Battle::Move
+  def pbDisplayUseMessage(user); end
+end
+
+#===============================================================================
+# Entry hazard. Lays poison spikes on the opposing side (max. 2 layers).
+# (Toxic Spikes)
+#===============================================================================
+class Battle::Move::AddVoltSpikesToFoeSide < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.pbOpposingSide.effects[PBEffects::VoltSpikes] >= 2
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::VoltSpikes] += 1
+    @battle.pbDisplay(_INTL("Electric spikes were scattered all around {1}'s feet!",
+                            user.pbOpposingTeam(true)))
+  end
+end

@@ -924,3 +924,13 @@ class Battle::Move::DisableTargetMovesKnownByUser < Battle::Move
     @battle.pbDisplay(_INTL("{1} sealed any moves its target shares with it!", user.pbThis))
   end
 end
+
+#===============================================================================
+# Roar/Whirlwind effect but with a recharge effect. (Wormhole)
+#===============================================================================
+class Battle::Move::SwitchOutTargetStatusMoveWithRecharge < Battle::Move::SwitchOutTargetStatusMove
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::HyperBeam] = 2
+    user.currentMove = @id
+  end
+end

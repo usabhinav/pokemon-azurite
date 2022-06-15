@@ -4,8 +4,6 @@
 class Player < Trainer
   # @return [Integer] the character ID of the player
   attr_reader   :character_ID
-  # @return [Integer] the player's outfit
-  attr_reader   :outfit
   # @return [Array<Boolean>] the player's Gym Badges (true if owned)
   attr_accessor :badges
   # @return [Integer] the player's money
@@ -34,8 +32,6 @@ class Player < Trainer
   attr_accessor :mystery_gift_unlocked
   # @return [Array<Array>] downloaded Mystery Gift data
   attr_accessor :mystery_gifts
-  # @return [Integer] the player's current outfit
-  attr_writer   :outfit
   # @return [ObservableOutfitState] the player's outfit state
   attr_accessor :outfitstate
 
@@ -113,7 +109,6 @@ class Player < Trainer
   def initialize(name, trainer_type)
     super
     @character_ID          = 0
-    @outfit                = 0
     @badges                = [false] * 8
     @money                 = GameData::Metadata.get.start_money
     @coins                 = 0

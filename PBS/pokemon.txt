@@ -2042,7 +2042,7 @@ Shape = Winged
 Habitat = Grassland
 Category = Wild Duck
 Pokedex = It is always seen with a stick from a plant. Apparently, there are good sticks and bad sticks. This Pokémon occasionally fights with others over choice sticks.
-WildItemUncommon = STICK
+WildItemUncommon = LEEK
 Evolutions = SIRFETCHD,None,
 #-------------------------------
 [DODUO]
@@ -20586,7 +20586,7 @@ Color = White
 Shape = Winged
 Category = Wild Duck
 Pokedex = After deflecting attacks with its hard leaf shield, it strikes back with its sharp leek stalk. The leek stalk is both weapon and food.
-WildItemUncommon = STICK
+WildItemUncommon = LEEK
 #-------------------------------
 [MRRIME]
 Name = Mr. Rime

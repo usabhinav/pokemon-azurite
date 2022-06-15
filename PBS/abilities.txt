@@ -1,4 +1,4 @@
-﻿# See the documentation on the wiki to learn how to edit this file.
+# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [STENCH]
 Name = Stench
@@ -158,6 +158,7 @@ Description = The Pokémon is protected from flinching.
 #-------------------------------
 [MAGMAARMOR]
 Name = Magma Armor
+Flags = FasterEggHatching
 Description = Prevents the Pokémon from becoming frozen.
 #-------------------------------
 [WATERVEIL]
@@ -194,6 +195,7 @@ Description = The Pokémon awakens quickly from sleep.
 #-------------------------------
 [FLAMEBODY]
 Name = Flame Body
+Flags = FasterEggHatching
 Description = Contact with the Pokémon may burn the attacker.
 #-------------------------------
 [RUNAWAY]
@@ -932,6 +934,144 @@ Description = Reduces damage from super-effective attacks.
 Name = Neuroforce
 Description = Powers up moves that are super-effective.
 #-------------------------------
+[INTREPIDSWORD]
+Name = Intrepid Sword
+Description = Boosts Attack when entering a battle.
+#-------------------------------
+[DAUNTLESSSHIELD]
+Name = Dauntless Shield
+Description = Boosts Defense when entering a battle.
+#-------------------------------
+[LIBERO]
+Name = Libero
+Description = It changes type to that of the move it's about to use.
+#-------------------------------
+[BALLFETCH]
+Name = Ball Fetch
+Description = Retrieves the first thrown Poké Ball if it failed.
+#-------------------------------
+[COTTONDOWN]
+Name = Cotton Down
+Description = Scatters Speed-lowering cotton fluff when hit.
+#-------------------------------
+[PROPELLERTAIL]
+Name = Propeller Tail
+Description = This Pokémon's moves cannot be redirected.
+#-------------------------------
+[MIRRORARMOR]
+Name = Mirror Armor
+Description = Bounces back stat-lowering effects.
+#-------------------------------
+[GULPMISSILE]
+Name = Gulp Missile
+Description = Catches prey via Surf or Dive, spits it out when hit.
+#-------------------------------
+[STALWART]
+Name = Stalwart
+Description = This Pokémon's moves cannot be redirected.
+#-------------------------------
+[STEAMENGINE]
+Name = Steam Engine
+Flags = FasterEggHatching
+Description = Boosts Speed drastically if hit by a Fire or Water move.
+#-------------------------------
+[PUNKROCK]
+Name = Punk Rock
+Description = Powers up own sound moves. Resists other sound moves.
+#-------------------------------
+[SANDSPIT]
+Name = Sand Spit
+Description = Creates a sandstorm when hit by an attack.
+#-------------------------------
+[ICESCALES]
+Name = Ice Scales
+Description = Halves the damage taken from special moves.
+#-------------------------------
+[RIPEN]
+Name = Ripen
+Description = Ripens Berries and doubles their effect.
+#-------------------------------
+[ICEFACE]
+Name = Ice Face
+Description = Blocks a physical hit, but the ice head breaks.
+#-------------------------------
+[POWERSPOT]
+Name = Power Spot
+Description = Just being next to the Pokémon powers up moves.
+#-------------------------------
+[MIMICRY]
+Name = Mimicry
+Description = Changes type depending on the terrain.
+#-------------------------------
+[SCREENCLEANER]
+Name = Screen Cleaner
+Description = On entering battle, clears effects of Reflect, etc.
+#-------------------------------
+[STEELYSPIRIT]
+Name = Steely Spirit
+Description = Powers up ally Pokémon's Steel-type moves.
+#-------------------------------
+[PERISHBODY]
+Name = Perish Body
+Description = Both Pokémon faint 3 turns after taking a contact hit.
+#-------------------------------
+[WANDERINGSPIRIT]
+Name = Wandering Spirit
+Description = Swaps Abilities with contact-making Pokémon.
+#-------------------------------
+[GORILLATACTICS]
+Name = Gorilla Tactics
+Description = Boosts Attack, but allows only one move to be used.
+#-------------------------------
+[NEUTRALIZINGGAS]
+Name = Neutralizing Gas
+Description = Nullifies the effects of all other Abilities.
+#-------------------------------
+[PASTELVEIL]
+Name = Pastel Veil
+Description = Protects the Pokémon and its allies from poisoning.
+#-------------------------------
+[HUNGERSWITCH]
+Name = Hunger Switch
+Description = Changes between Full Belly and Hangry Mode each turn.
+#-------------------------------
+[QUICKDRAW]
+Name = Quick Draw
+Description = Enables the Pokémon to move first occasionally.
+#-------------------------------
+[UNSEENFIST]
+Name = Unseen Fist
+Description = The Pokémon's contact moves ignore protections.
+#-------------------------------
+[CURIOUSMEDICINE]
+Name = Curious Medicine
+Description = Removes all allies' stat changes on joining battle.
+#-------------------------------
+[TRANSISTOR]
+Name = Transistor
+Description = Powers up Electric-type moves.
+#-------------------------------
+[DRAGONSMAW]
+Name = Dragon's Maw
+Description = Powers up Dragon-type moves.
+#-------------------------------
+[CHILLINGNEIGH]
+Name = Chilling Neigh
+Description = When knocking out a target, raises Attack.
+#-------------------------------
+[GRIMNEIGH]
+Name = Grim Neigh
+Description = When knocking out a target, raises Sp. Atk.
+#-------------------------------
+[ASONECHILLINGNEIGH]
+Name = As One
+Description = Combines Unnerve and Chilling Neigh Abilities.
+#-------------------------------
+[ASONEGRIMNEIGH]
+Name = As One
+Description = Combines Unnerve and Grim Neigh Abilities.
+# CUSTOM ABILITIES START HERE
+#-------------------------------
 [HYPERAROMA]
 Name = Hyper Aroma
 Description = All opposing Pokémon, except for Genderless Pokémon, will be infatuated with this Pokémon.
@@ -1551,142 +1691,6 @@ Description = Future Sight will hit twice.
 [OMNIPOTENT]
 Name = Omnipotent
 Description = This Pokémon evades all moves and always lands critical hits, like a true god.
-#-------------------------------
-[BALLFETCH]
-Name = Ball Fetch
-Description = Fetches the Poké Ball from the first failed throw.
-#-------------------------------
-[COTTONDOWN]
-Name = Cotton Down
-Description = Lowers everyone else's Speed when hit by an attack.
-#-------------------------------
-[DAUNTLESSSHIELD]
-Name = Dauntless Shield
-Description = Boosts Defense stat when the Pokémon enters a battle.
-#-------------------------------
-[GORILLATACTICS]
-Name = Gorilla Tactics
-Description = Boosts Attack but only allows the use of one move.
-#-------------------------------
-[GULPMISSILE]
-Name = Gulp Missile
-Description = Attacks with prey caught when using Surf or Dive.
-#-------------------------------
-[HUNGERSWITCH]
-Name = Hunger Switch
-Description = It alternates between Full Belly Mode and Hangry Mode.
-#-------------------------------
-[ICEFACE]
-Name = Ice Face
-Description = Prevents a physical attack. Can be restored with hail.
-#-------------------------------
-[ICESCALES]
-Name = Ice Scales
-Description = Halves the damage from special moves.
-#-------------------------------
-[INTREPIDSWORD]
-Name = Intrepid Sword
-Description = Boosts Attack stat when the Pokémon enters a battle.
-#-------------------------------
-[LIBERO]
-Name = Libero
-Description = Changes type to the type of the move it's about to use.
-#-------------------------------
-[MIMICRY]
-Name = Mimicry
-Description = Changes the Pokémon's type depending on the terrain.
-#-------------------------------
-[MIRRORARMOR]
-Name = Mirror Armor
-Description = Bounces back stat-lowering effects.
-#-------------------------------
-[NEUTRALIZINGGAS]
-Name = Neutralizing Gas
-Description = Abilities will be nullified or will not be triggered.
-#-------------------------------
-[PASTELVEIL]
-Name = Pastel Veil
-Description = Protects it and ally Pokémon from being poisoned.
-#-------------------------------
-[PERISHBODY]
-Name = Perish Body
-Description = When it takes a hit, both Pokémon faint after 3 turns.
-#-------------------------------
-[POWERSPOT]
-Name = Power Spot
-Description = Just being next to the Pokémon powers up moves.
-#-------------------------------
-[PROPELLERTAIL]
-Name = Propeller Tail
-Description = Ignores effects changing the target of a move.
-#-------------------------------
-[PUNKROCK]
-Name = Punk Rock
-Description = Boosts power and resistance of sound-based moves.
-#-------------------------------
-[RIPEN]
-Name = Ripen
-Description = Ripens Berries and doubles their effect.
-#-------------------------------
-[SANDSPIT]
-Name = Sand Spit
-Description = Creates a sandstorm when it's hit by an attack.
-#-------------------------------
-[SCREENCLEANER]
-Name = Screen Cleaner
-Description = Screens are nullified when entering battle.
-#-------------------------------
-[STALWART]
-Name = Stalwart
-Description = Ignores effects changing the target of a move.
-#-------------------------------
-[STEAMENGINE]
-Name = Steam Engine
-Description = Boosts Speed when hit by a Fire- or Water-type move.
-#-------------------------------
-[STEELYSPIRIT]
-Name = Steely Spirit
-Description = Powers up ally Pokémon's Steel-type moves.
-#-------------------------------
-[WANDERINGSPIRIT]
-Name = Wandering Spirit
-Description = Taking a direct contact hit exchanges Abilities.
-#-------------------------------
-[UNSEENFIST]
-Name = Unseen Fist
-Description = Contact moves negate all protection effects.
-#-------------------------------
-[QUICKDRAW]
-Name = Quick Draw
-Description = Enables the Pokémon to move first occasionally.
-#-------------------------------
-[CURIOUSMEDICINE]
-Name = Curious Medicine
-Description = Stat changes are cleared upon entering battle.
-#-------------------------------
-[TRANSISTOR]
-Name = Transistor
-Description = Powers up Electric-type moves.
-#-------------------------------
-[DRAGONSMAW]
-Name = Dragon's Maw
-Description = Powers up Dragon-type moves.
-#-------------------------------
-[CHILLINGNEIGH]
-Name = Chilling Neigh
-Description = Boosts Attack after knocking out any Pokémon.
-#-------------------------------
-[GRIMNEIGH]
-Name = Grim Neigh
-Description = Boosts Sp. Atk after knocking out any Pokémon.
-#-------------------------------
-[ASONEICE]
-Name = As One
-Description = Possesses 2 abilities, Unnerve and Chilling Neigh.
-#-------------------------------
-[ASONEGHOST]
-Name = As One
-Description = Possesses 2 abilities, Unnerve and Grim Neigh.
 #-------------------------------
 [VANGUARD]
 Name = Vanguard

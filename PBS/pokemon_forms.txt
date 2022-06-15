@@ -2430,28 +2430,34 @@ FormName = Kurian Jigglypuff
 Type1 = GHOST
 Type2 = SOUND
 BaseStats = 115,45,70,20,45,60
+Flags = InheritFormWithEverStone
 #-------------------------------
 [DODRIO,1]
 FormName = Kurian Dodrio
+Flags = InheritFormWithEverStone
 #-------------------------------
 [HITMONLEE,1]
 FormName = Kurian Hitmonlee
 Type1 = GRASS
 Type2 = FIGHTING
 BaseStats = 87,120,110,53,35,50
+Flags = InheritFormWithEverStone
 #-------------------------------
 [HITMONCHAN,1]
 FormName = Kurian Hitmonchan
 Type1 = FIRE
 Type2 = FIGHTING
 BaseStats = 50,110,82,95,35,83
+Flags = InheritFormWithEverStone
 #-------------------------------
 [KOFFING,2]
 FormName = Kurian Koffing
 Type1 = FAIRY
+Flags = InheritFormWithEverStone
 #-------------------------------
 [WEEZING,2]
 FormName = Kurian Weezing
+Flags = InheritFormWithEverStone
 #-------------------------------
 [MAGIKARP,1]
 FormName = Kurian Magikarp
@@ -2461,18 +2467,21 @@ Abilities = INTIMIDATE,SWIFTSWIM
 HiddenAbility = MOXIE
 Compatibility = Water2,Dragon
 Evolutions = GYARADOS,Level,36
+Flags = InheritFormWithEverStone
 #-------------------------------
 [LEDYBA,1]
 FormName = Kurian Ledyba
 Type1 = STEEL
 Type2 = PSYCHIC
 BaseStats = 40,50,50,50,50,85
+Flags = InheritFormWithEverStone
 #-------------------------------
 [LEDIAN,1]
 FormName = Kurian Ledian
 Type1 = STEEL
 Type2 = PSYCHIC
 BaseStats = 70,90,70,125,60,115
+Flags = InheritFormWithEverStone
 #-------------------------------
 [AIPOM,1]
 FormName = Kurian Aipom
@@ -2483,18 +2492,21 @@ EffortPoints = 0,0,0,1,0,0
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
+Flags = InheritFormWithEverStone
 #-------------------------------
 [TYROGUE,1]
 FormName = Kurian Tyrogue
 Type1 = NORMAL
 Type2 = FIGHTING
 BaseStats = 30,30,30,30,30,30
+Flags = InheritFormWithEverStone
 #-------------------------------
 [HITMONTOP,1]
 FormName = Kurian Hitmontop
 Type1 = WATER
 Type2 = FIGHTING
 BaseStats = 58,110,70,92,35,90
+Flags = InheritFormWithEverStone
 #-------------------------------
 [BRELOOM,1]
 FormName = Kurian Breloom
@@ -2505,24 +2517,28 @@ EffortPoints = 0,2,0,0,0,0
 Abilities = STENCH,CLEARINGFUMES
 HiddenAbility = ADAPTABILITY
 Compatibility = Grass,Fairy
+Flags = InheritFormWithEverStone
 #-------------------------------
 [NOSEPASS,1]
 FormName = Kurian Nosepass
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 50,50,110,25,40,100
+Flags = InheritFormWithEverStone
 #-------------------------------
 [SKITTY,1]
 FormName = Kurian Skitty
 Type1 = DARK
 Type2 = STEEL
 BaseStats = 55,70,55,35,25,80
+Flags = InheritFormWithEverStone
 #-------------------------------
 [DELCATTY,1]
 FormName = Kurian Delcatty
 Type1 = DARK
 Type2 = STEEL
 BaseStats = 94,104,85,81,45,95
+Flags = InheritFormWithEverStone
 #-------------------------------
 [PLUSLE,1]
 FormName = Kurian Plusle
@@ -2533,6 +2549,7 @@ EffortPoints = 0,0,0,0,0,2
 Abilities = ADDITION,TRIAGE
 HiddenAbility = RIVALRY
 Compatibility = Field,Fairy
+Flags = InheritFormWithEverStone
 #-------------------------------
 [MINUN,1]
 FormName = Kurian Minun
@@ -2543,11 +2560,13 @@ EffortPoints = 0,0,0,0,2,0
 Abilities = SUBTRACTION,INFILTRATOR
 HiddenAbility = RIVALRY
 Compatibility = Field,Fairy
+Flags = InheritFormWithEverStone
 #-------------------------------
 [ROSELIA,1]
 ForName = Kurian Roselia
 Type1 = DARK
 Type2 = POISON
+Flags = InheritFormWithEverStone
 #-------------------------------
 [BUDEW,1]
 FormName = Kurian Budew
@@ -2559,6 +2578,7 @@ Abilities = PRANKSTER,WONDERSKIN
 HiddenAbility = COMPOUNDEYES
 Compatibility = Fairy,Monster
 Evolutions = ROSELIA,HasMove,TOXICTHREAD
+Flags = InheritFormWithEverStone
 #-------------------------------
 [AMBIPOM,1]
 FormName = Kurian Ambipom
@@ -2569,6 +2589,7 @@ EffortPoints = 0,0,0,2,0,0
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
+Flags = InheritFormWithEverStone
 #-------------------------------
 [BUNEARY,1]
 FormName = Kurian Buneary
@@ -2579,6 +2600,7 @@ EffortPoints = 0,0,0,0,1,0
 Abilities = UNNERVE,FLUFFY
 HiddenAbility = VOODOO
 Compatibility = Amorphous,Humanlike
+Flags = InheritFormWithEverStone
 #-------------------------------
 [LOPUNNY,2]
 FormName = Kurian Lopunny
@@ -2589,135 +2611,159 @@ EffortPoints = 0,2,0,0,0,0
 Abilities = UNNERVE,FLUFFY
 HiddenAbility = VOODOO
 Compatibility = Amorphous,Humanlike
+Flags = InheritFormWithEverStone
 #-------------------------------
 [SPIRITOMB,1]
 FormName = Kurian Spiritomb
 Type1 = COSMIC
 Type2 = LIGHT
 BaseStats = 80,52,108,35,132,78
+Flags = InheritFormWithEverStone
 #-------------------------------
 [LUMINEON,1]
 FormName = Kurian Lumineon
 Type1 = WATER
 Type2 = LIGHT
 BaseStats = 75,45,80,80,75,101
+Flags = InheritFormWithEverStone
 #-------------------------------
 [PROBOPASS,1]
 FormName = Kurian Probopass
 Type1 = GRASS
 Type2 = SOUND
 BaseStats = 80,100,130,40,65,120
+Flags = InheritFormWithEverStone
 #-------------------------------
 [TIMBURR,1]
 FormName = Kurian Timburr
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 70,75,55,45,30,35
+Flags = InheritFormWithEverStone
 #-------------------------------
 [GURDURR,1]
 FormName = Kurian Gurdurr
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 80,100,75,65,40,55
+Flags = InheritFormWithEverStone
 #-------------------------------
 [CONKELDURR,1]
 FormName = Kurian Conkeldurr
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 95,130,90,85,55,80
+Flags = InheritFormWithEverStone
 #-------------------------------
 [SCRAFTY,1]
 FormName = Kurian Scrafty
 Type1 = ICE
 Type2 = MYSTIC
 BaseStats = 75,115,71,93,80,75
+Flags = InheritFormWithEverStone
 #-------------------------------
 [SWADLOON,1]
 FormName = Kurian Swadloon
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 77,40,60,60,88,65
+Flags = InheritFormWithEverStone
 #-------------------------------
 [LEAVANNY,1]
 FormName = Kurian Leavanny
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 107,65,60,75,118,95
+Flags = InheritFormWithEverStone
 #-------------------------------
 [ALOMOMOLA,1]
 FormName = Kurian Alomomola
+Flags = InheritFormWithEverStone
 #-------------------------------
 [FERROSEED,1]
 FormName = Kurian Ferroseed
 Type1 = STEEL
 Type2 = POISON
 BaseStats = 44,79,81,10,34,71
+Flags = InheritFormWithEverStone
 #-------------------------------
 [FERROTHORN,1]
 FormName = Kurian Ferrothorn
 Type1 = STEEL
 Type2 = POISON
 BaseStats = 84,119,121,20,54,111
+Flags = InheritFormWithEverStone
 #-------------------------------
 [KARRABLAST,1]
 FormName = Kurian Karrablast
 Type1 = BUG
 Type2 = DARK
 BaseStats = 50,65,50,70,30,50
+Flags = InheritFormWithEverStone
 #-------------------------------
 [ESCAVALIER,1]
 FormName = Kurian Escavalier - V
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 70,135,95,90,50,90
+Flags = InheritFormWithEverStone
 #-------------------------------
 [ESCAVALIER,2]
 FormName = Kurian Escavalier - B
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 80,120,140,30,50,110
+Flags = InheritFormWithEverStone
 #-------------------------------
 [ESCAVALIER,3]
 FormName = Kurian Escavalier - D
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 100,130,110,50,50,90
+Flags = InheritFormWithEverStone
 #-------------------------------
 [DEINO,1]
 FormName = Kurian Deino
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 100,30,52,32,25,58
+Flags = InheritFormWithEverStone
 #-------------------------------
 [ZWEILOUS,1]
 FormName = Kurian Zweilous
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 120,50,62,23,45,60
+Flags = InheritFormWithEverStone
 #-------------------------------
 [HYDREIGON,1]
 FormName = Kurian Hydreigon
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 140,70,82,30,60,88
+Flags = InheritFormWithEverStone
 #-------------------------------
 [TORNADUS,2]
 FormName = Kurian Tornadus
+Flags = InheritFormWithEverStone
 #-------------------------------
 [PANGORO,1]
 FormName = Kurian Pangoro
+Flags = InheritFormWithEverStone
 #-------------------------------
 [HONEDGE,2]
 FormName = Kurian Honedge
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 45,80,110,35,40,20
+Flags = InheritFormWithEverStone
 #-------------------------------
 [DOUBLADE,2]
 FormName = Kurian Doublade
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 60,120,150,45,59,25
+Flags = InheritFormWithEverStone
 #-------------------------------
 [AEGISLASH,2]
 FormName = Kurian Aegislash (Shield Form)
@@ -2725,6 +2771,7 @@ Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,50,140,110,120,40
 Abilities = STANCESHIFT
+Flags = InheritFormWithEverStone
 #-------------------------------
 [AEGISLASH,3]
 FormName = Kurian Aegislash (Blade Form)
@@ -2732,54 +2779,63 @@ Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,140,80,80,70,90
 Abilities = STANCESHIFT
+Flags = InheritFormWithEverStone
 #-------------------------------
 [CLAUNCHER,1]
 FormName = Kurian Clauncher
 Type1 = WATER
 Type2 = ELECTRIC
 BaseStats = 50,55,64,49,62,50
+Flags = InheritFormWithEverStone
 #-------------------------------
 [CLAWITZER,1]
 FormName = Kurian Clawitzer
 Type1 = STEEL
 Type2 = ELECTRIC
 BaseStats = 70,75,94,99,122,65
+Flags = InheritFormWithEverStone
 #-------------------------------
 [PHANTUMP,1]
 FormName = Kurian Phantump
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 43,70,63,30,70,63
+Flags = InheritFormWithEverStone
 #-------------------------------
 [TREVENANT,1]
 FormName = Kurian Trevenant
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 95,110,104,42,85,104
+Flags = InheritFormWithEverStone
 #-------------------------------
 [SANDYGAST,1]
 FormName = Kurian Sandygast
 Type1 = ELECTRIC
 Type2 = GROUND
 BaseStats = 60,50,50,10,80,80
+Flags = InheritFormWithEverStone
 #-------------------------------
 [PALOSSAND,1]
 FormName = Kurian Palossand
 Type1 = ELECTRIC
 Type2 = GROUND
 BaseStats = 100,60,60,20,120,120
+Flags = InheritFormWithEverStone
 #-------------------------------
 [HAKAMOO,1]
 FormName = Kurian Hakamo-o
 Type1 = FIGHTING
 Type2 = FLYING
 BaseStats = 65,90,65,75,60,65
+Flags = InheritFormWithEverStone
 #-------------------------------
 [KOMMOO,1]
 FormName = Kurian Kommo-o
 Type1 = FIGHTING
 Type2 = FLYING
 BaseStats = 90,120,90,115,95,90
+Flags = InheritFormWithEverStone
 #-------------------------------
 [BOUNSWEET,1]
 FormName = Kurian Bounsweet
@@ -2790,6 +2846,7 @@ Abilities = PIXILATE,INFILTRATOR
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
+Flags = InheritFormWithEverStone
 #-------------------------------
 [STEENEE,1]
 FormName = Kurian Steenee
@@ -2801,6 +2858,7 @@ Abilities = PHASINGBODY,KLUTZ
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
+Flags = InheritFormWithEverStone
 #-------------------------------
 [TSAREENA,1]
 FormName = Kurian Tsareena
@@ -2812,6 +2870,7 @@ Abilities = PHASINGBODY,QUEENLYMAJESTY
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
+Flags = InheritFormWithEverStone
 #-------------------------------
 #Mega Forms
 #-------------------------------

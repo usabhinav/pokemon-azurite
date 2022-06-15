@@ -6089,6 +6089,7 @@ NamePlural = EXp. Share 2s
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = Fling_30
 Description = Turning on this special device will allow all the Pokémon on your team to receive Exp. Points from battles.
 #-------------------------------
 [MEGABRACELET]
@@ -6096,6 +6097,7 @@ Name = Mega Bracelet
 NamePlural = Mega Bracelets
 Pocket = 8
 Price = 0
+Flags = KeyItem, MegaRing
 Description = (What ever description you want)
 #-------------------------------
 [MEGACUFF]
@@ -6103,6 +6105,7 @@ Name = Mega Cuff
 NamePlural = Mega Cuffs
 Pocket = 8
 Price = 0
+Flags = KeyItem, MegaRing
 Description = (What ever description you want)
 #-------------------------------
 [MEGACHARM]
@@ -6110,6 +6113,7 @@ Name = Mega Charm
 NamePlural = Mega Charms
 Pocket = 8
 Price = 0
+Flags = KeyItem, MegaRing
 Description = (What ever description you want)
 #-------------------------------
 [CRYSTALSHARD]
@@ -6117,6 +6121,7 @@ Name = Crystal Shard
 NamePlural = Crystal Shards
 Pocket = 1
 Price = 0
+Flags = KeyItem, MegaRing
 Description = This crystal will enable the user to Crystal Evolve in battle.
 #-------------------------------
 [SYNCHROPENDANT]
@@ -6223,6 +6228,7 @@ Name = Mega Disc
 NamePlural = Mega Discs
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Porygon-Z to mega evolve.
 #-------------------------------
 [ARBOKITE]
@@ -6230,6 +6236,7 @@ Name = Arbokite
 NamePlural = Arbokites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Arbok to mega evolve.
 #-------------------------------
 [AROMATISSITE]
@@ -6237,6 +6244,7 @@ Name = Aromatissite
 NamePlural = Aromatissites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Aromatisse to mega evolve.
 #-------------------------------
 [BEHEEYITE]
@@ -6244,6 +6252,7 @@ Name = Beheeyite
 NamePlural = Beheeyites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Beheeyem to mega evolve.
 #-------------------------------
 [CACTURNITE]
@@ -6251,6 +6260,7 @@ Name = Cacturnite
 NamePlural = Cacturnites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Cacturne to mega evolve.
 #-------------------------------
 [CHEETITE]
@@ -6258,6 +6268,7 @@ Name = Cheetite
 NamePlural = Cheetites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Cheetatic to mega evolve.
 #-------------------------------
 [CHERRITE]
@@ -6265,6 +6276,7 @@ Name = Cherrite
 NamePlural = Cherrites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Cherrim to mega evolve.
 #-------------------------------
 [DARMANITE]
@@ -6272,6 +6284,7 @@ Name = Darmanite
 NamePlural = Darmanites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Darmanitan to mega evolve.
 #-------------------------------
 [DUSKNITE]
@@ -6279,6 +6292,7 @@ Name = Dusknite
 NamePlural = Dusknites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Dusknoir to mega evolve.
 #-------------------------------
 [ELECTRODITE]
@@ -6286,6 +6300,7 @@ Name = Electrodite
 NamePlural = Electrodites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Electrode to mega evolve.
 #-------------------------------
 [ENTEINITE]
@@ -6293,6 +6308,7 @@ Name = Enteinite
 NamePlural = Enteinites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Entei to mega evolve.
 #-------------------------------
 [DELTAMETAGROSSITE]
@@ -6300,6 +6316,7 @@ Name = Delta Metagrossite
 NamePlural = Delta Metagrossite
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Delta Metagross to mega evolve.
 #-------------------------------
 [KURIANLOPUNNITE]
@@ -6307,6 +6324,7 @@ Name = Kurian Lopunnite
 NamePlural = Kurian Lopunnite
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Kurian Lopunny to mega evolve.
 #-------------------------------
 [MISMAGITE]
@@ -6314,6 +6332,7 @@ Name = Mismagite
 NamePlural = Mismagite
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Mismagius to mega evolve.
 #-------------------------------
 [SHAYMINITE]
@@ -6321,6 +6340,7 @@ Name = Shayminite
 NamePlural = Shayminite
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Shaymin to mega evolve.
 #-------------------------------
 [SLURPITE]
@@ -6328,6 +6348,7 @@ Name = Slurpite
 NamePlural = Slurpite
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Slurpuff to mega evolve.
 #-------------------------------
 [VENOMITE]
@@ -6335,6 +6356,7 @@ Name = Venomite
 NamePlural = Venomite
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Venomoth to mega evolve.
 #-------------------------------
 [XATITE]
@@ -6342,6 +6364,7 @@ Name = Xatite
 NamePlural = Xatite
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Xatu to mega evolve.
 #-------------------------------
 [ROYALHONEY]
@@ -6678,6 +6701,7 @@ Name = Enigmatic Card
 NamePlural = Enigmatic Cards
 Pocket = 1
 Price = 0
+Flags = KeyItem
 Description = A mysterious card. Written on it is a text that is unable to read.
 #-------------------------------
 [FESTIVALTICKET]
@@ -6685,6 +6709,7 @@ Name = Festival Ticket
 NamePlural = Festival Tickets
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = A ticket that allows you to enter some kind of festival.
 #-------------------------------
 [FORAGEBAG]
@@ -6692,6 +6717,7 @@ Name = Forage Bag
 NamePlural = Forage Bags
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = A bag to carry ingredients gathered in the jungle.
 #-------------------------------
 [GOLDBOTTLECAP]
@@ -6707,6 +6733,7 @@ NamePlural = Moon Flutes
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = KeyItem
 Description = It is said that the tones it produces were offered up as an expression of gratitude to the Legendary Pokémon of the Moon.
 #-------------------------------
 [SUNFLUTE]
@@ -6715,6 +6742,7 @@ NamePlural = Sun Flutes
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = KeyItem
 Description = It is said that the tones it produces were offered up as an expression of gratitude to the Legendary Pokémon of the Sun.
 #-------------------------------
 [ALORAICHIUMZ]
@@ -6954,6 +6982,7 @@ Name = Z-Ring
 NamePlural = Z-Rings
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = A mysterious ring that enables Pokémon to use Z-Power. It requires willpower and physical power of the trainer.
 #-------------------------------
 [SPARKLINGSTONE]
@@ -6991,6 +7020,7 @@ NamePlural = Expert Balls
 Pocket = 3
 Price = 2000
 BattleUse = OnFoe
+Flags = PokeBall
 Description = One of the rarest, but most effective balls, with a catch rate higher than Ultra Balls.
 #-------------------------------
 [RICHBALL]
@@ -6999,6 +7029,7 @@ NamePlural = Rich Balls
 Pocket = 3
 Price = 10000
 BattleUse = OnFoe
+Flags = PokeBall
 Description = A fancy ball, that does nothing but make you look rich.
 #-------------------------------
 [PSYCHOBALL]
@@ -7007,6 +7038,7 @@ NamePlural = Psycho Balls
 Pocket = 3
 Price = 1000
 BattleUse = OnFoe
+Flags = PokeBall
 Description = Its effectiveness is improves by a lot on confused Pokemon.
 #-------------------------------
 [MUNDANEBALL]
@@ -7015,6 +7047,7 @@ NamePlural = Mundane Balls
 Pocket = 3
 Price = 200
 BattleUse = OnFoe
+Flags = PokeBall
 Description = The most useless ball ever made, even if it costs the same as the regular one.
 #-------------------------------
 [GLORIOUSBALL]
@@ -7023,6 +7056,7 @@ NamePlural = Glorious Balls
 Pocket = 3
 Price = 1000
 BattleUse = OnFoe
+Flags = PokeBall
 Description = A ball made by champions, for champions.
 #-------------------------------
 [JINGLEBALL]
@@ -7031,6 +7065,7 @@ NamePlural = Jingle Balls
 Pocket = 3
 Price = 1000
 BattleUse = OnFoe
+Flags = PokeBall
 Description = Jingle balls, jingle balls, catch 'em all with them! Oh what fun it is to catch some Pokémon on this day!
 #-------------------------------
 [LAPTOP]
@@ -7039,6 +7074,7 @@ NamePlural = Laptop
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = KeyItem
 Description = A device that allows you to access the PC from anywhere.
 #-------------------------------
 [EQUALIZERC]
@@ -7053,6 +7089,7 @@ Name = Victinite
 NamePlural = Victinites
 Pocket = 1
 Price = 0
+Flags = MegaStone, Fling_80
 Description = Allows Victini to mega evolve.
 #-------------------------------
 [SPEEDINGTICKET]
@@ -7095,6 +7132,7 @@ Name = Crystal Fragment
 NamePlural = Crystal Fragments
 Pocket = 1
 Price = 2000
+Flags = MegaStone, Fling_80
 Description = An item to be held by a Pokémon. Allows it to Crystallize.
 #-------------------------------
 [CRYSTALSUICUNITE]
@@ -7102,6 +7140,7 @@ Name = Crystal Suicunite
 NamePlural = Crystal Suicunites
 Pocket = 1
 Price = 2000
+Flags = MegaStone, Fling_80
 Description = If held by Crystal Suicune, it will transform into Perfect Suicune in battle.
 #-------------------------------
 [GREYSCALE]
@@ -7169,6 +7208,7 @@ NamePlural = Risci Berries
 Pocket = 5
 Price = 2000
 BattleUse = OnBattler
+Flags = Berry,Fling_10
 Description = Doubles the power of super-effective moves upon use. However, also takes double damage from super-effective attacks.
 #-------------------------------
 [CRYSTALBALL]
@@ -7177,6 +7217,7 @@ NamePlural = Crystal Balls
 Pocket = 3
 Price = 10000
 BattleUse = OnFoe
+Flags = PokeBall
 Description = Higher catch rate on Crystal-type Pokémon.
 #-------------------------------
 [DEITYBALL]
@@ -7185,6 +7226,7 @@ NamePlural = Deity Balls
 Pocket = 3
 Price = 10000
 BattleUse = OnFoe
+Flags = PokeBall
 Description = Higher catch rate on Legendary Pokémon.
 #-------------------------------
 [PRISMATICBALL]
@@ -7193,6 +7235,7 @@ NamePlural = Prismatic Balls
 Pocket = 3
 Price = 10000
 BattleUse = OnFoe
+Flags = PokeBall
 Description = The color of the top changes to fit the Pokémon's primary typing.
 #-------------------------------
 [HELPERBALL]
@@ -7201,6 +7244,7 @@ NamePlural = Helper Balls
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = PokeBall
 Description = Accesses the Helper Ditto interface.
 #-------------------------------
 [KAIZURESFRAGMENTS]
@@ -7209,6 +7253,7 @@ NamePlural = Kaizure's Fragments
 Pocket = 8
 Price = 0
 FieldUse = OnPokemon
+Flags = KeyItem
 Description = Changes Kaizure's Form.
 #-------------------------------
 [THEATRERADIO]
@@ -7217,6 +7262,7 @@ NamePlural = Theatre Radios
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = KeyItem
 Description = Allows you to control the in-game music.
 #-------------------------------
 [GUMMIPOUCH]
@@ -7225,6 +7271,7 @@ NamePlural = Gummi Pouches
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = KeyItem
 Description = Stores Gummis for Pokémon Suite and Pokémon Explorer's Guild.
 #-------------------------------
 [AIDENSFRAGMENT]
@@ -7232,6 +7279,7 @@ Name = Aiden's Fragment
 NamePlural = Aiden's Fragments
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = A fragment of Aiden.
 #-------------------------------
 [ZIRCONIASFRAGMENT]
@@ -7239,6 +7287,7 @@ Name = Zirconia's Fragment
 NamePlural = Zirconia's Fragments
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = A fragment of Zirconia.
 #-------------------------------
 [DAHLIASFRAGMENT]
@@ -7246,6 +7295,7 @@ Name = Dahlia's Fragment
 NamePlural = Dahlia's Fragments
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = A fragment of Dahlia.
 #-------------------------------
 [MEGADEX]
@@ -7254,6 +7304,7 @@ NamePlural = Mega Dexes
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = KeyItem
 Description = A Pokédex specifically for Mega Evolutions.
 #-------------------------------
 [MEGAKEYSTONE]
@@ -7261,6 +7312,7 @@ Name = Mega Keystone
 NamePlural = Mega Keystones
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = This keystone contains an untold power that somehow enables Pokémon carrying Mega Stones to Mega Evolve.
 #-------------------------------
 [ENIGMACHAINRED]
@@ -7268,6 +7320,7 @@ Name = Enigma Chain Red
 NamePlural = Enigma Chains Red
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = Obtained from Cryoberus.
 #-------------------------------
 [ENIGMACHAINBLUE]
@@ -7275,6 +7328,7 @@ Name = Enigma Chain Blue
 NamePlural = Enigma Chains Blue
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = Obtained from Caldimis.
 #-------------------------------
 [ENIGMACHAINYELLOW]
@@ -7282,6 +7336,7 @@ Name = Enigma Chain Yellow
 NamePlural = Enigma Chains Yellow
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = Obtained from Pontremor.
 #-------------------------------
 [TRUEENIGMACHAIN]
@@ -7289,6 +7344,7 @@ Name = True Enigma Chain
 NamePlural = True Enigma Chains
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = Allows you to see Mundimea's physical form.
 #-------------------------------
 [COMETFOSSIL]
@@ -7296,6 +7352,7 @@ Name = Comet Fossil
 NamePlural = Comet Fossils
 Pocket = 8
 Price = 0
+Flags = Fossil,Fling_100
 Description = A fossil of an ancient Pokémon that lived inside a comet. It appears to be contain stardust.
 #-------------------------------
 [FIREFOSSIL]
@@ -7303,6 +7360,7 @@ Name = Fire Fossil
 NamePlural = Fire Fossils
 Pocket = 8
 Price = 0
+Flags = Fossil,Fling_100
 Description = A fossil of an ancient Fire-type Pokémon.
 #-------------------------------
 [WATERFOSSIL]
@@ -7310,6 +7368,7 @@ Name = Water Fossil
 NamePlural = Water Fossils
 Pocket = 8
 Price = 0
+Flags = Fossil,Fling_100
 Description = A fossil of an ancient Water-type Pokémon.
 #-------------------------------
 [GRASSFOSSIL]
@@ -7317,6 +7376,7 @@ Name = Grass Fossil
 NamePlural = Grass Fossils
 Pocket = 8
 Price = 0
+Flags = Fossil,Fling_100
 Description = A fossil of an ancient Grass-type Pokémon.
 #-------------------------------
 [BODYSCALE]
@@ -7324,6 +7384,7 @@ Name = Body Scale
 NamePlural = Body Scales
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = Can be used to re-allocate EVs through the EV Tracker.
 #-------------------------------
 [SOULSCALE]
@@ -7331,6 +7392,7 @@ Name = Soul Scale
 NamePlural = Soul Scales
 Pocket = 8
 Price = 0
+Flags = KeyItem
 Description = Can be used to re-allocate IVs through the IV Machine.
 #-------------------------------
 [INFINITEROPE]
@@ -7339,6 +7401,7 @@ NamePlural = Escape Ropes
 Pocket = 8
 Price = 0
 FieldUse = Direct
+Flags = KeyItem
 Description = A long, durable rope. Use it to escape instantly from a cave or a dungeon.
 #-------------------------------
 [TR00]

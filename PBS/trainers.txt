@@ -1,4 +1,4 @@
-# See the documentation on the wiki to learn how to edit this file.
+﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
 [CAMPER,Liam]
 LoseText = A very good battle, indeed!
@@ -21,7 +21,6 @@ Pokemon = ONIX,14
     AbilityIndex = 0
     Item = SITRUSBERRY
     IV = 20,20,20,20,20,20
-    Ball = HEAVYBALL
 #-------------------------------
 [TEAMROCKET_M,Grunt,1]
 LoseText = You're too good for me!

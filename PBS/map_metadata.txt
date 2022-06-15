@@ -3,7 +3,7 @@
 [001]   # Intro
 Name = Intro
 #-------------------------------
-[002]   # Lappet Town
+[002]   # Candelle UNUSED
 Name = Lappet Town
 Outdoor = true
 ShowArea = true
@@ -31,7 +31,7 @@ BattleBack = field
 Name = Route 1
 MapPosition = 0,13,11
 #-------------------------------
-[007]   # Cedolan City
+[007]   # Fallmont Town
 Name = Cedolan City
 Outdoor = true
 ShowArea = true
@@ -54,7 +54,7 @@ BattleBack = indoor3
 Environment = Rock
 Flags = DisableBoxLink
 #-------------------------------
-[011]   # Pokémon Institute
+[011]   # Maples Lab
 Name = Cedolan City
 MapPosition = 0,14,10
 #-------------------------------
@@ -103,7 +103,7 @@ MapPosition = 0,14,8
 BattleBack = field
 MapSize = 1,11
 #-------------------------------
-[023]   # Lerucean Town
+[023]   # Timbera FOLDER
 Name = Lerucean Town
 Outdoor = true
 ShowArea = true
@@ -126,7 +126,7 @@ MapPosition = 0,15,8
 Name = Lerucean Town
 MapPosition = 0,15,8
 #-------------------------------
-[028]   # Natural Park
+[028]   # Route 3 UNUSED
 Name = Natural Park
 Outdoor = true
 ShowArea = true
@@ -159,18 +159,18 @@ BattleBack = cave1
 Environment = Cave
 Flags = IceRock
 #-------------------------------
-[035]   # Ingido Plateau outside
+[035]   # Vivlio University
 Name = Ingido Plateau
 Outdoor = true
 ShowArea = true
 MapPosition = 0,13,6
 #-------------------------------
-[036]   # Pokémon League entrance
+[036]   # Pokémon League
 Name = Ingido Plateau
 HealingSpot = 35,17,7
 MapPosition = 0,13,6
 #-------------------------------
-[037]   # Pokémon League room 1
+[037]   # Pokémon League
 Name = Ingido Plateau
 MapPosition = 0,13,6
 BattleBack = elite1
@@ -181,7 +181,7 @@ Name = Ingido Plateau
 MapPosition = 0,13,6
 Flags = DisableBoxLink
 #-------------------------------
-[039]   # Route 4
+[039]   # Kutei Path
 Name = Route 4
 Outdoor = true
 ShowArea = true
@@ -189,14 +189,14 @@ MapPosition = 0,11,6
 BattleBack = field
 MapSize = 2,11
 #-------------------------------
-[040]   # Route 4 Cycling Road
+[040]   # Aerios Peak
 Name = Route 4
 Outdoor = true
 ShowArea = true
 BicycleAlways = true
 MapPosition = 0,11,6
 #-------------------------------
-[041]   # Route 5
+[041]   # Route 7
 Name = Route 5
 Outdoor = true
 ShowArea = true
@@ -204,7 +204,7 @@ BicycleAlways = true
 MapPosition = 0,11,7
 MapSize = 1,111
 #-------------------------------
-[044]   # Route 6
+[044]   # Timbera City (MAIN)
 Name = Route 6
 Outdoor = true
 ShowArea = true
@@ -212,19 +212,19 @@ MapPosition = 0,11,10
 BattleBack = field
 MapSize = 2,11
 #-------------------------------
-[045]   # Route 6 Cycling Road
+[045]   # MAP045
 Name = Route 6
 Outdoor = true
 ShowArea = true
 BicycleAlways = true
 MapPosition = 0,11,10
 #-------------------------------
-[046]   # Route 4 Cycling Road gate
+[046]   # MAP046
 Name = Route 4
 Bicycle = true
 MapPosition = 0,12,6
 #-------------------------------
-[047]   # Route 7
+[047]   # Route 4
 Name = Route 7
 Outdoor = true
 ShowArea = true
@@ -234,7 +234,7 @@ BattleBack = rocky
 MapSize = 2,11
 Environment = Rock
 #-------------------------------
-[049]   # Rock Cave 1F
+[049]   # Rock Cave
 Name = Route 7
 Bicycle = true
 MapPosition = 0,16,10
@@ -242,7 +242,7 @@ BattleBack = cave1
 Environment = Cave
 Flags = Magnetic,DistortionWorld
 #-------------------------------
-[050]   # Rock Cave B1F
+[050]   # Rock Cave
 Name = Route 7
 Bicycle = true
 MapPosition = 0,16,10
@@ -260,7 +260,7 @@ BattleBack = cave2
 Environment = Cave
 Flags = Magnetic,DistortionWorld
 #-------------------------------
-[052]   # Battle Frontier
+[052]   # Kutei Village
 Name = Battle Frontier
 Outdoor = true
 ShowArea = true
@@ -330,7 +330,7 @@ Name = Battle Frontier
 MapPosition = 0,17,10
 Flags = DisableBoxLink
 #-------------------------------
-[066]   # Safari Zone outside
+[066]   # Route 5
 Name = Safari Zone
 Outdoor = true
 ShowArea = true
@@ -350,7 +350,7 @@ SafariMap = true
 BattleBack = forest
 Environment = Forest
 #-------------------------------
-[069]   # Route 8
+[069]   # Cantabile City
 Name = Route 8
 Outdoor = true
 ShowArea = true
@@ -358,17 +358,17 @@ MapPosition = 0,13,13
 DiveMap = 70
 BattleBack = field
 #-------------------------------
-[070]   # Route 8 underwater
+[070]   # Underwater
 Name = Route 8
 MapPosition = 0,13,13
 BattleBack = underwater
 Environment = Underwater
 #-------------------------------
-[071]   # Route 8 harbor
+[071]   # Harbour
 Name = Route 8
 MapPosition = 0,13,13
 #-------------------------------
-[072]   # Berth Island
+[072]   # Daroxy Island
 Name = Berth Island
 Outdoor = true
 ShowArea = true
@@ -377,7 +377,7 @@ MapPosition = 0,18,17
 BattleBack = field
 Flags = DistortionWorld
 #-------------------------------
-[073]   # Faraday Island
+[073]   # Noltimere Town
 Name = Faraday Island
 Outdoor = true
 ShowArea = true
@@ -385,12 +385,12 @@ MapPosition = 0,22,16
 BattleBack = field
 Flags = DistortionWorld
 #-------------------------------
-[074]   # Route 6 Cycling Road gate
+[074]   # MAP074
 Name = Route 6
 Bicycle = true
 MapPosition = 0,12,10
 #-------------------------------
-[075]   # Tiall Region
+[075]   # Route 6
 Name = Tiall Region
 Outdoor = true
 MapPosition = 1,13,16

@@ -970,7 +970,7 @@ module Compiler
       new_events = []
       if battle_params[2] && !battle_params[2].strip.empty? && battle_params[2].strip != "nil"
         speech = battle_params[2].gsub(/^\s*_I\(\s*"\s*/, "")
-        speech.gsub!(/\"\s*\)\s*$/, "").strip
+        speech = speech.gsub(/\"\s*\)\s*$/, "").strip
         push_comment(new_events, "EndSpeech: #{speech}", old_indent)
       end
       if battle_params[3] && battle_params[3][/true/]
@@ -995,12 +995,12 @@ module Compiler
       new_events = []
       if battle_params[3] && !battle_params[3].strip.empty? && battle_params[3].strip != "nil"
         speech = battle_params[3].gsub(/^\s*_I\(\s*"\s*/, "")
-        speech.gsub!(/\"\s*\)\s*$/, "").strip
+        speech = speech.gsub(/\"\s*\)\s*$/, "").strip
         push_comment(new_events, "EndSpeech1: #{speech}", old_indent)
       end
       if battle_params[7] && !battle_params[7].strip.empty? && battle_params[7].strip != "nil"
         speech = battle_params[7].gsub(/^\s*_I\(\s*"\s*/, "")
-        speech.gsub!(/\"\s*\)\s*$/, "").strip
+        speech = speech.gsub(/\"\s*\)\s*$/, "").strip
         push_comment(new_events, "EndSpeech2: #{speech}", old_indent)
       end
       if battle_params[8] && battle_params[8][/true/]
@@ -1024,17 +1024,17 @@ module Compiler
       new_events = []
       if battle_params[3] && !battle_params[3].strip.empty? && battle_params[3].strip != "nil"
         speech = battle_params[3].gsub(/^\s*_I\(\s*"\s*/, "")
-        speech.gsub!(/\"\s*\)\s*$/, "").strip
+        speech = speech.gsub(/\"\s*\)\s*$/, "").strip
         push_comment(new_events, "EndSpeech1: #{speech}", old_indent)
       end
       if battle_params[7] && !battle_params[7].strip.empty? && battle_params[7].strip != "nil"
         speech = battle_params[7].gsub(/^\s*_I\(\s*"\s*/, "")
-        speech.gsub!(/\"\s*\)\s*$/, "").strip
+        speech = speech.gsub(/\"\s*\)\s*$/, "").strip
         push_comment(new_events, "EndSpeech2: #{speech}", old_indent)
       end
       if battle_params[7] && !battle_params[7].strip.empty? && battle_params[11].strip != "nil"
         speech = battle_params[11].gsub(/^\s*_I\(\s*"\s*/, "")
-        speech.gsub!(/\"\s*\)\s*$/, "").strip
+        speech = speech.gsub(/\"\s*\)\s*$/, "").strip
         push_comment(new_events, "EndSpeech3: #{speech}", old_indent)
       end
       if battle_params[12] && battle_params[12][/true/]

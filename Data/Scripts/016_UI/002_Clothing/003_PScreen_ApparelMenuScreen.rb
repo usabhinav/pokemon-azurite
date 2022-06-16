@@ -85,12 +85,12 @@ class PokemonApparelMenu_Screen
               if(@model.hasSet(set_name)) # Don't add if set name exists already.
                 pbMessage(_INTL("That set name already exists."))
               else
-                new_outfitstate = pbDeepCopy($Trainer.outfitstate)
+                new_outfitstate = pbDeepCopy($player.outfitstate)
                 @model.createSet(set_name, new_outfitstate)
               end
             
             elsif Input.trigger?(Input::ALT) # Alter Set
-              echoln "Active Layer Hair ID: " + $Trainer.outfitstate.active_layer_states["Hair"].selected_part.to_s
+              echoln "Active Layer Hair ID: " + $player.outfitstate.active_layer_states["Hair"].selected_part.to_s
               echoln "Model outfit mode: " + @model.outfit_mode
               echoln "Outfit Preview Animation: " + @scene.p_outfitstate.animation 
               echoln "Outfit Preview Active Layer Hair ID: " + @scene.p_outfitstate.active_layer_states["Hair"].selected_part.to_s

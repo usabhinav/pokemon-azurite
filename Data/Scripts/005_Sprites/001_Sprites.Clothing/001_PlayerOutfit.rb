@@ -586,7 +586,7 @@ class Sprite_Character
   def initialize(viewport, character = nil)
     old_initialize(viewport, character)
 
-    if $Trainer
+    if $player
       if character == $game_player
         #@player_outfit_sprite_updater = Sprite_Player_Clother.new($Trainer.outfitstate, self)
         #$Trainer.outfitstate.attach(@player_outfit_sprite_updater)
@@ -614,24 +614,24 @@ class Sprite_Character
             @ch = @charbitmap.height / 4
           end
           #$Trainer.outfitstate..applyToOverworldBitmap(@sprite_character.charbitmap.bitmap)
-          $Trainer.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap)
+          $player.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap)
         }
         @player_outfit_sprite_updater = Updater.new(updateproc)
-        $Trainer.outfitstate.attach(@player_outfit_sprite_updater)
-        $Trainer.outfitstate.setSpriteCharacter(self)
+        $player.outfitstate.attach(@player_outfit_sprite_updater)
+        $player.outfitstate.setSpriteCharacter(self)
 
       end
     end
   end
   
   def updateOutfit
-    $Trainer.outfitstate.applyToOverworldBitmap(self.charbitmap.bitmap)
+    $player.outfitstate.applyToOverworldBitmap(self.charbitmap.bitmap)
   end
   
   alias old_dispose dispose
   def dispose
     old_dispose
-    $Trainer.outfitstate.detach(@player_outfit_sprite_updater)
+    $player.outfitstate.detach(@player_outfit_sprite_updater)
   end
   
 end
@@ -643,7 +643,7 @@ def pbSetWetLayerState(layer_name, apparel_id, color="Default")
   end
 	
   if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
-    $Trainer.outfitstate.setWetLayerState(layer_name, apparel_id, color)
+    $player.outfitstate.setWetLayerState(layer_name, apparel_id, color)
   else
     #echo "Doesnt have apparel\n" 
   end
@@ -655,7 +655,7 @@ def pbSetDryLayerState(layer_name, apparel_id, color="Default")
   end
 
   if $ApparelBag.pbHasApparel?(layer_name, apparel_id, color)
-    $Trainer.outfitstate.setDryLayerState(layer_name, apparel_id, color)
+    $player.outfitstate.setDryLayerState(layer_name, apparel_id, color)
   else
     #echo "Doesnt have apparel\n"
   end

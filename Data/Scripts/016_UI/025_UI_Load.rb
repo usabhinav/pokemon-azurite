@@ -1,4 +1,4 @@
-# Check if lib folder exists that is needed for require 'date'
+# Check if lib folder exists that is needed for require 'lib/ruby/3.0.0/date'
 if File.exists?("lib")
   #echoln "Exists."
 else
@@ -6,7 +6,7 @@ else
   raise RuntimeError.new("You need to get the lib folder from the Dropbox!")
 end
 
-require 'date'
+require 'lib/ruby/3.0.0/date'
 
 #===============================================================================
 #
@@ -83,7 +83,7 @@ class PokemonLoadPanel < SpriteWrapper
     if !self.bitmap || self.bitmap.disposed?
       self.bitmap = BitmapWrapper.new(@bgbitmap.width, @bgbitmap.height)
       pbSetSmallFont(self.bitmap)
-      #self.bitmap.font.size = 29
+      self.bitmap.font.size = 29
       
     end
     if @refreshBitmap

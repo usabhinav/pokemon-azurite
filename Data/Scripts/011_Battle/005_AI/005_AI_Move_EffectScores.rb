@@ -3069,7 +3069,7 @@ class Battle::AI
         score -= target.stages[:SPECIAL_ATTACK] * 20
       end
     #---------------------------------------------------------------------------
-    when "LowerTargetDefense1DoublePowerInGravity"
+    when "LowerTargetDefense1PowersUpInGravity"
       if target.pbCanLowerStatStage?(:DEFENSE, user)
         score += 20
         score += target.stages[:DEFENSE] * 20

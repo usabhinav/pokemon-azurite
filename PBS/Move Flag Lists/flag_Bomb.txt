@@ -10,6 +10,7 @@ Zap Cannon
 Electro Ball
 Focus Blast
 Aura Sphere
+Pyro Ball
 Searing Shot
 Beak Blast
 Shadow Ball

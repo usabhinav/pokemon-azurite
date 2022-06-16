@@ -9,6 +9,7 @@ Bug Buzz
 Snarl
 Parting Shot
 Clanging Scales
+Overdrive
 Disarming Voice
 Chatter
 Grass Whistle
@@ -28,6 +29,7 @@ Roar
 Screech
 Sing
 Supersonic
+Eerie Spell
 Metal Sound
 Sparkling Aria
 Sound Test

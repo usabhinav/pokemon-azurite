@@ -8,6 +8,7 @@ Moves with flag Pulse:
 Dark Pulse
 Dragon Pulse
 Aura Sphere
+Terrain Pulse
 Heal Pulse
 Origin Pulse
 Water Pulse
@@ -15,4 +16,3 @@ Magnet Pulse
 Force Pulse
 Secret Pulse
 Miracle Pulse
-Terrain Pulse

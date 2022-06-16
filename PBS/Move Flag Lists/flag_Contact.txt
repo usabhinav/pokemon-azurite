@@ -10,6 +10,7 @@ First Impression
 Leech Life
 Lunge
 X-Scissor
+Skitter Smack
 U-turn
 Steamroller
 Bug Bite
@@ -19,7 +20,11 @@ Infestation
 Foul Play
 Darkest Lariat
 Crunch
+False Surrender
+Jaw Lock
 Throat Chop
+Wicked Blow
+Lash Out
 Night Slash
 Sucker Punch
 Knock Off
@@ -36,18 +41,21 @@ Outrage
 Dragon Rush
 Dragon Hammer
 Dragon Claw
+Breaking Swipe
 Dragon Tail
 Dual Chop
 Bolt Strike
 Volt Tackle
 Plasma Fists
 Wild Charge
+Bolt Beak
 Zing Zap
 Thunder Punch
 Spark
 Thunder Fang
 Nuzzle
 Play Rough
+Spirit Break
 Draining Kiss
 Focus Punch
 High Jump Kick
@@ -59,7 +67,9 @@ Flying Press
 Hammer Arm
 Jump Kick
 Sacred Sword
+Thunderous Kick
 Sky Uppercut
+Body Press
 Submission
 Brick Break
 Drain Punch
@@ -101,6 +111,7 @@ Pluck
 Sky Drop
 Wing Attack
 Acrobatics
+Dual Wingbeat
 Peck
 Shadow Force
 Phantom Force
@@ -116,9 +127,12 @@ Power Whip
 Wood Hammer
 Leaf Blade
 Horn Leech
+Grassy Glide
 Trop Kick
 Needle Arm
 Vine Whip
+Branch Poke
+Snap Trap
 Grass Knot
 High Horsepower
 Dig
@@ -129,14 +143,15 @@ Ice Punch
 Ice Fang
 Avalanche
 Ice Ball
+Triple Axel
 Giga Impact
 Last Resort
 Skull Bash
 Double-Edge
 Head Charge
 Mega Kick
-Thrash
 Multi-Attack
+Thrash
 Rock Climb
 Take Down
 Body Slam
@@ -158,6 +173,7 @@ Stomp
 Covet
 Vise Grip
 Cut
+Rapid Spin
 Struggle
 Fake Out
 False Swipe
@@ -169,7 +185,6 @@ Tackle
 Double Hit
 Tail Slap
 Rage
-Rapid Spin
 Comet Punch
 Fury Swipes
 Bind
@@ -198,6 +213,9 @@ Heart Stamp
 Head Smash
 Accelerock
 Rollout
+Steel Roller
+Behemoth Bash
+Behemoth Blade
 Iron Tail
 Sunsteel Strike
 Meteor Mash
@@ -213,12 +231,15 @@ Gyro Ball
 Heavy Slam
 Crabhammer
 Aqua Tail
+Fishious Rend
 Liquidation
 Dive
 Waterfall
 Razor Shell
+Flip Turn
 Aqua Jet
 Clamp
+Surging Strikes
 Crystal Test
 Sound Test
 Light Test
@@ -330,28 +351,6 @@ Flash Strike
 Golden Spin
 Track Punch
 Brave Bug
-Skitter Smack
-False Surrender
-Wicked Blow
-Lash Out
-Breaking Swipe
-Scale Shot
-Bolt Beak
-Spirit Break
-Body Press
-Thunderous Kick
-Dual Wingbeat
-Poltergeist
-Snap Trap
-Grassy Glide
-Scorching Sands
-Triple Axel
-Behemoth Bash
-Behemoth Blade
-Steel Roller
-Fishious Rend
-Surging Strikes
-Flip Turn
 Armor Pierce
 Cute Fang
 Whimsy Tackle

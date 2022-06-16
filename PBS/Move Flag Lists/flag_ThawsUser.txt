@@ -6,9 +6,11 @@ Changes made here will be overwritten on the next full game compile.
 Moves with flag ThawsUser:
 
 Flare Blitz
+Pyro Ball
 Fusion Flare
 Sacred Fire
 Flame Wheel
+Scorching Sands
 Steam Eruption
 Scald
 Time Break

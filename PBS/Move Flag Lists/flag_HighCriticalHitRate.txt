@@ -25,6 +25,7 @@ Poison Tail
 Psycho Cut
 Stone Edge
 Crabhammer
+Snipe Shot
 Thunder Blade
 Ice Blade
 Screech Slash

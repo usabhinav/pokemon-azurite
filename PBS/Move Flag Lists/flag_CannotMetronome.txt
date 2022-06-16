@@ -5,3 +5,32 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag CannotMetronome:
 
+Fiery Wrath
+False Surrender
+Wicked Blow
+Eternabeam
+Dragon Energy
+Dynamax Cannon
+Breaking Swipe
+Aura Wheel
+Overdrive
+Thunder Cage
+Fleur Cannon
+Strange Steam
+Spirit Break
+Meteor Assault
+Thunderous Kick
+Body Press
+Pyro Ball
+Astral Barrage
+Apple Acid
+Drum Beating
+Grav Apple
+Branch Poke
+Snap Trap
+Glacial Lance
+Freezing Glare
+Steel Beam
+Behemoth Bash
+Behemoth Blade
+Surging Strikes

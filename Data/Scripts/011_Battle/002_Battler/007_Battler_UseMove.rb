@@ -482,8 +482,7 @@ class Battle::Battler
             b.lastRoundMoved = @battle.turnCount
             b.pbUseMove(@battle.choices[b.index])
             destinybond = b.effects[PBEffects::DestinyBond]
-            b.pbReduceHP(b.hp)
-            b.pbFaint
+            b.pbTakeEffectDamage(b.hp)
             # This effectively cancels the user's move if there are no targets left.
             # Moves that don't inflict damage shouldn't be affected by this because
             # such moves shouldn't even be triggering this ability in the first place.

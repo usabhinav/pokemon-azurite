@@ -24,7 +24,7 @@ class Battle::Battler
     # Check if any other battler still has Crystal Energy active
     if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
       # Revert battlers on field
-      @battle.eachBattler do |b|
+      @battle.allBattlers.each do |b|
         if b.crystal?
           @battle.pbUnCrystallize(b.index)
         end
@@ -56,7 +56,7 @@ class Battle::Battler
     # Check if any other battler still has Crystal Energy active
     if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
       # Revert battlers on field
-      @battle.eachBattler do |b|
+      @battle.allBattlers.each do |b|
         if b.crystal?
           @battle.pbUnCrystallize(b.index)
         end
@@ -132,8 +132,8 @@ class Battle::Battler
     if onSwitchIn && !@battle.initialSwitchIn && @battle.pbCheckAllyAbility(:SUBTRACTION, @index) &&
       !hasActiveAbility?(:SUBTRACTION) && !@battle.pbCheckAllyAbility(:ADDITION, @index)
       subtractionCount = 0
-      @battle.eachSameSideBattler(@index) do |b|
-       subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+      @battle.allSameSideBattlers(@index).each do |b|
+        subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
       end
       typeListString = @effects[PBEffects::SubtractionTypes][0...subtractionCount].join(", ")
       @battle.pbDisplay(_INTL("{1} lost its weakness(es) to the following type(s): {2}", pbThis, typeListString))
@@ -199,7 +199,7 @@ class Battle::Battler
     # Negation
     if hasActiveAbility?(:NEGATION) && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
       # Revert battlers on field
-      @battle.eachBattler do |b|
+      @battle.allBattlers.each do |b|
         next if b.index == self.index
         if b.mega?
           @battle.pbUnMegaEvolve(b.index)
@@ -240,7 +240,7 @@ class Battle::Battler
     # Crystal Energy
     if hasActiveAbility?(:CRYSTALENERGY)
       # Crystallize battlers on field
-      @battle.eachBattler do |b|
+      @battle.allBattlers.each do |b|
         if b.hasCrystalWithoutItemCheck? && !b.crystal?
           if b.mega?
             side  = self.idxOwnSide

@@ -852,7 +852,7 @@ class Battle
           if @powerWithin[side][i] <= 0
             # If Pokemon is on field, uncrystallize with animation, else uncrystallize silently
             find_battler = nil
-            eachSameSideBattler(side) do |b|
+            allSameSideBattlers(side).each do |b|
               find_battler = b if b.pokemonIndex == i
             end
             if find_battler

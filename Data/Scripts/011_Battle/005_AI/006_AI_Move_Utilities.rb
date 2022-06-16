@@ -93,7 +93,7 @@ class Battle::AI
     end
     # Subtraction (target loses certain weaknesses, or all weaknesses if one of its allies has Addition)
     subtractionCount = 0
-    @battle.eachSameSideBattler(target.index) do |b|
+    @battle.allSameSideBattlers(target.index).each do |b|
       subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
     end
     if subtractionCount > 0

@@ -123,8 +123,7 @@ class Battle
         pbDisplay(_INTL("{1} felt the reverberations of the previous attack!",b.pbThis))
         typemod = Effectiveness.calculate(:SOUND,b.type1,b.type2,b.effects[PBEffects::Type3])
         @scene.pbDamageAnimation(b)
-        b.pbReduceHP((b.effects[PBEffects::ReverbDamage]*typemod.to_f/8.0).round)
-        b.pbFaint if b.fainted?
+        b.pbTakeEffectDamage((b.effects[PBEffects::ReverbDamage]*typemod.to_f/8.0).round)
         b.effects[PBEffects::ReverbDamage] = 0
       end
     end

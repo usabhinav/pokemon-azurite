@@ -229,9 +229,7 @@ def pbChangePlayer(id)
   meta = GameData::PlayerMetadata.get(id)
   return false if !meta
   $player.character_ID = id
-  # $player.trainer_type = meta[0]
   $player.outfitstate.gender = pbGetTrainerTypeGenderString(meta.trainer_type)
-  # $game_player.character_name = meta[1]
   return true
 end
 

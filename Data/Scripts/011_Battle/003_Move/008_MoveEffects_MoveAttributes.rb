@@ -1810,7 +1810,7 @@ end
 class Battle::Move::DoublePowerIfNoBattlersActed < Battle::Move
   def pbBaseDamage(baseDmg,user,target)
     noneMoved = true
-    @battle.eachBattler do |b|
+    @battle.allBattlers.each do |b|
       next if b.index==user.index
       next if @battle.choices[b.index][0]!=:UseMove && @battle.choices[b.index][0]!=:Shift
       next if !b.movedThisRound?

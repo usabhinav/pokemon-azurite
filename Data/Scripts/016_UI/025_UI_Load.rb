@@ -83,7 +83,7 @@ class PokemonLoadPanel < SpriteWrapper
     if !self.bitmap || self.bitmap.disposed?
       self.bitmap = BitmapWrapper.new(@bgbitmap.width, @bgbitmap.height)
       pbSetSmallFont(self.bitmap)
-      #self.bitmap.font.size = 29
+      self.bitmap.font.size = 29
       
     end
     if @refreshBitmap

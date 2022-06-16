@@ -209,7 +209,7 @@ class Battle
   def pbCanCrystallize?(idxBattler)
     return false if $game_switches[Settings::NO_MEGA_EVOLUTION]
     return false if !@battlers[idxBattler].hasCrystal?
-    return false if wildBattle? && opposes?(idxBattler)
+    return false if @battlers[idxBattler].wild?
     return true if $DEBUG && Input.press?(Input::CTRL)
     return true if pbCheckGlobalAbility(:CRYSTALENERGY)
     return false if @battlers[idxBattler].effects[PBEffects::SkyDrop]>=0

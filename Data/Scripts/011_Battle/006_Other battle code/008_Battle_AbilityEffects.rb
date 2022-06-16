@@ -2796,7 +2796,7 @@ Battle::AbilityEffects::OnBeingHit.add(:VOODOO,
   proc { |ability,user,target,move,battle|
     # Collect all battlers of the same egg group
     targetBattlers = []
-    battle.eachBattler do |b|
+    battle.allBattlers.each do |b|
       next if b.index == target.index
       # Validates that b and target share at least one egg group
       next if b.pokemon.species_data.egg_groups.intersection(target.pokemon.species_data.egg_groups).length == 0
@@ -2957,7 +2957,7 @@ Battle::AbilityEffects::OnDealingHit.add(:ROARINGHORN,
   proc { |ability,user,target,move,battle|
     next if move.pbTarget(user).num_targets > 1
     next if !user.opposes?(target)
-    battle.eachSameSideBattler(target.index) do |b|
+    battle.allSameSideBattlers(target.index).each do |b|
       next if b.index != target.index + 2 && b.index != target.index - 2
       next if !b.takesIndirectDamage?
       battle.pbShowAbilitySplash(user)
@@ -3267,7 +3267,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TRICKSTER,
     next if battle.futureSight
     next if !move.pbDamagingMove?
     next if !move.pbContactMove?(user)
-    next if battle.wildBattle? && user.opposes?
+    next if user.wild?
     targets.each do |b|
       next if b.damageState.unaffected || b.damageState.substitute
       next if user.item==0 && b.item==0
@@ -3290,7 +3290,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TRICKSTER,
       b.effects[PBEffects::ChoiceBand] = nil
       b.effects[PBEffects::Unburden]   = (!b.item && oldTargetItem)
       # Permanently steal the item from wild Pokémon
-      if battle.wildBattle? && b.opposes? && b.initialItem == oldTargetItem && !user.initialItem
+      if b.wild? && b.initialItem == oldTargetItem && !user.initialItem
         user.setInitialItem(oldTargetItem)
       end
       battle.pbDisplay(_INTL("{1} switched items with its opponent!",user.pbThis))
@@ -3380,7 +3380,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:MASTERTHIEF,
     next if battle.futureSight
     next if !move.pbDamagingMove?
     next if !move.pbContactMove?(user)
-    next if battle.wildBattle? && user.opposes?
+    next if user.wild?
     targets.each do |b|
       next if b.damageState.unaffected || b.damageState.substitute
       next if !b.item
@@ -3434,7 +3434,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:WONDERHARP,
   proc { |ability,user,targets,move,battle|
     next if move.calcType != :SOUND && !move.pbSoundMove?(user)
     battle.pbShowAbilitySplash(user)
-    battle.eachSameSideBattler(user.index) do |b|
+    battle.allSameSideBattlers(user.index).each do |b|
       if b.pbCanRaiseStatStage?(:DEFENSE, user)
         b.pbRaiseStatStage(:DEFENSE, 1, user)
       end
@@ -3784,14 +3784,14 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:SOOTHINGSHINE,
   proc { |ability,battler,battle|
     # Validates if any battlers on same side need healing
     canHealAnyBattler = false
-    battle.eachSameSideBattler(battler.index) do |b|
+    battle.allSameSideBattlers(battler.index).each do |b|
       canHealAnyBattler = true if b.canHeal?
     end
     next if !canHealAnyBattler
     # Ability effect
     battle.pbShowAbilitySplash(battler)
     healfactor = [:Sun, :HarshSun].include?(battle.pbWeather) ? 8 : 16
-    battle.eachSameSideBattler(battler.index) do |b|
+    battle.allSameSideBattlers(battler.index).each do |b|
       next if !b.canHeal?
       b.pbRecoverHP(b.totalhp/healfactor)
       if Battle::Scene::USE_ABILITY_SPLASH
@@ -3808,14 +3808,14 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:ADDITION,
   proc { |ability,battler,battle|
     # Validates if any battlers on same side need healing
     canHealAnyBattler = false
-    battle.eachSameSideBattler(battler.index) do |b|
+    battle.allSameSideBattlers(battler.index).each do |b|
       canHealAnyBattler = true if b.canHeal?
     end
     next if !canHealAnyBattler
     # Ability effect
     battle.pbShowAbilitySplash(battler)
     healmult = battle.pbCheckAllyAbility(:SUBTRACTION, battler.index) ? 0.3 : 0.1
-    battle.eachSameSideBattler(battler.index) do |b|
+    battle.allSameSideBattlers(battler.index).each do |b|
       next if !b.canHeal?
       b.pbRecoverHP(b.totalhp * healmult)
       if Battle::Scene::USE_ABILITY_SPLASH
@@ -3896,7 +3896,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SPEEDBOOST,
 
 Battle::AbilityEffects::EndOfRoundEffect.add(:SWEETDREAMS,
   proc { |ability,battler,battle|
-    battle.eachSameSideBattler(battler.index) do |b|
+    battle.allSameSideBattlers(battler.index).each do |b|
       next if !b.near?(battler) || !b.asleep?
       next if !b.canHeal?
       battle.pbShowAbilitySplash(battler)
@@ -3925,7 +3925,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SIGNALBOOST,
 
 Battle::AbilityEffects::EndOfRoundEffect.add(:ALLSEEING,
   proc { |ability,battler,battle|
-    battle.eachOtherSideBattler(battler.index) do |b|
+    battle.allOtherSideBattlers(battler.index).each do |b|
       if b.near?(battler) && b.pbCanLowerStatStage?(:EVASION,battler)
         b.pbLowerStatStageByAbility(:EVASION,1,battler)
       end
@@ -3963,7 +3963,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
     next if !battler.canHeal?
     # Get number of affected battlers
     battlerCount = 0
-    battle.eachBattler do |b|
+    battle.allBattlers.each do |b|
       next if b.index == battler.index
       next if !b.takesIndirectDamage?
       battlerCount += 1
@@ -3973,7 +3973,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
     hpDrain = totalHPDrain / battlerCount
     # Do damage and heal ability user
     battle.pbShowAbilitySplash(battler)
-    battle.eachBattler do |b|
+    battle.allBattlers.each do |b|
       next if b.index == battler.index
       next if !b.takesIndirectDamage?(Battle::Scene::USE_ABILITY_SPLASH)
       oldHP = b.hp
@@ -4603,7 +4603,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:TEMPERMENTAL,
 Battle::AbilityEffects::OnSwitchIn.add(:MIRRORTYPE,
   proc { |ability, battler, battle, switch_in|
     targets = []
-    battle.eachOtherSideBattler(battler.index) {|b| targets.push(b)}
+    battle.allOtherSideBattlers(battler.index).each {|b| targets.push(b)}
     if targets.length > 0
       target = targets[rand(targets.length)]
       battle.pbShowAbilitySplash(battler)
@@ -4670,7 +4670,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:FERTILEGIFTS,
   proc { |ability, battler, battle, switch_in|
     battle.pbShowAbilitySplash(battler)
     battle.pbDisplay(_INTL("{1} is ready to share its fertile gifts!", battler.pbThis))
-    battle.eachSameSideBattler(battler) do |b|
+    battle.allSameSideBattlers(battler).each do |b|
       next if b.index != battler.index && !b.pbHasType?(:GRASS)
       if b.pbCanRaiseStatStage?(:ATTACK, battler)
         b.pbRaiseStatStage(:ATTACK, 1, battler)
@@ -4709,7 +4709,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:HYPERAROMA,
 
 Battle::AbilityEffects::OnSwitchIn.add(:MINDIPULATION,
   proc { |ability, battler, battle, switch_in|
-    battle.eachBattler do |b|
+    battle.allBattlers.each do |b|
       next if b.index == battler.index
       next if !b.pbCanConfuse?(battler, false)
       next if battle.pbRandom(100) < 50
@@ -4722,7 +4722,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:MINDIPULATION,
 
 Battle::AbilityEffects::OnSwitchIn.add(:LASTBASTION,
   proc { |ability, battler, battle, switch_in|
-    next if battle.wildBattle? && battler.opposes?
+    next if battler.wild?
     party = battle.pbParty(battler.index)
     able_pokemon_count = 0
     party.each { |p| able_pokemon_count += 1 if p && !p.egg? && !p.fainted? }
@@ -4775,7 +4775,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:ALIGNED,
 
 Battle::AbilityEffects::OnSwitchIn.add(:BULLY,
   proc { |ability, battler, battle, switch_in|
-    battle.eachOtherSideBattler(battler.index) do |b|
+    battle.allOtherSideBattlers(battler.index).each do |b|
       next if b.pokemon.height > battler.pokemon.height
       next if b.pokemon.height == battler.pokemon.height && battler.pbWeight <= b.pbWeight
       next if !b.pbCanLowerStatStage?(:ATTACK, battler)
@@ -4786,7 +4786,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:BULLY,
 
 Battle::AbilityEffects::OnSwitchIn.add(:SUDDENSEED,
   proc { |ability, battler, battle, switch_in|
-    battle.eachOtherSideBattler(battler.index) do |b|
+    battle.allOtherSideBattlers(battler.index).each do |b|
       next if b.effects[PBEffects::LeechSeed] >= 0
       next if b.pbHasType?(:GRASS)
       next if b.effects[PBEffects::Substitute] > 0
@@ -4900,7 +4900,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
     targetSide.effects[PBEffects::VoltSpikes] = 0
     targetSide.effects[PBEffects::StickyWeb] = false
     # Clear all battlers' stat changes
-    battle.eachBattler do |b|
+    battle.allBattlers.each do |b|
       b.pbResetStatStages
     end
     battle.pbShowAbilitySplash(battler)
@@ -4912,7 +4912,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
 Battle::AbilityEffects::OnSwitchIn.add(:CHILLING,
   proc { |ability, battler, battle, switch_in|
     battle.pbShowAbilitySplash(battler)
-    battle.eachOtherSideBattler(battler.index) do |b|
+    battle.allOtherSideBattlers(battler.index).each do |b|
       next if !b.near?(battler)
       b.pbLowerSpecialAttackStatStageChilling(battler)
       b.pbItemOnIntimidatedCheck # Copied from Intimidate
@@ -5108,11 +5108,11 @@ Battle::AbilityEffects::OnSwitchIn.add(:SUBTRACTION,
     end
     # Display message for each Pokemon losing a weakness
     subtractionCount = 0
-    battle.eachSameSideBattler(battler.index) do |b|
+    battle.allSameSideBattlers(battler.index).each do |b|
       subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
     end
     battle.pbShowAbilitySplash(battler)
-    battle.eachSameSideBattler(battler.index) do |b|
+    battle.allSameSideBattlers(battler.index).each do |b|
       if subtractionCount <= b.effects[PBEffects::SubtractionTypes].length
         typeListString = b.effects[PBEffects::SubtractionTypes][0...subtractionCount].join(", ")
         battle.pbDisplay(_INTL("{1} lost its weakness(es) to the following type(s): {2}", b.pbThis, typeListString))
@@ -5248,7 +5248,7 @@ Battle::AbilityEffects::OnBattlerFainting.add(:SOULHEART,
 Battle::AbilityEffects::OnBattlerFainting.add(:LASTBASTION,
   proc { |ability,battler,fainted,battle|
     next if battler.opposes?(fainted)
-    next if battle.wildBattle? && battler.opposes?
+    next if battler.wild?
     party = battle.pbParty(battler.index)
     able_pokemon_count = 0
     party.each { |p| able_pokemon_count += 1 if p && !p.egg? && !p.fainted? }

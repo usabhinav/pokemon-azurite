@@ -2041,7 +2041,7 @@ Battle::ItemEffects::OnSwitchIn.add(:ROOMSERVICE,
 Battle::ItemEffects::OnSwitchIn.add(:PECULIARMIRROR,
   proc { |item,battler,battle|
     choices = []
-    battle.eachOtherSideBattler(battler.index) do |b|
+    battle.allOtherSideBattlers(battler.index).each do |b|
       next if b.ungainableAbility? ||
               [:POWEROFALCHEMY, :RECEIVER, :TRACE].include?(b.ability_id)
       choices.push(b)

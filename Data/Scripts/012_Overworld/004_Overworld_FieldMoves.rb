@@ -772,10 +772,9 @@ def pbStartSwimming()
   $PokemonEncounters.reset_step_count
   $PokemonGlobal.swimming = true
   pbUpdateVehicle
-  $PokemonTemp.surfJump = $MapFactory.getFacingCoords($game_player.x,$game_player.y,$game_player.direction)
+  $game_temp.surf_base_coords = $map_factory.getFacingCoords($game_player.x, $game_player.y, $game_player.direction)
   pbJumpToward
-  $PokemonTemp.surfJump = nil
-  #pbUpdateVehicle
+  $game_temp.surf_base_coords = nil
   $game_player.check_event_trigger_here([1,2])
 end
 
@@ -848,9 +847,7 @@ def pbSwim
   if pbConfirmMessage(_INTL("The water is dyed a deep blue...  Would you like to swim?"))
     surfbgm=pbGetMetadata(0,MetadataSurfBGM)
     $PokemonTemp.dependentEvents.check_surf(true)
-    if surfbgm
-      pbCueBGM(surfbgm,0.5)
-    end
+    pbCueBGM(surfbgm,0.5) if surfbgm
     pbStartSwimming()
     return true
   end

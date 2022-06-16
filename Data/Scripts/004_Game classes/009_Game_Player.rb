@@ -620,34 +620,6 @@ def pbGetPlayerCharset(charset, trainer = nil, force = false)
 end
 
 def pbUpdateVehicle
-
-#  meta = GameData::Metadata.get_player($Trainer.character_ID)
-#  if meta
-=begin
-    charset = 1                                 # Regular graphic
-    if $PokemonGlobal.diving;     charset = 5   # Diving graphic
-    elsif $PokemonGlobal.surfing; charset = 3   # Surfing graphic
-    elsif $PokemonGlobal.bicycle; charset = 2   # Bicycle graphic
-    end
-    newCharName = pbGetPlayerCharset(meta,charset)
-    $game_player.character_name = newCharName if newCharName
-=end
-=begin
-	if $PokemonGlobal.diving
-      #$game_player.character_name=pbGetPlayerCharset(meta,5) # Diving graphic
-      $Trainer.outfitstate.animation = "Diving"
-    elsif $PokemonGlobal.surfing
-      #$game_player.character_name=pbGetPlayerCharset(meta,3) # Surfing graphic
-      $Trainer.outfitstate.animation = "Surfing"
-    elsif $PokemonGlobal.bicycle
-      #$game_player.character_name=pbGetPlayerCharset(meta,2) # Bicycle graphic
-      $Trainer.outfitstate.animation = "Bicycle"
-    elsif $PokemonGlobal.swimming
-      $Trainer.outfitstate.animation = "Swimming"            # Swimming animation
-    else
-      #$game_player.character_name=pbGetPlayerCharset(meta,1) # Regular graphic
-    end
-=end
   if $PokemonGlobal&.diving
     $game_player.set_movement_type(:diving)
     $player.outfitstate.animation = "Diving"
@@ -658,6 +630,7 @@ def pbUpdateVehicle
     $game_player.set_movement_type(:cycling)
     $player.outfitstate.animation = "Bicycle"
   elsif $PokemonGlobal&.swimming
+    $game_player.set_movement_type(:swimming)
     $player.outfitstate.animation = "Swimming"
   else
     $game_player.set_movement_type(:walking)

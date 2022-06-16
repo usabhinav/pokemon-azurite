@@ -91,9 +91,6 @@ module Battle::Scene::Animation::BallAnimationMixin
 
   def addBallSprite(ballX, ballY, poke_ball)
     file_path = sprintf("Graphics/Battle animations/ball_%s", poke_ball)
-    if !pbResolveBitmap(file_path)
-      file_path = sprintf("Graphics/Battle animations/ball_%02d", pbGetBallType(poke_ball))
-    end
     ball = addNewSprite(ballX, ballY, file_path, PictureOrigin::CENTER)
     @ballSprite = @pictureSprites.last
     if @ballSprite.bitmap.width >= @ballSprite.bitmap.height
@@ -211,9 +208,6 @@ module Battle::Scene::Animation::BallAnimationMixin
 
   def ballSetOpen(ball, delay, poke_ball)
     file_path = sprintf("Graphics/Battle animations/ball_%s_open", poke_ball)
-    if !pbResolveBitmap(file_path)
-      file_path = sprintf("Graphics/Battle animations/ball_%02d_open", pbGetBallType(poke_ball))
-    end
     ball.setName(delay, file_path)
     if @ballSprite && @ballSprite.bitmap.width >= @ballSprite.bitmap.height
       ball.setSrcSize(delay, @ballSprite.bitmap.height / 2, @ballSprite.bitmap.height)
@@ -222,9 +216,6 @@ module Battle::Scene::Animation::BallAnimationMixin
 
   def ballSetClosed(ball, delay, poke_ball)
     file_path = sprintf("Graphics/Battle animations/ball_%s", poke_ball)
-    if !pbResolveBitmap(file_path)
-      file_path = sprintf("Graphics/Battle animations/ball_%02d", pbGetBallType(poke_ball))
-    end
     ball.setName(delay, file_path)
     if @ballSprite && @ballSprite.bitmap.width >= @ballSprite.bitmap.height
       ball.setSrcSize(delay, @ballSprite.bitmap.height / 2, @ballSprite.bitmap.height)

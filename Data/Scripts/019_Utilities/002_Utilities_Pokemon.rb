@@ -287,3 +287,17 @@ def pbHasEgg?(species)
   return true if species == baby   # Is an egg species without incense
   return false
 end
+
+#===============================================================================
+# Gives the player one Pokemon and deposits 30 more in PC. Used in Azurite debug map.
+#===============================================================================
+def pbGiveRandomPokemon
+  species_keys = GameData::Species.keys
+  species_data = GameData::Species.get(species_keys.sample)
+  pbAddPokemonSilent(species_data.species, 15)
+  $PokemonStorage.maxPokemon(0).times do |j|
+    species_keys = GameData::Species.keys
+    species_data = GameData::Species.get(species_keys.sample)
+    $PokemonStorage[0, j] = Pokemon.new(species_data.species, 15)
+  end
+end

@@ -1,3 +1,5 @@
+echoln "BEP: " + $:.to_s
+
 # Check if lib folder exists that is needed for require 'date'
 if File.exists?("lib")
   #echoln "Exists."

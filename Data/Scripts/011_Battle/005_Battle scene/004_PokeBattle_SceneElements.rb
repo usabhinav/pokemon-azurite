@@ -229,6 +229,12 @@ class PokemonDataBox < SpriteWrapper
     if @battler.shiny?
       shinyX = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
       imagePos.push(["Graphics/Pictures/shiny",@spriteBaseX+shinyX,36])
+    elsif @battler.albino?
+      shinyX = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
+      imagePos.push(["Graphics/Pictures/albino",@spriteBaseX+shinyX,36])
+    # elsif @battler.glossy?
+      # shinyX = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
+      # imagePos.push(["Graphics/Pictures/shiny",@spriteBaseX+shinyX,36])
     end
     # Draw Mega Evolution/Crystallization/Primal Reversion icon
     if @battler.mega?

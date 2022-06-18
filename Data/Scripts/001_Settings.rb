@@ -30,13 +30,17 @@ module Settings
   #=============================================================================
 
   # The maximum level Pokémon can reach.
-  MAXIMUM_LEVEL        = 100
+  MAXIMUM_LEVEL         = 100
   # The level of newly hatched Pokémon.
-  EGG_LEVEL            = 1
+  EGG_LEVEL             = 1
   # The odds of a newly generated Pokémon being shiny (out of 65536).
-  SHINY_POKEMON_CHANCE = (MECHANICS_GENERATION >= 6) ? 16 : 8
+  SHINY_POKEMON_CHANCE  = (MECHANICS_GENERATION >= 6) ? 16/2 : 8/2    # (Halve it because of glossy mechanic.)
+  # The odds of a newly generated Pokémon being albino (out of 65536).
+  ALBINO_POKEMON_CHANCE = 10
+  # The odds of a newly generated Pokémon being glossy (out of 65536).
+  GLOSSY_POKEMON_CHANCE = SHINY_POKEMON_CHANCE
   # The odds of a wild Pokémon/bred egg having Pokérus (out of 65536).
-  POKERUS_CHANCE       = 3
+  POKERUS_CHANCE        = 3
   # Whether a bred baby Pokémon can inherit any TM/HM moves from its father. It
   # can never inherit TM/HM moves from its mother.
   BREEDING_CAN_INHERIT_MACHINE_MOVES         = (MECHANICS_GENERATION <= 5)
@@ -290,15 +294,21 @@ module Settings
   #=============================================================================
 
   # The Game Switch that is set to ON when the player blacks out.
-  STARTING_OVER_SWITCH      = 1
+  STARTING_OVER_SWITCH       = 1
   # The Game Switch that is set to ON when the player has seen Pokérus in the
   # Poké Center (and doesn't need to be told about it again).
-  SEEN_POKERUS_SWITCH       = 2
+  SEEN_POKERUS_SWITCH        = 2
   # The Game Switch which, while ON, makes all wild Pokémon created be shiny.
-  SHINY_WILD_POKEMON_SWITCH = 31
+  SHINY_WILD_POKEMON_SWITCH  = 31
+  # The Game Switch which, while ON, makes all wild Pokémon created be albino.
+  ALBINO_WILD_POKEMON_SWITCH = 59
+  # The Game Switch which, while ON, makes all wild Pokémon created be glossy.
+  GLOSSY_WILD_POKEMON_SWITCH = 65
   # The Game Switch which, while ON, makes all Pokémon created considered to be
   # met via a fateful encounter.
-  FATEFUL_ENCOUNTER_SWITCH  = 32
+  FATEFUL_ENCOUNTER_SWITCH   = 32
+ 
+ 
 
   #=============================================================================
 

@@ -1,4 +1,16 @@
 #===============================================================================
+# Enum for the 4 different shiny states a Pokemon can have, which are
+# none, shiny, glossy, and albino.
+# - Baustein
+#===============================================================================
+module ShinyForm
+  NONE   = 0
+  SHINY  = 1
+  GLOSSY = 2
+  ALBINO = 3
+end
+
+#===============================================================================
 # Instances of this class are individual Pokémon.
 # The player's party Pokémon are stored in the array $Trainer.party.
 #===============================================================================

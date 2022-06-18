@@ -17,8 +17,8 @@ $LAYER_NAMES_MUGSHOT = ["Base", "Torso", "Hair", "Hat", "Eyes"]
 #$LAYER_NAMES_POKEMON = ["PkmnBack", "PkmnFront"]
 
 #===============================================================================
-# A data structure that represents an arbitrary outfit layer and contains what
-# bitmap file and which color is selected for it.
+# A data structure that represents an arbitrary outfit layer and which color 
+# is selected for it.
 # - Baustein
 #===============================================================================
 class OutfitLayerState

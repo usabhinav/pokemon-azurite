@@ -219,14 +219,14 @@ class PokemonSpeciesIconSprite < SpriteWrapper
   attr_reader :species
   attr_reader :gender
   attr_reader :form
-  attr_reader :shiny
+  attr_reader :shiny_form
 
   def initialize(species,viewport=nil)
     super(viewport)
     @species      = species
     @gender       = 0
     @form         = 0
-    @shiny        = 0
+    @shiny_form   = ShinyForm::NONE
     @numFrames    = 0
     @currentFrame = 0
     @counter      = 0
@@ -253,16 +253,16 @@ class PokemonSpeciesIconSprite < SpriteWrapper
     refresh
   end
 
-  def shiny=(value)
-    @shiny = value
+  def shiny_form=(value)
+    @shiny_form = value
     refresh
   end
 
-  def pbSetParams(species,gender,form,shiny=false)
+  def pbSetParams(species,gender,form,shiny_form = ShinyForm::NONE)
     @species = species
     @gender  = gender
     @form    = form
-    @shiny   = shiny
+    @shiny_form   = shiny_form
     refresh
   end
 

@@ -319,7 +319,7 @@ class PokemonLoad_Scene
 
   def pbSetParty(trainer)
     return if !trainer || !trainer.party
-    meta = GameData::Metadata.get_player(trainer.character_ID)
+    meta = GameData::PlayerMetadata.get(trainer.character_ID)
     if meta
 
       @sprites["player"] = IconSprite.new(0,0, @viewport)

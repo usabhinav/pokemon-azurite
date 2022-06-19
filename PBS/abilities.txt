@@ -1658,7 +1658,7 @@ Description = The lower this Pokémon's HP is, the higher the damage boost is fo
 #-------------------------------
 [SUGARPOWER]
 Name = Sugar Power
-Description = This Pokémon's Water-type moves heal the user instead of dealing damage.
+Description = This Pokémon's Water-type moves heal the target instead of dealing damage.
 #-------------------------------
 [SOULABSORB]
 Name = Soul Absorb

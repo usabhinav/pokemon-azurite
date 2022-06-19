@@ -337,7 +337,7 @@ Description = The foe is bound with silk blown from the user's mouth. This silk 
 #-------------------------------
 [TAILGLOW]
 Name = Tail Glow
-Type = BUG
+Type = LIGHT
 Category = Status
 Accuracy = 0
 TotalPP = 20
@@ -856,7 +856,7 @@ Description = Converts life-force into power to attack. The lower the user's HP,
 #-------------------------------
 [ROAROFTIME]
 Name = Roar of Time
-Type = DRAGON
+Type = MYSTIC
 Category = Special
 Power = 150
 Accuracy = 90
@@ -941,7 +941,7 @@ Description = The user unleashes a strong beam from its core.
 #-------------------------------
 [SPACIALREND]
 Name = Spacial Rend
-Type = DRAGON
+Type = COSMIC
 Category = Special
 Power = 100
 Accuracy = 95
@@ -1755,7 +1755,7 @@ Description = The user covers the ground with mist for five turns. Grounded Pok�
 #-------------------------------
 [MOONLIGHT]
 Name = Moonlight
-Type = FAIRY
+Type = COSMIC
 Category = Status
 Accuracy = 0
 TotalPP = 5
@@ -2754,7 +2754,7 @@ Description = The user slams the foe with its flaming body. The heavier the user
 #-------------------------------
 [SUNNYDAY]
 Name = Sunny Day
-Type = FIRE
+Type = LIGHT
 Category = Status
 Accuracy = 0
 TotalPP = 5
@@ -4586,7 +4586,7 @@ Description = The foe is attacked with a powerful beam. The user must rest on th
 #-------------------------------
 [BOOMBURST]
 Name = Boomburst
-Type = NORMAL
+Type = SOUND
 Category = Special
 Power = 140
 Accuracy = 100
@@ -4598,7 +4598,7 @@ Description = The user attacks everything around it with the destructive power o
 #-------------------------------
 [LASTRESORT]
 Name = Last Resort
-Type = NORMAL
+Type = DARK
 Category = Physical
 Power = 140
 Accuracy = 100
@@ -4718,7 +4718,7 @@ Description = The user releases countless shots of light. Its type varies with t
 #-------------------------------
 [HYPERVOICE]
 Name = Hyper Voice
-Type = NORMAL
+Type = SOUND
 Category = Special
 Power = 90
 Accuracy = 100
@@ -4742,7 +4742,7 @@ Description = The user attacks the target by dancing very hard. The user's type 
 #-------------------------------
 [ROCKCLIMB]
 Name = Rock Climb
-Type = NORMAL
+Type = FIGHTING
 Category = Physical
 Power = 90
 Accuracy = 85
@@ -4767,7 +4767,7 @@ Description = A reckless, full-body charge attack for slamming into the foe. It 
 #-------------------------------
 [UPROAR]
 Name = Uproar
-Type = NORMAL
+Type = SOUND
 Category = Special
 Power = 90
 Accuracy = 100
@@ -4892,7 +4892,7 @@ Description = The user slashes the target with hard and sharp claws. It may also
 #-------------------------------
 [RELICSONG]
 Name = Relic Song
-Type = NORMAL
+Type = SOUND
 Category = Special
 Power = 75
 Accuracy = 100
@@ -5053,7 +5053,7 @@ Description = A unique attack that varies in type and intensity depending on the
 #-------------------------------
 [ROUND]
 Name = Round
-Type = NORMAL
+Type = SOUND
 Category = Special
 Power = 60
 Accuracy = 100
@@ -5163,7 +5163,7 @@ Description = An attack move that varies in power and type depending on the weat
 #-------------------------------
 [ECHOEDVOICE]
 Name = Echoed Voice
-Type = NORMAL
+Type = SOUND
 Category = Special
 Power = 40
 Accuracy = 100
@@ -5213,7 +5213,7 @@ Description = The user holds back when it attacks, and the target is left with a
 #-------------------------------
 [PAYDAY]
 Name = Pay Day
-Type = NORMAL
+Type = MYSTIC
 Category = Physical
 Power = 40
 Accuracy = 100
@@ -5335,7 +5335,7 @@ Description = Sharp spikes are shot at the target in rapid succession. They hit 
 #-------------------------------
 [COMETPUNCH]
 Name = Comet Punch
-Type = NORMAL
+Type = COSMIC
 Category = Physical
 Power = 18
 Accuracy = 85
@@ -5706,7 +5706,7 @@ Description = The user's type is changed depending on its environment, such as a
 #-------------------------------
 [CAPTIVATE]
 Name = Captivate
-Type = NORMAL
+Type = FAIRY
 Category = Status
 Accuracy = 100
 TotalPP = 20
@@ -5832,7 +5832,7 @@ Description = The user dances to compel the target to mimic it, making the targe
 #-------------------------------
 [FLASH]
 Name = Flash
-Type = NORMAL
+Type = LIGHT
 Category = Status
 Accuracy = 100
 TotalPP = 20
@@ -5927,7 +5927,7 @@ Description = The user stiffens all the muscles in its body to raise its Defense
 #-------------------------------
 [HEALBELL]
 Name = Heal Bell
-Type = NORMAL
+Type = SOUND
 Category = Status
 Accuracy = 0
 TotalPP = 5
@@ -6012,7 +6012,7 @@ Description = With a scary face, the user tries to force a kiss on the target. I
 #-------------------------------
 [LUCKYCHANT]
 Name = Lucky Chant
-Type = NORMAL
+Type = MYSTIC
 Category = Status
 Accuracy = 0
 TotalPP = 30
@@ -6033,7 +6033,7 @@ Description = The user tries to cut ahead of the foe to steal and use the foe's 
 #-------------------------------
 [MEANLOOK]
 Name = Mean Look
-Type = NORMAL
+Type = DARK
 Category = Status
 Accuracy = 0
 TotalPP = 5
@@ -6096,7 +6096,7 @@ Description = The user compresses its body to make itself look smaller, which sh
 #-------------------------------
 [MORNINGSUN]
 Name = Morning Sun
-Type = NORMAL
+Type = LIGHT
 Category = Status
 Accuracy = 0
 TotalPP = 5
@@ -6116,7 +6116,7 @@ Description = An attack that makes use of nature's power. Its effects vary depen
 #-------------------------------
 [NOBLEROAR]
 Name = Noble Roar
-Type = NORMAL
+Type = SOUND
 Category = Status
 Accuracy = 0
 TotalPP = 30
@@ -6149,7 +6149,7 @@ Description = The user adds its HP to the target's HP, then equally shares the c
 #-------------------------------
 [PERISHSONG]
 Name = Perish Song
-Type = NORMAL
+Type = SOUND
 Category = Status
 Accuracy = 0
 TotalPP = 5
@@ -6245,7 +6245,7 @@ Description = The target is scared off and replaced by another Pokémon in its p
 #-------------------------------
 [SAFEGUARD]
 Name = Safeguard
-Type = NORMAL
+Type = MYSTIC
 Category = Status
 Accuracy = 0
 TotalPP = 25
@@ -6266,7 +6266,7 @@ Description = The user frightens the target with a scary face to harshly reduce 
 #-------------------------------
 [SCREECH]
 Name = Screech
-Type = NORMAL
+Type = SOUND
 Category = Status
 Accuracy = 85
 TotalPP = 40
@@ -6308,7 +6308,7 @@ Description = The user's mysterious psychic wave changes the target's Ability to
 #-------------------------------
 [SING]
 Name = Sing
-Type = NORMAL
+Type = SOUND
 Category = Status
 Accuracy = 55
 TotalPP = 15
@@ -6370,7 +6370,7 @@ Description = The user restores its own HP by up to half of its maximum HP. May 
 #-------------------------------
 [SPLASH]
 Name = Splash
-Type = NORMAL
+Type = WATER
 Category = Status
 Accuracy = 0
 TotalPP = 40
@@ -6412,7 +6412,7 @@ Description = The user makes a copy of itself using some of its HP. The copy ser
 #-------------------------------
 [SUPERSONIC]
 Name = Supersonic
-Type = NORMAL
+Type = SOUND
 Category = Status
 Accuracy = 55
 TotalPP = 20
@@ -6455,7 +6455,7 @@ Description = A sweet scent that lowers the foe's evasiveness. It also lures wil
 #-------------------------------
 [SWORDSDANCE]
 Name = Swords Dance
-Type = NORMAL
+Type = STEEL
 Category = Status
 Accuracy = 0
 TotalPP = 10
@@ -6510,7 +6510,7 @@ Description = The user tickles the target into laughing, reducing its Attack and
 #-------------------------------
 [TRANSFORM]
 Name = Transform
-Type = NORMAL
+Type = MYSTIC
 Category = Status
 Accuracy = 0
 TotalPP = 10
@@ -6532,7 +6532,7 @@ Description = The foe is blown away, to be replaced by another Pokémon in its p
 #-------------------------------
 [WISH]
 Name = Wish
-Type = NORMAL
+Type = COSMIC
 Category = Status
 Accuracy = 0
 TotalPP = 10
@@ -6910,7 +6910,7 @@ Description = The user attacks the target at full power. The attack's recoil har
 #-------------------------------
 [FUTURESIGHT]
 Name = Future Sight
-Type = PSYCHIC
+Type = MYSTIC
 Category = Special
 Power = 120
 Accuracy = 100
@@ -6945,7 +6945,7 @@ Description = The user eats the dreams of a sleeping foe. It absorbs half the da
 #-------------------------------
 [PHOTONGEYSER]
 Name = Photon Geyser
-Type = PSYCHIC
+Type = LIGHT
 Category = Special
 Power = 100
 Accuracy = 100
@@ -7081,7 +7081,7 @@ Description = The user focuses its willpower to its head and attacks the foe. It
 #-------------------------------
 [LUSTERPURGE]
 Name = Luster Purge
-Type = PSYCHIC
+Type = LIGHT
 Category = Special
 Power = 70
 Accuracy = 100
@@ -7094,7 +7094,7 @@ Description = The user lets loose a damaging burst of light. It may also reduce 
 #-------------------------------
 [MISTBALL]
 Name = Mist Ball
-Type = PSYCHIC
+Type = MYSTIC
 Category = Special
 Power = 70
 Accuracy = 100
@@ -7170,7 +7170,7 @@ Description = The user attacks with stored power. The more the user's stats are 
 #-------------------------------
 [MIRRORCOAT]
 Name = Mirror Coat
-Type = PSYCHIC
+Type = MYSTIC
 Category = Special
 Power = 1
 Accuracy = 100
@@ -7246,7 +7246,7 @@ Description = The user quietly focuses its mind and calms its spirit to raise it
 #-------------------------------
 [COSMICPOWER]
 Name = Cosmic Power
-Type = PSYCHIC
+Type = COSMIC
 Category = Status
 Accuracy = 0
 TotalPP = 20
@@ -7256,7 +7256,7 @@ Description = The user absorbs a mystical power from space to raise its Defense 
 #-------------------------------
 [GRAVITY]
 Name = Gravity
-Type = PSYCHIC
+Type = COSMIC
 Category = Status
 Accuracy = 0
 TotalPP = 5
@@ -7310,7 +7310,7 @@ Description = The user emits a healing pulse which restores the target's HP by u
 #-------------------------------
 [HEALINGWISH]
 Name = Healing Wish
-Type = PSYCHIC
+Type = COSMIC
 Category = Status
 Accuracy = 0
 TotalPP = 10
@@ -7374,7 +7374,7 @@ Description = The user distracts the target by bending a spoon. It lowers the ta
 #-------------------------------
 [LIGHTSCREEN]
 Name = Light Screen
-Type = PSYCHIC
+Type = LIGHT
 Category = Status
 Accuracy = 0
 TotalPP = 30
@@ -7384,7 +7384,7 @@ Description = A wondrous wall of light is put up to suppress damage from special
 #-------------------------------
 [LUNARDANCE]
 Name = Lunar Dance
-Type = PSYCHIC
+Type = COSMIC
 Category = Status
 Accuracy = 0
 TotalPP = 10
@@ -7395,7 +7395,7 @@ Description = The user faints. In return, the Pokémon taking its place will hav
 #-------------------------------
 [MAGICCOAT]
 Name = Magic Coat
-Type = PSYCHIC
+Type = MYSTIC
 Category = Status
 Accuracy = 0
 TotalPP = 15
@@ -7460,7 +7460,7 @@ Description = The user employs its psychic power to switch changes to its Attack
 #-------------------------------
 [POWERTRICK]
 Name = Power Trick
-Type = PSYCHIC
+Type = MYSTIC
 Category = Status
 Accuracy = 0
 TotalPP = 10
@@ -7575,7 +7575,7 @@ Description = The user catches the target off guard and swaps its held item with
 #-------------------------------
 [TRICKROOM]
 Name = Trick Room
-Type = PSYCHIC
+Type = MYSTIC
 Category = Status
 Accuracy = 0
 TotalPP = 5

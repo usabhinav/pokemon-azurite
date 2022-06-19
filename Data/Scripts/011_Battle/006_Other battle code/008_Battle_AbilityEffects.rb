@@ -1846,8 +1846,9 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:ILLINTENT,
 Battle::AbilityEffects::DamageCalcFromUser.add(:WINDUP,
   proc { |ability,user,target,move,mults,baseDmg,type|
     # TODO: Consider making dedicated method for detecting two-turn attacks, charging or otherwise
-    # Two turn attack, Hyper Beam, or Shadow Half
-    next if !move.chargingTurnMove? && move.function != "0C2" && move.function != "12E"
+    # Two turn attack, Hyper Beam, Crystallized Beam, or Shadow Half
+    next if !move.chargingTurnMove? && move.function != "AttackAndSkipNextTurn" &&
+            move.function != "AttackAndSkipThreeTurns" && move.function != "AllBattlersLoseHalfHPUserSkipsNextTurn"
     mults[:final_damage_multiplier] *= 1.5
   }
 )
@@ -1913,7 +1914,8 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:BERSERKER,
 Battle::AbilityEffects::DamageCalcFromUser.add(:EXPLOSIVEEXHAUST,
   proc { |ability,user,target,move,mults,baseDmg,type|
     # Recoil move or move function for Explosion (or Self-Destruct), Final Gambit, or Mind Blown
-    mults[:base_damage_multiplier] *= 1.5 if move.recoilMove? || ["0E0", "0E1", "170"].include?(move.function)
+    explosiveMoves = ["UserFaintsExplosive", "UserFaintsFixedDamageUserHP", "UserLosesHalfOfTotalHPExplosive"]
+    mults[:base_damage_multiplier] *= 1.5 if move.recoilMove? || explosiveMoves.include?(move.function)
   }
 )
 
@@ -2691,7 +2693,7 @@ Battle::AbilityEffects::OnBeingHit.add(:VINDICTIVE,
     next if !target.fainted?
     stat = :ATTACK
     # Photon Geyser uses the higher of Sp. Atk and Attack
-    if move.pbSpecialMove?(user) || (move.function == "164" && user.spatk >= user.attack)
+    if move.pbSpecialMove?(user) || (move.function == "CategoryDependsOnHigherDamageIgnoreTargetAbility" && user.spatk >= user.attack)
       stat = :SPECIAL_ATTACK
     end
     if user.pbCanLowerStatStage?(stat,user)
@@ -3285,10 +3287,10 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TRICKSTER,
       oldTargetItem = b.item; oldTargetItemName = b.itemName
       user.item                             = oldTargetItem
       user.effects[PBEffects::ChoiceBand]   = nil
-      user.effects[PBEffects::Unburden]     = (!user.item && oldUserItem)
+      user.effects[PBEffects::Unburden]     = (!user.item && oldUserItem) if user.hasActiveAbility?(:UNBURDEN)
       b.item                           = oldUserItem
       b.effects[PBEffects::ChoiceBand] = nil
-      b.effects[PBEffects::Unburden]   = (!b.item && oldTargetItem)
+      b.effects[PBEffects::Unburden]   = (!b.item && oldTargetItem) if b.hasActiveAbility?(:UNBURDEN)
       # Permanently steal the item from wild Pokémon
       if b.wild? && b.initialItem == oldTargetItem && !user.initialItem
         user.setInitialItem(oldTargetItem)
@@ -3360,7 +3362,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:HUNGRY,
         user.item = b.item
       end
       b.item = nil
-      b.effects[PBEffects::Unburden] = true
+      b.effects[PBEffects::Unburden] = true if b.hasActiveAbility?(:UNBURDEN)
       if Battle::Scene::USE_ABILITY_SPLASH
         battle.pbDisplay(_INTL("{1} ate and stored {2}'s {3}!",user.pbThis,
            b.pbThis(true),old_target_item.name))
@@ -3398,7 +3400,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:MASTERTHIEF,
       if !user.item
         user.item = b.item
         b.item = nil
-        b.effects[PBEffects::Unburden] = true
+        b.effects[PBEffects::Unburden] = true if b.hasActiveAbility?(:UNBURDEN)
         if battle.wildBattle? && !user.initialItem && user.item == b.initialItem
           user.setInitialItem(user.item)
           b.setInitialItem(nil)
@@ -3416,7 +3418,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:MASTERTHIEF,
       else
         old_target_item = b.item
         b.item = nil
-        b.effects[PBEffects::Unburden] = true
+        b.effects[PBEffects::Unburden] = true if b.hasActiveAbility?(:UNBURDEN)
         if Battle::Scene::USE_ABILITY_SPLASH
           battle.pbDisplay(_INTL("{1} knocked off {2}'s {3}!",user.pbThis,
             b.pbThis(true),old_target_item.name))
@@ -3426,6 +3428,59 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:MASTERTHIEF,
         end
         battle.pbHideAbilitySplash(user)
       end
+    end
+  }
+)
+
+Battle::AbilityEffects::OnEndOfUsingMove.add(:TASTYTREAT,
+  proc { |ability,user,targets,move,battle|
+    next if battle.futureSight
+    next if !move.pbDamagingMove?
+    targets.each do |b|
+      next if b.damageState.unaffected || b.damageState.substitute
+      next if !b.item
+      next if b.unlosableItem?(b.item) || user.unlosableItem?(b.item)
+      food_items_with_battle_handler_list = [:LAVACOOKIE, :OLDGATEAU, :CASTELIACONE, :BERRYJUICE, :RAGECANDYBAR, :SWEETHEART, :FRESHWATER, :SODAPOP, :LEMONADE, :MOOMOOMILK, :ENERGYPOWDER, :ENERGYROOT, :HEALPOWDER, :CHERIBERRY, :CHESTOBERRY, :PECHABERRY, :RAWSTBERRY, :ASPEARBERRY, :ORANBERRY, :PERSIMBERRY, :LUMBERRY, :SITRUSBERRY, :LUMIOSEGALETTE, :SHALOURSABLE, :BIGMALASADA]
+      food_items_without_battle_handler_list = [:HONEY, :REDAPRICORN, :YELLOWAPRICORN, :BLUEAPRICORN, :GREENAPRICORN, :PINKAPRICORN, :WHITEAPRICORN, :BLACKAPRICORN, :TINYMUSHROOM, :BIGMUSHROOM, :BALMMUSHROOM, :LUCKYEGG, :BIGROOT, :BLACKSLUDGE, :LEFTOVERS, :MENTALHERB, :WHITEHERB, :POWERHERB, :ABSORBBULB, :MIRACLESEED, :SACREDASH, :REVIVALHERB, :LEPPABERRY, :FIGYBERRY, :WIKIBERRY, :MAGOBERRY, :AGUAVBERRY, :IAPAPABERRY, :RAZZBERRY, :BLUKBERRY, :NANABBERRY, :WEPEARBERRY, :PINAPBERRY, :POMEGBERRY, :KELPSYBERRY, :QUALOTBERRY, :HONDEWBERRY, :GREPABERRY, :TAMATOBERRY, :CORNNBERRY, :MAGOSTBERRY, :RABUTABERRY, :NOMELBERRY, :SPELONBERRY, :PAMTREBERRY, :WATMELBERRY, :DURINBERRY, :BELUEBERRY, :OCCABERRY, :PASSHOBERRY, :WACANBERRY, :RINDOBERRY, :YACHEBERRY, :CHOPLEBERRY, :KEBIABERRY, :SHUCABERRY, :COBABERRY, :PAYAPABERRY, :TANGABERRY, :CHARTIBERRY, :KASIBBERRY, :HABANBERRY, :COLBURBERRY, :BABIRIBERRY, :CHILANBERRY, :LIECHIBERRY, :GANLONBERRY, :SALACBERRY, :PETAYABERRY, :APICOTBERRY, :LANSATBERRY, :STARFBERRY, :ENIGMABERRY, :MICLEBERRY, :CUSTAPBERRY, :JABOCABERRY, :ROWAPBERRY, :GRACIDEA, :REDNECTAR, :YELLOWNECTAR, :PINKNECTAR, :PURPLENECTAR, :ELECTRICSEED, :PSYCHICSEED, :MISTYSEED, :GRASSYSEED, :LUMINOUSMOSS, :SNOWBALL, :WHIPPEDDREAM, :ROSELIBERRY, :KEEBERRY, :MARANGABERRY, :ROYALHONEY, :LIGHTNUT, :LIGHTSEED, :ALOLANPANCAKES, :POPROCK, :RISCIBERRY, :LONELYMINT, :ADAMANTMINT, :NAUGHTYMINT, :BRAVEMINT, :BOLDMINT, :IMPISHMINT, :LAXMINT, :RELAXEDMINT, :MODESTMINT, :MILDMINT, :RASHMINT, :QUIETMINT, :CALMMINT, :GENTLEMINT, :CAREFULMINT, :SASSYMINT, :TIMIDMINT, :HASTYMINT, :JOLLYMINT, :NAIVEMINT, :SERIOUSMINT, :SWEETAPPLE, :TARTAPPLE, :STRAWBERRYSWEET, :LOVESWEET, :BERRYSWEET, :CLOVERSWEET, :FLOWERSWEET, :STARSWEET, :RIBBONSWEET]
+      food_item_list = food_items_with_battle_handler_list.union(food_items_without_battle_handler_list)
+      next if !food_item_list.include?(b.item.id)
+      battle.pbShowAbilitySplash(user)
+      if b.hasActiveAbility?(:STICKYHOLD)
+        battle.pbShowAbilitySplash(b) if user.opposes?(b)
+        if Battle::Scene::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1}'s item cannot be stolen!",b.pbThis))
+        end
+        battle.pbHideAbilitySplash(b) if user.opposes?(b)
+        next
+      end
+      old_target_item = b.item
+      b.item = nil
+      b.effects[PBEffects::Unburden] = true if b.hasActiveAbility?(:UNBURDEN)
+      if Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1} ate {2}'s {3}!",user.pbThis,
+           b.pbThis(true),old_target_item.name))
+      else
+        battle.pbDisplay(_INTL("{1} ate {2}'s {3} with {4}!",user.pbThis,
+           b.pbThis(true),old_target_item.name,user.abilityName))
+      end
+      user.pbRecoverHP(user.totalhp/4)
+      battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+      if food_items_with_battle_handler_list.include?(old_target_item.id)
+        if old_target_item.id == :REVIVALHERB ||
+           ItemHandlers.triggerCanUseInBattle(old_target_item.id, user.pokemon, user, nil, nil, battle, nil, false)
+          ItemHandlers.triggerUseInBattle(old_target_item.id, user, battle)
+          ItemHandlers.triggerBattleUseOnBattler(old_target_item.id, user, battle.scene)
+          ItemHandlers.triggerBattleUseOnPokemon(old_target_item.id, user.pokemon, user, nil, battle.scene)
+        end
+      else
+        # TODO: alt effect
+        case old_target_item.id
+        when :HONEY
+          
+        end
+      end
+      battle.pbHideAbilitySplash(user)
+      break
     end
   }
 )
@@ -5120,6 +5175,25 @@ Battle::AbilityEffects::OnSwitchIn.add(:SUBTRACTION,
     end
     battle.pbHideAbilitySplash(battler)
     battle.subtractionMessageDisplayed[battler.index % 2] = true
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:SKILLSCAN,
+  proc { |ability, battler, battle, switch_in|
+    types = battler.pbTypes(true)
+    showSprite = false
+    battler.eachOpposing do |b|
+      b.eachMove do |m|
+        next if !m.pbDamagingMove?
+        next if !Effectiveness.super_effective_type?(m.type, types[0], types[1], types[2])
+        showSprite = true
+        break
+      end
+    end
+    if showSprite
+      # TODO: show skill scan sprite
+      battle.pbDisplay(_INTL("!!!!!!!!!!!!!!"))
+    end
   }
 )
 

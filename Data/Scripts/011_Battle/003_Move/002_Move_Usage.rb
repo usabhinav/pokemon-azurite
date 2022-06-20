@@ -274,6 +274,9 @@ class Battle::Move
         else
           oldHP += b.damageState.hpLost
           PBDebug.log("[Move damage] #{b.pbThis} lost #{b.damageState.hpLost} HP (#{oldHP}=>#{b.hp})")
+          # Increase damage dealt for user and damage taken for target
+          user.pokemon.increase_damage_dealt(b.damageState.hpLost) if user.pokemon
+          b.pokemon.increase_damage_taken(b.damageState.hpLost) if b.pokemon
         end
         effectiveness = 0
         if Effectiveness.resistant?(b.damageState.typeMod)

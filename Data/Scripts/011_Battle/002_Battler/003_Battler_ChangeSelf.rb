@@ -67,6 +67,8 @@ class Battle::Battler
       return
     end
     return if @fainted   # Has already fainted properly
+    # Increase faint counter
+    @pokemon.increase_faint_count if @pokemon
     # Shed Spikes Armor
     if @effects[PBEffects::SpikesArmor] > 0
       pbOwnSide.effects[PBEffects::Spikes] += [@effects[PBEffects::SpikesArmor], 3].min

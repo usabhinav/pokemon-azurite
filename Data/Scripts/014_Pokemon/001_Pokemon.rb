@@ -86,6 +86,14 @@ class Pokemon
   attr_accessor :cannot_release
   # Whether this Pokémon can be traded
   attr_accessor :cannot_trade
+  # Amount of damage dealt by this Pokemon in battles
+  attr_accessor :damage_dealt
+  # Amount of damage taken by this Pokemon in battles
+  attr_accessor :damage_taken
+  # Number of KOs by this Pokemon in battles
+  attr_accessor :ko_count
+  # Number of times this Pokemon has fainted in battles
+  attr_accessor :faint_count
 
   # Max total IVs
   IV_STAT_LIMIT = 31
@@ -1133,6 +1141,26 @@ class Pokemon
     @speed   = stats[:SPEED]
   end
 
+  # Increases damage dealt by amount (caps at 999999)
+  def increase_damage_dealt(amount)
+    @damage_dealt = [@damage_dealt + amount, 999999].min
+  end
+
+  # Increases damage taken by amount (caps at 999999)
+  def increase_damage_taken(amount)
+    @damage_taken = [@damage_taken + amount, 999999].min
+  end
+
+  # Increases KO count (caps at 999999)
+  def increase_ko_count
+    @ko_count += 1 if @ko_count < 999999
+  end
+
+  # Increases faint count (caps at 999999)
+  def increase_faint_count
+    @faint_count += 1 if @faint_count < 999999
+  end
+
   #=============================================================================
   # Pokémon creation
   #=============================================================================
@@ -1220,6 +1248,10 @@ class Pokemon
     @timeEggHatched   = nil
     @fused            = nil
     @personalID       = rand(2**16) | (rand(2**16) << 16)
+    @damage_dealt     = 0
+    @damage_taken     = 0
+    @ko_count         = 0
+    @faint_count      = 0
     @hp               = 1
     @totalhp          = 1
     calc_stats

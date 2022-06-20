@@ -196,6 +196,7 @@ class Battle::Battler
       if targets && targets.length > 0
         @battle.pbShowAbilitySplash(self)
         @battle.pbDisplayBrief(_INTL("{1}'s move healed instead of causing damage!", pbThis))
+        pbReducePP(choice[2])
         choice[2] = Battle::Move.from_pokemon_move(@battle, Pokemon::Move.new(:SUGARPOWERMOVE))
         targets.each do |t|
           choice[2].pbCalcDamage(self, t, targets.length)

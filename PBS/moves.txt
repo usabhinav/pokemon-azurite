@@ -12918,3 +12918,14 @@ FunctionCode = OHKO
 Flags = CanMirrorMove
 EffectChance = 100
 Description = The user smites the target, causing it to faint instantly if it hits.
+#-------------------------------
+[SUGARPOWERMOVE]
+Name = Sugar Power Move
+Type = WATER
+Category = Status
+Accuracy = 0
+TotalPP = 10
+Target = Other
+FunctionCode = HealTargetByCustomAmount
+Flags = CanProtect
+Description = This move is used by the Sugar Power ability to heal its targets. It is not meant to be an actual move.

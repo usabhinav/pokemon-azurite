@@ -190,6 +190,27 @@ class Battle::Battler
         choice[2] = @moves[idxEncoredMove]
         choice[3] = -1   # No target chosen
       end
+    # Sugar Power
+    elsif hasActiveAbility?(:SUGARPOWER) && choice[2].type == :WATER && choice[2].damagingMove?
+      targets = pbFindTargets(choice, choice[2], self)
+      if targets && targets.length > 0
+        @battle.pbShowAbilitySplash(self)
+        @battle.pbDisplayBrief(_INTL("{1}'s move healed instead of causing damage!", pbThis))
+        choice[2] = Battle::Move.from_pokemon_move(@battle, Pokemon::Move.new(:SUGARPOWERMOVE))
+        targets.each do |t|
+          choice[2].pbCalcDamage(self, t, targets.length)
+          choice[2].healAmt = t.damageState.calcDamage
+          t.damageState.calcDamage = 0
+          choice[3] = t.index
+          saveLastRoundMoved = self.lastRoundMoved
+          pbUseMove(choice, true)
+          self.lastRoundMoved = saveLastRoundMoved
+        end
+        @battle.pbHideAbilitySplash(self)
+        self.lastRoundMoved = @battle.turnCount
+        return
+      end
+    # Vermilingua
     else
       hasabil = @battle.pbCheckGlobalAbility(:VERMILINGUA)
       if hasabil && pbHasType?(:BUG) && !hasActiveAbility?(:VERMILINGUA)

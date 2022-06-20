@@ -684,3 +684,17 @@ class Battle::Move::SetAttackerMovePPTo0IfUserFaints < Battle::Move
     @battle.pbDisplay(_INTL("{1} wants its target to bear a grudge!", user.pbThis))
   end
 end
+
+#===============================================================================
+# Healing move used for Sugar Power ability.
+#===============================================================================
+class Battle::Move::HealTargetByCustomAmount < Battle::Move::HealTargetHalfOfTotalHP
+  attr_accessor :healAmt
+
+  def pbDisplayUseMessage(user); end
+
+  def pbEffectAgainstTarget(user, target)
+    target.pbRecoverHP(@healAmt)
+    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+  end
+end

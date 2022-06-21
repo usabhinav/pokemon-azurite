@@ -105,6 +105,14 @@ class Pokemon
   MAX_NAME_SIZE = 10
   # Maximum number of moves a Pokémon can know at once
   MAX_MOVES     = 4
+  # Maximum damage dealt that can be recorded
+  MAX_DAMAGE_DEALT = 1000000
+  # Maximum damage taken that can be recorded
+  MAX_DAMAGE_TAKEN = 1000000
+  # Maximum number of KOs that can be recorded
+  MAX_KO_COUNT = 1000000
+  # Maximum number of faints that can be recorded
+  MAX_FAINT_COUNT = 1000000
 
   def self.play_cry(species, form = 0, volume = 90, pitch = 100)
     GameData::Species.play_cry_from_species(species, form, volume, pitch)
@@ -1141,24 +1149,44 @@ class Pokemon
     @speed   = stats[:SPEED]
   end
 
-  # Increases damage dealt by amount (caps at 999999)
+  # Increases damage dealt by amount (caps at MAX_DAMAGE_DEALT)
   def increase_damage_dealt(amount)
-    @damage_dealt = [@damage_dealt + amount, 999999].min
+    @damage_dealt = [@damage_dealt + amount, MAX_DAMAGE_DEALT].min
   end
 
-  # Increases damage taken by amount (caps at 999999)
+  # Returns if damage dealt is at highest that can be recorded
+  def damage_dealt_max?
+    return @damage_dealt == MAX_DAMAGE_DEALT
+  end
+
+  # Increases damage taken by amount (caps at MAX_DAMAGE_TAKEN)
   def increase_damage_taken(amount)
-    @damage_taken = [@damage_taken + amount, 999999].min
+    @damage_taken = [@damage_taken + amount, MAX_DAMAGE_TAKEN].min
   end
 
-  # Increases KO count (caps at 999999)
+  # Returns if damage taken is at highest that can be recorded
+  def damage_taken_max?
+    return @damage_taken == MAX_DAMAGE_TAKEN
+  end
+
+  # Increases KO count (caps at MAX_KO_COUNT)
   def increase_ko_count
-    @ko_count += 1 if @ko_count < 999999
+    @ko_count += 1 if @ko_count < MAX_KO_COUNT
   end
 
-  # Increases faint count (caps at 999999)
+  # Returns if KO count is at highest that can be recorded
+  def ko_count_max?
+    return @ko_count == MAX_KO_COUNT
+  end
+
+  # Increases faint count (caps at MAX_FAINT_COUNT)
   def increase_faint_count
-    @faint_count += 1 if @faint_count < 999999
+    @faint_count += 1 if @faint_count < MAX_FAINT_COUNT
+  end
+
+  # Returns if faint count is at highest that can be recorded
+  def faint_count_max?
+    return @faint_count == MAX_FAINT_COUNT
   end
 
   #=============================================================================

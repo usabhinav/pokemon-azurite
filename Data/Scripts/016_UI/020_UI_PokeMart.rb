@@ -454,8 +454,8 @@ class PokemonMart_Scene
         return if brief
         pbRefresh if i == 0
       end
-      if Input.trigger?(Input::USE) && cw.busy?
-        cw.resume
+      if Input.trigger?(Input::USE) || Input.trigger?(Input::BACK)
+        cw.resume if cw.busy?
       end
       return if i >= Graphics.frame_rate * 3 / 2
       i += 1 if !cw.busy?
@@ -480,9 +480,11 @@ class PokemonMart_Scene
         yielded = true
       end
       pbRefresh if !cw.busy? && wasbusy
-      if Input.trigger?(Input::USE) && cw.resume && !cw.busy?
-        @sprites["helpwindow"].visible = false
-        return
+      if Input.trigger?(Input::USE) || Input.trigger?(Input::BACK)
+        if cw.resume && !cw.busy?
+          @sprites["helpwindow"].visible = false
+          break
+        end
       end
     end
   end
@@ -813,11 +815,10 @@ def pbApparelMart(stock,speech=nil)
       screen = PokemonMartScreen.new(scene,stock,true)
       screen.pbBuyScreen
     else
-      pbMessage(_INTL("Please come again!"))
+      pbMessage(_INTL("Do come again!"))
       break
     end
-    cmd = pbMessage(_INTL("Is there anything else I can help you with?"),
-       commands,cmdQuit+1)
+    cmd = pbMessage(_INTL("Is there anything else I can do for you?"), commands, cmdQuit + 1)
   end
   $game_temp.clear_mart_prices
 end

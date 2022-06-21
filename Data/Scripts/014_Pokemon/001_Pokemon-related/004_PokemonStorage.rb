@@ -189,7 +189,6 @@ class PokemonStorage
     else   # Copying into box
       pkmn = self[boxSrc, indexSrc]
       raise "Trying to copy nil to storage" if !pkmn
-      pkmn.form = 0 if pkmn.isSpecies?(:SHAYMIN)
       if Settings::HEAL_STORED_POKEMON
         old_ready_evo = pkmn.ready_to_evolve
         pkmn.heal
@@ -219,7 +218,6 @@ class PokemonStorage
   def pbMoveCaughtToBox(pkmn, box)
     maxPokemon(box).times do |i|
       next unless self[box, i].nil?
-      pkmn.form = 0 if pkmn.isSpecies?(:SHAYMIN)
       if Settings::HEAL_STORED_POKEMON && box >= 0
         old_ready_evo = pkmn.ready_to_evolve
         pkmn.heal

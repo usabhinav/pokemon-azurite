@@ -117,7 +117,7 @@ end
 #===============================================================================
 # Cursor
 #===============================================================================
-class PokemonBoxArrow < SpriteWrapper
+class PokemonBoxArrow < Sprite
   attr_accessor :quickswap
 
   def initialize(viewport = nil)
@@ -288,7 +288,7 @@ end
 #===============================================================================
 # Box
 #===============================================================================
-class PokemonBoxSprite < SpriteWrapper
+class PokemonBoxSprite < Sprite
   attr_accessor :refreshBox
   attr_accessor :refreshSprites
 
@@ -443,7 +443,7 @@ end
 #===============================================================================
 # Party pop-up panel
 #===============================================================================
-class PokemonBoxPartySprite < SpriteWrapper
+class PokemonBoxPartySprite < Sprite
   def initialize(party, viewport = nil)
     super(viewport)
     @party = party
@@ -1728,7 +1728,6 @@ class PokemonStorageScreen
           end
           if heldpoke || selected[0] == -1
             p = (heldpoke) ? heldpoke : @storage[-1, index]
-            p.form = 0 if p.isSpecies?(:SHAYMIN)
             if Settings::HEAL_STORED_POKEMON
               old_ready_evo = p.ready_to_evolve
               p.heal

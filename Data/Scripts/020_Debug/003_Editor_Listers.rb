@@ -224,17 +224,13 @@ class MusicFileLister
     @commands.clear
     Dir.chdir(folder) {
 #      Dir.glob("*.mp3") { |f| @commands.push(f) }
-#      Dir.glob("*.MP3") { |f| @commands.push(f) }
       Dir.glob("*.ogg") { |f| @commands.push(f) }
-      Dir.glob("*.OGG") { |f| @commands.push(f) }
       Dir.glob("*.wav") { |f| @commands.push(f) }
-      Dir.glob("*.WAV") { |f| @commands.push(f) }
       Dir.glob("*.mid") { |f| @commands.push(f) }
-      Dir.glob("*.MID") { |f| @commands.push(f) }
       Dir.glob("*.midi") { |f| @commands.push(f) }
-      Dir.glob("*.MIDI") { |f| @commands.push(f) }
     }
-    @commands.sort!
+    @commands.uniq!
+    @commands.sort! { |a, b| a.downcase <=> b.downcase }
     @commands.length.times do |i|
       @index = i if @commands[i] == @setting
     end
@@ -253,7 +249,36 @@ class MusicFileLister
     else
       pbPlayBGM("../../Audio/ME/" + @commands[index])
     end
+    @new_player = new_player
   end
+
+  def dispose; end
+
+  def setViewport(viewport); end
+
+  def startIndex
+    return @index
+  end
+
+  def commands
+    @commands.clear
+    @commands.push(_INTL("[GLOBAL METADATA]"))
+    @player_ids.each { |id| @commands.push(_INTL("Player {1}", id)) }
+    @commands.push(_INTL("[ADD NEW PLAYER]")) if @new_player
+    return @commands
+  end
+
+  # Cancel: -1
+  # New player: -2
+  # Global metadata: 0
+  # Player character: 1+ (the player ID itself)
+  def value(index)
+    return index if index < 1
+    return -2 if @new_player && index == @commands.length - 1
+    return @player_ids[index - 1]
+  end
+
+  def refresh(index); end
 end
 
 #===============================================================================
@@ -305,7 +330,7 @@ end
 #===============================================================================
 class MapLister
   def initialize(selmap, addGlobal = false)
-    @sprite = SpriteWrapper.new
+    @sprite = Sprite.new
     @sprite.bitmap = nil
     @sprite.x      = Graphics.width * 3 / 4
     @sprite.y      = ((Graphics.height - 64) / 2) + 64

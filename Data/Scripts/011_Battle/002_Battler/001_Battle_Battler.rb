@@ -10,8 +10,6 @@ class Battle::Battler
   attr_accessor :ability_id
   attr_accessor :item_id
   attr_accessor :moves
-  attr_accessor :gender
-  attr_accessor :iv
   attr_accessor :attack
   attr_accessor :spatk
   attr_accessor :speed

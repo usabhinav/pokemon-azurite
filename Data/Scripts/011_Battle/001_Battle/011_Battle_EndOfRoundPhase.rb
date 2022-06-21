@@ -168,16 +168,16 @@ class Battle
     #       Stomping Tantrum.
     userLastMoveFailed = moveUser.lastMoveFailed
     @futureSight = true
-    moveUser.pbUseMoveSimple(move, idxPos)
+    moveUser.pbUseMoveSimple(move, position_index)
     # Second Sight	
     if move == :FUTURESIGHT
       if moveUser.dummy
         # Cannot use moveUser.ability because it is not initialized in pbInitDummyPokemon
         if moveUser.pokemon.ability_id == :SECONDSIGHT
-          moveUser.pbUseMoveSimple(move, idxPos)
+          moveUser.pbUseMoveSimple(move, position_index)
         end
       elsif moveUser.hasActiveAbility?(:SECONDSIGHT)
-        moveUser.pbUseMoveSimple(move, idxPos)
+        moveUser.pbUseMoveSimple(move, position_index)
       end
     end
     @futureSight = false

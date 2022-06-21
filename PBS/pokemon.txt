@@ -19213,6 +19213,7 @@ Category = Dancing
 Pokedex = It beats its wings together to create fire. As it moves in the steps of its beautiful dance, it bathes opponents in intense flames.
 FormName = Baile Style
 Generation = 7
+Flags = InheritFormFromMother
 WildItemUncommon = HONEY
 Flags = InheritFormFromMother
 #-------------------------------

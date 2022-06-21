@@ -775,7 +775,7 @@ def pbStartSwimming()
   $game_temp.surf_base_coords = $map_factory.getFacingCoords($game_player.x, $game_player.y, $game_player.direction)
   pbJumpToward
   $game_temp.surf_base_coords = nil
-  $game_player.check_event_trigger_here([1,2])
+  $game_player.check_event_trigger_here([1, 2])
 end
 
 def pbEndSurf(_xOffset, _yOffset)

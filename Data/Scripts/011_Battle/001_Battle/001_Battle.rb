@@ -815,6 +815,11 @@ class Battle
       # Start up the default weather
       pbStartWeather(nil, @field.defaultWeather) if @field.defaultWeather != :None
     end
+    fixed_duration = false
+    fixed_duration = true if Settings::FIXED_DURATION_WEATHER_FROM_ABILITY &&
+                             ![:HarshSun, :HeavyRain, :StrongWinds].include?(new_weather)
+    pbStartWeather(battler, new_weather, fixed_duration)
+    # NOTE: The ability splash is hidden again in def pbStartWeather.
   end
 
   def pbStartWeatherAbility(new_weather, battler, ignore_primal = false)

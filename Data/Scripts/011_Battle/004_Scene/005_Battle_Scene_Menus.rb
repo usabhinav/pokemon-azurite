@@ -139,7 +139,7 @@ class Battle::Scene::CommandMenu < Battle::Scene::MenuBase
       @buttonBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/battleCommandButtons"))
       # Create action buttons
       @buttons = Array.new(4) do |i|   # 4 command options, therefore 4 buttons
-        button = SpriteWrapper.new(viewport)
+        button = Sprite.new(viewport)
         button.bitmap = @buttonBitmap.bitmap
         button.x = self.x + Graphics.width - 260
         button.x += (i.even? ? 0 : (@buttonBitmap.width / 2) - 4)
@@ -252,7 +252,7 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
       addSprite("background", background)
       # Create move buttons
       @buttons = Array.new(Pokemon::MAX_MOVES) do |i|
-        button = SpriteWrapper.new(viewport)
+        button = Sprite.new(viewport)
         button.bitmap = @buttonBitmap.bitmap
         button.x = self.x + 4
         button.x += (i.even? ? 0 : (@buttonBitmap.width / 2) - 4)
@@ -276,14 +276,14 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
       pbSetNarrowFont(@infoOverlay.bitmap)
       addSprite("infoOverlay", @infoOverlay)
       # Create type icon
-      @typeIcon = SpriteWrapper.new(viewport)
+      @typeIcon = Sprite.new(viewport)
       @typeIcon.bitmap = @typeBitmap.bitmap
       @typeIcon.x      = self.x + 416
       @typeIcon.y      = self.y + 20
       @typeIcon.src_rect.height = TYPE_ICON_HEIGHT
       addSprite("typeIcon", @typeIcon)
       # Create Mega Evolution button
-      @megaButton = SpriteWrapper.new(viewport)
+      @megaButton = Sprite.new(viewport)
       @megaButton.bitmap = @megaEvoBitmap.bitmap
       @megaButton.x      = self.x + 4 + @buttonBitmap.width / 2 - (@megaEvoBitmap.width / 5) / 2
       @megaButton.y      = self.y + 6 + BUTTON_HEIGHT - (@megaEvoBitmap.width / 4) / 2
@@ -291,7 +291,7 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
       @megaButton.src_rect.height = @megaEvoBitmap.height / 4
       addSprite("megaButton", @megaButton)
       # Create Shift button
-      @shiftButton = SpriteWrapper.new(viewport)
+      @shiftButton = Sprite.new(viewport)
       @shiftButton.bitmap = @shiftBitmap.bitmap
       @shiftButton.x      = self.x + 4
       @shiftButton.y      = self.y - @shiftBitmap.height
@@ -498,7 +498,7 @@ class Battle::Scene::TargetMenu < Battle::Scene::MenuBase
     # NOTE: @mode is for which buttons are shown as selected.
     #       0=select 1 button (@index), 1=select all buttons with text
     # Create bitmaps
-    @buttonBitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/Battle/cursor_target"))
+    @buttonBitmap = AnimatedBitmap.new("Graphics/Pictures/Battle/cursor_target")
     # Create target buttons
     @buttons = Array.new(maxIndex + 1) do |i|
       numButtons = @sideSizes[i % 2]
@@ -507,7 +507,7 @@ class Battle::Scene::TargetMenu < Battle::Scene::MenuBase
       #       that side's trainer, so inc is different for each side for the
       #       same value of i/2.
       inc = (i.even?) ? i / 2 : numButtons - 1 - (i / 2)
-      button = SpriteWrapper.new(viewport)
+      button = Sprite.new(viewport)
       button.bitmap = @buttonBitmap.bitmap
       button.src_rect.width  = (@smallButtons) ? CMD_BUTTON_WIDTH_SMALL : @buttonBitmap.width / 2
       button.src_rect.height = BUTTON_HEIGHT

@@ -3647,7 +3647,7 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:ICEFACE,
 
 Battle::AbilityEffects::EndOfRoundWeather.add(:RAINDISH,
   proc { |ability, weather, battler, battle|
-    next unless [:Rain, :HeavyRain, :Thunderstorm].include?(weather)
+    next unless [:Rain, :HeavyRain].include?(weather)
     next if !battler.canHeal?
     battle.pbShowAbilitySplash(battler)
     battler.pbRecoverHP(battler.totalhp / 16)
@@ -4266,7 +4266,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:DARKAURA,
 
 Battle::AbilityEffects::OnSwitchIn.add(:DAUNTLESSSHIELD,
   proc { |ability, battler, battle, switch_in|
-    battler.pbRaiseStatStageByAbility(:ATTACK, 1, battler)
+    battler.pbRaiseStatStageByAbility(:DEFENSE, 1, battler)
   }
 )
 

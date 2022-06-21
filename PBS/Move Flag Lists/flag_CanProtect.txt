@@ -171,6 +171,7 @@ Final Gambit
 Low Kick
 Reversal
 Seismic Toss
+Octolock
 V-create
 Blast Burn
 Eruption
@@ -467,6 +468,7 @@ Acid
 Acid Spray
 Smog
 Poison Sting
+Corrosive Gas
 Gastro Acid
 Poison Gas
 Poison Powder
@@ -505,6 +507,7 @@ Heart Swap
 Hypnosis
 Instruct
 Kinesis
+Magic Powder
 Miracle Eye
 Power Split
 Power Swap
@@ -527,6 +530,7 @@ Smack Down
 Accelerock
 Rollout
 Rock Blast
+Tar Shot
 Steel Beam
 Steel Roller
 Behemoth Bash
@@ -829,9 +833,6 @@ Web Tie
 Scare Off
 Power Blast
 Self-Destruct
-Octolock
-Magic Powder
-Tar Shot
 Heat Wave
 Stare
 Armor Pierce

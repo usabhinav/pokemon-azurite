@@ -9,6 +9,7 @@ Bug Buzz
 Snarl
 Parting Shot
 Clanging Scales
+Clangorous Soul
 Overdrive
 Disarming Voice
 Chatter
@@ -23,6 +24,7 @@ Echoed Voice
 Confide
 Growl
 Heal Bell
+Howl
 Noble Roar
 Perish Song
 Roar
@@ -61,5 +63,4 @@ Binaural Beat
 Cymbal Clap
 Cadenza
 War Cry
-Clangorous Soul
 Bassquake

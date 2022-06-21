@@ -22,6 +22,7 @@ Mega Punch
 Dizzy Punch
 Comet Punch
 Meteor Mash
+Double Iron Bash
 Bullet Punch
 Consecutive Punch
 Magnum Punch

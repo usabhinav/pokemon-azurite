@@ -169,6 +169,8 @@ Triple Kick
 Low Kick
 Reversal
 Seismic Toss
+Coaching
+Octolock
 V-create
 Blast Burn
 Eruption
@@ -420,6 +422,7 @@ Bestow
 Block
 Captivate
 Confide
+Court Change
 Disable
 Encore
 Entrainment
@@ -466,6 +469,7 @@ Acid
 Acid Spray
 Smog
 Poison Sting
+Corrosive Gas
 Gastro Acid
 Poison Gas
 Poison Powder
@@ -500,6 +504,7 @@ Heal Block
 Heart Swap
 Hypnosis
 Kinesis
+Magic Powder
 Magic Room
 Miracle Eye
 Power Swap
@@ -524,6 +529,7 @@ Smack Down
 Accelerock
 Rollout
 Rock Blast
+Tar Shot
 Steel Beam
 Steel Roller
 Behemoth Bash
@@ -838,11 +844,6 @@ Brave Bug
 Web Tie
 Power Blast
 Self-Destruct
-Octolock
-Court Change
-Stuff Cheeks
-Magic Powder
-Tar Shot
 Heat Wave
 Stare
 Armor Pierce

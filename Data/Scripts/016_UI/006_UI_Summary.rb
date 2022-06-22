@@ -99,6 +99,147 @@ end
 #===============================================================================
 #
 #===============================================================================
+class PartyRotationSprite < Sprite
+  attr_accessor :index
+  attr_accessor :moving_up # If false, is moving down
+
+  def initialize(viewport = nil, party = nil, start_index = nil)
+    super(viewport)
+    @party = party
+    @index = start_index
+    @moving_up = true
+    @circle_points = generate_points_along_circle(0, 0, 46)
+    @num_points_in_octant = @circle_points.length / 8
+    @sprites = []
+    @sprite_position_index_list = [] # Tracks position in circle for each sprite
+    @sprite_party_position_list = [] # Tracks which Pokemon in party for each sprite
+    party_index = decrement_index(decrement_index(start_index, @party.length - 1), @party.length - 1)
+    # Start with upper right corner of ball and goes counter-clockwise (to lower left corner)
+    for i in 0...5
+      @sprites.push(create_icon_sprite(viewport, party[party_index], i))
+      @sprite_position_index_list.push(@num_points_in_octant * i)
+      @sprite_party_position_list.push(party_index)
+      party_index = increment_index(party_index, @party.length - 1)
+    end
+    @updating = false
+  end
+
+  def dispose
+    for sprite in @sprites
+      sprite.dispose
+    end
+    super
+  end
+
+  def update
+    @updating = true
+    super
+    # Currently highlighted Pokemon is in lower right corner, so don't rotate
+    if (@sprite_position_index_list[2] == @num_points_in_octant * 2) && @sprite_party_position_list[2] == @index
+      @updating = false
+      return
+    end
+    # Rotate all sprites a little
+    for i in 0...@sprites.length
+      if @moving_up
+        @sprite_position_index_list[i] = decrement_index(@sprite_position_index_list[i], @circle_points.length - 1)
+      else
+        @sprite_position_index_list[i] = increment_index(@sprite_position_index_list[i], @circle_points.length - 1)
+      end
+      @sprites[i].x = @circle_points[@sprite_position_index_list[i]][0]
+      @sprites[i].y = @circle_points[@sprite_position_index_list[i]][1]
+      @sprites[i].update
+    end
+    # If sprite at top is out of bounds, wrap around to bottom
+    if @moving_up && @sprite_position_index_list[0] < @circle_points.length &&
+       @sprite_position_index_list[0] > @num_points_in_octant * 7
+      # Move uppermost sprite to bottom
+      @sprites.push(@sprites.delete_at(0))
+      @sprite_position_index_list.push(@sprite_position_index_list.delete_at(0))
+      @sprite_party_position_list.push(@sprite_party_position_list.delete_at(0))
+      # Reset sprite's coordinates and Pokemon
+      i = @sprites.length - 1
+      @sprite_position_index_list[i] = @sprite_position_index_list[i - 1] + @num_points_in_octant
+      @sprite_party_position_list[i] = increment_index(@sprite_party_position_list[i - 1], @party.length - 1)
+      @sprites[i].x = @circle_points[@sprite_position_index_list[i]][0]
+      @sprites[i].y = @circle_points[@sprite_position_index_list[i]][1]
+      @sprites[i].pokemon = @party[@sprite_party_position_list[i]]
+      @sprites[i].update
+    end
+    # If sprite at bottom is out of bounds, wrap around to top
+    if !@moving_up && @sprite_position_index_list[@sprites.length - 1] > (@num_points_in_octant * 4) &&
+       @sprite_position_index_list[@sprites.length - 1] < (@num_points_in_octant * 5)
+      i = @sprites.length - 1
+      # Move lowermost sprite to top
+      @sprites.insert(0, @sprites.delete_at(i))
+      @sprite_position_index_list.insert(0, @sprite_position_index_list.delete_at(i))
+      @sprite_party_position_list.insert(0, @sprite_party_position_list.delete_at(i))
+      # Reset sprite's coordinates and Pokemon
+      @sprite_position_index_list[0] = @sprite_position_index_list[1] - @num_points_in_octant
+      @sprite_party_position_list[0] = decrement_index(@sprite_party_position_list[1], @party.length - 1)
+      @sprites[0].pokemon = @party[@sprite_party_position_list[0]]
+      @sprites[0].x = @circle_points[@sprite_position_index_list[0]][0]
+      @sprites[0].y = @circle_points[@sprite_position_index_list[0]][1]
+      @sprites[0].update
+    end
+    @updating = false
+  end
+
+  # Increments a counter with wrap-around
+  def increment_index(index, maximum)
+    new_index = index + 1
+    new_index = 0 if new_index > maximum
+    return new_index
+  end
+
+  # Decrements a counter with wrap-around
+  def decrement_index(index, maximum)
+    new_index = index - 1
+    new_index = maximum if new_index < 0
+    return new_index
+  end
+
+  # Returns icon sprite at a specific point on the circle
+  def create_icon_sprite(viewport, pkmn, i)
+    icon_sprite = PokemonIconSprite.new(pkmn, viewport)
+    icon_sprite.setOffset(PictureOrigin::CENTER)
+    icon_sprite.x = @circle_points[@num_points_in_octant * i][0]
+    icon_sprite.y = @circle_points[@num_points_in_octant * i][1]
+    icon_sprite.zoom_x = 0.5
+    icon_sprite.zoom_y = 0.5
+    return icon_sprite
+  end
+
+  # Generates set of points along outline of circle for sprites to move along
+  def generate_points_along_circle(center_x, center_y, r)
+    # Starts from the bottom-most point of the circle, goes counter-clockwise
+    # Octant 0 starts from the bottom-most octant on the right, and octants increment counter-clockwise
+    octants = Array.new(8) {|i| Array.new}
+    x = center_x
+    y = center_y + r
+    while x < y
+      y = (center_y + Math.sqrt(r * r - (x - center_x) * (x - center_x))).round
+      dist_x = x - center_x
+      dist_y = y - center_y
+      octants[0].push([center_x + dist_x, center_y + dist_y])
+      octants[1].push([center_x + dist_y, center_y + dist_x])
+      octants[2].push([center_x + dist_y, center_y - dist_x])
+      octants[3].push([center_x + dist_x, center_y - dist_y])
+      octants[4].push([center_x - dist_x, center_y - dist_y])
+      octants[5].push([center_x - dist_y, center_y - dist_x])
+      octants[6].push([center_x - dist_y, center_y + dist_x])
+      octants[7].push([center_x - dist_x, center_y + dist_y])
+      x += 1
+    end
+    # Returns starting from octant 2 and going clockwise
+    points = octants[2].reverse + octants[1] + octants[0].reverse + octants[7] + octants[6].reverse + octants[5] + octants[4].reverse + octants[3]
+    return points
+  end
+end
+
+#===============================================================================
+#
+#===============================================================================
 class PokemonSummary_Scene
   MARK_WIDTH  = 16
   MARK_HEIGHT = 16
@@ -119,6 +260,7 @@ class PokemonSummary_Scene
     @markingbitmap = AnimatedBitmap.new("Graphics/Pictures/Summary/markings")
     @sprites = {}
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
+    @sprites["partyrotation"] = PartyRotationSprite.new(@viewport, @party, @partyindex)
     @sprites["pokemon"] = PokemonSprite.new(@viewport)
     @sprites["pokemon"].setOffset(PictureOrigin::CENTER)
     @sprites["pokemon"].x = 104
@@ -129,9 +271,10 @@ class PokemonSummary_Scene
     @sprites["pokeicon"].x       = 46
     @sprites["pokeicon"].y       = 92
     @sprites["pokeicon"].visible = false
-    @sprites["itemicon"] = ItemIconSprite.new(30, 320, @pokemon.item_id, @viewport)
+    @sprites["itemicon"] = ItemIconSprite.new(16, 368, @pokemon.item_id, @viewport)
     @sprites["itemicon"].blankzero = true
-    @sprites["itemicon"].visible = false
+    @sprites["itemicon"].zoom_x = 0.5
+    @sprites["itemicon"].zoom_y = 0.5
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
     @sprites["movepresel"] = MoveSelectionSprite.new(@viewport)
@@ -340,7 +483,7 @@ class PokemonSummary_Scene
     ]
     # Write the held item's name
     if @pokemon.hasItem?
-      textpos.push([@pokemon.item.name, 16, 358, 0, base, shadow, 1])
+      textpos.push([@pokemon.item.name, 40, 358, 0, base, shadow, 1])
     else
       textpos.push([_INTL("None"), 16, 358, 0, base, shadow, 1])
     end
@@ -445,8 +588,8 @@ class PokemonSummary_Scene
       endexp = @pokemon.growth_rate.minimum_exp_for_level(@pokemon.level + 1)
       textpos.push([_INTL("KOs"), 234, 278, 0, base, shadow, 1])
       textpos.push([_INTL("Damage"), 234, 310, 0, base, shadow, 1])
-      textpos.push([@pokemon.exp.to_s, 286, 362, 1, base, shadow, 1])
-      textpos.push([(endexp - @pokemon.exp).to_s, 494, 344, 1, base, shadow, 1])
+      textpos.push([@pokemon.exp.to_s, 494, 344, 1, base, shadow, 1])
+      textpos.push([(endexp - @pokemon.exp).to_s, 286, 362, 1, base, shadow, 1])
       # Draw KO count
       if !@pokemon.ko_count_max?
         textpos.push([_INTL(@pokemon.ko_count.to_s), 402, 278, 1, Color.new(153,255,255), shadow, 1])
@@ -516,7 +659,7 @@ class PokemonSummary_Scene
     ]
     # Write the held item's name
     if @pokemon.hasItem?
-      textpos.push([@pokemon.item.name, 16, 358, 0, base, shadow, 1])
+      textpos.push([@pokemon.item.name, 40, 358, 0, base, shadow, 1])
     else
       textpos.push([_INTL("None"), 16, 358, 0, base, shadow, 1])
     end
@@ -718,7 +861,6 @@ class PokemonSummary_Scene
                 Color.new(136, 48, 48)]   # Zero PP
     @sprites["pokemon"].visible  = true
     @sprites["pokeicon"].visible = false
-    @sprites["itemicon"].visible = false
     textpos  = []
     imagepos = []
     # Write move names, types and PP amounts for each known move
@@ -739,7 +881,7 @@ class PokemonSummary_Scene
           elsif move.pp * 2 <= move.total_pp
             ppfraction = 1
           end
-          textpos.push([sprintf("%d/%d", move.pp, move.total_pp), 460, yPos + 32, 1, ppBase[ppfraction], ppShadow[ppfraction]])
+          textpos.push([sprintf("%d/%d", move.pp, move.total_pp), 460, yPos + 32, 1, ppBase[ppfraction], ppShadow[ppfraction], 1])
         end
       else
         textpos.push(["-", 316, yPos, 0, moveBase, moveShadow, 1])
@@ -759,11 +901,11 @@ class PokemonSummary_Scene
     shadow = Color.new(66, 66, 81)
     moveBase   = Color.new(64, 64, 64)
     moveShadow = Color.new(176, 176, 176)
-    ppBase   = [moveBase,                # More than 1/2 of total PP
+    ppBase   = [base,                # More than 1/2 of total PP
                 Color.new(248, 192, 0),    # 1/2 of total PP or less
                 Color.new(248, 136, 32),   # 1/4 of total PP or less
                 Color.new(248, 72, 72)]    # Zero PP
-    ppShadow = [moveShadow,             # More than 1/2 of total PP
+    ppShadow = [shadow,             # More than 1/2 of total PP
                 Color.new(144, 104, 0),   # 1/2 of total PP or less
                 Color.new(144, 72, 24),   # 1/4 of total PP or less
                 Color.new(136, 48, 48)]   # Zero PP
@@ -804,7 +946,7 @@ class PokemonSummary_Scene
           elsif move.pp * 2 <= move.total_pp
             ppfraction = 1
           end
-          textpos.push([sprintf("%d/%d", move.pp, move.total_pp), 460, yPos + 32, 1, ppBase[ppfraction], ppShadow[ppfraction]])
+          textpos.push([sprintf("%d/%d", move.pp, move.total_pp), 460, yPos + 32, 1, ppBase[ppfraction], ppShadow[ppfraction], 1])
         end
       else
         textpos.push(["-", 316, yPos, 0, base, shadow, 1])
@@ -1319,6 +1461,10 @@ class PokemonSummary_Scene
         if @partyindex != oldindex
           pbChangePokemon
           @ribbonOffset = 0
+          echoln "UP TRIGGER UPDATED TO INDEX = #{@partyindex}"
+          @sprites["partyrotation"].index = @partyindex
+          @sprites["partyrotation"].moving_up = false
+          @sprites["partyrotation"].update
           dorefresh = true
         end
       elsif Input.trigger?(Input::DOWN) && @partyindex < @party.length - 1
@@ -1327,6 +1473,10 @@ class PokemonSummary_Scene
         if @partyindex != oldindex
           pbChangePokemon
           @ribbonOffset = 0
+          echoln "DOWN TRIGGER UPDATED TO INDEX = #{@partyindex}"
+          @sprites["partyrotation"].index = @partyindex
+          @sprites["partyrotation"].moving_up = true
+          @sprites["partyrotation"].update
           dorefresh = true
         end
       elsif Input.trigger?(Input::LEFT) && !@pokemon.egg?

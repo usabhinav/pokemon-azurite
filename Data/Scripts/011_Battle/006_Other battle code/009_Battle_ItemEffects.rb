@@ -1122,6 +1122,36 @@ Battle::ItemEffects::DamageCalcFromUser.add(:EONGENE,
   }
 )
 
+Battle::ItemEffects::DamageCalcFromUser.add(:ODDPLATE,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    mults[:base_damage_multiplier] *= 1.2 if type == :MYSTIC
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromUser.add(:LOUDPLATE,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    mults[:base_damage_multiplier] *= 1.2 if type == :SOUND
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromUser.add(:LUMENPLATE,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    mults[:base_damage_multiplier] *= 1.2 if type == :LIGHT
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromUser.add(:COSMOSPLATE,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    mults[:base_damage_multiplier] *= 1.2 if type == :COSMIC
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromUser.add(:SHINYPLATE,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    mults[:base_damage_multiplier] *= 1.2 if type == :CRYSTAL
+  }
+)
+
 #===============================================================================
 # DamageCalcFromTarget handlers
 # NOTE: Species-specific held items consider the original species, not the

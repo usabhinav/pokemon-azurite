@@ -5040,7 +5040,12 @@ Battle::AbilityEffects::OnSwitchIn.add(:OMNIGENE,
       :ICICLEPLATE => :ICE,
       :DRACOPLATE  => :DRAGON,
       :DREADPLATE  => :DARK,
-      :PIXIEPLATE  => :FAIRY
+      :PIXIEPLATE  => :FAIRY,
+      :ODDPLATE    => :MYSTIC,
+      :LOUDPLATE   => :SOUND,
+      :LUMENPLATE  => :LIGHT,
+      :COSMOSPLATE => :COSMIC,
+      :SHINYPLATE  => :CRYSTAL
     }
     newType = nil
     if battler.itemActive?

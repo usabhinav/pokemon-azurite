@@ -329,7 +329,8 @@ class MiningGameScene
                :SKULLFOSSIL, :ARMORFOSSIL, :CLAWFOSSIL]
     plates = [:INSECTPLATE, :DREADPLATE, :DRACOPLATE, :ZAPPLATE, :FISTPLATE,
               :FLAMEPLATE, :MEADOWPLATE, :EARTHPLATE, :ICICLEPLATE, :TOXICPLATE,
-              :MINDPLATE, :STONEPLATE, :SKYPLATE, :SPOOKYPLATE, :IRONPLATE, :SPLASHPLATE]
+              :MINDPLATE, :STONEPLATE, :SKYPLATE, :SPOOKYPLATE, :IRONPLATE, :SPLASHPLATE,
+              :ODDPLATE,:LOUDPLATE,:LUMENPLATE,:COSMOSPLATE,:SHINYPLATE]
     @items.each do |i|
       preitem = ITEMS[i[0]][0]
       return false if preitem == newitem   # No duplicate items

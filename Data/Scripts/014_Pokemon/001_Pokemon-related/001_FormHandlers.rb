@@ -340,7 +340,12 @@ MultipleForms.register(:ARCEUS, {
       15 => [:ICICLEPLATE, :ICIUMZ],
       16 => [:DRACOPLATE,  :DRAGONIUMZ],
       17 => [:DREADPLATE,  :DARKINIUMZ],
-      18 => [:PIXIEPLATE,  :FAIRIUMZ]
+      18 => [:PIXIEPLATE,  :FAIRIUMZ],
+      19 => [:LUMENPLATE],
+      20 => [:LOUDPLATE],
+      21 => [:COSMOSPLATE],
+      22 => [:ODDPLATE],
+      23 => [:SHINYPLATE]
     }
     ret = 0
     typeArray.each do |f, items|

@@ -8303,3 +8303,48 @@ Price = 6000
 FieldUse = TR
 Move = BODYPRESS
 Description = The user attacks by slamming its body into the target. The higher the user's Defense, the more damage it inflicts.
+#-------------------------------
+[ODDPLATE]
+Name = Odd Plate
+NamePlural = Odd Plates
+Pocket = 1
+Price = 10000
+SellPrice = 500
+Flags = Fling_90
+Description = An item to be held by a Pokémon. It is a stone tablet that boosts the power of Mystic-type moves.
+#-------------------------------
+[LOUDPLATE]
+Name = Loud Plate
+NamePlural = Loud Plates
+Pocket = 1
+Price = 10000
+SellPrice = 500
+Flags = Fling_90
+Description = An item to be held by a Pokémon. It is a stone tablet that boosts the power of Sound-type moves.
+#-------------------------------
+[LUMENPLATE]
+Name = Lumen Plate
+NamePlural = Lumen Plates
+Pocket = 1
+Price = 10000
+SellPrice = 500
+Flags = Fling_90
+Description = An item to be held by a Pokémon. It is a stone tablet that boosts the power of Light-type moves.
+#-------------------------------
+[COSMOSPLATE]
+Name = Cosmos Plate
+NamePlural = Cosmos Plates
+Pocket = 1
+Price = 10000
+SellPrice = 500
+Flags = Fling_90
+Description = An item to be held by a Pokémon. It is a stone tablet that boosts the power of Cosmic-type moves.
+#-------------------------------
+[SHINYPLATE]
+Name = Shiny Plate
+NamePlural = Shiny Plates
+Pocket = 1
+Price = 10000
+SellPrice = 500
+Flags = Fling_90
+Description = An item to be held by a Pokémon. It is a stone tablet that boosts the power of Crystal-type moves.

@@ -139,7 +139,12 @@ module GameData
           :ICICLEPLATE => :ICE,
           :DRACOPLATE  => :DRAGON,
           :DREADPLATE  => :DARK,
-          :PIXIEPLATE  => :FAIRY
+          :PIXIEPLATE  => :FAIRY,
+          :ODDPLATE    => :MYSTIC,
+          :LOUDPLATE   => :SOUND,
+          :LUMENPLATE  => :LIGHT,
+          :COSMOSPLATE => :COSMIC,
+          :SHINYPLATE  => :CRYSTAL
         }
         if pkmn.hasItem?
           item_types.each do |item, item_type|
@@ -236,7 +241,7 @@ module GameData
                   :DRACOPLATE,:DREADPLATE,:EARTHPLATE,:FISTPLATE,:FLAMEPLATE,
                   :ICICLEPLATE,:INSECTPLATE,:IRONPLATE,:MEADOWPLATE,:MINDPLATE,
                   :PIXIEPLATE,:SKYPLATE,:SPLASHPLATE,:SPOOKYPLATE,:STONEPLATE,
-                  :TOXICPLATE,:ZAPPLATE
+                  :TOXICPLATE,:ZAPPLATE,:ODDPLATE,:LOUDPLATE,:LUMENPLATE,:COSMOSPLATE,:SHINYPLATE
                  ],
            80 => [:ASSAULTVEST,:CHIPPEDPOT,:CRACKEDPOT,:DAWNSTONE,:DUSKSTONE,
                   :ELECTIRIZER,:HEAVYDUTYBOOTS,:MAGMARIZER,:ODDKEYSTONE,:OVALSTONE,

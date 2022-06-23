@@ -81,7 +81,7 @@ class RibbonSelectionSprite < MoveSelectionSprite
     w = @movesel.width
     h = @movesel.height / 2
     self.x = 232 + ((self.index % 4) * 64)
-    self.y = 86 + (((self.index) / 4).floor * 80)
+    self.y = 84 + (((self.index) / 4).floor * 80)
     self.bitmap = @movesel.bitmap
   end
 
@@ -112,14 +112,25 @@ class PartyRotationSprite < Sprite
     @num_points_in_octant = @circle_points.length / 8
     @sprites = []
     @sprite_position_index_list = [] # Tracks position in circle for each sprite
-    @sprite_party_position_list = [] # Tracks which Pokemon in party for each sprite
-    party_index = decrement_index(decrement_index(start_index, @party.length - 1), @party.length - 1)
-    # Start with upper right corner of ball and goes counter-clockwise (to lower left corner)
-    for i in 0...5
-      @sprites.push(create_icon_sprite(viewport, party[party_index], i))
-      @sprite_position_index_list.push(@num_points_in_octant * i)
-      @sprite_party_position_list.push(party_index)
-      party_index = increment_index(party_index, @party.length - 1)
+    position_index = 0
+    for i in 0...start_index
+      position_index -= @num_points_in_octant
+      position_index += @circle_points.length if position_index < 0
+    end
+    # Start with lower right corner of ball and goes clockwise (to lower left corner)
+    for i in 0...@party.length
+      icon_sprite = PokemonIconSprite.new(party[i], viewport)
+      icon_sprite.setOffset(PictureOrigin::CENTER)
+      icon_sprite.x = @circle_points[position_index][0]
+      icon_sprite.y = @circle_points[position_index][1]
+      icon_sprite.zoom_x = 0.5
+      icon_sprite.zoom_y = 0.5
+      icon_sprite.opacity = (i == @index) ? 255 : 100
+      icon_sprite.update
+      @sprites.push(icon_sprite)
+      @sprite_position_index_list.push(position_index)
+      position_index += @num_points_in_octant
+      position_index -= @circle_points.length if position_index >= @circle_points.length
     end
     @updating = false
   end
@@ -135,7 +146,7 @@ class PartyRotationSprite < Sprite
     @updating = true
     super
     # Currently highlighted Pokemon is in lower right corner, so don't rotate
-    if (@sprite_position_index_list[2] == @num_points_in_octant * 2) && @sprite_party_position_list[2] == @index
+    if @sprite_position_index_list[@index] == 0
       @updating = false
       return
     end
@@ -148,39 +159,8 @@ class PartyRotationSprite < Sprite
       end
       @sprites[i].x = @circle_points[@sprite_position_index_list[i]][0]
       @sprites[i].y = @circle_points[@sprite_position_index_list[i]][1]
+      @sprites[i].opacity = (i == @index) ? 255 : 100
       @sprites[i].update
-    end
-    # If sprite at top is out of bounds, wrap around to bottom
-    if @moving_up && @sprite_position_index_list[0] < @circle_points.length &&
-       @sprite_position_index_list[0] > @num_points_in_octant * 7
-      # Move uppermost sprite to bottom
-      @sprites.push(@sprites.delete_at(0))
-      @sprite_position_index_list.push(@sprite_position_index_list.delete_at(0))
-      @sprite_party_position_list.push(@sprite_party_position_list.delete_at(0))
-      # Reset sprite's coordinates and Pokemon
-      i = @sprites.length - 1
-      @sprite_position_index_list[i] = @sprite_position_index_list[i - 1] + @num_points_in_octant
-      @sprite_party_position_list[i] = increment_index(@sprite_party_position_list[i - 1], @party.length - 1)
-      @sprites[i].x = @circle_points[@sprite_position_index_list[i]][0]
-      @sprites[i].y = @circle_points[@sprite_position_index_list[i]][1]
-      @sprites[i].pokemon = @party[@sprite_party_position_list[i]]
-      @sprites[i].update
-    end
-    # If sprite at bottom is out of bounds, wrap around to top
-    if !@moving_up && @sprite_position_index_list[@sprites.length - 1] > (@num_points_in_octant * 4) &&
-       @sprite_position_index_list[@sprites.length - 1] < (@num_points_in_octant * 5)
-      i = @sprites.length - 1
-      # Move lowermost sprite to top
-      @sprites.insert(0, @sprites.delete_at(i))
-      @sprite_position_index_list.insert(0, @sprite_position_index_list.delete_at(i))
-      @sprite_party_position_list.insert(0, @sprite_party_position_list.delete_at(i))
-      # Reset sprite's coordinates and Pokemon
-      @sprite_position_index_list[0] = @sprite_position_index_list[1] - @num_points_in_octant
-      @sprite_party_position_list[0] = decrement_index(@sprite_party_position_list[1], @party.length - 1)
-      @sprites[0].pokemon = @party[@sprite_party_position_list[0]]
-      @sprites[0].x = @circle_points[@sprite_position_index_list[0]][0]
-      @sprites[0].y = @circle_points[@sprite_position_index_list[0]][1]
-      @sprites[0].update
     end
     @updating = false
   end
@@ -197,17 +177,6 @@ class PartyRotationSprite < Sprite
     new_index = index - 1
     new_index = maximum if new_index < 0
     return new_index
-  end
-
-  # Returns icon sprite at a specific point on the circle
-  def create_icon_sprite(viewport, pkmn, i)
-    icon_sprite = PokemonIconSprite.new(pkmn, viewport)
-    icon_sprite.setOffset(PictureOrigin::CENTER)
-    icon_sprite.x = @circle_points[@num_points_in_octant * i][0]
-    icon_sprite.y = @circle_points[@num_points_in_octant * i][1]
-    icon_sprite.zoom_x = 0.5
-    icon_sprite.zoom_y = 0.5
-    return icon_sprite
   end
 
   # Generates set of points along outline of circle for sprites to move along
@@ -231,8 +200,8 @@ class PartyRotationSprite < Sprite
       octants[7].push([center_x - dist_x, center_y + dist_y])
       x += 1
     end
-    # Returns starting from octant 2 and going clockwise
-    points = octants[2].reverse + octants[1] + octants[0].reverse + octants[7] + octants[6].reverse + octants[5] + octants[4].reverse + octants[3]
+    # Returns points starting from octant 0 and going clockwise
+    points = octants[0].reverse + octants[7] + octants[6].reverse + octants[5] + octants[4].reverse + octants[3] + octants[2].reverse + octants[1]
     return points
   end
 end
@@ -256,6 +225,7 @@ class PokemonSummary_Scene
     @pokemon    = @party[@partyindex]
     @inbattle   = inbattle
     @page = 1
+    @withinsym  = true
     @typebitmap    = AnimatedBitmap.new(_INTL("Graphics/Pictures/types"))
     @markingbitmap = AnimatedBitmap.new("Graphics/Pictures/Summary/markings")
     @sprites = {}
@@ -653,7 +623,6 @@ class PokemonSummary_Scene
     pbDrawImagePositions(overlay, imagepos)
     # Write various bits of text
     textpos = [
-      [_INTL("TRAINER MEMO"), 26, 22, 0, base, shadow],
       [@pokemon.name, 46, 68, 0, base, shadow, 1],
       [_INTL("Item"), 16, 324, 0, base, shadow, 1]
     ]
@@ -677,9 +646,9 @@ class PokemonSummary_Scene
     mapname = pbGetMapNameFromId(@pokemon.obtain_map)
     mapname = @pokemon.obtain_text if @pokemon.obtain_text && !@pokemon.obtain_text.empty?
     if mapname && mapname != ""
-      memo += _INTL("A mysterious Pokémon Egg received from <c3=FF9999>{1}</c3>.\n", mapname)
+      memo += _INTL("\nA mysterious Pokémon Egg received from <c3=FF9999>{1}</c3>.\n", mapname)
     else
-      memo += _INTL("A mysterious Pokémon Egg.\n", mapname)
+      memo += _INTL("\nA mysterious Pokémon Egg.\n", mapname)
     end
     memo += "\n" # Empty line
     # Write Egg Watch blurb
@@ -690,7 +659,7 @@ class PokemonSummary_Scene
     eggstate = _INTL("Sounds can be heard coming from inside! It will hatch soon!") if @pokemon.steps_to_hatch < 1275
     memo += sprintf("%s\n", eggstate)
     # Draw all text
-    drawFormattedTextEx(overlay, 232, 86, 268, memo)
+    drawFormattedTextEx(overlay, 232, 86, 268, memo, base, shadow)
     # Draw the Pokémon's markings
     drawMarkings(overlay, 84, 292)
   end
@@ -806,17 +775,17 @@ class PokemonSummary_Scene
     end
     # Write various bits of text
     textpos = [
-      [_INTL("HP"), 292, 82, 2, base, statshadows[:HP]],
+      [_INTL("HP"), 292, 82, 2, base, shadow, 1],
       [sprintf("%d/%d", @pokemon.hp, @pokemon.totalhp), 462, 82, 1, base, shadow, 1],
-      [_INTL("Attack"), 248, 126, 0, base, statshadows[:ATTACK], 1],
+      [_INTL("Attack"), 248, 126, 0, base, shadow, 1],
       [sprintf("%d", @pokemon.attack), 456, 126, 1, base, shadow, 1],
-      [_INTL("Defense"), 248, 158, 0, base, statshadows[:DEFENSE], 1],
+      [_INTL("Defense"), 248, 158, 0, base, shadow, 1],
       [sprintf("%d", @pokemon.defense), 456, 158, 1, base, shadow, 1],
-      [_INTL("Sp. Atk"), 248, 190, 0, base, statshadows[:SPECIAL_ATTACK], 1],
+      [_INTL("Sp. Atk"), 248, 190, 0, base, shadow, 1],
       [sprintf("%d", @pokemon.spatk), 456, 190, 1, base, shadow, 1],
-      [_INTL("Sp. Def"), 248, 222, 0, base, statshadows[:SPECIAL_DEFENSE], 1],
+      [_INTL("Sp. Def"), 248, 222, 0, base, shadow, 1],
       [sprintf("%d", @pokemon.spdef), 456, 222, 1, base, shadow, 1],
-      [_INTL("Speed"), 248, 254, 0, base, statshadows[:SPEED], 1],
+      [_INTL("Speed"), 248, 254, 0, base, shadow, 1],
       [sprintf("%d", @pokemon.speed), 456, 254, 1, base, shadow, 1],
       [_INTL("Ability"), 224, 290, 0, base, shadow, 1]
     ]
@@ -844,7 +813,77 @@ class PokemonSummary_Scene
   end
 
   def drawPageFour
+    overlay = @sprites["overlay"].bitmap
+    base   = Color.new(248, 248, 248)
+    shadow = Color.new(66, 66, 81)
+    # Write various bits of text
+    textpos = [
+      [_INTL("HP"), 248, 96, 0, base, shadow, 1],
+      [_INTL("Attack"), 248, 126, 0, base, shadow, 1],
+      [_INTL("Defense"), 248, 158, 0, base, shadow, 1],
+      [_INTL("Sp. Atk"), 248, 190, 0, base, shadow, 1],
+      [_INTL("Sp. Def"), 248, 222, 0, base, shadow, 1],
+      [_INTL("Speed"), 248, 254, 0, base, shadow, 1],
+      [_INTL("Typology"), 248, 312, 0, base, shadow, 1]
+    ]
+    endexp = @pokemon.growth_rate.minimum_exp_for_level(@pokemon.level + 1)
+    textpos.push([@pokemon.exp.to_s, 494, 344, 1, base, shadow, 1])
+    textpos.push([(endexp - @pokemon.exp).to_s, 286, 362, 1, base, shadow, 1])
+    # Draw EVs and IVs
+    if !@withinsym
+      # EVs
+      textpos.push([@pokemon.ev[:HP].to_s, 422, 96, 1, base, shadow, 1])
+      textpos.push([@pokemon.ev[:ATTACK].to_s, 422, 126, 1, base, shadow, 1])
+      textpos.push([@pokemon.ev[:DEFENSE].to_s, 422, 158, 1, base, shadow, 1])
+      textpos.push([@pokemon.ev[:SPECIAL_ATTACK].to_s, 422, 190, 1, base, shadow, 1])
+      textpos.push([@pokemon.ev[:SPECIAL_DEFENSE].to_s, 422, 222, 1, base, shadow, 1])
+      textpos.push([@pokemon.ev[:SPEED].to_s, 422, 254, 1, base, shadow, 1])
+      # IVs
+      textpos.push([@pokemon.iv[:HP].to_s, 482, 96, 1, base, shadow, 1])
+      textpos.push([@pokemon.iv[:ATTACK].to_s, 482, 126, 1, base, shadow, 1])
+      textpos.push([@pokemon.iv[:DEFENSE].to_s, 482, 158, 1, base, shadow, 1])
+      textpos.push([@pokemon.iv[:SPECIAL_ATTACK].to_s, 482, 190, 1, base, shadow, 1])
+      textpos.push([@pokemon.iv[:SPECIAL_DEFENSE].to_s, 482, 222, 1, base, shadow, 1])
+      textpos.push([@pokemon.iv[:SPEED].to_s, 482, 254, 1, base, shadow, 1])
+    else
+      imagepos = [
+        # EVs
+        [getEVImageName(@pokemon.ev[:HP]), 391, 90],
+        [getEVImageName(@pokemon.ev[:ATTACK]), 391, 120],
+        [getEVImageName(@pokemon.ev[:DEFENSE]), 391, 152],
+        [getEVImageName(@pokemon.ev[:SPECIAL_ATTACK]), 391, 184],
+        [getEVImageName(@pokemon.ev[:SPECIAL_DEFENSE]), 391, 216],
+        [getEVImageName(@pokemon.ev[:SPEED]), 391, 248],
+        # IVs
+        [getIVImageName(@pokemon.iv[:HP]), 456, 90],
+        [getIVImageName(@pokemon.iv[:ATTACK]), 456, 120],
+        [getIVImageName(@pokemon.iv[:DEFENSE]), 456, 152],
+        [getIVImageName(@pokemon.iv[:SPECIAL_ATTACK]), 456, 184],
+        [getIVImageName(@pokemon.iv[:SPECIAL_DEFENSE]), 456, 216],
+        [getIVImageName(@pokemon.iv[:SPEED]), 456, 248]
+      ]
+      pbDrawImagePositions(overlay, imagepos)
+    end
+    # Draw all text
+    pbDrawTextPositions(overlay, textpos)
+  end
 
+  def getEVImageName(ev)
+    name = "Graphics/Pictures/Summary New/summaryEV"
+    if ev == 252
+      return name + "252"
+    elsif ev >= 250
+      return name + "250"
+    end
+    return name + sprintf("%03d", 40 * (ev / 40).floor)
+  end
+
+  def getIVImageName(iv)
+    name = "Graphics/Pictures/Summary New/summaryIV"
+    if iv == 31
+      return name + "31"
+    end
+    return name + sprintf("%02d", 5 * (iv / 5).floor)
   end
 
   def drawPageFive
@@ -995,8 +1034,13 @@ class PokemonSummary_Scene
     imagepos = [["Graphics/Pictures/category", 166, 124, 0, selected_move.display_category(@pokemon) * 28, 64, 28]]
     pbDrawImagePositions(overlay, imagepos)
     # Draw selected move's description
-    # drawTextEx(overlay, 4, 224, 230, 5, selected_move.description, base, shadow)
-    drawFormattedTextEx(overlay, 4, 224, 230, "<outln2>" + selected_move.description, base, shadow)
+    normtext = getLineBrokenChunks(overlay, selected_move.description, 230, nil)
+    textpos = []
+    for text in normtext
+      next if text[2] >= 5 * 32 # Max of 5 lines of text
+      textpos.push([text[0], 4 + text[1], 224 + text[2], 0, base, shadow, 1])
+    end
+    pbDrawTextPositions(overlay, textpos)
   end
 
   def drawPageSix
@@ -1356,11 +1400,15 @@ class PokemonSummary_Scene
     cmdGiveItem = -1
     cmdTakeItem = -1
     cmdPokedex  = -1
+    cmdWithin   = -1
     cmdMark     = -1
     if !@pokemon.egg?
       commands[cmdGiveItem = commands.length] = _INTL("Give item")
       commands[cmdTakeItem = commands.length] = _INTL("Take item") if @pokemon.hasItem?
       commands[cmdPokedex = commands.length]  = _INTL("View Pokédex") if $player.has_pokedex
+      if @page == 4
+        commands[cmdWithin = commands.length] = @withinsym ? _INTL("Show Text") : _INTL("Show Symbols")
+      end
     end
     commands[cmdMark = commands.length]       = _INTL("Mark")
     commands[commands.length]                 = _INTL("Cancel")
@@ -1384,6 +1432,9 @@ class PokemonSummary_Scene
         screen = PokemonPokedexInfoScreen.new(scene)
         screen.pbStartSceneSingle(@pokemon.species)
       }
+      dorefresh = true
+    elsif cmdWithin >= 0 && command == cmdWithin
+      @withinsym = !@withinsym
       dorefresh = true
     elsif cmdMark >= 0 && command == cmdMark
       dorefresh = pbMarking(@pokemon)
@@ -1461,7 +1512,6 @@ class PokemonSummary_Scene
         if @partyindex != oldindex
           pbChangePokemon
           @ribbonOffset = 0
-          echoln "UP TRIGGER UPDATED TO INDEX = #{@partyindex}"
           @sprites["partyrotation"].index = @partyindex
           @sprites["partyrotation"].moving_up = false
           @sprites["partyrotation"].update
@@ -1473,7 +1523,6 @@ class PokemonSummary_Scene
         if @partyindex != oldindex
           pbChangePokemon
           @ribbonOffset = 0
-          echoln "DOWN TRIGGER UPDATED TO INDEX = #{@partyindex}"
           @sprites["partyrotation"].index = @partyindex
           @sprites["partyrotation"].moving_up = true
           @sprites["partyrotation"].update

@@ -39,6 +39,7 @@ class DayCare
       # Inherit properties from parent(s)
       inherit_form(egg, species_parent, mother_data, father_data)
       inherit_nature(egg, mother, father)
+      inherit_typology(egg, mother, father)
       inherit_ability(egg, mother_data, father_data)
       inherit_moves(egg, mother_data, father_data)
       inherit_IVs(egg, mother, father)
@@ -148,6 +149,95 @@ class DayCare
       new_natures.push(father.nature) if father.hasItem?(:EVERSTONE)
       return if new_natures.empty?
       egg.nature = new_natures.sample
+    end
+
+    def inherit_typology(egg, mother, father)
+      # Item type map copied from Judgment move function (09F)
+      plateTypologies = {
+        :FISTPLATE   => :POWER,
+        :SKYPLATE    => :WIND,
+        :TOXICPLATE  => :TOXIC,
+        :EARTHPLATE  => :EARTH,
+        :STONEPLATE  => :STONE,
+        :INSECTPLATE => :INSECT,
+        :SPOOKYPLATE => :HAUNTED,
+        :IRONPLATE   => :METAL,
+        :FLAMEPLATE  => :CINDER,
+        :SPLASHPLATE => :HYDRO,
+        :MEADOWPLATE => :SPROUT,
+        :ZAPPLATE    => :LIGHTNING,
+        :MINDPLATE   => :WISDOM,
+        :ICICLEPLATE => :CHILL,
+        :DRACOPLATE  => :SCALE,
+        :DREADPLATE  => :SINISTER,
+        :PIXIEPLATE  => :PIXIE,
+        :ODDPLATE    => :ILLUSION,
+        :LOUDPLATE   => :NOISE,
+        :LUMENPLATE  => :SHINE,
+        :COSMOSPLATE => :GALAXY,
+        :SHINYPLATE  => :PRISM
+      }
+      # List of typologies based on plates
+      plate_typologies = []
+      plate_typologies.push(plateTypologies[mother.item_id]) if !plateTypologies[mother.item_id].nil?
+      plate_typologies.push(plateTypologies[father.item_id]) if !plateTypologies[father.item_id].nil?
+      if plate_typologies.length > 0
+        egg.typology = plate_typologies.sample
+        return
+      end
+      itemTypologies = {
+        :SILKSCARF      => :BASIC,
+        :NORMALGEM      => :BASIC,
+        :BLACKBELT      => :POWER,
+        :FIGHTINGGEM    => :POWER,
+        :SHARPBEAK      => :WIND,
+        :FLYINGGEM      => :WIND,
+        :POISONBARB     => :TOXIC,
+        :POISONGEM      => :TOXIC,
+        :SOFTSAND       => :EARTH,
+        :GROUNDGEM      => :EARTH,
+        :HARDSTONE      => :STONE,
+        :ROCKGEM        => :STONE,
+        :ROCKINCENSE    => :STONE,
+        :SILVERPOWDER   => :INSECT,
+        :BUGGEM         => :INSECT,
+        :SPELLTAG       => :HAUNTED,
+        :GHOSTGEM       => :HAUNTED,
+        :METALCOAT      => :METAL,
+        :STEELGEM       => :METAL,
+        :FIREGEM        => :CINDER,
+        :MYSTICWATER    => :HYDRO,
+        :WATERGEM       => :HYDRO,
+        :SEAINCENSE     => :HYDRO,
+        :WAVEINCENSE    => :HYDRO,
+        :MIRACLESEED    => :SPROUT,
+        :ROSEINCENSE    => :SPROUT,
+        :GRASSGEM       => :SPROUT,
+        :MAGNET         => :LIGHTNING,
+        :ELECTRICGEM    => :LIGHTNING,
+        :TWISTEDSPOON   => :WISDOM,
+        :PSYCHICGEM     => :WISDOM,
+        :NEVERMELTICE   => :CHILL,
+        :ICEGEM         => :CHILL,
+        :DRAGONFANG     => :SCALE,
+        :DRAGONGEM      => :SCALE,
+        :BLACKGLASSES   => :SINISTER,
+        :DARKGEM        => :SINISTER,
+        :FAIRYGEM       => :PIXIE
+      }
+      # List of typologies based on normal items
+      new_typologies = []
+      new_typologies.push(new_typologies[mother.item_id]) if !new_typologies[mother.item_id].nil?
+      new_typologies.push(new_typologies[father.item_id]) if !new_typologies[father.item_id].nil?
+      if new_typologies.length == 0 || rand(9) < 4
+        typologies = []
+        GameData::Typology.each do |t|
+          typologies.push(t)
+        end
+        egg.typology = typologies.sample
+      else
+        egg.typology = new_typologies.sample
+      end
     end
 
     # If a Pokémon is bred with a Ditto, that Pokémon can pass down its Hidden

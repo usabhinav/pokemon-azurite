@@ -824,7 +824,8 @@ class PokemonSummary_Scene
       [_INTL("Sp. Atk"), 248, 190, 0, base, shadow, 1],
       [_INTL("Sp. Def"), 248, 222, 0, base, shadow, 1],
       [_INTL("Speed"), 248, 254, 0, base, shadow, 1],
-      [_INTL("Typology"), 248, 312, 0, base, shadow, 1]
+      [_INTL("Typology"), 248, 312, 0, base, shadow, 1],
+      [_INTL(@pokemon.typology.name), 360, 312, 0, base, shadow, 1]
     ]
     endexp = @pokemon.growth_rate.minimum_exp_for_level(@pokemon.level + 1)
     textpos.push([@pokemon.exp.to_s, 494, 344, 1, base, shadow, 1])

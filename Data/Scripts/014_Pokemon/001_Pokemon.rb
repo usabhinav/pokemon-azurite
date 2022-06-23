@@ -1190,6 +1190,40 @@ class Pokemon
   end
 
   #=============================================================================
+  # Typology
+  #=============================================================================
+
+  # @return [GameData::Typology, nil] a Typology object corresponding to this Pokémon's typology
+  def typology
+    if !@typology
+      idx = @personalID % GameData::Typology.count
+      @typology = GameData::Typology.get(GameData::Typology.keys[idx]).id
+    end
+    return GameData::Typology.try_get(@typology)
+  end
+
+  def typology_id
+    return @typology
+  end
+
+  # Sets this Pokémon's typology to a particular typology.
+  # @param value [Symbol, String, GameData::Typology, nil] typology to change to
+  def typology=(value)
+    return if value && !GameData::Typology.exists?(value)
+    @typology = (value) ? GameData::Typology.get(value).id : value
+  end
+
+  # Returns whether this Pokémon has a particular typology. If no value is given,
+  # returns whether this Pokémon has a typology set.
+  # @param check_typology [Symbol, String, GameData::Typology, nil] typology ID to check
+  # @return [Boolean] whether this Pokémon has a particular typology or a typology
+  #   at all
+  def hasTypology?(check_typology = nil)
+    return !@typology_id.nil? if check_typology.nil?
+    return self.typology == check_typology
+  end
+
+  #=============================================================================
   # Pokémon creation
   #=============================================================================
 
@@ -1280,6 +1314,7 @@ class Pokemon
     @damage_taken     = 0
     @ko_count         = 0
     @faint_count      = 0
+    @typology         = nil
     @hp               = 1
     @totalhp          = 1
     calc_stats

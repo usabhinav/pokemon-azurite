@@ -1333,6 +1333,8 @@ def pbHiddenPower(pkmn)
   idxType |= (iv[:SPECIAL_DEFENSE] & 1) << 5
   idxType = (types.length - 1) * idxType / 63
   type = types[idxType]
+  # Use typology to determine type
+  type = pkmn.typology.damage_boost_type
   if Settings::MECHANICS_GENERATION <= 5
     powerMin = 30
     powerMax = 70
@@ -1427,7 +1429,12 @@ class Battle::Move::TypeDependsOnUserPlate < Battle::Move
       :ICICLEPLATE => :ICE,
       :DRACOPLATE  => :DRAGON,
       :DREADPLATE  => :DARK,
-      :PIXIEPLATE  => :FAIRY
+      :PIXIEPLATE  => :FAIRY,
+      :ODDPLATE    => :MYSTIC,
+      :LOUDPLATE   => :SOUND,
+      :LUMENPLATE  => :LIGHT,
+      :COSMOSPLATE => :COSMIC,
+      :SHINYPLATE  => :CRYSTAL
     }
   end
 

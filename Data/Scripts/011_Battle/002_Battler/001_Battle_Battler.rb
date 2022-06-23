@@ -206,6 +206,7 @@ class Battle::Battler
   def affection_level; return @pokemon ? @pokemon.affection_level : 2; end
   def gender;          return @pokemon ? @pokemon.gender : 0;          end
   def nature;          return @pokemon ? @pokemon.nature : nil;        end
+  def typology;        return @pokemon ? @pokemon.typology : nil;      end
   def pokerusStage;    return @pokemon ? @pokemon.pokerusStage : 0;    end
 
   #=============================================================================

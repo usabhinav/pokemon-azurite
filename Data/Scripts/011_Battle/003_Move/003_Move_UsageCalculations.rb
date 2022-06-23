@@ -504,6 +504,10 @@ class Battle::Move
         end
       end
     end
+    # Typology damage boost
+    if type == user.typology.damage_boost_type
+      multipliers[:final_damage_multiplier] *= 1.1
+    end
     # Multi-targeting attacks
     if numTargets > 1
       multipliers[:final_damage_multiplier] *= 0.75

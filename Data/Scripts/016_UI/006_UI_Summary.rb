@@ -409,7 +409,11 @@ class PokemonSummary_Scene
 
   def drawPage(page)
     if @pokemon.egg?
-      drawPageOneEgg
+      if page == 1
+        drawPageOneEgg
+      else
+        drawPageTwoEgg
+      end
       return
     end
     @sprites["itemicon"].item = @pokemon.item_id
@@ -760,6 +764,37 @@ class PokemonSummary_Scene
     drawFormattedTextEx(overlay, 232, 86, 268, memo, base, shadow)
   end
 
+  def drawPageTwoEgg
+    @sprites["itemicon"].item = @pokemon.item_id
+    overlay = @sprites["overlay"].bitmap
+    overlay.clear
+    base   = Color.new(248, 248, 248)
+    shadow = Color.new(66, 66, 81)
+    # Set background image
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary New/summaryEgg2")
+    imagepos = []
+    # Show the Poké Ball containing the Pokémon
+    ballimage = sprintf("Graphics/Pictures/Summary/icon_ball_%s", @pokemon.poke_ball)
+    imagepos.push([ballimage, 14, 60])
+    # Draw all images
+    pbDrawImagePositions(overlay, imagepos)
+    # Write various bits of text
+    textpos = [
+      [@pokemon.name, 46, 68, 0, base, shadow, 1],
+      [_INTL("Item"), 16, 324, 0, base, shadow, 1]
+    ]
+    # Write the held item's name
+    if @pokemon.hasItem?
+      textpos.push([@pokemon.item.name, 40, 358, 0, base, shadow, 1])
+    else
+      textpos.push([_INTL("None"), 16, 358, 0, base, shadow, 1])
+    end
+    # Draw all text
+    pbDrawTextPositions(overlay, textpos)
+    # Draw the Pokémon's markings
+    drawMarkings(overlay, 84, 292)
+  end
+
   def drawPageThree
     overlay = @sprites["overlay"].bitmap
     base   = Color.new(248, 248, 248)
@@ -824,12 +859,14 @@ class PokemonSummary_Scene
       [_INTL("Sp. Atk"), 248, 190, 0, base, shadow, 1],
       [_INTL("Sp. Def"), 248, 222, 0, base, shadow, 1],
       [_INTL("Speed"), 248, 254, 0, base, shadow, 1],
-      [_INTL("Typology"), 248, 312, 0, base, shadow, 1],
-      [_INTL(@pokemon.typology.name), 360, 312, 0, base, shadow, 1]
+      [_INTL("Typology"), 248, 314, 0, base, shadow, 1],
+      [_INTL(@pokemon.typology.name), 360, 314, 0, base, shadow, 1]
     ]
     endexp = @pokemon.growth_rate.minimum_exp_for_level(@pokemon.level + 1)
     textpos.push([@pokemon.exp.to_s, 494, 344, 1, base, shadow, 1])
     textpos.push([(endexp - @pokemon.exp).to_s, 286, 362, 1, base, shadow, 1])
+    # Typology icon
+    imagepos = [[sprintf("Graphics/Pictures/Typologies/typology_%s", @pokemon.typology.id), 454, 312]]
     # Draw EVs and IVs
     if !@withinsym
       # EVs
@@ -847,26 +884,25 @@ class PokemonSummary_Scene
       textpos.push([@pokemon.iv[:SPECIAL_DEFENSE].to_s, 482, 222, 1, base, shadow, 1])
       textpos.push([@pokemon.iv[:SPEED].to_s, 482, 254, 1, base, shadow, 1])
     else
-      imagepos = [
-        # EVs
-        [getEVImageName(@pokemon.ev[:HP]), 391, 90],
-        [getEVImageName(@pokemon.ev[:ATTACK]), 391, 120],
-        [getEVImageName(@pokemon.ev[:DEFENSE]), 391, 152],
-        [getEVImageName(@pokemon.ev[:SPECIAL_ATTACK]), 391, 184],
-        [getEVImageName(@pokemon.ev[:SPECIAL_DEFENSE]), 391, 216],
-        [getEVImageName(@pokemon.ev[:SPEED]), 391, 248],
-        # IVs
-        [getIVImageName(@pokemon.iv[:HP]), 456, 90],
-        [getIVImageName(@pokemon.iv[:ATTACK]), 456, 120],
-        [getIVImageName(@pokemon.iv[:DEFENSE]), 456, 152],
-        [getIVImageName(@pokemon.iv[:SPECIAL_ATTACK]), 456, 184],
-        [getIVImageName(@pokemon.iv[:SPECIAL_DEFENSE]), 456, 216],
-        [getIVImageName(@pokemon.iv[:SPEED]), 456, 248]
-      ]
-      pbDrawImagePositions(overlay, imagepos)
+      # EVs
+      imagepos.push([getEVImageName(@pokemon.ev[:HP]), 391, 90])
+      imagepos.push([getEVImageName(@pokemon.ev[:ATTACK]), 391, 120])
+      imagepos.push([getEVImageName(@pokemon.ev[:DEFENSE]), 391, 152])
+      imagepos.push([getEVImageName(@pokemon.ev[:SPECIAL_ATTACK]), 391, 184])
+      imagepos.push([getEVImageName(@pokemon.ev[:SPECIAL_DEFENSE]), 391, 216])
+      imagepos.push([getEVImageName(@pokemon.ev[:SPEED]), 391, 248])
+      # IVs
+      imagepos.push([getIVImageName(@pokemon.iv[:HP]), 456, 90])
+      imagepos.push([getIVImageName(@pokemon.iv[:ATTACK]), 456, 120])
+      imagepos.push([getIVImageName(@pokemon.iv[:DEFENSE]), 456, 152])
+      imagepos.push([getIVImageName(@pokemon.iv[:SPECIAL_ATTACK]), 456, 184])
+      imagepos.push([getIVImageName(@pokemon.iv[:SPECIAL_DEFENSE]), 456, 216])
+      imagepos.push([getIVImageName(@pokemon.iv[:SPEED]), 456, 248])
     end
     # Draw all text
     pbDrawTextPositions(overlay, textpos)
+    # Draw all images
+    pbDrawImagePositions(overlay, imagepos)
   end
 
   def getEVImageName(ev)
@@ -901,6 +937,7 @@ class PokemonSummary_Scene
                 Color.new(136, 48, 48)]   # Zero PP
     @sprites["pokemon"].visible  = true
     @sprites["pokeicon"].visible = false
+    @sprites["itemicon"].visible = true
     textpos  = []
     imagepos = []
     # Write move names, types and PP amounts for each known move
@@ -1103,7 +1140,7 @@ class PokemonSummary_Scene
     newindex = @partyindex
     while newindex > 0
       newindex -= 1
-      if @party[newindex] && (@page == 1 || !@party[newindex].egg?)
+      if @party[newindex] && (@page == 1 || (@page == 2 && @party[newindex].egg? == @party[@partyindex].egg?) || (@page > 2 && !@party[newindex].egg?))
         @partyindex = newindex
         break
       end
@@ -1114,7 +1151,7 @@ class PokemonSummary_Scene
     newindex = @partyindex
     while newindex < @party.length - 1
       newindex += 1
-      if @party[newindex] && (@page == 1 || !@party[newindex].egg?)
+      if @party[newindex] && (@page == 1 || (@page == 2 && @party[newindex].egg? == @party[@partyindex].egg?) || (@page > 2 && !@party[newindex].egg?))
         @partyindex = newindex
         break
       end
@@ -1529,21 +1566,29 @@ class PokemonSummary_Scene
           @sprites["partyrotation"].update
           dorefresh = true
         end
-      elsif Input.trigger?(Input::LEFT) && !@pokemon.egg?
+      elsif Input.trigger?(Input::LEFT)
         oldpage = @page
         @page -= 1
         @page = 1 if @page < 1
-        @page = 6 if @page > 6
+        if !@pokemon.egg?
+          @page = 6 if @page > 6
+        else
+          @page = 2 if @page > 2
+        end
         if @page != oldpage   # Move to next page
           pbSEPlay("GUI summary change page")
           @ribbonOffset = 0
           dorefresh = true
         end
-      elsif Input.trigger?(Input::RIGHT) && !@pokemon.egg?
+      elsif Input.trigger?(Input::RIGHT)
         oldpage = @page
         @page += 1
         @page = 1 if @page < 1
-        @page = 6 if @page > 6
+        if !@pokemon.egg?
+          @page = 6 if @page > 6
+        else
+          @page = 2 if @page > 2
+        end
         if @page != oldpage   # Move to next page
           pbSEPlay("GUI summary change page")
           @ribbonOffset = 0

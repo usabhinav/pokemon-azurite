@@ -94,6 +94,8 @@ class Pokemon
   attr_accessor :ko_count
   # Number of times this Pokemon has fainted in battles
   attr_accessor :faint_count
+  # Family tree
+  attr_accessor :family_tree
 
   # Max total IVs
   IV_STAT_LIMIT = 31

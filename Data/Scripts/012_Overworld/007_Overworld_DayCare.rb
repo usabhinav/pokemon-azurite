@@ -47,6 +47,8 @@ class DayCare
       # Calculate other properties of the egg
       set_shininess(egg, mother, father)   # Masuda method and Shiny Charm
       set_pokerus(egg)
+      # Set family tree of egg
+      egg.family_tree = FamilyTree.new(father, mother)
       # Recalculate egg's stats
       egg.calc_stats
       return egg
@@ -227,8 +229,8 @@ class DayCare
       }
       # List of typologies based on normal items
       new_typologies = []
-      new_typologies.push(new_typologies[mother.item_id]) if !new_typologies[mother.item_id].nil?
-      new_typologies.push(new_typologies[father.item_id]) if !new_typologies[father.item_id].nil?
+      new_typologies.push(itemTypologies[mother.item_id]) if !itemTypologies[mother.item_id].nil?
+      new_typologies.push(itemTypologies[father.item_id]) if !itemTypologies[father.item_id].nil?
       if new_typologies.length == 0 || rand(9) < 4
         typologies = []
         GameData::Typology.each do |t|
@@ -652,6 +654,49 @@ EventHandlers.add(:on_player_step_taken, :update_day_care,
     $PokemonGlobal.day_care.update_on_step_taken
   }
 )
+
+#===============================================================================
+# Family Tree
+#===============================================================================
+
+class FamilyTreeNode
+  attr_reader :species
+  attr_reader :gender
+  attr_reader :form
+  attr_reader :shiny
+  attr_reader :name
+
+  def initialize(pokemon)
+    @species = pokemon.species
+    @gender = pokemon.gender
+    @form = pokemon.form
+    @shiny = pokemon.shiny?
+    @name = pokemon.name
+  end
+end
+
+class FamilyTree
+  # Order: father, mother, father's father, father's mother, mother's father, mother's mother
+  attr_reader :tree
+
+  def initialize(father, mother)
+    @tree = []
+    @tree.push(father ? FamilyTreeNode.new(father) : nil)
+    @tree.push(mother ? FamilyTreeNode.new(mother) : nil)
+    @tree.push(father&.family_tree ? father.family_tree.father : nil)
+    @tree.push(father&.family_tree ? father.family_tree.mother : nil)
+    @tree.push(mother&.family_tree ? mother.family_tree.father : nil)
+    @tree.push(mother&.family_tree ? mother.family_tree.mother : nil)
+  end
+
+  def father
+    return @tree[0]
+  end
+
+  def mother
+    return @tree[1]
+  end
+end
 
 #===============================================================================
 # Deprecated methods

@@ -789,6 +789,65 @@ class PokemonSummary_Scene
     else
       textpos.push([_INTL("None"), 16, 358, 0, base, shadow, 1])
     end
+    # Show family tree
+    # Father
+    if @pokemon.family_tree&.father
+      father = @pokemon.family_tree.father
+      father_bitmap = Bitmap.new(GameData::Species.icon_filename_from_family_tree_node(father))
+      w = father_bitmap.width
+      h = father_bitmap.height
+      overlay.blt(294 - (w / 4), 170 - (h / 2), father_bitmap, Rect.new(0, 0, w / 2, h))
+      textpos.push([father.name, 342, 140, 0, base, shadow, 1])
+      textpos.push([sprintf("%s", father.species), 342, 178, 0, base, shadow, 1])
+      # Write the gender symbol
+      if father.gender == 0
+        textpos.push([_INTL("♂"), 472, 140, 0, Color.new(24, 112, 216), shadow, 1])
+      elsif father.gender == 1
+        textpos.push([_INTL("♀"), 472, 140, 0, Color.new(248, 56, 32), shadow, 1])
+      end
+    else
+      father_bitmap = Bitmap.new("Graphics/Pokemon/Icons/000")
+      w = father_bitmap.width
+      h = father_bitmap.height
+      overlay.blt(294 - (w / 4), 170 - (h / 2), father_bitmap, Rect.new(0, 0, w / 2, h))
+      textpos.push(["???", 342, 140, 0, base, shadow, 1])
+      textpos.push(["???", 342, 178, 0, base, shadow, 1])
+    end
+    # Mother
+    if @pokemon.family_tree&.mother
+      mother = @pokemon.family_tree.mother
+      mother_bitmap = Bitmap.new(GameData::Species.icon_filename_from_family_tree_node(mother))
+      w = mother_bitmap.width
+      h = mother_bitmap.height
+      overlay.blt(294 - (w / 4), 278 - (h / 2), mother_bitmap, Rect.new(0, 0, w / 2, h))
+      textpos.push([mother.name, 342, 248, 0, base, shadow, 1])
+      textpos.push([sprintf("%s", mother.species), 342, 286, 0, base, shadow, 1])
+      # Write the gender symbol
+      if mother.gender == 0
+        textpos.push([_INTL("♂"), 472, 248, 0, Color.new(24, 112, 216), shadow, 1])
+      elsif mother.gender == 1
+        textpos.push([_INTL("♀"), 472, 248, 0, Color.new(248, 56, 32), shadow, 1])
+      end
+    else
+      mother_bitmap = Bitmap.new("Graphics/Pokemon/Icons/000")
+      w = mother_bitmap.width
+      h = mother_bitmap.height
+      overlay.blt(294 - (w / 4), 278 - (h / 2), mother_bitmap, Rect.new(0, 0, w / 2, h))
+      textpos.push(["???", 342, 248, 0, base, shadow, 1])
+      textpos.push(["???", 342, 286, 0, base, shadow, 1])
+    end
+    # Grandparents
+    for i in 2..5
+      grandparent_bitmap = nil
+      if @pokemon.family_tree && @pokemon.family_tree.tree[i]
+        grandparent_bitmap = Bitmap.new(GameData::Species.icon_filename_from_family_tree_node(@pokemon.family_tree.tree[i]))
+      else
+        grandparent_bitmap = Bitmap.new("Graphics/Pokemon/Icons/000")
+      end
+      x = [406, 450, 406, 450][i - 2]
+      y = [90, 90, 318, 318][i - 2]
+      overlay.stretch_blt(Rect.new(x, y, 40, 40), grandparent_bitmap, Rect.new(0, 0, grandparent_bitmap.width / 2, grandparent_bitmap.height))
+    end
     # Draw all text
     pbDrawTextPositions(overlay, textpos)
     # Draw the Pokémon's markings

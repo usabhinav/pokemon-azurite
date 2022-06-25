@@ -1290,6 +1290,8 @@ module Compiler
     GameData::Ribbon::DATA.clear
     schema = GameData::Ribbon::SCHEMA
     ribbon_names        = []
+    ribbon_rarities     = []
+    ribbon_small_descriptions = []
     ribbon_descriptions = []
     ribbon_hash         = nil
     pbCompilerEachPreppedLine(path) { |line, line_no|
@@ -1319,6 +1321,10 @@ module Compiler
         case property_name
         when "Name"
           ribbon_names.push(ribbon_hash[:name])
+        when "Rarity"
+          ribbon_rarities.push(ribbon_hash[:rarity])
+        when "SmallDescription"
+          ribbon_small_descriptions.push(ribbon_hash[:small_description])
         when "Description"
           ribbon_descriptions.push(ribbon_hash[:description])
         end
@@ -1350,6 +1356,8 @@ module Compiler
     # Save all data
     GameData::Ribbon.save
     MessageTypes.setMessagesAsHash(MessageTypes::RibbonNames, ribbon_names)
+    MessageTypes.setMessagesAsHash(MessageTypes::RibbonRarities, ribbon_rarities)
+    MessageTypes.setMessagesAsHash(MessageTypes::RibbonSmallDescriptions, ribbon_small_descriptions)
     MessageTypes.setMessagesAsHash(MessageTypes::RibbonDescriptions, ribbon_descriptions)
     process_pbs_file_message_end
   end

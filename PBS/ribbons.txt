@@ -2,6 +2,8 @@
 #-------------------------------
 [HOENNCOOL]
 Name = Cool Ribbon
+Rarity = RARE
+SmallDescription = A ribbon symbolizing something truly special!
 IconPosition = 0
 Description = Hoenn Cool Contest Normal Rank winner!
 #-------------------------------

@@ -80,8 +80,8 @@ class RibbonSelectionSprite < MoveSelectionSprite
   def refresh
     w = @movesel.width
     h = @movesel.height / 2
-    self.x = 232 + ((self.index % 4) * 64)
-    self.y = 84 + (((self.index) / 4).floor * 80)
+    self.x = 94 + ((self.index % 5) * 72)
+    self.y = 132 + (((self.index) / 5).floor * 80)
     self.bitmap = @movesel.bitmap
   end
 
@@ -89,7 +89,7 @@ class RibbonSelectionSprite < MoveSelectionSprite
     @updating = true
     super
     @movesel = AnimatedBitmap.new("Graphics/Pictures/Summary New/summaryribbonsel")
-    self.visible = @spriteVisible && @index >= 0 && @index < 12
+    self.visible = @spriteVisible && @index >= 0 && @index < 10
     @movesel.update
     @updating = false
     refresh
@@ -258,12 +258,12 @@ class PokemonSummary_Scene
     @sprites["ribbonsel"] = RibbonSelectionSprite.new(@viewport)
     @sprites["ribbonsel"].visible = false
     @sprites["uparrow"] = AnimatedSprite.new("Graphics/Pictures/uparrow", 8, 28, 40, 2, @viewport)
-    @sprites["uparrow"].x = 350
-    @sprites["uparrow"].y = 56
+    @sprites["uparrow"].x = 260
+    @sprites["uparrow"].y = 110
     @sprites["uparrow"].play
     @sprites["uparrow"].visible = false
     @sprites["downarrow"] = AnimatedSprite.new("Graphics/Pictures/downarrow", 8, 28, 40, 2, @viewport)
-    @sprites["downarrow"].x = 350
+    @sprites["downarrow"].x = 260
     @sprites["downarrow"].y = 260
     @sprites["downarrow"].play
     @sprites["downarrow"].visible = false
@@ -1148,6 +1148,7 @@ class PokemonSummary_Scene
     shadow = Color.new(66, 66, 81)
     @sprites["uparrow"].visible   = false
     @sprites["downarrow"].visible = false
+    @sprites["itemicon"].visible = true if @sprites["itemicon"]
     # Write various bits of text
     textpos = [
       [_INTL("No. of Ribbons:"), 234, 350, 0, base, shadow, 1],
@@ -1158,7 +1159,7 @@ class PokemonSummary_Scene
     # Show all ribbons
     imagepos = []
     coord = 0
-    (@ribbonOffset * 4...(@ribbonOffset * 4) + 12).each do |i|
+    (@ribbonOffset * 5...(@ribbonOffset * 5) + 12).each do |i|
       break if !@pokemon.ribbons[i]
       ribbon_data = GameData::Ribbon.get(@pokemon.ribbons[i])
       ribn = ribbon_data.icon_position
@@ -1172,29 +1173,42 @@ class PokemonSummary_Scene
   end
 
   def drawSelectedRibbon(ribbonid)
-    # Draw all of page five
-    drawPage(6)
+    @sprites["itemicon"].visible = false if @sprites["itemicon"]
     # Set various values
     overlay = @sprites["overlay"].bitmap
-    base   = Color.new(64, 64, 64)
-    shadow = Color.new(176, 176, 176)
-    nameBase   = Color.new(248, 248, 248)
-    nameShadow = Color.new(66, 66, 81)
+    overlay.clear
+    base   = Color.new(248, 248, 248)
+    shadow = Color.new(66, 66, 81)
+    # Set background image
+    @sprites["background"].setBitmap("Graphics/Pictures/Summary New/summary6desc" + (@pokemon.fainted? ? "f" : ""))
     # Get data for selected ribbon
     name = ribbonid ? GameData::Ribbon.get(ribbonid).name : ""
+    rarity = ribbonid ? GameData::Ribbon.get(ribbonid).rarity : ""
+    small_desc = ribbonid ? GameData::Ribbon.get(ribbonid).small_description : ""
     desc = ribbonid ? GameData::Ribbon.get(ribbonid).description : ""
-    # Draw the description box
-    imagepos = [
-      ["Graphics/Pictures/Summary/overlay_ribbon", 8, 280]
-    ]
+    # Show all ribbons
+    imagepos = []
+    coord = 0
+    (@ribbonOffset * 5...(@ribbonOffset * 5) + 10).each do |i|
+      break if !@pokemon.ribbons[i]
+      ribbon_data = GameData::Ribbon.get(@pokemon.ribbons[i])
+      ribn = ribbon_data.icon_position
+      imagepos.push(["Graphics/Pictures/ribbons",
+                     100 + (72 * (coord % 5)), 136 + (80 * (coord / 5).floor),
+                     64 * (ribn % 8), 64 * (ribn / 8).floor, 64, 64])
+      coord += 1
+    end
+    # Draw all images
     pbDrawImagePositions(overlay, imagepos)
     # Draw name of selected ribbon
     textpos = [
-      [name, 18, 292, 0, nameBase, nameShadow]
+      [name, 34, 68, 0, base, shadow, 1],
+      [rarity, 52, 98, 0, base, shadow, 1],
+      [small_desc, 8, 298, 0, base, shadow, 1]
     ]
     pbDrawTextPositions(overlay, textpos)
     # Draw selected ribbon's description
-    drawTextEx(overlay, 18, 324, 480, 2, desc, base, shadow)
+    drawFormattedTextEx(overlay, 18, 328, 448, "<outln2><fn=Power Green>" + desc, base, shadow)
   end
 
   def pbGoToPrevious
@@ -1297,15 +1311,15 @@ class PokemonSummary_Scene
   def pbRibbonSelection
     @sprites["ribbonsel"].visible = true
     @sprites["ribbonsel"].index   = 0
-    selribbon    = @ribbonOffset * 4
+    selribbon    = @ribbonOffset * 5
     oldselribbon = selribbon
     switching = false
     numRibbons = @pokemon.ribbons.length
-    numRows    = [((numRibbons + 3) / 4).floor, 3].max
+    numRows    = [((numRibbons + 4) / 5).floor, 2].max
     drawSelectedRibbon(@pokemon.ribbons[selribbon])
     loop do
       @sprites["uparrow"].visible   = (@ribbonOffset > 0)
-      @sprites["downarrow"].visible = (@ribbonOffset < numRows - 3)
+      @sprites["downarrow"].visible = (@ribbonOffset < numRows - 2)
       Graphics.update
       Input.update
       pbUpdate
@@ -1339,40 +1353,40 @@ class PokemonSummary_Scene
         else
           if @pokemon.ribbons[selribbon]
             pbPlayDecisionSE
-            @sprites["ribbonpresel"].index = selribbon - (@ribbonOffset * 4)
+            @sprites["ribbonpresel"].index = selribbon - (@ribbonOffset * 5)
             oldselribbon = selribbon
             @sprites["ribbonpresel"].visible = true
             switching = true
           end
         end
       elsif Input.trigger?(Input::UP)
-        selribbon -= 4
-        selribbon += numRows * 4 if selribbon < 0
+        selribbon -= 5
+        selribbon += numRows * 5 if selribbon < 0
         hasMovedCursor = true
         pbPlayCursorSE
       elsif Input.trigger?(Input::DOWN)
-        selribbon += 4
-        selribbon -= numRows * 4 if selribbon >= numRows * 4
+        selribbon += 5
+        selribbon -= numRows * 5 if selribbon >= numRows * 5
         hasMovedCursor = true
         pbPlayCursorSE
       elsif Input.trigger?(Input::LEFT)
         selribbon -= 1
-        selribbon += 4 if selribbon % 4 == 3
+        selribbon += 5 if selribbon % 5 == 4
         hasMovedCursor = true
         pbPlayCursorSE
       elsif Input.trigger?(Input::RIGHT)
         selribbon += 1
-        selribbon -= 4 if selribbon % 4 == 0
+        selribbon -= 5 if selribbon % 5 == 0
         hasMovedCursor = true
         pbPlayCursorSE
       end
       next if !hasMovedCursor
-      @ribbonOffset = (selribbon / 4).floor if selribbon < @ribbonOffset * 4
-      @ribbonOffset = (selribbon / 4).floor - 2 if selribbon >= (@ribbonOffset + 3) * 4
+      @ribbonOffset = (selribbon / 5).floor if selribbon < @ribbonOffset * 5
+      @ribbonOffset = (selribbon / 5).floor - 1 if selribbon >= (@ribbonOffset + 2) * 5
       @ribbonOffset = 0 if @ribbonOffset < 0
-      @ribbonOffset = numRows - 3 if @ribbonOffset > numRows - 3
-      @sprites["ribbonsel"].index    = selribbon - (@ribbonOffset * 4)
-      @sprites["ribbonpresel"].index = oldselribbon - (@ribbonOffset * 4)
+      @ribbonOffset = numRows - 2 if @ribbonOffset > numRows - 2
+      @sprites["ribbonsel"].index    = selribbon - (@ribbonOffset * 5)
+      @sprites["ribbonpresel"].index = oldselribbon - (@ribbonOffset * 5)
       drawSelectedRibbon(@pokemon.ribbons[selribbon])
     end
     @sprites["ribbonsel"].visible = false

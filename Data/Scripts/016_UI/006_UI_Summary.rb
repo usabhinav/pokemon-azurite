@@ -37,8 +37,8 @@ class MoveSelectionSprite < Sprite
     h = @movesel.height / 2
     self.x = 240
     self.y = 92 + (self.index * 64)
-    self.y -= 76 if @fifthmove
-    self.y += 20 if @fifthmove && self.index == Pokemon::MAX_MOVES   # Add a gap
+    self.y -= 40 if @fifthmove
+    self.y += 4 if @fifthmove && self.index == Pokemon::MAX_MOVES   # Add a gap
     self.bitmap = @movesel.bitmap
     if self.preselected
       self.src_rect.set(0, h, w, h)
@@ -431,13 +431,15 @@ class PokemonSummary_Scene
     status = -1
     if @pokemon.fainted?
       status = GameData::Status.count - 1
+    elsif @pokemon.status == :POISON && @pokemon.statusCount > 0
+      status = GameData::Status.count + 1
     elsif @pokemon.status != :NONE
       status = GameData::Status.get(@pokemon.status).icon_position
     elsif @pokemon.pokerusStage == 1
       status = GameData::Status.count
     end
     if status >= 0
-      imagepos.push(["Graphics/Pictures/statuses", 124, 100, 0, 16 * status, 44, 16])
+      imagepos.push(["Graphics/Pictures/Summary New/summaryStatuses", 124, 96, 0, 20 * status, 55, 20])
     end
     # Show Pokérus cured icon
     if @pokemon.pokerusStage == 2
@@ -598,8 +600,8 @@ class PokemonSummary_Scene
     # Draw Pokémon type(s)
     @pokemon.types.each_with_index do |type, i|
       type_number = GameData::Type.get(type).icon_position
-      type_rect = Rect.new(0, type_number * 28, 64, 28)
-      type_x = (@pokemon.types.length == 1) ? 402 : 370 + (66 * i)
+      type_rect = Rect.new(0, type_number * 27, 63, 27)
+      type_x = (@pokemon.types.length == 1) ? 386 : 354 + (65 * i)
       overlay.blt(type_x, 146, @typebitmap.bitmap, type_rect)
     end
     # Draw Exp bar
@@ -925,7 +927,7 @@ class PokemonSummary_Scene
     textpos.push([@pokemon.exp.to_s, 494, 344, 1, base, shadow, 1])
     textpos.push([(endexp - @pokemon.exp).to_s, 286, 362, 1, base, shadow, 1])
     # Typology icon
-    imagepos = [[sprintf("Graphics/Pictures/Typologies/typology_%s", @pokemon.typology.id), 454, 312]]
+    imagepos = [[sprintf("Graphics/Pictures/Typologies/typology_%s", @pokemon.typology.id), 458, 312]]
     # Draw EVs and IVs
     if !@withinsym
       # EVs
@@ -1005,7 +1007,7 @@ class PokemonSummary_Scene
       move = @pokemon.moves[i]
       if move
         type_number = GameData::Type.get(move.display_type(@pokemon)).icon_position
-        imagepos.push(["Graphics/Pictures/types", 248, yPos - 4, 0, type_number * 28, 64, 28])
+        imagepos.push(["Graphics/Pictures/types", 248, yPos - 4, 0, type_number * 27, 63, 27])
         textpos.push([move.name, 316, yPos, 0, moveBase, moveShadow, 1])
         if move.total_pp > 0
           textpos.push([_INTL("PP"), 342, yPos + 32, 0, moveBase, moveShadow, 1])
@@ -1060,17 +1062,17 @@ class PokemonSummary_Scene
     imagepos = []
     # Write move names, types and PP amounts for each known move
     yPos = 104
-    yPos -= 76 if move_to_learn
+    yPos -= 40 if move_to_learn
     limit = (move_to_learn) ? Pokemon::MAX_MOVES + 1 : Pokemon::MAX_MOVES
     limit.times do |i|
       move = @pokemon.moves[i]
       if i == Pokemon::MAX_MOVES
         move = move_to_learn
-        yPos += 20
+        yPos += 4
       end
       if move
         type_number = GameData::Type.get(move.display_type(@pokemon)).icon_position
-        imagepos.push(["Graphics/Pictures/types", 248, yPos - 4, 0, type_number * 28, 64, 28])
+        imagepos.push(["Graphics/Pictures/types", 248, yPos - 4, 0, type_number * 27, 63, 27])
         textpos.push([move.name, 316, yPos, 0, base, shadow, 1])
         if move.total_pp > 0
           textpos.push([_INTL("PP"), 342, yPos + 32, 0, base, shadow, 1])
@@ -1096,8 +1098,8 @@ class PokemonSummary_Scene
     # Draw Pokémon's type icon(s)
     @pokemon.types.each_with_index do |type, i|
       type_number = GameData::Type.get(type).icon_position
-      type_rect = Rect.new(0, type_number * 28, 64, 28)
-      type_x = (@pokemon.types.length == 1) ? 130 : 96 + (70 * i)
+      type_rect = Rect.new(0, type_number * 27, 63, 27)
+      type_x = (@pokemon.types.length == 1) ? 130 : 96 + (69 * i)
       overlay.blt(type_x, 78, @typebitmap.bitmap, type_rect)
     end
   end
@@ -1161,7 +1163,7 @@ class PokemonSummary_Scene
       ribbon_data = GameData::Ribbon.get(@pokemon.ribbons[i])
       ribn = ribbon_data.icon_position
       imagepos.push(["Graphics/Pictures/ribbons",
-                     230 + (68 * (coord % 4)), 78 + (68 * (coord / 4).floor),
+                     236 + (64 * (coord % 4)), 88 + (80 * (coord / 4).floor),
                      64 * (ribn % 8), 64 * (ribn / 8).floor, 64, 64])
       coord += 1
     end
@@ -1543,6 +1545,7 @@ class PokemonSummary_Scene
     new_move = (move_to_learn) ? Pokemon::Move.new(move_to_learn) : nil
     selmove = 0
     maxmove = (new_move) ? Pokemon::MAX_MOVES : Pokemon::MAX_MOVES - 1
+    @sprites["movesel"].pokemon = @pokemon
     loop do
       Graphics.update
       Input.update

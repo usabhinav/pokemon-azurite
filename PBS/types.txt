@@ -122,7 +122,7 @@ Immunities = PSYCHIC
 #-------------------------------
 [FAIRY]
 Name = Fairy
-IconPosition = 18
+IconPosition = 19
 IsSpecialType = true
 Weaknesses = POISON,STEEL
 Resistances = FIGHTING,BUG,DARK
@@ -130,14 +130,14 @@ Immunities = DRAGON
 #-------------------------------
 [MYSTIC]
 Name = Mystic
-IconPosition = 19
+IconPosition = 20
 IsSpecialType = true
 Weaknesses = NORMAL,PSYCHIC,STEEL,SOUND
 Resistances = COSMIC
 #-------------------------------
 [SOUND]
 Name = Sound
-IconPosition = 20
+IconPosition = 21
 IsSpecialType = true
 Weaknesses = WATER,FLYING,GROUND,POISON,COSMIC
 Resistances = FIGHTING,DARK,MYSTIC
@@ -145,7 +145,7 @@ Immunities = SOUND
 #-------------------------------
 [LIGHT]
 Name = Light
-IconPosition = 21
+IconPosition = 22
 IsSpecialType = true
 Weaknesses = GRASS,POISON,COSMIC
 Resistances = PSYCHIC,GHOST,DRAGON
@@ -153,7 +153,7 @@ Immunities = DARK
 #-------------------------------
 [COSMIC]
 Name = Cosmic
-IconPosition = 22
+IconPosition = 23
 IsSpecialType = true
 Weaknesses = FLYING,ROCK,MYSTIC,POISON,STEEL
 Resistances = FIGHTING,ICE
@@ -161,4 +161,4 @@ Immunities = SOUND,GROUND,FIRE
 #-------------------------------
 [CRYSTAL]
 Name = Crystal
-IconPosition = 23
+IconPosition = 24

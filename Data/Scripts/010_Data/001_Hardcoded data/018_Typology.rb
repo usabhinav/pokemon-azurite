@@ -94,8 +94,8 @@ GameData::Typology.register({
 })
 
 GameData::Typology.register({
-  :id                => :SPROUT,
-  :name              => _INTL("Sprout"),
+  :id                => :FOREST,
+  :name              => _INTL("Forest"),
   :damage_boost_type => :GRASS
 })
 

@@ -6,14 +6,16 @@ class SpriteAnimation
     @sprite = sprite
   end
 
-  ["x", "y", "ox", "oy", "viewport", "flash", "src_rect", "opacity", "tone"].each do |def_name|
-    eval <<-__END__
+  %w[
+     x y ox oy viewport flash src_rect opacity tone
+  ].each_with_index do |s, _i|
+  eval <<-__END__
 
-  def #{def_name}(*arg)         # def x(*arg)
-    @sprite.#{def_name}(*arg)   #   @sprite.x(*arg)
-  end                           # end
+  def #{s}(*arg)
+    @sprite.#{s}(*arg)
+  end
 
-    __END__
+  __END__
   end
 
   def self.clear
@@ -28,7 +30,7 @@ class SpriteAnimation
   def animation(animation, hit, height = 3)
     dispose_animation
     @_animation = animation
-    return if @_animation.nil?
+    return if @_animation == nil
     @_animation_hit      = hit
     @_animation_height   = height
     @_animation_duration = @_animation.frame_max
@@ -64,7 +66,7 @@ class SpriteAnimation
     return if animation == @_loop_animation
     dispose_loop_animation
     @_loop_animation = animation
-    return if @_loop_animation.nil?
+    return if @_loop_animation == nil
     @_loop_animation_index = 0
     fr = 20
     if @_animation.name[/\[\s*(\d+?)\s*\]\s*$/]
@@ -90,15 +92,15 @@ class SpriteAnimation
   end
 
   def dispose_animation
-    return if @_animation_sprites.nil?
+    return if @_animation_sprites == nil
     sprite = @_animation_sprites[0]
-    if sprite
+    if sprite != nil
       @@_reference_count[sprite.bitmap] -= 1
       if @@_reference_count[sprite.bitmap] == 0
         sprite.bitmap.dispose
       end
     end
-    @_animation_sprites.each do |sprite|
+    for sprite in @_animation_sprites
       sprite.dispose
     end
     @_animation_sprites = nil
@@ -106,15 +108,15 @@ class SpriteAnimation
   end
 
   def dispose_loop_animation
-    return if @_loop_animation_sprites.nil?
+    return if @_loop_animation_sprites == nil
     sprite = @_loop_animation_sprites[0]
-    if sprite
+    if sprite != nil
       @@_reference_count[sprite.bitmap] -= 1
       if @@_reference_count[sprite.bitmap] == 0
         sprite.bitmap.dispose
       end
     end
-    @_loop_animation_sprites.each do |sprite|
+    for sprite in @_loop_animation_sprites
       sprite.dispose
     end
     @_loop_animation_sprites = nil
@@ -122,7 +124,7 @@ class SpriteAnimation
   end
 
   def active?
-    return @_loop_animation_sprites || @_animation_sprites
+    return @_loop_animation_sprites != nil || @_animation_sprites != nil
   end
 
   def effect?
@@ -130,7 +132,7 @@ class SpriteAnimation
   end
 
   def update
-    if @_animation
+    if @_animation != nil
       quick_update = true
       if Graphics.frame_count % @_animation_frame_skip == 0
         @_animation_duration -= 1
@@ -138,7 +140,7 @@ class SpriteAnimation
       end
       update_animation(quick_update)
     end
-    if @_loop_animation
+    if @_loop_animation != nil
       quick_update = (Graphics.frame_count % @_loop_animation_frame_skip != 0)
       update_loop_animation(quick_update)
       if !quick_update
@@ -158,7 +160,7 @@ class SpriteAnimation
     position    = @_animation.position
     animation_set_sprites(@_animation_sprites, cell_data, position, quick_update)
     return if quick_update
-    @_animation.timings.each do |timing|
+    for timing in @_animation.timings
       next if timing.frame != frame_index
       animation_process_timing(timing, @_animation_hit)
     end
@@ -170,7 +172,7 @@ class SpriteAnimation
     position    = @_loop_animation.position
     animation_set_sprites(@_loop_animation_sprites, cell_data, position, quick_update)
     return if quick_update
-    @_loop_animation.timings.each do |timing|
+    for timing in @_loop_animation.timings
       next if timing.frame != frame_index
       animation_process_timing(timing, true)
     end
@@ -180,33 +182,33 @@ class SpriteAnimation
     sprite_x = 320
     sprite_y = 240
     if position == 3
-      if self.viewport
+      if self.viewport != nil
         sprite_x = self.viewport.rect.width / 2
         sprite_y = self.viewport.rect.height - 160
       end
     else
-      sprite_x = self.x - self.ox + (self.src_rect.width / 2)
+      sprite_x = self.x - self.ox + self.src_rect.width / 2
       sprite_y = self.y - self.oy
       sprite_y += self.src_rect.height / 2 if position == 1
       sprite_y += self.src_rect.height if position == 2
     end
-    16.times do |i|
+    for i in 0..15
       sprite = sprites[i]
       pattern = cell_data[i, 0]
-      if sprite.nil? || pattern.nil? || pattern == -1
-        sprite.visible = false if sprite
+      if sprite == nil || pattern == nil || pattern == -1
+        sprite.visible = false if sprite != nil
         next
       end
-      sprite.x = sprite_x + cell_data[i, 1]
-      sprite.y = sprite_y + cell_data[i, 2]
+      sprite.x          = sprite_x + cell_data[i, 1]
+      sprite.y          = sprite_y + cell_data[i, 2]
       next if quick_update
-      sprite.visible = true
+      sprite.visible    = true
       sprite.src_rect.set(pattern % 5 * 192, pattern / 5 * 192, 192, 192)
       case @_animation_height
-      when 0 then sprite.z = 1
-      when 1 then sprite.z = sprite.y + (Game_Map::TILE_HEIGHT * 3 / 2) + 1
-      when 2 then sprite.z = sprite.y + (Game_Map::TILE_HEIGHT * 3) + 1
-      else        sprite.z = 2000
+      when 0 then sprite.z  = 1
+      when 1 then sprite.z  = sprite.y+32+15
+      when 2 then sprite.z  = sprite.y+32+32+17
+      else        sprite.z  = 2000
       end
       sprite.ox         = 96
       sprite.oy         = 96
@@ -232,7 +234,9 @@ class SpriteAnimation
       when 1
         self.flash(timing.flash_color, timing.flash_duration * 2)
       when 2
-        self.viewport.flash(timing.flash_color, timing.flash_duration * 2) if self.viewport
+        if self.viewport != nil
+          self.viewport.flash(timing.flash_color, timing.flash_duration * 2)
+        end
       when 3
         self.flash(nil, timing.flash_duration * 2)
       end
@@ -242,22 +246,30 @@ class SpriteAnimation
   def x=(x)
     sx = x - self.x
     return if sx == 0
-    if @_animation_sprites
-      16.times { |i| @_animation_sprites[i].x += sx }
+    if @_animation_sprites != nil
+      for i in 0..15
+        @_animation_sprites[i].x += sx
+      end
     end
-    if @_loop_animation_sprites
-      16.times { |i| @_loop_animation_sprites[i].x += sx }
+    if @_loop_animation_sprites != nil
+      for i in 0..15
+        @_loop_animation_sprites[i].x += sx
+      end
     end
   end
 
   def y=(y)
     sy = y - self.y
     return if sy == 0
-    if @_animation_sprites
-      16.times { |i| @_animation_sprites[i].y += sy }
+    if @_animation_sprites != nil
+      for i in 0..15
+        @_animation_sprites[i].y += sy
+      end
     end
-    if @_loop_animation_sprites
-      16.times { |i| @_loop_animation_sprites[i].y += sy }
+    if @_loop_animation_sprites != nil
+      for i in 0..15
+        @_loop_animation_sprites[i].y += sy
+      end
     end
   end
 end
@@ -287,9 +299,9 @@ module RPG
     end
 
     def whiten
-      self.blend_type = 0
+      self.blend_type     = 0
       self.color.set(255, 255, 255, 128)
-      self.opacity = 255
+      self.opacity        = 255
       @_whiten_duration   = 16
       @_appear_duration   = 0
       @_escape_duration   = 0
@@ -333,10 +345,10 @@ module RPG
       bitmap.font.name = "Arial Black"
       bitmap.font.size = 32
       bitmap.font.color.set(0, 0, 0)
-      bitmap.draw_text(-1, 12 - 1, 160, 36, damage_string, 1)
-      bitmap.draw_text(+1, 12 - 1, 160, 36, damage_string, 1)
-      bitmap.draw_text(-1, 12 + 1, 160, 36, damage_string, 1)
-      bitmap.draw_text(+1, 12 + 1, 160, 36, damage_string, 1)
+      bitmap.draw_text(-1, 12-1, 160, 36, damage_string, 1)
+      bitmap.draw_text(+1, 12-1, 160, 36, damage_string, 1)
+      bitmap.draw_text(-1, 12+1, 160, 36, damage_string, 1)
+      bitmap.draw_text(+1, 12+1, 160, 36, damage_string, 1)
       if value.is_a?(Numeric) && value < 0
         bitmap.font.color.set(176, 255, 144)
       else
@@ -358,14 +370,14 @@ module RPG
       @_damage_sprite.ox     = 80
       @_damage_sprite.oy     = 20
       @_damage_sprite.x      = self.x
-      @_damage_sprite.y      = self.y - (self.oy / 2)
+      @_damage_sprite.y      = self.y - self.oy / 2
       @_damage_sprite.z      = 3000
       @_damage_duration      = 40
     end
 
     def pushAnimation(array, anim)
-      array.length.times do |i|
-        next if array[i]&.active?
+      for i in 0...array.length
+        next if array[i] && array[i].active?
         array[i] = anim
         return
       end
@@ -374,18 +386,18 @@ module RPG
 
     def animation(animation, hit, height = 3)
       anim = SpriteAnimation.new(self)
-      anim.animation(animation, hit, height)
-      pushAnimation(@animations, anim)
+      anim.animation(animation,hit,height)
+      pushAnimation(@animations,anim)
     end
 
     def loop_animation(animation)
       anim = SpriteAnimation.new(self)
       anim.loop_animation(animation)
-      pushAnimation(@loopAnimations, anim)
+      pushAnimation(@loopAnimations,anim)
     end
 
     def dispose_damage
-      return if @_damage_sprite.nil?
+      return if @_damage_sprite == nil
       @_damage_sprite.bitmap.dispose
       @_damage_sprite.dispose
       @_damage_sprite   = nil
@@ -393,15 +405,15 @@ module RPG
     end
 
     def dispose_animation
-      @animations.each do |a|
-        a&.dispose_animation
+      for a in @animations
+        a.dispose_animation if a
       end
       @animations.clear
     end
 
     def dispose_loop_animation
-      @loopAnimations.each do |a|
-        a&.dispose_loop_animation
+      for a in @loopAnimations
+        a.dispose_loop_animation if a
       end
       @loopAnimations.clear
     end
@@ -428,7 +440,7 @@ module RPG
       return true if @_escape_duration > 0
       return true if @_collapse_duration > 0
       return true if @_damage_duration > 0
-      @animations.each do |a|
+      for a in @animations
         return true if a.effect?
       end
       return false
@@ -438,7 +450,7 @@ module RPG
       super
       if @_whiten_duration > 0
         @_whiten_duration -= 1
-        self.color.alpha = 128 - ((16 - @_whiten_duration) * 10)
+        self.color.alpha = 128 - (16 - @_whiten_duration) * 10
       end
       if @_appear_duration > 0
         @_appear_duration -= 1
@@ -446,11 +458,11 @@ module RPG
       end
       if @_escape_duration > 0
         @_escape_duration -= 1
-        self.opacity = 256 - ((32 - @_escape_duration) * 10)
+        self.opacity = 256 - (32 - @_escape_duration) * 10
       end
       if @_collapse_duration > 0
         @_collapse_duration -= 1
-        self.opacity = 256 - ((48 - @_collapse_duration) * 6)
+        self.opacity = 256 - (48 - @_collapse_duration) * 6
       end
       if @_damage_duration > 0
         @_damage_duration -= 1
@@ -464,15 +476,15 @@ module RPG
         when 28..33
           @_damage_sprite.y += 4
         end
-        @_damage_sprite.opacity = 256 - ((12 - @_damage_duration) * 32)
+        @_damage_sprite.opacity = 256 - (12 - @_damage_duration) * 32
         if @_damage_duration == 0
           dispose_damage
         end
       end
-      @animations.each do |a|
+      for a in @animations
         a.update
       end
-      @loopAnimations.each do |a|
+      for a in @loopAnimations
         a.update
       end
       if @_blink
@@ -488,32 +500,32 @@ module RPG
     end
 
     def update_animation
-      @animations.each do |a|
-        a.update_animation if a&.active?
+      for a in @animations
+        a.update_animation if a && a.active?
       end
     end
 
     def update_loop_animation
-      @loopAnimations.each do |a|
-        a.update_loop_animation if a&.active?
+      for a in @loopAnimations
+        a.update_loop_animation if a && a.active?
       end
     end
 
     def x=(x)
-      @animations.each do |a|
+      for a in @animations
         a.x = x if a
       end
-      @loopAnimations.each do |a|
+      for a in @loopAnimations
         a.x = x if a
       end
       super
     end
 
     def y=(y)
-      @animations.each do |a|
+      for a in @animations
         a.y = y if a
       end
-      @loopAnimations.each do |a|
+      for a in @loopAnimations
         a.y = y if a
       end
       super

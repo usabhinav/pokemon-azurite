@@ -20,8 +20,8 @@ class BattleChallenge
     @numRounds = numrounds
     @rules = rules
     register(id, id[/double/], 3,
-             id[/^factory/] ? BattleFactoryID : BattleTowerID,
-             id[/open$/] ? 1 : 0)
+       id[/^factory/] ? BattleFactoryID : BattleTowerID,
+       id[/open$/] ? 1 : 0)
     pbWriteCup(id, rules)
   end
 
@@ -98,9 +98,9 @@ class BattleChallenge
     opponent = pbGenerateBattleTrainer(self.nextTrainer, self.rules)
     bttrainers = pbGetBTTrainers(@id)
     trainerdata = bttrainers[self.nextTrainer]
-    opponent.lose_text = pbGetMessageFromHash(MessageTypes::EndSpeechLose, trainerdata[4])
-    opponent.win_text = pbGetMessageFromHash(MessageTypes::EndSpeechWin, trainerdata[3])
-    ret = pbOrganizedBattleEx(opponent, self.rules)
+    ret = pbOrganizedBattleEx(opponent,self.rules,
+       pbGetMessageFromHash(MessageTypes::EndSpeechLose, trainerdata[4]),
+       pbGetMessageFromHash(MessageTypes::EndSpeechWin, trainerdata[3]))
     return ret
   end
 
@@ -197,8 +197,12 @@ class BattleChallengeData
   end
 
   def setParty(value)
-    $player.party = value if @inProgress
-    @party = value
+    if @inProgress
+      $Trainer.party = value
+      @party = value
+    else
+      @party = value
+    end
   end
 
   def pbStart(t, numRounds)
@@ -216,14 +220,14 @@ class BattleChallengeData
     while @trainers.length < @numRounds
       newtrainer = pbBattleChallengeTrainer(@wins + @trainers.length, btTrainers)
       found = false
-      @trainers.each do |tr|
+      for tr in @trainers
         found = true if tr == newtrainer
       end
       @trainers.push(newtrainer) if !found
     end
     @start = [$game_map.map_id, $game_player.x, $game_player.y]
-    @oldParty = $player.party
-    $player.party = @party if @party
+    @oldParty = $Trainer.party
+    $Trainer.party = @party if @party
     Game.save(safe: true)
   end
 
@@ -266,12 +270,12 @@ class BattleChallengeData
   end
 
   def pbCancel
-    $player.party = @oldParty if @oldParty
+    $Trainer.party = @oldParty if @oldParty
     reset
   end
 
   def pbEnd
-    $player.party = @oldParty
+    $Trainer.party = @oldParty
     return if !@inProgress
     save = (@decision != 0)
     reset
@@ -372,13 +376,10 @@ class BattleFactoryData
     bttrainers = pbGetBTTrainers(pbBattleChallenge.currentChallenge)
     trainerdata = bttrainers[@trainerid]
     @opponent = NPCTrainer.new(
-      pbGetMessageFromHash(MessageTypes::TrainerNames, trainerdata[1]),
-      trainerdata[0]
-    )
-    @opponent.lose_text = pbGetMessageFromHash(MessageTypes::EndSpeechLose, trainerdata[4])
-    @opponent.win_text = pbGetMessageFromHash(MessageTypes::EndSpeechWin, trainerdata[3])
+       pbGetMessageFromHash(MessageTypes::TrainerNames, trainerdata[1]),
+       trainerdata[0])
     opponentPkmn = pbBattleFactoryPokemon(pbBattleChallenge.rules, @bcdata.wins, @bcdata.swaps, @rentals)
-    @opponent.party = opponentPkmn.sample(3)
+    @opponent.party = opponentPkmn.shuffle[0, 3]
   end
 
   def pbChooseRentals
@@ -397,14 +398,11 @@ class BattleFactoryData
     bttrainers = pbGetBTTrainers(pbBattleChallenge.currentChallenge)
     trainerdata = bttrainers[trainerid]
     @opponent = NPCTrainer.new(
-      pbGetMessageFromHash(MessageTypes::TrainerNames, trainerdata[1]),
-      trainerdata[0]
-    )
-    @opponent.lose_text = pbGetMessageFromHash(MessageTypes::EndSpeechLose, trainerdata[4])
-    @opponent.win_text = pbGetMessageFromHash(MessageTypes::EndSpeechWin, trainerdata[3])
+       pbGetMessageFromHash(MessageTypes::TrainerNames, trainerdata[1]),
+       trainerdata[0])
     opponentPkmn = pbBattleFactoryPokemon(pbBattleChallenge.rules, @bcdata.wins, @bcdata.swaps,
-                                          [].concat(@rentals).concat(@oldopponent))
-    @opponent.party = opponentPkmn.sample(3)
+       [].concat(@rentals).concat(@oldopponent))
+    @opponent.party = opponentPkmn.shuffle[0, 3]
   end
 
   def pbChooseSwaps
@@ -422,6 +420,8 @@ class BattleFactoryData
   def pbBattle(challenge)
     bttrainers = pbGetBTTrainers(pbBattleChallenge.currentChallenge)
     trainerdata = bttrainers[@trainerid]
-    return pbOrganizedBattleEx(@opponent, challenge.rules)
+    return pbOrganizedBattleEx(@opponent, challenge.rules,
+       pbGetMessageFromHash(MessageTypes::EndSpeechLose, trainerdata[4]),
+       pbGetMessageFromHash(MessageTypes::EndSpeechWin, trainerdata[3]))
   end
 end

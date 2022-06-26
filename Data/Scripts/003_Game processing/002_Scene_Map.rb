@@ -5,44 +5,43 @@
 #===============================================================================
 class Scene_Map
   attr_reader :spritesetGlobal
-  attr_reader :map_renderer
 
-  def spriteset(map_id = -1)
-    return @spritesets[map_id] if map_id > 0 && @spritesets[map_id]
-    @spritesets.each_value do |i|
-      return i if i.map == $game_map
+  def spriteset
+    for i in @spritesets.values
+      return i if i.map==$game_map
     end
     return @spritesets.values[0]
   end
 
   def createSpritesets
-    @map_renderer = TilemapRenderer.new(Spriteset_Map.viewport) if !@map_renderer || @map_renderer.disposed?
-    @spritesetGlobal = Spriteset_Global.new if !@spritesetGlobal
+    @spritesetGlobal = Spriteset_Global.new
     @spritesets = {}
-    $map_factory.maps.each do |map|
+    for map in $MapFactory.maps
       @spritesets[map.map_id] = Spriteset_Map.new(map)
     end
-    $map_factory.setSceneStarted(self)
-    updateSpritesets(true)
+    $MapFactory.setSceneStarted(self)
+    updateSpritesets
   end
 
   def createSingleSpriteset(map)
     temp = $scene.spriteset.getAnimations
-    @spritesets[map] = Spriteset_Map.new($map_factory.maps[map])
+    @spritesets[map] = Spriteset_Map.new($MapFactory.maps[map])
     $scene.spriteset.restoreAnimations(temp)
-    $map_factory.setSceneStarted(self)
-    updateSpritesets(true)
+    $MapFactory.setSceneStarted(self)
+    updateSpritesets
   end
 
   def disposeSpritesets
     return if !@spritesets
-    @spritesets.each_key do |i|
+    for i in @spritesets.keys
       next if !@spritesets[i]
       @spritesets[i].dispose
       @spritesets[i] = nil
     end
     @spritesets.clear
     @spritesets = {}
+    @spritesetGlobal.dispose
+    @spritesetGlobal = nil
   end
 
   def autofade(mapid)
@@ -51,25 +50,26 @@ class Scene_Map
     return if !playingBGM && !playingBGS
     map = load_data(sprintf("Data/Map%03d.rxdata", mapid))
     if playingBGM && map.autoplay_bgm
-      if (PBDayNight.isNight? && FileTest.audio_exist?("Audio/BGM/" + map.bgm.name + "_n") &&
-         playingBGM.name != map.bgm.name + "_n") || playingBGM.name != map.bgm.name
-        pbBGMFade(0.8)
+      if (PBDayNight.isNight? rescue false)
+        pbBGMFade(0.8) if playingBGM.name!=map.bgm.name && playingBGM.name!=map.bgm.name+"_n"
+      else
+        pbBGMFade(0.8) if playingBGM.name!=map.bgm.name
       end
     end
-    if playingBGS && map.autoplay_bgs && playingBGS.name != map.bgs.name
-      pbBGMFade(0.8)
+    if playingBGS && map.autoplay_bgs
+      pbBGMFade(0.8) if playingBGS.name!=map.bgs.name
     end
     Graphics.frame_reset
   end
 
-  def transfer_player(cancel_swimming = true)
+  def transfer_player(cancelVehicles=true)
     $game_temp.player_transferring = false
-    pbCancelVehicles($game_temp.player_new_map_id, cancel_swimming)
+    pbCancelVehicles($game_temp.player_new_map_id) if cancelVehicles
     autofade($game_temp.player_new_map_id)
     pbBridgeOff
     @spritesetGlobal.playersprite.clearShadows
-    if $game_map.map_id != $game_temp.player_new_map_id
-      $map_factory.setup($game_temp.player_new_map_id)
+    if $game_map.map_id!=$game_temp.player_new_map_id
+      $MapFactory.setup($game_temp.player_new_map_id)
     end
     $game_player.moveto($game_temp.player_new_x, $game_temp.player_new_y)
     case $game_temp.player_new_direction
@@ -79,14 +79,13 @@ class Scene_Map
     when 8 then $game_player.turn_up
     end
     $game_player.straighten
-    $game_temp.followers.map_transfer_followers
     $game_map.update
     disposeSpritesets
     RPG::Cache.clear
     createSpritesets
     if $game_temp.transition_processing
       $game_temp.transition_processing = false
-      Graphics.transition
+      Graphics.transition(20)
     end
     $game_map.autoplay
     Graphics.frame_reset
@@ -112,63 +111,60 @@ class Scene_Map
   end
 
   def miniupdate
-    $game_temp.in_mini_update = true
+    $PokemonTemp.miniupdate = true
     loop do
-      $game_player.update
       updateMaps
+      $game_player.update
       $game_system.update
       $game_screen.update
       break unless $game_temp.player_transferring
-      transfer_player(false)
+      transfer_player
       break if $game_temp.transition_processing
     end
     updateSpritesets
-    $game_temp.in_mini_update = false
+    $PokemonTemp.miniupdate = false
   end
 
   def updateMaps
-    $map_factory.maps.each do |map|
+    for map in $MapFactory.maps
       map.update
     end
-    $map_factory.updateMaps(self)
+    $MapFactory.updateMaps(self)
   end
 
-  def updateSpritesets(refresh = false)
+  def updateSpritesets
     @spritesets = {} if !@spritesets
-    $map_factory.maps.each do |map|
-      @spritesets[map.map_id] = Spriteset_Map.new(map) if !@spritesets[map.map_id]
-    end
     keys = @spritesets.keys.clone
-    keys.each do |i|
-      if $map_factory.hasMap?(i)
-        @spritesets[i].update
-      else
-        @spritesets[i]&.dispose
+    for i in keys
+      if !$MapFactory.hasMap?(i)
+        @spritesets[i].dispose if @spritesets[i]
         @spritesets[i] = nil
         @spritesets.delete(i)
+      else
+        @spritesets[i].update
       end
     end
     @spritesetGlobal.update
-    pbDayNightTint(@map_renderer)
-    @map_renderer.refresh if refresh
-    @map_renderer.update
-    EventHandlers.trigger(:on_frame_update)
+    for map in $MapFactory.maps
+      @spritesets[map.map_id] = Spriteset_Map.new(map) if !@spritesets[map.map_id]
+    end
+    Events.onMapUpdate.trigger(self)
   end
 
   def update
     loop do
+      updateMaps
       pbMapInterpreter.update
       $game_player.update
-      updateMaps
       $game_system.update
       $game_screen.update
       break unless $game_temp.player_transferring
-      transfer_player(false)
+      transfer_player
       break if $game_temp.transition_processing
     end
     updateSpritesets
-    if $game_temp.title_screen_calling
-      $game_temp.title_screen_calling = false
+    if $game_temp.to_title
+      $game_temp.to_title = false
       SaveData.mark_values_as_unloaded
       $scene = pbCallTitle
       return
@@ -176,7 +172,7 @@ class Scene_Map
     if $game_temp.transition_processing
       $game_temp.transition_processing = false
       if $game_temp.transition_name == ""
-        Graphics.transition
+        Graphics.transition(20)
       else
         Graphics.transition(40, "Graphics/Transitions/" + $game_temp.transition_name)
       end
@@ -184,15 +180,15 @@ class Scene_Map
     return if $game_temp.message_window_showing
     if !pbMapInterpreterRunning?
       if Input.trigger?(Input::USE)
-        $game_temp.interact_calling = true
-      elsif Input.trigger?(Input::ACTION)
+        $PokemonTemp.hiddenMoveEventCalling = true
+      elsif Input.trigger?(Input::BACK)
         unless $game_system.menu_disabled || $game_player.moving?
           $game_temp.menu_calling = true
           $game_temp.menu_beep = true
         end
       elsif Input.trigger?(Input::SPECIAL)
         unless $game_player.moving?
-          $game_temp.ready_menu_calling = true
+          $PokemonTemp.keyItemCalling = true
         end
       elsif Input.press?(Input::F9)
         $game_temp.debug_calling = true if $DEBUG
@@ -203,34 +199,31 @@ class Scene_Map
         call_menu
       elsif $game_temp.debug_calling
         call_debug
-      elsif $game_temp.ready_menu_calling
-        $game_temp.ready_menu_calling = false
+      elsif $PokemonTemp.keyItemCalling
+        $PokemonTemp.keyItemCalling = false
         $game_player.straighten
         pbUseKeyItem
-      elsif $game_temp.interact_calling
-        $game_temp.interact_calling = false
+      elsif $PokemonTemp.hiddenMoveEventCalling
+        $PokemonTemp.hiddenMoveEventCalling = false
         $game_player.straighten
-        EventHandlers.trigger(:on_player_interact)
+        Events.onAction.trigger(self)
       end
     end
   end
 
   def main
     createSpritesets
-    Graphics.transition
+    Graphics.transition(20)
     loop do
       Graphics.update
       Input.update
       update
       break if $scene != self
     end
-    
-    
-
     Graphics.freeze
     disposeSpritesets
-    if $game_temp.title_screen_calling
-      Graphics.transition
+    if $game_temp.to_title
+      Graphics.transition(20)
       Graphics.freeze
     end
   end

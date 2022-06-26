@@ -1,1 +1,1 @@
-1,STD,Std,1,1,1,"stdsss"
+1,STD,Std,1,1,1,"std"

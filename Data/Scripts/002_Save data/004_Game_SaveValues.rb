@@ -2,11 +2,11 @@
 
 SaveData.register(:player) do
   ensure_class :Player
-  save_value { $player }
-  load_value { |value| $player = $Trainer = value }
+  save_value { $Trainer }
+  load_value { |value| $Trainer = value }
   new_game_value {
-    # Get the first defined trainer type as a placeholder
-    trainer_type = GameData::TrainerType.keys.first
+    trainer_type = nil   # Get the first defined trainer type as a placeholder
+    GameData::TrainerType.each { |t| trainer_type = t.id; break }
     Player.new("Unnamed", trainer_type)
   }
   from_old_format { |old_format| old_format[0] }
@@ -72,8 +72,8 @@ end
 
 SaveData.register(:map_factory) do
   ensure_class :PokemonMapFactory
-  save_value { $map_factory }
-  load_value { |value| $map_factory = $MapFactory = value }
+  save_value { $MapFactory }
+  load_value { |value| $MapFactory = value }
   from_old_format { |old_format| old_format[9] }
 end
 
@@ -103,8 +103,8 @@ end
 
 SaveData.register(:bag) do
   ensure_class :PokemonBag
-  save_value { $bag }
-  load_value { |value| $bag = $PokemonBag = value }
+  save_value { $PokemonBag }
+  load_value { |value| $PokemonBag = value }
   new_game_value { PokemonBag.new }
   from_old_format { |old_format| old_format[13] }
 end
@@ -121,32 +121,15 @@ SaveData.register(:essentials_version) do
   load_in_bootup
   ensure_class :String
   save_value { Essentials::VERSION }
-  load_value { |value| $save_engine_version = value }
+  load_value { |value| $SaveVersion = value }
   new_game_value { Essentials::VERSION }
   from_old_format { |old_format| old_format[15] }
-end
-
-SaveData.register(:apparel_bag) do
-  ensure_class :ApparelBag
-  save_value { $ApparelBag }
-  load_value { |value| $ApparelBag = value }
-  new_game_value { ApparelBag.new }
-  # Do we need this?
-  #from_old_format { |old_format| old_format[16] }
 end
 
 SaveData.register(:game_version) do
   load_in_bootup
   ensure_class :String
   save_value { Settings::GAME_VERSION }
-  load_value { |value| $save_game_version = value }
+  load_value { |value| $game_version = value }
   new_game_value { Settings::GAME_VERSION }
-end
-
-SaveData.register(:stats) do
-  load_in_bootup
-  ensure_class :GameStats
-  save_value { $stats }
-  load_value { |value| $stats = value }
-  new_game_value { GameStats.new }
 end

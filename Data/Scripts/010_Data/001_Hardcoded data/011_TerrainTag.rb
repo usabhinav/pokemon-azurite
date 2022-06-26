@@ -170,9 +170,8 @@ GameData::TerrainTag.register({
   :ignore_passability     => true
 })
 
-# NOTE: This is referenced by ID in the :pick_up_soot proc added to
-#       EventHandlers. It adds soot to the Soot Sack if the player walks over
-#       one of these tiles.
+# NOTE: This is referenced by ID in an Events.onStepTakenFieldMovement proc that
+#       adds soot to the Soot Sack if the player walks over one of these tiles.
 GameData::TerrainTag.register({
   :id                     => :SootGrass,
   :id_number              => 14,
@@ -192,9 +191,4 @@ GameData::TerrainTag.register({
   :id_number              => 16,
   :battle_environment     => :Puddle,
   :shows_reflections      => true
-})
-
-GameData::TerrainTag.register({
-  :id                     => :NoEffect,
-  :id_number              => 17
 })

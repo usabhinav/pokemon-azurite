@@ -1,25 +1,26 @@
-# NOTE: The order these shapes are registered are the order they are listed in
-#       the Pokédex search screen.
+# NOTE: The id_number is only used to determine the order that body shapes are
+#       listed in the Pokédex search screen. Number 0 (:None) is ignored; they
+#       start with shape 1.
 #       "Graphics/Pictures/Pokedex/icon_shapes.png" contains icons for these
 #       shapes.
 module GameData
   class BodyShape
     attr_reader :id
+    attr_reader :id_number
     attr_reader :real_name
-    attr_reader :icon_position   # Where this shape's icon is within icon_shapes.png
 
     DATA = {}
 
-    extend ClassMethodsSymbols
+    extend ClassMethods
     include InstanceMethods
 
     def self.load; end
     def self.save; end
 
     def initialize(hash)
-      @id            = hash[:id]
-      @real_name     = hash[:name]          || "Unnamed"
-      @icon_position = hash[:icon_position] || 0
+      @id        = hash[:id]
+      @id_number = hash[:id_number] || -1
+      @real_name = hash[:name]      || "Unnamed"
     end
 
     # @return [String] the translated name of this body shape
@@ -32,85 +33,85 @@ end
 #===============================================================================
 
 GameData::BodyShape.register({
-  :id            => :Head,
-  :name          => _INTL("Head"),
-  :icon_position => 0
+  :id        => :Head,
+  :id_number => 1,
+  :name      => _INTL("Head")
 })
 
 GameData::BodyShape.register({
-  :id            => :Serpentine,
-  :name          => _INTL("Serpentine"),
-  :icon_position => 1
+  :id        => :Serpentine,
+  :id_number => 2,
+  :name      => _INTL("Serpentine")
 })
 
 GameData::BodyShape.register({
-  :id            => :Finned,
-  :name          => _INTL("Finned"),
-  :icon_position => 2
+  :id        => :Finned,
+  :id_number => 3,
+  :name      => _INTL("Finned")
 })
 
 GameData::BodyShape.register({
-  :id            => :HeadArms,
-  :name          => _INTL("Head and arms"),
-  :icon_position => 3
+  :id        => :HeadArms,
+  :id_number => 4,
+  :name      => _INTL("Head and arms")
 })
 
 GameData::BodyShape.register({
-  :id            => :HeadBase,
-  :name          => _INTL("Head and base"),
-  :icon_position => 4
+  :id        => :HeadBase,
+  :id_number => 5,
+  :name      => _INTL("Head and base")
 })
 
 GameData::BodyShape.register({
-  :id            => :BipedalTail,
-  :name          => _INTL("Bipedal with tail"),
-  :icon_position => 5
+  :id        => :BipedalTail,
+  :id_number => 6,
+  :name      => _INTL("Bipedal with tail")
 })
 
 GameData::BodyShape.register({
-  :id            => :HeadLegs,
-  :name          => _INTL("Head and legs"),
-  :icon_position => 6
+  :id        => :HeadLegs,
+  :id_number => 7,
+  :name      => _INTL("Head and legs")
 })
 
 GameData::BodyShape.register({
-  :id            => :Quadruped,
-  :name          => _INTL("Quadruped"),
-  :icon_position => 7
+  :id        => :Quadruped,
+  :id_number => 8,
+  :name      => _INTL("Quadruped")
 })
 
 GameData::BodyShape.register({
-  :id            => :Winged,
-  :name          => _INTL("Winged"),
-  :icon_position => 8
+  :id        => :Winged,
+  :id_number => 9,
+  :name      => _INTL("Winged")
 })
 
 GameData::BodyShape.register({
-  :id            => :Multiped,
-  :name          => _INTL("Multiped"),
-  :icon_position => 9
+  :id        => :Multiped,
+  :id_number => 10,
+  :name      => _INTL("Multiped")
 })
 
 GameData::BodyShape.register({
-  :id            => :MultiBody,
-  :name          => _INTL("Multi Body"),
-  :icon_position => 10
+  :id        => :MultiBody,
+  :id_number => 11,
+  :name      => _INTL("Multi Body")
 })
 
 GameData::BodyShape.register({
-  :id            => :Bipedal,
-  :name          => _INTL("Bipedal"),
-  :icon_position => 11
+  :id        => :Bipedal,
+  :id_number => 12,
+  :name      => _INTL("Bipedal")
 })
 
 GameData::BodyShape.register({
-  :id            => :MultiWinged,
-  :name          => _INTL("Multi Winged"),
-  :icon_position => 12
+  :id        => :MultiWinged,
+  :id_number => 13,
+  :name      => _INTL("Multi Winged")
 })
 
 GameData::BodyShape.register({
-  :id            => :Insectoid,
-  :name          => _INTL("Insectoid"),
-  :icon_position => 13
+  :id        => :Insectoid,
+  :id_number => 14,
+  :name      => _INTL("Insectoid")
 })

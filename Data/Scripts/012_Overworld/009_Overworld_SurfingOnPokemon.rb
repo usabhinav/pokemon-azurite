@@ -14,20 +14,15 @@ end
 # Returns the first surfable Pokemon in the trainer's party, or nil if none was found
 def pbGetSurfablePkmn
   
-  for pkmn in $player.party
+  for pkmn in $Trainer.party
     next if pkmn.isEgg?
     if $SURFABLE_POKEMON_SPECIES.include?(pkmn.species)
       return pkmn
     end
   end
   
-  if $DEBUG 
-    return Pokemon.new(321, 1)
-  else
-    # No Surfable Pokmeon found in party
-    return nil
-  end
   
-
+  # No Surfable Pokmeon found in party
+  return nil
   
 end

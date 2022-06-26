@@ -1,7 +1,6 @@
 # Audio, Graphics and Plugins folders
 Audio/
 Graphics/
-lib/
 
 # Other Azurite folders
 Animations/
@@ -20,9 +19,6 @@ RGSS*.dll
 .vscode/
 *.code-workspace
 .idea/
-/.vs/ProjectSettings.json
-/.vs/slnx.sqlite
-*.mkproj
 
 # Operating system generated files & folders
 .DS_Store
@@ -45,4 +41,3 @@ Maps/Candelle Residential.png
 traceback.log
 Game.yaml
 *.ttf
-

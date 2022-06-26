@@ -12,13 +12,13 @@ class PokemonRuleSet
 
   def copy
     ret = PokemonRuleSet.new(@number)
-    @pokemonRules.each do |rule|
+    for rule in @pokemonRules
       ret.addPokemonRule(rule)
     end
-    @teamRules.each do |rule|
+    for rule in @teamRules
       ret.addTeamRule(rule)
     end
-    @subsetRules.each do |rule|
+    for rule in @subsetRules
       ret.addSubsetRule(rule)
     end
     return ret
@@ -51,16 +51,15 @@ class PokemonRuleSet
     minLevel = 1
     maxLevel = GameData::GrowthRate.max_level
     num = self.suggestedNumber
-    @pokemonRules.each do |rule|
-      case rule
-      when MinimumLevelRestriction
+    for rule in @pokemonRules
+      if rule.is_a?(MinimumLevelRestriction)
         minLevel = rule.level
-      when MaximumLevelRestriction
+      elsif rule.is_a?(MaximumLevelRestriction)
         maxLevel = rule.level
       end
     end
     totalLevel = maxLevel * num
-    @subsetRules.each do |rule|
+    for rule in @subsetRules
       totalLevel = rule.level if rule.is_a?(TotalLevelRestriction)
     end
     return [maxLevel, minLevel].max if totalLevel >= maxLevel * num
@@ -126,7 +125,7 @@ class PokemonRuleSet
 
   def isPokemonValid?(pkmn)
     return false if !pkmn
-    @pokemonRules.each do |rule|
+    for rule in @pokemonRules
       return false if !rule.isValid?(pkmn)
     end
     return true
@@ -148,17 +147,17 @@ class PokemonRuleSet
   def canRegisterTeam?(team)
     return false if !team || team.length < self.minTeamLength
     return false if team.length > self.maxTeamLength
-    teamNumber = self.minTeamLength
-    team.each do |pkmn|
+    teamNumber = [self.maxLength, team.length].min
+    for pkmn in team
       return false if !isPokemonValid?(pkmn)
     end
-    @teamRules.each do |rule|
+    for rule in @teamRules
       return false if !rule.isValid?(team)
     end
     if @subsetRules.length > 0
       pbEachCombination(team, teamNumber) { |comb|
         isValid = true
-        @subsetRules.each do |rule|
+        for rule in @subsetRules
           next if rule.isValid?(comb)
           isValid = false
           break
@@ -175,9 +174,9 @@ class PokemonRuleSet
   # team rules and subset rules. Not all Pokemon in the team have to be valid.
   def hasValidTeam?(team)
     return false if !team || team.length < self.minTeamLength
-    teamNumber = self.minTeamLength
+    teamNumber = [self.maxLength, team.length].min
     validPokemon = []
-    team.each do |pkmn|
+    for pkmn in team
       validPokemon.push(pkmn) if isPokemonValid?(pkmn)
     end
     return false if validPokemon.length < teamNumber
@@ -197,26 +196,26 @@ class PokemonRuleSet
       error.push(_INTL("{1} Pokémon are needed.", self.minLength)) if error && self.minLength > 1
       return false
     elsif team.length > self.maxLength
-      error&.push(_INTL("No more than {1} Pokémon may enter.", self.maxLength))
+      error.push(_INTL("No more than {1} Pokémon may enter.", self.maxLength)) if error
       return false
     end
-    team.each do |pkmn|
+    for pkmn in team
       next if isPokemonValid?(pkmn)
       if pkmn
-        error&.push(_INTL("{1} is not allowed.", pkmn.name))
-      elsif error
-        error.push(_INTL("This team is not allowed."))
+        error.push(_INTL("{1} is not allowed.", pkmn.name)) if error
+      else
+        error.push(_INTL("This team is not allowed.")) if error
       end
       return false
     end
-    @teamRules.each do |rule|
+    for rule in @teamRules
       next if rule.isValid?(team)
-      error&.push(rule.errorMessage)
+      error.push(rule.errorMessage) if error
       return false
     end
-    @subsetRules.each do |rule|
+    for rule in @subsetRules
       next if rule.isValid?(team)
-      error&.push(rule.errorMessage)
+      error.push(rule.errorMessage) if error
       return false
     end
     return true

@@ -1,13 +1,14 @@
-# NOTE: The order these colors are registered are the order they are listed in
-#       the Pokédex search screen.
+# NOTE: The id_number is only used to determine the order that body colors are
+#       listed in the Pokédex search screen.
 module GameData
   class BodyColor
     attr_reader :id
+    attr_reader :id_number
     attr_reader :real_name
 
     DATA = {}
 
-    extend ClassMethodsSymbols
+    extend ClassMethods
     include InstanceMethods
 
     def self.load; end
@@ -15,7 +16,8 @@ module GameData
 
     def initialize(hash)
       @id        = hash[:id]
-      @real_name = hash[:name] || "Unnamed"
+      @id_number = hash[:id_number] || -1
+      @real_name = hash[:name]      || "Unnamed"
     end
 
     # @return [String] the translated name of this body color
@@ -28,51 +30,61 @@ end
 #===============================================================================
 
 GameData::BodyColor.register({
-  :id   => :Red,
-  :name => _INTL("Red")
+  :id        => :Red,
+  :id_number => 0,
+  :name      => _INTL("Red")
 })
 
 GameData::BodyColor.register({
-  :id   => :Blue,
-  :name => _INTL("Blue")
+  :id        => :Blue,
+  :id_number => 1,
+  :name      => _INTL("Blue")
 })
 
 GameData::BodyColor.register({
-  :id   => :Yellow,
-  :name => _INTL("Yellow")
+  :id        => :Yellow,
+  :id_number => 2,
+  :name      => _INTL("Yellow")
 })
 
 GameData::BodyColor.register({
-  :id   => :Green,
-  :name => _INTL("Green")
+  :id        => :Green,
+  :id_number => 3,
+  :name      => _INTL("Green")
 })
 
 GameData::BodyColor.register({
-  :id   => :Black,
-  :name => _INTL("Black")
+  :id        => :Black,
+  :id_number => 4,
+  :name      => _INTL("Black")
 })
 
 GameData::BodyColor.register({
-  :id   => :Brown,
-  :name => _INTL("Brown")
+  :id        => :Brown,
+  :id_number => 5,
+  :name      => _INTL("Brown")
 })
 
 GameData::BodyColor.register({
-  :id   => :Purple,
-  :name => _INTL("Purple")
+  :id        => :Purple,
+  :id_number => 6,
+  :name      => _INTL("Purple")
 })
 
 GameData::BodyColor.register({
-  :id   => :Gray,
-  :name => _INTL("Gray")
+  :id        => :Gray,
+  :id_number => 7,
+  :name      => _INTL("Gray")
 })
 
 GameData::BodyColor.register({
-  :id   => :White,
-  :name => _INTL("White")
+  :id        => :White,
+  :id_number => 8,
+  :name      => _INTL("White")
 })
 
 GameData::BodyColor.register({
-  :id   => :Pink,
-  :name => _INTL("Pink")
+  :id        => :Pink,
+  :id_number => 9,
+  :name      => _INTL("Pink")
 })

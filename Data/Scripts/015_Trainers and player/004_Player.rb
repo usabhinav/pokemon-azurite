@@ -3,9 +3,9 @@
 #===============================================================================
 class Player < Trainer
   # @return [Integer] the character ID of the player
-  attr_reader   :character_ID
+  attr_accessor :character_ID
   # @return [Integer] the player's outfit
-  attr_reader   :outfit
+  attr_accessor :outfit
   # @return [Array<Boolean>] the player's Gym Badges (true if owned)
   attr_accessor :badges
   # @return [Integer] the player's money
@@ -24,45 +24,22 @@ class Player < Trainer
   attr_accessor :has_pokegear
   # @return [Boolean] whether the player has running shoes (i.e. can run)
   attr_accessor :has_running_shoes
-  # @return [Boolean] whether the player has an innate ability to access Pokémon storage
-  attr_accessor :has_box_link
   # @return [Boolean] whether the creator of the Pokémon Storage System has been seen
   attr_accessor :seen_storage_creator
-  # @return [Boolean] whether the effect of Exp All applies innately
-  attr_accessor :has_exp_all
   # @return [Boolean] whether Mystery Gift can be used from the load screen
   attr_accessor :mystery_gift_unlocked
   # @return [Array<Array>] downloaded Mystery Gift data
   attr_accessor :mystery_gifts
+  # @return [Integer] the player's current outfit
+  attr_writer   :outfit
   # @return [ObservableOutfitState] the player's outfit state
   attr_accessor :outfitstate
 
-  def character_ID=(value)
-    return if @character_ID == value
-    @character_ID = value
-    $game_player&.refresh_charset
-  end
-
-  def outfit=(value)
-    return if @outfit == value
-    @outfit = value
-    $game_player&.refresh_charset
-  end
-
-  def character_ID=(value)
-    return if @character_ID == value
-    @character_ID = value
-    $game_player&.refresh_charset
-  end
-
-  def outfit=(value)
-    return if @outfit == value
-    @outfit = value
-    $game_player&.refresh_charset
-  end
-
   def trainer_type
-    return GameData::PlayerMetadata.get(@character_ID || 1).trainer_type
+    if @trainer_type.is_a?(Integer)
+      @trainer_type = GameData::Metadata.get_player(@character_ID || 0)[0]
+    end
+    return @trainer_type
   end
 
   # Sets the player's money. It can not exceed {Settings::MAX_MONEY}.
@@ -122,10 +99,10 @@ class Player < Trainer
 
   def initialize(name, trainer_type)
     super
-    @character_ID          = 0
+    @character_ID          = -1
     @outfit                = 0
     @badges                = [false] * 8
-    @money                 = GameData::Metadata.get.start_money
+    @money                 = Settings::INITIAL_MONEY
     @coins                 = 0
     @battle_points         = 0
     @soot                  = 0
@@ -133,15 +110,14 @@ class Player < Trainer
     @has_pokedex           = false
     @has_pokegear          = false
     @has_running_shoes     = false
-    @has_box_link          = false
     @seen_storage_creator  = false
-    @has_exp_all           = false
     @mystery_gift_unlocked = false
     @mystery_gifts         = []
     @outfit                = 0
     # Initialize trainer outfit state.
-    @outfitstate = ObservableOutfitState.new(OutfitState.new(trainer_type, "Walking"))
-    @outfitstate.setDryLayerState("Base", 1)
-    @outfitstate.setWetLayerState("Base", 1)
+    # OUTFIT DISABLED (3 lines)
+    # @outfitstate = ObservableOutfitState.new(OutfitState.new(trainer_type, "Walking"))
+    # @outfitstate.setDryLayerPart("Base", 1)
+    # @outfitstate.setWetLayerPart("Base", 1)
   end
 end

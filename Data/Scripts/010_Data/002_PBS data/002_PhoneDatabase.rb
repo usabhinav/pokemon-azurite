@@ -22,3 +22,10 @@ class PhoneDatabase
     @trainers         = []
   end
 end
+
+module PhoneMsgType
+  Generic       = 0
+  Greeting      = 1
+  Body          = 2
+  BattleRequest = 3
+end

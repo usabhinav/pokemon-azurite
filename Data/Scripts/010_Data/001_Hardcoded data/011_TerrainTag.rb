@@ -198,3 +198,9 @@ GameData::TerrainTag.register({
   :id                     => :NoEffect,
   :id_number              => 17
 })
+
+GameData::TerrainTag.register({
+  :id                     => :Mirror,
+  :id_number              => 18,
+  :shows_reflections      => true
+})

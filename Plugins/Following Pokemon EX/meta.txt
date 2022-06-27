@@ -1,7 +1,6 @@
 Name       = Following Pokemon EX
-Version    = 2.2.1
-Essentials = 20
-Requires   = v20 Hotfixes, 1.0.0
+Version    = 2.2.2
+Essentials = 20.1
 Optional   = Battle Scripting EX, 1.0.0
 Optional   = Boss Battles EX, 1.0.0
 Optional   = Battle Databoxes EX, 1.0.0

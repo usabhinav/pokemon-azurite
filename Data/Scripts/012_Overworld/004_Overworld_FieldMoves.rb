@@ -1077,3 +1077,14 @@ HiddenMoveHandlers::UseMove.add(:WATERFALL, proc { |move, pokemon|
   pbAscendWaterfall
   next true
 })
+
+EventHandlers.add(:on_player_interact, :mirror,
+  proc {
+    terrain = $game_player.pbFacingTerrainTag
+    next if terrain.id != :Mirror
+    model = PokemonApparelMenu.new($ApparelBag.apparel)
+    scene = PokemonApparelMenu_Scene.new
+    screen = PokemonApparelMenu_Screen.new(scene, model, $player.outfitstate)
+    screen.pbStartScreen
+  }
+)

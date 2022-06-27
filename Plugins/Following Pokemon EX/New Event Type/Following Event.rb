@@ -1,4 +1,23 @@
 #-------------------------------------------------------------------------------
+# Defining a new method for base Essentials followers to show dust animation
+#-------------------------------------------------------------------------------
+class Game_Follower
+  def update_move
+    was_jumping = jumping?
+    super
+    show_dust_animation if was_jumping && !jumping?
+  end
+
+  if !method_defined?(:show_dust_animation)
+    def show_dust_animation
+      spriteset = $scene.spriteset(map_id)
+      spriteset&.addUserAnimation(Settings::DUST_ANIMATION_ID, self.x, self.y, true, 1)
+    end
+  end
+end
+
+
+#-------------------------------------------------------------------------------
 # Defining a new class for Following Pokemon event which has several additions
 # to make it more robust as a Following Pokemon
 #-------------------------------------------------------------------------------
@@ -43,14 +62,19 @@ class Game_FollowingPkmn < Game_Follower
     __followingpkmn__straighten
   end
   #-----------------------------------------------------------------------------
+  # Don't show dust animation if Following Pokemon isn't active or is airborne
+  #-----------------------------------------------------------------------------
+  def show_dust_animation
+    return if !FollowingPkmn.active? || FollowingPkmn.airborne_follower?
+    super
+  end
+  #-----------------------------------------------------------------------------
   # Allow following pokemon to freely walk on water
   #-----------------------------------------------------------------------------
   def location_passable?(x, y, direction)
     this_map = self.map
     return false if !this_map || !this_map.valid?(x, y)
     return true if @through
-	# :Elysium: Followers passable when start or end surfing
-	return true if $game_temp.surf_base_coords
     passed_tile_checks = false
     bit = (1 << ((direction / 2) - 1)) & 0x0f
     # Check all events for ones using tiles as graphics, and see if they're passable

@@ -305,6 +305,8 @@ end
 #
 #===============================================================================
 class FollowerSprites
+  attr_reader :sprites
+
   def initialize(viewport)
     @viewport    = viewport
     @sprites     = []

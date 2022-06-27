@@ -54,9 +54,33 @@ class Spriteset_Map
     @fog = AnimatedPlane.new(@@viewport1)
     @fog.z = 3000
     @character_sprites = []
+    @mirror_reflection_sprites = []
+    mirror_list = map.get_mirrors
     @map.events.keys.sort.each do |i|
       sprite = Sprite_Character.new(@@viewport1, @map.events[i])
       @character_sprites.push(sprite)
+      # Create a mirror reflection sprite per mirror for each event on this map
+      if !@map.events[i] || (@map.events[i].name[/reflection/i] rescue false)
+        for rect in mirror_list
+          @mirror_reflection_sprites.push(Sprite_Reflection2.new(sprite, @map.events[i], @@viewport1, rect))
+        end
+      end
+    end
+    # Create a mirror reflection sprite per mirror for the player and per mirror for each of its followers
+    if $scene.is_a?(Scene_Map)
+      for rect in mirror_list
+        @mirror_reflection_sprites.push(Sprite_Reflection2.new($scene.spritesetGlobal.playersprite, $game_player, @@viewport1, rect))
+        for follower in $scene.spritesetGlobal.follower_sprites.sprites
+          event = nil
+          $game_temp.followers.each_follower do |event, foll|
+            if follower.character == event
+              event = follower.character
+              break
+            end
+          end
+          @mirror_reflection_sprites.push(Sprite_Reflection2.new(follower, event, @@viewport1, rect))
+        end
+      end
     end
     @weather = RPG::Weather.new(@@viewport1)
     EventHandlers.trigger(:on_new_spriteset_map, self, @@viewport1)
@@ -72,6 +96,7 @@ class Spriteset_Map
     @panorama.dispose
     @fog.dispose
     @character_sprites.each { |sprite| sprite.dispose }
+    @mirror_reflection_sprites.each {|sprite| sprite.dispose}
     @weather.dispose
     @panorama = nil
     @fog = nil
@@ -121,6 +146,9 @@ class Spriteset_Map
     @fog.update
     @character_sprites.each do |sprite|
       sprite.update
+    end
+    @mirror_reflection_sprites.each do |sprite|
+      sprite.update if !sprite.disposed?
     end
     if self.map == $game_map
       @weather.fade_in($game_screen.weather_type, $game_screen.weather_max, $game_screen.weather_duration)

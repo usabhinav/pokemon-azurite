@@ -124,6 +124,7 @@ class Sprite_Reflection2
 
   def update
     return if disposed?
+    return if @rsprite.disposed?
     shouldShow = @rsprite.visible
     if !shouldShow
       # Just-in-time disposal of sprite
@@ -140,32 +141,41 @@ class Sprite_Reflection2
       y = @rsprite.y - @rsprite.oy * TilemapRenderer::ZOOM_Y
       end_y = @bounding_box.y + @bounding_box.height
       if @event
-        y -= (@event.real_y - (end_y * Game_Map::REAL_RES_Y))/2 * TilemapRenderer::ZOOM_Y
+        y -= (@event.real_y - (end_y * Game_Map::REAL_RES_Y)) / 2 * TilemapRenderer::ZOOM_Y
       elsif $scene.is_a?(Scene_Map)
-        y -= ($game_player.real_y - (end_y * Game_Map::REAL_RES_Y))/2 * TilemapRenderer::ZOOM_Y
+        y -= ($game_player.real_y - (end_y * Game_Map::REAL_RES_Y)) / 2 * TilemapRenderer::ZOOM_Y
         y += ($scene.spritesetGlobal.playersprite.y - @rsprite.y) * 2 * TilemapRenderer::ZOOM_Y
       end
       y -= Game_Map::TILE_HEIGHT * TilemapRenderer::ZOOM_Y if @rsprite.character.character_name[/offset/i]
-      @height = $PokemonGlobal.bridge if !@fixedheight
-      y += @height * TilemapRenderer::ZOOM_Y * Game_Map::TILE_HEIGHT / 2
       width  = @rsprite.src_rect.width
       height = @rsprite.src_rect.height
       @sprite.x        = x + (width / 2) * TilemapRenderer::ZOOM_X
       @sprite.y        = y
       @sprite.ox       = width / 2
-      @sprite.oy       = (height / 2) + 2   # Hard-coded 2 pixel shift down
+      @sprite.oy       = (height / 2)   # Hard-coded 2 pixel shift down
       @sprite.oy       += @rsprite.character.bob_height * 2
-      @sprite.z        = -50   # Still water is -100, map is 0 and above
+      @sprite.z        = -29   # Mirror is -30, map is 0 and above
       @sprite.z        += 1 if @event == $game_player
       @sprite.zoom_x   = @rsprite.zoom_x
       @sprite.zoom_y   = @rsprite.zoom_y
       @sprite.mirror   = true
       @sprite.bitmap   = @rsprite.bitmap
       @sprite.tone     = @rsprite.tone
-      @sprite.color   = Color.new(224, 224, 224, 96)
-      @sprite.opacity = @rsprite.opacity * 3 / 4
-      end_x = @bounding_box.x + @bounding_box.width + 1
-      @sprite.visible = (@sprite.x >= (@bounding_box.x - 1) * Game_Map::REAL_RES_X && @sprite.x <= end_x * Game_Map::REAL_RES_X)
+      # @sprite.color    = Color.new(224, 224, 224, 96)
+      @sprite.opacity  = @rsprite.opacity
+      if @event
+        @sprite.visible = (@event.real_x >= (@bounding_box.x - 1) * Game_Map::REAL_RES_X) &&
+                          (@event.real_x <= (@bounding_box.x + @bounding_box.width) * Game_Map::REAL_RES_X) &&
+                          (@event.real_y >= (@bounding_box.y + @bounding_box.height) * Game_Map::REAL_RES_Y) &&
+                          (@event.real_y <= (@bounding_box.y + 2*@bounding_box.height) * Game_Map::REAL_RES_Y)
+      elsif $scene.is_a?(Scene_Map)
+        follower_x = ($game_player.real_x) - ($scene.spritesetGlobal.playersprite.x - @rsprite.x) * Game_Map::X_SUBPIXELS
+        follower_y = ($game_player.real_y) - ($scene.spritesetGlobal.playersprite.y - @rsprite.y) * Game_Map::Y_SUBPIXELS
+        @sprite.visible = (follower_x >= (@bounding_box.x - 1) * Game_Map::REAL_RES_X) &&
+                          (follower_x <= (@bounding_box.x + @bounding_box.width) * Game_Map::REAL_RES_X) &&
+                          (follower_y >= (@bounding_box.y + @bounding_box.height) * Game_Map::REAL_RES_Y) &&
+                          (follower_y <= (@bounding_box.y + 2*@bounding_box.height) * Game_Map::REAL_RES_Y)
+      end
       new_direction = 0
       case @rsprite.character.direction
       when 2 # Down

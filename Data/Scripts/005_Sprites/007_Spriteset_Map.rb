@@ -101,6 +101,7 @@ class Spriteset_Map
     @panorama = nil
     @fog = nil
     @character_sprites.clear
+    @mirror_reflection_sprites.clear
     @weather = nil
   end
 
@@ -148,7 +149,7 @@ class Spriteset_Map
       sprite.update
     end
     @mirror_reflection_sprites.each do |sprite|
-      sprite.update if !sprite.disposed?
+      sprite.update
     end
     if self.map == $game_map
       @weather.fade_in($game_screen.weather_type, $game_screen.weather_max, $game_screen.weather_duration)

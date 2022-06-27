@@ -242,6 +242,7 @@ class TilemapRenderer
     attr_accessor :animated
     attr_accessor :priority
     attr_accessor :shows_reflection
+    attr_accessor :shows_mirror_reflection
     attr_accessor :bridge
     attr_accessor :need_refresh
 
@@ -256,6 +257,7 @@ class TilemapRenderer
       @animated         = animated
       @priority         = priority
       @shows_reflection = false
+      @shows_mirror_reflection = false
       @bridge           = false
       self.visible      = !bitmap.nil?
       @need_refresh     = true
@@ -361,6 +363,7 @@ class TilemapRenderer
     if tile_id < TILES_PER_AUTOTILE
       tile.set_bitmap("", tile_id, false, false, 0, nil)
       tile.shows_reflection = false
+      tile.shows_mirror_reflection = false
       tile.bridge           = false
     else
       terrain_tag = map.terrain_tags[tile_id] || 0
@@ -392,6 +395,7 @@ class TilemapRenderer
         tile.set_bitmap(filename, tile_id, false, false, priority, @tilesets[filename])
       end
       tile.shows_reflection = terrain_tag_data&.shows_reflections
+      tile.shows_mirror_reflection = terrain_tag_data&.shows_mirror_reflections
       tile.bridge           = terrain_tag_data&.bridge
     end
     refresh_tile_src_rect(tile, tile_id)
@@ -420,6 +424,8 @@ class TilemapRenderer
   def refresh_tile_z(tile, map, y, layer, tile_id)
     if tile.shows_reflection
       tile.z = -100
+    elsif tile.shows_mirror_reflection
+      tile.z = -30 # Blocks regular water reflections
     elsif tile.bridge && $PokemonGlobal.bridge > 0
       tile.z = 0
     else
@@ -609,6 +615,7 @@ class TilemapRenderer
         coord.each do |tile|
           tile.set_bitmap("", 0, false, false, 0, nil)
           tile.shows_reflection = false
+          tile.shows_mirror_reflection = false
           tile.bridge           = false
         end
       end

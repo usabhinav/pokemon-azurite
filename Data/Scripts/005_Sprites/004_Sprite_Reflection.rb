@@ -142,9 +142,6 @@ class Sprite_Reflection2
       end_y = @bounding_box.y + @bounding_box.height
       if @event
         y -= (@event.real_y - (end_y * Game_Map::REAL_RES_Y)) / 2 * TilemapRenderer::ZOOM_Y
-      elsif $scene.is_a?(Scene_Map)
-        y -= ($game_player.real_y - (end_y * Game_Map::REAL_RES_Y)) / 2 * TilemapRenderer::ZOOM_Y
-        y += ($scene.spritesetGlobal.playersprite.y - @rsprite.y) * 2 * TilemapRenderer::ZOOM_Y
       end
       y -= Game_Map::TILE_HEIGHT * TilemapRenderer::ZOOM_Y if @rsprite.character.character_name[/offset/i]
       width  = @rsprite.src_rect.width
@@ -168,13 +165,6 @@ class Sprite_Reflection2
                           (@event.real_x <= (@bounding_box.x + @bounding_box.width) * Game_Map::REAL_RES_X) &&
                           (@event.real_y >= (@bounding_box.y + @bounding_box.height) * Game_Map::REAL_RES_Y) &&
                           (@event.real_y <= (@bounding_box.y + 2*@bounding_box.height) * Game_Map::REAL_RES_Y)
-      elsif $scene.is_a?(Scene_Map)
-        follower_x = ($game_player.real_x) - ($scene.spritesetGlobal.playersprite.x - @rsprite.x) * Game_Map::X_SUBPIXELS
-        follower_y = ($game_player.real_y) - ($scene.spritesetGlobal.playersprite.y - @rsprite.y) * Game_Map::Y_SUBPIXELS
-        @sprite.visible = (follower_x >= (@bounding_box.x - 1) * Game_Map::REAL_RES_X) &&
-                          (follower_x <= (@bounding_box.x + @bounding_box.width) * Game_Map::REAL_RES_X) &&
-                          (follower_y >= (@bounding_box.y + @bounding_box.height) * Game_Map::REAL_RES_Y) &&
-                          (follower_y <= (@bounding_box.y + 2*@bounding_box.height) * Game_Map::REAL_RES_Y)
       end
       new_direction = 0
       case @rsprite.character.direction

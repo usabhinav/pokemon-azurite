@@ -69,16 +69,18 @@ class Spriteset_Map
     # Create a mirror reflection sprite per mirror for the player and per mirror for each of its followers
     if $scene.is_a?(Scene_Map)
       for rect in mirror_list
+        # Player reflection
         @mirror_reflection_sprites.push(Sprite_Reflection2.new($scene.spritesetGlobal.playersprite, $game_player, @@viewport1, rect))
+        # Reflection per follower
         for follower in $scene.spritesetGlobal.follower_sprites.sprites
           event = nil
-          $game_temp.followers.each_follower do |event, foll|
-            if follower.character == event
+          $game_temp.followers.each_follower do |ev, foll|
+            if follower.character == ev
               event = follower.character
               break
             end
           end
-          @mirror_reflection_sprites.push(Sprite_Reflection2.new(follower, event, @@viewport1, rect))
+          @mirror_reflection_sprites.push(Sprite_Reflection2.new(follower, event, @@viewport1, rect)) if event
         end
       end
     end

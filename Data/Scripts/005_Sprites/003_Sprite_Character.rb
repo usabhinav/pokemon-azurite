@@ -66,6 +66,15 @@ class Sprite_Character < RPG::Sprite
     if !character || character == $game_player || (character.name[/reflection/i] rescue false)
       @reflection = Sprite_Reflection.new(self, character, viewport)
     end
+    # Water reflections for followers
+    if character
+      $game_temp.followers.each_follower do |ev, foll|
+        if character == ev
+          @reflection = Sprite_Reflection.new(self, character, viewport)
+          break
+        end
+      end
+    end
     @surfbase = Sprite_SurfBase.new(self, character, viewport) if character == $game_player
     self.zoom_x = TilemapRenderer::ZOOM_X
     self.zoom_y = TilemapRenderer::ZOOM_Y

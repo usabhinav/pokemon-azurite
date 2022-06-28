@@ -8,18 +8,13 @@ class PokemonPartyConfirmCancelSprite < Sprite
     super(viewport)
     @refreshBitmap = true
     @bgsprite = ChangelingSprite.new(0, 0, viewport)
-    if narrowbox
-      @bgsprite.addBitmap("desel", "Graphics/Pictures/Party New/partyCancelNarrow")
-      @bgsprite.addBitmap("sel", "Graphics/Pictures/Party New/partyCancelNarrowSel")
-    else
-      @bgsprite.addBitmap("desel", "Graphics/Pictures/Party New/partyCancel")
-      @bgsprite.addBitmap("sel", "Graphics/Pictures/Party New/partyCancelSel")
-    end
+    @bgsprite.addBitmap("desel", "Graphics/Pictures/Party New/partyCancel")
+    @bgsprite.addBitmap("sel", "Graphics/Pictures/Party New/partyCancelSel")
     @bgsprite.changeBitmap("desel")
     @overlaysprite = BitmapSprite.new(@bgsprite.bitmap.width, @bgsprite.bitmap.height, viewport)
     @overlaysprite.z = self.z + 1
     pbSetSystemFont(@overlaysprite.bitmap)
-    textpos = [[text, 56, (narrowbox) ? 8 : 14, 2, Color.new(248, 248, 248), Color.new(66, 66, 81), 1]]
+    textpos = [[text, 56, 10, 2, Color.new(248, 248, 248), Color.new(66, 66, 81), 1]]
     pbDrawTextPositions(@overlaysprite.bitmap, textpos)
     self.x = x
     self.y = y
@@ -59,6 +54,13 @@ class PokemonPartyConfirmCancelSprite < Sprite
     end
   end
 
+  def changeBitmapSuffix(new_suffix)
+    @bgsprite = ChangelingSprite.new(0, 0, viewport)
+    @bgsprite.addBitmap("desel", "Graphics/Pictures/Party New/partyCancel" + new_suffix)
+    @bgsprite.addBitmap("sel", "Graphics/Pictures/Party New/partyCancel" + new_suffix + "Sel")
+    refresh
+  end
+
   def refresh
     if @bgsprite && !@bgsprite.disposed?
       @bgsprite.changeBitmap((@selected) ? "sel" : "desel")
@@ -79,7 +81,7 @@ end
 #===============================================================================
 class PokemonPartyCancelSprite < PokemonPartyConfirmCancelSprite
   def initialize(viewport = nil)
-    super(_INTL("CANCEL"), 398, 328, false, viewport)
+    super(_INTL("CANCEL"), 398, 336, false, viewport)
   end
 end
 
@@ -88,7 +90,7 @@ end
 #===============================================================================
 class PokemonPartyConfirmSprite < PokemonPartyConfirmCancelSprite
   def initialize(viewport = nil)
-    super(_INTL("CONFIRM"), 398, 308, true, viewport)
+    super(_INTL("CONFIRM"), 398, 336, true, viewport)
   end
 end
 
@@ -97,7 +99,7 @@ end
 #===============================================================================
 class PokemonPartyCancelSprite2 < PokemonPartyConfirmCancelSprite
   def initialize(viewport = nil)
-    super(_INTL("CANCEL"), 398, 346, true, viewport)
+    super(_INTL("CANCEL"), 398, 336, true, viewport)
   end
 end
 
@@ -216,7 +218,7 @@ class PokemonPartyPanel < Sprite
     pbSetSystemFont(@overlaysprite.bitmap)
     @hpbar    = AnimatedBitmap.new("Graphics/Pictures/Party New/partyHPBar")
     @expbar   = AnimatedBitmap.new("Graphics/Pictures/Party New/partyEXPBarFill")
-    @statuses = AnimatedBitmap.new(_INTL("Graphics/Pictures/statuses"))
+    @statuses = AnimatedBitmap.new(_INTL("Graphics/Pictures/Summary New/summaryStatuses"))
     @selected      = false
     @preselected   = false
     @switching     = false
@@ -386,16 +388,14 @@ class PokemonPartyPanel < Sprite
 
   def draw_name
     pbDrawTextPositions(@overlaysprite.bitmap,
-                        [[@pokemon.name, 86, 10, 0, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, 1]])
+                        [[@pokemon.name, 86, 12, 0, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, 1]])
   end
 
   def draw_level
     return if @pokemon.egg?
     # Level number
-    pbSetSmallFont(@overlaysprite.bitmap)
-    pbDrawTextPositions(@overlaysprite.bitmap,
-                        [[@pokemon.level.to_s, 42, 68, 0, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, 1]])
-    pbSetSystemFont(@overlaysprite.bitmap)
+    level_header = "<ac><i><b><outln2>"
+    drawFormattedTextEx(@overlaysprite.bitmap, 190, 67, 38, level_header + @pokemon.level.to_s, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR)
   end
 
   def draw_gender
@@ -410,9 +410,8 @@ class PokemonPartyPanel < Sprite
   def draw_hp
     return if @pokemon.egg? || (@text && @text.length > 0)
     # HP numbers
-    hp_text = sprintf("% 3d /% 3d", @pokemon.hp, @pokemon.totalhp)
-    pbDrawTextPositions(@overlaysprite.bitmap,
-                        [[hp_text, 224, 66, 1, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, 1]])
+    hp_text = sprintf("%d/%d", @pokemon.hp, @pokemon.totalhp)
+    drawFormattedTextEx(@overlaysprite.bitmap, 110, 56, 74, "<outln><r><fs=20>" + hp_text, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR)
     # HP bar
     if @pokemon.able?
       w = @pokemon.hp * HP_BAR_WIDTH / @pokemon.totalhp.to_f
@@ -429,13 +428,11 @@ class PokemonPartyPanel < Sprite
   def draw_exp
     return if @pokemon.egg? || (@text && @text.length > 0)
     # EXP bar
-    endexp = @pokemon.growth_rate.minimum_exp_for_level(@pokemon.level + 1)
-    startexp = @pokemon.growth_rate.minimum_exp_for_level(@pokemon.level)
-    w = (endexp - @pokemon.exp) * 68 / (endexp - startexp)
-    w = 1 if w < 1
-    w = ((w / 2).round) * 2   # Round to the nearest 2 pixels
-    # TODO: Do exp
-    @overlaysprite.bitmap.blt(114, 70, @expbar.bitmap, Rect.new(0, 0, w, 4))
+    if @pokemon.level < GameData::GrowthRate.max_level
+      w = @pokemon.exp_fraction * 68
+      w = ((w / 2).round) * 2   # Round to the nearest 2 pixels
+      @overlaysprite.bitmap.blt(114, 70, @expbar.bitmap, Rect.new(0, 0, w, 4))
+    end
   end
 
   def draw_status
@@ -443,6 +440,8 @@ class PokemonPartyPanel < Sprite
     status = -1
     if @pokemon.fainted?
       status = GameData::Status.count - 1
+    elsif @pokemon.status == :POISON && @pokemon.statusCount > 0
+      status = GameData::Status.count + 1
     elsif @pokemon.status != :NONE
       status = GameData::Status.get(@pokemon.status).icon_position
     elsif @pokemon.pokerusStage == 1
@@ -450,7 +449,7 @@ class PokemonPartyPanel < Sprite
     end
     return if status < 0
     statusrect = Rect.new(0, STATUS_ICON_HEIGHT * status, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT)
-    @overlaysprite.bitmap.blt(78, 68, @statuses.bitmap, statusrect)
+    @overlaysprite.bitmap.blt(185, 61, @statuses.bitmap, statusrect)
   end
 
   def draw_shiny_icon
@@ -507,7 +506,7 @@ class PokemonParty_Scene
     @viewport.z = 99999
     @multiselect = multiselect
     @can_access_storage = can_access_storage
-    addBackgroundPlane(@sprites, "partybg", "Party New/partybg", @viewport)
+    addBackgroundPlane(@sprites, "partybg", getBGName, @viewport)
     @sprites["messagebox"] = Window_AdvancedTextPokemon.new("")
     @sprites["messagebox"].z              = 50
     @sprites["messagebox"].viewport       = @viewport
@@ -540,9 +539,12 @@ class PokemonParty_Scene
     end
     if @multiselect
       @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"] = PokemonPartyConfirmSprite.new(@viewport)
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"].changeBitmapSuffix(getBGSuffix)
       @sprites["pokemon#{Settings::MAX_PARTY_SIZE + 1}"] = PokemonPartyCancelSprite2.new(@viewport)
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE + 1}"].changeBitmapSuffix(getBGSuffix)
     else
       @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"] = PokemonPartyCancelSprite.new(@viewport)
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"].changeBitmapSuffix(getBGSuffix)
     end
     # Select first Pokémon
     @activecmd = 0
@@ -554,6 +556,27 @@ class PokemonParty_Scene
     pbFadeOutAndHide(@sprites) { update }
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
+  end
+
+  def getBGSuffix
+    names = ["", "3Down", "5Down"]
+    able_matrix = [
+      nil,
+      [2, 0],
+      [2, 2, 0],
+      [2, 2, 1, 0],
+      [2, 2, 1, 1, 0],
+      [2, 2, 1, 1, 0, 0],
+      [2, 2, 1, 1, 0, 0, 0]
+    ]
+    party = @party.find_all {|p| p && !p.egg?}
+    able_party = party.find_all {|p| !p.fainted?}
+    index = able_matrix[party.length][able_party.length]
+    return names[index]
+  end
+
+  def getBGName
+    return "Party New/partybg" + getBGSuffix
   end
 
   def pbDisplay(text)
@@ -869,6 +892,7 @@ class PokemonParty_Scene
   end
 
   def pbHardRefresh
+    @sprites["partybg"].setBitmap("Graphics/Pictures/" + getBGName)
     oldtext = []
     lastselected = -1
     Settings::MAX_PARTY_SIZE.times do |i|
@@ -887,9 +911,16 @@ class PokemonParty_Scene
       @sprites["pokemon#{i}"].text = oldtext[i]
     end
     pbSelect(lastselected)
+    if @multiselect
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"].changeBitmapSuffix(getBGSuffix)
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE + 1}"].changeBitmapSuffix(getBGSuffix)
+    else
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"].changeBitmapSuffix(getBGSuffix)
+    end
   end
 
   def pbRefresh
+    @sprites["partybg"].setBitmap("Graphics/Pictures/" + getBGName)
     Settings::MAX_PARTY_SIZE.times do |i|
       sprite = @sprites["pokemon#{i}"]
       if sprite
@@ -900,9 +931,16 @@ class PokemonParty_Scene
         end
       end
     end
+    if @multiselect
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"].changeBitmapSuffix(getBGSuffix)
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE + 1}"].changeBitmapSuffix(getBGSuffix)
+    else
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"].changeBitmapSuffix(getBGSuffix)
+    end
   end
 
   def pbRefreshSingle(i)
+    @sprites["partybg"].setBitmap("Graphics/Pictures/" + getBGName)
     sprite = @sprites["pokemon#{i}"]
     if sprite
       if sprite.is_a?(PokemonPartyPanel)
@@ -910,6 +948,12 @@ class PokemonParty_Scene
       else
         sprite.refresh
       end
+    end
+    if @multiselect
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"].changeBitmapSuffix(getBGSuffix)
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE + 1}"].changeBitmapSuffix(getBGSuffix)
+    else
+      @sprites["pokemon#{Settings::MAX_PARTY_SIZE}"].changeBitmapSuffix(getBGSuffix)
     end
   end
 

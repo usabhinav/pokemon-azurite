@@ -439,11 +439,11 @@ class PokemonSummary_Scene
       status = GameData::Status.count
     end
     if status >= 0
-      imagepos.push(["Graphics/Pictures/Summary New/summaryStatuses", 124, 96, 0, 20 * status, 55, 20])
+      imagepos.push(["Graphics/Pictures/Summary New/summaryStatuses", 120, 96, 0, 20 * status, 55, 20])
     end
     # Show Pokérus cured icon
     if @pokemon.pokerusStage == 2
-      imagepos.push([sprintf("Graphics/Pictures/Summary New/summaryPokerus"), 176, 100])
+      imagepos.push([sprintf("Graphics/Pictures/pokerus"), 176, 98])
     end
     # Show shininess star
     if @pokemon.shiny?

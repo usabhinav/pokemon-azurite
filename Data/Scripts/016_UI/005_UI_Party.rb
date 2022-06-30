@@ -81,7 +81,7 @@ end
 #===============================================================================
 class PokemonPartyCancelSprite < PokemonPartyConfirmCancelSprite
   def initialize(viewport = nil)
-    super(_INTL("CANCEL"), 398, 336, false, viewport)
+    super(_INTL("Cancel"), 398, 336, false, viewport)
   end
 end
 
@@ -90,7 +90,7 @@ end
 #===============================================================================
 class PokemonPartyConfirmSprite < PokemonPartyConfirmCancelSprite
   def initialize(viewport = nil)
-    super(_INTL("CONFIRM"), 398, 336, true, viewport)
+    super(_INTL("Confirm"), 398, 336, true, viewport)
   end
 end
 
@@ -99,7 +99,7 @@ end
 #===============================================================================
 class PokemonPartyCancelSprite2 < PokemonPartyConfirmCancelSprite
   def initialize(viewport = nil)
-    super(_INTL("CANCEL"), 398, 336, true, viewport)
+    super(_INTL("Cancel"), 398, 336, true, viewport)
   end
 end
 
@@ -175,8 +175,8 @@ class PokemonPartyPanel < Sprite
   TEXT_BASE_COLOR    = Color.new(248, 248, 248)
   TEXT_SHADOW_COLOR  = Color.new(66, 66, 81)
   HP_BAR_WIDTH       = 100
-  STATUS_ICON_WIDTH  = 55
-  STATUS_ICON_HEIGHT = 20
+  STATUS_ICON_WIDTH  = 68
+  STATUS_ICON_HEIGHT = 24
 
   def initialize(pokemon, index, viewport = nil)
     super(viewport)
@@ -211,14 +211,16 @@ class PokemonPartyPanel < Sprite
     @pkmnsprite.setOffset(PictureOrigin::CENTER)
     @pkmnsprite.active = @active
     @pkmnsprite.z      = self.z + 2
-    @helditemsprite = HeldItemIconSprite.new(0, 0, @pokemon, viewport)
+    @helditemsprite = ItemIconSprite.new(0, 0, @pokemon.item, viewport)
+    @helditemsprite.zoom_x = 0.5
+    @helditemsprite.zoom_y = 0.5
     @helditemsprite.z = self.z + 3
     @overlaysprite = BitmapSprite.new(Graphics.width, Graphics.height, viewport)
     @overlaysprite.z = self.z + 4
     pbSetSystemFont(@overlaysprite.bitmap)
     @hpbar    = AnimatedBitmap.new("Graphics/Pictures/Party New/partyHPBar")
     @expbar   = AnimatedBitmap.new("Graphics/Pictures/Party New/partyEXPBarFill")
-    @statuses = AnimatedBitmap.new(_INTL("Graphics/Pictures/Summary New/summaryStatuses"))
+    @statuses = AnimatedBitmap.new(_INTL("Graphics/Pictures/Party New/partyStatuses"))
     @selected      = false
     @preselected   = false
     @switching     = false
@@ -268,7 +270,8 @@ class PokemonPartyPanel < Sprite
   def pokemon=(value)
     @pokemon = value
     @pkmnsprite.pokemon = value if @pkmnsprite && !@pkmnsprite.disposed?
-    @helditemsprite.pokemon = value if @helditemsprite && !@helditemsprite.disposed?
+    @helditemsprite.item = value.item if @helditemsprite && !@helditemsprite.disposed?
+    @helditemsprite.visible = !value.item.nil?
     @refreshBitmap = true
     refresh
   end
@@ -369,7 +372,7 @@ class PokemonPartyPanel < Sprite
   def refresh_held_item_icon
     return if !@helditemsprite || @helditemsprite.disposed? || !@helditemsprite.visible
     @helditemsprite.x     = self.x + 62
-    @helditemsprite.y     = self.y + 48
+    @helditemsprite.y     = self.y + 64
     @helditemsprite.color = self.color
   end
 
@@ -383,6 +386,7 @@ class PokemonPartyPanel < Sprite
     draw_exp
     draw_status
     draw_shiny_icon
+    draw_pokerus_icon
     draw_annotation
   end
 
@@ -394,8 +398,14 @@ class PokemonPartyPanel < Sprite
   def draw_level
     return if @pokemon.egg?
     # Level number
-    level_header = "<ac><i><b><outln2>"
-    drawFormattedTextEx(@overlaysprite.bitmap, 190, 67, 38, level_header + @pokemon.level.to_s, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR)
+    @overlaysprite.bitmap.font.italic = true
+    @overlaysprite.bitmap.font.bold = true
+    @overlaysprite.bitmap.font.size = 20
+    pbDrawTextPositions(@overlaysprite.bitmap,
+                        [[@pokemon.level.to_s, 209, 66, 2, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, 1]])
+    @overlaysprite.bitmap.font.italic = false
+    @overlaysprite.bitmap.font.bold = false
+    pbSetSystemFont(@overlaysprite.bitmap)
   end
 
   def draw_gender
@@ -411,7 +421,11 @@ class PokemonPartyPanel < Sprite
     return if @pokemon.egg? || (@text && @text.length > 0)
     # HP numbers
     hp_text = sprintf("%d/%d", @pokemon.hp, @pokemon.totalhp)
-    drawFormattedTextEx(@overlaysprite.bitmap, 110, 56, 74, "<outln><r><fs=20>" + hp_text, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR)
+    pbSetSmallFont(@overlaysprite.bitmap)
+    @overlaysprite.bitmap.font.size = 24
+    pbDrawTextPositions(@overlaysprite.bitmap,
+                        [[hp_text, 184, 58, 1, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, 1]])
+    pbSetSystemFont(@overlaysprite.bitmap)
     # HP bar
     if @pokemon.able?
       w = @pokemon.hp * HP_BAR_WIDTH / @pokemon.totalhp.to_f
@@ -441,21 +455,25 @@ class PokemonPartyPanel < Sprite
     if @pokemon.fainted?
       status = GameData::Status.count - 1
     elsif @pokemon.status == :POISON && @pokemon.statusCount > 0
-      status = GameData::Status.count + 1
+      status = GameData::Status.count
     elsif @pokemon.status != :NONE
       status = GameData::Status.get(@pokemon.status).icon_position
-    elsif @pokemon.pokerusStage == 1
-      status = GameData::Status.count
     end
     return if status < 0
     statusrect = Rect.new(0, STATUS_ICON_HEIGHT * status, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT)
-    @overlaysprite.bitmap.blt(185, 61, @statuses.bitmap, statusrect)
+    @overlaysprite.bitmap.blt(174, 58, @statuses.bitmap, statusrect)
   end
 
   def draw_shiny_icon
     return if @pokemon.egg? || !@pokemon.shiny?
     pbDrawImagePositions(@overlaysprite.bitmap,
-                         [["Graphics/Pictures/shiny", 80, 48, 0, 0, 16, 16]])
+                         [["Graphics/Pictures/shiny", 68, 6, 0, 0, 16, 16]])
+  end
+
+  def draw_pokerus_icon
+    return if @pokemon.egg? || @pokemon.pokerusStage != 2
+    pbDrawImagePositions(@overlaysprite.bitmap,
+                         [["Graphics/Pictures/pokerus", 220, 12, 0, 0, 16, 16]])
   end
 
   def draw_annotation
@@ -516,8 +534,8 @@ class PokemonParty_Scene
     @sprites["storagetext"] = Window_UnformattedTextPokemon.new(
       @can_access_storage ? _INTL("[Special]: To Boxes") : ""
     )
-    @sprites["storagetext"].x           = 32
-    @sprites["storagetext"].y           = Graphics.height - @sprites["messagebox"].height - 16
+    @sprites["storagetext"].x           = 264
+    @sprites["storagetext"].y           = -8
     @sprites["storagetext"].z           = 10
     @sprites["storagetext"].viewport    = @viewport
     @sprites["storagetext"].baseColor   = Color.new(248, 248, 248)

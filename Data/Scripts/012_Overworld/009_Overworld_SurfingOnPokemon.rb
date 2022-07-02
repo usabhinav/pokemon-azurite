@@ -15,7 +15,7 @@ end
 def pbGetSurfablePkmn
   
   for pkmn in $player.party
-    next if pkmn.isEgg?
+    next if pkmn.egg?
     if $SURFABLE_POKEMON_SPECIES.include?(pkmn.species)
       return pkmn
     end

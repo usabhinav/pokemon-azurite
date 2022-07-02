@@ -828,14 +828,14 @@ def pbSwimOrSurf
   
   if pbCanPlayerSwim? && pbCanPlayerSurf?
     # Ask the player if they want to either swim or surf
-    #TODO: Implement this
+    # TODO: Implement this
     commands = [_INTL("Swim"), _INTL("Surf")]
     surfbgm = GameData::Metadata.get.surf_BGM
     pbCueBGM(surfbgm,0.5) if surfbgm
   elsif pbCanPlayerSwim? 
-    Kernel.pbSwim # Ask the player if they want to swim
+    pbSwim # Ask the player if they want to swim
   elsif pbCanPlayerSurf?
-    Kernel.pbSurf # Ask the player if they want to surf
+    pbSurf # Ask the player if they want to surf
   end
       
 end

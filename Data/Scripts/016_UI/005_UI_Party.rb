@@ -762,7 +762,7 @@ class PokemonParty_Scene
   def pbSummary(pkmnid, inbattle = false)
     oldsprites = pbFadeOutAndHide(@sprites)
     scene = PokemonSummary_Scene.new
-    screen = PokemonSummaryScreen.new(scene, inbattle)
+    screen = PokemonSummaryScreen.new(scene, inbattle, true)
     screen.pbStartScreen(@party, pkmnid)
     yield if block_given?
     pbFadeInAndShow(@sprites, oldsprites)

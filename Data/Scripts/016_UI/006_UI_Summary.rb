@@ -135,6 +135,13 @@ class PartyRotationSprite < Sprite
     @updating = false
   end
 
+  def visible=(value)
+    @visible = value
+    for sprite in @sprites
+      sprite.visible = value
+    end
+  end
+
   def dispose
     for sprite in @sprites
       sprite.dispose
@@ -217,7 +224,7 @@ class PokemonSummary_Scene
     pbUpdateSpriteHash(@sprites)
   end
 
-  def pbStartScene(party, partyindex, inbattle = false)
+  def pbStartScene(party, partyindex, inbattle = false, showpartyrotation = false)
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
     @party      = party
@@ -231,6 +238,7 @@ class PokemonSummary_Scene
     @sprites = {}
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
     @sprites["partyrotation"] = PartyRotationSprite.new(@viewport, @party, @partyindex)
+    @sprites["partyrotation"].visible = showpartyrotation
     @sprites["pokemon"] = PokemonSprite.new(@viewport)
     @sprites["pokemon"].setOffset(PictureOrigin::CENTER)
     @sprites["pokemon"].x = 104
@@ -606,10 +614,10 @@ class PokemonSummary_Scene
     end
     # Draw Exp bar
     if @pokemon.level < GameData::GrowthRate.max_level
-      w = @pokemon.exp_fraction * 128
+      w = @pokemon.exp_fraction * 132
       w = ((w / 2).round) * 2
       pbDrawImagePositions(overlay,
-                           [["Graphics/Pictures/Summary New/summaryEXPBar", 362, 372, 0, 0, w, 6]])
+                           [["Graphics/Pictures/Summary New/summaryEXPBar", 360, 372, 0, 0, w, 6]])
     end
   end
 
@@ -959,6 +967,12 @@ class PokemonSummary_Scene
       imagepos.push([getIVImageName(@pokemon.iv[:SPECIAL_ATTACK]), 456, 184])
       imagepos.push([getIVImageName(@pokemon.iv[:SPECIAL_DEFENSE]), 456, 216])
       imagepos.push([getIVImageName(@pokemon.iv[:SPEED]), 456, 248])
+    end
+    # Draw Exp bar
+    if @pokemon.level < GameData::GrowthRate.max_level
+      w = @pokemon.exp_fraction * 132
+      w = ((w / 2).round) * 2
+      imagepos.push(["Graphics/Pictures/Summary New/summaryEXPBar", 360, 372, 0, 0, w, 6])
     end
     # Draw all text
     pbDrawTextPositions(overlay, textpos)
@@ -1683,13 +1697,14 @@ end
 #
 #===============================================================================
 class PokemonSummaryScreen
-  def initialize(scene, inbattle = false)
+  def initialize(scene, inbattle = false, showpartyrotation = false)
     @scene = scene
     @inbattle = inbattle
+    @showpartyrotation = showpartyrotation
   end
 
   def pbStartScreen(party, partyindex)
-    @scene.pbStartScene(party, partyindex, @inbattle)
+    @scene.pbStartScene(party, partyindex, @inbattle, @showpartyrotation)
     ret = @scene.pbScene
     @scene.pbEndScene
     return ret

@@ -72,26 +72,26 @@ class Battle::Move
     if user.hasActiveItem?(:CRYSTALHAMMER)
       ret = Effectiveness::SUPER_EFFECTIVE_ONE if defType == :CRYSTAL
     end
-	# Joyful Globe
+    # Joyful Globe
     if user.hasActiveItem?(:JOYFULGLOBE) && user.pbHasType?(:NORMAL) && moveType == :NORMAL 
       ret = Effectiveness::SUPER_EFFECTIVE_ONE if defType == :FIGHTING
     end
-	# Fire Red Medal (fire moves are at least neutral effective against target if the user has fire typing)
-	if user.hasActiveItem?(:FIREREDMEDAL) && user.pbHasType?(:FIRE) && moveType == :FIRE
-	  ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
-	end
-	# Leaf Green Medal (grass moves are at least neutral effective against target if the user has grass typing)
-	if user.hasActiveItem?(:LEAFGREENMEDAL) && user.pbHasType?(:GRASS) && moveType == :GRASS
-	  ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
-	end
-	# Aqua Blue Medal (water moves are at least neutral effective against target if the user has water typing)
-	if user.hasActiveItem?(:AQUABLUEMEDAL) && user.pbHasType?(:WATER) && moveType == :WATER
-	  ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
-	end
-	# Volt Yellow Medal (water moves are at least neutral effective against target if the user has water typing)
-	if user.hasActiveItem?(:VOLTYELLOWMEDAL) && user.pbHasType?(:ELECTRIC) && moveType == :ELECTRIC
-	  ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
-	end
+    # Fire Red Medal (fire moves are at least neutral effective against target if the user has fire typing)
+    if user.hasActiveItem?(:FIREREDMEDAL) && user.pbHasType?(:FIRE) && moveType == :FIRE
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Leaf Green Medal (grass moves are at least neutral effective against target if the user has grass typing)
+    if user.hasActiveItem?(:LEAFGREENMEDAL) && user.pbHasType?(:GRASS) && moveType == :GRASS
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Aqua Blue Medal (water moves are at least neutral effective against target if the user has water typing)
+    if user.hasActiveItem?(:AQUABLUEMEDAL) && user.pbHasType?(:WATER) && moveType == :WATER
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Volt Yellow Medal (water moves are at least neutral effective against target if the user has water typing)
+    if user.hasActiveItem?(:VOLTYELLOWMEDAL) && user.pbHasType?(:ELECTRIC) && moveType == :ELECTRIC
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
     # Crystal Torrent (water moves are at least neutral effective against target)
     if user.hasActiveAbility?(:CRYSTALTORRENT) && moveType == :WATER
       ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
@@ -578,14 +578,14 @@ class Battle::Move
 	  elsif user.hasActiveItem?(:FOCUSBELT)
       multipliers[:final_damage_multiplier] *= 0.7
     end
-	# Wet Ice Charm
-	if user.hasType?(:ICE) && type == :WATER && user.hasActiveItem?(:WETICECHARM)
-	  multipliers[:final_damage_multiplier] *= 1.5
-	end
-	# Dragonheart Charm
-	if user.hasType?(:DRAGON) && type == :FIRE && user.hasActiveItem?(:DRAGONHEARTCHARM)
-	  multipliers[:final_damage_multiplier] *= 1.5
-	end
+    # Wet Ice Charm
+    if user.hasType?(:ICE) && type == :WATER && user.hasActiveItem?(:WETICECHARM)
+      multipliers[:final_damage_multiplier] *= 1.5
+    end
+    # Dragonheart Charm
+    if user.hasType?(:DRAGON) && type == :FIRE && user.hasActiveItem?(:DRAGONHEARTCHARM)
+      multipliers[:final_damage_multiplier] *= 1.5
+    end
     # Crystal Moves
     if type == :CRYSTAL && user.pbHasType?(type) == false
         multipliers[:final_damage_multiplier] *= 0.5

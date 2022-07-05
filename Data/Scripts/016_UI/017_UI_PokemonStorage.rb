@@ -422,7 +422,7 @@ class PokemonBoxSprite < Sprite
           sprite.viewport = self.viewport
           sprite.x = xval
           sprite.y = yval
-          sprite.z = 0
+          sprite.z = 1
         end
         xval += 48
       end
@@ -547,7 +547,7 @@ class PokemonBoxPartySprite < Sprite
       sprite.viewport = self.viewport
       sprite.x = self.x + xvalues[j]
       sprite.y = self.y + yvalues[j]
-      sprite.z = 0
+      sprite.z = 1
     end
   end
 
@@ -1447,7 +1447,7 @@ class PokemonStorageScene
       typebitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/types"))
       pokemon.types.each_with_index do |type, i|
         type_number = GameData::Type.get(type).icon_position
-        type_rect = Rect.new(0, type_number * 28, 64, 28)
+        type_rect = Rect.new(0, type_number * 27, 63, 27)
         type_x = (pokemon.types.length == 1) ? 52 : 18 + (70 * i)
         overlay.blt(type_x, 272, typebitmap.bitmap, type_rect)
       end

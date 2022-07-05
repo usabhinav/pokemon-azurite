@@ -53,6 +53,8 @@ class PokemonGlobalMetadata
   # Save file
   attr_accessor :safesave
   attr_accessor :savedate # Remembers when the last save took place. (Datatype is Time)
+  # Guild
+  attr_accessor :guild
 
   def initialize
     # Movement
@@ -108,6 +110,8 @@ class PokemonGlobalMetadata
     @pokerusTime          = nil
     # Save file
     @safesave             = false
+    # Guild
+    @guild                = Guild.new
   end
 
   def encounter_version=(value)

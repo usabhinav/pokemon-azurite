@@ -627,6 +627,14 @@ GameData::Evolution.register({
   }
 })
 
+GameData::Evolution.register({
+  :id                => :DamageTaken,
+  :parameter         => Integer,
+  :after_battle_proc => proc { |pkmn, party_index, parameter|
+    next pkmn.damage_taken >= parameter
+  }
+})
+
 #===============================================================================
 # Evolution methods that are triggered by an event
 # Each event has its own number, which is the value of the parameter as defined

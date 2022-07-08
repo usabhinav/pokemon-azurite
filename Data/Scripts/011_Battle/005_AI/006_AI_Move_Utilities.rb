@@ -620,11 +620,11 @@ class Battle::AI
       multipliers[:final_damage_multiplier] *= 0.7
     end
     # Wet Ice Charm
-    if skill >= PBTrainerAI.mediumSkill && user.hasType?(:ICE) && type == :WATER && user.hasActiveItem?(:WETICECHARM)
+    if skill >= PBTrainerAI.mediumSkill && user.pbHasType?(:ICE) && type == :WATER && user.hasActiveItem?(:WETICECHARM)
       multipliers[:final_damage_multiplier] *= 1.5
     end
     # Dragonheart Charm
-    if skill >= PBTrainerAI.mediumSkill && user.hasType?(:DRAGON) && type == :FIRE && user.hasActiveItem?(:DRAGONHEARTCHARM)
+    if skill >= PBTrainerAI.mediumSkill && user.pbHasType?(:DRAGON) && type == :FIRE && user.hasActiveItem?(:DRAGONHEARTCHARM)
       multipliers[:final_damage_multiplier] *= 1.5
     end
     # Crystal Moves

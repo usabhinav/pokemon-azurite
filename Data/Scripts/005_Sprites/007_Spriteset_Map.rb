@@ -62,7 +62,7 @@ class Spriteset_Map
       # Create a mirror reflection sprite per mirror for each event on this map
       if !@map.events[i] || (@map.events[i].name[/reflection/i] rescue false)
         for rect in mirror_list
-          @mirror_reflection_sprites.push(Sprite_Reflection2.new(sprite, @map.events[i], @@viewport1, rect))
+          @mirror_reflection_sprites.push(Sprite_Mirror_Reflection.new(sprite, @map.events[i], @@viewport1, rect))
         end
       end
     end
@@ -70,7 +70,7 @@ class Spriteset_Map
     if $scene.is_a?(Scene_Map)
       for rect in mirror_list
         # Player reflection
-        @mirror_reflection_sprites.push(Sprite_Reflection2.new($scene.spritesetGlobal.playersprite, $game_player, @@viewport1, rect))
+        @mirror_reflection_sprites.push(Sprite_Mirror_Reflection.new($scene.spritesetGlobal.playersprite, $game_player, @@viewport1, rect))
         # Reflection per follower
         for follower in $scene.spritesetGlobal.follower_sprites.sprites
           event = nil
@@ -80,7 +80,7 @@ class Spriteset_Map
               break
             end
           end
-          @mirror_reflection_sprites.push(Sprite_Reflection2.new(follower, event, @@viewport1, rect)) if event
+          @mirror_reflection_sprites.push(Sprite_Mirror_Reflection.new(follower, event, @@viewport1, rect)) if event
         end
       end
     end

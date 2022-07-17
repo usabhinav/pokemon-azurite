@@ -85,7 +85,7 @@ class Sprite_Reflection
 end
 
 # For mirror reflections
-class Sprite_Reflection2
+class Sprite_Mirror_Reflection
   attr_reader :visible
   attr_accessor :event
 

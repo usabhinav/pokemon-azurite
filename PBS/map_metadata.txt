@@ -350,7 +350,7 @@ SafariMap = true
 BattleBack = forest
 Environment = Forest
 #-------------------------------
-[069]   # Cantabile City
+[069]   # Cantabile City Folder
 Name = Route 8
 Outdoor = true
 ShowArea = true
@@ -368,7 +368,7 @@ Environment = Underwater
 Name = Route 8
 MapPosition = 0,13,13
 #-------------------------------
-[072]   # Daroxy Island
+[072]   # Cantabile Arena
 Name = Berth Island
 Outdoor = true
 ShowArea = true
@@ -395,3 +395,7 @@ Name = Tiall Region
 Outdoor = true
 MapPosition = 1,13,16
 BattleBack = city
+#-------------------------------
+[079]   # Candelle Residential
+Name = Candelle Residential
+Outdoor = true

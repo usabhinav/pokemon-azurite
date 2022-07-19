@@ -56,9 +56,7 @@ class Spriteset_Map
     @character_sprites = []
     @mirror_reflection_sprites = []
     mirror_list = []
-    t1 = Time.now
     mirror_list = map.get_mirrors if map.mirror_in_map?
-    echoln(Time.now - t1)
     emptySprite = Sprite_Character.new(@@viewport1, nil)
     @map.events.keys.sort.each do |i|
       # In case the event doesn't have a sprite, don't use an entirely different Sprite_Character:

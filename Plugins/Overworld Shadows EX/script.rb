@@ -15,7 +15,7 @@ class Sprite_OWShadow
     @remove   = false
     name      = ""
     if !defined?(Game_FollowingPkmn) || !@event.is_a?(Game_FollowingPkmn)
-      if @event != $game_player
+      if (@event != $game_player) && @event
         name = $~[1] if @event.name[/shdw\((.*?)\)/]
         if OWShadowSettings::CASE_SENSITIVE_BLACKLISTS
           @remove = true if OWShadowSettings::SHADOWLESS_EVENT_NAME.any? {|e| @event.name[/#{e}/]}
@@ -102,6 +102,7 @@ class Sprite_OWShadow
   # Calculation of shadow size when jumping
   #-----------------------------------------------------------------------------
   def update
+    return if !@event
     return if disposed? || !$scene.is_a?(Scene_Map)
     return jump_sprite if @event.jumping?
     @sprite = Sprite.new(@viewport) if !@sprite

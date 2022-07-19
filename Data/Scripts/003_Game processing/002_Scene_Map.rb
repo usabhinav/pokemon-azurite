@@ -224,8 +224,8 @@ class Scene_Map
       update
       break if $scene != self
     end
-    
-    
+
+
 
     Graphics.freeze
     disposeSpritesets

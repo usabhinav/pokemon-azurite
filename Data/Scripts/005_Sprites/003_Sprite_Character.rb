@@ -104,6 +104,7 @@ class Sprite_Character < RPG::Sprite
 
   def update
     return if @character.is_a?(Game_Event) && !@character.should_update?
+    return if !@character
     super
     if @tile_id != @character.tile_id ||
        @character_name != @character.character_name ||

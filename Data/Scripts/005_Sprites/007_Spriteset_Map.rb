@@ -57,8 +57,14 @@ class Spriteset_Map
     @mirror_reflection_sprites = []
     mirror_list = []
     #mirror_list = map.get_mirrors
+    emptySprite = Sprite_Character.new(@@viewport1, nil)
     @map.events.keys.sort.each do |i|
-      sprite = Sprite_Character.new(@@viewport1, @map.events[i])
+      # In case the event doesn't have a sprite, don't use an entirely different Sprite_Character:
+      if (@map.events[i].character_name != "")
+        sprite = Sprite_Character.new(@@viewport1, @map.events[i])
+      else
+        sprite = emptySprite
+      end
       @character_sprites.push(sprite)
       # Create a mirror reflection sprite per mirror for each event on this map
       if !@map.events[i] || (@map.events[i].name[/reflection/i] rescue false)

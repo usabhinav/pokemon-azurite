@@ -9792,7 +9792,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = None
-FunctionCode = 19C
+FunctionCode = RemovesHazardsAndWeather
 Description = Ends all weathers and hazards.
 #-------------------------------
 [WORMHOLE]
@@ -9812,9 +9812,9 @@ Type = COSMIC
 Category = Status
 Accuracy = 0
 TotalPP = 5
-Target = None
+Target = Other
 Priority = 5
-FunctionCode = 19E
+FunctionCode = RedirectsMovesToUserToTarget
 Description = Set up a black hole which sends all moves that targeted the user to whoever used them. Can't be used twice in a row.
 #-------------------------------
 [CRASHLANDING]
@@ -10552,7 +10552,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = User
-FunctionCode = 24B
+FunctionCode = UseRandomCosmicMove
 Description = The Pokémon contemplates the wonders of the universe, summoning unknown power.
 #-------------------------------
 [COMETRUSH]
@@ -11557,7 +11557,7 @@ Power = 140
 Accuracy = 90
 TotalPP = 10
 Target = NearOther
-FunctionCode = 25C
+FunctionCode = CometSwing
 Flags = Contact,CanProtect,CanMirrorMove
 Description = The Pokémon lines up a reckless swing. If the user is hit with a contact move, ups power and accuracy.
 #-------------------------------

@@ -984,6 +984,7 @@ class Battle::Move::RemoveProtections < Battle::Move
     target.effects[PBEffects::KingsShield]            = false
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
+    target.effects[PBEffects::BlackHole]              = 0      if target.effects[PBEffects::BlackHole] == 2
     target.effects[PBEffects::SpikyShield]            = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
@@ -1003,6 +1004,7 @@ class Battle::Move::RemoveProtectionsBypassSubstitute < Battle::Move
     target.effects[PBEffects::KingsShield]            = false
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
+    target.effects[PBEffects::BlackHole]              = 0      if target.effects[PBEffects::BlackHole] == 2
     target.effects[PBEffects::SpikyShield]            = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
@@ -1039,6 +1041,7 @@ class Battle::Move::HoopaRemoveProtectionsBypassSubstituteLowerUserDef1 < Battle
     target.effects[PBEffects::KingsShield]            = false
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
+    target.effects[PBEffects::BlackHole]              = 0      if target.effects[PBEffects::BlackHole] == 2
     target.effects[PBEffects::SpikyShield]            = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false

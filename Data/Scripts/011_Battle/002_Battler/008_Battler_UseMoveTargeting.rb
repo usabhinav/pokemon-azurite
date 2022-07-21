@@ -102,6 +102,23 @@ class Battle::Battler
     return targets if user.hasActiveAbility?([:PROPELLERTAIL, :STALWART])
     priority = @battle.pbPriority(true)
     nearOnly = !target_data.can_choose_distant_target?
+    # Black Hole:
+    newTarget = nil
+    if targets[0].effects[PBEffects::BlackHole] % 2 == 0 && targets[0].effects[PBEffects::BlackHole] > 0
+      priority.each do |b|
+        next if b.fainted?
+        next if b.effects[PBEffects::BlackHole] != targets[0].effects[PBEffects::BlackHole] - 1
+        echoln(b.pbThis)
+        newTarget = b
+      end
+    end
+    if newTarget
+      PBDebug.log("[Move target changed] #{newTarget.pbThis}'s Spotlight made it the target")
+      echoln(newTarget.pbThis)
+      targets = []
+      pbAddTarget(targets, user, newTarget, move, false, true)
+      return targets
+    end
     # Spotlight (takes priority over Follow Me/Rage Powder/Lightning Rod/Storm Drain)
     newTarget = nil
     strength = 100   # Lower strength takes priority

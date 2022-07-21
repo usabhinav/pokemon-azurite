@@ -1295,6 +1295,65 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
 end
 
 #===============================================================================
+# Ends all weather and hazards. (Cosmic Void)
+#===============================================================================
+class Battle::Move::RemovesHazardsAndWeather < Battle::Move
+  def pbEffectGeneral(user)
+    @battle.field.weather = :None
+    @battle.field.weatherDuration = 0
+    @battle.pbDisplay(_INTL("The weather went back to normal!"))
+    if user.pbOwnSide.effects[PBEffects::StealthRock] ||
+        (Settings::MECHANICS_GENERATION >= 6 &&
+        user.pbOpposingSide.effects[PBEffects::StealthRock])
+      user.pbOwnSide.effects[PBEffects::StealthRock]      = false
+      user.pbOpposingSide.effects[PBEffects::StealthRock] = false if Settings::MECHANICS_GENERATION >= 6
+      @battle.pbDisplay(_INTL("{1} blew away stealth rocks!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::Spikes] > 0 ||
+        (Settings::MECHANICS_GENERATION >= 6 &&
+        user.pbOpposingSide.effects[PBEffects::Spikes] > 0)
+      user.pbOwnSide.effects[PBEffects::Spikes]      = 0
+      user.pbOpposingSide.effects[PBEffects::Spikes] = 0 if Settings::MECHANICS_GENERATION >= 6
+      @battle.pbDisplay(_INTL("{1} blew away spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 ||
+        (Settings::MECHANICS_GENERATION >= 6 &&
+        user.pbOpposingSide.effects[PBEffects::ToxicSpikes] > 0)
+      user.pbOwnSide.effects[PBEffects::ToxicSpikes]      = 0
+      user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0 if Settings::MECHANICS_GENERATION >= 6
+      @battle.pbDisplay(_INTL("{1} blew away poison spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::StickyWeb] ||
+        (Settings::MECHANICS_GENERATION >= 6 &&
+        user.pbOpposingSide.effects[PBEffects::StickyWeb])
+      user.pbOwnSide.effects[PBEffects::StickyWeb]      = false
+      user.pbOpposingSide.effects[PBEffects::StickyWeb] = false if Settings::MECHANICS_GENERATION >= 6
+      @battle.pbDisplay(_INTL("{1} blew away sticky webs!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0 ||
+      (Settings::MECHANICS_GENERATION >= 6 &&
+      user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0)
+      user.pbOwnSide.effects[PBEffects::AsteroidBelt]      = 0
+      user.pbOpposingSide.effects[PBEffects::AsteroidBelt] = 0 if Settings::MECHANICS_GENERATION >= 6
+      @battle.pbDisplay(_INTL("{1} blew away spikes!", user.pbThis))
+    end
+    if Settings::MECHANICS_GENERATION >= 8 && @battle.field.terrain != :None
+      case @battle.field.terrain
+      when :Electric
+        @battle.pbDisplay(_INTL("The electricity disappeared from the battlefield."))
+      when :Grassy
+        @battle.pbDisplay(_INTL("The grass disappeared from the battlefield."))
+      when :Misty
+        @battle.pbDisplay(_INTL("The mist disappeared from the battlefield."))
+      when :Psychic
+        @battle.pbDisplay(_INTL("The weirdness disappeared from the battlefield."))
+      end
+      @battle.field.terrain = :None
+    end
+  end
+end
+
+#===============================================================================
 # Decreases the target's evasion by 2 stages. (Sweet Scent (Gen 6+))
 #===============================================================================
 class Battle::Move::LowerTargetEvasion2 < Battle::Move::TargetStatDownMove

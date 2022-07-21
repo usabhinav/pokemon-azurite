@@ -32,6 +32,49 @@ class Battle::Move::RedirectAllMovesToTarget < Battle::Move
 end
 
 #===============================================================================
+# This round, target becomes the target of attacks that target the user.
+# (Black Hole)
+#===============================================================================
+class Battle::Move::RedirectsMovesToUserToTarget < Battle::Move::ProtectMove
+  def initialize(battle, move)
+    super
+    @effect = PBEffects::Protect
+  end
+
+  def canMagicCoat?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::ProtectRate] > 1
+      user.effects[PBEffects::ProtectRate] = 1
+	    user.effects[PBEffects::GreatShield] = false
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    if pbMoveFailedLastInRound?(user)
+      user.effects[PBEffects::ProtectRate] = 1
+	    user.effects[PBEffects::GreatShield] = false
+      return true
+    end
+    return false
+  end
+  
+  def pbEffectAgainstTarget(user, target)
+    blackHoleIndex = 0
+    @battle.allBattlers.each do |b|
+      next if b.effects[PBEffects::BlackHole] <= 0
+      next if b.effects[PBEffects::BlackHole] < blackHoleIndex
+      blackHoleIndex = b.effects[PBEffects::BlackHole]
+    end
+    target.effects[PBEffects::BlackHole] = blackHoleIndex + 1
+    user.effects[PBEffects::BlackHole] = blackHoleIndex + 2
+    @battle.pbDisplay(_INTL("{1} became the focus of {2}'s black hole!", target.pbThis, user.pbThis))
+  end
+
+  def pbProtectMessage(user)
+  end
+end
+
+#===============================================================================
 # Unaffected by moves and abilities that would redirect this move. (Snipe Shot)
 #===============================================================================
 class Battle::Move::CannotBeRedirected < Battle::Move
@@ -449,6 +492,39 @@ class Battle::Move::CounterPhysicalDamage < Battle::Move::FixedDamageMove
 end
 
 #===============================================================================
+# 30% Recoil. If hit with contact move before using it this turn, 
+# 1.5 power, wont miss, and no recoil. (Comet Swing)
+#===============================================================================
+class Battle::Move::CometSwing < Battle::Move
+  def recoilMove?;                 return true; end
+
+  def pbEffectAfterAllHits(user, target)
+    return if target.damageState.unaffected
+    return if !user.takesIndirectDamage?
+    return if user.hasActiveAbility?(:ROCKHEAD)
+    amt = pbRecoilDamage(user, target)
+    user.pbReduceHP(amt, false) if amt > 0
+    @battle.pbDisplay(_INTL("{1} is damaged by recoil!", user.pbThis)) if amt > 0
+    user.pbItemHPHealCheck if amt > 0
+  end
+
+  def pbRecoilDamage(user, target)
+    return 0 if user.effects[PBEffects::Counter] > 0
+    return (target.damageState.totalHPLost * 0.3).round
+  end
+
+  def pbAccuracyCheck(user, target)
+    return true if user.effects[PBEffects::Counter] > 0
+    return super
+  end
+
+  def pbBaseDamage(baseDmg, user, target)
+    return baseDmg * 1.5 if user.effects[PBEffects::Counter] > 0
+    return baseDmg
+  end
+end
+
+#===============================================================================
 # Counters a specical move used against the user this round, with 2x the power.
 # (Mirror Coat)
 #===============================================================================
@@ -689,6 +765,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "RemoveProtections",                                 # Feint
       # Protection moves
       "ProtectUser",                                       # Detect, Protect
+      "RedirectsMovesToUserToTarget",
       "ProtectUserSideFromPriorityMoves",                  # Quick Guard        # Not listed on Bulbapedia
       "ProtectUserSideFromMultiTargetDamagingMoves",       # Wide Guard         # Not listed on Bulbapedia
       "UserEnduresFaintingThisTurn",   # Endure
@@ -915,6 +992,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "RemoveProtections",                                 # Feint
       # Protection moves
       "ProtectUser",                                       # Detect, Protect
+      "RedirectsMovesToUserToTarget",
       "ProtectUserSideFromPriorityMoves",                  # Quick Guard
       "ProtectUserSideFromMultiTargetDamagingMoves",       # Wide Guard
       "UserEnduresFaintingThisTurn",                       # Endure
@@ -983,6 +1061,43 @@ class Battle::Move::UseRandomMove < Battle::Move
 end
 
 #===============================================================================
+# Uses a random Cosmic move that exists. (Astronomy)
+#===============================================================================
+class Battle::Move::UseRandomCosmicMove < Battle::Move
+  def callsAnotherMove?; return true; end
+
+  def initialize(battle, move)
+    super
+    @moveBlacklist = []
+  end
+
+  def pbMoveFailed?(user, targets)
+    @metronomeMove = nil
+    move_keys = GameData::Move.keys
+    # NOTE: You could be really unlucky and roll blacklisted moves 1000 times in
+    #       a row. This is too unlikely to care about, though.
+    until metronomeMove do
+      move_id = move_keys[@battle.pbRandom(move_keys.length)]
+      move_data = GameData::Move.get(move_id)
+      next if @moveBlacklist.include?(move_data.function_code)
+      next if move_data.has_flag?("CannotMetronome")
+      next if move_data.type != :COSMIC
+      @metronomeMove = move_data.id
+      break
+    end
+    if !@metronomeMove
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbUseMoveSimple(@metronomeMove)
+  end
+end
+
+#===============================================================================
 # Uses a random move known by any non-user Pokémon in the user's party. (Assist)
 #===============================================================================
 class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
@@ -1007,6 +1122,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "RemoveProtections",                                 # Feint
       # Protection moves
       "ProtectUser",                                       # Detect, Protect
+      "RedirectsMovesToUserToTarget",
       "ProtectUserSideFromPriorityMoves",                  # Quick Guard        # Not listed on Bulbapedia
       "ProtectUserSideFromMultiTargetDamagingMoves",       # Wide Guard         # Not listed on Bulbapedia
       "UserEnduresFaintingThisTurn",                       # Endure

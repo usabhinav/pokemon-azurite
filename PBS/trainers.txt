@@ -120,6 +120,6 @@ Pokemon = BLASTOISE,63
 LoseText = im surprised you even got this far.
 Pokemon = BLASTOISE,20
     Gender = male
-    Moves = ASTEROIDBELT
+    Moves = SUNNYDAY
     AbilityIndex = 0
     IV = 20,20,20,20,20,20

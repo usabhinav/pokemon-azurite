@@ -418,6 +418,12 @@ class Battle
     pbEORCountDownBattlerEffect(priority, PBEffects::Taunt) { |battler|
       pbDisplay(_INTL("{1}'s taunt wore off!", battler.pbThis))
     }
+    # Black Hole
+    priority.each do |battler|
+      next if battler.fainted? || battler.effects[PBEffects::BlackHole] == 0
+      pbDisplay(_INTL("{1}'s black hole dissipated!", battler.pbThis)) if battler.effects[PBEffects::BlackHole] % 2 == 0
+      battler.effects[PBEffects::BlackHole] = 0
+    end
     # Encore
     priority.each do |battler|
       next if battler.fainted? || battler.effects[PBEffects::Encore] == 0

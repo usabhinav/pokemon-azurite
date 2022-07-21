@@ -60,7 +60,15 @@ class Spriteset_Map
     emptySprite = Sprite_Character.new(@@viewport1, nil)
     @map.events.keys.sort.each do |i|
       # In case the event doesn't have a sprite, don't use an entirely different Sprite_Character:
-      if (@map.events[i].character_name != "")
+      isGraphic = false
+      @map.events[i].pages.each do |page|
+        if page.graphic.character_name != ""
+          isGraphic = true
+          break
+        end
+      end
+
+      if (isGraphic)
         sprite = Sprite_Character.new(@@viewport1, @map.events[i])
       else
         sprite = emptySprite

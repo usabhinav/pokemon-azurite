@@ -525,6 +525,9 @@ class Battle
     # Aurora Veil
     pbEORCountDownSideEffect(side, PBEffects::AuroraVeil,
                              _INTL("{1}'s Aurora Veil wore off!", @battlers[side].pbTeam))
+    # Aurora Veil
+    pbEORCountDownSideEffect(side, PBEffects::AsteroidBelt,
+                             _INTL("The asteroid belt on {1}'s side disappeared!", @battlers[side].pbTeam))
   end
 
   #=============================================================================

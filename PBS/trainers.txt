@@ -115,3 +115,11 @@ Pokemon = CHARIZARD,63
     Item = SITRUSBERRY
 Pokemon = BLASTOISE,63
     Item = SITRUSBERRY
+#-------------------------------
+[YOUNGSTER,MoveDummy]
+LoseText = im surprised you even got this far.
+Pokemon = BLASTOISE,20
+    Gender = male
+    Moves = ASTEROIDBELT
+    AbilityIndex = 0
+    IV = 20,20,20,20,20,20

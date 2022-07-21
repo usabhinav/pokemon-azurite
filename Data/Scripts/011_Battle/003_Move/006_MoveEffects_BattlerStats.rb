@@ -1207,12 +1207,14 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
     return false if targetSide.effects[PBEffects::StealthRock] ||
                     targetSide.effects[PBEffects::Spikes] > 0 ||
                     targetSide.effects[PBEffects::ToxicSpikes] > 0 ||
-                    targetSide.effects[PBEffects::StickyWeb]
+                    targetSide.effects[PBEffects::StickyWeb] ||
+                    targetSide.effects[PBEffects::AsteroidBelt] > 0
     return false if Settings::MECHANICS_GENERATION >= 6 &&
                     (targetOpposingSide.effects[PBEffects::StealthRock] ||
                     targetOpposingSide.effects[PBEffects::Spikes] > 0 ||
                     targetOpposingSide.effects[PBEffects::ToxicSpikes] > 0 ||
-                    targetOpposingSide.effects[PBEffects::StickyWeb])
+                    targetOpposingSide.effects[PBEffects::StickyWeb] ||
+                    targetOpposingSide.effects[PBEffects::AsteroidBelt])
     return false if Settings::MECHANICS_GENERATION >= 8 && @battle.field.terrain != :None
     return super
   end
@@ -1269,6 +1271,13 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
       target.pbOpposingSide.effects[PBEffects::StickyWeb] = false if Settings::MECHANICS_GENERATION >= 6
       @battle.pbDisplay(_INTL("{1} blew away sticky webs!", user.pbThis))
     end
+    if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0 ||
+      (Settings::MECHANICS_GENERATION >= 6 &&
+      target.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0)
+     target.pbOwnSide.effects[PBEffects::AsteroidBelt]      = 0
+     target.pbOpposingSide.effects[PBEffects::AsteroidBelt] = 0 if Settings::MECHANICS_GENERATION >= 6
+     @battle.pbDisplay(_INTL("{1} blew away spikes!", user.pbThis))
+   end
     if Settings::MECHANICS_GENERATION >= 8 && @battle.field.terrain != :None
       case @battle.field.terrain
       when :Electric
@@ -1954,4 +1963,11 @@ class Battle::Move::LowerRandomTargetStat < Battle::Move::TargetStatDownMove
     when 6; @statDown = [:ACCURACY,1]
     end
   end
+end
+
+#===============================================================================
+# Decreases the target's Defense by 2 stages and ignores reflect. (Armor Pierce)
+#===============================================================================
+class Battle::Move::ArmorPierce < Battle::Move::LowerTargetDefense2
+  def ignoresReflect?; return true; end
 end

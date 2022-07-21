@@ -357,6 +357,7 @@ class Game_Map
   end
 
   def mirror_in_map?
+    return false if !metadata
     return metadata.has_flag?("Mirror")
   end
 

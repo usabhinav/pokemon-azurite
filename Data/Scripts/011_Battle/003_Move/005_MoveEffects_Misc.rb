@@ -391,6 +391,27 @@ class Battle::Move::AddSpikesToFoeSide < Battle::Move
 end
 
 #===============================================================================
+# Entry and exit hazard. Deals cosmic damage,  lasts 8 turns. (Asteroid Belt)
+#===============================================================================
+class Battle::Move::AsteroidBeltFoeSide < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::AsteroidBelt] = 8
+    @battle.pbDisplay(_INTL("An asteroid belt was summoned on {1}'s field!",
+                            user.pbOpposingTeam(true)))
+  end
+end
+
+#===============================================================================
 # Entry hazard. Lays poison spikes on the opposing side (max. 2 layers).
 # (Toxic Spikes)
 #===============================================================================
@@ -472,7 +493,8 @@ class Battle::Move::SwapSideEffects < Battle::Move
       PBEffects::Spikes,
       PBEffects::Swamp,
       PBEffects::Tailwind,
-      PBEffects::ToxicSpikes
+      PBEffects::ToxicSpikes,
+      PBEffects::AsteroidBelt
     ]
     @boolean_effects = [
       PBEffects::StealthRock,
@@ -588,6 +610,10 @@ class Battle::Move::RemoveUserBindingAndEntryHazards < Battle::Move::StatUpMove
     if user.pbOwnSide.effects[PBEffects::StickyWeb]
       user.pbOwnSide.effects[PBEffects::StickyWeb] = false
       @battle.pbDisplay(_INTL("{1} blew away sticky webs!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
+      user.pbOwnSide.effects[PBEffects::AsteroidBelt] = 0
+      @battle.pbDisplay(_INTL("{1} blew away the asteroid belt!", user.pbThis))
     end
   end
 

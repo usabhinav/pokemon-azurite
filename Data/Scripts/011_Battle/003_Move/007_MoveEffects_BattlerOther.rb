@@ -520,6 +520,28 @@ class Battle::Move::StartUserSideImmunityToInflictedStatus < Battle::Move
 end
 
 #===============================================================================
+# Protects user side from status problems for 5 turns, same as Safeguard but
+# different message pretty much.
+# (Pollen Shield)
+#===============================================================================
+class Battle::Move::PollenShield < Battle::Move
+  def canSnatch?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.pbOwnSide.effects[PBEffects::Safeguard] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOwnSide.effects[PBEffects::Safeguard] = 5
+    @battle.pbDisplay(_INTL("{1} was covered in pollen!", user.pbTeam))
+  end
+end
+
+#===============================================================================
 # Causes the target to flinch.
 #===============================================================================
 class Battle::Move::FlinchTarget < Battle::Move

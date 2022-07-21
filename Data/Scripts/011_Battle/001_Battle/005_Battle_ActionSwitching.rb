@@ -219,6 +219,7 @@ class Battle
 
   # Actually performs the recalling and sending out in all situations.
   def pbRecallAndReplace(idxBattler, idxParty, randomReplacement = false, batonPass = false)
+    pbExitHazards(@battlers[idxBattler])
     @scene.pbRecall(idxBattler) if !@battlers[idxBattler].fainted?
     @battlers[idxBattler].pbAbilitiesOnSwitchOut   # Inc. primordial weather check
     @scene.pbShowPartyLineup(idxBattler & 1) if pbSideSize(idxBattler) == 1
@@ -438,6 +439,19 @@ class Battle
         battler.pbItemHPHealCheck
       end
     end
+    # Asteroid Belt
+    if battler_side.effects[PBEffects::AsteroidBelt] > 0 && battler.takesIndirectDamage? &&
+      GameData::Type.exists?(:COSMIC) && !battler.hasActiveItem?([:HEAVYDUTYBOOTS, :IRONSHELL]) &&
+      !battler.hasActiveAbility?(:DEBRISARMOR)
+     bTypes = battler.pbTypes(true)
+     eff = Effectiveness.calculate(:COSMIC, bTypes[0], bTypes[1], bTypes[2])
+     if !Effectiveness.ineffective?(eff)
+       eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+       battler.pbReduceHP(battler.totalhp * eff / 8, false)
+       pbDisplay(_INTL("{1} crashed into the asteroid belt!", battler.pbThis))
+       battler.pbItemHPHealCheck
+     end
+   end
     # Spikes
     if battler_side.effects[PBEffects::Spikes] > 0 && battler.takesIndirectDamage? &&
        !battler.airborne? && !battler.hasActiveItem?([:HEAVYDUTYBOOTS, :IRONSHELL]) &&
@@ -482,5 +496,22 @@ class Battle
         battler.pbItemStatRestoreCheck
       end
     end
+  end
+
+  def pbExitHazards(battler)
+    battler_side = battler.pbOwnSide
+    # Asteroid Belt
+    if battler_side.effects[PBEffects::AsteroidBelt] > 0 && battler.takesIndirectDamage? &&
+      GameData::Type.exists?(:COSMIC) && !battler.hasActiveItem?([:HEAVYDUTYBOOTS, :IRONSHELL]) &&
+      !battler.hasActiveAbility?(:DEBRISARMOR)
+     bTypes = battler.pbTypes(true)
+     eff = Effectiveness.calculate(:COSMIC, bTypes[0], bTypes[1], bTypes[2])
+     if !Effectiveness.ineffective?(eff)
+       eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+       battler.pbReduceHP(battler.totalhp * eff / 8, false)
+       pbDisplay(_INTL("{1} crashed into the asteroid belt!", battler.pbThis))
+       battler.pbItemHPHealCheck
+     end
+   end
   end
 end

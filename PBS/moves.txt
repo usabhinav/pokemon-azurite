@@ -9136,7 +9136,7 @@ Power = 20
 Accuracy = 95
 TotalPP = 5
 Target = NearOther
-FunctionCode = 176
+FunctionCode = MultiplyPowerByBugParty
 Flags = Contact,CanProtect,CanMirrorMove
 Description = This moves' power is multiplied by the ammount of bug-types in your party.
 #-------------------------------
@@ -10542,7 +10542,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 5
 Target = FoeSide
-FunctionCode = 24A
+FunctionCode = AsteroidBeltFoeSide
 Description = The user summons an asteroid belt, damaging opposing Pokémon that enter or leave the battle.
 #-------------------------------
 [ASTRONOMY]
@@ -12608,7 +12608,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 25
 Target = UserSide
-FunctionCode = StartUserSideImmunityToInflictedStatus
+FunctionCode = PollenShield
 Description = The user creates a barrier of pollen that blocks status problems for five turns.
 #-------------------------------
 [WEBTIE]
@@ -12706,7 +12706,7 @@ Power = 105
 Accuracy = 70
 TotalPP = 5
 Target = AllNearFoes
-FunctionCode = PowderStorm
+FunctionCode = ParalyzePoisonOrSleepTarget
 Flags = CanProtect,CanMirrorMove
 EffectChance = 20
 Description = The user unleashes a whirlwind of powder that has a 20% chance to poison, sleep, or paralyze each opponent.

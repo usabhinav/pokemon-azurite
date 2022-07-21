@@ -179,6 +179,7 @@ module PBEffects
   ToxicSpikes        = 20
   WideGuard          = 21
   VoltSpikes         = 22
+  AsteroidBelt       = 23
 
   #=============================================================================
   # These effects apply to the battle (i.e. both sides)

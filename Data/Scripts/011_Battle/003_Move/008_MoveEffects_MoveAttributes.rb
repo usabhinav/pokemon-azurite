@@ -1839,3 +1839,22 @@ class Battle::Move::RecoilHalfOfUserHP < Battle::Move::RecoilMove
     return recoilDmg
   end
 end
+
+#===============================================================================
+# Multiplies base power of the move by the amount of bug-types in the party.
+# (Swarm Attack)
+#===============================================================================
+class Battle::Move::MultiplyPowerByBugParty < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    # Find number of bug-type Pokémon:
+    nBugs = 0
+    @battle.pbParty(user.index).each do |pkmn|
+      next if !pkmn || !pkmn.able?
+      nBugs += 1 if pkmn.hasType?(:BUG)
+    end
+
+    # Increase base damage.
+    baseDmg *= nBugs
+    return baseDmg
+  end
+end

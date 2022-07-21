@@ -66,6 +66,7 @@ class Battle::ActiveSide
     @effects[PBEffects::ToxicSpikes]        = 0
     @effects[PBEffects::WideGuard]          = false
     @effects[PBEffects::VoltSpikes]         = 0
+    @effects[PBEffects::AsteroidBelt]         = 0
   end
 end
 

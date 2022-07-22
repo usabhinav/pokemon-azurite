@@ -249,7 +249,7 @@ class PokemonLoad_Scene
         cmdwindow_commands.push(@commands[i])
         
         
-      # Case 2: The current button fits into the current cmdwindow which has one column.
+      # Case 2: The current button fits into the current cmdwindow which has two columns.
       elsif ((current_btn != LoadMenu_Model::BTN_CONTINUE &&
               current_btn != LoadMenu_Model::BTN_NORMAL_BIG) &&
               cmdwindows.last.columns == 2)

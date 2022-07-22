@@ -1384,7 +1384,7 @@ class Window_Segmented
       # If the index reaches its limit, switch to the next or
       # previous segment. Otherwise just update normally.
       #active_segment = @segs[@curr_seg_i] 
-      if Input.repeat?(Input::UP) && @segs[@curr_seg_i] .index - @segs[@curr_seg_i] .columns < 0
+      if Input.repeat?(Input::UP) && @segs[@curr_seg_i].index - @segs[@curr_seg_i] .columns < 0
         if @curr_seg_i > 0 
           # Go to the last row of the previous segment. 
           @curr_seg_i -= 1
@@ -1398,6 +1398,10 @@ class Window_Segmented
           @curr_seg_i = @segs.length-1
           @segs[@curr_seg_i] .index = @segs[@curr_seg_i] .itemCount-1
         end
+      
+        # Play cursor SE for segment changes.
+        pbPlayCursorSE
+      
       elsif Input.repeat?(Input::DOWN) && @segs[@curr_seg_i] .index >= @segs[@curr_seg_i] .itemCount - @segs[@curr_seg_i] .columns
         if @curr_seg_i < @segs.length-1
           # Select the first row of the next segment.
@@ -1408,14 +1412,17 @@ class Window_Segmented
           prev_col = @segs[@curr_seg_i].index % @segs[@curr_seg_i].columns
           @segs[@curr_seg_i].index = 0
           @segs[@curr_seg_i].index += prev_col
-		  
+        
         else
           # Select the very first item.
           @curr_seg_i = 0
           @segs[@curr_seg_i].index = 0
-		end
+        end
         
-      else
+        # Play cursor SE for segment changes.
+        pbPlayCursorSE
+        
+      else # This is when no segment change occurs.
         @segs[@curr_seg_i].update
       end
 

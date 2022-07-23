@@ -635,6 +635,7 @@ def pbUpdateVehicle
     $player.outfitstate.animation = "Swimming"
   else
     $game_player.set_movement_type(:walking)
+    $player.outfitstate.animation = "Walking"
   end
 end
 

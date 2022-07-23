@@ -139,6 +139,8 @@ class Sprite_Character < RPG::Sprite
         @cw = @charbitmap.width / 4
         @ch = @charbitmap.height / 4
         self.ox = @cw / 2
+        # Update the outfit every time the default character image gets reloaded again in order to replace it.
+        updateOutfit if @character == $game_player
       end
       @character.sprite_size = [@cw, @ch]
     end
@@ -181,5 +183,6 @@ class Sprite_Character < RPG::Sprite
     end
     @reflection&.update
     @surfbase&.update
+    
   end
 end

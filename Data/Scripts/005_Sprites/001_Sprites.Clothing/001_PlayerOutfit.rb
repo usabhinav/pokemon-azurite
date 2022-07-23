@@ -615,6 +615,7 @@ class Sprite_Character
           end
           #$Trainer.outfitstate..applyToOverworldBitmap(@sprite_character.charbitmap.bitmap)
           $player.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap)
+          #echoln "PPAPPA: Applied to charbitmap"
         }
         @player_outfit_sprite_updater = Updater.new(updateproc)
         $player.outfitstate.attach(@player_outfit_sprite_updater)

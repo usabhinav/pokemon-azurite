@@ -56,22 +56,8 @@ class Spriteset_Map
     @character_sprites = []
     @mirror_reflection_sprites = []
     mirror_list = $map_mirrors[@map.map_id]
-    emptySprite = Sprite_Character.new(@@viewport1, nil)
     @map.events.keys.sort.each do |i|
-      # In case the event doesn't have a sprite, don't use an entirely different Sprite_Character:
-      isGraphic = false
-      @map.events[i].pages.each do |page|
-        if page.graphic.character_name != ""
-          isGraphic = true
-          break
-        end
-      end
-
-      if (isGraphic)
-        sprite = Sprite_Character.new(@@viewport1, @map.events[i])
-      else
-        sprite = emptySprite
-      end
+      sprite = Sprite_Character.new(@@viewport1, @map.events[i])
       @character_sprites.push(sprite)
       # Create a mirror reflection sprite per mirror for each event on this map
       if !@map.events[i] || (@map.events[i].name[/reflection/i] rescue false)

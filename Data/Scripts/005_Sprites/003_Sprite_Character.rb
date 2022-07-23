@@ -104,7 +104,6 @@ class Sprite_Character < RPG::Sprite
 
   def update
     return if @character.is_a?(Game_Event) && !@character.should_update?
-    return if !@character
     super
     if @tile_id != @character.tile_id ||
        @character_name != @character.character_name ||
@@ -127,7 +126,7 @@ class Sprite_Character < RPG::Sprite
         self.src_rect.set(0, 0, @cw, @ch)
         self.ox = @cw / 2
         self.oy = @ch
-      else
+      elsif @character_name != ""
         @charbitmap = AnimatedBitmap.new(
           "Graphics/Characters/" + @character_name, @character_hue
         )
@@ -141,48 +140,59 @@ class Sprite_Character < RPG::Sprite
         self.ox = @cw / 2
         # Update the outfit every time the default character image gets reloaded again in order to replace it.
         updateOutfit if @character == $game_player
+      else
+        @charbitmapAnimated = false
+        @bushbitmap&.dispose
+        @bushbitmap = nil
+        @spriteoffset = false
+        @cw = Game_Map::TILE_WIDTH * @character.width
+        @ch = Game_Map::TILE_HEIGHT * @character.height
+        self.src_rect.set(0, 0, @cw, @ch)
+        self.ox = @cw / 2
+        self.oy = @ch
       end
       @character.sprite_size = [@cw, @ch]
     end
-    @charbitmap.update if @charbitmapAnimated
-    bushdepth = @character.bush_depth
-    if bushdepth == 0
-      self.bitmap = (@charbitmapAnimated) ? @charbitmap.bitmap : @charbitmap
-    else
-      @bushbitmap = BushBitmap.new(@charbitmap, (@tile_id >= 384), bushdepth) if !@bushbitmap
-      self.bitmap = @bushbitmap.bitmap
-    end
-    self.visible = !@character.transparent
-    if @tile_id == 0
-      sx = @character.pattern * @cw
-      sy = ((@character.direction - 2) / 2) * @ch
-      self.src_rect.set(sx, sy, @cw, @ch)
-      self.oy = (@spriteoffset rescue false) ? @ch - 16 : @ch
-      self.oy -= @character.bob_height
-    end
-    if self.visible
-      if @character.is_a?(Game_Event) && @character.name[/regulartone/i]
-        self.tone.set(0, 0, 0, 0)
+    if @character_name != ""
+      @charbitmap.update if @charbitmapAnimated
+      bushdepth = @character.bush_depth
+      if bushdepth == 0
+        self.bitmap = (@charbitmapAnimated) ? @charbitmap.bitmap : @charbitmap
       else
-        pbDayNightTint(self)
+        @bushbitmap = BushBitmap.new(@charbitmap, (@tile_id >= 384), bushdepth) if !@bushbitmap
+        self.bitmap = @bushbitmap.bitmap
       end
+      self.visible = !@character.transparent
+      if @tile_id == 0
+        sx = @character.pattern * @cw
+        sy = ((@character.direction - 2) / 2) * @ch
+        self.src_rect.set(sx, sy, @cw, @ch)
+        self.oy = (@spriteoffset rescue false) ? @ch - 16 : @ch
+        self.oy -= @character.bob_height
+      end
+      if self.visible
+        if @character.is_a?(Game_Event) && @character.name[/regulartone/i]
+          self.tone.set(0, 0, 0, 0)
+        else
+          pbDayNightTint(self)
+        end
+      end
+      this_x = @character.screen_x
+      this_x = ((this_x - (Graphics.width / 2)) * TilemapRenderer::ZOOM_X) + (Graphics.width / 2) if TilemapRenderer::ZOOM_X != 1
+      self.x          = this_x
+      this_y = @character.screen_y
+      this_y = ((this_y - (Graphics.height / 2)) * TilemapRenderer::ZOOM_Y) + (Graphics.height / 2) if TilemapRenderer::ZOOM_Y != 1
+      self.y          = this_y
+      self.z          = @character.screen_z(@ch)
+      self.opacity    = @character.opacity
+      self.blend_type = @character.blend_type
+      if @character.animation_id != 0
+        animation = $data_animations[@character.animation_id]
+        animation(animation, true)
+        @character.animation_id = 0
+      end
+      @reflection&.update
+      @surfbase&.update
     end
-    this_x = @character.screen_x
-    this_x = ((this_x - (Graphics.width / 2)) * TilemapRenderer::ZOOM_X) + (Graphics.width / 2) if TilemapRenderer::ZOOM_X != 1
-    self.x          = this_x
-    this_y = @character.screen_y
-    this_y = ((this_y - (Graphics.height / 2)) * TilemapRenderer::ZOOM_Y) + (Graphics.height / 2) if TilemapRenderer::ZOOM_Y != 1
-    self.y          = this_y
-    self.z          = @character.screen_z(@ch)
-    self.opacity    = @character.opacity
-    self.blend_type = @character.blend_type
-    if @character.animation_id != 0
-      animation = $data_animations[@character.animation_id]
-      animation(animation, true)
-      @character.animation_id = 0
-    end
-    @reflection&.update
-    @surfbase&.update
-    
   end
 end

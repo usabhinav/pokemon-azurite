@@ -47,7 +47,7 @@ class Sprite_Reflection
     end
     # Just-in-time creation of sprite
     @sprite = Sprite.new(@viewport) if !@sprite
-    if @sprite
+    if @sprite && @rsprite.character
       x = @rsprite.x - @rsprite.ox * TilemapRenderer::ZOOM_X
       y = @rsprite.y - @rsprite.oy * TilemapRenderer::ZOOM_Y
       y -= Game_Map::TILE_HEIGHT * TilemapRenderer::ZOOM_Y if @rsprite.character.character_name[/offset/i]

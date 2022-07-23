@@ -83,7 +83,7 @@ class PokemonLoadPanel < SpriteWrapper
     if !self.bitmap || self.bitmap.disposed?
       self.bitmap = BitmapWrapper.new(@bgbitmap.width, @bgbitmap.height)
       pbSetSmallFont(self.bitmap)
-      self.bitmap.font.size = 29
+      self.bitmap.font.size = 25
       
     end
     if @refreshBitmap
@@ -99,34 +99,34 @@ class PokemonLoadPanel < SpriteWrapper
         if @pokemon_global.savedate != nil
           date = @pokemon_global.savedate
           date_str = date.strftime(date_format + "   %H:%M")
-          textpos.push([date_str,185,54,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([date_str,185,68,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         end
         
         # Draw map name.
         mapname = pbGetMapNameFromId(@mapid)
         mapname.gsub!(/\\PN/,@trainer.name)
-        textpos.push([mapname,197,90,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([mapname,197,104,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         
         # Draw playtime.
-        textpos.push([_INTL("Playtime"),220,126,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([_INTL("Playtime"),220,140,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         hour = @totalsec / 60 / 60
         min  = @totalsec / 60 % 60
         if hour>0
-          textpos.push([_INTL("{1}h {2}m",hour,min),275,126,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([_INTL("{1}h {2}m",hour,min),275,140,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         else
-          textpos.push([_INTL("{1}m",min),275,126,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([_INTL("{1}m",min),275,140,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         end
         
         # Draw amount of seen pokemon.
-        textpos.push([_INTL("Seen"),209,162,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        textpos.push([@trainer.pokedex.seen_count.to_s,275,162,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([_INTL("Seen"),209,176,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@trainer.pokedex.seen_count.to_s,275,176,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         
         # Draw amount of caught pokemon.
-        textpos.push([_INTL("Caught"),193,196,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        textpos.push([@trainer.pokedex.owned_count.to_s,275,196,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([_INTL("Caught"),193,210,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@trainer.pokedex.owned_count.to_s,275,210,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
 
         # Draw trainer name.
-        textpos.push([@trainer.name,92,10,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@trainer.name,92,26,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         
         # end
       else
@@ -151,7 +151,7 @@ class PokemonLoadPanel < SpriteWrapper
         # Overwrite specified text alignment if given.
         alignment = @text_align if @text_align > -1
         
-        textpos.push([@title,text_x,10,alignment,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@title,text_x,24,alignment,TEXTCOLOR,TEXTSHADOWCOLOR,1])
       end
       pbDrawTextPositions(self.bitmap,textpos)
     end
@@ -249,7 +249,7 @@ class PokemonLoad_Scene
         cmdwindow_commands.push(@commands[i])
         
         
-      # Case 2: The current button fits into the current cmdwindow which has one column.
+      # Case 2: The current button fits into the current cmdwindow which has two columns.
       elsif ((current_btn != LoadMenu_Model::BTN_CONTINUE &&
               current_btn != LoadMenu_Model::BTN_NORMAL_BIG) &&
               cmdwindows.last.columns == 2)

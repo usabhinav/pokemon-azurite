@@ -55,7 +55,7 @@ class Spriteset_Map
     @fog.z = 3000
     @character_sprites = []
     @mirror_reflection_sprites = []
-    mirror_list = map.get_mirrors
+    mirror_list = $map_mirrors[@map.map_id]
     @map.events.keys.sort.each do |i|
       sprite = Sprite_Character.new(@@viewport1, @map.events[i])
       @character_sprites.push(sprite)

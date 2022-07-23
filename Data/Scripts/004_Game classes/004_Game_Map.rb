@@ -315,52 +315,6 @@ class Game_Map
     return GameData::TerrainTag.get(:None)
   end
 
-  # Gets list of clusters of mirror tiles
-  def get_mirrors
-    checked = Array.new(height){Array.new(width) {false}}
-    list = []
-    for x in 0...width
-      for y in 0...height
-        if !checked[y][x]
-          cur_list = []
-          check_mirror(x, y, checked, cur_list)
-          if cur_list.length > 0
-            x_list = []
-            y_list = []
-            for i in cur_list
-              x_list.push(i[0])
-              y_list.push(i[1])
-            end
-            list.push(Rect.new(x_list.min, y_list.min, (x_list.max - x_list.min + 1), (y_list.max - y_list.min + 1)))
-          end
-        end
-      end
-    end
-    return list
-  end
-
-  def check_mirror(x, y, checked, cur_list)
-    return if x < 0 || x >= width || y < 0 || y >= height
-    if !checked[y][x]
-      is_mirror = false
-      [2, 1, 0].each do |i|
-        terrain = GameData::TerrainTag.try_get(@terrain_tags[data[x, y, i]])
-        if terrain.id == :Mirror
-          is_mirror = true
-          break
-        end
-      end
-      checked[y][x] = true
-      if is_mirror
-        cur_list.push([x, y])
-        check_mirror(x + 1, y, checked, cur_list)
-        check_mirror(x - 1, y, checked, cur_list)
-        check_mirror(x, y + 1, checked, cur_list)
-        check_mirror(x, y - 1, checked, cur_list)
-      end
-    end
-  end
-
   # Unused.
   def check_event(x, y)
     self.events.each_value do |event|

@@ -1183,3 +1183,14 @@ MenuHandlers.add(:debug_menu, :reload_system_cache, {
     pbMessage(_INTL("Done."))
   }
 })
+
+MenuHandlers.add(:debug_menu, :compile_mirrors, {
+  "name"        => _INTL("Compile Mirrors"),
+  "parent"      => :other_menu,
+  "description" => _INTL("Fully compile mirror data."),
+  "effect"      => proc {
+    Compiler.cache_map_mirrors
+    $map_mirrors = load_data("Data/map_mirrors.dat")
+    pbMessage(_INTL("Done."))
+  }
+})

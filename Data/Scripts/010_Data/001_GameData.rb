@@ -241,5 +241,6 @@ module GameData
     PlayerMetadata.load
     MapMetadata.load
     Apparel.load
+    $map_mirrors = load_data("Data/map_mirrors.dat")
   end
 end

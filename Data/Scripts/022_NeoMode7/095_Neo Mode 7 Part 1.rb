@@ -75,7 +75,7 @@ $neoM7_maps_settings["Smallslant"] = ["#20", "A", "F"]
 # Add any number of settings you want
 
 # enable/disable mode7 for mode7 maps (not on the fly, just when the map is loaded), enabled by default
-$enable_neoM7_number = 15 # switch number : change this value !
+$enable_neoM7_number = 66 # switch number : change this value !
 
 # - Number of directions for the player on mode 7 maps :
 $player_directions = 8 # you can change this value !
@@ -183,7 +183,7 @@ class Game_System
   def neoM7_reset
     self.neoM7_pivot = 256
     self.neoM7_zoom = 100
-    self.neoM7_center_y = Game_Player::CENTER_Y
+    self.neoM7_center_y = Game_Player::SCREEN_CENTER_Y
   end
 end
 

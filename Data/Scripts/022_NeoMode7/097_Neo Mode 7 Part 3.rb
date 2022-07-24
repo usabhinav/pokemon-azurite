@@ -382,9 +382,9 @@ class Spriteset_Map
   # * Initialize Object
   #   Rewritten to call a map with neoM7
   #--------------------------------------------------------------------------
-  def initialize
+  def initialize(map = nil)
     if !$game_system.neoM7
-      initialize_neoM7_spriteset_map
+      initialize_neoM7_spriteset_map(map)
       return
     end
     @viewport1 = Viewport.new(0, 0, 640, 480)

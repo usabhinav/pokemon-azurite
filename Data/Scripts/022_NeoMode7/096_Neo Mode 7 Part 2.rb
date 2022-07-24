@@ -240,8 +240,8 @@ class Game_Character
   #--------------------------------------------------------------------------
   # * Object Initialization
   #--------------------------------------------------------------------------
-  def initialize
-    initialize_neoM7_game_character
+  def initialize(map = nil)
+    initialize_neoM7_game_character(map)
     self.height = 0.0
     self.map_number_x = 0
     self.map_number_y = 0
@@ -352,7 +352,7 @@ class Game_Player < Game_Character
       center_neoM7_game_player(x, y)
       return
     end
-    $game_map.display_x = x * 128 - CENTER_X
+    $game_map.display_x = x * 128 - SCREEN_CENTER_X
     $game_map.display_y = y * 128 - $game_system.neoM7_center_y
   end
   #--------------------------------------------------------------------------

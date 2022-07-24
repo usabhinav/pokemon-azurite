@@ -126,7 +126,7 @@ class Sprite_Character < RPG::Sprite
         self.src_rect.set(0, 0, @cw, @ch)
         self.ox = @cw / 2
         self.oy = @ch
-      elsif @character_name != ""
+      elsif @character_name != "" or @character == $game_player
         @charbitmap = AnimatedBitmap.new(
           "Graphics/Characters/" + @character_name, @character_hue
         )

@@ -22,7 +22,7 @@ def pbGetSurfablePkmn
   end
   
   if $DEBUG 
-    return Pokemon.new(321, 1)
+    return Pokemon.new(:WAILORD, 1)
   else
     # No Surfable Pokmeon found in party
     return nil

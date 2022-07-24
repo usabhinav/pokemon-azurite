@@ -122,8 +122,11 @@ class ApparelMartAdapter < PokemonMartAdapter
   end
 
   def getQuantity(item)
-    item_data = GameData::Apparel.get(item)
-    return $ApparelBag.pbHasApparel?(item_data.class::LAYER, item_data.id_number) ? 1 : 0
+    if item
+      item_data = GameData::Apparel.get(item)
+      return $ApparelBag.pbHasApparel?(item_data.class::LAYER, item_data.id_number) ? 1 : 0
+    end
+    return nil
   end
 
   def showQuantity?(item)

@@ -15,6 +15,7 @@ class PokemonSystem
   attr_accessor :bgmvolume
   attr_accessor :sevolume
   attr_accessor :textinput
+  attr_accessor :cache_all_events
 
   def initialize
     @textspeed     = 1     # Text speed (0=slow, 1=normal, 2=fast)
@@ -30,6 +31,7 @@ class PokemonSystem
     @bgmvolume     = 100   # Volume of background music and ME
     @sevolume      = 100   # Volume of sound effects
     @textinput     = 0     # Text input mode (0=cursor, 1=keyboard)
+    @cache_all_events = 1  # Cache all events option (0=on, 1=off) (if on, caches bitmaps for all events as maps are loaded)
   end
 end
 
@@ -541,4 +543,14 @@ MenuHandlers.add(:options_menu, :screen_size, {
     $PokemonSystem.screensize = value
     pbSetResizeFactor($PokemonSystem.screensize)
   }
+})
+
+MenuHandlers.add(:options_menu, :cache_all_events, {
+  "name"        => _INTL("Event Caching"),
+  "order"       => 130,
+  "type"        => EnumOption,
+  "parameters"  => [_INTL("On"), _INTL("Off")],
+  "description" => _INTL("Choose this option for smoother map transitions (requires more memory)."),
+  "get_proc"    => proc { next $PokemonSystem.cache_all_events },
+  "set_proc"    => proc { |value, _scene| $PokemonSystem.cache_all_events = value }
 })

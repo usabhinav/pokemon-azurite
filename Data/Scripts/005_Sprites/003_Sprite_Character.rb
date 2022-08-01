@@ -126,11 +126,13 @@ class Sprite_Character < RPG::Sprite
         self.src_rect.set(0, 0, @cw, @ch)
         self.ox = @cw / 2
         self.oy = @ch
-      elsif @character_name != "" or @character == $game_player
+      elsif @character_name != "" || @character == $game_player
         @charbitmap = AnimatedBitmap.new(
           "Graphics/Characters/" + @character_name, @character_hue
         )
-        RPG::Cache.retain("Graphics/Characters/", @character_name, @character_hue) if @character == $game_player
+        if @character == $game_player || $PokemonSystem.cache_all_events == 0 # 0 means on
+          RPG::Cache.retain("Graphics/Characters/", @character_name, @character_hue)
+        end
         @charbitmapAnimated = true
         @bushbitmap&.dispose
         @bushbitmap = nil
@@ -141,6 +143,7 @@ class Sprite_Character < RPG::Sprite
         # Update the outfit every time the default character image gets reloaded again in order to replace it.
         updateOutfit if @character == $game_player
       else
+        self.visible = false
         @charbitmapAnimated = false
         @bushbitmap&.dispose
         @bushbitmap = nil

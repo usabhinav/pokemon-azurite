@@ -170,7 +170,7 @@ class Battle
               idxPartyForName = new_index if new_index >= 0 && new_index != idxPartyNew
             end
             if pbDisplayConfirm(_INTL("{1} is about to send out {2}. Will you switch your Pokémon?",
-                                      opponent.full_name, enemyParty[idxPartyForName].name))
+                                      opponent.full_name, enemyParty[idxPartyForName].speciesName))
               idxPlayerPartyNew = pbSwitchInBetween(0, false, true)
               if idxPlayerPartyNew >= 0
                 pbMessageOnRecall(@battlers[0])

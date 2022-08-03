@@ -23414,7 +23414,7 @@ Color = Gray
 Shape = Head
 Habitat = Cosmos
 Category = Traveler
-Pokedex = Upon emerging, Mosquillite fly into the atmosphere and orbit the planet continuously. They send and recieve signals, and sometimes shoot them deep into the unknown of space.
+Pokedex = Upon emerging, Mosquillite fly into the atmosphere and orbit the planet continuously. They send and receive signals, and sometimes shoot them deep into the unknown of space.
 #-------------------------------
 [AZULING]
 Name = Azuling
@@ -23558,7 +23558,7 @@ Color = Black
 Shape = Bipedal
 Habitat = Mountain
 Category = Edgy
-Pokedex = Edglet are fiersome and territorial. When born, they begin to grow a sharp horn like apendage on their head that is sharp enough to slice an Onix in half.
+Pokedex = Edglet are fiersome and territorial. When born, they begin to grow a sharp horn like appendage on their head that is sharp enough to slice an Onix in half.
 Evolutions = HAWKEDGE,Level,24
 #-------------------------------
 [HAWKEDGE]
@@ -23774,7 +23774,7 @@ Color = Brown
 Shape = Bipedal
 Habitat = Cave
 Category = Heavy Armor
-Pokedex = Eating lots of minerals has caused Atroceros skin to harden almost as hard as its shell. It can withstand powerful physical attacks and retaliate twice as hard.
+Pokedex = Eating lots of minerals has caused Atroceros's skin to harden almost as hard as its shell. It can withstand powerful physical attacks and retaliate twice as hard.
 #-------------------------------
 [NYMPHICK]
 Name = Nymphick
@@ -23868,7 +23868,7 @@ Color = Green
 Shape = Bipedal
 Habitat = Forest
 Category = Gathered
-Pokedex = Witherwind are seen as bad omens to People and Pokemon. They are incredibly immune to disease, they use their psychic ability to neutralise viruses and then telepathically pass them on to fester in other organisms as a survival mechanic. Witherwind have the power to consume anything in it's white belly, which is deeper than an Ultra Wormhole.
+Pokedex = Witherwind are seen as bad omens to people and Pokemon. They are incredibly immune to disease, they use their psychic ability to neutralise viruses and then telepathically pass them on to fester in other organisms as a survival mechanic. Witherwind have the power to consume anything in its white belly, which is deeper than an Ultra Wormhole.
 #-------------------------------
 [SASAGGOT]
 Name = Sasaggot
@@ -24011,7 +24011,7 @@ Color = Purple
 Shape = Bipedal
 Habitat = Sea
 Category = Harp
-Pokedex = It plays a serene tone with it’s harp-like tail. Those who listen to the sound are captivated by it’s loveliness and follow it endlessly, never to be seen again.
+Pokedex = It plays a serene tone with its harp-like tail. Those who listen to the sound are captivated by its loveliness and follow it endlessly, never to be seen again.
 #-------------------------------
 [TRICKGRIN]
 Name = Trickgrin
@@ -24083,7 +24083,7 @@ Color = Blue
 Shape = Bipedal
 Habitat = Cosmos
 Category = Crashing Water
-Pokedex = Humideor keeps everything in a kilometer distance humid merely by being there. Due to the water released from it's ears, it requires constant absorption of liters of water to survive.
+Pokedex = Humideor keeps everything in a kilometer distance humid merely by being there. Due to the water released from its ears, it requires constant absorption of liters of water to survive.
 #-------------------------------
 [JOLTTER]
 Name = Joltter
@@ -24155,7 +24155,7 @@ Color = Purple
 Shape = Bipedal
 Habitat = Sea
 Category = Alluring
-Pokedex = Often living in sunken ships, it is thought of that Anglure are the reason the ships sunk in the first place. The lights they emit are seen from deep within the ocean and makes those who see it extremely curious, enough so to lead them on a wrong path.
+Pokedex = Often living in sunken ships, it is thought that Anglure are the reason the ships sunk in the first place. The lights they emit are seen from deep within the ocean and make those who see it extremely curious, enough so to lead them on a wrong path.
 Evolutions = ANGLOW,Level,22
 #-------------------------------
 [ANGLOW]
@@ -24203,7 +24203,7 @@ Color = Purple
 Shape = Bipedal
 Habitat = Sea
 Category = Alluring
-Pokedex = Alluard's teeth are so abnormally large that it can't actually move them. They weigh as much as a car's tire, every single one. Due to this Alluard can only use his teeth as a shield of sorts and attacks with it's angler.
+Pokedex = Alluard's teeth are so abnormally large that it can't actually move them. They weigh as much as a car's tire, every single one. Due to this Alluard can only use his teeth as a shield of sorts and attacks with its angler.
 #-------------------------------
 [CUBEAT]
 Name = Cubeat
@@ -24251,7 +24251,7 @@ Color = Black
 Shape = Bipedal
 Habitat = Forest
 Category = Speaker
-Pokedex = Raccoustic sound has evolved to be more grunge than when it was younger. The sounds it creates are unappealing and can cause devastating damage if played too loudly.
+Pokedex = Raccoustic's sound has evolved to be more grunge than when it was younger. The sounds it creates are unappealing and can cause devastating damage if played too loudly.
 #-------------------------------
 [GRIZZWAVE]
 Name = Grizzwave
@@ -24321,7 +24321,7 @@ Color = Green
 Shape = Bipedal
 Habitat = Desert
 Category = Sharp Dairy
-Pokedex = Cowctus store large amounts of liquid inside its body so it can last a very long time in the hot desert. Drinking this liquid will cause anyone else to hallucinate.
+Pokedex = Cowctus stores large amounts of liquid inside its body so it can last a very long time in the hot desert. Drinking this liquid will cause anyone else to hallucinate.
 #-------------------------------
 [MALLOCOLT]
 Name = Mallocolt
@@ -24345,7 +24345,7 @@ Color = White
 Shape = Bipedal
 Habitat = Grassland
 Category = Soft Sweet
-Pokedex = It's unsure if Mallocolt exists outside of peoples dreams. It's mane tastes of marshmallows and the rocks that fall off of its body taste of sugar.
+Pokedex = It's unsure if Mallocolt exists outside of peoples dreams. Its mane tastes of marshmallows and the rocks that fall off of its body taste of sugar.
 Evolutions = CANDICORN,Beauty,170
 #-------------------------------
 [CANDICORN]
@@ -24417,7 +24417,7 @@ Color = Purple
 Shape = Bipedal
 Habitat = Tundra
 Category = Stalker
-Pokedex = Stalking strangers who get lost in snowstorms, Ghoskarf will follow someone for hours until they freeze solid. He will then keep the stature as a trophy.
+Pokedex = Stalking strangers who get lost in snowstorms, Ghoskarf will follow someone for hours until they freeze solid. It will then keep the stature as a trophy.
 Evolutions = SHROUDICE,Level,55
 #-------------------------------
 [SHROUDICE]
@@ -24441,7 +24441,7 @@ Color = Purple
 Shape = Bipedal
 Habitat = Tundra
 Category = Mirror
-Pokedex = Its body is made of malicious souls. They say if you shatter a Shroudices mirror, those souls will haunt you for all of eternity. Or at least seven years.
+Pokedex = During a blizzard in a tundra, Shroudice will appear, just staring at lost travelers, waiting for their actions. Because it looks fairly human from a distance, people will sometimes approach, only to get their souls sealed in its mirror.
 #-------------------------------
 [VARYMITE]
 Name = Varymite
@@ -24512,7 +24512,7 @@ Color = Green
 Shape = Bipedal
 Habitat = Sea
 Category = Tardigrade
-Pokedex = They travel much faster in water than on land. Using the holes in their body, Mosglet quickly fire balls of mucus at anything that threatens it.
+Pokedex = They travel much faster in water than on land. Using the holes in their body, Mosglet quickly fire balls of mucus at anything that threatens them.
 Evolutions = TARNAVIS,Level,55
 #-------------------------------
 [TARNAVIS]
@@ -24629,7 +24629,7 @@ Color = Red
 Shape = Bipedal
 Habitat = Urban
 Category = Training
-Pokedex = They spend day and night wondering caves and fields looking for opponents to fight. Their body is resillient,so they can quickly patch themselves up using mud and sand if it gets torn.
+Pokedex = They spend day and night wandering caves and fields looking for opponents to fight. Their body is resillient, but they can quickly patch themselves up using mud and sand if it gets torn.
 #-------------------------------
 [BAGARROUGH]
 Name = Bagarrough
@@ -24725,7 +24725,7 @@ Color = Red
 Shape = Bipedal
 Habitat = Cave
 Category = Soldier
-Pokedex = Canoling will roll around, finding anything it can to launch out of the cannon on its head. They are often used for Fireworks.
+Pokedex = Canoling will roll around, finding anything it can to launch out of the cannon on its head. They are often used for fireworks.
 Evolutions = CANOBLAST,HasMove,AURASPHERE,CANOBLAST,HasMove,DARKPULSE,CANOBLAST,HasMove,DRAGONPULSE,CANOBLAST,HasMove,HEALPULSE,CANOBLAST,HasMove,ORIGINPULSE,CANOBLAST,HasMove,WATERPULSE
 #-------------------------------
 [CANOBLAST]
@@ -24750,7 +24750,7 @@ Color = Blue
 Shape = Bipedal
 Habitat = Cave
 Category = Cannon
-Pokedex = Canoblasts wheels have flattened, allowing it large defensive shields in place of its speed. The cannon has been optimized so it may launch long range blasts.
+Pokedex = Canoblast's wheels have flattened, allowing it large defensive shields in place of its speed. The cannon has been optimized so it may launch long range blasts.
 #-------------------------------
 [NYASHI]
 Name = Nyashi
@@ -24774,7 +24774,7 @@ Color = Gray
 Shape = Bipedal
 Habitat = Forest
 Category = Undead
-Pokedex = There was rumors that Nyashi are actually deceased Pokemon, due to their pale, cold skin, and slow breathing pattern, however numerous research debunked that theory.
+Pokedex = There were rumors that Nyashi are actually deceased Pokémon, due to their pale, cold skin, and slow breathing pattern. However, numerous researches debunked that theory.
 #-------------------------------
 [FELINSHII]
 Name = Felinshii
@@ -24965,7 +24965,7 @@ Color = Blue
 Shape = Bipedal
 Habitat = Volcano
 Category = Volcanic
-Pokedex = Pengerupt wander deep into Volcanos so they may fill their bodies with hot lava. They will then travel to the top of the Volcano and shoot it into the air. No one knows why they do this.
+Pokedex = Pengerupt wander deep into volcanos so they may fill their bodies with hot lava. They will then travel to the top of the volcano and shoot it into the air. No one knows why they do this.
 #-------------------------------
 [CHABALLIC]
 Name = Chaballic
@@ -24989,7 +24989,7 @@ Color = Green
 Shape = Bipedal
 Habitat = Jungle
 Category = Changing
-Pokedex = Chaballic change colors to match their environment. However, when caught in a Pokeball it seems to imitate the ball design permanently.
+Pokedex = Chaballic can create large illusions of themselves by striking odd poses, and they use this to stun their foes in fear. They're very stubborn when it comes to changing colors.
 #-------------------------------
 [POPERI]
 Name = Poperi
@@ -25161,8 +25161,8 @@ Habitat = Desert
 Category = Hermit Frog
 Pokedex = When it is properly hydrated, its body is slimey and flexible. It has a level headed disposition and takes a pragmatic approach to survival.
 #-------------------------------
-[POTAGON]
-Name = Potagon
+[DRAGURN]
+Name = Dragurn
 Types = DRAGON
 BaseStats = 50,60,90,20,60,90
 GenderRatio = Female50Percent
@@ -25183,11 +25183,11 @@ Color = White
 Shape = Head
 Habitat = Desert
 Category = Pot
-Pokedex = When born Potagon find a vessel to hide within to protect themselves from predators. They will stay in their new found homes all of their life.
-Evolutions = PEEKAGRON,HasMove,HIDDENPOWER
+Pokedex = When born, Dragurn find a vessel to hide within to protect themselves from predators. They will stay in their new found homes all of their life.
+Evolutions = DRAJINN,HasMove,HIDDENPOWER
 #-------------------------------
-[PEEKAGRON]
-Name = Peekagron
+[DRAJINN]
+Name = Drajinn
 Types = DRAGON
 BaseStats = 70,90,110,50,90,110
 GenderRatio = Female50Percent
@@ -25208,7 +25208,7 @@ Color = White
 Shape = Head
 Habitat = Desert
 Category = Crawling
-Pokedex = Peekagron have outgrown their home, but are now stuck and unable to fully emerge. Despite this, they will still live their lives as if there's nothing wrong.
+Pokedex = Drajinn have outgrown their home, but are now stuck and unable to fully emerge. Despite this, they will still live their lives as if there's nothing wrong.
 #-------------------------------
 [KOBBLE]
 Name = Kobble
@@ -25279,7 +25279,7 @@ Color = Green
 Shape = Bipedal
 Habitat = Mountain
 Category = Garlic
-Pokedex = Gareed smell heavily of garlic. It is said that in ancient times when people feared of vampires, they would keep Gareed around.
+Pokedex = Gareed smell heavily of garlic. It is said that in ancient times when people were afraid of vampires, they would keep Gareed around.
 Evolutions = GNARLIC,Level,27
 #-------------------------------
 [GNARLIC]
@@ -25304,7 +25304,7 @@ Color = Green
 Shape = Bipedal
 Habitat = Mountain
 Category = Unholy
-Pokedex = Often found roaming farms to aid farmers, Gnarlic scare away birds with bursts of flames. They like to hoarde objects they finds in their nests.
+Pokedex = Often found roaming farms to aid farmers, Gnarlic scare away birds with bursts of flames. They like to hoard objects they finds in their nests.
 Evolutions = GNARSOME,Level,44
 #-------------------------------
 [GNARSOME]
@@ -25378,7 +25378,7 @@ Color = Brown
 Shape = Bipedal
 Habitat = Forest
 Category = Aardvark
-Pokedex = Savark live on a diet of solely Bug Type Pokemon. Once it sees one, it will not stop hunting it down until either the bug or itself goes down. Savark very rarely goes down.
+Pokedex = Savark live on a diet of solely Bug-type Pokémon. Once it sees one, it will not stop hunting it down until either the bug or itself goes down. Savark very rarely goes down.
 #-------------------------------
 [CLAVARMA]
 Name = Clavarma
@@ -25523,7 +25523,7 @@ Color = Blue
 Shape = Bipedal
 Habitat = Skies
 Category = Clouded
-Pokedex = An often calm pokemon that spends most of its days watching clouds. When it finds a specific cloud it likes, it chases it non-stop.
+Pokedex = An often calm Pokémon that spends most of its days watching clouds. When it finds a specific cloud it likes, it chases it non-stop.
 #-------------------------------
 [ASTREON]
 Name = Astreon
@@ -25595,7 +25595,7 @@ Color = Black
 Shape = Bipedal
 Habitat = Urban
 Category = Up-Beat
-Pokedex = Different parts of Icheons body makes different noises. This allows them to imitate almost any sound it has ever heard, including entire songs.
+Pokedex = Different parts of Icheon's body make different noises. This allows them to imitate almost any sound it has ever heard, including entire songs.
 #-------------------------------
 [FULGEON]
 Name = Fulgeon
@@ -25643,7 +25643,7 @@ Color = Blue
 Shape = Bipedal
 Habitat = Cave
 Category = Power
-Pokedex = Due to Eevees ability to adapt to any situation, it has the opportunity to become one of the only known truly Crystal Type Pokémon by being exposed to highly concentrated crystal radiation.
+Pokedex = Due to Eevee's ability to adapt to any situation, it has the opportunity to become one of the only known truly Crystal-type Pokémon by being exposed to highly concentrated crystal radiation.
 #-------------------------------
 [ASAWAJI]
 Name = Asawaji
@@ -25669,7 +25669,7 @@ Category = Dream
 Pokedex = Most often seen roaming deserted ruins from an age long past, Asawaji act as some sort of defender. Perhaps no one told them the ruins they patrol are no longer in use.
 #-------------------------------
 [CHICHAW]
-Name = Chichaws
+Name = Chichaw
 Types = GROUND
 BaseStats = 55,75,40,60,40,40
 GenderRatio = Female25Percent
@@ -25738,7 +25738,7 @@ Color = Pink
 Shape = Bipedal
 Habitat = Graveyard
 Category = Doll
-Pokedex = Kindeshu looks like an old toy, so children are more likely to find comfort in it. However, once it gains a childs trust it will change form and absorb the childs light energy to feed itself.
+Pokedex = Kindeshu looks like an old toy, so children are more likely to find comfort in it. However, once it gains a child's trust it will change form and absorb the child's light energy to feed itself.
 #-------------------------------
 [PHANTITUTE]
 Name = Phantitute
@@ -26659,7 +26659,7 @@ Color = Yellow
 Shape = Bipedal
 Habitat = WatersEdge
 Category = Shining
-Pokedex = Lumeny is a very gentle pokemon and prefers not to fight, but instead to help. The soothing light coming from it's antenna and tails give a warm feeling that can make other pokemon and even people feel a lot better.
+Pokedex = Lumeny is a very gentle Pokémon and prefers not to fight, but instead to help. The soothing light coming from its antenna and tails gives a warm feeling that can make other Pokémon and even people feel a lot better.
 #-------------------------------
 [KOSURITE]
 Name = Kosurite
@@ -26706,7 +26706,7 @@ Color = Black
 Shape = Bipedal
 Habitat = Urban
 Category = Replicant
-Pokedex = Kyazura was created by Vitreus from a part of Kaizure. Made to control Energy of those around it, all Crystal and Mega forms are reverted back to their original state. It hates its own existance and will attack without warning.
+Pokedex = Kyazura was created by Vitreus from a part of Kaizure. Made to control energy of those around it, all Crystal and Mega forms are reverted back to their original state. It hates its own existence and will attack without warning.
 #-------------------------------
 [KAIZURE]
 Name = Kaizure
@@ -26729,7 +26729,7 @@ Color = Black
 Shape = Bipedal
 Habitat = Grassland
 Category = Crystal Origin
-Pokedex = The original Crystal Pokémon. Capable of controlling all crystal energy, it spent its days keeping the flow of energy moving throughout the world. When it met a Mew, it yearned to live a carefree life, so it created Kosurite to do its job. This turned out terribly.
+Pokedex = The original Crystal Pokémon. Capable of controlling all Crystal energy, it spent its days keeping the flow of energy moving throughout the world. When it met a Mew, it yearned to live a carefree life, so it created Kosurite to do its job. This turned out terribly.
 #-------------------------------
 [UBFLOW]
 Name = UB-Flow

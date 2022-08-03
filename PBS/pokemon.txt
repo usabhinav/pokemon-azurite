@@ -23558,7 +23558,7 @@ Color = Black
 Shape = Bipedal
 Habitat = Mountain
 Category = Edgy
-Pokedex = Edglet are fiersome and territorial. When born, they begin to grow a sharp horn like appendage on their head that is sharp enough to slice an Onix in half.
+Pokedex = Edglet are fierce and territorial. When born, they begin to grow a sharp horn like appendage on their head that is sharp enough to slice an Onix in half.
 Evolutions = HAWKEDGE,Level,24
 #-------------------------------
 [HAWKEDGE]

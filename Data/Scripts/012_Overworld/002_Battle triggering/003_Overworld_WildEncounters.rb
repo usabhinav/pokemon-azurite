@@ -387,9 +387,18 @@ def pbGenerateWildPokemon(species, level, isRoamer = false)
   genwildpoke = Pokemon.new(species, level)
   # Give the wild Pokémon a held item
   items = genwildpoke.wildHoldItems
+  items_are_empty = true
+  for item_list in items
+    if item_list.length > 0
+      items_are_empty = false
+      break
+    end
+  end
   # Check if items are defined for this species at a map level
+  # If so, use this item pool if species level items are not defined
+  # If both map level items and species level items are defined, 50/50 chance to choose either
   encounter_data = GameData::Encounter.get($game_map.map_id, $PokemonGlobal.encounter_version)
-  if encounter_data.items[$PokemonEncounters.encounter_type][species] && rand(2) == 0
+  if encounter_data.items[$PokemonEncounters.encounter_type][species] && (items_are_empty || rand(2) == 0)
     map_hold_items = encounter_data.items[$PokemonEncounters.encounter_type][species]
     items = []
     items.push(map_hold_items["WildItemCommon"] ? map_hold_items["WildItemCommon"] : [])

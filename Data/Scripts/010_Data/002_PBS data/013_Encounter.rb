@@ -5,6 +5,7 @@ module GameData
     attr_accessor :version
     attr_reader :step_chances
     attr_reader :types
+    attr_reader :items
 
     DATA = {}
     DATA_FILENAME = "encounters.dat"
@@ -63,6 +64,7 @@ module GameData
       @version      = hash[:version]      || 0
       @step_chances = hash[:step_chances]
       @types        = hash[:types]        || {}
+      @items        = hash[:items]        || {}
     end
   end
 end

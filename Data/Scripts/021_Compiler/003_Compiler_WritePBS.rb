@@ -610,6 +610,18 @@ module Compiler
             else
               f.write(sprintf("    %d,%s,%d,%d\r\n", slot[0], slot[1], slot[2], slot[3]))
             end
+            if encounter_data.items[type][slot[1]]
+              item_types = ["WildItemCommon", "WildItemUncommon", "WildItemRare"]
+              for item_type in item_types
+                next if !encounter_data.items[type][slot[1]][item_type]
+                item_list_string = ""
+                for i in 0...encounter_data.items[type][slot[1]][item_type].length
+                  item_list_string += encounter_data.items[type][slot[1]][item_type][i].to_s
+                  item_list_string += "," if i < encounter_data.items[type][slot[1]][item_type].length - 1
+                end
+                f.write(sprintf("        %s = %s\r\n", item_type, item_list_string))
+              end
+            end
           end
         end
       end

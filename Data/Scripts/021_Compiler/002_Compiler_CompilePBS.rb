@@ -1373,6 +1373,7 @@ module Compiler
     current_type   = nil
     max_level = GameData::GrowthRate.max_level
     idx = 0
+    last_species = nil
     pbCompilerEachPreppedLine(path) { |line, line_no|
       echo "." if idx % 50 == 0
       idx += 1
@@ -1394,6 +1395,7 @@ module Compiler
           raise _INTL("Minimum level is greater than maximum level: {1}\r\n{2}", line, FileLineData.linereport)
         end
         encounter_hash[:types][current_type].push(values)
+        last_species = values[1]
       elsif line[/^\[\s*(.+)\s*\]$/]   # Map ID line
         values = $~[1].split(",").collect! { |v| v.strip.to_i }
         values[1] = 0 if !values[1]
@@ -1429,9 +1431,31 @@ module Compiler
           :map          => map_number,
           :version      => map_version,
           :step_chances => step_chances,
-          :types        => {}
+          :types        => {},
+          :items        => {}
         }
         current_type = nil
+      elsif current_type && line[/WildItem/]  # Wild item holds for wild encounters
+        if !last_species
+          raise _INTL("Expected a species entry line before: {1}\r\n{2}", line, FileLineData.linereport)
+        end
+        split_line = line.split("=")
+        key = split_line[0].strip
+        if !["WildItemCommon", "WildItemUncommon", "WildItemRare"].include?(key)
+          raise _INTL("{1} must be one of three types: WildItemCommon, WildItemUncommon, WildItemRare.\r\n{2}", key, FileLineData.linereport)
+        end
+        value = split_line[1].strip
+        item_list = value.split(",")
+        item_sym_list = []
+        for item_str in item_list
+          item_sym = item_str.to_sym
+          if !GameData::Item.exists?(item_sym)
+            raise _INTL("Undefined item \"{1}\".\r\n{2}", item_str, FileLineData.linereport)
+          end
+          item_sym_list.push(item_sym)
+        end
+        encounter_hash[:items][current_type][last_species] = {} if !encounter_hash[:items][current_type][last_species]
+        encounter_hash[:items][current_type][last_species][key] = item_sym_list
       elsif !encounter_hash   # File began with something other than a map ID line
         raise _INTL("Expected a map number, got \"{1}\" instead.\r\n{2}", line, FileLineData.linereport)
       else
@@ -1442,6 +1466,7 @@ module Compiler
           step_chances[current_type] = values[1].to_i if values[1] && !values[1].empty?
           step_chances[current_type] ||= GameData::EncounterType.get(current_type).trigger_chance
           encounter_hash[:types][current_type] = []
+          encounter_hash[:items][current_type] = {}
         else
           raise _INTL("Undefined encounter type \"{1}\" for map '{2}'.\r\n{3}",
                       line, encounter_hash[:map], FileLineData.linereport)

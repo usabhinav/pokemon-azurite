@@ -587,7 +587,7 @@ class Sprite_Character
     old_initialize(viewport, character)
 
     if $player
-      if character == $game_player
+      if character == $game_player && @charbitmap
         #@player_outfit_sprite_updater = Sprite_Player_Clother.new($Trainer.outfitstate, self)
         #$Trainer.outfitstate.attach(@player_outfit_sprite_updater)
         

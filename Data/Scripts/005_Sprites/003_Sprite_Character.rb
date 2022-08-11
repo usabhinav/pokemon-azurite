@@ -114,19 +114,20 @@ class Sprite_Character < RPG::Sprite
       @character_hue  = @character.character_hue
       @oldbushdepth   = @character.bush_depth
       @charbitmap&.dispose
+      @charbitmap = nil
+      @bushbitmap&.dispose
+      @bushbitmap = nil
       if @tile_id >= 384
         @charbitmap = pbGetTileBitmap(@character.map.tileset_name, @tile_id,
                                       @character_hue, @character.width, @character.height)
         @charbitmapAnimated = false
-        @bushbitmap&.dispose
-        @bushbitmap = nil
         @spriteoffset = false
         @cw = Game_Map::TILE_WIDTH * @character.width
         @ch = Game_Map::TILE_HEIGHT * @character.height
         self.src_rect.set(0, 0, @cw, @ch)
         self.ox = @cw / 2
         self.oy = @ch
-      elsif @character_name != "" || @character == $game_player
+      elsif @character_name != ""
         @charbitmap = AnimatedBitmap.new(
           "Graphics/Characters/" + @character_name, @character_hue
         )
@@ -134,8 +135,6 @@ class Sprite_Character < RPG::Sprite
           RPG::Cache.retain("Graphics/Characters/", @character_name, @character_hue)
         end
         @charbitmapAnimated = true
-        @bushbitmap&.dispose
-        @bushbitmap = nil
         @spriteoffset = @character_name[/offset/i]
         @cw = @charbitmap.width / 4
         @ch = @charbitmap.height / 4
@@ -144,23 +143,32 @@ class Sprite_Character < RPG::Sprite
         updateOutfit if @character == $game_player
       else
         self.visible = false
-        @charbitmapAnimated = false
-        @bushbitmap&.dispose
-        @bushbitmap = nil
-        @spriteoffset = false
-        @cw = Game_Map::TILE_WIDTH * @character.width
-        @ch = Game_Map::TILE_HEIGHT * @character.height
-        self.src_rect.set(0, 0, @cw, @ch)
-        self.ox = @cw / 2
-        self.oy = @ch
+        self.bitmap = nil
+        @cw = 0
+        @ch = 0
       end
       @character.sprite_size = [@cw, @ch]
     end
-    if @character_name != ""
-      @charbitmap.update if @charbitmapAnimated
-      bushdepth = @character.bush_depth
-      if bushdepth == 0
-        self.bitmap = (@charbitmapAnimated) ? @charbitmap.bitmap : @charbitmap
+    return if !@charbitmap
+    @charbitmap.update if @charbitmapAnimated
+    bushdepth = @character.bush_depth
+    if bushdepth == 0
+      self.bitmap = (@charbitmapAnimated) ? @charbitmap.bitmap : @charbitmap
+    else
+      @bushbitmap = BushBitmap.new(@charbitmap, (@tile_id >= 384), bushdepth) if !@bushbitmap
+      self.bitmap = @bushbitmap.bitmap
+    end
+    self.visible = !@character.transparent
+    if @tile_id == 0
+      sx = @character.pattern * @cw
+      sy = ((@character.direction - 2) / 2) * @ch
+      self.src_rect.set(sx, sy, @cw, @ch)
+      self.oy = (@spriteoffset rescue false) ? @ch - 16 : @ch
+      self.oy -= @character.bob_height
+    end
+    if self.visible
+      if @character.is_a?(Game_Event) && @character.name[/regulartone/i]
+        self.tone.set(0, 0, 0, 0)
       else
         @bushbitmap = BushBitmap.new(@charbitmap, (@tile_id >= 384), bushdepth) if !@bushbitmap
         self.bitmap = @bushbitmap.bitmap

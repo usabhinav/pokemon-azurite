@@ -105,7 +105,6 @@ class Battle
     end
     @scene             = scene
     @peer              = Peer.new
-    @battleAI          = AI.new(self)
     @field             = ActiveField.new    # Whole field (gravity/rooms)
     @sides             = [ActiveSide.new,   # Player's side
                           ActiveSide.new]   # Foe's side
@@ -182,6 +181,7 @@ class Battle
     end
     @mega_rings = []
     GameData::Item.each { |item| @mega_rings.push(item.id) if item.has_flag?("MegaRing") }
+    @battleAI          = AI.new(self)
   end
 
   #=============================================================================

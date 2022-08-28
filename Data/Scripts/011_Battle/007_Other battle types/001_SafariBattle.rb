@@ -22,7 +22,10 @@ class Battle::FakeBattler
   def name;           return @pokemon.name;         end
   def totalhp;        return @pokemon.totalhp;      end
   def displayGender;  return @pokemon.gender;       end
+  def regular?;       return @pokemon.regular?;     end
   def shiny?;         return @pokemon.shiny?;       end
+  def albino?;        return @pokemon.albino?;      end
+  def glossy?;        return @pokemon.glossy?;      end
   def super_shiny?;   return @pokemon.super_shiny?; end
 
   def isSpecies?(check_species)
@@ -363,7 +366,7 @@ class SafariBattle
     return if !battler || !@internalBattle
     if battler.is_a?(Battle::Battler)
       pbPlayer.pokedex.register(battler.displaySpecies, battler.displayGender,
-                                battler.displayForm, battler.shiny?)
+                                battler.displayForm, battler.shiny_variant)
     else
       pbPlayer.pokedex.register(battler)
     end

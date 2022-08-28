@@ -249,7 +249,7 @@ SaveData.register_conversion(:v20_add_pokedex_records) do
       @defeated_counts = {} if @defeated_counts.nil?
       @seen_eggs = {} if @seen_eggs.nil?
       @seen_forms.each_value do |sp|
-        next if !sp || sp[0][0].is_a?(Array)   # Already converted to include shininess
+        next if !sp || sp[0][0].is_a?(Array)   # Already converted to include shiny variant
         sp[0] = [sp[0], []]
         sp[1] = [sp[1], []]
       end

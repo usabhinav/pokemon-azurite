@@ -279,9 +279,29 @@ class Battle::Battler
     return self.form
   end
 
+  def shiny_variant
+    return @effects[PBEffects::Illusion].shiny_variant if @effects[PBEffects::Illusion]
+    return @pokemon&.shiny_variant
+  end
+
+  def regular?
+    return @effects[PBEffects::Illusion].regular? if @effects[PBEffects::Illusion]
+    return @pokemon&.regular?
+  end
+
   def shiny?
     return @effects[PBEffects::Illusion].shiny? if @effects[PBEffects::Illusion]
     return @pokemon&.shiny?
+  end
+
+  def albino?
+    return @effects[PBEffects::Illusion].albino? if @effects[PBEffects::Illusion]
+    return @pokemon&.albino?
+  end
+
+  def glossy?
+    return @effects[PBEffects::Illusion].glossy? if @effects[PBEffects::Illusion]
+    return @pokemon&.glossy?
   end
 
   def super_shiny?

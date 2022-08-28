@@ -44,9 +44,11 @@ class Battle::Scene
     if @battle.showAnims
       @battle.sideSizes[1].times do |i|
         idxBattler = (2 * i) + 1
-        next if !@battle.battlers[idxBattler] || !@battle.battlers[idxBattler].shiny?
+        next if !@battle.battlers[idxBattler] || @battle.battlers[idxBattler].regular?
         if Settings::SUPER_SHINY && @battle.battlers[idxBattler].super_shiny?
           pbCommonAnimation("SuperShiny", @battle.battlers[idxBattler])
+        elsif @battle.battlers[idxBattler].albino?
+          pbCommonAnimation("Albino", @battle.battlers[idxBattler])
         else
           pbCommonAnimation("Shiny", @battle.battlers[idxBattler])
         end
@@ -146,11 +148,13 @@ class Battle::Scene
       a[0].dispose
       a[1].dispose
     end
-    # Play shininess animations for shiny Pokémon
+    # Play shiny variant animations for shiny Pokémon
     sendOuts.each do |b|
-      next if !@battle.showAnims || !@battle.battlers[b[0]].shiny?
+      next if !@battle.showAnims || @battle.battlers[b[0]].regular?
       if Settings::SUPER_SHINY && @battle.battlers[b[0]].super_shiny?
         pbCommonAnimation("SuperShiny", @battle.battlers[b[0]])
+      elsif @battle.battlers[b[0]].albino?
+        pbCommonAnimation("Albino", @battle.battlers[b[0]])
       else
         pbCommonAnimation("Shiny", @battle.battlers[b[0]])
       end

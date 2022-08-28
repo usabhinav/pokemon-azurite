@@ -269,10 +269,12 @@ module Battle::DebugMixin
     # Form number
     ret += _INTL("Form: {1}", battler.form)
     ret += "\r\n"
-    # Level, gender, shininess
+    # Level, gender, shiny variant
     ret += _INTL("Level {1}, {2}", battler.level,
                  (battler.pokemon.male?) ? "♂" : (battler.pokemon.female?) ? "♀" : _INTL("genderless"))
     ret += ", " + _INTL("shiny") if battler.pokemon.shiny?
+    ret += ", " + _INTL("albino") if battler.pokemon.albino?
+    ret += ", " + _INTL("glossy") if battler.pokemon.glossy?
     ret += "\r\n"
     # HP
     ret += _INTL("HP: {1}/{2} ({3}%)", battler.hp, battler.totalhp, (100.0 * battler.hp / battler.totalhp).to_i)
@@ -318,10 +320,12 @@ module Battle::DebugMixin
     # Form number
     ret += _INTL("Form: {1}", sp_data.form)
     ret += "\r\n"
-    # Level, gender, shininess
+    # Level, gender, shiny variant
     ret += _INTL("Level {1}, {2}", pkmn.level,
                  (pkmn.male?) ? "♂" : (pkmn.female?) ? "♀" : _INTL("genderless"))
     ret += ", " + _INTL("shiny") if pkmn.shiny?
+    ret += ", " + _INTL("albino") if pkmn.albino?
+    ret += ", " + _INTL("glossy") if pkmn.glossy?
     ret += "\r\n"
     # HP
     ret += _INTL("HP: {1}/{2} ({3}%)", pkmn.hp, pkmn.totalhp, (100.0 * pkmn.hp / pkmn.totalhp).to_i)

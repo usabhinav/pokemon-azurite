@@ -10,7 +10,7 @@ class GuildScreenPokemonSprite < Sprite
   end
 
   def getBitmapFile(poke)
-    return GameData::Species.ow_sprite_filename(poke.species, poke.form, poke.gender, poke.shiny?, poke.shadow)
+    return GameData::Species.ow_sprite_filename(poke.species, poke.form, poke.gender, poke.shiny_variant, poke.shadow)
   end
 
   def update

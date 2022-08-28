@@ -127,16 +127,16 @@ class PokemonPokedexInfo_Scene
   def pbUpdateDummyPokemon
     @species = @dexlist[@index][0]
     @gender, @form, _shiny = $player.pokedex.last_form_seen(@species)
-    @shiny = false
+    @shiny_variant = Pokemon::REGULAR
     metrics_data = GameData::SpeciesMetrics.get_species_form(@species, @form)
-    @sprites["infosprite"].setSpeciesBitmap(@species, @gender, @form, @shiny)
-    @sprites["formfront"]&.setSpeciesBitmap(@species, @gender, @form, @shiny)
+    @sprites["infosprite"].setSpeciesBitmap(@species, @gender, @form, @shiny_variant)
+    @sprites["formfront"]&.setSpeciesBitmap(@species, @gender, @form, @shiny_variant)
     if @sprites["formback"]
-      @sprites["formback"].setSpeciesBitmap(@species, @gender, @form, @shiny, false, true)
+      @sprites["formback"].setSpeciesBitmap(@species, @gender, @form, @shiny_variant, false, true)
       @sprites["formback"].y = 256
       @sprites["formback"].y += metrics_data.back_sprite[1] * 2
     end
-    @sprites["formicon"]&.pbSetParams(@species, @gender, @form, @shiny)
+    @sprites["formicon"]&.pbSetParams(@species, @gender, @form, @shiny_variant)
   end
 
   def pbGetAvailableForms

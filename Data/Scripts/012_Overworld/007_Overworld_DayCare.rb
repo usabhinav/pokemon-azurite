@@ -45,7 +45,7 @@ class DayCare
       inherit_IVs(egg, mother, father)
       inherit_poke_ball(egg, mother_data, father_data)
       # Calculate other properties of the egg
-      set_shininess(egg, mother, father)   # Masuda method and Shiny Charm
+      set_shiny_variant(egg, mother, father)   # Masuda method and Shiny Charm
       set_pokerus(egg)
       # Set family tree of egg
       egg.family_tree = FamilyTree.new(father, mother)
@@ -328,7 +328,7 @@ class DayCare
     #       egg's personal ID if the Masuda Method/Shiny Charm can cause any
     #       rerolls. Essentials doesn't have this bug, meaning eggs are slightly
     #       more likely to be shiny (in Gen 8+ mechanics) than in Gen 8 itself.
-    def set_shininess(egg, mother, father)
+    def set_shiny_variant(egg, mother, father)
       shiny_retries = 0
       if father.owner.language != mother.owner.language
         shiny_retries += (Settings::MECHANICS_GENERATION >= 8) ? 6 : 5
@@ -336,8 +336,8 @@ class DayCare
       shiny_retries += 2 if $bag.has?(:SHINYCHARM)
       return if shiny_retries == 0
       shiny_retries.times do
-        break if egg.shiny?
-        egg.shiny = nil   # Make it recalculate shininess
+        break if egg.shinyOrGlossy?
+        egg.shiny_variant = nil   # Make it recalculate shiny variant
         egg.personalID = rand(2**16) | (rand(2**16) << 16)
       end
     end
@@ -663,14 +663,14 @@ class FamilyTreeNode
   attr_reader :species
   attr_reader :gender
   attr_reader :form
-  attr_reader :shiny
+  attr_reader :shiny_variant
   attr_reader :name
 
   def initialize(pokemon)
     @species = pokemon.species
     @gender = pokemon.gender
     @form = pokemon.form
-    @shiny = pokemon.shiny?
+    @shiny_variant = pokemon.shiny_variant
     @name = pokemon.name
   end
 end

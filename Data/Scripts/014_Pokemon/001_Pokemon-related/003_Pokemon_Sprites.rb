@@ -61,9 +61,9 @@ class PokemonSprite < Sprite
     changeOrigin
   end
 
-  def setSpeciesBitmap(species, gender = 0, form = 0, shiny = false, shadow = false, back = false, egg = false)
+  def setSpeciesBitmap(species, gender = 0, form = 0, shiny_variant = Pokemon::REGULAR, shadow = false, back = false, egg = false)
     @_iconbitmap&.dispose
-    @_iconbitmap = GameData::Species.sprite_bitmap(species, form, gender, shiny, shadow, back, egg)
+    @_iconbitmap = GameData::Species.sprite_bitmap(species, form, gender, shiny_variant, shadow, back, egg)
     self.bitmap = (@_iconbitmap) ? @_iconbitmap.bitmap : nil
     changeOrigin
   end
@@ -221,14 +221,14 @@ class PokemonSpeciesIconSprite < Sprite
   attr_reader :species
   attr_reader :gender
   attr_reader :form
-  attr_reader :shiny
+  attr_reader :shiny_variant
 
   def initialize(species, viewport = nil)
     super(viewport)
     @species      = species
     @gender       = 0
     @form         = 0
-    @shiny        = 0
+    @shiny_variant = 0
     @numFrames    = 0
     @currentFrame = 0
     @counter      = 0
@@ -255,16 +255,16 @@ class PokemonSpeciesIconSprite < Sprite
     refresh
   end
 
-  def shiny=(value)
-    @shiny = value
+  def shiny_variant=(value)
+    @shiny_variant = value
     refresh
   end
 
-  def pbSetParams(species, gender, form, shiny = false)
+  def pbSetParams(species, gender, form, shiny_variant = Pokemon::REGULAR)
     @species = species
     @gender  = gender
     @form    = form
-    @shiny   = shiny
+    @shiny_variant = shiny_variant
     refresh
   end
 
@@ -309,7 +309,7 @@ class PokemonSpeciesIconSprite < Sprite
   def refresh
     @animBitmap&.dispose
     @animBitmap = nil
-    bitmapFileName = GameData::Species.icon_filename(@species, @form, @gender, @shiny)
+    bitmapFileName = GameData::Species.icon_filename(@species, @form, @gender, @shiny_variant)
     return if !bitmapFileName
     @animBitmap = AnimatedBitmap.new(bitmapFileName)
     self.bitmap = @animBitmap.bitmap

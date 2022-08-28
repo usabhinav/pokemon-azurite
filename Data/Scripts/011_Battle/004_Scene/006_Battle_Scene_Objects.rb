@@ -248,10 +248,11 @@ class Battle::Scene::PokemonDataBox < Sprite
                                         0, s * STATUS_ICON_HEIGHT, -1, STATUS_ICON_HEIGHT]])
   end
 
-  def draw_shiny_icon
-    return if !@battler.shiny?
+  def draw_shiny_variant_icon
+    return if @battler.regular?
     shiny_x = (@battler.opposes?(0)) ? 206 : -6   # Foe's/player's
-    pbDrawImagePositions(self.bitmap, [["Graphics/Pictures/shiny", @spriteBaseX + shiny_x, 36]])
+    icon_filename = @battler.albino? ? "albino" : "shiny"
+    pbDrawImagePositions(self.bitmap, [["Graphics/Pictures/" + icon_filename, @spriteBaseX + shiny_x, 36]])
   end
 
   def draw_special_form_icon
@@ -286,7 +287,7 @@ class Battle::Scene::PokemonDataBox < Sprite
     draw_level
     draw_gender
     draw_status
-    draw_shiny_icon
+    draw_shiny_variant_icon
     draw_special_form_icon
     draw_owned_icon
     refreshHP

@@ -6,7 +6,7 @@ class Mail
     @item    = GameData::Item.get(item).id   # Item represented by this mail
     @message = message   # Message text
     @sender  = sender    # Name of the message's sender
-    @poke1   = poke1     # [species,gender,shininess,form,shadowness,is egg]
+    @poke1   = poke1     # [species,gender,shiny variant,form,shadowness,is egg]
     @poke2   = poke2
     @poke3   = poke3
   end
@@ -104,15 +104,15 @@ def pbWriteMail(item, pkmn, pkmnid, scene)
       poke1 = poke2 = nil
       if $player.party[pkmnid + 2]
         p = $player.party[pkmnid + 2]
-        poke1 = [p.species, p.gender, p.shiny?, p.form, p.shadowPokemon?]
+        poke1 = [p.species, p.gender, p.shiny_variant, p.form, p.shadowPokemon?]
         poke1.push(true) if p.egg?
       end
       if $player.party[pkmnid + 1]
         p = $player.party[pkmnid + 1]
-        poke2 = [p.species, p.gender, p.shiny?, p.form, p.shadowPokemon?]
+        poke2 = [p.species, p.gender, p.shiny_variant, p.form, p.shadowPokemon?]
         poke2.push(true) if p.egg?
       end
-      poke3 = [pkmn.species, pkmn.gender, pkmn.shiny?, pkmn.form, pkmn.shadowPokemon?]
+      poke3 = [pkmn.species, pkmn.gender, pkmn.shiny_variant, pkmn.form, pkmn.shadowPokemon?]
       poke3.push(true) if pkmn.egg?
       pbStoreMail(pkmn, item, message, poke1, poke2, poke3)
       return true

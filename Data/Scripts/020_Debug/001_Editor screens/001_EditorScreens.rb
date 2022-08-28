@@ -652,7 +652,7 @@ module TrainerPokemonProperty
       [_INTL("Name"),          StringProperty,                          _INTL("Name of the Pokémon.")],
       [_INTL("Form"),          LimitProperty2.new(999),                 _INTL("Form of the Pokémon.")],
       [_INTL("Gender"),        GenderProperty,                          _INTL("Gender of the Pokémon.")],
-      [_INTL("Shiny"),         BooleanProperty2,                        _INTL("If set to true, the Pokémon is a different-colored Pokémon.")],
+      [_INTL("ShinyVariant"),  LimitProperty.new(Pokemon::GLOSSY),      _INTL("Determines Pokémon's shiny variant (regular, shiny, albino, glossy).")],
       [_INTL("SuperShiny"),    BooleanProperty2,                        _INTL("Whether the Pokémon is super shiny (shiny with a special shininess animation).")],
       [_INTL("Shadow"),        BooleanProperty2,                        _INTL("If set to true, the Pokémon is a Shadow Pokémon.")]
     ]

@@ -25,9 +25,9 @@ class Pokemon
   # @return [Integer] sleep count / toxic flag / 0:
   #   sleep (number of rounds before waking up), toxic (0 = regular poison, 1 = toxic)
   attr_accessor :statusCount
-  # This Pokémon's shininess (true, false, nil). Is recalculated if made nil.
-  # @param value [Boolean, nil] whether this Pokémon is shiny
-  attr_writer   :shiny
+  # This Pokémon's shiny variant (0, 1, 2, 3, nil). Is recalculated if made nil.
+  # @param value [Integer, nil] whether this Pokémon is regular (0), shiny (1), albino (2), or glossy (3)
+  attr_writer   :shiny_variant
   # @return [Array<Pokemon::Move>] the moves known by this Pokémon
   attr_accessor :moves
   # @return [Array<Symbol>] the IDs of moves known by this Pokémon when it was obtained
@@ -115,6 +115,12 @@ class Pokemon
   MAX_KO_COUNT = 1000000
   # Maximum number of faints that can be recorded
   MAX_FAINT_COUNT = 1000000
+
+  # Shiny variant enum
+  REGULAR = 0
+  SHINY = 1
+  ALBINO = 2
+  GLOSSY = 3
 
   def self.play_cry(species, form = 0, volume = 90, pitch = 100)
     GameData::Species.play_cry_from_species(species, form, volume, pitch)
@@ -404,30 +410,112 @@ class Pokemon
   end
 
   #=============================================================================
-  # Shininess
+  # Shiny variant (shiny/albino/glossy)
   #=============================================================================
 
-  # @return [Boolean] whether this Pokémon is shiny (differently colored)
-  def shiny?
-    if @shiny.nil?
+  def glossyFormExists?
+    formtext = (self.form > 0) ? sprintf("_%d", self.form) : ""
+    return !pbResolveBitmap(sprintf("Graphics/Pokemon/Icons glossy/%s%s.png", self.species, formtext)).nil? ||
+           !pbResolveBitmap(sprintf("Graphics/Characters/Followers glossy/%s%s.png", self.species, formtext)).nil?
+  end
+
+  # @return [Integer] which shiny variant this Pokémon is
+  def shiny_variant
+    if @shiny_variant.nil?
       a = @personalID ^ @owner.id
       b = a & 0xFFFF
       c = (a >> 16) & 0xFFFF
       d = b ^ c
-      @shiny = d < Settings::SHINY_POKEMON_CHANCE
+      if d < Settings::ALBINO_POKEMON_CHANCE
+        @shiny_variant = ALBINO
+      elsif d < Settings::ALBINO_POKEMON_CHANCE + Settings::SHINY_POKEMON_CHANCE
+        # Equal chance of shiny or glossy, unless this Pokémon doesn't have a glossy
+        if glossyFormExists?
+          @shiny_variant = (rand(2) == 0) ? SHINY : GLOSSY
+        else
+          @shiny_variant = SHINY
+        end
+      else
+        @shiny_variant = REGULAR
+      end
     end
-    return @shiny
+    return @shiny_variant
+  end
+
+  # @return [Boolean] whether this Pokémon is regular
+  def regular?
+    return self.shiny_variant == REGULAR
+  end
+
+  # Makes this Pokémon regular
+  def makeRegular
+    @shiny_variant = REGULAR
+  end
+
+  # @return [Boolean] whether this Pokémon is shiny (differently colored)
+  def shiny?
+    return self.shiny_variant == SHINY
+  end
+
+  # Makes this Pokémon shiny
+  def makeShiny
+    @shiny_variant = SHINY
+  end
+
+  # @return [Boolean] whether this Pokémon is albino (differently colored)
+  def albino?
+    return self.shiny_variant == ALBINO
+  end
+
+  # Makes this Pokémon albino
+  def makeAlbino
+    @shiny_variant = ALBINO
+  end
+
+  # @return [Boolean] whether this Pokémon is glossy (differently colored)
+  def glossy?
+    return self.shiny_variant == GLOSSY
+  end
+
+  # Makes this Pokémon glossy
+  def makeGlossy
+    @shiny_variant = GLOSSY
+  end
+
+  # @return [Boolean] whether this Pokémon is shiny or glossy (differently colored)
+  def shinyOrGlossy?
+    return shiny? || glossy?
+  end
+
+  # Makes this Pokémon shiny or glossy (50/50 chance if glossy form exists, otherwise just makes it shiny)
+  def makeShinyOrGlossy
+    if glossyFormExists?
+      (rand(2) == 0) ? makeShiny : makeGlossy
+    else
+      makeShiny
+    end
   end
 
   # @return [Boolean] whether this Pokémon is super shiny (differently colored,
   #   square sparkles)
   def super_shiny?
     if @super_shiny.nil?
-      a = @personalID ^ @owner.id
-      b = a & 0xFFFF
-      c = (a >> 16) & 0xFFFF
-      d = b ^ c
-      @super_shiny = (d == 0)
+      # NOTE: This version of determining super shininess has a bug where super shininess
+      # does not have a chance of being true if the Pokemon is albino.
+
+      # a = @personalID ^ @owner.id
+      # b = a & 0xFFFF
+      # c = (a >> 16) & 0xFFFF
+      # d = b ^ c
+      # @super_shiny = (d == 0)
+
+      # This version slightly changes the method of determining super shininess, but
+      # allows albino Pokemon to be super shiny
+      if !regular?
+        @super_shiny = (rand(Settings::SHINY_POKEMON_CHANCE + ALBINO_POKEMON_CHANCE) == 0)
+      else
+        @super_shiny = false
+      end
     end
     return @super_shiny
   end
@@ -435,7 +523,7 @@ class Pokemon
   # @param value [Boolean] whether this Pokémon is super shiny
   def super_shiny=(value)
     @super_shiny = value
-    @shiny = true if @super_shiny
+    @shiny_variant = SHINY if @super_shiny && regular?
   end
 
   #=============================================================================
@@ -1265,7 +1353,7 @@ class Pokemon
     @steps_to_hatch   = 0
     heal_status
     @gender           = nil
-    @shiny            = nil
+    @shiny_variant    = nil
     @ability_index    = nil
     @ability          = nil
     @nature           = nil

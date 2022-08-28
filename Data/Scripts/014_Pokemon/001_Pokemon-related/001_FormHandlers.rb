@@ -119,7 +119,7 @@ def pbSpindaSpots(pkmn, bitmap)
   c = (id >> 8) & 15
   b = (id >> 4) & 15
   a = (id) & 15
-  if pkmn.shiny?
+  if !pkmn.regular?
     drawSpot(bitmap, spot1, b + 33, a + 25, -75, -10, -150)
     drawSpot(bitmap, spot2, d + 21, c + 24, -75, -10, -150)
     drawSpot(bitmap, spot3, f + 39, e + 7, -75, -10, -150)

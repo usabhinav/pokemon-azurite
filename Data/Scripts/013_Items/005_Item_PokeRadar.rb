@@ -205,7 +205,7 @@ EventHandlers.add(:on_wild_pokemon_created, :poke_radar_shiny,
     next if !grasses
     grasses.each do |grass|
       next if $game_player.x != grass[0] || $game_player.y != grass[1]
-      pkmn.shiny = true if grass[3] == 2
+      pkmn.makeShinyOrGlossy if grass[3] == 2
       break
     end
   }

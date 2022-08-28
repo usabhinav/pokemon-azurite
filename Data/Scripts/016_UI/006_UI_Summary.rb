@@ -453,9 +453,10 @@ class PokemonSummary_Scene
     if @pokemon.pokerusStage == 2
       imagepos.push([sprintf("Graphics/Pictures/pokerus"), 176, 98])
     end
-    # Show shininess star
-    if @pokemon.shiny?
-      imagepos.push([sprintf("Graphics/Pictures/shiny"), 2, 134])
+    # Show shiny variant icon
+    if !@pokemon.regular?
+      icon_filename = @pokemon.albino? ? "albino" : "shiny"
+      imagepos.push([sprintf("Graphics/Pictures/" + icon_filename), 2, 134])
     end
     # Draw all images
     pbDrawImagePositions(overlay, imagepos)
@@ -496,8 +497,6 @@ class PokemonSummary_Scene
     overlay = @sprites["overlay"].bitmap
     base   = Color.new(248, 248, 248)
     shadow = Color.new(66, 66, 81)
-    dexNumBase   = (@pokemon.shiny?) ? Color.new(248, 56, 32) : Color.new(64, 64, 64)
-    dexNumShadow = (@pokemon.shiny?) ? Color.new(224, 152, 144) : Color.new(176, 176, 176)
     # If a Shadow Pokémon, draw the heart gauge area and bar
     if @pokemon.shadowPokemon?
       shadowfract = @pokemon.heart_gauge.to_f / @pokemon.max_gauge_size

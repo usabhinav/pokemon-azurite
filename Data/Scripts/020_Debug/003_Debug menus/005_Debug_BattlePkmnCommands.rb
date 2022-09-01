@@ -805,32 +805,40 @@ MenuHandlers.add(:battle_pokemon_debug_menu, :set_species, {
   }
 })
 
-MenuHandlers.add(:battle_pokemon_debug_menu, :set_shininess, {
-  "name"   => _INTL("Set shininess"),
+MenuHandlers.add(:battle_pokemon_debug_menu, :set_shiny_variant, {
+  "name"   => _INTL("Set shiny variant"),
   "parent" => :main,
   "usage"  => :both,
   "effect" => proc { |pkmn, battler, battle|
     cmd = 0
     loop do
-      msg_idx = pkmn.shiny? ? (pkmn.super_shiny? ? 1 : 0) : 2
-      msg = [_INTL("Is shiny."), _INTL("Is super shiny."), _INTL("Is normal (not shiny).")][msg_idx]
+      msg_idx = pkmn.super_shiny? ? 4 : pkmn.shiny_variant
+      msg = [_INTL("Is normal (not shiny)."), _INTL("Is shiny."), _INTL("Is albino."), _INTL("Is glossy."), _INTL("Is super shiny.")][msg_idx]
       cmd = pbMessage("\\ts[]" + msg,
                       [_INTL("Make shiny"),
+                       _INTL("Make albino"),
+                       _INTL("Make glossy"),
                        _INTL("Make super shiny"),
                        _INTL("Make normal"),
                        _INTL("Reset")], -1, nil, cmd)
       break if cmd < 0
       case cmd
       when 0   # Make shiny
-        pkmn.shiny = true
+        pkmn.makeShiny
         pkmn.super_shiny = false
-      when 1   # Make super shiny
+      when 1   # Make albino
+        pkmn.makeAlbino
+        pkmn.super_shiny = false
+      when 2   # Make glossy
+        pkmn.makeGlossy
+        pkmn.super_shiny = false
+      when 3   # Make super shiny
         pkmn.super_shiny = true
-      when 2   # Make normal
-        pkmn.shiny = false
+      when 4   # Make normal
+        pkmn.makeRegular
         pkmn.super_shiny = false
-      when 3   # Reset
-        pkmn.shiny = nil
+      when 5   # Reset
+        pkmn.shiny_variant = nil
         pkmn.super_shiny = nil
       end
     end

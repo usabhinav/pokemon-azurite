@@ -762,9 +762,9 @@ class PokemonPokedex_Scene
   end
 
   def setIconBitmap(species)
-    gender, form, shiny = $player.pokedex.last_form_seen(species)
-    shiny = false
-    @sprites["icon"].setSpeciesBitmap(species, gender, form, shiny)
+    gender, form, shiny_variant = $player.pokedex.last_form_seen(species)
+    shiny_variant = Pokemon::REGULAR
+    @sprites["icon"].setSpeciesBitmap(species, gender, form, shiny_variant)
   end
 
   def pbSearchDexList(params)

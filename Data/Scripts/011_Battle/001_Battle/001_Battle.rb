@@ -715,7 +715,7 @@ class Battle
     return if !battler || !@internalBattle
     if battler.is_a?(Battler)
       pbPlayer.pokedex.register(battler.displaySpecies, battler.displayGender,
-                                battler.displayForm, battler.shiny?)
+                                battler.displayForm, battler.shiny_variant)
     else
       pbPlayer.pokedex.register(battler)
     end

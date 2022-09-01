@@ -385,7 +385,7 @@ class PokemonPartyPanel < Sprite
     draw_hp
     draw_exp
     draw_status
-    draw_shiny_icon
+    draw_shiny_variant_icon
     draw_pokerus_icon
     draw_annotation
   end
@@ -464,10 +464,11 @@ class PokemonPartyPanel < Sprite
     @overlaysprite.bitmap.blt(174, 58, @statuses.bitmap, statusrect)
   end
 
-  def draw_shiny_icon
-    return if @pokemon.egg? || !@pokemon.shiny?
+  def draw_shiny_variant_icon
+    return if @pokemon.egg? || @pokemon.regular?
+    icon_filename = @pokemon.albino? ? "albino" : "shiny"
     pbDrawImagePositions(@overlaysprite.bitmap,
-                         [["Graphics/Pictures/shiny", 68, 6, 0, 0, 16, 16]])
+                         [["Graphics/Pictures/" + icon_filename, 68, 6, 0, 0, 16, 16]])
   end
 
   def draw_pokerus_icon

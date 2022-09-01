@@ -441,8 +441,8 @@ def pbGenerateWildPokemon(species, level, isRoamer = false)
   end
   if shiny_retries > 0
     shiny_retries.times do
-      break if genwildpoke.shiny?
-      genwildpoke.shiny = nil   # Make it recalculate shininess
+      break if genwildpoke.shinyOrGlossy?
+      genwildpoke.shiny_variant = nil   # Make it recalculate shiny variant
       genwildpoke.personalID = rand(2**16) | (rand(2**16) << 16)
     end
   end

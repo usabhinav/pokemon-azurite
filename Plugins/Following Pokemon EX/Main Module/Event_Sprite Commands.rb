@@ -85,10 +85,10 @@ module FollowingPkmn
   # Set the Following Pokemon sprite to a different Pokemon
   #-----------------------------------------------------------------------------
   def self.change_sprite(pkmn)
-    shiny = pkmn.shiny?
+    shiny_variant = pkmn.shiny_variant
     shiny = pkmn.superVariant if (pkmn.respond_to?(:superVariant) && !pkmn.superVariant.nil? && pkmn.superShiny?)
     fname = GameData::Species.ow_sprite_filename(pkmn.species, pkmn.form,
-      pkmn.gender, shiny, pkmn.shadow)
+      pkmn.gender, shiny_variant, pkmn.shadow)
     fname.gsub!("Graphics/Characters/", "")
     FollowingPkmn.get_event&.character_name = fname
     FollowingPkmn.get_data&.character_name  = fname

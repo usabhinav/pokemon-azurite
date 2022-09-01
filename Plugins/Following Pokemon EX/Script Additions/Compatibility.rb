@@ -16,10 +16,9 @@ end
 #-------------------------------------------------------------------------------
 module GameData
   class Species
-    # TODO: change this method's shiny check to account for albino and glossy
-    def self.ow_sprite_filename(species, form = 0, gender = 0, shiny = false, shadow = false)
+    def self.ow_sprite_filename(species, form = 0, gender = 0, shiny_variant = Pokemon::REGULAR, shadow = false)
       ret = self.check_graphic_file("Graphics/Characters/", species, form,
-                                    gender, shiny, shadow, shiny ? "Followers" : "")
+                                    gender, shiny_variant, shadow, (shiny_variant != Pokemon::REGULAR) ? "Followers" : "")
       ret = "Graphics/Characters/Followers/" if nil_or_empty?(ret)
 	    return ret
     end

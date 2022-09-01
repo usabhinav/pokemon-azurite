@@ -25,7 +25,7 @@ class PokemonEggHatch_Scene
     @sprites["pokemon"].x = Graphics.width / 2
     @sprites["pokemon"].y = 264 + 56   # 56 to offset the egg sprite
     @sprites["pokemon"].setSpeciesBitmap(@pokemon.species, @pokemon.gender,
-                                         @pokemon.form, @pokemon.shiny?,
+                                         @pokemon.form, @pokemon.shiny_variant,
                                          false, false, true)   # Egg sprite
     # Load egg cracks bitmap
     crackfilename = sprintf("Graphics/Pokemon/Eggs/%s_cracks", @pokemon.species)

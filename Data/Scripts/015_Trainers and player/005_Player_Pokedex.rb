@@ -24,7 +24,7 @@ class Player < Trainer
     def clear
       @seen            = {}
       @owned           = {}
-      @seen_forms      = {}   # Gender (0 or 1), shiny (0 or 1), form number
+      @seen_forms      = {}   # Gender (0 or 1), shiny_variant (0-3), form number
       @seen_eggs       = {}
       @last_seen_forms = {}
       @owned_shadow    = {}
@@ -56,17 +56,17 @@ class Player < Trainer
     # @param species [Symbol, GameData::Species] species to check
     # @param gender [Integer] gender to check
     # @param form [Integer] form to check
-    # @param shiny [Boolean, nil] shininess to check (checks both if nil)
-    # @return [Boolean] whether the species of the given gender/form/shininess is seen
-    def seen_form?(species, gender, form, shiny = nil)
+    # @param shiny_variant [Integer, nil] shiny variant to check (checks both if nil)
+    # @return [Boolean] whether the species of the given gender/form/shiny variant is seen
+    def seen_form?(species, gender, form, shiny_variant = nil)
       species_id = GameData::Species.try_get(species)&.species
       return false if species_id.nil?
-      @seen_forms[species_id] ||= [[[], []], [[], []]]
-      if shiny.nil?
-        return @seen_forms[species_id][gender][0][form] || @seen_forms[species_id][gender][1][form]
+      @seen_forms[species_id] ||= [[[], [], [], []], [[], [], [], []]]
+      if shiny_variant.nil?
+        return @seen_forms[species_id][gender][0][form] || @seen_forms[species_id][gender][1][form] ||
+                @seen_forms[species_id][gender][2][form] || @seen_forms[species_id][gender][3][form]
       end
-      shin = (shiny) ? 1 : 0
-      return @seen_forms[species_id][gender][shin][form] == true
+      return @seen_forms[species_id][gender][shiny_variant][form] == true
     end
 
     # Sets the egg for the given species as seen.
@@ -116,11 +116,11 @@ class Player < Trainer
       species_id = GameData::Species.try_get(species)&.species
       return 0 if species_id.nil?
       ret = 0
-      @seen_forms[species_id] ||= [[[], []], [[], []]]
+      @seen_forms[species_id] ||= [[[], [], [], []], [[], [], [], []]]
       array = @seen_forms[species_id]
       [array[0].length, array[1].length].max.times do |i|
-        ret += 1 if array[0][0][i] || array[0][1][i] ||   # male or genderless shiny/non-shiny
-                    array[1][0][i] || array[1][1][i]      # female shiny/non-shiny
+        ret += 1 if array[0][0][i] || array[0][1][i] || array[0][2][i] || array[0][3][i] ||   # male or genderless shiny/non-shiny
+                    array[1][0][i] || array[1][1][i] || array[1][2][i] || array[1][3][i]      # female shiny/non-shiny
       end
       return ret
     end
@@ -134,9 +134,9 @@ class Player < Trainer
     # @param species [Symbol, GameData::Species] Pokémon species
     # @param gender [Integer] gender (0=male, 1=female, 2=genderless)
     # @param form [Integer] form number
-    # @param shiny [Boolean] shininess
-    def set_last_form_seen(species, gender = 0, form = 0, shiny = false)
-      @last_seen_forms[species] = [gender, form, shiny]
+    # @param shiny_variant [Integer] shiny variant
+    def set_last_form_seen(species, gender = 0, form = 0, shiny_variant = Pokemon::REGULAR)
+      @last_seen_forms[species] = [gender, form, shiny_variant]
     end
 
     #===========================================================================
@@ -190,20 +190,20 @@ class Player < Trainer
     # @param species [Pokemon, Symbol, GameData::Species] Pokemon to register as seen
     # @param gender [Integer] gender to register (0=male, 1=female, 2=genderless)
     # @param form [Integer] form to register
-    # @param shiny [Boolean] shininess to register
+    # @param shiny_variant [Integer] shiny variant to register
     # @param should_refresh_dexes [Boolean] whether to recalculate accessible Dex lists
-    def register(species, gender = 0, form = 0, shiny = false, should_refresh_dexes = true)
+    def register(species, gender = 0, form = 0, shiny_variant = Pokemon::REGULAR, should_refresh_dexes = true)
       if species.is_a?(Pokemon)
         species_data = species.species_data
         gender = species.gender
-        shiny = species.shiny?
+        shiny_variant = species.shiny_variant
       else
         species_data = GameData::Species.get_species_form(species, form)
       end
       species = species_data.species
       gender = 0 if gender >= 2
       form = species_data.form
-      shin = (shiny) ? 1 : 0
+      shin = (shiny_variant) ? shiny_variant : Pokemon::REGULAR
       if form != species_data.pokedex_form
         species_data = GameData::Species.get_species_form(species, species_data.pokedex_form)
         form = species_data.form
@@ -211,10 +211,10 @@ class Player < Trainer
       form = 0 if species_data.form_name.nil? || species_data.form_name.empty?
       # Register as seen
       @seen[species] = true
-      @seen_forms[species] ||= [[[], []], [[], []]]
+      @seen_forms[species] ||= [[[], [], [], []], [[], [], [], []]]
       @seen_forms[species][gender][shin][form] = true
       @last_seen_forms[species] ||= []
-      @last_seen_forms[species] = [gender, form, shiny] if @last_seen_forms[species] == []
+      @last_seen_forms[species] = [gender, form, shiny_variant] if @last_seen_forms[species] == []
       self.refresh_accessible_dexes if should_refresh_dexes
     end
 
@@ -224,7 +224,7 @@ class Player < Trainer
       species_data = pkmn.species_data
       form = species_data.pokedex_form
       form = 0 if species_data.form_name.nil? || species_data.form_name.empty?
-      @last_seen_forms[pkmn.species] = [pkmn.gender, form, pkmn.shiny?]
+      @last_seen_forms[pkmn.species] = [pkmn.gender, form, pkmn.shiny_variant]
     end
 
     #===========================================================================

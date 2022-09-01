@@ -27,7 +27,7 @@ module GameData
       "IV"           => [:iv,              "uUUUUU"],
       "EV"           => [:ev,              "uUUUUU"],
       "Happiness"    => [:happiness,       "u"],
-      "Shiny"        => [:shininess,       "b"],
+      "ShinyVariant" => [:shininess,       "s"],
       "SuperShiny"   => [:super_shininess, "b"],
       "Shadow"       => [:shadowness,      "b"],
       "Ball"         => [:poke_ball,       "e", :Item]
@@ -130,7 +130,18 @@ module GameData
         pkmn.ability_index = pkmn_data[:ability_index] || 0
         pkmn.ability = pkmn_data[:ability]
         pkmn.gender = pkmn_data[:gender] || ((trainer.male?) ? 0 : 1)
-        pkmn.shiny = (pkmn_data[:shininess]) ? true : false
+        if pkmn_data[:shininess]
+          case pkmn_data[:shininess].downcase
+          when "shiny"
+            pkmn.makeShiny
+          when "albino"
+            pkmn.makeAlbino
+          when "glossy"
+            pkmn.makeGlossy
+          else
+            pkmn.makeRegular
+          end
+        end
         pkmn.super_shiny = (pkmn_data[:super_shininess]) ? true : false
         if pkmn_data[:nature]
           pkmn.nature = pkmn_data[:nature]
@@ -157,7 +168,7 @@ module GameData
         if pkmn_data[:shadowness]
           pkmn.makeShadow
           pkmn.update_shadow_moves(true)
-          pkmn.shiny = false
+          pkmn.makeRegular
         end
         pkmn.poke_ball = pkmn_data[:poke_ball] if pkmn_data[:poke_ball]
         pkmn.calc_stats

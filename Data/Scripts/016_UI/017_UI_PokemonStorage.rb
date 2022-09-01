@@ -1441,8 +1441,9 @@ class PokemonStorageScene
       else
         textstrings.push([_INTL("No item"), 86, 348, 2, nonbase, nonshadow])
       end
-      if pokemon.shiny?
-        imagepos.push(["Graphics/Pictures/shiny", 156, 198])
+      if !pokemon.regular?
+        icon_filename = pokemon.albino? ? "albino" : "shiny"
+        imagepos.push(["Graphics/Pictures/" + icon_filename, 156, 198])
       end
       typebitmap = AnimatedBitmap.new(_INTL("Graphics/Pictures/types"))
       pokemon.types.each_with_index do |type, i|

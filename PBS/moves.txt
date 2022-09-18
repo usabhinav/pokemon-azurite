@@ -6014,7 +6014,11 @@ Description = The user stiffens all the muscles in its body to raise its Defense
 #-------------------------------
 [HEALBELL]
 Name = Heal Bell
+Type = NORMAL
 Category = Status
+Accuracy = 0
+TotalPP = 5
+Target = UserAndAllies
 FunctionCode = CureUserPartyStatus
 Flags = Sound
 Description = The user makes a soothing bell chime to heal the status problems of all the party Pokémon.

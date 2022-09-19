@@ -1,12 +1,4 @@
-# Check if lib folder exists that is needed for require 'lib/ruby/3.0.0/date'
-if File.exists?("lib")
-  #echoln "Exists."
-else
-  #echoln "Doesnt exist."
-  raise RuntimeError.new("You need to get the lib folder from the Dropbox!")
-end
-
-require 'lib/ruby/3.0.0/date'
+require 'date'
 
 #===============================================================================
 #

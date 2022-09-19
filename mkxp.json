@@ -266,6 +266,7 @@
     //
     // "rubyLoadpath": ["/usr/lib64/ruby/",
     //                  "/usr/local/share/ruby/site_ruby"],
+    "rubyLoadpath": ["./lib/"],
 
 
     // Determines whether JIT is enabled. This probably

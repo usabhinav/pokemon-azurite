@@ -183,6 +183,7 @@ class DayCare
       plate_typologies = []
       plate_typologies.push(plateTypologies[mother.item_id]) if !plateTypologies[mother.item_id].nil?
       plate_typologies.push(plateTypologies[father.item_id]) if !plateTypologies[father.item_id].nil?
+      # Arceus plates guarantee typology
       if plate_typologies.length > 0
         egg.typology = plate_typologies.sample
         return
@@ -228,17 +229,24 @@ class DayCare
         :FAIRYGEM       => :PIXIE
       }
       # List of typologies based on normal items
-      new_typologies = []
-      new_typologies.push(itemTypologies[mother.item_id]) if !itemTypologies[mother.item_id].nil?
-      new_typologies.push(itemTypologies[father.item_id]) if !itemTypologies[father.item_id].nil?
-      if new_typologies.length == 0 || rand(9) < 4
+      item_typologies = []
+      item_typologies.push(itemTypologies[mother.item_id]) if !itemTypologies[mother.item_id].nil?
+      item_typologies.push(itemTypologies[father.item_id]) if !itemTypologies[father.item_id].nil?
+      # Type boost items guarantee typology
+      if item_typologies.length > 0
+        egg.typology = item_typologies.sample
+        return
+      end
+      # 20% chance of random typology, 40% chance of father's typology, 40% chance of mother's typology
+      if rand(10) < 2
         typologies = []
+        # TODO: Prevent Prism typology for non-legendary Pokemon
         GameData::Typology.each do |t|
           typologies.push(t)
         end
         egg.typology = typologies.sample
       else
-        egg.typology = new_typologies.sample
+        egg.typology = [father.typology, mother.typology].sample
       end
     end
 

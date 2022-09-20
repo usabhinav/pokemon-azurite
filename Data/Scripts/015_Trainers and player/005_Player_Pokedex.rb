@@ -232,17 +232,11 @@ class Player < Trainer
     # Checks if given form is the correct crystal form for the given species, and records crystal frequency if so.
     # @param species [Symbol] Species to record crystal frequency for.
     def register_crystal_form_check(species, form)
-      is_crystal = false
-      # Find crystal form for given species
-      GameData::Species.each do |data|
-        next if data.species != species || data.form != form
-        if data.mega_stone && Settings::CRYSTALLIZATION_ITEMS.include?(data.mega_stone)
-          is_crystal = true
-          break
-        end
-      end
+      crystal_form_species_data = GameData::Species.get_species_form(species, form)
       # Record crystal frequency
-      @crystals[species] = true if is_crystal
+      if crystal_form_species_data.mega_stone && Settings::CRYSTALLIZATION_ITEMS.include?(crystal_form_species_data.mega_stone)
+        @crystals[species] = true
+      end
     end
 
     # Records crystal frequency for given species. Used by Crystal Recorder screen.

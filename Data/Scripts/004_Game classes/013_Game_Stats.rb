@@ -38,6 +38,7 @@ class GameStats
   attr_accessor :battle_money_gained, :battle_money_lost
   attr_accessor :blacked_out_count
   attr_accessor :mega_evolution_count
+  attr_accessor :crystallization_count
   attr_accessor :failed_poke_ball_count
   # Currency
   attr_accessor :money_spent_at_marts
@@ -116,6 +117,7 @@ class GameStats
     @battle_money_lost             = 0
     @blacked_out_count             = 0
     @mega_evolution_count          = 0
+    @crystallization_count         = 0
     @failed_poke_ball_count        = 0
     # Currency
     @money_spent_at_marts          = 0

@@ -201,9 +201,7 @@ class Battle
   #=============================================================================
   def pbHasCrystalData?(idxBattler)
     return true if !pbOwnedByPlayer?(idxBattler)   # Assume AI trainer has the crystal data
-    # TODO: Implement crystal recorder data
-    return true
-    # return false
+    return $player.pokedex.crystal_frequency_recorded?(@battlers[idxBattler].species)
   end
 
   def pbCanCrystallize?(idxBattler)
@@ -256,7 +254,9 @@ class Battle
     return if !battler || !battler.pokemon
     return if !battler.hasCrystal? || battler.crystal?
     return if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
+    $stats.crystallization_count += 1 if battler.pbOwnedByPlayer?
     trainerName = pbGetOwnerName(idxBattler)
+    old_ability = battler.ability_id
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
       Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
@@ -283,9 +283,10 @@ class Battle
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     @crystallization[side][owner] = -2
     @powerWithin[battler.index&1][battler.pokemonIndex] = 4 if battler.ability == :POWERWITHIN
-    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
     # Trigger ability
-    battler.pbEffectsOnSwitchIn
+    battler.pbOnLosingAbility(old_ability)
+    battler.pbTriggerAbilityOnGainingIt
+    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
   end
 
   def pbCrystallizeWithoutItemCheck(idxBattler)

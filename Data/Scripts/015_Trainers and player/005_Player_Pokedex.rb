@@ -30,6 +30,7 @@ class Player < Trainer
       @owned_shadow    = {}
       @caught_counts   = {}
       @defeated_counts = {}
+      @crystals        = {}
       self.refresh_accessible_dexes
     end
 
@@ -215,6 +216,7 @@ class Player < Trainer
       @seen_forms[species][gender][shin][form] = true
       @last_seen_forms[species] ||= []
       @last_seen_forms[species] = [gender, form, shiny_variant] if @last_seen_forms[species] == []
+      register_crystal_form_check(species, form)
       self.refresh_accessible_dexes if should_refresh_dexes
     end
 
@@ -225,6 +227,31 @@ class Player < Trainer
       form = species_data.pokedex_form
       form = 0 if species_data.form_name.nil? || species_data.form_name.empty?
       @last_seen_forms[pkmn.species] = [pkmn.gender, form, pkmn.shiny_variant]
+    end
+
+    # Checks if given form is the correct crystal form for the given species, and records crystal frequency if so.
+    # @param species [Symbol] Species to record crystal frequency for.
+    def register_crystal_form_check(species, form)
+      crystal_form_species_data = GameData::Species.get_species_form(species, form)
+      # Record crystal frequency
+      if crystal_form_species_data.mega_stone && Settings::CRYSTALLIZATION_ITEMS.include?(crystal_form_species_data.mega_stone)
+        @crystals[species] = true
+      end
+    end
+
+    # Records crystal frequency for given species. Used by Crystal Recorder screen.
+    # @param species [Symbol] Species to record crystal frequency for.
+    def register_crystal(species)
+      # Record crystal frequency
+      @crystals[species] = true
+    end
+
+    # @param species [Symbol, GameData::Species] species to check
+    # @return [Boolean] whether the crystal frequency for this species has been recorded
+    def crystal_frequency_recorded?(species)
+      species_id = GameData::Species.try_get(species)&.species
+      return false if species_id.nil?
+      return @crystals[species_id] == true
     end
 
     #===========================================================================

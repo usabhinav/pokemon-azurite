@@ -33,7 +33,7 @@ Name = Route 1
 MapPosition = 0,13,11
 #-------------------------------
 [007]   # Fallmont Town
-Name = Cedolan City
+Name = Fallmont Town
 Outdoor = true
 ShowArea = true
 MapPosition = 0,13,10
@@ -55,8 +55,8 @@ BattleBack = indoor3
 Environment = Rock
 Flags = DisableBoxLink
 #-------------------------------
-[011]   # Maples Lab
-Name = Cedolan City
+[011]   # Maple's Lab
+Name = Maple's Lab
 MapPosition = 0,14,10
 #-------------------------------
 [012]   # Cedolan City Condo

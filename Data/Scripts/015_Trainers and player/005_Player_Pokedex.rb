@@ -4,6 +4,8 @@ class Player < Trainer
     # @return [Array<Integer>] an array of accessible Dexes
     # @see #refresh_accessible_dexes
     attr_reader :accessible_dexes
+    # return [Symbol] species of last recorded crystal form
+    attr_reader :last_recorded_crystal
 
     def inspect
       str = super.chop
@@ -32,6 +34,7 @@ class Player < Trainer
       @defeated_counts = {}
       @crystals        = {}
       self.refresh_accessible_dexes
+      @last_recorded_crystal = nil
     end
 
     #===========================================================================
@@ -236,6 +239,7 @@ class Player < Trainer
       # Record crystal frequency
       if crystal_form_species_data.mega_stone && Settings::CRYSTALLIZATION_ITEMS.include?(crystal_form_species_data.mega_stone)
         @crystals[species] = true
+        @last_recorded_crystal = species
       end
     end
 
@@ -244,6 +248,7 @@ class Player < Trainer
     def register_crystal(species)
       # Record crystal frequency
       @crystals[species] = true
+      @last_recorded_crystal = species
     end
 
     # @param species [Symbol, GameData::Species] species to check

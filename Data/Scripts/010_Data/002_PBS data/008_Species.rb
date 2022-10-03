@@ -352,5 +352,17 @@ module GameData
       end
       return 1
     end
+
+    def get_crystal_form_data
+      ret = 0
+      GameData::Species.each do |data|
+        next if data.species != @species
+        if data.mega_stone && Settings::CRYSTALLIZATION_ITEMS.include?(data.mega_stone)
+          ret = data.form
+          break
+        end
+      end
+      return GameData::Species.get_species_form(@species, ret)
+    end
   end
 end

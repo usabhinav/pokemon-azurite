@@ -3,6 +3,15 @@ module AzuriteMenuSettings
   FOLDER_PATH = "Graphics/Pictures/Pause Menu/"
 end
 
+# Calls the option's "condition" proc if it exists, raises an error otherwise. This is to ensure that the "condition" proc
+# only ever returns true or false, and never nil
+def call_menu_handler_condition_proc(option)
+  if MenuHandlers.call(:pause_menu, option, "condition").nil?
+    raise "A condition proc MUST be defined, and the proc must NOT return nil (only true or false) for option #{option}!"
+  end
+  return MenuHandlers.call(:pause_menu, option, "condition")
+end
+
 # Sprite subclass for scrollable button sprite (NOT online, settings, or quit buttons)
 class AzuriteMenu_MainButtonSprite < Sprite
   # Defines the x-range that these buttons are visible
@@ -45,15 +54,6 @@ class AzuriteMenu_MainButtonSprite < Sprite
     return cloned
   end
 
-  # Calls the option's "condition" proc if it exists, raises an error otherwise. This is to ensure that the "condition" proc
-  # only ever returns true or false, and never nil
-  def callMenuHandlerCondition(option)
-    if MenuHandlers.call(:pause_menu, option, "condition").nil?
-      raise "A condition proc MUST be defined, and the proc must NOT return nil (only true or false) for option #{option}!"
-    end
-    return MenuHandlers.call(:pause_menu, option, "condition")
-  end
-
   # Returns whether or not the player has access to the option represented by this button
   def available?
     case @text_row
@@ -61,22 +61,22 @@ class AzuriteMenu_MainButtonSprite < Sprite
       case @text_col
       when 0
         # Party
-        return callMenuHandlerCondition(:party)
+        return call_menu_handler_condition_proc(:party)
       when 1
         # Pokedex
-        return callMenuHandlerCondition(:pokedex)
+        return call_menu_handler_condition_proc(:pokedex)
       when 2
         # Suite
         return false
       when 3
         # Map
-        return callMenuHandlerCondition(:town_map)
+        return call_menu_handler_condition_proc(:town_map)
       end
     when 1
       case @text_col
       when 0
         # Bag
-        return callMenuHandlerCondition(:bag)
+        return call_menu_handler_condition_proc(:bag)
       when 1
         # Mega evo.
         return false
@@ -91,7 +91,7 @@ class AzuriteMenu_MainButtonSprite < Sprite
       case @text_col
       when 0
         # Save
-        return callMenuHandlerCondition(:save)
+        return call_menu_handler_condition_proc(:save)
       when 1
         # Cr. record
         return false
@@ -706,14 +706,10 @@ class AzuriteMenu
     @scene.pbShowMenu
   end
 
-  # Calls pause menu handler "effect" proc if "condition" proc returns true. Also validates that "condition" proc does not
-  # return nil due to it being undefined or some other reason.
+  # Calls pause menu handler "effect" proc if "condition" proc returns true.
   def pbCallPauseMenu(option, unallowed_text)
-    if MenuHandlers.call(:pause_menu, option, "condition").nil?
-      raise "A condition proc MUST be defined, and the proc must NOT return nil (only true or false) for option #{option}!"
-    end
     # If condition is true, call the effect, else display message to player
-    if MenuHandlers.call(:pause_menu, option, "condition")
+    if call_menu_handler_condition_proc(option)
       MenuHandlers.call(:pause_menu, option, "effect", @scene)
     else
       pbMessage(unallowed_text)

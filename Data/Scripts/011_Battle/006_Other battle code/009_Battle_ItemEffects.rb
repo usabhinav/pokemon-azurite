@@ -247,6 +247,12 @@ Battle::ItemEffects::SpeedCalc.add(:IRONBALL,
   }
 )
 
+Battle::ItemEffects::SpeedCalc.add(:SYNCHROPENDANT,
+  proc { |item, battler, mult|
+    next mult * battler.battle.pbGetSynchroPendantMultiplier(battler)
+  }
+)
+
 #===============================================================================
 # WeightCalc handlers
 #===============================================================================
@@ -1152,6 +1158,12 @@ Battle::ItemEffects::DamageCalcFromUser.add(:SHINYPLATE,
   }
 )
 
+Battle::ItemEffects::DamageCalcFromUser.add(:SYNCHROPENDANT,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    mults[:attack_multiplier] *= user.battle.pbGetSynchroPendantMultiplier(user)
+  }
+)
+
 #===============================================================================
 # DamageCalcFromTarget handlers
 # NOTE: Species-specific held items consider the original species, not the
@@ -1312,14 +1324,20 @@ Battle::ItemEffects::DamageCalcFromTarget.add(:YACHEBERRY,
 )
 
 Battle::ItemEffects::DamageCalcFromTarget.add(:CRACKEDMULTIPLATE,
-  proc { |item,user,target,move,mults,baseDmg,type|
+  proc { |item, user, target, move, mults, baseDmg, type|
     mults[:final_damage_multiplier] /= 2 if target.hp == target.totalhp
   }
 )
 
 Battle::ItemEffects::DamageCalcFromTarget.add(:PLATEBODY,
-  proc { |item,user,target,move,mults,baseDmg,type|
+  proc { |item, user, target, move, mults, baseDmg, type|
     mults[:defense_multiplier] *= 1.5 if move.pbPhysicalMove?(user)
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromTarget.add(:SYNCHROPENDANT,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    mults[:defense_multiplier] *= target.battle.pbGetSynchroPendantMultiplier(target)
   }
 )
 

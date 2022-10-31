@@ -483,12 +483,13 @@ class Battle::Battler
       end
       # Get the number of hits
       numHits = move.pbNumHits(user, targets)
-      # Last Stand
+      # Things that cause a target to go first
       targets.each do |b|
+        # Last Stand
+        # NOTE: Can trigger even if both user and target (b) are on same side
         if b.hasActiveAbility?(:LASTSTAND) && !b.movedThisRound? &&
             @battle.choices[b.index][2] != move # Target is not old user
           dmg = numHits * move.pbCalcDamage(user,b,targets.length)
-          # NOTE: Can trigger even if both user and target (b) are on same side
           if dmg >= b.hp
             @battle.pbShowAbilitySplash(b)
             @battle.pbDisplayBrief(_INTL("{1} moved first!",b.pbThis))
@@ -510,6 +511,17 @@ class Battle::Battler
               break
             end
           end
+        end
+        # Speeding Ticket
+        # NOTE: Can trigger even if both user and target (b) are on same side
+        if b.hasActiveItem?(:SPEEDINGTICKET) && !b.movedThisRound? && move.pbPriority(user) > 0 &&
+           @battle.choices[b.index][2] != move # Target is not old user
+          @battle.pbDisplayBrief(_INTL("{1}'s {2} allowed it to move first!", b.pbThis, b.itemName))
+          b.pbConsumeItem
+          b.lastRoundMoved = @battle.turnCount
+          b.pbUseMove(@battle.choices[b.index])
+          # Re-displays the "X used Y!" message for the original user's move
+          move.pbDisplayUseMessage(self)
         end
       end
       # Process each hit in turn

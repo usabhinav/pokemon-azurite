@@ -131,8 +131,6 @@ SaveData.register(:apparel_bag) do
   save_value { $ApparelBag }
   load_value { |value| $ApparelBag = value }
   new_game_value { ApparelBag.new }
-  # Do we need this?
-  #from_old_format { |old_format| old_format[16] }
 end
 
 SaveData.register(:game_version) do

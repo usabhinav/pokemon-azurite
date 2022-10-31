@@ -613,12 +613,12 @@ class Battle
             b.pbRecoverHP(b.totalhp/16)
             pbDisplay(_INTL("{1} was healed by the Lava Terrain!", b.pbThis))
           end
-        elsif !Effectiveness.ineffective_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+        elsif !Effectiveness.ineffective_type?(:FIRE, b.types[0], b.types[1], b.effects[PBEffects::Type3])
           oldHP = b.hp
           @scene.pbDamageAnimation(b)
-          if Effectiveness.normal_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+          if Effectiveness.normal_type?(:FIRE, b.types[0], b.types[1], b.effects[PBEffects::Type3])
             b.pbReduceHP(b.totalhp/14)
-          elsif Effectiveness.super_effective_type?(:FIRE, b.type1, b.type2, b.effects[PBEffects::Type3])
+          elsif Effectiveness.super_effective_type?(:FIRE, b.types[0], b.types[1], b.effects[PBEffects::Type3])
             b.pbReduceHP(b.totalhp/7)
           else
             b.pbReduceHP(b.totalhp/28)

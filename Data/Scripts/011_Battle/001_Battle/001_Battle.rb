@@ -428,6 +428,57 @@ class Battle
     return [battlers, party]
   end
 
+  # Returns the multiplier for Synchro Pendant
+  # 
+  # Example 1 (party size = 3):
+  # User types = [:FIRE, :DRAGON]
+  # Party member 1 types = [:WATER]
+  # Party member 2 types = [:GRASS]
+  # ---> Multiplier = 1 because user shares no types with any party members
+  # 
+  # Example 2 (party size = 3):
+  # User types = [:FIRE, :DRAGON]
+  # Party member 1 types = [:FIRE]
+  # Party member 2 types = [:DRAGON]
+  # ---> Multiplier = 1.15 because user shares a type with each member
+  # 
+  # Example 3 (party size = 3):
+  # User types = [:FIRE, :DRAGON]
+  # Party member 1 types = [:FIRE, :DRAGON]
+  # Party member 2 types = [:FIRE]
+  # ---> Multiplier = 1.15 because user shares two types with member 1 but only one type with member 2
+  # 
+  # Example 4 (party size = 2):
+  # User types = [:FIRE, :DRAGON, :GHOST]
+  # Party member 1 types = [:FIRE, :DRAGON, :GHOST]
+  # ---> Multiplier = 1.45 because user shares three types with member 1
+  # Note that types that are added in battle (ex. Trick-or-Treat) are also counted
+  # 
+  def pbGetSynchroPendantMultiplier(user)
+    type_lists = pbGetTypeListsOfBattlersAndParty(user.index)
+    return 1 if type_lists.length == 0 # If total party size is 1 then no boost
+    shared_type_counts = [] # Stores list of number of shared types of each Pokemon with user
+    user_types = user.pbTypes(true) # Get user's battle types because it's on the field
+    for type_list in type_lists
+      # Get number of shared types between this mon and the user
+      # Example 1:
+      # User types = [:FIRE, :DRAGON]
+      # Member types = [:WATER]
+      # ---> Shared type count = 0
+      # 
+      # Example 2:
+      # User types = [:FIRE, :DRAGON]
+      # Member types = [:FIRE]
+      # ---> Shared type count = 1 (member doesn't have dragon type)
+      shared_type_counts.push(user_types.intersection(type_list).length)
+    end
+    # shared_type_counts.min is the boost multiplier (e.g. if it's 1, then give 15% boost, 2 is 30% boost, etc.)
+    mult = 1 + 0.15 * shared_type_counts.min
+    # Special case where monotype Pokemon will get 1.3x boost if all other party members are also monotype with the same type
+    mult = 1.3 if user_types.length == 1 && shared_type_counts.min == 1
+    return mult
+  end
+
   #=============================================================================
   # Get team information (a team is only the Pokémon owned by a particular
   # trainer)

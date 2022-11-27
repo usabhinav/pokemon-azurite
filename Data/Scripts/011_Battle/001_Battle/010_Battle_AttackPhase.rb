@@ -64,6 +64,22 @@ class Battle
       end
       pbRecallAndReplace(b.index, idxNewPkmn)
       pbOnBattlerEnteringBattle(b.index, true)
+      # Quick Switch
+      if b.hasActiveItem?(:QUICKSWITCH)
+        pbDisplay(_INTL("{1}'s {2} allowed it to choose an attack!", b.name, b.itemName))
+        loop do
+          ret = pbFightMenu(b.index)
+          # User selected a move
+          if ret
+            b.pbConsumeItem
+            break
+          # User canceled move selection
+          elsif pbConfirmMessageSerious("Are you sure you want to proceed without making a move?")
+            break
+          end
+          # Else, continue to display fight menu until user makes a choice
+        end
+      end
     end
   end
 
@@ -119,7 +135,7 @@ class Battle
         #       stage, it can be assumed that any battler with built-up Reverb damage is not
         #       immune to Sound-type damage.
         pbDisplay(_INTL("{1} felt the reverberations of the previous attack!",b.pbThis))
-        typemod = Effectiveness.calculate(:SOUND,b.type1,b.type2,b.effects[PBEffects::Type3])
+        typemod = Effectiveness.calculate(:SOUND, b.types[0], b.types[1], b.effects[PBEffects::Type3])
         @scene.pbDamageAnimation(b)
         b.pbTakeEffectDamage((b.effects[PBEffects::ReverbDamage]*typemod.to_f/8.0).round)
         b.effects[PBEffects::ReverbDamage] = 0

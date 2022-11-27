@@ -64,6 +64,22 @@ class Battle
       end
       pbRecallAndReplace(b.index, idxNewPkmn)
       pbOnBattlerEnteringBattle(b.index, true)
+      # Quick Switch
+      if b.hasActiveItem?(:QUICKSWITCH)
+        pbDisplay(_INTL("{1}'s {2} allowed it to choose an attack!", b.name, b.itemName))
+        loop do
+          ret = pbFightMenu(b.index)
+          # User selected a move
+          if ret
+            b.pbConsumeItem
+            break
+          # User canceled move selection
+          elsif pbConfirmMessageSerious("Are you sure you want to proceed without making a move?")
+            break
+          end
+          # Else, continue to display fight menu until user makes a choice
+        end
+      end
     end
   end
 

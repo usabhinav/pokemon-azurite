@@ -424,6 +424,8 @@ class Battle
   end
 
   def pbEntryHazards(battler)
+    # Flying Vest (immune to entry hazards)
+    return if battler.hasActiveItem?(:FLYINGVEST) && battler.pbHasType?(:FLYING)
     battler_side = battler.pbOwnSide
     # Stealth Rock
     if battler_side.effects[PBEffects::StealthRock] && battler.takesIndirectDamage? &&

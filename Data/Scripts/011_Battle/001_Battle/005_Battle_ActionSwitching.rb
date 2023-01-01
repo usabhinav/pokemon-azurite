@@ -367,6 +367,7 @@ class Battle
     pbPriority(true).each do |b|
       break if b.pbItemOnStatDropped
       break if b.pbAbilitiesOnDamageTaken
+      break if b.pbItemsOnDamageTaken
     end
     allBattlers.each do |b|
       b.droppedBelowHalfHP = false

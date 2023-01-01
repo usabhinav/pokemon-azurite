@@ -269,6 +269,7 @@ class Battle
         recipient.pbRecoverHPFromDrain(hp_lost, battler,
                                        _INTL("{1}'s health is sapped by Leech Seed!", battler.pbThis))
         recipient.pbAbilitiesOnDamageTaken
+        recipient.pbItemsOnDamageTaken
       }
       recipient.pbFaint if recipient.fainted?
     end
@@ -306,6 +307,7 @@ class Battle
         battler.pbContinueStatus { battler.pbReduceHP(dmg, false) }
         battler.pbItemHPHealCheck
         battler.pbAbilitiesOnDamageTaken
+        battler.pbItemsOnDamageTaken
         battler.pbFaint if battler.fainted?
         battler.droppedBelowHalfHP = false
       end
@@ -319,6 +321,7 @@ class Battle
       battler.pbContinueStatus { battler.pbReduceHP(dmg, false) }
       battler.pbItemHPHealCheck
       battler.pbAbilitiesOnDamageTaken
+      battler.pbItemsOnDamageTaken
       battler.pbFaint if battler.fainted?
       battler.droppedBelowHalfHP = false
     end
@@ -625,7 +628,7 @@ class Battle
           end
           pbDisplay(_INTL("{1} was damaged by the Lava Terrain!", b.pbThis))
           b.pbItemHPHealCheck
-          if b.pbAbilitiesOnDamageTaken(oldHP)   # Switched out
+          if b.pbAbilitiesOnDamageTaken || b.pbItemsOnDamageTaken   # Switched out
             return pbOnActiveOne(b)   # For replacement battler
           end
         end

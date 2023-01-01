@@ -57,6 +57,7 @@ class Battle::Battler
     yield hp_lost if block_given?   # Show message
     pbItemHPHealCheck
     pbAbilitiesOnDamageTaken
+    pbItemsOnDamageTaken
     pbFaint if fainted?
     @droppedBelowHalfHP = false
   end

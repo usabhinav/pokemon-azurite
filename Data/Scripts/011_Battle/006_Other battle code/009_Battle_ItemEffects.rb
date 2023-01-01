@@ -5,6 +5,7 @@ module Battle::ItemEffects
   SpeedCalc                       = ItemHandlerHash.new
   WeightCalc                      = ItemHandlerHash.new   # Float Stone
   # Battler's HP/stat changed
+  DamageTaken                     = ItemHandlerHash.new
   HPHeal                          = ItemHandlerHash.new
   OnStatLoss                      = ItemHandlerHash.new
   # Battler's status problem
@@ -33,7 +34,7 @@ module Battle::ItemEffects
   # Experience and EV gain
   ExpGainModifier                 = ItemHandlerHash.new   # Lucky Egg
   EVGainModifier                  = ItemHandlerHash.new
-  # Weather and terrin
+  # Weather and terrain
   WeatherExtender                 = ItemHandlerHash.new
   TerrainExtender                 = ItemHandlerHash.new   # Terrain Extender
   TerrainStatBoost                = ItemHandlerHash.new
@@ -63,6 +64,12 @@ module Battle::ItemEffects
 
   def self.triggerWeightCalc(item, battler, w)
     return trigger(WeightCalc, item, battler, w, ret: w)
+  end
+
+  #=============================================================================
+
+  def self.triggerOnDamageTaken(item, user, move_user, battle)
+    return trigger(DamageTaken, item, user, move_user, battle)
   end
 
   #=============================================================================
@@ -260,6 +267,39 @@ Battle::ItemEffects::SpeedCalc.add(:SYNCHROPENDANT,
 Battle::ItemEffects::WeightCalc.add(:FLOATSTONE,
   proc { |item, battler, w|
     next [w / 2, 1].max
+  }
+)
+
+#===============================================================================
+# DamageTaken handlers
+#===============================================================================
+
+Battle::ItemEffects::DamageTaken.add(:RETREATORDER,
+  proc { |ability, battler, move_user, battle|
+    next if battler.effects[PBEffects::SkyDrop] >= 0 ||
+            battler.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSkyTargetCannotAct")   # Sky Drop
+    next if battle.pbAllFainted?(battler.idxOpposingSide)
+    next if !battle.pbCanSwitch?(battler.index)   # Battler can't switch out
+    next if !battle.pbCanChooseNonActive?(battler.index)   # No Pokémon can switch in
+    next if battler.hp >= (battler.totalhp * 3) / 10
+    battle.pbDisplay(_INTL("{1}'s {2} activated!", battler.pbThis, battler.itemName))
+    battle.pbDisplay(_INTL("{1} went back to {2}!",
+      battler.pbThis, battle.pbGetOwnerName(battler.index)))
+    if battle.endOfRound   # Just switch out
+      battler.pbConsumeItem
+      battle.scene.pbRecall(target.index) if !battler.fainted?
+      battler.pbAbilitiesOnSwitchOut   # Inc. primordial weather check
+      next
+    end
+    newPkmn = battle.pbGetReplacementPokemonIndex(battler.index)   # Owner chooses
+    next if newPkmn < 0   # Shouldn't ever do this
+    old_target_pkmn = battler.pokemon
+    battler.pbConsumeItem
+    battle.pbRecallAndReplace(battler.index, newPkmn)
+    battle.pbClearChoice(battler.index)   # Replacement Pokémon does nothing this round
+    battle.moldBreaker = false if move_user && battler.index == move_user.index
+    battle.pbOnBattlerEnteringBattle(battler.index)
+    old_target_pkmn.hp += old_target_pkmn.totalhp / 2
   }
 )
 
@@ -1567,35 +1607,6 @@ Battle::ItemEffects::OnBeingHit.add(:REVENGEBELT,
   proc { |item, user, target, move, battle|
     next if !target.damageState.critical
     target.effects[PBEffects::RevengeBelt] = true
-  }
-)
-
-Battle::ItemEffects::OnBeingHit.add(:RETREATORDER,
-  proc { |item, user, target, move, battle|
-    next if target.effects[PBEffects::SkyDrop] >= 0 ||
-            target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSkyTargetCannotAct")   # Sky Drop
-    next if battle.pbAllFainted?(target.idxOpposingSide)
-    next if !battle.pbCanSwitch?(target.index)   # Battler can't switch out
-    next if !battle.pbCanChooseNonActive?(target.index)   # No Pokémon can switch in
-    next if target.hp >= (target.totalhp * 3) / 10
-    battle.pbDisplay(_INTL("{1}'s {2} activated!", target.pbThis, target.itemName))
-    battle.pbDisplay(_INTL("{1} went back to {2}!",
-      target.pbThis, battle.pbGetOwnerName(target.index)))
-    if battle.endOfRound   # Just switch out
-      target.pbConsumeItem
-      battle.scene.pbRecall(target.index) if !target.fainted?
-      target.pbAbilitiesOnSwitchOut   # Inc. primordial weather check
-      next
-    end
-    newPkmn = battle.pbGetReplacementPokemonIndex(target.index)   # Owner chooses
-    next if newPkmn < 0   # Shouldn't ever do this
-    old_target_pkmn = target.pokemon
-    target.pbConsumeItem
-    battle.pbRecallAndReplace(target.index, newPkmn)
-    battle.pbClearChoice(target.index)   # Replacement Pokémon does nothing this round
-    battle.moldBreaker = false if user && target.index == user.index
-    battle.pbOnBattlerEnteringBattle(target.index)
-    old_target_pkmn.hp += old_target_pkmn.totalhp / 2
   }
 )
 

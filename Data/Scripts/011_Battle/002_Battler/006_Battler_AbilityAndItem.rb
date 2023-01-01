@@ -581,6 +581,12 @@ class Battle::Battler
     end
   end
 
+  # Used for Retreat Order/Stench Doll. Returns whether self has switched out.
+  def pbItemsOnDamageTaken(move_user = nil)
+    return false if !itemActive?
+    return Battle::ItemEffects.triggerOnDamageTaken(self.item, self, move_user, @battle)
+  end
+
   # Used for Eject Pack. Returns whether self has switched out.
   def pbItemOnStatDropped(move_user = nil)
     return false if !@statsDropped

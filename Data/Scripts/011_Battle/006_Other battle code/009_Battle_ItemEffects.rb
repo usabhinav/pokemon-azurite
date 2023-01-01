@@ -1556,7 +1556,7 @@ Battle::ItemEffects::OnBeingHit.add(:WEAKNESSPOLICY,
 )
 
 Battle::ItemEffects::OnBeingHit.add(:CRACKEDMULTIPLATE,
-  proc { |item,user,target,move,battle|
+  proc { |item, user, target, move, battle|
     battle.pbDisplay(_INTL("{1}'s {2} fell apart!",target.pbThis,target.itemName))
     target.pbConsumeItem
     target.pbSymbiosis
@@ -1564,9 +1564,38 @@ Battle::ItemEffects::OnBeingHit.add(:CRACKEDMULTIPLATE,
 )
 
 Battle::ItemEffects::OnBeingHit.add(:REVENGEBELT,
-  proc { |item,user,target,move,battle|
+  proc { |item, user, target, move, battle|
     next if !target.damageState.critical
     target.effects[PBEffects::RevengeBelt] = true
+  }
+)
+
+Battle::ItemEffects::OnBeingHit.add(:RETREATORDER,
+  proc { |item, user, target, move, battle|
+    next if target.effects[PBEffects::SkyDrop] >= 0 ||
+            target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSkyTargetCannotAct")   # Sky Drop
+    next if battle.pbAllFainted?(target.idxOpposingSide)
+    next if !battle.pbCanSwitch?(target.index)   # Battler can't switch out
+    next if !battle.pbCanChooseNonActive?(target.index)   # No Pokémon can switch in
+    next if target.hp >= (target.totalhp * 3) / 10
+    battle.pbDisplay(_INTL("{1}'s {2} activated!", target.pbThis, target.itemName))
+    battle.pbDisplay(_INTL("{1} went back to {2}!",
+      target.pbThis, battle.pbGetOwnerName(target.index)))
+    if battle.endOfRound   # Just switch out
+      target.pbConsumeItem
+      battle.scene.pbRecall(target.index) if !target.fainted?
+      target.pbAbilitiesOnSwitchOut   # Inc. primordial weather check
+      next
+    end
+    newPkmn = battle.pbGetReplacementPokemonIndex(target.index)   # Owner chooses
+    next if newPkmn < 0   # Shouldn't ever do this
+    old_target_pkmn = target.pokemon
+    target.pbConsumeItem
+    battle.pbRecallAndReplace(target.index, newPkmn)
+    battle.pbClearChoice(target.index)   # Replacement Pokémon does nothing this round
+    battle.moldBreaker = false if user && target.index == user.index
+    battle.pbOnBattlerEnteringBattle(target.index)
+    old_target_pkmn.hp += old_target_pkmn.totalhp / 2
   }
 )
 

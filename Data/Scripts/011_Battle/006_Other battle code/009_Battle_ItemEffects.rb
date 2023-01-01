@@ -303,6 +303,22 @@ Battle::ItemEffects::DamageTaken.add(:RETREATORDER,
   }
 )
 
+Battle::ItemEffects::DamageTaken.add(:STENCHDOLL,
+  proc { |ability, battler, move_user, battle|
+    next if battle.pbAllFainted?(battler.idxOpposingSide)
+    next if battler.effects[PBEffects::StenchDoll]
+    next if !battler.pbHasType?(:POISON)
+    next if battler.hp >= (battler.totalhp * 3) / 10
+    battle.pbDisplay(_INTL("{1}'s {2} released a foul smell to the opposing team!", battler.pbThis, battler.itemName))
+    battler.eachOpposing do |b|
+      next if b.nil? || b.fainted?
+      next if !b.pbCanPoison?(battler, true)
+      b.pbPoison(battler)
+    end
+    battler.effects[PBEffects::StenchDoll] = true
+  }
+)
+
 #===============================================================================
 # HPHeal handlers
 #===============================================================================

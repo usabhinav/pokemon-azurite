@@ -326,6 +326,7 @@ class Battle::Move
     # Other effects
     return true if c > 50   # Merciless
     return true if user.effects[PBEffects::LaserFocus] > 0
+    return true if user.hasActiveItem?(:BERSERKERBRACELET)
     c += 1 if highCriticalRate?
     c += user.effects[PBEffects::FocusEnergy]
 	  c += 1 if user.hasActiveItem?(:CHOICESCOPE) && (self.accuracy == 0 || self.accuracy == 100)

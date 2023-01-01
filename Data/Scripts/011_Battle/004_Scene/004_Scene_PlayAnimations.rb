@@ -231,7 +231,9 @@ class Battle::Scene
     elsif battler.hp < oldHP
       pbCommonAnimation("HealthDown", battler) if showAnim && @battle.showAnims
     end
-    @sprites["dataBox_#{battler.index}"].animateHP(oldHP, battler.hp, battler.totalhp)
+    # Changed these two lines for Berserker Bracelet
+    totalhp = battler.pokemon.nil? ? battler.totalhp : battler.pokemon.totalhp
+    @sprites["dataBox_#{battler.index}"].animateHP(oldHP, battler.hp, totalhp)
     while @sprites["dataBox_#{battler.index}"].animatingHP
       pbUpdate
     end
@@ -259,7 +261,9 @@ class Battle::Scene
     targets.each do |t|
       anim = Animation::BattlerDamage.new(@sprites, @viewport, t[0].index, t[2])
       damageAnims.push(anim)
-      @sprites["dataBox_#{t[0].index}"].animateHP(t[1], t[0].hp, t[0].totalhp)
+      # Changed these two lines for Berserker Bracelet
+      totalhp = t[0].pokemon.nil? ? t[0].totalhp : t[0].pokemon.totalhp
+      @sprites["dataBox_#{t[0].index}"].animateHP(t[1], t[0].hp, totalhp)
     end
     # Update loop
     loop do

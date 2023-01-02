@@ -276,12 +276,12 @@ Battle::ItemEffects::WeightCalc.add(:FLOATSTONE,
 
 Battle::ItemEffects::DamageTaken.add(:RETREATORDER,
   proc { |ability, battler, move_user, battle|
-    next if battler.effects[PBEffects::SkyDrop] >= 0 ||
+    next false if battler.effects[PBEffects::SkyDrop] >= 0 ||
             battler.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSkyTargetCannotAct")   # Sky Drop
-    next if battle.pbAllFainted?(battler.idxOpposingSide)
-    next if !battle.pbCanSwitch?(battler.index)   # Battler can't switch out
-    next if !battle.pbCanChooseNonActive?(battler.index)   # No Pokémon can switch in
-    next if battler.hp >= (battler.totalhp * 3) / 10
+    next false if battle.pbAllFainted?(battler.idxOpposingSide)
+    next false if !battle.pbCanSwitch?(battler.index)   # Battler can't switch out
+    next false if !battle.pbCanChooseNonActive?(battler.index)   # No Pokémon can switch in
+    next false if battler.hp >= (battler.totalhp * 3) / 10
     battle.pbDisplay(_INTL("{1}'s {2} activated!", battler.pbThis, battler.itemName))
     battle.pbDisplay(_INTL("{1} went back to {2}!",
       battler.pbThis, battle.pbGetOwnerName(battler.index)))
@@ -289,10 +289,10 @@ Battle::ItemEffects::DamageTaken.add(:RETREATORDER,
       battler.pbConsumeItem
       battle.scene.pbRecall(target.index) if !battler.fainted?
       battler.pbAbilitiesOnSwitchOut   # Inc. primordial weather check
-      next
+      next true
     end
     newPkmn = battle.pbGetReplacementPokemonIndex(battler.index)   # Owner chooses
-    next if newPkmn < 0   # Shouldn't ever do this
+    next false if newPkmn < 0   # Shouldn't ever do this
     old_target_pkmn = battler.pokemon
     battler.pbConsumeItem
     battle.pbRecallAndReplace(battler.index, newPkmn)
@@ -300,15 +300,16 @@ Battle::ItemEffects::DamageTaken.add(:RETREATORDER,
     battle.moldBreaker = false if move_user && battler.index == move_user.index
     battle.pbOnBattlerEnteringBattle(battler.index)
     old_target_pkmn.hp += old_target_pkmn.totalhp / 2
+    next true
   }
 )
 
 Battle::ItemEffects::DamageTaken.add(:STENCHDOLL,
   proc { |ability, battler, move_user, battle|
-    next if battle.pbAllFainted?(battler.idxOpposingSide)
-    next if battler.effects[PBEffects::StenchDoll]
-    next if !battler.pbHasType?(:POISON)
-    next if battler.hp >= (battler.totalhp * 3) / 10
+    next false if battle.pbAllFainted?(battler.idxOpposingSide)
+    next false if battler.effects[PBEffects::StenchDoll]
+    next false if !battler.pbHasType?(:POISON)
+    next false if battler.hp >= (battler.totalhp * 3) / 10
     battle.pbDisplay(_INTL("{1}'s {2} released a foul smell to the opposing team!", battler.pbThis, battler.itemName))
     battler.eachOpposing do |b|
       next if b.nil? || b.fainted?
@@ -316,6 +317,7 @@ Battle::ItemEffects::DamageTaken.add(:STENCHDOLL,
       b.pbPoison(battler)
     end
     battler.effects[PBEffects::StenchDoll] = true
+    next false
   }
 )
 

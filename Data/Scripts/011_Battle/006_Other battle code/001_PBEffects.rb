@@ -140,6 +140,7 @@ module PBEffects
   RevengeBelt         = 135
   SubtractionTypes    = 136
   StenchDoll          = 137
+  RoughRockEffectLost = 138
 
   #=============================================================================
   # These effects apply to a battler position

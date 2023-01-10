@@ -445,6 +445,12 @@ class Battle::Battler
       @battle.pbHideAbilitySplash(user)
       return false
     end
+    # Vantablack Cloak
+    if target.hasActiveItem?(:VANTABLACKCLOAK) && target.pbHasType?(:DARK) &&
+       move.pbDamagingMove? && move.calcType == :LIGHT
+      @battle.pbDisplay(_INTL("{1}'s {2} made it immune to Light-type attacks!", target.pbThis, target.itemName))
+      return false
+    end
     # Immunity because of ability (intentionally before type immunity check)
     return false if move.pbImmunityByAbility(user, target, show_message)
     # Type immunity

@@ -51,7 +51,7 @@ class Battle
       pbEORWeatherDamage(battler)
     end
     # Thunderstorm damage
-    if @battle.pbWeather == :Thunderstorm && pbRandom(100) < 25
+    if pbWeather == :Thunderstorm && pbRandom(100) < 25
       # Collect eligible targets
       targets = []
       target = nil

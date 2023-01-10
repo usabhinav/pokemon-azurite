@@ -1889,7 +1889,7 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:CRYSTALSTINGER,
 Battle::AbilityEffects::DamageCalcFromUser.add(:WINTERSPIRIT,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if type != :GHOST
-    next if user.battle.pbWeather != :Hail
+    next if user.effectiveWeather != :Hail
     mults[:final_damage_multiplier] *= 1.5
   }
 )
@@ -4890,13 +4890,13 @@ Battle::AbilityEffects::OnSwitchIn.add(:OUTMATCH,
 
 Battle::AbilityEffects::OnSwitchIn.add(:TEMPEST,
   proc { |ability, battler, battle, switch_in|
-    pbBattleWeatherAbility(:Thunderstorm, battler, battle)
+    battle.pbStartWeatherAbility(:Thunderstorm, battler)
   }
 )
 
 Battle::AbilityEffects::OnSwitchIn.add(:CYCLONE,
   proc { |ability, battler, battle, switch_in|
-    pbBattleWeatherAbility(:Windstorm, battler, battle)
+    battle.pbStartWeatherAbility(:Windstorm, battler)
   }
 )
 

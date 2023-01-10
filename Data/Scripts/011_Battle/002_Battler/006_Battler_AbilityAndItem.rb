@@ -274,6 +274,30 @@ class Battle::Battler
         end
       end
     end
+    # Berserker Bracelet
+    # NOTE: This code assumes that there are no other effects (e.g. other items, abilities, or other thing)
+    # that manipulate a Pokemon's total HP in battle. If any such effect is added, this will need to be modified
+    # to take the new effect into account (and vice versa in the new effect code).
+    if hasActiveItem?(:BERSERKERBRACELET)
+      # Cut totalhp in half if not already done so.
+      if @totalhp == @pokemon.totalhp
+        @battle.pbDisplay(_INTL("{1} had its total HP cut in half by its {2}!", pbThis, itemName))
+        # TODO: Add some kind of animation or visual effect for this
+        # Example: Max HP indicator in Dark Souls 2
+        if @hp > @pokemon.totalhp / 2
+          pbReduceHP(@hp - @pokemon.totalhp / 2)
+        end
+        @totalhp = @pokemon.totalhp / 2
+      end
+    else
+      # Restore totalhp if this battler previously had the Berserker Bracelet
+      # but then lost it.
+      if @totalhp != @pokemon.totalhp
+        @battle.pbDisplay(_INTL("{1} had its total HP restored to normal.", pbThis))
+        # TODO: Add some kind of animation or visual effect for this
+        @totalhp = @pokemon.totalhp
+      end
+    end
   end
 
   #=============================================================================
@@ -555,6 +579,12 @@ class Battle::Battler
     if Battle::ItemEffects.triggerOnIntimidated(self.item, self, @battle)
       pbHeldItemTriggered(self.item)
     end
+  end
+
+  # Used for Retreat Order/Stench Doll. Returns whether self has switched out.
+  def pbItemsOnDamageTaken(move_user = nil)
+    return false if !itemActive?
+    return Battle::ItemEffects.triggerOnDamageTaken(self.item, self, move_user, @battle)
   end
 
   # Used for Eject Pack. Returns whether self has switched out.

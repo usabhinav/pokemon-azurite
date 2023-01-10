@@ -73,7 +73,7 @@ class Battle::Battler
             b.pbReduceHP(b.totalhp*eff/8, false)
             @battle.pbDisplay(_INTL("{1} was blasted by the shrapnel!", b.pbThis))
             b.pbItemHPHealCheck
-            if b.pbAbilitiesOnDamageTaken(oldHP)   # Switched out
+            if b.pbAbilitiesOnDamageTaken || b.pbItemsOnDamageTaken   # Switched out
               return @battle.pbOnActiveOne(b)   # For replacement battler
             end
           end
@@ -91,7 +91,7 @@ class Battle::Battler
           user.pbReduceHP(user.totalhp*eff*target.effects[PBEffects::VoltSpikesArmor]/16,false)
           @battle.pbDisplay(_INTL("{1} was shocked by {2}'s Volt Spikes Armor!", user.pbThis, target.pbThis(true)))
           user.pbItemHPHealCheck
-          if user.pbAbilitiesOnDamageTaken(oldHP)   # Switched out
+          if user.pbAbilitiesOnDamageTaken || user.pbItemsOnDamageTaken   # Switched out
             return @battle.pbOnActiveOne(user)   # For replacement battler
           end
           if target.effects[PBEffects::VoltSpikesArmor] == 2 && user.pbCanParalyze?(target, false)
@@ -255,7 +255,7 @@ class Battle::Battler
       end
       # Target's Emergency Exit, Wimp Out (including for Pokémon hurt by Flame Burst)
       if switched_battlers.empty? && move.damagingMove? &&
-         b.index != user.index && b.pbAbilitiesOnDamageTaken(user)
+         b.index != user.index && (b.pbAbilitiesOnDamageTaken(user) || b.pbItemsOnDamageTaken(user))
         switched_battlers.push(b.index)
       end
     end
@@ -268,7 +268,7 @@ class Battle::Battler
       switched_battlers.push(user.index)
     end
     # User's ability (Emergency Exit, Wimp Out)
-    if switched_battlers.empty? && move.damagingMove? && user.pbAbilitiesOnDamageTaken(user)
+    if switched_battlers.empty? && move.damagingMove? && (user.pbAbilitiesOnDamageTaken(user) || user.pbItemsOnDamageTaken(user))
       switched_battlers.push(user.index)
     end
   end

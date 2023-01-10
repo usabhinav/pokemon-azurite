@@ -367,6 +367,7 @@ class Battle
     pbPriority(true).each do |b|
       break if b.pbItemOnStatDropped
       break if b.pbAbilitiesOnDamageTaken
+      break if b.pbItemsOnDamageTaken
     end
     allBattlers.each do |b|
       b.droppedBelowHalfHP = false
@@ -424,6 +425,8 @@ class Battle
   end
 
   def pbEntryHazards(battler)
+    # Flying Vest (immune to entry hazards)
+    return if battler.hasActiveItem?(:FLYINGVEST) && battler.pbHasType?(:FLYING)
     battler_side = battler.pbOwnSide
     # Stealth Rock
     if battler_side.effects[PBEffects::StealthRock] && battler.takesIndirectDamage? &&

@@ -139,6 +139,7 @@ module PBEffects
   Overcharged         = 134
   RevengeBelt         = 135
   SubtractionTypes    = 136
+  StenchDoll          = 137
 
   #=============================================================================
   # These effects apply to a battler position

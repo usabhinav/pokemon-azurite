@@ -302,6 +302,7 @@ class Battle::Battler
       end
     end
     @effects[PBEffects::SubtractionTypes].shuffle!
+    @effects[PBEffects::StenchDoll]          = false
   end
 
   #=============================================================================

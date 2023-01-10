@@ -294,6 +294,7 @@ class Battle::Scene::PokemonDataBox < Sprite
     refreshExp
   end
 
+  # Changed totalhp lines in this method for Berserker Bracelet
   def refreshHP
     @hpNumbers.bitmap.clear
     return if !@battler.pokemon
@@ -301,12 +302,12 @@ class Battle::Scene::PokemonDataBox < Sprite
     if @showHP
       pbDrawNumber(self.hp, @hpNumbers.bitmap, 54, 2, 1)
       pbDrawNumber(-1, @hpNumbers.bitmap, 54, 2)   # / char
-      pbDrawNumber(@battler.totalhp, @hpNumbers.bitmap, 70, 2)
+      pbDrawNumber(@battler.pokemon.totalhp, @hpNumbers.bitmap, 70, 2)
     end
     # Resize HP bar
     w = 0
     if self.hp > 0
-      w = @hpBarBitmap.width.to_f * self.hp / @battler.totalhp
+      w = @hpBarBitmap.width.to_f * self.hp / @battler.pokemon.totalhp
       w = 1 if w < 1
       # NOTE: The line below snaps the bar's width to the nearest 2 pixels, to
       #       fit in with the rest of the graphics which are doubled in size.
@@ -314,8 +315,8 @@ class Battle::Scene::PokemonDataBox < Sprite
     end
     @hpBar.src_rect.width = w
     hpColor = 0                                  # Green bar
-    hpColor = 1 if self.hp <= @battler.totalhp / 2   # Yellow bar
-    hpColor = 2 if self.hp <= @battler.totalhp / 4   # Red bar
+    hpColor = 1 if self.hp <= @battler.pokemon.totalhp / 2   # Yellow bar
+    hpColor = 2 if self.hp <= @battler.pokemon.totalhp / 4   # Red bar
     @hpBar.src_rect.y = hpColor * @hpBarBitmap.height / 3
   end
 

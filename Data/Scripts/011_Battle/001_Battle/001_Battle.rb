@@ -832,7 +832,7 @@ class Battle
     when :HeavyRain   then pbDisplay(_INTL("A heavy rain began to fall!"))
     when :StrongWinds then pbDisplay(_INTL("Mysterious strong winds are protecting Flying-type Pokémon!"))
     when :ShadowSky   then pbDisplay(_INTL("A shadow sky appeared!"))
-    when :Thunderstorm   then pbDisplay(_INTL("Thunder clouds started to roll in!"))
+    when :Thunderstorm then pbDisplay(_INTL("Thunder clouds started to roll in!"))
     when :Windstorm   then pbDisplay(_INTL("A mysterious windstorm is protecting Flying-type Pokémon!"))
     end
     # Check for end of primordial weather, and weather-triggered form changes

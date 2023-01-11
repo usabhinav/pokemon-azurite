@@ -303,6 +303,7 @@ class Battle::Battler
     end
     @effects[PBEffects::SubtractionTypes].shuffle!
     @effects[PBEffects::StenchDoll]          = false
+    @effects[PBEffects::RoughRockEffectLost] = false
   end
 
   #=============================================================================

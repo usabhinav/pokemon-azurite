@@ -670,7 +670,7 @@ class Battle::Battler
     return false if inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground",
                                      "TwoTurnAttackInvulnerableUnderwater")
     return false if hasActiveAbility?([:OVERCOAT, :SANDFORCE, :SANDRUSH, :SANDVEIL, :WEATHERBENEFIT])
-    return false if hasActiveItem?([:SAFETYGOGGLES, :IRONSHELL])
+    return false if hasActiveItem?([:SAFETYGOGGLES, :IRONSHELL, :UMBRELLA])
     return true
   end
 
@@ -680,7 +680,7 @@ class Battle::Battler
     return false if inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground",
                                      "TwoTurnAttackInvulnerableUnderwater")
     return false if hasActiveAbility?([:OVERCOAT, :ICEBODY, :SNOWCLOAK, :WEATHERBENEFIT])
-    return false if hasActiveItem?([:SAFETYGOGGLES, :IRONSHELL])
+    return false if hasActiveItem?([:SAFETYGOGGLES, :IRONSHELL, :UMBRELLA])
     return true
   end
 
@@ -697,13 +697,14 @@ class Battle::Battler
     return true if hasActiveAbility?(:LIGHTNINGROD)
     return false if pbHasType?(:ELECTRIC)
     return false if hasActiveAbility?([:WEATHERBENEFIT])
-	  return false if hasActiveItem?(:IRONSHELL)
+	  return false if hasActiveItem?([:IRONSHELL, :UMBRELLA])
     return true
   end
 
   def effectiveWeather
     ret = @battle.pbWeather
     ret = :None if [:Sun, :Rain, :HarshSun, :HeavyRain, :Thunderstorm].include?(ret) && hasActiveItem?(:UTILITYUMBRELLA)
+    ret = :None if hasActiveItem?(:UMBRELLA)
     return ret
   end
 

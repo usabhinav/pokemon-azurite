@@ -1399,6 +1399,14 @@ Battle::ItemEffects::DamageCalcFromTarget.add(:SYNCHROPENDANT,
   }
 )
 
+Battle::ItemEffects::DamageCalcFromTarget.add(:ROUGHROCK,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    next if target.effects[PBEffects::RoughRockEffectLost]
+    next if !target.pbHasType?(:ROCK)
+    mults[:defense_multiplier] *= 2
+  }
+)
+
 #===============================================================================
 # CriticalCalcFromUser handlers
 #===============================================================================
@@ -1625,6 +1633,15 @@ Battle::ItemEffects::OnBeingHit.add(:REVENGEBELT,
   proc { |item, user, target, move, battle|
     next if !target.damageState.critical
     target.effects[PBEffects::RevengeBelt] = true
+  }
+)
+
+Battle::ItemEffects::OnBeingHit.add(:ROUGHROCK,
+  proc { |item, user, target, move, battle|
+    next if target.effects[PBEffects::RoughRockEffectLost]
+    next if !target.pbHasType?(:ROCK)
+    battle.pbDisplay(_INTL("{1} lost its defense boost from its {2}!", target.pbThis, target.itemName))
+    target.effects[PBEffects::RoughRockEffectLost] = true
   }
 )
 
@@ -2159,6 +2176,14 @@ Battle::ItemEffects::OnSwitchIn.add(:PECULIARMIRROR,
       battler.ability = choice.ability
       battle.pbDisplay(_INTL("{1} traced {2}'s {3}!",battler.pbThis,choice.pbThis(true),choice.abilityName))
     end
+  }
+)
+
+Battle::ItemEffects::OnSwitchIn.add(:ROUGHROCK,
+  proc { |item, battler, battle|
+    next if !battler.pbHasType?(:ROCK)
+    battle.pbDisplay(_INTL("{1}'s defense is boosted with {2}!",
+      battler.pbThis, battler.itemName))
   }
 )
 

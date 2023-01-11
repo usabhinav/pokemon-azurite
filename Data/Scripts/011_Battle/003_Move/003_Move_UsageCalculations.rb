@@ -549,7 +549,7 @@ class Battle::Move
       when :WATER
         multipliers[:final_damage_multiplier] *= 1.5
       when :ELECTRIC
-        multipliers[:final_damage_multiplier] *= 1.5 if @battle.pbWeather == :Thunderstorm
+        multipliers[:final_damage_multiplier] *= 1.5 if user.effectiveWeather == :Thunderstorm
       end
     when :Sandstorm
       if target.pbHasType?(:ROCK) && pbSpecialMove?(user) && @function != "UseTargetDefenseInsteadOfTargetSpDef"

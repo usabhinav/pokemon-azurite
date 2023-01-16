@@ -1832,7 +1832,7 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:FRENZIED,
 Battle::AbilityEffects::DamageCalcFromUser.add(:PERSEVERANCE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     met = 1 + 0.2 * [user.effects[PBEffects::Metronome], 3].min
-    mults[:final_damage_multiplier] *= met
+    mults[:base_damage_multiplier] *= met
   }
 )
 

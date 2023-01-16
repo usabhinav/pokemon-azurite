@@ -1645,6 +1645,16 @@ Battle::ItemEffects::OnBeingHit.add(:ROUGHROCK,
   }
 )
 
+Battle::ItemEffects::OnBeingHit.add(:REFLECTIVEMETAL,
+  proc { |item, user, target, move, battle|
+    next if !user.takesIndirectDamage?
+    next if !target.pbHasType?(:STEEL)
+    battle.pbDisplay(_INTL("{1} is damaged by recoil!", user.pbThis))
+    battle.scene.pbDamageAnimation(user)
+    user.pbTakeEffectDamage(target.damageState.calcDamage / 4)
+  }
+)
+
 #===============================================================================
 # OnBeingHitPositiveBerry handlers
 # NOTE: This is for berries that have an effect when Pluck/Bug Bite/Fling

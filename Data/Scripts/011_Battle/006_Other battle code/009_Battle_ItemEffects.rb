@@ -2197,6 +2197,14 @@ Battle::ItemEffects::OnSwitchIn.add(:ROUGHROCK,
   }
 )
 
+Battle::ItemEffects::OnSwitchIn.add(:BIZARREBAND,
+  proc { |item, battler, battle|
+    next if !battler.pbHasType?(:MYSTIC)
+    battle.pbDisplay(_INTL("{1}'s {2} turned all resistances into weaknesses!",
+       battler.pbThis, battler.itemName))
+  }
+)
+
 #===============================================================================
 # OnIntimidated handlers
 #===============================================================================

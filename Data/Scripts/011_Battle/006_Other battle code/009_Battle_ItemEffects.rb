@@ -1830,7 +1830,7 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:THROATSPRAY,
 )
 
 Battle::ItemEffects::AfterMoveUseFromUser.add(:CRUSHINGHAMMER,
-  proc { |item,user,targets,move,numHits,battle|
+  proc { |item, user, targets, move, numHits, battle|
     next if !move.pbDamagingMove? || numHits==0
     targets.each do |t|
       next if t.damageState.unaffected || t.damageState.substitute
@@ -1848,7 +1848,7 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:CRUSHINGHAMMER,
 )
 
 Battle::ItemEffects::AfterMoveUseFromUser.add(:GREATSHIELD,
-  proc { |item,user,targets,move,numHits,battle|
+  proc { |item, user, targets, move, numHits, battle|
     next if move.id != :PROTECT
     next if user.effects[PBEffects::GreatShield]
     user.effects[PBEffects::ProtectRate] = 1
@@ -1857,13 +1857,26 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:GREATSHIELD,
 )
 
 Battle::ItemEffects::AfterMoveUseFromUser.add(:SHODDYSLINGSHOT,
-  proc { |item,user,targets,move,numHits,battle|
+  proc { |item, user, targets, move, numHits, battle|
 	next if !move.pbDamagingMove? || numHits==0
 	targets.each do |b|
 		next if b.damageState.unaffected || b.damageState.substitute
 		next if !move.projectileBasedMove?
-    	b.pbFlinch
-    	user.pbConsumeItem
+    b.pbFlinch
+    user.pbConsumeItem
+	end
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:AMPLIFIER,
+  proc { |item, user, targets, move, numHits, battle|
+	next if !move.pbDamagingMove? || numHits==0
+  next if !user.pbHasType?(:SOUND)
+  next if move.calcType != :SOUND
+	targets.each do |t|
+		next if t.damageState.unaffected || t.damageState.substitute
+    t.pbLowerStatStageByCause(:DEFENSE, 1, user, user.itemName) if t.pbCanLowerStatStage?(:DEFENSE, user)
+    t.pbLowerStatStageByCause(:SPECIAL_DEFENSE, 1, user, user.itemName) if t.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user)
 	end
   }
 )

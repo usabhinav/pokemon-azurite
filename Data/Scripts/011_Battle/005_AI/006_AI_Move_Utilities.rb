@@ -121,6 +121,11 @@ class Battle::AI
         ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].min
       end
     end
+    # Bizarre Band (all resistances become weaknesses)
+    has_bizarre_band = @battle.pbCheckGlobalItem(:BIZARREBAND)
+    if has_bizarre_band && has_bizarre_band.pbHasType?(:MYSTIC) && ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      ret = Effectiveness::SUPER_EFFECTIVE_ONE
+    end
     return ret
   end
 

@@ -583,6 +583,11 @@ class Battle
     return allSameSideBattlers.select { |b| b.pbOwnedByPlayer? }.length
   end
 
+  def pbCheckGlobalItem(item)
+    allBattlers.each { |b| return b if b.hasActiveItem?(item) }
+    return nil
+  end
+
   def pbCheckGlobalAbility(abil)
     allBattlers.each { |b| return b if b.hasActiveAbility?(abil) }
     return nil

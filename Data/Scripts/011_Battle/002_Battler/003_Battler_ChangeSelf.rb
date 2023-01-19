@@ -20,6 +20,12 @@ class Battle::Battler
   end
 
   def pbRecoverHP(amt, anim = true, anyAnim = true)
+    # Healing Crown (boosts healing amount from ALL effects)
+    has_healing_crown = false
+    @battle.eachSameSideBattler(self.index) do |b|
+      has_healing_crown = true if b.pbHasType?(:LIGHT) && b.hasActiveItem?(:HEALINGCROWN)
+    end
+    amt = (amt * 1.5).floor if has_healing_crown
     amt = amt.round
     amt = @totalhp - @hp if amt > @totalhp - @hp
     amt = 1 if amt < 1 && @hp < @totalhp

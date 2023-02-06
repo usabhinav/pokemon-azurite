@@ -408,6 +408,10 @@ class Battle::Move
     pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
     # Main damage calculation
     baseDmg = [(baseDmg * multipliers[:base_damage_multiplier]).round, 1].max
+    # Master's Belt (base damage of at least 90)
+    if user.hasActiveItem?(:MASTERSBELT) && user.pbHasType?(:FIGHTING) && !multiHitMove? && type == :FIGHTING
+      baseDmg = [baseDmg, 90].max
+    end
     atk     = [(atk     * multipliers[:attack_multiplier]).round, 1].max
     defense = [(defense * multipliers[:defense_multiplier]).round, 1].max
     damage  = ((((2.0 * user.level / 5) + 2).floor * baseDmg * atk / defense).floor / 50).floor + 2

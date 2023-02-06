@@ -1655,6 +1655,15 @@ Battle::ItemEffects::OnBeingHit.add(:REFLECTIVEMETAL,
   }
 )
 
+Battle::ItemEffects::OnBeingHit.add(:HAILGLOBE,
+  proc { |item, user, target, move, battle|
+    next if battle.field.weather == :Hail
+    battle.pbDisplay(_INTL("{1}'s {2} shattered!", target.pbThis, target.itemName))
+    battle.pbStartWeather(target, :Hail, true)
+    target.pbConsumeItem
+  }
+)
+
 #===============================================================================
 # OnBeingHitPositiveBerry handlers
 # NOTE: This is for berries that have an effect when Pluck/Bug Bite/Fling
@@ -1877,6 +1886,20 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:AMPLIFIER,
 		next if t.damageState.unaffected || t.damageState.substitute
     t.pbLowerStatStageByCause(:DEFENSE, 1, user, user.itemName) if t.pbCanLowerStatStage?(:DEFENSE, user)
     t.pbLowerStatStageByCause(:SPECIAL_DEFENSE, 1, user, user.itemName) if t.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user)
+	end
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:CLEARMINDTIARA,
+  proc { |item, user, targets, move, numHits, battle|
+	next if !move.pbDamagingMove? || numHits==0
+  next if !user.pbHasType?(:PSYCHIC)
+  next if move.calcType != :PSYCHIC
+	targets.each do |t|
+		next if t.damageState.unaffected || t.damageState.substitute
+    next if !t.pbCanConfuse?(user, false)
+    next if t.spatk >= 70
+    t.pbConfuse
 	end
   }
 )

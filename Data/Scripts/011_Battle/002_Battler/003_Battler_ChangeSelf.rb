@@ -19,10 +19,11 @@ class Battle::Battler
     return amt
   end
 
-  def pbRecoverHP(amt, anim = true, anyAnim = true)
-    # Healing Crown (boosts healing amount from ALL effects)
+  def pbRecoverHP(amt, anim = true, anyAnim = true, from_bag = false)
+    # Healing Crown (boosts healing amount from ALL effects (drain, self-healing, etc.) except items used from bags (ex. Potions))
     has_healing_crown = false
     @battle.eachSameSideBattler(self.index) do |b|
+      next if from_bag
       has_healing_crown = true if b.pbHasType?(:LIGHT) && b.hasActiveItem?(:HEALINGCROWN)
     end
     amt = (amt * 1.5).floor if has_healing_crown

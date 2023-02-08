@@ -349,7 +349,7 @@ end
 
 def pbBattleHPItem(pkmn, battler, restoreHP, scene)
   if battler
-    if battler.pbRecoverHP(restoreHP) > 0
+    if battler.pbRecoverHP(restoreHP, true, true, true) > 0
       scene.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
     end
   elsif pbItemRestoreHP(pkmn, restoreHP) > 0

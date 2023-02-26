@@ -587,7 +587,7 @@ class Sprite_Character
     old_initialize(viewport, character)
 
     if $player
-      if character == $game_player && @charbitmap
+      if character == $game_player
         #@player_outfit_sprite_updater = Sprite_Player_Clother.new($Trainer.outfitstate, self)
         #$Trainer.outfitstate.attach(@player_outfit_sprite_updater)
         
@@ -614,7 +614,8 @@ class Sprite_Character
             @ch = @charbitmap.height / 4
           end
           #$Trainer.outfitstate..applyToOverworldBitmap(@sprite_character.charbitmap.bitmap)
-          $player.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap)
+          #$player.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap)
+          updateOutfit
           #echoln "PPAPPA: Applied to charbitmap"
         }
         @player_outfit_sprite_updater = Updater.new(updateproc)
@@ -626,7 +627,8 @@ class Sprite_Character
   end
   
   def updateOutfit
-    $player.outfitstate.applyToOverworldBitmap(self.charbitmap.bitmap)
+    $player.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap) if @charbitmap
+    $player.outfitstate.applyToOverworldBitmap(@bushbitmap.bitmap) if @bushbitmap
   end
   
   alias old_dispose dispose

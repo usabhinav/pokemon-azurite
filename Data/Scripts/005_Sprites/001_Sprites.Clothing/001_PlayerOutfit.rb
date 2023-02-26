@@ -615,7 +615,7 @@ class Sprite_Character
           end
           #$Trainer.outfitstate..applyToOverworldBitmap(@sprite_character.charbitmap.bitmap)
           #$player.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap)
-          updateOutfit
+          updateOutfitBushbitmap
           #echoln "PPAPPA: Applied to charbitmap"
         }
         @player_outfit_sprite_updater = Updater.new(updateproc)
@@ -626,10 +626,19 @@ class Sprite_Character
     end
   end
   
-  def updateOutfit
+  def updateOutfitCharbitmap
     $player.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap) if @charbitmap
+  end
+  
+  def updateOutfitBushbitmap
     $player.outfitstate.applyToOverworldBitmap(@bushbitmap.bitmap) if @bushbitmap
   end
+  
+  # Unused for now.
+  #def updateOutfit
+  #  $player.outfitstate.applyToOverworldBitmap(@charbitmap.bitmap) if @charbitmap
+  #  $player.outfitstate.applyToOverworldBitmap(@bushbitmap.bitmap) if @bushbitmap
+  #end
   
   alias old_dispose dispose
   def dispose

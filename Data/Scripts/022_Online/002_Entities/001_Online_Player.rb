@@ -51,4 +51,22 @@ class OnlinePlayer
 
     # TODO Add game version to online
   end
+
+  def to_hash
+    {"online_Player_ID"       => @online_Player_ID,
+    "online_Machine_Id"       => @online_Machine_Id,
+  "id"                        => @id,
+  "name"                      => @name,
+  "language"                  => @language,
+  "money"                     => @money,
+  "coins"                     => @coins,
+  "soot"                      => @soot,
+  "battle_points"             => @battle_points,
+  "has_pokedex"               => @has_pokedex,
+  "has_running_shoes"         => @has_running_shoes,
+  "has_box_link"              => @has_box_link,
+  "has_exp_all"               => @has_exp_all,
+  "seen_storage_creator"      => @seen_storage_creator,
+  "outfit"                    => @outfit}
+  end
 end

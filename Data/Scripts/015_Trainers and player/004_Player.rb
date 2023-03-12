@@ -1,7 +1,11 @@
+require 'securerandom'
+
 #===============================================================================
 # Trainer class for the player
 #===============================================================================
 class Player < Trainer
+  # @return [Integer] the player's randomly generated UUID (for online)
+  attr_accessor :uuid
   # @return [Integer] the character ID of the player
   attr_reader   :character_ID
   # @return [Integer] the player's outfit
@@ -36,18 +40,6 @@ class Player < Trainer
   attr_accessor :mystery_gifts
   # @return [ObservableOutfitState] the player's outfit state
   attr_accessor :outfitstate
-
-  def character_ID=(value)
-    return if @character_ID == value
-    @character_ID = value
-    $game_player&.refresh_charset
-  end
-
-  def outfit=(value)
-    return if @outfit == value
-    @outfit = value
-    $game_player&.refresh_charset
-  end
 
   def character_ID=(value)
     return if @character_ID == value
@@ -122,6 +114,7 @@ class Player < Trainer
 
   def initialize(name, trainer_type)
     super
+    @uuid                  = SecureRandom.uuid
     @character_ID          = 0
     @outfit                = 0
     @badges                = [false] * 8

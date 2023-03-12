@@ -1,8 +1,12 @@
+require 'securerandom'
+
 #===============================================================================
 # Instances of this class are individual Pokémon.
 # The player's party Pokémon are stored in the array $player.party.
 #===============================================================================
 class Pokemon
+  # @return [String] this Pokémon's randomly generated UUID (for online)
+  attr_accessor :uuid
   # @return [Symbol] this Pokémon's species
   attr_reader   :species
   # If defined, this Pokémon's form will be this value even if a MultipleForms
@@ -1286,6 +1290,7 @@ class Pokemon
   # @return [GameData::Typology, nil] a Typology object corresponding to this Pokémon's typology
   def typology
     if !@typology
+      # TODO: Prevent Prism typology for non-legendary Pokemon
       idx = @personalID % GameData::Typology.count
       @typology = GameData::Typology.get(GameData::Typology.keys[idx]).id
     end
@@ -1344,6 +1349,7 @@ class Pokemon
   # @param withMoves [Boolean] whether the Pokémon should have moves
   # @param recheck_form [Boolean] whether to auto-check the form
   def initialize(species, level, owner = $player, withMoves = true, recheck_form = true)
+    @uuid             = SecureRandom.uuid
     species_data = GameData::Species.get(species)
     @species          = species_data.species
     @form             = species_data.base_form

@@ -14,6 +14,7 @@ class GameStats
   attr_accessor :waterfall_count, :waterfalls_descended
   # Items
   attr_accessor :repel_count
+  attr_accessor :anti_repel_count
   attr_accessor :itemfinder_count
   attr_accessor :fishing_count, :fishing_battles
   attr_accessor :poke_radar_count, :poke_radar_longest_chain
@@ -83,6 +84,7 @@ class GameStats
     @waterfalls_descended          = 0
     # Items
     @repel_count                   = 0
+    @anti_repel_count              = 0
     @itemfinder_count              = 0
     @fishing_count                 = 0
     @fishing_battles               = 0

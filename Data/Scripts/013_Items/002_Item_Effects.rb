@@ -111,6 +111,31 @@ ItemHandlers::ConfirmUseInField.add(:ESCAPEROPE, proc { |item|
 # If an item has this handler, it can be registered to the Ready Menu.
 #===============================================================================
 
+def pbAntiRepel(item, steps)
+  if $PokemonGlobal.anti_repel > 0
+    pbMessage(_INTL("There's already a perfume going. And it's expensive..."))
+    return false
+  end
+  $stats.anti_repel_count += 1
+  pbUseItemMessage(item)
+  $PokemonGlobal.anti_repel = steps
+  return true
+end
+
+ItemHandlers::UseInField.add(:SPRITZEEPERFUME, proc { |item|
+  next pbAntiRepel(item, 200)
+})
+
+# Didn't feel it necessary to auto replenish or give the option to replenish.
+EventHandlers.add(:on_player_step_taken, :anti_repel_counter,
+  proc {
+    next if $PokemonGlobal.anti_repel <= 0 || $game_player.terrain_tag.ice   # Shouldn't count down if on ice
+    $PokemonGlobal.anti_repel -= 1
+    next if $PokemonGlobal.anti_repel > 0
+    pbMessage(_INTL("The perfume's effect wore off!"))
+  }
+)
+
 def pbRepel(item, steps)
   if $PokemonGlobal.repel > 0
     pbMessage(_INTL("But a repellent's effect still lingers from earlier."))

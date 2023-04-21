@@ -126,6 +126,7 @@ class PokemonEncounters
       encounter_chance *= 1.5 if $PokemonMap.whiteFluteUsed
       min_steps_needed /= 2 if $PokemonMap.whiteFluteUsed
     end
+    encounter_chance *= 10 if $PokemonGlobal.anti_repel > 0
     first_pkmn = $player.first_pokemon
     if first_pkmn
       case first_pkmn.item_id

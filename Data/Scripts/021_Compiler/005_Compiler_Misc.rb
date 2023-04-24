@@ -1,6 +1,9 @@
 require 'csv'
 
 module Compiler
+  EXPORT_MAP_INFORMATION_FOLDER = "Data/Exported Data"
+  EXPORT_MAP_INFORMATION_EVENTS_FOLDER = "Data/Exported Data/Events"
+
   def self.cache_map_mirrors
     map_mirrors = Hash.new
     mapinfos = pbLoadMapInfos
@@ -70,10 +73,13 @@ module Compiler
   # 2. Data/Exported Data/map_info.csv
   # 3. Data/Exported Data/Events/XXX.csv (for each map)
   def self.export_map_information
+    # Create the necessary folders if they don't already exist
+    Dir.mkdir(EXPORT_MAP_INFORMATION_FOLDER) if !(Dir.chdir(EXPORT_MAP_INFORMATION_FOLDER){true} rescue false)
+    Dir.mkdir(EXPORT_MAP_INFORMATION_EVENTS_FOLDER) if !(Dir.chdir(EXPORT_MAP_INFORMATION_EVENTS_FOLDER){true} rescue false)
     map_infos = pbLoadMapInfos
     data_tilesets = load_data("Data/Tilesets.rxdata")
     # Export Tilesets.rxdata information
-    CSV.open("Data/Exported Data/tileset_info.csv", "wb") do |tileset_csv|
+    CSV.open("#{EXPORT_MAP_INFORMATION_FOLDER}/tileset_info.csv", "wb") do |tileset_csv|
       tileset_csv << ["id", "name", "tileset_name"]
       for id in 0...data_tilesets.length
         data_tileset = data_tilesets[id]
@@ -82,7 +88,7 @@ module Compiler
       end
     end
     # Export MapInfos.rxdata and individual map rxdatas
-    CSV.open("Data/Exported Data/map_info.csv", "wb") do |csv|
+    CSV.open("#{EXPORT_MAP_INFORMATION_FOLDER}/map_info.csv", "wb") do |csv|
       csv << ["id", "name", "tileset_id", "width", "height", "bgm"]
       map_infos.keys.each do |id|
         map_info = map_infos[id]
@@ -104,7 +110,7 @@ module Compiler
   # Exports event and trainer info
   def self.export_map(map_id, map)
     trainer_events = []
-    CSV.open("Data/Exported Data/Events/%03d.csv" % map_id, "wb") do |csv|
+    CSV.open("#{EXPORT_MAP_INFORMATION_EVENTS_FOLDER}/%03d.csv" % map_id, "wb") do |csv|
       csv << ["id", "name", "x", "y", "trainer_type", "trainer_name"]
       map.events.keys.sort.each do |id|
         event = map.events[id]

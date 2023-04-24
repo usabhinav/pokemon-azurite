@@ -90,7 +90,7 @@ module Compiler
     # Export MapInfos.rxdata and individual map rxdatas
     CSV.open("#{EXPORT_MAP_INFORMATION_FOLDER}/map_info.csv", "wb") do |csv|
       csv << ["id", "name", "tileset_id", "width", "height", "bgm"]
-      map_infos.keys.each do |id|
+      map_infos.keys.sort.each do |id|
         map_info = map_infos[id]
         filename = sprintf("Data/Map%03d.rxdata", id)
         next if !pbRgssExists?(filename)
@@ -110,7 +110,7 @@ module Compiler
   # Exports event and trainer info
   def self.export_map(map_id, map)
     trainer_events = []
-    CSV.open("#{EXPORT_MAP_INFORMATION_EVENTS_FOLDER}/%03d.csv" % map_id, "wb") do |csv|
+    CSV.open("#{EXPORT_MAP_INFORMATION_EVENTS_FOLDER}/map_%03d_events.csv" % map_id, "wb") do |csv|
       csv << ["id", "name", "x", "y", "trainer_type", "trainer_name"]
       map.events.keys.sort.each do |id|
         event = map.events[id]

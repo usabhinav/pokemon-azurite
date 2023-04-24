@@ -123,12 +123,17 @@ module Compiler
           # We assume the first page will have the "TrainerBattle.start" command in a Conditional Branch script
           event.pages[0].list.each do |cmd|
             if cmd.code == 111 && cmd.parameters[0] == 12 # Conditional Branch, Script parameter
-              # We assume script_args will look like:
-              # [":TRAINER_TYPE", "\"TRAINER_NAME\""]
-              script_args = cmd.parameters[1].split("(")[1].split(")")[0].split(",")
-              csv_row.push(script_args[0].split(":")[1]) # Remove the colon from the symbol
-              csv_row.push(script_args[1])
-              break
+              # We assume the script will look like "TrainerBattle.start(:TRAINER_TYPE, \"TRAINER_NAME\")"
+              if /TrainerBattle\.start\(.*\)/.match?(cmd.parameters[1])
+                script_args = cmd.parameters[1].split("(")[1].split(")")[0].split(",")
+                # We assume script_args will look like:
+                # [":TRAINER_TYPE", "\"TRAINER_NAME\""]
+                if script_args[0].start_with?(":") && script_args.length >= 2
+                  csv_row.push(script_args[0].split(":")[1]) # Remove the colon from the symbol
+                  csv_row.push(script_args[1].split("\"")[1]) # Remove the double quotes from the string
+                  break
+                end
+              end
             end
           end
         end

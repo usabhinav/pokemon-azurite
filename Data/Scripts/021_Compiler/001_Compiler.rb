@@ -784,12 +784,14 @@ module Compiler
     compile_pbs_files
     compile_animations
     compile_trainer_events(mustCompile)
-    Console.echo_li _INTL("Compiling apparel")
+    Console.echo_li _INTL("Compiling apparel...")
     compile_apparel                # Depends on Apparel
-    Console.echo_li _INTL("Generating move flag lists")
+    Console.echo_li _INTL("Generating move flag lists...")
     generate_move_flag_lists       # Depends on Move
-    Console.echo_li _INTL("Caching mirror locations")
+    Console.echo_li _INTL("Caching mirror locations...")
     cache_map_mirrors
+    Console.echo_li _INTL("Exporting map information...")
+    export_map_information
     Console.echo_li _INTL("Saving messages...")
     pbSetTextMessages
     MessageTypes.saveMessages

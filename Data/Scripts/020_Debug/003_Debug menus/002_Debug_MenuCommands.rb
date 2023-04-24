@@ -1205,3 +1205,13 @@ MenuHandlers.add(:debug_menu, :compile_mirrors, {
     pbMessage(_INTL("Done."))
   }
 })
+
+MenuHandlers.add(:debug_menu, :export_map_information, {
+  "name"        => _INTL("Export Map Information"),
+  "parent"      => :other_menu,
+  "description" => _INTL("Export all relevant map information. Used by online system."),
+  "effect"      => proc {
+    Compiler.export_map_information
+    pbMessage(_INTL("Done."))
+  }
+})

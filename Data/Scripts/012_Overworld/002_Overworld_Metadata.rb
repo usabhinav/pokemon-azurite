@@ -35,6 +35,7 @@ class PokemonGlobalMetadata
   # Affecting the map
   attr_accessor :bridge
   attr_accessor :repel
+  attr_accessor :anti_repel
   attr_accessor :flashUsed
   attr_reader   :encounter_version
   # Map transfers
@@ -60,7 +61,7 @@ class PokemonGlobalMetadata
     # Movement
     @bicycle              = false
     @surfing              = false
-	@swimming             = false
+	  @swimming             = false
     @diving               = false
     @sliding              = false
     @fishing              = false
@@ -93,6 +94,7 @@ class PokemonGlobalMetadata
     # Affecting the map
     @bridge               = 0
     @repel                = 0
+    @anti_repel           = 0
     @flashused            = false
     @encounter_version    = 0
     # Map transfers

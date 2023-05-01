@@ -8348,12 +8348,3 @@ Price = 10000
 SellPrice = 500
 Flags = Fling_90
 Description = An item to be held by a Pokémon. It is a stone tablet that boosts the power of Crystal-type moves.
-#-------------------------------
-[GROUNDEDBOOTS]
-Name = Grounded Boots
-NamePlural = Grounded Boot Sets
-Pocket = 1
-Price = 4000
-Flags = Fling_60
-Description = An item to be held by a Pokémon. It ignores negative and positive effects of Terrain. Ground Types only.
-#-------------------------------

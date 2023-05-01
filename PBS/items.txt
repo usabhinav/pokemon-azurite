@@ -8348,4 +8348,3 @@ Price = 10000
 SellPrice = 500
 Flags = Fling_90
 Description = An item to be held by a Pokémon. It is a stone tablet that boosts the power of Crystal-type moves.
-#-------------------------------

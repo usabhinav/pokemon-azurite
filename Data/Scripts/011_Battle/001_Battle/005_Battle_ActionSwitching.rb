@@ -356,6 +356,19 @@ class Battle
       pbEndPrimordialWeather   # Checking this again just in case
       # Items that trigger upon switching in (Air Balloon message)
       if b.itemActive?
+        # Weird Trinket
+        # We check for this one first so that if it changes into a held item that has its own switch in handler,
+        # it will activate as soon as it changes to that item.
+        if b.hasActiveItem?(:WEIRDTRINKET)
+          weird_trinket_items = []
+          GameData::Item.each do |i|
+            weird_trinket_items.push(i) if i.is_weird_trinket_held_item?
+          end
+          rand_item = weird_trinket_items.sample
+          pbDisplay(_INTL("{1}'s {2} turned into {3}!", b.pbThis, b.itemName, rand_item.real_name))
+          b.item = rand_item.id
+        end
+        # Other items
         Battle::ItemEffects.triggerOnSwitchIn(b.item, b, self)
       end
       # Berry check, status-curing ability check

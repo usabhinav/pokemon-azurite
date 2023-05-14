@@ -788,6 +788,8 @@ module Compiler
     compile_apparel                # Depends on Apparel
     Console.echo_li _INTL("Generating move flag lists...")
     generate_move_flag_lists       # Depends on Move
+    Console.echo_li _INTL("Generating item flag lists...")
+    generate_item_flag_lists       # Depends on Item
     Console.echo_li _INTL("Caching mirror locations...")
     cache_map_mirrors
     Console.echo_li _INTL("Exporting map information...")

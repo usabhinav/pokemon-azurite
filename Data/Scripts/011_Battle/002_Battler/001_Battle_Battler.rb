@@ -644,6 +644,7 @@ class Battle::Battler
   def affectedByTerrain?
     return false if airborne?
     return false if semiInvulnerable?
+    return false if hasActiveItem?(:GROUNDEDBOOTS) && pbHasType?(:GROUND)
     return true
   end
 

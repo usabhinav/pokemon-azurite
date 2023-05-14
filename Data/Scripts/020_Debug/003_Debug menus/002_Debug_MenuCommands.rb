@@ -1215,3 +1215,23 @@ MenuHandlers.add(:debug_menu, :export_map_information, {
     pbMessage(_INTL("Done."))
   }
 })
+
+MenuHandlers.add(:debug_menu, :export_move_flag_lists, {
+  "name"        => _INTL("Export Move Flag Lists"),
+  "parent"      => :other_menu,
+  "description" => _INTL("For each flag, exports list of moves that use it."),
+  "effect"      => proc {
+    Compiler.generate_move_flag_lists
+    pbMessage(_INTL("Done."))
+  }
+})
+
+MenuHandlers.add(:debug_menu, :export_item_flag_lists, {
+  "name"        => _INTL("Export Item Flag Lists"),
+  "parent"      => :other_menu,
+  "description" => _INTL("For each flag, exports list of items that use it."),
+  "effect"      => proc {
+    Compiler.generate_item_flag_lists
+    pbMessage(_INTL("Done."))
+  }
+})

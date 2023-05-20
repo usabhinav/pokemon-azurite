@@ -53,7 +53,7 @@ NamePlural = Honey
 Pocket = 1
 Price = 900
 FieldUse = Direct
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A sweet honey with a lush aroma that attracts wild Pokémon when used in tall grass, in caves, or elsewhere.
 #-------------------------------
 [REDSHARD]
@@ -184,7 +184,7 @@ NamePlural = Sweet Apples
 Pocket = 1
 Price = 2200
 FieldUse = OnPokemon
-Flags = EvolutionStone,Fling_30
+Flags = EvolutionStone,Fling_30,TastyTreatItem
 Description = A peculiar apple that can make a certain species of Pokémon evolve. It's exceptionally sweet.
 #-------------------------------
 [TARTAPPLE]
@@ -193,7 +193,7 @@ NamePlural = Tart Apples
 Pocket = 1
 Price = 2200
 FieldUse = OnPokemon
-Flags = EvolutionStone,Fling_30
+Flags = EvolutionStone,Fling_30,TastyTreatItem
 Description = A peculiar apple that can make a certain species of Pokémon evolve. It's exceptionally tart.
 #-------------------------------
 [CRACKEDPOT]
@@ -239,7 +239,7 @@ Name = Red Apricorn
 NamePlural = Red Apricorns
 Pocket = 1
 Price = 200
-Flags = Apricorn
+Flags = Apricorn,TastyTreatItem
 Description = A red Apricorn. It assails your nostrils.
 #-------------------------------
 [YELLOWAPRICORN]
@@ -247,7 +247,7 @@ Name = Yellow Apricorn
 NamePlural = Yellow Apricorns
 Pocket = 1
 Price = 200
-Flags = Apricorn
+Flags = Apricorn,TastyTreatItem
 Description = A yellow Apricorn. It has an invigorating scent.
 #-------------------------------
 [BLUEAPRICORN]
@@ -255,7 +255,7 @@ Name = Blue Apricorn
 NamePlural = Blue Apricorns
 Pocket = 1
 Price = 200
-Flags = Apricorn
+Flags = Apricorn,TastyTreatItem
 Description = A blue Apricorn. It smells a bit like grass.
 #-------------------------------
 [GREENAPRICORN]
@@ -263,7 +263,7 @@ Name = Green Apricorn
 NamePlural = Green Apricorns
 Pocket = 1
 Price = 200
-Flags = Apricorn
+Flags = Apricorn,TastyTreatItem
 Description = A green Apricorn. It has a mysterious, aromatic scent.
 #-------------------------------
 [PINKAPRICORN]
@@ -271,7 +271,7 @@ Name = Pink Apricorn
 NamePlural = Pink Apricorns
 Pocket = 1
 Price = 200
-Flags = Apricorn
+Flags = Apricorn,TastyTreatItem
 Description = A pink Apricorn. It has a nice, sweet scent.
 #-------------------------------
 [WHITEAPRICORN]
@@ -279,7 +279,7 @@ Name = White Apricorn
 NamePlural = White Apricorns
 Pocket = 1
 Price = 200
-Flags = Apricorn
+Flags = Apricorn,TastyTreatItem
 Description = A white Apricorn. It doesn't smell like anything.
 #-------------------------------
 [BLACKAPRICORN]
@@ -287,7 +287,7 @@ Name = Black Apricorn
 NamePlural = Black Apricorns
 Pocket = 1
 Price = 200
-Flags = Apricorn
+Flags = Apricorn,TastyTreatItem
 Description = A black Apricorn. It has an indescribable scent.
 #-------------------------------
 [HELIXFOSSIL]
@@ -423,7 +423,7 @@ Name = Tiny Mushroom
 NamePlural = Tiny Mushrooms
 Pocket = 1
 Price = 500
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A small and rare mushroom. It is sought after by collectors.
 #-------------------------------
 [BIGMUSHROOM]
@@ -431,7 +431,7 @@ Name = Big Mushroom
 NamePlural = Big Mushrooms
 Pocket = 1
 Price = 5000
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A large and rare mushroom. It is sought after by collectors.
 #-------------------------------
 [BALMMUSHROOM]
@@ -439,7 +439,7 @@ Name = Balm Mushroom
 NamePlural = Balm Mushrooms
 Pocket = 1
 Price = 15000
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A rare mushroom which gives off a nice fragrance. A maniac will buy it for a high price.
 #-------------------------------
 [PEARL]
@@ -647,7 +647,7 @@ NamePlural = Red Nectars
 Pocket = 1
 Price = 300
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A flower nectar obtained at Ula'ula Meadow. It changes the form of certain species of Pokémon.
 #-------------------------------
 [YELLOWNECTAR]
@@ -656,7 +656,7 @@ NamePlural = Yellow Nectars
 Pocket = 1
 Price = 300
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A flower nectar obtained at Melemele Meadow. It changes the form of certain species of Pokémon.
 #-------------------------------
 [PINKNECTAR]
@@ -665,7 +665,7 @@ NamePlural = Pink Nectars
 Pocket = 1
 Price = 300
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A flower nectar obtained from shrubs on Royal Avenue. It changes the form of certain species of Pokémon.
 #-------------------------------
 [PURPLENECTAR]
@@ -674,7 +674,7 @@ NamePlural = Purple Nectars
 Pocket = 1
 Price = 300
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A flower nectar obtained at Poni Meadow. It changes the form of certain species of Pokémon.
 #-------------------------------
 [AIRBALLOON]
@@ -825,7 +825,7 @@ Name = Lucky Egg
 NamePlural = Lucky Eggs
 Pocket = 1
 Price = 10000
-Flags = Fling_30,WeirdTrinketHeldItem
+Flags = Fling_30,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It is an egg filled with happiness that earns extra Exp. Points in battle.
 #-------------------------------
 [EXPSHARE]
@@ -954,7 +954,7 @@ Name = Big Root
 NamePlural = Big Roots
 Pocket = 1
 Price = 4000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = A Pokémon held item that boosts the power of HP-stealing moves to let the holder recover more HP.
 #-------------------------------
 [BLACKSLUDGE]
@@ -963,7 +963,7 @@ NamePlural = Black Sludges
 Pocket = 1
 Price = 3000
 SellPrice = 2000
-Flags = Fling_30,WeirdTrinketHeldItem
+Flags = Fling_30,WeirdTrinketHeldItem,TastyTreatItem
 Description = A held item that gradually restores the HP of Poison-type Pokémon. It inflicts damage on all other types.
 #-------------------------------
 [LEFTOVERS]
@@ -971,7 +971,7 @@ Name = Leftovers
 NamePlural = Leftovers
 Pocket = 1
 Price = 4000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. The holder's HP is gradually restored during battle.
 #-------------------------------
 [SHELLBELL]
@@ -987,7 +987,7 @@ Name = Mental Herb
 NamePlural = Mental Herbs
 Pocket = 1
 Price = 4000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It snaps the holder out of infatuation. It can be used only once.
 #-------------------------------
 [WHITEHERB]
@@ -995,7 +995,7 @@ Name = White Herb
 NamePlural = White Herbs
 Pocket = 1
 Price = 4000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It restores any lowered stat in battle. It can be used only once.
 #-------------------------------
 [POWERHERB]
@@ -1003,7 +1003,7 @@ Name = Power Herb
 NamePlural = Power Herbs
 Pocket = 1
 Price = 4000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = A single-use item to be held by a Pokémon. It allows the immediate use of a move that charges up first.
 #-------------------------------
 [ABSORBBULB]
@@ -1011,7 +1011,7 @@ Name = Absorb Bulb
 NamePlural = Absorb Bulbs
 Pocket = 1
 Price = 4000
-Flags = Fling_30,WeirdTrinketHeldItem
+Flags = Fling_30,WeirdTrinketHeldItem,TastyTreatItem
 Description = A consumable bulb. If the holder is hit by a Water-type move, its Sp. Atk will rise.
 #-------------------------------
 [CELLBATTERY]
@@ -1027,7 +1027,7 @@ Name = Luminous Moss
 NamePlural = Luminous Mosses
 Pocket = 1
 Price = 4000
-Flags = Fling_30,WeirdTrinketHeldItem
+Flags = Fling_30,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It boosts Sp. Def if hit by a Water-type attack. It can only be used once.
 #-------------------------------
 [SNOWBALL]
@@ -1035,7 +1035,7 @@ Name = Snowball
 NamePlural = Snowballs
 Pocket = 1
 Price = 4000
-Flags = Fling_30,WeirdTrinketHeldItem
+Flags = Fling_30,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It boosts Attack if hit by an Ice-type attack. It can only be used once.
 #-------------------------------
 [WEAKNESSPOLICY]
@@ -1084,7 +1084,7 @@ NamePlural = Electric Seeds
 Pocket = 1
 Price = 3000
 SellPrice = 2000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It boosts Defense on Electric Terrain. It can only be used once.
 #-------------------------------
 [GRASSYSEED]
@@ -1093,7 +1093,7 @@ NamePlural = Grassy Seeds
 Pocket = 1
 Price = 3000
 SellPrice = 2000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It boosts Defense on Grassy Terrain. It can only be used once.
 #-------------------------------
 [MISTYSEED]
@@ -1102,7 +1102,7 @@ NamePlural = Misty Seeds
 Pocket = 1
 Price = 3000
 SellPrice = 2000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It boosts Sp. Def on Misty Terrain. It can only be used once.
 #-------------------------------
 [PSYCHICSEED]
@@ -1111,7 +1111,7 @@ NamePlural = Psychic Seeds
 Pocket = 1
 Price = 3000
 SellPrice = 2000
-Flags = Fling_10,WeirdTrinketHeldItem
+Flags = Fling_10,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It boosts Sp. Def on Psychic Terrain. It can only be used once.
 #-------------------------------
 [LIFEORB]
@@ -1441,7 +1441,7 @@ NamePlural = Miracle Seeds
 Pocket = 1
 Price = 3000
 SellPrice = 500
-Flags = Fling_30,WeirdTrinketHeldItem
+Flags = Fling_30,WeirdTrinketHeldItem,TastyTreatItem
 Description = An item to be held by a Pokémon. It is a seed imbued with life that ups the power of Grass-type moves.
 #-------------------------------
 [NEVERMELTICE]
@@ -2234,7 +2234,7 @@ NamePlural = Whipped Dreams
 Pocket = 1
 Price = 3000
 SellPrice = 1000
-Flags = Fling_80
+Flags = Fling_80,TastyTreatItem
 Description = A soft and sweet treat made of fluffy, puffy and whirled cream. It's loved by a certain Pokémon.
 #-------------------------------
 [SACHET]
@@ -2251,7 +2251,7 @@ Name = Strawberry Sweet
 NamePlural = Strawberry Sweets
 Pocket = 1
 Price = 500
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A strawberry-shaped sweet. When a Milcery holds this, it will spin around happily.
 #-------------------------------
 [LOVESWEET]
@@ -2259,7 +2259,7 @@ Name = Love Sweet
 NamePlural = Love Sweets
 Pocket = 1
 Price = 500
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A heart-shaped sweet. When a Milcery holds this, it spins around happily.
 #-------------------------------
 [BERRYSWEET]
@@ -2267,7 +2267,7 @@ Name = Berry Sweet
 NamePlural = Berry Sweets
 Pocket = 1
 Price = 500
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A berry-shaped sweet. When a Milcery holds this, it spins around happily.
 #-------------------------------
 [CLOVERSWEET]
@@ -2275,7 +2275,7 @@ Name = Clover Sweet
 NamePlural = Clover Sweets
 Pocket = 1
 Price = 500
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A clover-shaped sweet. When a Milcery holds this, it spins around happily.
 #-------------------------------
 [FLOWERSWEET]
@@ -2283,7 +2283,7 @@ Name = Flower Sweet
 NamePlural = Flower Sweets
 Pocket = 1
 Price = 500
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A flower-shaped sweet. When a Milcery holds this, it spins around happily.
 #-------------------------------
 [STARSWEET]
@@ -2291,7 +2291,7 @@ Name = Star Sweet
 NamePlural = Star Sweets
 Pocket = 1
 Price = 500
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A star-shaped sweet. When a Milcery holds this, it spins around happily.
 #-------------------------------
 [RIBBONSWEET]
@@ -2299,7 +2299,7 @@ Name = Ribbon Sweet
 NamePlural = Ribbon Sweets
 Pocket = 1
 Price = 500
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = A ribbon-shaped sweet. When a Milcery holds this, it spins around happily.
 #-------------------------------
 [VENUSAURITE]
@@ -2750,7 +2750,7 @@ NamePlural = Sacred Ashes
 Pocket = 2
 Price = 50000
 FieldUse = Direct
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = It revives all fainted Pokémon. In doing so, it also fully restores their HP.
 #-------------------------------
 [AWAKENING]
@@ -2830,7 +2830,7 @@ Pocket = 2
 Price = 350
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Mahogany Town's famous candy. It can be used once to heal all the status conditions of a Pokémon.
 #-------------------------------
 [LAVACOOKIE]
@@ -2840,7 +2840,7 @@ Pocket = 2
 Price = 350
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Lavaridge Town's local specialty. It heals all the status problems of one Pokémon.
 #-------------------------------
 [OLDGATEAU]
@@ -2850,7 +2850,7 @@ Pocket = 2
 Price = 350
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Old Chateau's hidden specialty. It heals all the status problems of a single Pokémon.
 #-------------------------------
 [CASTELIACONE]
@@ -2860,7 +2860,7 @@ Pocket = 2
 Price = 350
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Castelia City's specialty, soft-serve ice cream. It heals all the status problems of a single Pokémon.
 #-------------------------------
 [LUMIOSEGALETTE]
@@ -2870,7 +2870,7 @@ Pocket = 2
 Price = 350
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A popular treat in Lumiose City. It can be used once to heal all the status conditions of a Pokémon.
 #-------------------------------
 [SHALOURSABLE]
@@ -2880,7 +2880,7 @@ Pocket = 2
 Price = 350
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Shalour City's famous shortbread. It can be used once to heal all the status conditions of a Pokémon.
 #-------------------------------
 [BIGMALASADA]
@@ -2890,7 +2890,7 @@ Pocket = 2
 Price = 350
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = The Alola region's specialty--fried bread. It can be used once to heal all the status conditions of a Pokémon.
 #-------------------------------
 [REVIVE]
@@ -2920,7 +2920,7 @@ Pocket = 2
 Price = 100
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A 100% pure juice made of Berries. It restores the HP of one Pokémon by just 20 points.
 #-------------------------------
 [SWEETHEART]
@@ -2930,7 +2930,7 @@ Pocket = 2
 Price = 3000
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Very sweet chocolate. It restores the HP of one Pokémon by only 20 points.
 #-------------------------------
 [FRESHWATER]
@@ -2940,7 +2940,7 @@ Pocket = 2
 Price = 200
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Water with high mineral content. It can be used to restore 30 HP to a single Pokémon.
 #-------------------------------
 [SODAPOP]
@@ -2950,7 +2950,7 @@ Pocket = 2
 Price = 300
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A highly carbonated soda drink. It can be used to restore 50 HP to a single Pokémon.
 #-------------------------------
 [LEMONADE]
@@ -2961,7 +2961,7 @@ Price = 350
 SellPrice = 200
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A very sweet and refreshing drink. It can be used to restore 70 HP to a single Pokémon.
 #-------------------------------
 [MOOMOOMILK]
@@ -2971,7 +2971,7 @@ Pocket = 2
 Price = 600
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Milk with a very high nutrition content. It restores the HP of one Pokémon by 100 points.
 #-------------------------------
 [ENERGYPOWDER]
@@ -2981,7 +2981,7 @@ Pocket = 2
 Price = 500
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A very bitter medicinal powder. It can be used to restore 60 HP to a single Pokémon.
 #-------------------------------
 [ENERGYROOT]
@@ -2991,7 +2991,7 @@ Pocket = 2
 Price = 1200
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = An extremely bitter medicinal root. It can be used to restore 120 HP to a single Pokémon.
 #-------------------------------
 [HEALPOWDER]
@@ -3001,7 +3001,7 @@ Pocket = 2
 Price = 300
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A very bitter medicine powder. It heals all the status problems of a single Pokémon.
 #-------------------------------
 [REVIVALHERB]
@@ -3011,7 +3011,7 @@ Pocket = 2
 Price = 2800
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = A very bitter medicinal herb. It revives a fainted Pokémon, fully restoring its HP.
 #-------------------------------
 [MAXHONEY]
@@ -3021,7 +3021,7 @@ Pocket = 2
 Price = 8000
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Fling_30
+Flags = Fling_30,TastyTreatItem
 Description = Honey that Dynamax Vespiquen produces. It has the same effect as a Max Revive.
 #-------------------------------
 [ETHER]
@@ -3196,7 +3196,7 @@ NamePlural = Lonely Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Attack will grow more easily, but its Defense will grow more slowly.
 #-------------------------------
 [ADAMANTMINT]
@@ -3205,7 +3205,7 @@ NamePlural = Adamant Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Attack will grow more easily, but its Sp. Atk will grow more slowly.
 #-------------------------------
 [NAUGHTYMINT]
@@ -3214,7 +3214,7 @@ NamePlural = Naughty Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Attack will grow more easily, but its Sp. Def will grow more slowly.
 #-------------------------------
 [BRAVEMINT]
@@ -3223,7 +3223,7 @@ NamePlural = Brave Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Attack will grow more easily, but its Speed will grow more slowly.
 #-------------------------------
 [BOLDMINT]
@@ -3232,7 +3232,7 @@ NamePlural = Bold Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Defense will grow more easily, but its Attack will grow more slowly.
 #-------------------------------
 [IMPISHMINT]
@@ -3241,7 +3241,7 @@ NamePlural = Impish Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Defense will grow more easily, but its Sp. Atk will grow more slowly.
 #-------------------------------
 [LAXMINT]
@@ -3250,7 +3250,7 @@ NamePlural = Lax Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Defense will grow more easily, but its Sp. Def will grow more slowly.
 #-------------------------------
 [RELAXEDMINT]
@@ -3259,7 +3259,7 @@ NamePlural = Relaxed Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Defense will grow more easily, but its Speed will grow more slowly.
 #-------------------------------
 [MODESTMINT]
@@ -3268,7 +3268,7 @@ NamePlural = Modest Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Sp. Atk will grow more easily, but its Attack will grow more slowly.
 #-------------------------------
 [MILDMINT]
@@ -3277,7 +3277,7 @@ NamePlural = Mild Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Sp. Atk will grow more easily, but its Defense will grow more slowly.
 #-------------------------------
 [RASHMINT]
@@ -3286,7 +3286,7 @@ NamePlural = Rash Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Sp. Atk will grow more easily, but its Sp. Def will grow more slowly.
 #-------------------------------
 [QUIETMINT]
@@ -3295,7 +3295,7 @@ NamePlural = Quiet Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Sp. Atk will grow more easily, but its Speed will grow more slowly.
 #-------------------------------
 [CALMMINT]
@@ -3304,7 +3304,7 @@ NamePlural = Calm Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Sp. Def will grow more easily, but its Attack will grow more slowly.
 #-------------------------------
 [GENTLEMINT]
@@ -3313,7 +3313,7 @@ NamePlural = Gentle Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Sp. Def will grow more easily, but its Defense will grow more slowly.
 #-------------------------------
 [CAREFULMINT]
@@ -3322,7 +3322,7 @@ NamePlural = Careful Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Sp. Def will grow more easily, but its Sp. Atk will grow more slowly.
 #-------------------------------
 [SASSYMINT]
@@ -3331,7 +3331,7 @@ NamePlural = Sassy Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Sp. Def will grow more easily, but its Speed will grow more slowly.
 #-------------------------------
 [TIMIDMINT]
@@ -3340,7 +3340,7 @@ NamePlural = Timid Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Speed will grow more easily, but its Attack will grow more slowly.
 #-------------------------------
 [HASTYMINT]
@@ -3349,7 +3349,7 @@ NamePlural = Hasty Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Speed will grow more easily, but its Defense will grow more slowly.
 #-------------------------------
 [JOLLYMINT]
@@ -3358,7 +3358,7 @@ NamePlural = Jolly Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Speed will grow more easily, but its Sp. Atk will grow more slowly.
 #-------------------------------
 [NAIVEMINT]
@@ -3367,7 +3367,7 @@ NamePlural = Naive Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, its Speed will grow more easily, but its Sp. Def will grow more slowly.
 #-------------------------------
 [SERIOUSMINT]
@@ -3376,7 +3376,7 @@ NamePlural = Serious Mints
 Pocket = 2
 Price = 20
 FieldUse = OnPokemon
-Flags = Fling_10
+Flags = Fling_10,TastyTreatItem
 Description = When a Pokémon smells this mint, all of its stats will grow at an equal rate.
 #-------------------------------
 [ABILITYCAPSULE]
@@ -4745,7 +4745,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_FIRE_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FIRE_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to recover from paralysis.
 #-------------------------------
 [CHESTOBERRY]
@@ -4755,7 +4755,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_WATER_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_WATER_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to recover from sleep.
 #-------------------------------
 [PECHABERRY]
@@ -4765,7 +4765,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_ELECTRIC_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_ELECTRIC_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to recover from poison.
 #-------------------------------
 [RAWSTBERRY]
@@ -4775,7 +4775,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_GRASS_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GRASS_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to recover from a burn.
 #-------------------------------
 [ASPEARBERRY]
@@ -4785,7 +4785,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_ICE_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_ICE_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to defrost it.
 #-------------------------------
 [LEPPABERRY]
@@ -4795,7 +4795,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnMove
-Flags = Berry,Fling_10,NaturalGift_FIGHTING_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FIGHTING_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to restore a move's PP by 10.
 #-------------------------------
 [ORANBERRY]
@@ -4805,7 +4805,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_POISON_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_POISON_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to heal the user by just 10 HP.
 #-------------------------------
 [PERSIMBERRY]
@@ -4814,7 +4814,7 @@ NamePlural = Persim Berries
 Pocket = 5
 Price = 20
 BattleUse = OnBattler
-Flags = Berry,Fling_10,NaturalGift_GROUND_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GROUND_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to recover from confusion.
 #-------------------------------
 [LUMBERRY]
@@ -4824,7 +4824,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_FLYING_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FLYING_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to recover from any status problem.
 #-------------------------------
 [SITRUSBERRY]
@@ -4834,7 +4834,7 @@ Pocket = 5
 Price = 20
 FieldUse = OnPokemon
 BattleUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_PSYCHIC_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_PSYCHIC_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = It may be used or held by a Pokémon to heal the user's HP a little.
 #-------------------------------
 [FIGYBERRY]
@@ -4842,7 +4842,7 @@ Name = Figy Berry
 NamePlural = Figy Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_BUG_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_BUG_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
 #-------------------------------
 [WIKIBERRY]
@@ -4850,7 +4850,7 @@ Name = Wiki Berry
 NamePlural = Wiki Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ROCK_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_ROCK_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
 #-------------------------------
 [MAGOBERRY]
@@ -4858,7 +4858,7 @@ Name = Mago Berry
 NamePlural = Mago Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GHOST_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GHOST_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
 #-------------------------------
 [AGUAVBERRY]
@@ -4866,7 +4866,7 @@ Name = Aguav Berry
 NamePlural = Aguav Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DRAGON_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_DRAGON_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
 #-------------------------------
 [IAPAPABERRY]
@@ -4874,7 +4874,7 @@ Name = Iapapa Berry
 NamePlural = Iapapa Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DARK_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_DARK_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it restores the user's HP in a pinch, but will cause confusion if it hates the taste.
 #-------------------------------
 [RAZZBERRY]
@@ -4882,7 +4882,7 @@ Name = Razz Berry
 NamePlural = Razz Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_STEEL_80
+Flags = Berry,Fling_10,NaturalGift_STEEL_80,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [BLUKBERRY]
@@ -4890,7 +4890,7 @@ Name = Bluk Berry
 NamePlural = Bluk Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FIRE_90
+Flags = Berry,Fling_10,NaturalGift_FIRE_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [NANABBERRY]
@@ -4898,7 +4898,7 @@ Name = Nanab Berry
 NamePlural = Nanab Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_WATER_90
+Flags = Berry,Fling_10,NaturalGift_WATER_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [WEPEARBERRY]
@@ -4906,7 +4906,7 @@ Name = Wepear Berry
 NamePlural = Wepear Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ELECTRIC_90
+Flags = Berry,Fling_10,NaturalGift_ELECTRIC_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [PINAPBERRY]
@@ -4914,7 +4914,7 @@ Name = Pinap Berry
 NamePlural = Pinap Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GRASS_90
+Flags = Berry,Fling_10,NaturalGift_GRASS_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [POMEGBERRY]
@@ -4923,7 +4923,7 @@ NamePlural = Pomeg Berries
 Pocket = 5
 Price = 20
 FieldUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_ICE_90
+Flags = Berry,Fling_10,NaturalGift_ICE_90,TastyTreatItem
 Description = Using it on a Pokémon makes it more friendly, but it also lowers its base HP.
 #-------------------------------
 [KELPSYBERRY]
@@ -4932,7 +4932,7 @@ NamePlural = Kelpsy Berries
 Pocket = 5
 Price = 20
 FieldUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_FIGHTING_90
+Flags = Berry,Fling_10,NaturalGift_FIGHTING_90,TastyTreatItem
 Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Attack stat.
 #-------------------------------
 [QUALOTBERRY]
@@ -4941,7 +4941,7 @@ NamePlural = Qualot Berries
 Pocket = 5
 Price = 20
 FieldUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_POISON_90
+Flags = Berry,Fling_10,NaturalGift_POISON_90,TastyTreatItem
 Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Defense stat.
 #-------------------------------
 [HONDEWBERRY]
@@ -4950,7 +4950,7 @@ NamePlural = Hondew Berries
 Pocket = 5
 Price = 20
 FieldUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_GROUND_90
+Flags = Berry,Fling_10,NaturalGift_GROUND_90,TastyTreatItem
 Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Sp. Atk stat.
 #-------------------------------
 [GREPABERRY]
@@ -4959,7 +4959,7 @@ NamePlural = Grepa Berries
 Pocket = 5
 Price = 20
 FieldUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_FLYING_90
+Flags = Berry,Fling_10,NaturalGift_FLYING_90,TastyTreatItem
 Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Sp. Def stat.
 #-------------------------------
 [TAMATOBERRY]
@@ -4968,7 +4968,7 @@ NamePlural = Tamato Berries
 Pocket = 5
 Price = 20
 FieldUse = OnPokemon
-Flags = Berry,Fling_10,NaturalGift_PSYCHIC_90
+Flags = Berry,Fling_10,NaturalGift_PSYCHIC_90,TastyTreatItem
 Description = Using it on a Pokémon makes it more friendly, but it also lowers its base Speed stat.
 #-------------------------------
 [CORNNBERRY]
@@ -4976,7 +4976,7 @@ Name = Cornn Berry
 NamePlural = Cornn Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_BUG_90
+Flags = Berry,Fling_10,NaturalGift_BUG_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [MAGOSTBERRY]
@@ -4984,7 +4984,7 @@ Name = Magost Berry
 NamePlural = Magost Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ROCK_90
+Flags = Berry,Fling_10,NaturalGift_ROCK_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [RABUTABERRY]
@@ -4992,7 +4992,7 @@ Name = Rabuta Berry
 NamePlural = Rabuta Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GHOST_90
+Flags = Berry,Fling_10,NaturalGift_GHOST_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [NOMELBERRY]
@@ -5000,7 +5000,7 @@ Name = Nomel Berry
 NamePlural = Nomel Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DRAGON_90
+Flags = Berry,Fling_10,NaturalGift_DRAGON_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [SPELONBERRY]
@@ -5008,7 +5008,7 @@ Name = Spelon Berry
 NamePlural = Spelon Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DARK_90
+Flags = Berry,Fling_10,NaturalGift_DARK_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [PAMTREBERRY]
@@ -5016,7 +5016,7 @@ Name = Pamtre Berry
 NamePlural = Pamtre Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_STEEL_90
+Flags = Berry,Fling_10,NaturalGift_STEEL_90,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [WATMELBERRY]
@@ -5024,7 +5024,7 @@ Name = Watmel Berry
 NamePlural = Watmel Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FIRE_100
+Flags = Berry,Fling_10,NaturalGift_FIRE_100,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [DURINBERRY]
@@ -5032,7 +5032,7 @@ Name = Durin Berry
 NamePlural = Durin Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_WATER_100
+Flags = Berry,Fling_10,NaturalGift_WATER_100,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [BELUEBERRY]
@@ -5040,7 +5040,7 @@ Name = Belue Berry
 NamePlural = Belue Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ELECTRIC_100
+Flags = Berry,Fling_10,NaturalGift_ELECTRIC_100,TastyTreatItem
 Description = In the Sinnoh region, they like to make sweets known as Poffins with this Berry.
 #-------------------------------
 [OCCABERRY]
@@ -5048,7 +5048,7 @@ Name = Occa Berry
 NamePlural = Occa Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FIRE_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FIRE_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Fire-type attack against the holding Pokémon.
 #-------------------------------
 [PASSHOBERRY]
@@ -5056,7 +5056,7 @@ Name = Passho Berry
 NamePlural = Passho Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_WATER_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_WATER_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Water-type attack against the holding Pokémon.
 #-------------------------------
 [WACANBERRY]
@@ -5064,7 +5064,7 @@ Name = Wacan Berry
 NamePlural = Wacan Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ELECTRIC_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_ELECTRIC_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Electric-type attack against the holding Pokémon.
 #-------------------------------
 [RINDOBERRY]
@@ -5072,7 +5072,7 @@ Name = Rindo Berry
 NamePlural = Rindo Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GRASS_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GRASS_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Grass-type attack against the holding Pokémon.
 #-------------------------------
 [YACHEBERRY]
@@ -5080,7 +5080,7 @@ Name = Yache Berry
 NamePlural = Yache Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ICE_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_ICE_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Ice-type attack against the holding Pokémon.
 #-------------------------------
 [CHOPLEBERRY]
@@ -5088,7 +5088,7 @@ Name = Chople Berry
 NamePlural = Chople Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FIGHTING_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FIGHTING_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Fighting-type attack against the holding Pokémon.
 #-------------------------------
 [KEBIABERRY]
@@ -5096,7 +5096,7 @@ Name = Kebia Berry
 NamePlural = Kebia Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_POISON_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_POISON_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Poison-type attack against the holding Pokémon.
 #-------------------------------
 [SHUCABERRY]
@@ -5104,7 +5104,7 @@ Name = Shuca Berry
 NamePlural = Shuca Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GROUND_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GROUND_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Ground-type attack against the holding Pokémon.
 #-------------------------------
 [COBABERRY]
@@ -5112,7 +5112,7 @@ Name = Coba Berry
 NamePlural = Coba Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FLYING_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FLYING_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Flying-type attack against the holding Pokémon.
 #-------------------------------
 [PAYAPABERRY]
@@ -5120,7 +5120,7 @@ Name = Payapa Berry
 NamePlural = Payapa Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_PSYCHIC_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_PSYCHIC_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Psychic-type attack against the holding Pokémon.
 #-------------------------------
 [TANGABERRY]
@@ -5128,7 +5128,7 @@ Name = Tanga Berry
 NamePlural = Tanga Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_BUG_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_BUG_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Bug-type attack against the holding Pokémon.
 #-------------------------------
 [CHARTIBERRY]
@@ -5136,7 +5136,7 @@ Name = Charti Berry
 NamePlural = Charti Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ROCK_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_ROCK_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Rock-type attack against the holding Pokémon.
 #-------------------------------
 [KASIBBERRY]
@@ -5144,7 +5144,7 @@ Name = Kasib Berry
 NamePlural = Kasib Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GHOST_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GHOST_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Ghost-type attack against the holding Pokémon.
 #-------------------------------
 [HABANBERRY]
@@ -5152,7 +5152,7 @@ Name = Haban Berry
 NamePlural = Haban Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DRAGON_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_DRAGON_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Dragon-type attack against the holding Pokémon.
 #-------------------------------
 [COLBURBERRY]
@@ -5160,7 +5160,7 @@ Name = Colbur Berry
 NamePlural = Colbur Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DARK_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_DARK_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Dark-type attack against the holding Pokémon.
 #-------------------------------
 [BABIRIBERRY]
@@ -5168,7 +5168,7 @@ Name = Babiri Berry
 NamePlural = Babiri Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_STEEL_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_STEEL_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a supereffective Steel-type attack against the holding Pokémon.
 #-------------------------------
 [ROSELIBERRY]
@@ -5176,7 +5176,7 @@ Name = Roseli Berry
 NamePlural = Roseli Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FAIRY_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FAIRY_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, this Berry will lessen the damage taken from one supereffective Fairy-type attack.
 #-------------------------------
 [CHILANBERRY]
@@ -5184,7 +5184,7 @@ Name = Chilan Berry
 NamePlural = Chilan Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_NORMAL_80,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_NORMAL_80,WeirdTrinketHeldItem,TastyTreatItem
 Description = Weakens a Normal-type attack against the Pokémon holding this berry.
 #-------------------------------
 [LIECHIBERRY]
@@ -5192,7 +5192,7 @@ Name = Liechi Berry
 NamePlural = Liechi Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GRASS_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GRASS_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it raises its Attack stat in a pinch.
 #-------------------------------
 [GANLONBERRY]
@@ -5200,7 +5200,7 @@ Name = Ganlon Berry
 NamePlural = Ganlon Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ICE_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_ICE_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it raises its Defense stat in a pinch.
 #-------------------------------
 [SALACBERRY]
@@ -5208,7 +5208,7 @@ Name = Salac Berry
 NamePlural = Salac Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FIGHTING_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FIGHTING_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it raises its Speed stat in a pinch.
 #-------------------------------
 [PETAYABERRY]
@@ -5216,7 +5216,7 @@ Name = Petaya Berry
 NamePlural = Petaya Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_POISON_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_POISON_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it raises its Sp. Atk stat in a pinch.
 #-------------------------------
 [APICOTBERRY]
@@ -5224,7 +5224,7 @@ Name = Apicot Berry
 NamePlural = Apicot Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GROUND_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GROUND_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it raises its Sp. Def stat in a pinch.
 #-------------------------------
 [LANSATBERRY]
@@ -5232,7 +5232,7 @@ Name = Lansat Berry
 NamePlural = Lansat Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FLYING_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FLYING_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it raises its critical-hit ratio in a pinch.
 #-------------------------------
 [STARFBERRY]
@@ -5240,7 +5240,7 @@ Name = Starf Berry
 NamePlural = Starf Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_PSYCHIC_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_PSYCHIC_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it sharply raises one of its stats in a pinch.
 #-------------------------------
 [ENIGMABERRY]
@@ -5248,7 +5248,7 @@ Name = Enigma Berry
 NamePlural = Enigma Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_BUG_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_BUG_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it restores its HP if it is hit by any supereffective attack.
 #-------------------------------
 [MICLEBERRY]
@@ -5256,7 +5256,7 @@ Name = Micle Berry
 NamePlural = Micle Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_ROCK_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_ROCK_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it raises the accuracy of a move just once in a pinch.
 #-------------------------------
 [CUSTAPBERRY]
@@ -5264,7 +5264,7 @@ Name = Custap Berry
 NamePlural = Custap Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_GHOST_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_GHOST_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, it gets to move first just once in a pinch.
 #-------------------------------
 [JABOCABERRY]
@@ -5272,7 +5272,7 @@ Name = Jaboca Berry
 NamePlural = Jaboca Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DRAGON_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_DRAGON_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon and a physical attack lands, the attacker also takes damage.
 #-------------------------------
 [ROWAPBERRY]
@@ -5280,7 +5280,7 @@ Name = Rowap Berry
 NamePlural = Rowap Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DARK_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_DARK_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon and a special attack lands, the attacker also takes damage.
 #-------------------------------
 [KEEBERRY]
@@ -5288,7 +5288,7 @@ Name = Kee Berry
 NamePlural = Kee Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_FAIRY_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_FAIRY_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, this Berry will increase the holder's Defense if it's hit with a physical move.
 #-------------------------------
 [MARANGABERRY]
@@ -5296,7 +5296,7 @@ Name = Maranga Berry
 NamePlural = Maranga Berries
 Pocket = 5
 Price = 20
-Flags = Berry,Fling_10,NaturalGift_DARK_100,WeirdTrinketHeldItem
+Flags = Berry,Fling_10,NaturalGift_DARK_100,WeirdTrinketHeldItem,TastyTreatItem
 Description = If held by a Pokémon, this Berry will increase the holder's Sp. Def if it's hit with a special move.
 #-------------------------------
 [GRASSMAIL]
@@ -5908,7 +5908,7 @@ NamePlural = Gracideas
 Pocket = 8
 Price = 0
 FieldUse = OnPokemon
-Flags = KeyItem
+Flags = KeyItem,TastyTreatItem
 Description = A flower sometimes bundled in bouquets to convey gratitude on special occasions like birthdays.
 #-------------------------------
 [REVEALGLASS]
@@ -6384,6 +6384,7 @@ Name = Royal Honey
 NamePlural = Royal Honey
 Pocket = 1
 Price = 0
+Flags = TastyTreatItem
 Description = Turns male Combee into its Guard Forme.
 #-------------------------------
 [LIGHTGOGGLES]
@@ -6416,7 +6417,7 @@ Name = Light Nut
 NamePlural = Light Nuts
 Pocket = 1
 Price = 0
-Flags = WeirdTrinketHeldItem
+Flags = WeirdTrinketHeldItem,TastyTreatItem
 Description = Pachirisu starts with double Def. and Sp.Def. but goes back to normal after being attacked.
 #-------------------------------
 [LIGHTROD]
@@ -6432,7 +6433,7 @@ Name = Light Seed
 NamePlural = Light Seeds
 Pocket = 1
 Price = 0
-Flags = WeirdTrinketHeldItem
+Flags = WeirdTrinketHeldItem,TastyTreatItem
 Description = Dedenne's electric and fairy attacks are boosted and have priority.
 #-------------------------------
 [ADRENALINERING]
@@ -7250,6 +7251,7 @@ NamePlural = Alolan Pancakes
 Pocket = 1
 Price = 2000
 FieldUse = OnPokemon
+Flags = TastyTreatItem
 Description = Feeding it to a Pokémon makes it more friendly toward you. If used on a Pikachu, followed by a Thunderstone, it will evolve into Alolan Raichu.
 #-------------------------------
 [POPROCK]
@@ -7258,6 +7260,7 @@ NamePlural = Pop Rocks
 Pocket = 1
 Price = 2000
 FieldUse = OnPokemon
+Flags = TastyTreatItem
 Description = A candy consumable.
 #-------------------------------
 [RISCIBERRY]
@@ -7266,7 +7269,7 @@ NamePlural = Risci Berries
 Pocket = 5
 Price = 2000
 BattleUse = OnBattler
-Flags = Berry,Fling_10
+Flags = Berry,Fling_10,TastyTreatItem
 Description = Doubles the power of super-effective moves upon use. However, also takes double damage from super-effective attacks.
 #-------------------------------
 [CRYSTALBALL]

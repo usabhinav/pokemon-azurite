@@ -133,6 +133,7 @@ module GameData
     def is_mega_stone?;      return has_flag?("MegaStone"); end   # Does NOT include Red Orb/Blue Orb
     def is_scent?;           return has_flag?("Scent"); end
     def is_weird_trinket_held_item?; return has_flag?("WeirdTrinketHeldItem"); end
+    def is_tasty_treat_item?; return has_flag?("TastyTreatItem"); end
 
     def is_important?
       return true if is_key_item? || is_HM? || is_TM?

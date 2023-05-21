@@ -26,6 +26,7 @@ class Battle::ActiveField
     @effects[PBEffects::WaterSportField] = 0
     @effects[PBEffects::WonderRoom]      = 0
     @effects[PBEffects::Darkened]        = false
+    @effects[PBEffects::InverseRoom]     = 0
     @defaultWeather  = :None
     @weather         = :None
     @weatherDuration = 0

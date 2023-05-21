@@ -129,6 +129,14 @@ class Battle::Move
     if has_bizarre_band && has_bizarre_band.pbHasType?(:MYSTIC) && ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
       ret = Effectiveness::SUPER_EFFECTIVE_ONE
     end
+    # Inverse Room (type resistances are inverted)
+    if @battle.field.effects[PBEffects::InverseRoom] > 0 && @battle.pbCheckAllyItem(:COSMOCUBE, target.index).nil?
+      if ret == Effectiveness::SUPER_EFFECTIVE_ONE
+        ret = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      elsif ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
+        ret = Effectiveness::SUPER_EFFECTIVE_ONE
+      end
+    end
     return ret
   end
 

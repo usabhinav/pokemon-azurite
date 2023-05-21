@@ -9864,9 +9864,9 @@ Category = Status
 Accuracy = 0
 TotalPP = 20
 Target = BothSides
-FunctionCode = 202
+FunctionCode = StartInvertAllBattlersTypeResistances
 Flags = CanMirrorMove
-Description = Super effective moves and not very effective moves are reversed for 5 turns.
+Description = Each Pokémon's type resistances are inverted for 5 turns.
 #-------------------------------
 [DISTRACTION]
 Name = Distraction

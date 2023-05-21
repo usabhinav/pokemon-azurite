@@ -776,6 +776,13 @@ MultipleForms.register(:CALYREX, {
   }
 })
 
+MultipleForms.register(:COMBEE, {
+  "getForm" => proc { |pkmn|
+    next 1 if pkmn.hasItem?(:ROYALHONEY) && pkmn.male?
+    next 0
+  }
+})
+
 
 #===============================================================================
 # Regional forms

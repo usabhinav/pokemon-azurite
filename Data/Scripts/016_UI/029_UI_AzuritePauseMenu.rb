@@ -710,9 +710,10 @@ class AzuriteMenu
   def pbCallPauseMenu(option, unallowed_text)
     # If condition is true, call the effect, else display message to player
     if call_menu_handler_condition_proc(option)
-      MenuHandlers.call(:pause_menu, option, "effect", @scene)
+      return MenuHandlers.call(:pause_menu, option, "effect", @scene)
     else
       pbMessage(unallowed_text)
+      return false
     end
   end
 
@@ -773,22 +774,22 @@ class AzuriteMenu
           case @scene.selected_text_col
           when 0
             # Party
-            pbCallPauseMenu(:party, _INTL("You don't have any Pokémon with you!"))
+            break if pbCallPauseMenu(:party, _INTL("You don't have any Pokémon with you!"))
           when 1
             # Pokedex
-            pbCallPauseMenu(:pokedex, _INTL("The Pokédex is not accessible at this time!"))
+            break if pbCallPauseMenu(:pokedex, _INTL("The Pokédex is not accessible at this time!"))
           when 2
             # Suite
 
           when 3
             # Map
-            pbCallPauseMenu(:town_map, _INTL("The map is not accessible at this time!"))
+            break if pbCallPauseMenu(:town_map, _INTL("The map is not accessible at this time!"))
           end
         when 2
           case @scene.selected_text_col
           when 0
             # Bag
-            pbCallPauseMenu(:bag, _INTL("The bag is not accessible at this time!"))
+            break if pbCallPauseMenu(:bag, _INTL("The bag is not accessible at this time!"))
           when 1
             # Mega evo.
 
@@ -805,7 +806,7 @@ class AzuriteMenu
           case @scene.selected_text_col
           when 0
             # Save
-            pbCallPauseMenu(:save, _INTL("Saving is not allowed at this time!"))
+            break if pbCallPauseMenu(:save, _INTL("Saving is not allowed at this time!"))
           when 1
             # Cr. record
 
@@ -819,13 +820,13 @@ class AzuriteMenu
         when 4
           # Settings
           if $DEBUG && pbConfirmMessage(_INTL("Open Debug menu?"))
-            MenuHandlers.call(:pause_menu, :debug, "effect", @scene)
+            break if MenuHandlers.call(:pause_menu, :debug, "effect", @scene)
           else
-            MenuHandlers.call(:pause_menu, :options, "effect", @scene)
+            break if MenuHandlers.call(:pause_menu, :options, "effect", @scene)
           end
         when 5
           # Exit
-          MenuHandlers.call(:pause_menu, :quit_game, "effect", @scene)
+          break if MenuHandlers.call(:pause_menu, :quit_game, "effect", @scene)
         end
       end      
       if Input.trigger?(Input::B)

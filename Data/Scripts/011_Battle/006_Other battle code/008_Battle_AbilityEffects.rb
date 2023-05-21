@@ -3440,9 +3440,12 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TASTYTREAT,
       next if b.damageState.unaffected || b.damageState.substitute
       next if !b.item
       next if b.unlosableItem?(b.item) || user.unlosableItem?(b.item)
-      food_items_with_battle_handler_list = [:LAVACOOKIE, :OLDGATEAU, :CASTELIACONE, :BERRYJUICE, :RAGECANDYBAR, :SWEETHEART, :FRESHWATER, :SODAPOP, :LEMONADE, :MOOMOOMILK, :ENERGYPOWDER, :ENERGYROOT, :HEALPOWDER, :CHERIBERRY, :CHESTOBERRY, :PECHABERRY, :RAWSTBERRY, :ASPEARBERRY, :ORANBERRY, :PERSIMBERRY, :LUMBERRY, :SITRUSBERRY, :LUMIOSEGALETTE, :SHALOURSABLE, :BIGMALASADA]
-      food_items_without_battle_handler_list = [:HONEY, :REDAPRICORN, :YELLOWAPRICORN, :BLUEAPRICORN, :GREENAPRICORN, :PINKAPRICORN, :WHITEAPRICORN, :BLACKAPRICORN, :TINYMUSHROOM, :BIGMUSHROOM, :BALMMUSHROOM, :LUCKYEGG, :BIGROOT, :BLACKSLUDGE, :LEFTOVERS, :MENTALHERB, :WHITEHERB, :POWERHERB, :ABSORBBULB, :MIRACLESEED, :SACREDASH, :REVIVALHERB, :LEPPABERRY, :FIGYBERRY, :WIKIBERRY, :MAGOBERRY, :AGUAVBERRY, :IAPAPABERRY, :RAZZBERRY, :BLUKBERRY, :NANABBERRY, :WEPEARBERRY, :PINAPBERRY, :POMEGBERRY, :KELPSYBERRY, :QUALOTBERRY, :HONDEWBERRY, :GREPABERRY, :TAMATOBERRY, :CORNNBERRY, :MAGOSTBERRY, :RABUTABERRY, :NOMELBERRY, :SPELONBERRY, :PAMTREBERRY, :WATMELBERRY, :DURINBERRY, :BELUEBERRY, :OCCABERRY, :PASSHOBERRY, :WACANBERRY, :RINDOBERRY, :YACHEBERRY, :CHOPLEBERRY, :KEBIABERRY, :SHUCABERRY, :COBABERRY, :PAYAPABERRY, :TANGABERRY, :CHARTIBERRY, :KASIBBERRY, :HABANBERRY, :COLBURBERRY, :BABIRIBERRY, :CHILANBERRY, :LIECHIBERRY, :GANLONBERRY, :SALACBERRY, :PETAYABERRY, :APICOTBERRY, :LANSATBERRY, :STARFBERRY, :ENIGMABERRY, :MICLEBERRY, :CUSTAPBERRY, :JABOCABERRY, :ROWAPBERRY, :GRACIDEA, :REDNECTAR, :YELLOWNECTAR, :PINKNECTAR, :PURPLENECTAR, :ELECTRICSEED, :PSYCHICSEED, :MISTYSEED, :GRASSYSEED, :LUMINOUSMOSS, :SNOWBALL, :WHIPPEDDREAM, :ROSELIBERRY, :KEEBERRY, :MARANGABERRY, :ROYALHONEY, :LIGHTNUT, :LIGHTSEED, :ALOLANPANCAKES, :POPROCK, :RISCIBERRY, :LONELYMINT, :ADAMANTMINT, :NAUGHTYMINT, :BRAVEMINT, :BOLDMINT, :IMPISHMINT, :LAXMINT, :RELAXEDMINT, :MODESTMINT, :MILDMINT, :RASHMINT, :QUIETMINT, :CALMMINT, :GENTLEMINT, :CAREFULMINT, :SASSYMINT, :TIMIDMINT, :HASTYMINT, :JOLLYMINT, :NAIVEMINT, :SERIOUSMINT, :SWEETAPPLE, :TARTAPPLE, :STRAWBERRYSWEET, :LOVESWEET, :BERRYSWEET, :CLOVERSWEET, :FLOWERSWEET, :STARSWEET, :RIBBONSWEET]
-      food_item_list = food_items_with_battle_handler_list.union(food_items_without_battle_handler_list)
+      # Items that have some additional effect when consumed with Tasty Treat through either an existing item handler or
+      # a custom effect that we define below
+      food_item_list = []
+      GameData::Item.each do |i|
+        food_item_list.push(i.id) if i.is_tasty_treat_item?
+      end
       next if !food_item_list.include?(b.item.id)
       battle.pbShowAbilitySplash(user)
       if b.hasActiveAbility?(:STICKYHOLD)
@@ -3458,28 +3461,98 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TASTYTREAT,
       b.effects[PBEffects::Unburden] = true if b.hasActiveAbility?(:UNBURDEN)
       if Battle::Scene::USE_ABILITY_SPLASH
         battle.pbDisplay(_INTL("{1} ate {2}'s {3}!",user.pbThis,
-           b.pbThis(true),old_target_item.name))
+           b.pbThis(true), old_target_item.name))
       else
         battle.pbDisplay(_INTL("{1} ate {2}'s {3} with {4}!",user.pbThis,
-           b.pbThis(true),old_target_item.name,user.abilityName))
+           b.pbThis(true), old_target_item.name, user.abilityName))
       end
-      user.pbRecoverHP(user.totalhp/4)
-      battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
-      if food_items_with_battle_handler_list.include?(old_target_item.id)
-        if old_target_item.id == :REVIVALHERB ||
-           ItemHandlers.triggerCanUseInBattle(old_target_item.id, user.pokemon, user, nil, nil, battle, nil, false)
-          ItemHandlers.triggerUseInBattle(old_target_item.id, user, battle)
-          ItemHandlers.triggerBattleUseOnBattler(old_target_item.id, user, battle.scene)
-          ItemHandlers.triggerBattleUseOnPokemon(old_target_item.id, user.pokemon, user, nil, battle.scene)
-        end
-      else
-        # TODO: alt effect
+      # All items consumed with Tasty Treat will at least restore 25% HP
+      user.pbRecoverHP(user.totalhp / 4) if user.canHeal?
+      battle.pbDisplay(_INTL("{1} restored some of its HP.", user.pbThis))
+      # Additional effects
+      # Temporarily "give" the user the item to hold, in case one of the item handlers removes the item after use.
+      old_user_item = user.item
+      user.item = old_target_item
+      # Trigger various item handlers. If an item has multiple of the below handlers, only the first one will be triggered.
+      effect_triggered = false
+      if !effect_triggered && Battle::ItemEffects.triggerHPHeal(old_target_item.id, user, battle, true)
+        effect_triggered = true
+      end
+      if !effect_triggered && Battle::ItemEffects.triggerOnEndOfUsingMoveStatRestore(old_target_item.id, user, battle, true)
+        effect_triggered = true
+      end
+      if !effect_triggered && Battle::ItemEffects.triggerOnBeingHitPositiveBerry(old_target_item.id, user, battle, true)
+        effect_triggered = true
+      end
+      if !effect_triggered && Battle::ItemEffects.triggerEndOfRoundHealing(old_target_item.id, user, battle)
+        effect_triggered = true
+      end
+      if !effect_triggered && Battle::ItemEffects.triggerTerrainStatBoost(old_target_item.id, user, battle)
+        effect_triggered = true
+      end
+      if !effect_triggered && Battle::ItemEffects.triggerStatusCure(old_target_item.id, user, battle, true)
+        effect_triggered = true
+      end
+      if !effect_triggered && ItemHandlers.hasCanUseInBattle(old_target_item.id) &&
+          ItemHandlers.triggerCanUseInBattle(old_target_item.id, user.pokemon, user, nil, nil, battle, nil, false)
+        ItemHandlers.triggerUseInBattle(old_target_item.id, user, battle)
+        ItemHandlers.triggerBattleUseOnBattler(old_target_item.id, user, battle.scene)
+        ItemHandlers.triggerBattleUseOnPokemon(old_target_item.id, user.pokemon, user, nil, battle.scene)
+        effect_triggered = true
+      end
+      # Trigger custom additional effects for the remaining items. Some items won't have additional effects, which is fine.
+      if !effect_triggered
         case old_target_item.id
-        when :HONEY
-          
+        when :TINYMUSHROOM
+          if user.canHeal?
+            user.pbRecoverHP(10)
+            battle.pbDisplay(_INTL("{1} restored a little more HP from the {2}!", user.pbThis, old_target_item.real_name))
+          end
+        when :BIGMUSHROOM, :BIGROOT
+          if user.canHeal?
+            user.pbRecoverHP(20)
+            battle.pbDisplay(_INTL("{1} restored a little more HP from the {2}!", user.pbThis, old_target_item.real_name))
+          end
+        when :BALMMUSHROOM
+          if user.canHeal?
+            user.pbRecoverHP(50)
+            battle.pbDisplay(_INTL("{1} restored some more HP from the {2}!", user.pbThis, old_target_item.real_name))
+          end
+        when :REVIVALHERB, :MAXHONEY
+          if user.canHeal?
+            user.pbRecoverHP(user.totalhp)
+          end
+          user.pbCureStatus(false)
+          user.pbCureConfusion
+          battle.pbDisplay(_INTL("{1} became healthy.", user.pbThis))
+        when :ABSORBBULB
+          if user.pbCanRaiseStatStage?(:SPECIAL_ATTACK, user)
+            user.pbRaiseStatStage(:SPECIAL_ATTACK, 1, user)
+          end
+        when :SNOWBALL
+          if user.pbCanRaiseStatStage?(:ATTACK, user)
+            user.pbRaiseStatStage(:ATTACK, 1, user)
+          end
+        when :POWERHERB
+          if user.pbCanRaiseStatStage?(:SPEED, user)
+            user.pbRaiseStatStage(:SPEED, 1, user)
+          end
+        when :LUMINOUSMOSS
+          if user.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, user)
+            user.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, user)
+          end
+        when :LIGHTNUT
+          if user.pbCanRaiseStatStage?(:DEFENSE, user)
+            user.pbRaiseStatStage(:DEFENSE, 1, user)
+          end
+          if user.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, user)
+            user.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, user)
+          end
         end
       end
       battle.pbHideAbilitySplash(user)
+      # Return original user item
+      user.item = old_user_item
       break
     end
   }

@@ -189,7 +189,7 @@ module Battle::ItemEffects
   #=============================================================================
 
   def self.triggerEndOfRoundHealing(item, battler, battle)
-    EndOfRoundHealing.trigger(item, battler, battle)
+    return EndOfRoundHealing.trigger(item, battler, battle)
   end
 
   def self.triggerEndOfRoundEffect(item, battler, battle)
@@ -2117,27 +2117,31 @@ Battle::ItemEffects::TerrainStatBoost.add(:PSYCHICSEED,
 Battle::ItemEffects::EndOfRoundHealing.add(:BLACKSLUDGE,
   proc { |item, battler, battle|
     if battler.pbHasType?(:POISON)
-      next if !battler.canHeal?
+      next false if !battler.canHeal?
       battle.pbCommonAnimation("UseItem", battler)
       battler.pbRecoverHP(battler.totalhp / 16)
       battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
          battler.pbThis, battler.itemName))
+      next true
     elsif battler.takesIndirectDamage?
       battle.pbCommonAnimation("UseItem", battler)
       battler.pbTakeEffectDamage(battler.totalhp / 8) { |hp_lost|
         battle.pbDisplay(_INTL("{1} is hurt by its {2}!", battler.pbThis, battler.itemName))
       }
+      next true
     end
+    next false
   }
 )
 
 Battle::ItemEffects::EndOfRoundHealing.add(:LEFTOVERS,
   proc { |item, battler, battle|
-    next if !battler.canHeal?
+    next false if !battler.canHeal?
     battle.pbCommonAnimation("UseItem", battler)
     battler.pbRecoverHP(battler.totalhp / 16)
     battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
        battler.pbThis, battler.itemName))
+    next true
   }
 )
 

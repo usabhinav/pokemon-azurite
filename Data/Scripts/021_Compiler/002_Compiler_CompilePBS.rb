@@ -490,7 +490,8 @@ module Compiler
       "Mulch",
       "MegaStone",
       "Scent",
-      "WeirdTrinketHeldItem"
+      "WeirdTrinketHeldItem",
+      "TastyTreatItem"
     ]
     for i in 0...flags.length
       flag = flags[i]

@@ -359,6 +359,11 @@ class Battle
         # Weird Trinket
         # We check for this one first so that if it changes into a held item that has its own switch in handler,
         # it will activate as soon as it changes to that item.
+        # Note: One thing each battle keeps track of is the list of items that each Pokemon was initially holding before
+        # the battle started (stored in @initialItems). Any item changes done on the Battler and Pokemon level during
+        # the battle get reverted to whatever was stored in @initialItems after the battle is over. This means that whatever
+        # Weird Trinket turns into during the battle will get reverted back to the Weird Trinket after the battle (this is
+        # anyways the desired effect).
         if b.hasActiveItem?(:WEIRDTRINKET)
           weird_trinket_items = []
           GameData::Item.each do |i|

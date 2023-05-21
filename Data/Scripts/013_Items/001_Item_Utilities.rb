@@ -33,6 +33,10 @@ module ItemHandlers
     return !UseOnPokemonMaximum[item].nil?
   end
 
+  def self.hasCanUseInBattle(item)
+    return !CanUseInBattle[item].nil?
+  end
+
   def self.hasUseInBattle(item)
     return !UseInBattle[item].nil?
   end

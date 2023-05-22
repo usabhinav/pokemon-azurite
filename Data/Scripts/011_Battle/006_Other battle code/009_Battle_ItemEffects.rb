@@ -2203,7 +2203,7 @@ Battle::ItemEffects::OnSwitchIn.add(:AIRBALLOON,
 
 Battle::ItemEffects::OnSwitchIn.add(:ROOMSERVICE,
   proc { |item, battler, battle|
-    next if battle.field.effects[PBEffects::TrickRoom] == 0
+    next if battle.field.effects[PBEffects::TrickRoom] == 0 || battle.pbCheckGlobalCosmoCube
     next if !battler.pbCanLowerStatStage?(:SPEED)
     battle.pbCommonAnimation("UseItem", battler)
     battler.pbLowerStatStage(:SPEED, 1, nil)

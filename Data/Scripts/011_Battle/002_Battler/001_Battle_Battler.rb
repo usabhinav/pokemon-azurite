@@ -97,7 +97,7 @@ class Battle::Battler
 
   def defense
     def_stat = @defense
-    def_stat = @spdef if @battle.field.effects[PBEffects::WonderRoom] > 0
+    def_stat = @spdef if @battle.field.effects[PBEffects::WonderRoom] > 0 && @battle.pbCheckAllyCosmoCube(@index).nil?
     def_stat += @effects[PBEffects::DynamicPower]
     def_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
     return def_stat
@@ -115,7 +115,7 @@ class Battle::Battler
 
   def spdef
     spdef_stat = @spdef
-    spdef_stat = @defense if @battle.field.effects[PBEffects::WonderRoom] > 0
+    spdef_stat = @defense if @battle.field.effects[PBEffects::WonderRoom] > 0 && @battle.pbCheckAllyCosmoCube(@index).nil?
     spdef_stat += @effects[PBEffects::DynamicPower]
     spdef_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
     return spdef_stat
@@ -551,7 +551,7 @@ class Battle::Battler
   def itemActive?(ignoreFainted = false)
     return false if fainted? && !ignoreFainted
     return false if @effects[PBEffects::Embargo] > 0
-    return false if @battle.field.effects[PBEffects::MagicRoom] > 0
+    return false if @battle.field.effects[PBEffects::MagicRoom] > 0 && !(@battle.allSameSideBattlers(@index).any? { |b| b.item == :COSMOCUBE && b.pbHasType?(:COSMIC) } )
     return false if @battle.corrosiveGas[@index % 2][@pokemonIndex]
     return false if hasActiveAbility?(:KLUTZ, ignoreFainted)
     return false if @battle.pbCheckGlobalAbility(:MAGICSHOW)

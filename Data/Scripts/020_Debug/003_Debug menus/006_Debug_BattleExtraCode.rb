@@ -160,7 +160,9 @@ module Battle::DebugVariables
     PBEffects::PayDay          => { name: "Pay Day additional prize money",   default: 0, max: Settings::MAX_MONEY },
     PBEffects::TrickRoom       => { name: "Trick Room duration",              default: 0 },
     PBEffects::WaterSportField => { name: "Water Sport duration (Gen 6+)",    default: 0 },
-    PBEffects::WonderRoom      => { name: "Wonder Room duration",             default: 0 }
+    PBEffects::WonderRoom      => { name: "Wonder Room duration",             default: 0 },
+    PBEffects::Darkened        => { name: "Darken was used",                  default: false },
+    PBEffects::InverseRoom     => { name: "Inverse Room duration",            default: 0 }
   }
 
   POSITION_EFFECTS = {

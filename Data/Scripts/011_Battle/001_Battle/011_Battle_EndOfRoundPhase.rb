@@ -562,6 +562,9 @@ class Battle
     # Magic Room
     pbEORCountDownFieldEffect(PBEffects::MagicRoom,
                               _INTL("Magic Room wore off, and held items' effects returned to normal!"))
+    # Inverse Room
+    pbEORCountDownFieldEffect(PBEffects::InverseRoom,
+    _INTL("Inverse Room wore off, and type resistances returned to normal!"))
   end
 
   #=============================================================================

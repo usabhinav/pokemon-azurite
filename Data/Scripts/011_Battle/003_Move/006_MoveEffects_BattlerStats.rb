@@ -1926,6 +1926,26 @@ class Battle::Move::StartSwapAllBattlersBaseDefensiveStats < Battle::Move
 end
 
 #===============================================================================
+# For 5 rounds, inverts each battlers' type resistances. (Inverse Room)
+#===============================================================================
+class Battle::Move::StartInvertAllBattlersTypeResistances < Battle::Move
+  def pbEffectGeneral(user)
+    if @battle.field.effects[PBEffects::InverseRoom] > 0
+      @battle.field.effects[PBEffects::InverseRoom] = 0
+      @battle.pbDisplay(_INTL("Inverse Room wore off, and type resistances returned to normal!"))
+    else
+      @battle.field.effects[PBEffects::InverseRoom] = 5
+      @battle.pbDisplay(_INTL("It created a bizarre area in which each Pokémon's type resistances were inverted!"))
+    end
+  end
+
+  def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
+    return if @battle.field.effects[PBEffects::InverseRoom] > 0   # No animation
+    super
+  end
+end
+
+#===============================================================================
 # Decreases the target's Sp. Atk or Sp. Def by 1 stage. (Relic Wave)
 #===============================================================================
 class Battle::Move::LowerTargetSpAtkOrSpDef < Battle::Move::TargetStatDownMove

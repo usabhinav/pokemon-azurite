@@ -199,4 +199,5 @@ module PBEffects
   WaterSportField = 11
   WonderRoom      = 12
   Darkened        = 13
+  InverseRoom     = 14
 end

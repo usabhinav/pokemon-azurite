@@ -190,7 +190,8 @@ module GameData
         :KYOGRE    => [:BLUEORB],
         :GROUDON   => [:REDORB],
         :ZACIAN    => [:RUSTEDSWORD],
-        :ZAMAZENTA => [:RUSTEDSHIELD]
+        :ZAMAZENTA => [:RUSTEDSHIELD],
+        :COMBEE    => [:ROYALHONEY],
       }
       return combos[species]&.include?(@id)
     end

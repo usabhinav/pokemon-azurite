@@ -136,7 +136,7 @@ class Battle
   def pbCalculatePriority(fullCalc = false, indexArray = nil)
     needRearranging = false
     if fullCalc
-      @priorityTrickRoom = (@field.effects[PBEffects::TrickRoom] > 0)
+      @priorityTrickRoom = (@field.effects[PBEffects::TrickRoom] > 0 && pbCheckGlobalCosmoCube.nil?)
       # Recalculate everything from scratch
       randomOrder = Array.new(maxBattlerIndex + 1) { |i| i }
       (randomOrder.length - 1).times do |i|   # Can't use shuffle! here
@@ -175,9 +175,9 @@ class Battle
       end
       needRearranging = true
     else
-      if (@field.effects[PBEffects::TrickRoom] > 0) != @priorityTrickRoom
+      if (@field.effects[PBEffects::TrickRoom] > 0 && pbCheckGlobalCosmoCube.nil?) != @priorityTrickRoom
         needRearranging = true
-        @priorityTrickRoom = (@field.effects[PBEffects::TrickRoom] > 0)
+        @priorityTrickRoom = (@field.effects[PBEffects::TrickRoom] > 0 && pbCheckGlobalCosmoCube.nil?)
       end
       # Recheck all battler speeds and changes to priority caused by abilities
       @priority.each do |entry|

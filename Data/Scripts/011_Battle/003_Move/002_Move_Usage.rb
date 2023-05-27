@@ -109,6 +109,18 @@ class Battle::Move
   end
 
   #=============================================================================
+  # Check if target is immune to the move because of its item
+  #=============================================================================
+  def pbImmunityByItem(user, target, show_message)
+    ret = false
+    if target.itemActive?
+      ret = Battle::ItemEffects.triggerMoveImmunity(target.item, user, target,
+                                                    self, @calcType, @battle, show_message)
+    end
+    return ret
+  end
+
+  #=============================================================================
   # Move failure checks
   #=============================================================================
   # Check whether the move fails completely due to move-specific requirements.

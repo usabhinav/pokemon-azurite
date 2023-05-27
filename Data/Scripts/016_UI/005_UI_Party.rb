@@ -580,7 +580,7 @@ class PokemonParty_Scene
   def getBGSuffix
     names = ["", "3Down", "5Down"]
     able_matrix = [
-      nil,
+      [0],
       [2, 0],
       [2, 2, 0],
       [2, 2, 1, 0],

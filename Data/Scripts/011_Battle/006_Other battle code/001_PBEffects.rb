@@ -141,6 +141,7 @@ module PBEffects
   SubtractionTypes    = 136
   StenchDoll          = 137
   RoughRockEffectLost = 138
+  LightNutActive      = 139
 
   #=============================================================================
   # These effects apply to a battler position

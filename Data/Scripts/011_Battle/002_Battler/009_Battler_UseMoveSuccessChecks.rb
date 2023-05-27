@@ -451,8 +451,9 @@ class Battle::Battler
       @battle.pbDisplay(_INTL("{1}'s {2} made it immune to Light-type attacks!", target.pbThis, target.itemName))
       return false
     end
-    # Immunity because of ability (intentionally before type immunity check)
+    # Immunity because of ability or item (intentionally before type immunity check)
     return false if move.pbImmunityByAbility(user, target, show_message)
+    return false if move.pbImmunityByItem(user, target, show_message)
     # Type immunity
     if move.pbDamagingMove? && Effectiveness.ineffective?(typeMod)
       PBDebug.log("[Target immune] #{target.pbThis}'s type immunity")

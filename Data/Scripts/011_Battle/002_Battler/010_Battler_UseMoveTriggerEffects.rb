@@ -99,6 +99,12 @@ class Battle::Battler
           end
         end        
       end
+      if target.effects[PBEffects::LightNutActive]
+        target.stages[:DEFENSE] = 0 if target.stages[:DEFENSE] > 0
+        target.stages[:SPECIAL_DEFENSE] = 0 if target.stages[:SPECIAL_DEFENSE] > 0
+        battle.pbDisplay(_INTL("{1}'s Defense and Sp. Def returned to normal!", target.pbThis))
+        target.effects[PBEffects::LightNutActive] = false
+      end
     end
     if target.opposes?(user)
       # Rage

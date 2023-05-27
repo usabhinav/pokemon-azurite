@@ -130,6 +130,42 @@ class DayCare
           (mother[2] && mother[0].hasItem?(:LIGHTBALL)))
         moves.push(:VOLTTACKLE)
       end
+      # Learn Volt Attract if a parent has a Light Battery and is in the Plusle or Minun families
+      if [:PLUSLE, :MINUN].include?(egg.species) &&
+         ((father[2] && father[0].hasItem?(:LIGHTBATTERY)) ||
+          (mother[2] && mother[0].hasItem?(:LIGHTBATTERY)))
+        moves.push(:VOLTATTRACT)
+      end
+      # Learn Volt Wave if a parent has a Light Bell and is in the Symphy family
+      if egg.species == :SYMPHY &&
+        ((father[2] && father[0].hasItem?(:LIGHTBELL)) ||
+          (mother[2] && mother[0].hasItem?(:LIGHTBELL)))
+        moves.push(:VOLTWAVE)
+      end
+      # Learn Volt Crash if a parent has a Light Goggles and is in the Emolga family
+      if egg.species == :EMOLGA &&
+        ((father[2] && father[0].hasItem?(:LIGHTGOGGLES)) ||
+          (mother[2] && mother[0].hasItem?(:LIGHTGOGGLES)))
+        moves.push(:VOLTCRASH)
+      end
+      # Learn Volt Roll if a parent has a Light Nut and is in the Pachirisu family
+      if egg.species == :PACHIRISU &&
+        ((father[2] && father[0].hasItem?(:LIGHTNUT)) ||
+          (mother[2] && mother[0].hasItem?(:LIGHTNUT)))
+        moves.push(:VOLTROLL)
+      end
+      # Learn Volt Seed if a parent has a Light Seed and is in the Dedenne family
+      if egg.species == :DEDENNE &&
+        ((father[2] && father[0].hasItem?(:LIGHTSEED)) ||
+          (mother[2] && mother[0].hasItem?(:LIGHTSEED)))
+        moves.push(:VOLTSEED)
+      end
+      # Learn Volt Spikes if a parent has a Light Rod and is in the Togedemaru family
+      if egg.species == :TOGEDEMARU &&
+        ((father[2] && father[0].hasItem?(:LIGHTROD)) ||
+          (mother[2] && mother[0].hasItem?(:LIGHTROD)))
+        moves.push(:VOLTSPIKES)
+      end
       return moves
     end
 

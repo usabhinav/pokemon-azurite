@@ -135,9 +135,9 @@ class Battle
         #       stage, it can be assumed that any battler with built-up Reverb damage is not
         #       immune to Sound-type damage.
         pbDisplay(_INTL("{1} felt the reverberations of the previous attack!",b.pbThis))
-        typemod = Effectiveness.calculate(:SOUND, b.types[0], b.types[1], b.effects[PBEffects::Type3])
+        typemod = Effectiveness.calculate(:SOUND, b.types[0], b.types[1], b.types[2]).to_f / Effectiveness::NORMAL_EFFECTIVE
         @scene.pbDamageAnimation(b)
-        b.pbTakeEffectDamage((b.effects[PBEffects::ReverbDamage]*typemod.to_f/8.0).round)
+        b.pbReduceHP((b.effects[PBEffects::ReverbDamage] * typemod).round, false)
         b.effects[PBEffects::ReverbDamage] = 0
       end
     end

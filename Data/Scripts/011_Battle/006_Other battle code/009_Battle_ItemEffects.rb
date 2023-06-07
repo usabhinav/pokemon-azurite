@@ -11,10 +11,12 @@ module Battle::ItemEffects
   # Battler's status problem
   StatusCure                      = ItemHandlerHash.new
   # Priority and turn order
+  PriorityChange                  = ItemHandlerHash.new
   PriorityBracketChange           = ItemHandlerHash.new
   PriorityBracketUse              = ItemHandlerHash.new
   # Move usage failures
   OnMissingTarget                 = ItemHandlerHash.new   # Blunder Policy
+  MoveImmunity                    = ItemHandlerHash.new
   # Accuracy calculation
   AccuracyCalcFromUser            = ItemHandlerHash.new
   AccuracyCalcFromTarget          = ItemHandlerHash.new
@@ -90,6 +92,10 @@ module Battle::ItemEffects
 
   #=============================================================================
 
+  def self.triggerPriorityChange(item, battler, move, priority)
+    return trigger(PriorityChange, item, battler, move, priority, ret: priority)
+  end
+
   def self.triggerPriorityBracketChange(item, battler, battle)
     return trigger(PriorityBracketChange, item, battler, battle, ret: 0)
   end
@@ -102,6 +108,10 @@ module Battle::ItemEffects
 
   def self.triggerOnMissingTarget(item, user, target, move, hit_num, battle)
     OnMissingTarget.trigger(item, user, target, move, hit_num, battle)
+  end
+
+  def self.triggerMoveImmunity(item, user, target, move, type, battle, show_message)
+    return trigger(MoveImmunity, item, user, target, move, type, battle, show_message)
   end
 
   #=============================================================================
@@ -711,6 +721,18 @@ Battle::ItemEffects::StatusCure.add(:DIZZYSPECS,
 )
 
 #===============================================================================
+# PriorityChange handlers
+#===============================================================================
+
+Battle::ItemEffects::PriorityChange.add(:LIGHTSEED,
+  proc { |item, battler, move, pri|
+    if battler.isSpecies?(:DEDENNE) && [:ELECTRIC, :FAIRY].include?(move.type)
+      next pri + 1
+    end
+  }
+)
+
+#===============================================================================
 # PriorityBracketChange handlers
 #===============================================================================
 
@@ -766,6 +788,27 @@ Battle::ItemEffects::OnMissingTarget.add(:BLUNDERPOLICY,
     user.pbRaiseStatStageByCause(:SPEED, 2, user, user.itemName)
     battle.pbDisplay(_INTL("The {1} was used up...", user.itemName))
     user.pbHeldItemTriggered(item)
+  }
+)
+
+#===============================================================================
+# MoveImmunity handlers
+#===============================================================================
+
+Battle::ItemEffects::MoveImmunity.add(:LIGHTBATTERY,
+  proc { |item, user, target, move, type, battle, show_message|
+    next false if ![:PLUSLE, :MINUN].include?(target.species)
+    next false if type != :ELECTRIC
+    battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!", target.pbThis, target.itemName, move.name))
+    battle.eachSameSideBattler(target.index) do |b|
+      if b.pbCanRaiseStatStage?(:ATTACK, b)
+        b.pbRaiseStatStage(:ATTACK, 1, b)
+      end
+      if b.pbCanRaiseStatStage?(:SPECIAL_ATTACK, b)
+        b.pbRaiseStatStage(:SPECIAL_ATTACK, 1, b)
+      end
+    end
+    next true
   }
 )
 
@@ -1219,6 +1262,23 @@ Battle::ItemEffects::DamageCalcFromUser.add(:SHINYPLATE,
 Battle::ItemEffects::DamageCalcFromUser.add(:SYNCHROPENDANT,
   proc { |item, user, target, move, mults, baseDmg, type|
     mults[:attack_multiplier] *= user.battle.pbGetSynchroPendantMultiplier(user)
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromUser.add(:LIGHTGOGGLES,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    if user.isSpecies?(:EMOLGA)
+      mults[:attack_multiplier] *= 2
+      mults[:base_damage_multiplier] *= 1.2 if [:ELECTRIC, :FLYING].include?(type)
+    end
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromUser.add(:LIGHTSEED,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    if user.isSpecies?(:DEDENNE)
+      mults[:base_damage_multiplier] *= 1.2 if [:ELECTRIC, :FAIRY].include?(type)
+    end
   }
 )
 
@@ -1840,9 +1900,10 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:THROATSPRAY,
 
 Battle::ItemEffects::AfterMoveUseFromUser.add(:CRUSHINGHAMMER,
   proc { |item, user, targets, move, numHits, battle|
-    next if !move.pbDamagingMove? || numHits==0
+    next if !move.pbDamagingMove? || numHits == 0
     targets.each do |t|
       next if t.damageState.unaffected || t.damageState.substitute
+      next if t.fainted?
       t.eachMove do |m|
         next if m.id!=t.lastRegularMoveUsed
         reduction = [4,m.pp].min
@@ -1867,9 +1928,10 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:GREATSHIELD,
 
 Battle::ItemEffects::AfterMoveUseFromUser.add(:SHODDYSLINGSHOT,
   proc { |item, user, targets, move, numHits, battle|
-    next if !move.pbDamagingMove? || numHits==0
+    next if !move.pbDamagingMove? || numHits == 0
     targets.each do |b|
       next if b.damageState.unaffected || b.damageState.substitute
+      next if b.fainted?
       next if !move.projectileBasedMove?
       b.pbFlinch
       user.pbConsumeItem
@@ -1879,11 +1941,12 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:SHODDYSLINGSHOT,
 
 Battle::ItemEffects::AfterMoveUseFromUser.add(:AMPLIFIER,
   proc { |item, user, targets, move, numHits, battle|
-    next if !move.pbDamagingMove? || numHits==0
+    next if !move.pbDamagingMove? || numHits == 0
     next if !user.pbHasType?(:SOUND)
     next if move.calcType != :SOUND
     targets.each do |t|
       next if t.damageState.unaffected || t.damageState.substitute
+      next if t.fainted?
       t.pbLowerStatStageByCause(:DEFENSE, 1, user, user.itemName) if t.pbCanLowerStatStage?(:DEFENSE, user)
       t.pbLowerStatStageByCause(:SPECIAL_DEFENSE, 1, user, user.itemName) if t.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user)
     end
@@ -1892,14 +1955,49 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:AMPLIFIER,
 
 Battle::ItemEffects::AfterMoveUseFromUser.add(:CLEARMINDTIARA,
   proc { |item, user, targets, move, numHits, battle|
-    next if !move.pbDamagingMove? || numHits==0
+    next if !move.pbDamagingMove? || numHits == 0
     next if !user.pbHasType?(:PSYCHIC)
     next if move.calcType != :PSYCHIC
     targets.each do |t|
       next if t.damageState.unaffected || t.damageState.substitute
+      next if t.fainted?
       next if !t.pbCanConfuse?(user, false)
       next if t.spatk >= 70
       t.pbConfuse
+    end
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:LIGHTBELL,
+  proc { |item, user, targets, move, numHits, battle|
+    next if !move.pbDamagingMove? || numHits == 0
+    next if !user.isSpecies?(:SYMPHY)
+    next if ![:SOUND, :ELECTRIC].include?(move.calcType)
+    targets.each do |t|
+      next if t.damageState.unaffected
+      next if t.fainted?
+      typemod = Effectiveness.calculate(:SOUND, t.types[0], t.types[1], t.types[2])
+      if !Effectiveness.ineffective?(typemod)
+        typemod = typemod.to_f / Effectiveness::NORMAL_EFFECTIVE
+        battle.pbDisplay(_INTL("{1} felt the reverberations of the previous attack from {2}'s {3}!",
+                         t.pbThis, user.pbThis, user.itemName))
+        battle.scene.pbDamageAnimation(t)
+        t.pbReduceHP((t.damageState.calcDamage.to_f * 0.3 * typemod).round, false)
+      end
+    end
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:LIGHTROD,
+  proc { |item, user, targets, move, numHits, battle|
+    next if !move.pbDamagingMove? || numHits == 0
+    next if !user.isSpecies?(:TOGEDEMARU)
+    next if ![:ELECTRIC, :STEEL].include?(move.calcType)
+    targets.each do |t|
+      next if t.damageState.unaffected || t.damageState.substitute
+      next if t.fainted?
+      next if battle.pbRandom(100) >= 10
+      t.pbFlinch
     end
   }
 )
@@ -2242,6 +2340,19 @@ Battle::ItemEffects::OnSwitchIn.add(:BIZARREBAND,
     next if !battler.pbHasType?(:MYSTIC)
     battle.pbDisplay(_INTL("{1}'s {2} turned all resistances into weaknesses!",
        battler.pbThis, battler.itemName))
+  }
+)
+
+Battle::ItemEffects::OnSwitchIn.add(:LIGHTNUT,
+  proc { |item, battler, battle|
+    next if !battler.isSpecies?(:PACHIRISU)
+    if battler.pbCanRaiseStatStage?(:DEFENSE, battler)
+      battler.pbRaiseStatStageByCause(:DEFENSE, 2, battler, battler.itemName)
+    end
+    if battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
+      battler.pbRaiseStatStageByCause(:SPECIAL_DEFENSE, 2, battler, battler.itemName)
+    end
+    battler.effects[PBEffects::LightNutActive] = true
   }
 )
 

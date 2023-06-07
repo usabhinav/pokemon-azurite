@@ -94,6 +94,7 @@ class Battle
     return false if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+    return false if @crystallization[side][owner] != -1 && @battlers[@crystallization[side][owner]].isSpecies?(:SUICUNE)
     return @megaEvolution[side][owner] == -1
   end
 
@@ -210,12 +211,13 @@ class Battle
     return false if @battlers[idxBattler].wild?
     return true if $DEBUG && Input.press?(Input::CTRL)
     return true if pbCheckGlobalAbility(:CRYSTALENERGY)
-    return false if @battlers[idxBattler].effects[PBEffects::SkyDrop]>=0
+    return false if @battlers[idxBattler].effects[PBEffects::SkyDrop] >= 0
     return false if !pbHasCrystalData?(idxBattler)
     return false if pbCheckGlobalAbility(:NEGATION)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    return @crystallization[side][owner]==-1
+    return false if @megaEvolution[side][owner] != -1 && @battlers[idxBattler].isSpecies?(:SUICUNE)
+    return @crystallization[side][owner] == -1
   end
 
   def pbRegisterCrystallization(idxBattler)
@@ -227,13 +229,13 @@ class Battle
   def pbUnregisterCrystallization(idxBattler)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    @crystallization[side][owner] = -1 if @crystallization[side][owner]==idxBattler
+    @crystallization[side][owner] = -1 if @crystallization[side][owner] == idxBattler
   end
 
   def pbToggleRegisteredCrystallization(idxBattler)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    if @crystallization[side][owner]==idxBattler
+    if @crystallization[side][owner] == idxBattler
       @crystallization[side][owner] = -1
     else
       @crystallization[side][owner] = idxBattler
@@ -243,7 +245,7 @@ class Battle
   def pbRegisteredCrystallization?(idxBattler)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    return @crystallization[side][owner]==idxBattler
+    return @crystallization[side][owner] == idxBattler
   end
 
   #=============================================================================

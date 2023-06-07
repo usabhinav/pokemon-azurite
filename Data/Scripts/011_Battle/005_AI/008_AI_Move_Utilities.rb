@@ -535,6 +535,13 @@ class Battle::AI
     if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::Minimize] && move.tramplesMinimize?
       multipliers[:final_damage_multiplier] *= 2
     end
+    # Risci Berry
+    if skill >= PBTrainerAI.highSkill && user.effects[PBEffects::RisciBerryActive] && Effectiveness.super_effective?(target.damageState.typeMod)
+      multipliers[:final_damage_multiplier] *= 2
+    end
+    if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::RisciBerryActive] && Effectiveness.super_effective?(target.damageState.typeMod)
+      multipliers[:final_damage_multiplier] *= 2
+    end
     # Move-specific base damage modifiers
     # TODO
     # Move-specific final damage modifiers

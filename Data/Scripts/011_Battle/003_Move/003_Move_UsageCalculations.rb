@@ -658,6 +658,13 @@ class Battle::Move
     if target.effects[PBEffects::Minimize] && tramplesMinimize?
       multipliers[:final_damage_multiplier] *= 2
     end
+    # Risci Berry
+    if user.effects[PBEffects::RisciBerryActive] && Effectiveness.super_effective?(target.damageState.typeMod)
+      multipliers[:final_damage_multiplier] *= 2
+    end
+    if target.effects[PBEffects::RisciBerryActive] && Effectiveness.super_effective?(target.damageState.typeMod)
+      multipliers[:final_damage_multiplier] *= 2
+    end
     # Move-specific base damage modifiers
     multipliers[:base_damage_multiplier] = pbBaseDamageMultiplier(multipliers[:base_damage_multiplier], user, target)
     # Move-specific final damage modifiers

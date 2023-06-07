@@ -305,6 +305,7 @@ class Battle::Battler
     @effects[PBEffects::StenchDoll]          = false
     @effects[PBEffects::RoughRockEffectLost] = false
     @effects[PBEffects::LightNutActive]      = false
+    @effects[PBEffects::RisciBerryActive]    = false
   end
 
   #=============================================================================

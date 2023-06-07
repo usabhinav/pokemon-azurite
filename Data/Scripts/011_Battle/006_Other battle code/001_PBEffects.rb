@@ -142,6 +142,7 @@ module PBEffects
   StenchDoll          = 137
   RoughRockEffectLost = 138
   LightNutActive      = 139
+  RisciBerryActive    = 140
 
   #=============================================================================
   # These effects apply to a battler position

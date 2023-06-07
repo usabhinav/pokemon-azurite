@@ -67,7 +67,7 @@ module Settings
   NO_MEGA_EVOLUTION = 34
   # An array of items which act as Crystallization triggers for Pokemon with
   # Crystal forms.
-  CRYSTALLIZATION_ITEMS = [:CRYSTALFRAGMENT]
+  CRYSTALLIZATION_ITEMS = [:CRYSTALFRAGMENT, :CRYSTALSUICUNITE]
 
   #=============================================================================
 

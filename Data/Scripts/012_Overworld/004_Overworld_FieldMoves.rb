@@ -848,7 +848,7 @@ def pbSwim
   end
   if pbConfirmMessage(_INTL("The water is dyed a deep blue...  Would you like to swim?"))
     surfbgm=pbGetMetadata(0,MetadataSurfBGM)
-    $PokemonTemp.dependentEvents.check_surf(true)
+    $game_temp.followers.check_surf(true)
     pbCueBGM(surfbgm,0.5) if surfbgm
     pbStartSwimming()
     return true

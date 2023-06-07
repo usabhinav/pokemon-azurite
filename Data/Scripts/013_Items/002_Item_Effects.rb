@@ -113,7 +113,7 @@ ItemHandlers::ConfirmUseInField.add(:ESCAPEROPE, proc { |item|
 
 def pbAntiRepel(item, steps)
   if $PokemonGlobal.anti_repel > 0
-    pbMessage(_INTL("There's already a perfume going. And it's expensive..."))
+    pbMessage(_INTL("There's already a Spritzee Perfume going. And it's expensive..."))
     return false
   end
   $stats.anti_repel_count += 1
@@ -126,7 +126,6 @@ ItemHandlers::UseInField.add(:SPRITZEEPERFUME, proc { |item|
   next pbAntiRepel(item, 200)
 })
 
-# Didn't feel it necessary to auto replenish or give the option to replenish.
 EventHandlers.add(:on_player_step_taken, :anti_repel_counter,
   proc {
     next if $PokemonGlobal.anti_repel <= 0 || $game_player.terrain_tag.ice   # Shouldn't count down if on ice
@@ -178,6 +177,30 @@ EventHandlers.add(:on_player_step_taken, :repel_counter,
       ret = screen.pbChooseItemScreen(proc { |item| repels.include?(item) })
     }
     pbUseItem($bag, ret) if ret
+  }
+)
+
+def pbTrainerRepel(item, steps)
+  if $PokemonGlobal.trainer_repel > 0
+    pbMessage(_INTL("There's already a Gloom Perfume going on. And it's expensive..."))
+    return false
+  end
+  $stats.trainer_repel_count += 1
+  pbUseItemMessage(item)
+  $PokemonGlobal.trainer_repel = steps
+  return true
+end
+
+ItemHandlers::UseInField.add(:GLOOMPERFUME, proc { |item|
+  next pbTrainerRepel(item, 150)
+})
+
+EventHandlers.add(:on_player_step_taken, :trainer_repel_counter,
+  proc {
+    next if $PokemonGlobal.trainer_repel <= 0 || $game_player.terrain_tag.ice   # Shouldn't count down if on ice
+    $PokemonGlobal.trainer_repel -= 1
+    next if $PokemonGlobal.trainer_repel > 0
+    pbMessage(_INTL("The repellent's effect wore off!"))
   }
 )
 
@@ -1510,5 +1533,17 @@ ItemHandlers::UseOnPokemon.add(:REINSOFUNITYUSED, proc { |item, qty, pkmn, scene
     scene.pbDisplay(_INTL("{1} changed Forme!", pkmn.name))
   }
   $bag.replace_item(:REINSOFUNITYUSED, :REINSOFUNITY)
+  next true
+})
+
+ItemHandlers::UseOnPokemon.add(:ALOLANPANCAKES, proc { |item, qty, pkmn, scene|
+  if pkmn.fainted?
+    scene.pbDisplay(_INTL("It won't have any effect."))
+    next false
+  end
+  pkmn.changeHappiness("levelup")
+  pkmn.alolan_pancakes_consumed = true
+  scene.pbRefresh
+  scene.pbDisplay(_INTL("{1} looks a little happier.", pkmn.name))
   next true
 })

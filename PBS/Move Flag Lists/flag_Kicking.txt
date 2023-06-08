@@ -5,3 +5,19 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag Kicking:
 
+High Jump Kick
+Jump Kick
+Thunderous Kick
+Low Sweep
+Rolling Kick
+Double Kick
+Triple Kick
+Low Kick
+Blaze Kick
+Trop Kick
+Triple Axel
+Mega Kick
+Flash Kick
+Kick Shower
+Stretch Kick
+Moon Kick

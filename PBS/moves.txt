@@ -59,7 +59,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = HealAllyOrDamageFoe
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling
 Description = Fires an exploding pollen puff at enemies, or a HP-restoring one at allies.
 #-------------------------------
 [LEECHLIFE]
@@ -96,7 +96,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = The user slashes at the foe by crossing its scythes or claws as if they were a pair of scissors.
 #-------------------------------
 [SIGNALBEAM]
@@ -146,7 +146,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = FlinchTarget
-Flags = Contact,CanProtect,CanMirrorMove,TramplesMinimize
+Flags = Contact,CanProtect,CanMirrorMove,TramplesMinimize,BallRolling
 EffectChance = 30
 Description = The user crushes its foes by rolling over them. This attack may make the target flinch.
 #-------------------------------
@@ -209,7 +209,7 @@ Accuracy = 95
 TotalPP = 20
 Target = NearOther
 FunctionCode = PowerHigherWithConsecutiveUse
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = The target is slashed with scythes or claws. Its power increases if it hits in succession.
 #-------------------------------
 [PINMISSILE]
@@ -221,7 +221,7 @@ Accuracy = 95
 TotalPP = 20
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = Sharp spikes are shot at the target in rapid succession. They hit two to five times in a row.
 #-------------------------------
 [TWINEEDLE]
@@ -467,7 +467,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = DisableTargetSoundMoves
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Speed
 EffectChance = 100
 Description = The user attacks the target's throat. The target cannot use sound-based moves for two turns.
 #-------------------------------
@@ -504,7 +504,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = The user slashes the target the instant an opportunity arises. Critical hits land more easily.
 #-------------------------------
 [SUCKERPUNCH]
@@ -529,7 +529,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = RemoveTargetItem
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Defense
 Description = The user slaps down the target's held item, preventing that item from being used in the battle.
 #-------------------------------
 [ASSURANCE]
@@ -627,7 +627,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = PursueSwitchingFoe
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Speed
 Description = An attack move that inflicts double damage if used on a target that is switching out of battle.
 #-------------------------------
 [BEATUP]
@@ -651,7 +651,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = ThrowUserItemAtTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = The user flings its held item at the target to attack. Its power and effects depend on the item.
 #-------------------------------
 [POWERTRIP]
@@ -772,7 +772,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = LowerTargetAtkSpAtk1SwitchOutUser
-Flags = CanProtect,CanMirrorMove,Sound
+Flags = CanProtect,CanMirrorMove,Sound,Projectile
 Description = With a parting threat, the user lowers the target's Attack and Sp. Atk stats. Then it switches out.
 #-------------------------------
 [QUASH]
@@ -795,6 +795,7 @@ TotalPP = 10
 Target = User
 Priority = 4
 FunctionCode = StealAndUseBeneficialStatusMove
+Flags = Speed
 Description = The user steals the effects of any healing or stat-changing move the foe attempts to use.
 #-------------------------------
 [SWITCHEROO]
@@ -816,7 +817,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = DisableTargetStatusMoves
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = The target is taunted into a rage that allows it to use only attack moves for three turns.
 #-------------------------------
 [TOPSYTURVY]
@@ -838,7 +839,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = DisableTargetUsingSameMoveConsecutively
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = The user torments and enrages the foe, making it incapable of using the same move twice in a row.
 #-------------------------------
 [ETERNABEAM]
@@ -995,7 +996,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = The user slashes the target with huge, sharp claws.
 #-------------------------------
 [BREAKINGSWIPE]
@@ -1034,7 +1035,7 @@ TotalPP = 10
 Target = NearOther
 Priority = -6
 FunctionCode = SwitchOutTargetDamagingMove
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Throwing
 Description = The user knocks away the target and drags out another Pokémon in its party. In the wild, the battle ends.
 #-------------------------------
 [DRAGONDARTS]
@@ -1046,7 +1047,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = HitTwoTimesTargetThenTargetAlly
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user attacks twice using Dreepy. If there are two targets, this move hits each one once.
 #-------------------------------
 [DUALCHOP]
@@ -1083,7 +1084,7 @@ Accuracy = 90
 TotalPP = 20
 Target = NearOther
 FunctionCode = HitTwoToFiveTimesRaiseUserSpd1LowerUserDef1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = Attacks by shooting scales two to five times in a row. Boosts the user's Speed but lowers its Defense.
 #-------------------------------
 [DRAGONRAGE]
@@ -1155,7 +1156,7 @@ Accuracy = 50
 TotalPP = 5
 Target = NearOther
 FunctionCode = ParalyzeTarget
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 EffectChance = 100
 Description = The user fires an electric blast like a cannon to inflict damage and cause paralysis.
 #-------------------------------
@@ -1243,7 +1244,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = DoublePowerIfTargetNotActed
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,HeadBased
 Description = Stabs the target with an electrified beak. Power is doubled if the user attacks first.
 #-------------------------------
 [DISCHARGE]
@@ -1444,7 +1445,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = PowerHigherWithUserFasterThanTarget
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = The user hurls an electric orb at the foe. It does more damage the faster the user is.
 #-------------------------------
 [CHARGE]
@@ -1528,7 +1529,7 @@ Accuracy = 90
 TotalPP = 20
 Target = NearOther
 FunctionCode = ParalyzeTargetIfNotTypeImmune
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = A weak electric charge is launched at the target. It causes paralysis if it hits.
 #-------------------------------
 [LIGHTOFRUIN]
@@ -1841,7 +1842,7 @@ Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = CrashDamageIfFailsUnusableInGravity
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = The target is attacked with a knee kick from a jump. If it misses, the user is hurt instead.
 #-------------------------------
 [CLOSECOMBAT]
@@ -1865,7 +1866,7 @@ Accuracy = 70
 TotalPP = 5
 Target = NearOther
 FunctionCode = LowerTargetSpDef1
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 EffectChance = 10
 Description = The user heightens its mental focus and unleashes its power. It may also lower the target's Sp. Def.
 #-------------------------------
@@ -1939,7 +1940,7 @@ Accuracy = 95
 TotalPP = 10
 Target = NearOther
 FunctionCode = CrashDamageIfFailsUnusableInGravity
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = The user jumps up high, then strikes with a kick. If the kick misses, the user hurts itself.
 #-------------------------------
 [SACREDSWORD]
@@ -1963,7 +1964,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetDefense1
-Flags = Contact,CanProtect,CanMirrorMove,CannotMetronome
+Flags = Contact,CanProtect,CanMirrorMove,CannotMetronome,Kicking
 EffectChance = 100
 Description = Overwhelms the target with lightning-like movement, then kicks. Lowers the target's Defense stat.
 #-------------------------------
@@ -2000,7 +2001,7 @@ Accuracy = 0
 TotalPP = 20
 Target = Other
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,Pulse,Bomb
+Flags = CanProtect,CanMirrorMove,Pulse,Bomb,BallRolling,Projectile
 Description = The user looses a blast of aura power from deep within its body. This move is certain to hit.
 #-------------------------------
 [BODYPRESS]
@@ -2048,7 +2049,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = HealUserByHalfOfDamageDone
-Flags = Contact,CanProtect,CanMirrorMove,Punching
+Flags = Contact,CanProtect,CanMirrorMove,Punching,Defense
 Description = An energy-draining punch. The user's HP is restored by half the damage taken by the target.
 #-------------------------------
 [VITALTHROW]
@@ -2085,7 +2086,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = LowerTargetSpeed1
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 EffectChance = 100
 Description = The user attacks the target's legs swiftly, reducing the target's Speed stat.
 #-------------------------------
@@ -2099,7 +2100,7 @@ TotalPP = 10
 Target = NearOther
 Priority = -6
 FunctionCode = SwitchOutTargetDamagingMove
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Throwing
 Description = The user throws the target and drags out another Pokémon in its party. In the wild, the battle ends.
 #-------------------------------
 [FORCEPALM]
@@ -2137,7 +2138,7 @@ Accuracy = 85
 TotalPP = 15
 Target = NearOther
 FunctionCode = FlinchTarget
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 EffectChance = 30
 Description = The user lashes out with a quick, spinning kick. It may also make the target flinch.
 #-------------------------------
@@ -2226,7 +2227,7 @@ Accuracy = 100
 TotalPP = 30
 Target = NearOther
 FunctionCode = HitTwoTimes
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = The target is quickly kicked twice in succession using both feet.
 #-------------------------------
 [ARMTHRUST]
@@ -2250,7 +2251,7 @@ Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = HitThreeTimesPowersUpWithEachHit
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = A consecutive three-kick attack that becomes more powerful with each successive hit.
 #-------------------------------
 [COUNTER]
@@ -2263,7 +2264,7 @@ TotalPP = 20
 Target = None
 Priority = -5
 FunctionCode = CounterPhysicalDamage
-Flags = Contact,CanProtect
+Flags = Contact,CanProtect,Defense
 Description = A retaliation move that counters any physical attack, inflicting double the damage taken.
 #-------------------------------
 [FINALGAMBIT]
@@ -2287,7 +2288,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = PowerHigherWithTargetWeight
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = A powerful low kick that makes the foe fall over. It inflicts greater damage on heavier foes.
 #-------------------------------
 [REVERSAL]
@@ -2311,7 +2312,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = FixedDamageUserLevel
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Throwing,Defense
 Description = The target is thrown using the power of gravity. It inflicts damage equal to the user's level.
 #-------------------------------
 [BULKUP]
@@ -2344,6 +2345,7 @@ TotalPP = 5
 Target = User
 Priority = 4
 FunctionCode = ProtectUser
+Flags = Defense
 Description = It enables the user to evade all attacks. Its chance of failing rises if it is used in succession.
 #-------------------------------
 [MATBLOCK]
@@ -2409,7 +2411,7 @@ Accuracy = 90
 TotalPP = 5
 Target = NearOther
 FunctionCode = AttackAndSkipNextTurn
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The target is razed by a fiery explosion. The user must rest on the next turn, however.
 #-------------------------------
 [ERUPTION]
@@ -2508,7 +2510,7 @@ Accuracy = 90
 TotalPP = 5
 Target = NearOther
 FunctionCode = BurnTarget
-Flags = CanProtect,CanMirrorMove,ThawsUser,Bomb,CannotMetronome
+Flags = CanProtect,CanMirrorMove,ThawsUser,Bomb,CannotMetronome,BallRolling,Projectile
 EffectChance = 10
 Description = Attacks by igniting a small stone and launching it as a fiery ball. May also burn the target.
 #-------------------------------
@@ -2584,7 +2586,7 @@ Accuracy = 100
 TotalPP = 5
 Target = AllNearOthers
 FunctionCode = BurnTarget
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 EffectChance = 30
 Description = An inferno of scarlet flames torches everything around the user. It may leave the foe with a burn.
 #-------------------------------
@@ -2623,7 +2625,7 @@ Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = BurnTarget
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Kicking
 EffectChance = 10
 Description = The user launches a kick with a high critical-hit ratio. It may also leave the target with a burn.
 #-------------------------------
@@ -2789,7 +2791,7 @@ Accuracy = 100
 TotalPP = 25
 Target = NearOther
 FunctionCode = BurnTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 10
 Description = The target is attacked with small flames. It may also leave the target with a burn.
 #-------------------------------
@@ -2825,6 +2827,7 @@ Accuracy = 0
 TotalPP = 5
 Target = BothSides
 FunctionCode = StartSunWeather
+Flags = Speed
 Description = The user intensifies the sun for five turns, powering up Fire-type moves.
 #-------------------------------
 [WILLOWISP]
@@ -2910,7 +2913,7 @@ TotalPP = 15
 Target = NearOther
 Priority = -3
 FunctionCode = BurnAttackerBeforeUserActs
-Flags = CanProtect,Bomb
+Flags = CanProtect,Bomb,HeadBased,BallRolling
 Description = The user heats up its beak before attacking. Making contact in this time results in a burn.
 #-------------------------------
 [FLY]
@@ -2971,7 +2974,7 @@ Accuracy = 95
 TotalPP = 15
 Target = Other
 FunctionCode = FlinchTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Slashing
 EffectChance = 30
 Description = The user attacks with a blade of air that slices even the sky. It may also make the target flinch.
 #-------------------------------
@@ -3009,7 +3012,7 @@ Accuracy = 95
 TotalPP = 25
 Target = AllNearFoes
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = The user launches razor-like wind to slash the opposing team. Critical hits land more easily.
 #-------------------------------
 [PLUCK]
@@ -3033,7 +3036,7 @@ Accuracy = 100
 TotalPP = 10
 Target = Other
 FunctionCode = TwoTurnAttackInvulnerableInSkyTargetCannotAct
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Throwing
 Description = The user takes the foe into the sky, then drops it on the next turn. The foe cannot attack while airborne.
 #-------------------------------
 [WINGATTACK]
@@ -3157,7 +3160,7 @@ Accuracy = 100
 TotalPP = 5
 Target = AllNearFoes
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,Projectile
 Description = The user attacks by sending a frightful amount of small ghosts at opposing Pokémon.
 #-------------------------------
 [SHADOWFORCE]
@@ -3242,7 +3245,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = LowerTargetSpDef1
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 EffectChance = 20
 Description = The user hurls a shadowy blob at the target. It may also lower the target's Sp. Def stat.
 #-------------------------------
@@ -3255,7 +3258,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = TrapTargetInBattle
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 100
 Description = The user attacks while also stitching the target's shadow to the ground to prevent it fleeing.
 #-------------------------------
@@ -3268,7 +3271,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = The user slashes with a sharp claw made from shadows. Critical hits land more easily.
 #-------------------------------
 [HEX]
@@ -3356,7 +3359,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = FixedDamageUserLevel
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Defense
 Description = The user makes the foe see a frightening mirage. It inflicts damage matching the user's level.
 #-------------------------------
 [CONFUSERAY]
@@ -3466,7 +3469,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = TwoTurnAttackOneTurnInSun
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = The user gathers light energy into a blade, attacking the target on the next turn.
 #-------------------------------
 [PETALDANCE]
@@ -3539,7 +3542,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetSpDef1
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 EffectChance = 10
 Description = The user draws power from nature and fires it at the target. It may also lower the target's Sp. Def.
 #-------------------------------
@@ -3552,7 +3555,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = The user handles a sharp leaf like a sword and attacks by slashing. It has a high critical-hit ratio.
 #-------------------------------
 [PETALBLIZZARD]
@@ -3614,7 +3617,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetDefense1PowersUpInGravity
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,Projectile
 EffectChance = 100
 Description = The user inflicts damage by dropping an apple from high above. This also lowers the target's Defense.
 #-------------------------------
@@ -3627,7 +3630,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = The user slams a barrage of hard-shelled seeds down on the target from above.
 #-------------------------------
 [GIGADRAIN]
@@ -3675,7 +3678,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = LowerTargetAttack1
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 EffectChance = 100
 Description = The user lands an intense tropical kick on the target. This also lowers the target's Attack stat.
 #-------------------------------
@@ -3701,7 +3704,7 @@ Accuracy = 0
 TotalPP = 20
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user scatters curious leaves that chase the target. This attack will not miss.
 #-------------------------------
 [NEEDLEARM]
@@ -3726,7 +3729,7 @@ Accuracy = 95
 TotalPP = 25
 Target = AllNearFoes
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = Sharp-edged leaves are launched to slash at the opposing team. Critical hits land more easily.
 #-------------------------------
 [VINEWHIP]
@@ -3762,7 +3765,7 @@ Accuracy = 100
 TotalPP = 40
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user attacks by pelting the target with leaves.
 #-------------------------------
 [MEGADRAIN]
@@ -3798,7 +3801,7 @@ Accuracy = 100
 TotalPP = 30
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = The user forcefully shoots seeds at the target. Two to five seeds are shot in rapid succession.
 #-------------------------------
 [ABSORB]
@@ -4066,7 +4069,7 @@ Accuracy = 100
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = HitsTargetInSkyGroundsTarget
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,Projectile
 Description = This move also hits Pokémon that are in the air. Those Pokémon are knocked down to the ground.
 #-------------------------------
 [THOUSANDWAVES]
@@ -4152,7 +4155,7 @@ Accuracy = 85
 TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetAccuracy1
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling
 EffectChance = 30
 Description = The user launches a hard-packed mud ball to attack. It may also lower the target's accuracy.
 #-------------------------------
@@ -4178,7 +4181,7 @@ Accuracy = 95
 TotalPP = 15
 Target = NearOther
 FunctionCode = LowerTargetSpeed1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 100
 Description = The user attacks by hurling a blob of mud at the target. It also reduces the target's Speed.
 #-------------------------------
@@ -4227,7 +4230,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetAccuracy1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 100
 Description = The user hurls mud in the target's face to inflict damage and lower its accuracy.
 #-------------------------------
@@ -4304,6 +4307,7 @@ Accuracy = 0
 TotalPP = 20
 Target = FoeSide
 FunctionCode = AddSpikesToFoeSide
+Flags = Defense
 Description = The user lays a trap of spikes at the foe's feet. The trap hurts foes that switch into battle.
 #-------------------------------
 [FREEZESHOCK]
@@ -4341,7 +4345,7 @@ Accuracy = 100
 TotalPP = 5
 Target = AllNearFoes
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,Projectile
 Description = The user attacks by hurling a blizzard-cloaked icicle lance at opposing Pokémon.
 #-------------------------------
 [BLIZZARD]
@@ -4508,7 +4512,7 @@ TotalPP = 30
 Target = NearOther
 Priority = 1
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user flash freezes chunks of ice and hurls them at the target. This move always goes first.
 #-------------------------------
 [POWDERSNOW]
@@ -4533,7 +4537,7 @@ Accuracy = 90
 TotalPP = 20
 Target = NearOther
 FunctionCode = MultiTurnAttackPowersUpEachTurn
-Flags = Contact,CanProtect,CanMirrorMove,Bomb
+Flags = Contact,CanProtect,CanMirrorMove,Bomb,BallRolling
 Description = The user continually rolls into the target over five turns. It becomes stronger each time it hits.
 #-------------------------------
 [ICICLESPEAR]
@@ -4545,7 +4549,7 @@ Accuracy = 100
 TotalPP = 30
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user launches sharp icicles at the target. It strikes two to five times in a row.
 #-------------------------------
 [TRIPLEAXEL]
@@ -4557,7 +4561,7 @@ Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = HitThreeTimesPowersUpWithEachHit
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = A consecutive three-kick attack that becomes more powerful with each successful hit.
 #-------------------------------
 [SHEERCOLD]
@@ -4717,7 +4721,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = RecoilQuarterOfDamageDealt
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,HeadBased
 Description = The user charges its head into the foe, using its powerful guard hair. The user also takes damage.
 #-------------------------------
 [MEGAKICK]
@@ -4729,7 +4733,7 @@ Accuracy = 75
 TotalPP = 5
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = The target is attacked by a kick launched with muscle-packed power.
 #-------------------------------
 [MULTIATTACK]
@@ -4777,7 +4781,7 @@ Accuracy = 75
 TotalPP = 10
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = A large egg is hurled at the target with maximum force to inflict damage.
 #-------------------------------
 [JUDGMENT]
@@ -4876,7 +4880,7 @@ TotalPP = 5
 Target = NearOther
 Priority = 2
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Speed
 Description = The user charges the target at blinding speed. This attack always goes before any other move.
 #-------------------------------
 [HYPERFANG]
@@ -4913,7 +4917,7 @@ Accuracy = 100
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = TwoTurnAttack
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = A two-turn attack. Blades of wind hit the foe on the second turn. Critical hits land more easily.
 #-------------------------------
 [SLAM]
@@ -4962,7 +4966,7 @@ Accuracy = 95
 TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetDefense1
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 EffectChance = 50
 Description = The user slashes the target with hard and sharp claws. It may also lower the target's Defense.
 #-------------------------------
@@ -5025,7 +5029,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = FlinchTarget
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,HeadBased
 EffectChance = 30
 Description = The user sticks out its head and attacks by charging into the foe. It may also make the target flinch.
 #-------------------------------
@@ -5063,7 +5067,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = The target is attacked with a slash of claws or blades. Critical hits land more easily.
 #-------------------------------
 [SMELLINGSALTS]
@@ -5148,7 +5152,7 @@ Accuracy = 0
 TotalPP = 20
 Target = AllNearFoes
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile,Speed
 Description = Star-shaped rays are shot at the opposing team. This attack never misses.
 #-------------------------------
 [VISEGRIP]
@@ -5172,7 +5176,7 @@ Accuracy = 95
 TotalPP = 30
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = The target is cut with a scythe or a claw. It can also be used to cut down thin trees.
 #-------------------------------
 [RAPIDSPIN]
@@ -5197,7 +5201,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = FlinchTargetFailsIfUserNotAsleep
-Flags = CanProtect,CanMirrorMove,Sound
+Flags = CanProtect,CanMirrorMove,Sound,Defense
 EffectChance = 30
 Description = An attack that can be used only if the user is asleep. The harsh noise may also make the target flinch.
 #-------------------------------
@@ -5234,7 +5238,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = TypeAndPowerDependOnWeather
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = An attack move that varies in power and type depending on the weather.
 #-------------------------------
 [ECHOEDVOICE]
@@ -5272,7 +5276,7 @@ Accuracy = 100
 TotalPP = 40
 Target = NearOther
 FunctionCode = CannotMakeTargetFaint
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = A restrained attack that prevents the target from fainting. The target is left with at least 1 HP.
 #-------------------------------
 [HOLDBACK]
@@ -5296,7 +5300,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = AddMoneyGainedFromBattle
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = Numerous coins are hurled at the target to inflict damage. Money is earned after battle.
 #-------------------------------
 [POUND]
@@ -5333,7 +5337,7 @@ Accuracy = 100
 TotalPP = 35
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = Hard, pointed, and sharp claws rake the target to inflict damage.
 #-------------------------------
 [TACKLE]
@@ -5430,7 +5434,7 @@ Accuracy = 80
 TotalPP = 15
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = The target is raked with sharp claws or scythes for two to five times in quick succession.
 #-------------------------------
 [BARRAGE]
@@ -5442,7 +5446,7 @@ Accuracy = 85
 TotalPP = 20
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = Round objects are hurled at the target to strike two to five times in a row.
 #-------------------------------
 [BIND]
@@ -5478,7 +5482,7 @@ Accuracy = 85
 TotalPP = 20
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Projectile
 Description = The target is jabbed repeatedly with a horn or beak two to five times in a row.
 #-------------------------------
 [WRAP]
@@ -5882,6 +5886,7 @@ Accuracy = 0
 TotalPP = 15
 Target = User
 FunctionCode = RaiseUserEvasion1
+Flags = Speed
 Description = By moving rapidly, the user makes illusory copies of itself to raise its evasiveness.
 #-------------------------------
 [ENCORE]
@@ -5904,6 +5909,7 @@ TotalPP = 10
 Target = User
 Priority = 4
 FunctionCode = UserEnduresFaintingThisTurn
+Flags = Defense
 Description = The user endures any attack with at least 1 HP. Its chance of failing rises if it is used in succession.
 #-------------------------------
 [ENTRAINMENT]
@@ -5925,7 +5931,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = LowerTargetAccuracy1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = The user flashes a light that cuts the target's accuracy. It can also be used to illuminate caves.
 #-------------------------------
 [FOCUSENERGY]
@@ -6063,6 +6069,7 @@ Accuracy = 0
 TotalPP = 30
 Target = User
 FunctionCode = EnsureNextCriticalHit
+Flags = Speed
 Description = The user focuses intensely. The attack on the next turn always results in a critical hit.
 #-------------------------------
 [LEER]
@@ -6266,6 +6273,7 @@ TotalPP = 10
 Target = User
 Priority = 4
 FunctionCode = ProtectUser
+Flags = Defense
 Description = It enables the user to evade all attacks. Its chance of failing rises if it is used in succession.
 #-------------------------------
 [PSYCHUP]
@@ -6276,6 +6284,7 @@ Accuracy = 0
 TotalPP = 10
 Target = NearOther
 FunctionCode = UserCopyTargetStatStages
+Flags = Speed
 Description = The user hypnotizes itself into copying any stat change made by the target.
 #-------------------------------
 [RECOVER]
@@ -6286,6 +6295,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = HealUserHalfOfTotalHP
+Flags = Defense
 Description = Restoring its own cells, the user restores its own HP by half of its max HP.
 #-------------------------------
 [RECYCLE]
@@ -6296,6 +6306,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = RestoreUserConsumedItem
+Flags = Speed
 Description = The user recycles a held item that has been used in battle so it can be used again.
 #-------------------------------
 [REFLECTTYPE]
@@ -6328,7 +6339,7 @@ TotalPP = 20
 Target = NearOther
 Priority = -6
 FunctionCode = SwitchOutTargetStatusMove
-Flags = CanMirrorMove,Sound
+Flags = CanMirrorMove,Sound,Throwing
 Description = The target is scared off and replaced by another Pokémon in its party. In the wild, the battle ends.
 #-------------------------------
 [SAFEGUARD]
@@ -6339,6 +6350,7 @@ Accuracy = 0
 TotalPP = 25
 Target = UserSide
 FunctionCode = StartUserSideImmunityToInflictedStatus
+Flags = Defense
 Description = The user creates a protective field that prevents status problems for five turns.
 #-------------------------------
 [SCARYFACE]
@@ -6433,6 +6445,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = UseRandomUserMoveIfAsleep
+Flags = Defense
 Description = While it is asleep, the user randomly uses one of the moves it knows.
 #-------------------------------
 [SMOKESCREEN]
@@ -6506,6 +6519,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = UserMakeSubstitute
+Flags = Speed
 Description = The user makes a copy of itself using some of its HP. The copy serves as the user's decoy.
 #-------------------------------
 [SUPERSONIC]
@@ -6527,7 +6541,7 @@ Accuracy = 85
 TotalPP = 15
 Target = NearOther
 FunctionCode = RaiseTargetAttack2ConfuseTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = The user enrages and confuses the target. However, it also sharply raises the target's Attack stat.
 #-------------------------------
 [SWALLOW]
@@ -6635,7 +6649,7 @@ TotalPP = 20
 Target = NearOther
 Priority = -6
 FunctionCode = SwitchOutTargetStatusMove
-Flags = CanMirrorMove
+Flags = CanMirrorMove,Throwing
 Description = The foe is blown away, to be replaced by another Pokémon in its party. In the wild, the battle ends.
 #-------------------------------
 [WISH]
@@ -6729,7 +6743,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = PoisonTarget
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling
 EffectChance = 30
 Description = Unsanitary sludge is hurled at the target. It may also poison the target.
 #-------------------------------
@@ -6755,7 +6769,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = PoisonTarget
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 EffectChance = 10
 Description = A slashing attack with a poisonous blade that may also poison the foe. Critical hits land more easily.
 #-------------------------------
@@ -6844,7 +6858,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = LowerTargetSpDef2
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling
 EffectChance = 100
 Description = The user spits fluid that works to melt the target. This harshly reduces the target's Sp. Def stat.
 #-------------------------------
@@ -6968,7 +6982,7 @@ Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = BadPoisonTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Defense
 Description = A move that leaves the target badly poisoned. Its poison damage worsens every turn.
 #-------------------------------
 [TOXICSPIKES]
@@ -6979,6 +6993,7 @@ Accuracy = 0
 TotalPP = 20
 Target = FoeSide
 FunctionCode = AddToxicSpikesToFoeSide
+Flags = Defense
 Description = The user lays a trap of poison spikes at the foe's feet. They poison foes that switch into battle.
 #-------------------------------
 [TOXICTHREAD]
@@ -7024,7 +7039,7 @@ Accuracy = 90
 TotalPP = 5
 Target = NearOther
 FunctionCode = LowerUserSpAtk2
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user attacks the target at full power. The attack's recoil harshly reduces the user's Sp. Atk stat.
 #-------------------------------
 [FUTURESIGHT]
@@ -7059,7 +7074,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = HealUserByHalfOfDamageDoneIfTargetAsleep
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Defense
 Description = The user eats the dreams of a sleeping foe. It absorbs half the damage caused to heal the user's HP.
 #-------------------------------
 [PHOTONGEYSER]
@@ -7194,7 +7209,7 @@ Accuracy = 90
 TotalPP = 15
 Target = NearOther
 FunctionCode = FlinchTarget
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,HeadBased
 EffectChance = 20
 Description = The user focuses its willpower to its head and attacks the foe. It may also make the target flinch.
 #-------------------------------
@@ -7220,7 +7235,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = LowerTargetSpAtk1
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 EffectChance = 50
 Description = A mistlike flurry of down envelops and damages the target. It may also lower the target's Sp. Atk.
 #-------------------------------
@@ -7233,7 +7248,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = The user tears at the target with blades formed by psychic power. Critical hits land more easily.
 #-------------------------------
 [PSYBEAM]
@@ -7297,7 +7312,7 @@ TotalPP = 20
 Target = None
 Priority = -5
 FunctionCode = CounterSpecialDamage
-Flags = CanProtect
+Flags = CanProtect,Defense
 Description = A retaliation move that counters any special attack, inflicting double the damage taken.
 #-------------------------------
 [PSYWAVE]
@@ -7320,6 +7335,7 @@ Accuracy = 0
 TotalPP = 30
 Target = User
 FunctionCode = RaiseUserSpeed2
+Flags = Speed
 Description = The user relaxes and lightens its body to move faster. It sharply boosts the Speed stat.
 #-------------------------------
 [ALLYSWITCH]
@@ -7331,6 +7347,7 @@ TotalPP = 15
 Target = User
 Priority = 2
 FunctionCode = UserSwapsPositionsWithAlly
+Flags = Speed
 Description = The user teleports using a strange power and switches its place with one of its allies.
 #-------------------------------
 [AMNESIA]
@@ -7341,6 +7358,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 FunctionCode = RaiseUserSpDef2
+Flags = Defense
 Description = The user temporarily empties its mind to forget its concerns. It sharply raises the user's Sp. Def stat.
 #-------------------------------
 [BARRIER]
@@ -7361,6 +7379,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 FunctionCode = RaiseUserSpAtkSpDef1
+Flags = Defense
 Description = The user quietly focuses its mind and calms its spirit to raise its Sp. Atk and Sp. Def stats.
 #-------------------------------
 [COSMICPOWER]
@@ -7371,6 +7390,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 FunctionCode = RaiseUserDefSpDef1
+Flags = Defense
 Description = The user absorbs a mystical power from space to raise its Defense and Sp. Def stats.
 #-------------------------------
 [GRAVITY]
@@ -7381,6 +7401,7 @@ Accuracy = 0
 TotalPP = 5
 Target = BothSides
 FunctionCode = StartGravity
+Flags = Defense
 Description = Gravity is intensified for five turns, making moves involving flying unusable and negating Levitation.
 #-------------------------------
 [GUARDSPLIT]
@@ -7499,6 +7520,7 @@ Accuracy = 0
 TotalPP = 30
 Target = UserSide
 FunctionCode = StartWeakenSpecialDamageAgainstUserSide
+Flags = Defense
 Description = A wondrous wall of light is put up to suppress damage from special attacks for five turns.
 #-------------------------------
 [LUNARDANCE]
@@ -7521,6 +7543,7 @@ TotalPP = 15
 Target = User
 Priority = 4
 FunctionCode = BounceBackProblemCausingStatusMoves
+Flags = Defense
 Description = A barrier reflects back to the target moves like Leech Seed and moves that damage status.
 #-------------------------------
 [MAGICPOWDER]
@@ -7616,7 +7639,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = GiveUserStatusToTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = Using its psychic power of suggestion, the user transfers its status problems to the target.
 #-------------------------------
 [REFLECT]
@@ -7627,6 +7650,7 @@ Accuracy = 0
 TotalPP = 20
 Target = UserSide
 FunctionCode = StartWeakenPhysicalDamageAgainstUserSide
+Flags = Defense
 Description = A wondrous wall of light is put up to suppress damage from physical attacks for five turns.
 #-------------------------------
 [REST]
@@ -7637,6 +7661,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = HealUserFullyAndFallAsleep
+Flags = Defense
 Description = The user goes to sleep for two turns. It fully restores the user's HP and heals any status problem.
 #-------------------------------
 [ROLEPLAY]
@@ -7647,6 +7672,7 @@ Accuracy = 0
 TotalPP = 10
 Target = NearOther
 FunctionCode = SetUserAbilityToTargetAbility
+Flags = Speed
 Description = The user mimics the target completely, copying the target's natural Ability.
 #-------------------------------
 [SKILLSWAP]
@@ -7657,7 +7683,7 @@ Accuracy = 0
 TotalPP = 10
 Target = NearOther
 FunctionCode = UserTargetSwapAbilities
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = The user employs its psychic power to exchange Abilities with the target.
 #-------------------------------
 [SPEEDSWAP]
@@ -7679,7 +7705,7 @@ Accuracy = 0
 TotalPP = 15
 Target = NearOther
 FunctionCode = StartTargetAirborneAndAlwaysHitByMoves
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = The user makes the target float with its psychic power. The target is easier to hit for three turns.
 #-------------------------------
 [TELEPORT]
@@ -7691,6 +7717,7 @@ TotalPP = 20
 Target = User
 Priority = -6
 FunctionCode = SwitchOutUserStatusMove
+Flags = Speed
 Description = The user switches place with a party Pokémon. Also warps to the last Pokémon Center visited.
 #-------------------------------
 [TRICK]
@@ -7701,7 +7728,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = UserTargetSwapItems
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Speed
 Description = The user catches the target off guard and swaps its held item with its own.
 #-------------------------------
 [TRICKROOM]
@@ -7713,7 +7740,7 @@ TotalPP = 5
 Target = BothSides
 Priority = -7
 FunctionCode = StartSlowerBattlersActFirst
-Flags = CanMirrorMove
+Flags = CanMirrorMove,Speed
 Description = The user creates a bizarre area in which slower Pokémon get to move first for five turns.
 #-------------------------------
 [WONDERROOM]
@@ -7725,7 +7752,7 @@ TotalPP = 10
 Target = BothSides
 Priority = -7
 FunctionCode = StartSwapAllBattlersBaseDefensiveStats
-Flags = CanMirrorMove
+Flags = CanMirrorMove,Speed
 Description = The user creates a bizarre area in which Pokémon's Defense and Sp. Def stats are swapped for 5 turns.
 #-------------------------------
 [HEADSMASH]
@@ -7737,7 +7764,7 @@ Accuracy = 80
 TotalPP = 5
 Target = NearOther
 FunctionCode = RecoilHalfOfDamageDealt
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,HeadBased
 Description = The user attacks the foe with a hazardous, full-power headbutt. The user also takes terrible damage.
 #-------------------------------
 [ROCKWRECKER]
@@ -7749,7 +7776,7 @@ Accuracy = 90
 TotalPP = 5
 Target = NearOther
 FunctionCode = AttackAndSkipNextTurn
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = The user launches a huge boulder at the target to attack. It must rest on the next turn, however.
 #-------------------------------
 [METEORBEAM]
@@ -7798,7 +7825,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user attacks with a ray of light that sparkles as if it were made of gemstones.
 #-------------------------------
 [ROCKSLIDE]
@@ -7823,7 +7850,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = RaiseUserMainStats1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 10
 Description = The user attacks with a prehistoric power. It may also raise all the user's stats at once.
 #-------------------------------
@@ -7849,7 +7876,7 @@ Accuracy = 90
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user picks up and throws a small rock at the target to attack.
 #-------------------------------
 [SMACKDOWN]
@@ -7886,7 +7913,7 @@ Accuracy = 90
 TotalPP = 20
 Target = NearOther
 FunctionCode = MultiTurnAttackPowersUpEachTurn
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,BallRolling
 Description = The user continually rolls into the target over five turns. It becomes stronger each time it hits.
 #-------------------------------
 [ROCKBLAST]
@@ -7898,7 +7925,7 @@ Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = The user hurls hard rocks at the target. Two to five rocks are launched in quick succession.
 #-------------------------------
 [ROCKPOLISH]
@@ -7928,7 +7955,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 20
 Target = FoeSide
-FunctionCode = AddStealthRocksToFoeSide
+FunctionCode = AddStealthRocksToFoeSide,Defense
 Description = The user lays a trap of levitating stones around the foe. The trap hurts foes that switch into battle.
 #-------------------------------
 [TARSHOT]
@@ -7985,7 +8012,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = RemoveTerrain
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,BallRolling
 Description = The user attacks while destroying the terrain. This move fails when the ground isn't a terrain.
 #-------------------------------
 [BEHEMOTHBASH]
@@ -8009,7 +8036,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove,CannotMetronome
+Flags = Contact,CanProtect,CanMirrorMove,CannotMetronome,Slashing
 Description = The user becomes a gigantic sword and cuts the target.
 #-------------------------------
 [IRONTAIL]
@@ -8085,7 +8112,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = FlinchTarget
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,HeadBased
 EffectChance = 30
 Description = The foe slams the target with its steel-hard head. It may also make the target flinch.
 #-------------------------------
@@ -8098,7 +8125,7 @@ Accuracy = 0
 TotalPP = 10
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Projectile
 Description = The user stabs the target with a sharp horn. This attack never misses.
 #-------------------------------
 [STEELWING]
@@ -8149,7 +8176,7 @@ Accuracy = 0
 TotalPP = 20
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling
 Description = The user launches steel bombs that stick to the target. This attack will not miss.
 #-------------------------------
 [GEARGRIND]
@@ -8173,7 +8200,7 @@ Accuracy = 95
 TotalPP = 35
 Target = NearOther
 FunctionCode = RaiseUserAttack1
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 EffectChance = 10
 Description = The target is raked with steel claws. It may also raise the user's Attack stat.
 #-------------------------------
@@ -8199,7 +8226,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = PowerHigherWithTargetFasterThanUser
-Flags = Contact,CanProtect,CanMirrorMove,Bomb
+Flags = Contact,CanProtect,CanMirrorMove,Bomb,BallRolling
 Description = The user tackles the target with a high-speed spin. The slower the user, the greater the damage.
 #-------------------------------
 [HEAVYSLAM]
@@ -8254,6 +8281,7 @@ Accuracy = 0
 TotalPP = 15
 Target = User
 FunctionCode = RaiseUserDefense2
+Flags = Defense
 Description = The user hardens its body's surface like iron, sharply raising its Defense stat.
 #-------------------------------
 [KINGSSHIELD]
@@ -8470,7 +8498,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = CannotBeRedirected
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,Projectile
 Description = The user ignores any effects that redirect moves, allowing this move to hit the chosen target.
 #-------------------------------
 [WATERPLEDGE]
@@ -8532,7 +8560,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = LowerTargetSpeed1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 10
 Description = A spray of bubbles is forcefully ejected at the target. It may also lower its Speed stat.
 #-------------------------------
@@ -8545,7 +8573,7 @@ Accuracy = 85
 TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetAccuracy1
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 EffectChance = 50
 Description = The user attacks by spraying ink in the foe's face or eyes. It may also lower the target's accuracy.
 #-------------------------------
@@ -8596,7 +8624,7 @@ Accuracy = 100
 TotalPP = 30
 Target = AllNearFoes
 FunctionCode = LowerTargetSpeed1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 10
 Description = A spray of countless bubbles is jetted at the opposing team. It may also lower the targets' Speed stats.
 #-------------------------------
@@ -8609,7 +8637,7 @@ Accuracy = 100
 TotalPP = 25
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The target is blasted with a forceful shot of water.
 #-------------------------------
 [CLAMP]
@@ -8658,7 +8686,7 @@ TotalPP = 20
 Target = NearOther
 Priority = 1
 FunctionCode = HitTwoToFiveTimesOrThreeForAshGreninja
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user hits the target with throwing stars 2-5 times in a row. This move always goes first.
 #-------------------------------
 [AQUARING]
@@ -8690,6 +8718,7 @@ Accuracy = 0
 TotalPP = 5
 Target = BothSides
 FunctionCode = StartRainWeather
+Flags = Speed
 Description = The user summons a heavy rain that falls for five turns, powering up Water-type moves.
 #-------------------------------
 [SOAK]
@@ -9033,7 +9062,7 @@ Accuracy = 90
 TotalPP = 20
 Target = NearOther
 FunctionCode = MultiTurnAttackPowersUpEachTurn
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,BallRolling
 Description = The user continually rolls into the target over five turns. It becomes stronger each time it hits.
 #-------------------------------
 [VOLTCRASH]
@@ -9058,7 +9087,7 @@ Accuracy = 100
 TotalPP = 30
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
 Description = The user forcefully shoots seeds at the target. Two to five seeds are shot in rapid succession.
 #-------------------------------
 [VOLTSPIKES]
@@ -9069,6 +9098,7 @@ Accuracy = 0
 TotalPP = 20
 Target = FoeSide
 FunctionCode = VoltSpikes
+Flags = Defense
 Description = The user lays a trap of volt spikes at the foe's feet. They paralyze foes that switch into battle.
 #-------------------------------
 [VOLTWAVE]
@@ -9116,7 +9146,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = FailsIfNotUserFirstTurn
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 EffectChance = 20
 Description = The target is slashed twice in succession using rock covered claws. It may also lower their defense.
 #-------------------------------
@@ -9421,7 +9451,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = 188
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = Does double damage against Dark Types.
 #-------------------------------
 [LIGHTBEAM]
@@ -9470,7 +9500,7 @@ Accuracy = 95
 TotalPP = 15
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,Projectile
 Description = The user shoots small bullets of light. 2 to 5 bullets are shot rapidly.
 #-------------------------------
 [LIGHTSHOW]
@@ -9738,7 +9768,7 @@ Accuracy = 95
 TotalPP = 15
 Target = AllNearFoes
 FunctionCode = 19A
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = The user jumps up and rains down a barrage of kicks. Hits 3-5 times and hits all adjecent foes.
 #-------------------------------
 [STARSHOT]
@@ -9750,7 +9780,7 @@ Accuracy = 100
 TotalPP = 30
 Target = NearOther
 FunctionCode = ConfuseTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 20
 Description = Has a chance to confuse the target.
 #-------------------------------
@@ -10062,7 +10092,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = 210
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = Pierces the defenses of the target, reducing Defense by 1 stage.
 #-------------------------------
 [CRYSTALRAMPA]
@@ -10100,7 +10130,7 @@ TotalPP = 15
 Target = NearOther
 Priority = 1
 FunctionCode = 213
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 20
 Description = Priority, has a chance to make the opponent flinch if the opponent's Special Attack is below 70.
 #-------------------------------
@@ -10486,7 +10516,7 @@ Accuracy = 100
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = Hits all foes.
 #-------------------------------
 [GIGASHOCK]
@@ -10606,7 +10636,7 @@ Accuracy = 85
 TotalPP = 15
 Target = NearOther
 FunctionCode = FlinchTarget
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Kicking	
 EffectChance = 10
 Description = A flying kick with a low-gravity leap.  May cause the foe to flinch.
 #-------------------------------
@@ -10742,7 +10772,7 @@ TotalPP = 30
 Target = NearOther
 Priority = 1
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user fires sharpened crystal at blinding speeds.  This attack strikes first.
 #-------------------------------
 [CRYSTALWAVE]
@@ -10766,7 +10796,7 @@ Accuracy = 95
 TotalPP = 20
 Target = NearOther
 FunctionCode = 24E
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,Projectile
 Description = The user fires a barrage of valuable gemstones, hitting 2-5 times.
 #-------------------------------
 [CRUELBEATDOWN]
@@ -10862,7 +10892,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = ParalyzeTarget
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 EffectChance = 10
 Description = Strikes with a blade of electricity.  Has a high critical-hit rate, and may cause paralysis.
 #-------------------------------
@@ -10914,7 +10944,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = BurnTarget
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 EffectChance = 10
 Description = Attacks with a blade wreathed in flame.  May cause a burn.
 #-------------------------------
@@ -10927,7 +10957,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The user fires a stream of exploding flames, hitting 2-5 times.
 #-------------------------------
 [MAGNUMPUNCH]
@@ -11052,7 +11082,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = FreezeTarget
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 EffectChance = 10
 Description = The user attacks with a frozen sword.  The attack has a high critical-hit rate.
 #-------------------------------
@@ -11139,7 +11169,7 @@ Accuracy = 100
 TotalPP = 20
 Target = NearOther
 FunctionCode = ConfuseTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 EffectChance = 10
 Description = The user fires a bolt of raw magical energy.  May cause confusion.
 #-------------------------------
@@ -11273,7 +11303,7 @@ Accuracy = 80
 TotalPP = 10
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,Bomb
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling
 Description = The user sends a single bubble at the opponent, popping with a powerful explosion.
 #-------------------------------
 [MAGNETPULSE]
@@ -11335,7 +11365,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = The user strikes with a blade of stone. Critical hits land more easily.
 #-------------------------------
 [STONEFIST]
@@ -11637,7 +11667,7 @@ Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = HitTwoToFiveTimes
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,Projectile
 Description = The Pokémon launches a salvo of fiery missiles, hitting 2-5 times.
 #-------------------------------
 [FLAREFIST]
@@ -11825,6 +11855,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = 26C
+Flags = Projectile
 Description = The user fires off missiles of light which crash down the turn after. Can't be protected.
 #-------------------------------
 [DROPWAVE]
@@ -11848,7 +11879,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = RemoveScreens
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = With a sword of light, the user cleaves through Reflect and Light Screen. High critical-hit rate.
 #-------------------------------
 [COTTONPUNCH]
@@ -12358,7 +12389,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = A beautiful sword of glass. Has a high critical-hit rate, and deals strong damage even when resisted.
 #-------------------------------
 [CADENZA]
@@ -12539,7 +12570,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = 299
-Flags = CanMirrorMove
+Flags = CanMirrorMove,Projectile
 Description = The user launches a firework that burns at the end of the round unless the target swaps out.
 #-------------------------------
 [FLAMERING]
@@ -12698,7 +12729,7 @@ Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = ArmorPierce
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 EffectChance = 100
 Description = The user pierces the target's armor or skin and harshly drops its Defense. It can even bypass Reflect.
 #-------------------------------
@@ -12723,6 +12754,7 @@ Accuracy = 0
 TotalPP = 5
 Target = FoeSide
 FunctionCode = ChargesSpikes
+Flags = Defense
 Description = The user places spikes on the ground that paralyze the opponent. It doesn't affect Ground, Electric, Flying and Cosmic types.
 #-------------------------------
 [VOLTSTORM]
@@ -12858,7 +12890,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = ColorSphere
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,BallRolling
 Description = Is super effective on certain types depending on user's form
 #-------------------------------
 [MYSTICEDGE]
@@ -12870,7 +12902,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = MysticEdge
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Slashing
 EffectChance = 100
 Description = If the target has not moved yet, damage dealt to K-Aegislash is reduced by 20%. If the target has already moved, this move's power is increased by 20%.
 #-------------------------------

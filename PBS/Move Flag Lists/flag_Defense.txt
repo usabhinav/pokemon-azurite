@@ -5,3 +5,31 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag Defense:
 
+Knock Off
+Drain Punch
+Counter
+Seismic Toss
+Detect
+Night Shade
+Spikes
+Snore
+Endure
+Protect
+Recover
+Safeguard
+Sleep Talk
+Toxic
+Toxic Spikes
+Dream Eater
+Mirror Coat
+Amnesia
+Calm Mind
+Cosmic Power
+Gravity
+Light Screen
+Magic Coat
+Reflect
+Rest
+Iron Defense
+Volt Spikes
+Charged Spikes

@@ -5,3 +5,9 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag Throwing:
 
+Dragon Tail
+Circle Throw
+Seismic Toss
+Sky Drop
+Roar
+Whirlwind

@@ -5,3 +5,10 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag HeadBased:
 
+Bolt Beak
+Beak Blast
+Head Charge
+Headbutt
+Zen Headbutt
+Head Smash
+Iron Head

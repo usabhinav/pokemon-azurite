@@ -7078,7 +7078,7 @@ Description = One of the rarest, but most effective balls, with a catch rate hig
 Name = Rich Ball
 NamePlural = Rich Balls
 Pocket = 3
-Price = 10000
+Price = 100000
 BattleUse = OnFoe
 Flags = PokeBall
 Description = A fancy ball, that does nothing but make you look rich.
@@ -7373,7 +7373,7 @@ Name = Mega Keystone
 NamePlural = Mega Keystones
 Pocket = 8
 Price = 0
-Flags = KeyItem
+Flags = KeyItem,MegaRing
 Description = This keystone contains an untold power that somehow enables Pokémon carrying Mega Stones to Mega Evolve.
 #-------------------------------
 [ENIGMACHAINRED]

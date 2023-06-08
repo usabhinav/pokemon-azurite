@@ -183,6 +183,41 @@ Battle::PokeBallEffects::ModifyCatchRate.add(:BEASTBALL, proc { |ball, catchRate
   next catchRate
 })
 
+Battle::PokeBallEffects::ModifyCatchRate.add(:CRYSTALBALL, proc { |ball, catchRate, battle, battler|
+  catchRate *= 4 if battler.pbHasType?(:CRYSTAL) || battler.pokemon.hasCrystalFormWithoutItemCheck?
+  next catchRate
+})
+
+Battle::PokeBallEffects::ModifyCatchRate.add(:DEITYBALL, proc { |ball, catchRate, battle, battler|
+  species_data = battler.pokemon.species_data
+  catchRate *= 3.5 if species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical")
+  next catchRate
+})
+
+Battle::PokeBallEffects::ModifyCatchRate.add(:GLORIOUSBALL, proc { |ball, catchRate, battle, battler|
+  catchRate *= 3 if $PokemonGlobal.hallOfFameLastNumber > 0
+  next catchRate
+})
+
+Battle::PokeBallEffects::ModifyCatchRate.add(:JINGLEBALL, proc { |ball, catchRate, battle, battler|
+  time = pbGetTimeNow
+  catchRate *= 10 if time.mon == 12 && time.mday == 25
+  next catchRate
+})
+
+Battle::PokeBallEffects::ModifyCatchRate.add(:MUNDANEBALL, proc { |ball, catchRate, battle, battler|
+  next catchRate / 10
+})
+
+Battle::PokeBallEffects::ModifyCatchRate.add(:PSYCHOBALL, proc { |ball, catchRate, battle, battler|
+  catchRate *= 4 if battler.effects[PBEffects::Confusion] > 0
+  next catchRate
+})
+
+Battle::PokeBallEffects::ModifyCatchRate.add(:EXPERTBALL, proc { |ball, catchRate, battle, battler|
+  next catchRate * 3.5
+})
+
 #===============================================================================
 # OnCatch
 #===============================================================================

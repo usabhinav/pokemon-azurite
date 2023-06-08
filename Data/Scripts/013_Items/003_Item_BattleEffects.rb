@@ -290,6 +290,14 @@ ItemHandlers::CanUseInBattle.add(:POKEFLUTE, proc { |item, pokemon, battler, mov
   next true
 })
 
+ItemHandlers::CanUseInBattle.add(:RISCIBERRY, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  if battler.effects[PBEffects::RisciBerryActive]
+    scene.pbDisplay(_INTL("{1} has already consumed a {2}!", battler.pbThis, GameData::Item.get(item).real_name)) if showMessages
+    next false
+  end
+  next true
+})
+
 #===============================================================================
 # UseInBattle handlers
 # For items used directly or on an opposing battler
@@ -699,4 +707,9 @@ ItemHandlers::BattleUseOnBattler.add(:DIREHIT3, proc { |item, battler, scene|
   battler.effects[PBEffects::FocusEnergy] = 3
   scene.pbDisplay(_INTL("{1} is getting pumped!", battler.pbThis))
   battler.pokemon.changeHappiness("battleitem")
+})
+
+ItemHandlers::BattleUseOnBattler.add(:RISCIBERRY, proc { |item, battler, scene|
+  battler.effects[PBEffects::RisciBerryActive] = true
+  scene.pbDisplay(_INTL("It strengthened the power of {1}'s super effective attacks, but weakened its own defense to them!", battler.pbThis))
 })

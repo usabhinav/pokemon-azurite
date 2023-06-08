@@ -1849,6 +1849,18 @@ Battle::ItemEffects::AfterMoveUseFromTarget.add(:REDCARD,
   }
 )
 
+Battle::ItemEffects::AfterMoveUseFromTarget.add(:REVERSALCARD,
+  proc { |item, battler, user, move, switched_battlers, battle|
+    next if !switched_battlers.empty? || user.fainted?
+    next if !move.pbSpecialMove?(user)
+    battler.effects[PBEffects::MirrorCoat] = battler.damageState.hpLost
+    battler.effects[PBEffects::MirrorCoatTarget] = user.index
+    battle.pbDisplay(_INTL("{1}'s {2} activated!", battler.pbThis, battler.itemName))
+    battler.pbUseMoveExtra(:MIRRORCOAT, user.index)
+    battler.pbConsumeItem
+  }
+)
+
 #===============================================================================
 # AfterMoveUseFromUser handlers
 #===============================================================================
@@ -2353,6 +2365,16 @@ Battle::ItemEffects::OnSwitchIn.add(:LIGHTNUT,
       battler.pbRaiseStatStageByCause(:SPECIAL_DEFENSE, 2, battler, battler.itemName)
     end
     battler.effects[PBEffects::LightNutActive] = true
+  }
+)
+
+Battle::ItemEffects::OnSwitchIn.add(:BERSERKGENE,
+  proc { |item, battler, battle|
+    battler.pbConfuseSelf
+    battler.effects[PBEffects::Confusion] = 256 if battler.effects[PBEffects::Confusion] > 0
+    if battler.pbCanRaiseStatStage?(:ATTACK, battler)
+      battler.pbRaiseStatStageByCause(:ATTACK, 2, battler, battler.itemName)
+    end
   }
 )
 

@@ -3322,7 +3322,7 @@ Type2 = CRYSTAL
 BaseStats = 78,65,85,85,135,204
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
-#Other Forms
+# Other Forms
 #-------------------------------
 [SUICUNE,1]
 FormName = Perfect Suicune
@@ -3335,6 +3335,7 @@ Abilities = CRYSTALADAPTATION
 HiddenAbility = CRYSTALADAPTATION
 Kind = Aurora
 Pokedex = The Perfect Transformation. Also known as Crystal Mega Evolution. Suicune underwent this transformation in order to reach "Perfection" and ascend beyond any other Pokémon.
+MegaStone = CRYSTALSUICUNITE
 #-------------------------------
 [SPRITZEE,1]
 FormName = Azure Spritzee

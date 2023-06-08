@@ -187,6 +187,14 @@ class Game_Player < Game_Character
     triggerLeaveTile
   end
 
+  def hasNoticePlayerScript(event)
+    # We assume the first page will have the "pbNoticePlayer" command in a Script box
+    event.pages[0].list.each do |cmd|
+      return true if cmd.code == 355 && cmd.parameters[0].start_with?("pbNoticePlayer")
+    end
+    return false
+  end
+
   def pbTriggeredTrainerEvents(triggers, checkIfRunning = true, trainer_only = false)
     result = []
     # If event is running
@@ -198,6 +206,9 @@ class Game_Player < Game_Character
       distance = $~[1].to_i
       next if !pbEventCanReachPlayer?(event, self, distance)
       next if event.jumping? || event.over_trigger?
+      # We may use "Trainer(XXX)" events for non-trainer battles (i.e. other events/cutscenes that trigger over a distance),
+      # so we check if it has a "pbNoticePlayer" command near the start since generally only trainer battles will have that.
+      next if $PokemonGlobal.trainer_repel > 0 && hasNoticePlayerScript(event)
       result.push(event)
     end
     return result

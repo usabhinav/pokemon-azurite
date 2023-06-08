@@ -4789,7 +4789,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:RETEXTURING,
 Battle::AbilityEffects::OnSwitchIn.add(:ROOTED,
   proc { |ability, battler, battle, switch_in|
     battle.pbShowAbilitySplash(battler)
-    battler.pbUseMoveExtra(:INGRAIN,battler.index,-1,true)
+    battler.pbUseMoveExtra(:INGRAIN, battler.index)
     battle.pbHideAbilitySplash(battler)
   }
 )

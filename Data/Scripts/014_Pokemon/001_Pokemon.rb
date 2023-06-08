@@ -90,16 +90,18 @@ class Pokemon
   attr_accessor :cannot_release
   # Whether this Pokémon can be traded
   attr_accessor :cannot_trade
-  # Amount of damage dealt by this Pokemon in battles
+  # Amount of damage dealt by this Pokémon in battles
   attr_accessor :damage_dealt
-  # Amount of damage taken by this Pokemon in battles
+  # Amount of damage taken by this Pokémon in battles
   attr_accessor :damage_taken
-  # Number of KOs by this Pokemon in battles
+  # Number of KOs by this Pokémon in battles
   attr_accessor :ko_count
-  # Number of times this Pokemon has fainted in battles
+  # Number of times this Pokémon has fainted in battles
   attr_accessor :faint_count
   # Family tree
   attr_accessor :family_tree
+  # Whether this Pokémon was fed an Alolan Pancakes
+  attr_accessor :alolan_pancakes_consumed
 
   # Max total IVs
   IV_STAT_LIMIT = 31
@@ -1040,7 +1042,8 @@ class Pokemon
   # @param method [String] the happiness changing method (e.g. 'walking')
   def changeHappiness(method)
 	  if hasItem?(:AWFULCOLLAR)
-      method = ":("
+      @happiness = 0
+      return
     end
     gain = 0
     happiness_range = @happiness / 100
@@ -1069,9 +1072,6 @@ class Pokemon
       gain = [-10, -10, -15][happiness_range]
     when "revivalherb"
       gain = [-15, -15, -20][happiness_range]
-	  when ":("
-      @happiness = 0
-	    return
     else
       raise _INTL("Unknown happiness-changing method: {1}", method.to_s)
     end
@@ -1415,6 +1415,7 @@ class Pokemon
     @totalhp          = 1
     calc_stats
     @standwatchhp     = @hp
+    @alolan_pancakes_consumed = false
     if @form == 0 && recheck_form
       f = MultipleForms.call("getFormOnCreation", self)
       if f

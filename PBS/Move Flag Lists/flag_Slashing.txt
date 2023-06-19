@@ -5,3 +5,34 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag Slashing:
 
+X-Scissor
+Fury Cutter
+Night Slash
+Dragon Claw
+Air Slash
+Air Cutter
+Shadow Claw
+Solar Blade
+Leaf Blade
+Razor Leaf
+Razor Wind
+Crush Claw
+Slash
+Cut
+False Swipe
+Scratch
+Fury Swipes
+Cross Poison
+Psycho Cut
+Behemoth Blade
+Metal Claw
+Rock Claw
+Crystal Pierce
+Thunder Blade
+Fire Blade
+Ice Blade
+Stone Blade
+Bright Blade
+Glass Blade
+Armor Pierce
+Mystic Edge

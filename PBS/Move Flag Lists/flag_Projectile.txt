@@ -5,3 +5,61 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag Projectile:
 
+Pin Missile
+Parting Shot
+Dragon Darts
+Scale Shot
+Zap Cannon
+Electro Ball
+Focus Blast
+Aura Sphere
+Blast Burn
+Pyro Ball
+Searing Shot
+Ember
+Astral Barrage
+Shadow Ball
+Spirit Shackle
+Energy Ball
+Grav Apple
+Seed Bomb
+Magical Leaf
+Leafage
+Bullet Seed
+Thousand Arrows
+Mud Shot
+Mud-Slap
+Glacial Lance
+Ice Shard
+Icicle Spear
+Egg Bomb
+Swift
+Weather Ball
+Pay Day
+Barrage
+Fury Attack
+Psycho Boost
+Mist Ball
+Rock Wrecker
+Power Gem
+Ancient Power
+Rock Throw
+Rock Blast
+Smart Strike
+Snipe Shot
+Bubble Beam
+Octazooka
+Bubble
+Water Gun
+Water Shuriken
+Volt Seed
+Shiny Shots
+Star Shot
+Shimmer Shot
+Crystal Shard
+Gem Shots
+Fireball
+Magic Shot
+Flame Missile
+Light Missiles
+Fireworks

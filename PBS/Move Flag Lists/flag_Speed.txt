@@ -5,3 +5,31 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag Speed:
 
+Throat Chop
+Pursuit
+Fling
+Snatch
+Taunt
+Torment
+Thunder Wave
+Sunny Day
+Extreme Speed
+Swift
+Double Team
+Flash
+Laser Focus
+Psych Up
+Recycle
+Substitute
+Swagger
+Agility
+Ally Switch
+Psycho Shift
+Role Play
+Skill Swap
+Telekinesis
+Teleport
+Trick
+Trick Room
+Wonder Room
+Rain Dance

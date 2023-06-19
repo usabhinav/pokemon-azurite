@@ -5,3 +5,35 @@ Changes made here will be overwritten on the next full game compile.
 
 Moves with flag BallRolling:
 
+Pollen Puff
+Steamroller
+Zap Cannon
+Electro Ball
+Focus Blast
+Aura Sphere
+Pyro Ball
+Searing Shot
+Beak Blast
+Shadow Ball
+Energy Ball
+Seed Bomb
+Bullet Seed
+Mud Bomb
+Ice Ball
+Egg Bomb
+Weather Ball
+Barrage
+Sludge Bomb
+Acid Spray
+Mist Ball
+Rock Wrecker
+Rollout
+Rock Blast
+Steel Roller
+Magnet Bomb
+Gyro Ball
+Octazooka
+Volt Ball
+Volt Seed
+Bubble Bomb
+Color Sphere

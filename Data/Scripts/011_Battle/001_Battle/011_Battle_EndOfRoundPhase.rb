@@ -851,6 +851,7 @@ class Battle
       party = pbParty(side)
       for i in 0...party.length
         pkmn = party[i]
+        next if pkmn.nil?
         # Must be Crystal Infernape
         if pkmn.isSpecies?(:INFERNAPE) && pkmn.crystal? && pkmn.hasAbility?(:POWERWITHIN)
           @powerWithin[side][i] -= 1

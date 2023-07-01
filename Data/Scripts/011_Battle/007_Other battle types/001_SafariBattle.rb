@@ -26,6 +26,7 @@ class Battle::FakeBattler
   def shiny?;         return @pokemon.shiny?;       end
   def albino?;        return @pokemon.albino?;      end
   def glossy?;        return @pokemon.glossy?;      end
+  def shinyOrGlossy?; return @pokemon.shinyOrGlossy?; end
   def super_shiny?;   return @pokemon.super_shiny?; end
 
   def isSpecies?(check_species)

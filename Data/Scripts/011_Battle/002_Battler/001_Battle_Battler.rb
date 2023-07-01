@@ -304,6 +304,11 @@ class Battle::Battler
     return @pokemon&.glossy?
   end
 
+  def shinyOrGlossy?
+    return @effects[PBEffects::Illusion].shinyOrGlossy? if @effects[PBEffects::Illusion]
+    return @pokemon&.shinyOrGlossy?
+  end
+
   def super_shiny?
     return @pokemon&.super_shiny?
   end

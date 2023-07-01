@@ -5169,7 +5169,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLOAKCONTROL,
     end
     loop do
       battle.scene.pbHideAllDataboxes
-      index = battle.scene.pbShowCommands_ebdx(_INTL("Which type should {1} take?",battler.pbThis), typeNames, -1)
+      index = battle.pbShowCommands(_INTL("Which type should {1} take?",battler.pbThis), typeNames)
       battle.scene.pbShowAllDataboxes
       newType = types[index]
       newTypeName = typeNames[index]

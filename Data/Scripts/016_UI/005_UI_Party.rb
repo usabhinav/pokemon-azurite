@@ -215,6 +215,7 @@ class PokemonPartyPanel < Sprite
     @helditemsprite.zoom_x = 0.5
     @helditemsprite.zoom_y = 0.5
     @helditemsprite.z = self.z + 3
+    @helditemsprite.visible = !@pokemon.item.nil?
     @overlaysprite = BitmapSprite.new(Graphics.width, Graphics.height, viewport)
     @overlaysprite.z = self.z + 4
     pbSetSystemFont(@overlaysprite.bitmap)

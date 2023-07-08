@@ -874,6 +874,21 @@ class Battle
         end
       end
     end
+    # Distorted
+    priority.each do |battler|
+      next if battler.fainted?
+      next if !battler.hasActiveAbility?(:DISTORTED)
+      types = []
+      GameData::Type.each do |i|
+        types.push(i) if i != :QMARKS
+      end
+      type = types[rand(types.length)]
+      pbShowAbilitySplash(battler)
+      pbDisplay(_INTL("{1} changed into the {2} type!", battler.pbThis, GameData::Type.get(type).name))
+      battler.pbChangeTypes(type)
+      pbHideAbilitySplash(battler)
+      # TODO: Change type gem on Mega PorygonZ's sprite
+    end
     # Incomprehensible
     # NOTE: Put this near the very end of pbEndOfRoundPhase so that ability effects
     # don't get triggered immediately after Incomprehensible effect switches ability

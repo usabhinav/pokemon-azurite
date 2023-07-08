@@ -49,93 +49,94 @@ EliteBattle.defineMoveAnimation(:ICYWIND) do
   shake = [2,2]
   @sprites["battlebg"].defocus
   # start animation
-  for i in 0...152
-    for m in 0...indexes.length
-      @targetSprite = @sprites["pokemon_#{indexes[m]}"]
-      next if !@targetSprite || @targetSprite.disposed? || @targetSprite.fainted || !@targetSprite.visible
-      for j in 0...16
-        if fp["#{m}#{j}"].opacity == 0 && fp["#{m}#{j}"].tone.gray == 0
-          fp["#{m}#{j}"].zoom_x = @userSprite.zoom_x
-          fp["#{m}#{j}"].zoom_y = @userSprite.zoom_y
-          cx, cy = @userSprite.getAnchor
-          fp["#{m}#{j}"].x = cx
-          fp["#{m}#{j}"].y = cy
-        end
-        cx, cy = @targetSprite.getCenter(true)
-        next if j>(i/4)
-        x2 = cx - 32*@targetSprite.zoom_x + rndx[m][j]*@targetSprite.zoom_x
-        y2 = cy - 32*@targetSprite.zoom_y + rndy[m][j]*@targetSprite.zoom_y
-        x0 = fp["#{m}#{j}"].x
-        y0 = fp["#{m}#{j}"].y
-        fp["#{m}#{j}"].x += (x2 - x0)*0.1
-        fp["#{m}#{j}"].y += (y2 - y0)*0.1
-        fp["#{m}#{j}"].zoom_x -= (fp["#{m}#{j}"].zoom_x - @targetSprite.zoom_x)*0.1
-        fp["#{m}#{j}"].zoom_y -= (fp["#{m}#{j}"].zoom_y - @targetSprite.zoom_y)*0.1
-        fp["#{m}#{j}"].angle += 2
-        if (x2 - x0)*0.1 < 1 && (y2 - y0)*0.1 < 1
-          fp["#{m}#{j}"].opacity -= 8
-          fp["#{m}#{j}"].tone.gray += 8
-          fp["#{m}#{j}"].angle += 2
-        else
-          fp["#{m}#{j}"].opacity += 12
-        end
-      end
-    end
-    if i >= 132
-      fp["bg"].opacity -= 7
-    else
-      fp["bg"].opacity += 2 if fp["bg"].opacity < 255*0.5
-    end
-    pbSEPlay("Anim/Ice7", 80) if i == 96
-    pbSEPlay("Anim/Wind8", 70) if i == 12
-    if i >= 96
-      for m in 0...indexes.length
-        @targetSprite = @sprites["pokemon_#{indexes[m]}"]
-        next if !@targetSprite || @targetSprite.disposed? || @targetSprite.fainted || !@targetSprite.visible
-        cx, cy = @targetSprite.getCenter(true)
-        if i >= 132
-          @targetSprite.tone.red -= 4.8
-          @targetSprite.tone.green -= 4.8
-          @targetSprite.tone.blue -= 4.8
-        else
-          @targetSprite.tone.red += 4.8 if @targetSprite.tone.red < 96
-          @targetSprite.tone.green += 4.8 if @targetSprite.tone.green < 96
-          @targetSprite.tone.blue += 4.8 if @targetSprite.tone.blue < 96
-        end
-        @targetSprite.ox += shake[m]
-        shake[m] = -2 if @targetSprite.ox > @targetSprite.bitmap.width/2 + 2
-        shake[m] = 2 if @targetSprite.ox < @targetSprite.bitmap.width/2 - 2
-        @targetSprite.still
-        for k in 0...8
-          if fp["i#{m}#{k}"].opacity == 0 && fp["i#{m}#{k}"].src_rect.x == 0
-            fp["i#{m}#{k}"].x = cx - 64*@targetSprite.zoom_x + irndx[m][k]*@targetSprite.zoom_x
-            fp["i#{m}#{k}"].y = cy - 64*@targetSprite.zoom_y + irndy[m][k]*@targetSprite.zoom_y
-          end
-          fp["i#{m}#{k}"].src_rect.x += 26 if i%4==0 && fp["i#{m}#{k}"].opacity >= 255
-          fp["i#{m}#{k}"].src_rect.x = 78 if fp["i#{m}#{k}"].src_rect.x > 78
-          if fp["i#{m}#{k}"].src_rect.x==78
-            fp["i#{m}#{k}"].opacity -= 24
-            fp["i#{m}#{k}"].zoom_x += 0.02
-            fp["i#{m}#{k}"].zoom_y += 0.02
-          elsif fp["i#{m}#{k}"].opacity >= 255
-            fp["i#{m}#{k}"].opacity -= 24
-            pbSEPlay("Anim/Ice1",50)
-          else
-            fp["i#{m}#{k}"].opacity += 45 if (i-96)/2 > k
-          end
-        end
-      end
-    end
-    @vector.set(EliteBattle.get_vector(:DUAL)) if i == 24
-    @vector.inc = 0.1 if i == 24
-    @scene.wait(1,true)
-  end
+  # TODO: This piece of code is causing major lag in this move animation. We should look into optimizing this.
+  # for i in 0...152
+  #   for m in 0...indexes.length
+  #     @targetSprite = @sprites["pokemon_#{indexes[m]}"]
+  #     next if !@targetSprite || @targetSprite.disposed? || @targetSprite.fainted || !@targetSprite.visible
+  #     for j in 0...16
+  #       if fp["#{m}#{j}"].opacity == 0 && fp["#{m}#{j}"].tone.gray == 0
+  #         fp["#{m}#{j}"].zoom_x = @userSprite.zoom_x
+  #         fp["#{m}#{j}"].zoom_y = @userSprite.zoom_y
+  #         cx, cy = @userSprite.getAnchor
+  #         fp["#{m}#{j}"].x = cx
+  #         fp["#{m}#{j}"].y = cy
+  #       end
+  #       cx, cy = @targetSprite.getCenter(true)
+  #       next if j>(i/4)
+  #       x2 = cx - 32*@targetSprite.zoom_x + rndx[m][j]*@targetSprite.zoom_x
+  #       y2 = cy - 32*@targetSprite.zoom_y + rndy[m][j]*@targetSprite.zoom_y
+  #       x0 = fp["#{m}#{j}"].x
+  #       y0 = fp["#{m}#{j}"].y
+  #       fp["#{m}#{j}"].x += (x2 - x0)*0.1
+  #       fp["#{m}#{j}"].y += (y2 - y0)*0.1
+  #       fp["#{m}#{j}"].zoom_x -= (fp["#{m}#{j}"].zoom_x - @targetSprite.zoom_x)*0.1
+  #       fp["#{m}#{j}"].zoom_y -= (fp["#{m}#{j}"].zoom_y - @targetSprite.zoom_y)*0.1
+  #       fp["#{m}#{j}"].angle += 2
+  #       if (x2 - x0)*0.1 < 1 && (y2 - y0)*0.1 < 1
+  #         fp["#{m}#{j}"].opacity -= 8
+  #         fp["#{m}#{j}"].tone.gray += 8
+  #         fp["#{m}#{j}"].angle += 2
+  #       else
+  #         fp["#{m}#{j}"].opacity += 12
+  #       end
+  #     end
+  #   end
+  #   if i >= 132
+  #     fp["bg"].opacity -= 7
+  #   else
+  #     fp["bg"].opacity += 2 if fp["bg"].opacity < 255*0.5
+  #   end
+  #   pbSEPlay("Anim/Ice7", 80) if i == 96
+  #   pbSEPlay("Anim/Wind8", 70) if i == 12
+  #   if i >= 96
+  #     for m in 0...indexes.length
+  #       @targetSprite = @sprites["pokemon_#{indexes[m]}"]
+  #       next if !@targetSprite || @targetSprite.disposed? || @targetSprite.fainted || !@targetSprite.visible
+  #       cx, cy = @targetSprite.getCenter(true)
+  #       if i >= 132
+  #         @targetSprite.tone.red -= 4.8
+  #         @targetSprite.tone.green -= 4.8
+  #         @targetSprite.tone.blue -= 4.8
+  #       else
+  #         @targetSprite.tone.red += 4.8 if @targetSprite.tone.red < 96
+  #         @targetSprite.tone.green += 4.8 if @targetSprite.tone.green < 96
+  #         @targetSprite.tone.blue += 4.8 if @targetSprite.tone.blue < 96
+  #       end
+  #       @targetSprite.ox += shake[m]
+  #       shake[m] = -2 if @targetSprite.ox > @targetSprite.bitmap.width/2 + 2
+  #       shake[m] = 2 if @targetSprite.ox < @targetSprite.bitmap.width/2 - 2
+  #       @targetSprite.still
+  #       for k in 0...8
+  #         if fp["i#{m}#{k}"].opacity == 0 && fp["i#{m}#{k}"].src_rect.x == 0
+  #           fp["i#{m}#{k}"].x = cx - 64*@targetSprite.zoom_x + irndx[m][k]*@targetSprite.zoom_x
+  #           fp["i#{m}#{k}"].y = cy - 64*@targetSprite.zoom_y + irndy[m][k]*@targetSprite.zoom_y
+  #         end
+  #         fp["i#{m}#{k}"].src_rect.x += 26 if i%4==0 && fp["i#{m}#{k}"].opacity >= 255
+  #         fp["i#{m}#{k}"].src_rect.x = 78 if fp["i#{m}#{k}"].src_rect.x > 78
+  #         if fp["i#{m}#{k}"].src_rect.x==78
+  #           fp["i#{m}#{k}"].opacity -= 24
+  #           fp["i#{m}#{k}"].zoom_x += 0.02
+  #           fp["i#{m}#{k}"].zoom_y += 0.02
+  #         elsif fp["i#{m}#{k}"].opacity >= 255
+  #           fp["i#{m}#{k}"].opacity -= 24
+  #           pbSEPlay("Anim/Ice1",50)
+  #         else
+  #           fp["i#{m}#{k}"].opacity += 45 if (i-96)/2 > k
+  #         end
+  #       end
+  #     end
+  #   end
+  #   @vector.set(EliteBattle.get_vector(:DUAL)) if i == 24
+  #   @vector.inc = 0.1 if i == 24
+  #   @scene.wait(1,true)
+  # end
   @sprites["battlebg"].focus
   for m in 0...indexes.length
     @targetSprite = @sprites["pokemon_#{indexes[m]}"]
     next if !@targetSprite || @targetSprite.disposed? || @targetSprite.fainted || !@targetSprite.visible
     @targetSprite.ox = @targetSprite.bitmap.width/2
-    @targetSprite.tone = Tone.new(0,0,0,0)
+    @targetSprite.tone = @targetSprite.pokemon.item_id == :GREYSCALE ? Tone.new(0, 0, 0, 255) : Tone.new(0,0,0,0)
   end
   @vector.reset if !@multiHit
   @vector.inc = 0.2

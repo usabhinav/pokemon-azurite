@@ -178,7 +178,6 @@ class Battle::Scene
       end
       # decides which global move animation to play, if any
       if !handled
-        echoln "ENTERING MAPMOVEGLOBAL"
         handled = EliteBattle.mapMoveGlobal(self, move.type, user.index, target.index, hitnum, multihit, multitarget, movedata.category)
       end
       # if all above failed, plays the move animation for Tackle

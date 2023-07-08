@@ -638,11 +638,20 @@ def pbSpriteSetAnimFrame(sprite, frame, user = nil, target = nil, inEditor = fal
     frame[AnimFrame::COLORBLUE],
     frame[AnimFrame::COLORALPHA]
   )
+  gray_tone = frame[AnimFrame::TONEGRAY]
+  # Pokemon with Grey Scale should keep their gray color even during move animations
+  if (sprite == user || sprite == target) && sprite.respond_to?(:index)
+    # First option belongs to DynamicPokemonSprite from EBDX, second is the default Battle::Scene::BattlerSprite
+    pokemon = sprite.respond_to?(:pokemon) ? sprite.pokemon : sprite.pkmn
+    if sprite.pokemon.item_id == :GREYSCALE
+      gray_tone = 255
+    end
+  end
   sprite.tone.set(
     frame[AnimFrame::TONERED],
     frame[AnimFrame::TONEGREEN],
     frame[AnimFrame::TONEBLUE],
-    frame[AnimFrame::TONEGRAY]
+    gray_tone
   )
   sprite.ox = sprite.src_rect.width / 2
   sprite.oy = sprite.src_rect.height / 2

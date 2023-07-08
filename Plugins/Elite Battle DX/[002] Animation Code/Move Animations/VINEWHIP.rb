@@ -71,7 +71,7 @@ EliteBattle.defineMoveAnimation(:VINEWHIP) do
       end
       @targetSprite.zoom_y -= 0.04*k
       @targetSprite.zoom_x += 0.02*k
-      @targetSprite.tone = Tone.new(255,255,255) if i == 4
+      @targetSprite.tone = (@targetSprite.pokemon.item_id == :GREYSCALE ? Tone.new(255, 255, 255, 255) : Tone.new(255,255,255)) if i == 4
       @targetSprite.tone.red -= 51 if @targetSprite.tone.red > 0
       @targetSprite.tone.green -= 51 if @targetSprite.tone.green > 0
       @targetSprite.tone.blue -= 51 if @targetSprite.tone.blue > 0

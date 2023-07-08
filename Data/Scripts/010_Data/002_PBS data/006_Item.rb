@@ -147,6 +147,7 @@ module GameData
     end
 
     def unlosable?(species, ability)
+      return true if @id == :GREYSCALE
       return false if species == :ARCEUS && ability != :MULTITYPE
       return false if species == :SILVALLY && ability != :RKSSYSTEM
       combos = {

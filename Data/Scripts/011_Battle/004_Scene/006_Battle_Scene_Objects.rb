@@ -588,6 +588,11 @@ class Battle::Scene::BattlerSprite < RPG::Sprite
     @_iconBitmap = GameData::Species.sprite_bitmap_from_pokemon(@pkmn, back)
     self.bitmap = (@_iconBitmap) ? @_iconBitmap.bitmap : nil
     pbSetPosition
+    if pkmn.item_id == :GREYSCALE
+      self.tone = Tone.new(0, 0, 0, 255)
+    else
+      self.tone = Tone.new(0, 0, 0, 0)
+    end
   end
 
   # This method plays the battle entrance animation of a Pokémon. By default

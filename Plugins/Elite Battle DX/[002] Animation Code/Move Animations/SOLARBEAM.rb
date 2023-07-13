@@ -78,7 +78,7 @@ EliteBattle.defineMoveAnimation(:SOLARBEAM_CHARGE) do
     @scene.wait(1,true)
   end
   @sprites["battlebg"].focus
-  @userSprite.tone = Tone.new(0,0,0)
+  @userSprite.tone = @userSprite.pokemon.item_id == :GREYSCALE ? Tone.new(0, 0, 0, 255) : Tone.new(0,0,0)
   @vector.reset
   pbDisposeSpriteHash(fp)
 end
@@ -161,7 +161,7 @@ EliteBattle.defineMoveAnimation(:SOLARBEAM_ATK) do
   end
   @sprites["battlebg"].focus
   @targetSprite.ox = @targetSprite.bitmap.width/2
-  @targetSprite.tone = Tone.new(0,0,0)
+  @targetSprite.tone = @targetSprite.pokemon.item_id == :GREYSCALE ? Tone.new(0, 0, 0, 255) : Tone.new(0,0,0)
   @vector.reset
   @vector.inc = 0.2
   pbDisposeSpriteHash(fp)

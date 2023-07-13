@@ -215,7 +215,11 @@ class Battle::Scene
         # fade in player battler when follower is out
         if !EliteBattle.follower(@battle).nil? && !@safaribattle
           @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.all += 25.5.delta_sub(false) if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.all < 0
-          @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray += 25.5.delta_sub(false) if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray < 0
+          if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].pokemon.item_id == :GREYSCALE
+            @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray += 51.delta_sub(false) if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray < 255
+          else
+            @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray += 25.5.delta_sub(false) if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray < 0
+          end
         end
       end
       # fades screen from black
@@ -255,12 +259,20 @@ class Battle::Scene
         for m in 0...@battle.pbParty(1).length
           next if !@sprites["pokemon_#{m*2 + 1}"]
           @sprites["pokemon_#{m*2 + 1}"].tone.all += 25.5.delta_sub(false) if @sprites["pokemon_#{m*2 + 1}"].tone.all < 0
-          @sprites["pokemon_#{m*2 + 1}"].tone.gray += 25.5.delta_sub(false) if @sprites["pokemon_#{m*2 + 1}"].tone.gray < 0
+          if @sprites["pokemon_#{m*2 + 1}"].pokemon.item_id == :GREYSCALE
+            @sprites["pokemon_#{m*2 + 1}"].tone.gray += 51.delta_sub(false) if @sprites["pokemon_#{m*2 + 1}"].tone.gray < 255
+          else
+            @sprites["pokemon_#{m*2 + 1}"].tone.gray += 25.5.delta_sub(false) if @sprites["pokemon_#{m*2 + 1}"].tone.gray < 0
+          end
         end
         # fade in player battler when follower is out
         if !EliteBattle.follower(@battle).nil?
           @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.all += 25.5.delta_sub(false) if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.all < 0
-          @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray += 25.5.delta_sub(false) if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray < 0
+          if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].pokemon.item_id == :GREYSCALE
+            @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray += 51.delta_sub(false) if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray < 255
+          else
+            @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray += 25.5.delta_sub(false) if @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone.gray < 0
+          end
         end
         self.wait(1, true)
       end

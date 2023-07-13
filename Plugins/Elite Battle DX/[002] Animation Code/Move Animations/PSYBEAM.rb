@@ -62,6 +62,6 @@ EliteBattle.defineMoveAnimation(:PSYBEAM) do
     @scene.wait(1,true)
   end
   @targetSprite.ox = @targetSprite.bitmap.width/2
-  @targetSprite.tone = Tone.new(0,0,0)
+  @targetSprite.tone = @targetSprite.pokemon.item_id == :GREYSCALE ? Tone.new(0, 0, 0, 255) : Tone.new(0,0,0)
   pbDisposeSpriteHash(fp)
 end

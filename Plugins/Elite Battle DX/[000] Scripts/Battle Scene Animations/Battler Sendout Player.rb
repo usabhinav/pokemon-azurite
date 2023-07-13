@@ -48,6 +48,9 @@ class Battle::Scene
       orgcord.push(@sprites["pokemon_#{i}"].oy)
       @sprites["pokemon_#{i}"].oy = @sprites["pokemon_#{i}"].height/2 if !dig[m]
       @sprites["pokemon_#{i}"].tone = Tone.new(255, 255, 255)
+      if pkmn.item_id == :GREYSCALE
+        @sprites["pokemon_#{i}"].tone = Tone.new(255, 255, 255, 255)
+      end
       @sprites["pokemon_#{i}"].opacity = 255
       @sprites["pokemon_#{i}"].visible = false
     end

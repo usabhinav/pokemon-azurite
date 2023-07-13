@@ -118,7 +118,7 @@ EliteBattle.defineMoveAnimation(:BOLTSTRIKE) do
       @targetSprite.x += (@targetIsPlayer ? -8 : 4)*((i-16)/4>0 ? -1 : 1)
       @targetSprite.y -= (@targetIsPlayer ? -4 : 2)*((i-16)/4>0 ? -1 : 1)
     end
-    @targetSprite.tone = Tone.new(250,250,250) if i == 16
+    @targetSprite.tone = (@targetSprite.pokemon.item_id == :GREYSCALE ? Tone.new(250, 250, 250, 255) : Tone.new(250,250,250)) if i == 16
     if i >= 16
       if (i-16)/3 > l
         m += 1

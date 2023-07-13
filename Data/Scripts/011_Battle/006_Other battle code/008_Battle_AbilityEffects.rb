@@ -1296,7 +1296,7 @@ Battle::AbilityEffects::ModifyMoveBaseType.add(:REFRIGERATE,
 )
 
 Battle::AbilityEffects::ModifyMoveBaseType.add(:CRYSTALATE,
-  proc { |ability,user,move,type|
+  proc { |ability, user, move, type|
     next if type != :NORMAL || !GameData::Type.exists?(:CRYSTAL)
     move.powerBoost = true
     next :CRYSTAL
@@ -1304,7 +1304,7 @@ Battle::AbilityEffects::ModifyMoveBaseType.add(:CRYSTALATE,
 )
 
 Battle::AbilityEffects::ModifyMoveBaseType.add(:SAKURA,
-  proc { |ability,user,move,type|
+  proc { |ability, user, move, type|
     next if type != :GRASS || !GameData::Type.exists?(:FAIRY)
     move.powerBoost = true
     next :FAIRY
@@ -1312,7 +1312,7 @@ Battle::AbilityEffects::ModifyMoveBaseType.add(:SAKURA,
 )
 
 Battle::AbilityEffects::ModifyMoveBaseType.add(:MINDTRICK,
-  proc { |ability,user,move,type|
+  proc { |ability, user, move, type|
     next if type != :PSYCHIC || !GameData::Type.exists?(:MYSTIC)
     move.powerBoost = true
     next :MYSTIC
@@ -1320,10 +1320,18 @@ Battle::AbilityEffects::ModifyMoveBaseType.add(:MINDTRICK,
 )
 
 Battle::AbilityEffects::ModifyMoveBaseType.add(:GALAXYBRAIN,
-  proc { |ability,user,move,type|
+  proc { |ability, user, move, type|
     next if type != :PSYCHIC || !GameData::Type.exists?(:COSMIC)
     move.powerBoost = true
     next :COSMIC
+  }
+)
+
+Battle::AbilityEffects::ModifyMoveBaseType.add(:DISTORTED,
+  proc { |ability, user, move, type|
+    next if type != :NORMAL
+    move.powerBoost = true
+    next user.types[0]
   }
 )
 
@@ -5269,9 +5277,19 @@ Battle::AbilityEffects::OnSwitchIn.add(:SKILLSCAN,
       end
     end
     if showSprite
-      # TODO: show skill scan sprite
-      battle.pbDisplay(_INTL("!!!!!!!!!!!!!!"))
+      battle.pbCommonAnimation("SkillScan", battler, nil)
+      if battle.pbSideSize(battler.index + 1) == 1
+        battle.pbDisplay(_INTL("{1} sensed a powerful attack from its opponent!", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} sensed a powerful attack from one of its opponents!", battler.pbThis))
+      end
     end
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:DISTORTED,
+  proc { |ability, battler, battle, switch_in|
+    # TODO: Change type gem on Mega PorygonZ's sprite
   }
 )
 

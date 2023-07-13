@@ -270,6 +270,16 @@ Battle::ItemEffects::SpeedCalc.add(:SYNCHROPENDANT,
   }
 )
 
+Battle::ItemEffects::SpeedCalc.add(:ADRENALINERING,
+  proc { |item, battler, mult|
+    fainted_count = 0
+    battler.battle.eachInTeamFromBattlerIndex(battler.index) do |poke|
+      fainted_count += 1 if !poke.egg? && poke.fainted?
+    end
+    next mult * (1 + (0.1 * fainted_count))
+  }
+)
+
 #===============================================================================
 # WeightCalc handlers
 #===============================================================================
@@ -1282,6 +1292,15 @@ Battle::ItemEffects::DamageCalcFromUser.add(:LIGHTSEED,
   }
 )
 
+Battle::ItemEffects::DamageCalcFromUser.add(:COUNTERFORMAMULET,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    if target.mega? || target.crystal? || target.primal? ||
+       (target.isSpecies?(:GRENINJA) && target.form == 2) || (target.isSpecies?(:KOSURITE) && target.form == 1)
+      mults[:base_damage_multiplier] *= 1.5
+    end
+  }
+)
+
 #===============================================================================
 # DamageCalcFromTarget handlers
 # NOTE: Species-specific held items consider the original species, not the
@@ -2014,6 +2033,51 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:LIGHTROD,
   }
 )
 
+Battle::ItemEffects::AfterMoveUseFromUser.add(:PIXIEDUST,
+  proc { |item, user, targets, move, numHits, battle|
+    next if !move.pbDamagingMove? || numHits == 0
+    next if !user.pbHasType?(:FAIRY)
+    next if move.calcType != :FAIRY
+    targets.each do |t|
+      next if t.damageState.unaffected || t.damageState.substitute
+      next if t.fainted?
+      next if battle.pbRandom(100) >= 10
+      whatStatusCondition = rand(7)
+      case whatStatusCondition
+      when 0
+        t.pbSleep if t.pbCanSleep?(user, false)
+      when 1
+        t.pbPoison(user) if t.pbCanPoison?(user, false)
+      when 2
+        t.pbBurn(user) if t.pbCanBurn?(user, false)
+      when 3
+        t.pbParalyze(user) if t.pbCanParalyze?(user, false)
+      when 4
+        t.pbFreeze if t.pbCanFreeze?(user, false)
+      when 5
+        t.pbConfuse if t.pbCanConfuse?(user, false)
+      when 6
+        t.pbAttract(user) if t.pbCanAttract?(user, false)
+      end
+    end
+  }
+)
+
+Battle::ItemEffects::AfterMoveUseFromUser.add(:PHANTOMMASK,
+  proc { |item, user, targets, move, numHits, battle|
+    next if !move.pbDamagingMove? || numHits == 0
+    next if !user.pbHasType?(:GHOST)
+    next if move.calcType != :GHOST
+    targets.each do |t|
+      next if t.damageState.unaffected || t.damageState.substitute
+      next if t.fainted?
+      next if t.effects[PBEffects::NoRetreat]
+      t.effects[PBEffects::NoRetreat] = true
+      battle.pbDisplay(_INTL("{1} was trapped by {2}!", t.pbThis, user.pbThis(true)))
+    end
+  }
+)
+
 #===============================================================================
 # OnEndOfUsingMove handlers
 #===============================================================================
@@ -2375,6 +2439,13 @@ Battle::ItemEffects::OnSwitchIn.add(:BERSERKGENE,
     if battler.pbCanRaiseStatStage?(:ATTACK, battler)
       battler.pbRaiseStatStageByCause(:ATTACK, 2, battler, battler.itemName)
     end
+  }
+)
+
+Battle::ItemEffects::OnSwitchIn.add(:RIDDLESBOOK,
+  proc { |item, battler, battle|
+    next if battler.moves.any? {|m| m && m.type == :PSYCHIC}
+    battler.pbConfuseSelf(_INTL("{1} was confused by its {2}!", battler.pbThis, battler.itemName))
   }
 )
 

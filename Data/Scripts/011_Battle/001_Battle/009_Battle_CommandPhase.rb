@@ -196,7 +196,7 @@ class Battle
     # Reset choices to perform Crystallization if it wasn't done somehow
     for side in 0...2
       @crystallization[side].each_with_index do |crystalEvo,i|
-        @crystallization[side][i] = -1 if crystalEvo>=0
+        @crystallization[side][i] = -1 if crystalEvo >= 0
       end
     end
     # Choose actions for the round (player first, then AI)
@@ -238,10 +238,16 @@ class Battle
         when 1    # Bag
           # This check is necessary so that Pokemon with Unstable don't get a free item turn
           if @battlers[idxBattler].usingMultiTurnAttack?
-            pbDisplay(_INTL("{1} is in the middle of an attack!",@battlers[idxBattler].pbThis))
+            pbDisplay(_INTL("{1} is in the middle of an attack!", @battlers[idxBattler].pbThis))
           elsif pbItemMenu(idxBattler, actioned.length==1)
-            commandsEnd = true if pbItemUsesAllActions?(@choices[idxBattler][1])
-            break
+            # Allows the user to make another choice after using a Z-item
+            if [:ZATTACK, :ZDEFENSE, :ZSPATK, :ZSPDEF, :ZSPEED, :ZACCURACY].include?(@choices[idxBattler][1])
+              pbUseItemOnBattler(@choices[idxBattler][1], @choices[idxBattler][2], @battlers[idxBattler])
+              pbClearChoice(idxBattler)
+            else
+              commandsEnd = true if pbItemUsesAllActions?(@choices[idxBattler][1])
+              break
+            end
           end
         when 2    # Pokémon
           break if pbPartyMenu(idxBattler)

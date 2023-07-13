@@ -214,12 +214,28 @@ ItemHandlers::CanUseInBattle.add(:XATTACK, proc { |item, pokemon, battler, move,
 
 ItemHandlers::CanUseInBattle.copy(:XATTACK, :XATTACK2, :XATTACK3, :XATTACK6)
 
+ItemHandlers::CanUseInBattle.add(:ZATTACK, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  if battler.effects[PBEffects::ZItemUsedThisRound]
+    scene.pbDisplay(_INTL("{1} is already under the effects of a Z-item this round.", battler.pbThis)) if showMessages
+    next false
+  end
+  next pbBattleItemCanRaiseStat?(:ATTACK, battler, scene, showMessages)
+})
+
 ItemHandlers::CanUseInBattle.add(:XDEFENSE, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
   next pbBattleItemCanRaiseStat?(:DEFENSE, battler, scene, showMessages)
 })
 
 ItemHandlers::CanUseInBattle.copy(:XDEFENSE,
    :XDEFENSE2, :XDEFENSE3, :XDEFENSE6, :XDEFEND, :XDEFEND2, :XDEFEND3, :XDEFEND6)
+
+ItemHandlers::CanUseInBattle.add(:ZDEFENSE, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  if battler.effects[PBEffects::ZItemUsedThisRound]
+    scene.pbDisplay(_INTL("{1} is already under the effects of a Z-item this round.", battler.pbThis)) if showMessages
+    next false
+  end
+  next pbBattleItemCanRaiseStat?(:DEFENSE, battler, scene, showMessages)
+})
 
 ItemHandlers::CanUseInBattle.add(:XSPATK, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
   next pbBattleItemCanRaiseStat?(:SPECIAL_ATTACK, battler, scene, showMessages)
@@ -228,11 +244,27 @@ ItemHandlers::CanUseInBattle.add(:XSPATK, proc { |item, pokemon, battler, move, 
 ItemHandlers::CanUseInBattle.copy(:XSPATK,
    :XSPATK2, :XSPATK3, :XSPATK6, :XSPECIAL, :XSPECIAL2, :XSPECIAL3, :XSPECIAL6)
 
+ItemHandlers::CanUseInBattle.add(:ZSPATK, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  if battler.effects[PBEffects::ZItemUsedThisRound]
+    scene.pbDisplay(_INTL("{1} is already under the effects of a Z-item this round.", battler.pbThis)) if showMessages
+    next false
+  end
+  next pbBattleItemCanRaiseStat?(:SPECIAL_ATTACK, battler, scene, showMessages)
+})
+
 ItemHandlers::CanUseInBattle.add(:XSPDEF, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
   next pbBattleItemCanRaiseStat?(:SPECIAL_DEFENSE, battler, scene, showMessages)
 })
 
 ItemHandlers::CanUseInBattle.copy(:XSPDEF, :XSPDEF2, :XSPDEF3, :XSPDEF6)
+
+ItemHandlers::CanUseInBattle.add(:ZSPDEF, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  if battler.effects[PBEffects::ZItemUsedThisRound]
+    scene.pbDisplay(_INTL("{1} is already under the effects of a Z-item this round.", battler.pbThis)) if showMessages
+    next false
+  end
+  next pbBattleItemCanRaiseStat?(:SPECIAL_DEFENSE, battler, scene, showMessages)
+})
 
 ItemHandlers::CanUseInBattle.add(:XSPEED, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
   next pbBattleItemCanRaiseStat?(:SPEED, battler, scene, showMessages)
@@ -240,11 +272,27 @@ ItemHandlers::CanUseInBattle.add(:XSPEED, proc { |item, pokemon, battler, move, 
 
 ItemHandlers::CanUseInBattle.copy(:XSPEED, :XSPEED2, :XSPEED3, :XSPEED6)
 
+ItemHandlers::CanUseInBattle.add(:ZSPEED, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  if battler.effects[PBEffects::ZItemUsedThisRound]
+    scene.pbDisplay(_INTL("{1} is already under the effects of a Z-item this round.", battler.pbThis)) if showMessages
+    next false
+  end
+  next pbBattleItemCanRaiseStat?(:SPEED, battler, scene, showMessages)
+})
+
 ItemHandlers::CanUseInBattle.add(:XACCURACY, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
   next pbBattleItemCanRaiseStat?(:ACCURACY, battler, scene, showMessages)
 })
 
 ItemHandlers::CanUseInBattle.copy(:XACCURACY, :XACCURACY2, :XACCURACY3, :XACCURACY6)
+
+ItemHandlers::CanUseInBattle.add(:ZACCURACY, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  if battler.effects[PBEffects::ZItemUsedThisRound]
+    scene.pbDisplay(_INTL("{1} is already under the effects of a Z-item this round.", battler.pbThis)) if showMessages
+    next false
+  end
+  next pbBattleItemCanRaiseStat?(:ACCURACY, battler, scene, showMessages)
+})
 
 ItemHandlers::CanUseInBattle.add(:MAXMUSHROOMS, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
   if !pbBattleItemCanRaiseStat?(:ATTACK, battler, scene, false) &&
@@ -292,7 +340,7 @@ ItemHandlers::CanUseInBattle.add(:POKEFLUTE, proc { |item, pokemon, battler, mov
 
 ItemHandlers::CanUseInBattle.add(:RISCIBERRY, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
   if battler.effects[PBEffects::RisciBerryActive]
-    scene.pbDisplay(_INTL("{1} has already consumed a {2}!", battler.pbThis, GameData::Item.get(item).real_name)) if showMessages
+    scene.pbDisplay(_INTL("{1} has already consumed a {2}.", battler.pbThis, GameData::Item.get(item).real_name)) if showMessages
     next false
   end
   next true
@@ -565,6 +613,12 @@ ItemHandlers::BattleUseOnBattler.add(:XATTACK6, proc { |item, battler, scene|
   battler.pokemon.changeHappiness("battleitem")
 })
 
+ItemHandlers::BattleUseOnBattler.add(:ZATTACK, proc { |item, battler, scene|
+  battler.pbRaiseStatStage(:ATTACK, 1, battler)
+  battler.pokemon.changeHappiness("battleitem")
+  battler.effects[PBEffects::ZItemUsedThisRound] = :ZATTACK
+})
+
 ItemHandlers::BattleUseOnBattler.add(:XDEFENSE, proc { |item, battler, scene|
   battler.pbRaiseStatStage(:DEFENSE, (Settings::X_STAT_ITEMS_RAISE_BY_TWO_STAGES) ? 2 : 1, battler)
   battler.pokemon.changeHappiness("battleitem")
@@ -592,6 +646,12 @@ ItemHandlers::BattleUseOnBattler.add(:XDEFENSE6, proc { |item, battler, scene|
 })
 
 ItemHandlers::BattleUseOnBattler.copy(:XDEFENSE6, :XDEFEND6)
+
+ItemHandlers::BattleUseOnBattler.add(:ZDEFENSE, proc { |item, battler, scene|
+  battler.pbRaiseStatStage(:DEFENSE, 1, battler)
+  battler.pokemon.changeHappiness("battleitem")
+  battler.effects[PBEffects::ZItemUsedThisRound] = :ZDEFENSE
+})
 
 ItemHandlers::BattleUseOnBattler.add(:XSPATK, proc { |item, battler, scene|
   battler.pbRaiseStatStage(:SPECIAL_ATTACK, (Settings::X_STAT_ITEMS_RAISE_BY_TWO_STAGES) ? 2 : 1, battler)
@@ -621,6 +681,12 @@ ItemHandlers::BattleUseOnBattler.add(:XSPATK6, proc { |item, battler, scene|
 
 ItemHandlers::BattleUseOnBattler.copy(:XSPATK6, :XSPECIAL6)
 
+ItemHandlers::BattleUseOnBattler.add(:ZSPATK, proc { |item, battler, scene|
+  battler.pbRaiseStatStage(:SPECIAL_ATTACK, 1, battler)
+  battler.pokemon.changeHappiness("battleitem")
+  battler.effects[PBEffects::ZItemUsedThisRound] = :ZSPATK
+})
+
 ItemHandlers::BattleUseOnBattler.add(:XSPDEF, proc { |item, battler, scene|
   battler.pbRaiseStatStage(:SPECIAL_DEFENSE, (Settings::X_STAT_ITEMS_RAISE_BY_TWO_STAGES) ? 2 : 1, battler)
   battler.pokemon.changeHappiness("battleitem")
@@ -639,6 +705,12 @@ ItemHandlers::BattleUseOnBattler.add(:XSPDEF3, proc { |item, battler, scene|
 ItemHandlers::BattleUseOnBattler.add(:XSPDEF6, proc { |item, battler, scene|
   battler.pbRaiseStatStage(:SPECIAL_DEFENSE, 6, battler)
   battler.pokemon.changeHappiness("battleitem")
+})
+
+ItemHandlers::BattleUseOnBattler.add(:ZSPDEF, proc { |item, battler, scene|
+  battler.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, battler)
+  battler.pokemon.changeHappiness("battleitem")
+  battler.effects[PBEffects::ZItemUsedThisRound] = :ZSPDEF
 })
 
 ItemHandlers::BattleUseOnBattler.add(:XSPEED, proc { |item, battler, scene|
@@ -661,6 +733,12 @@ ItemHandlers::BattleUseOnBattler.add(:XSPEED6, proc { |item, battler, scene|
   battler.pokemon.changeHappiness("battleitem")
 })
 
+ItemHandlers::BattleUseOnBattler.add(:ZSPEED, proc { |item, battler, scene|
+  battler.pbRaiseStatStage(:SPEED, 1, battler)
+  battler.pokemon.changeHappiness("battleitem")
+  battler.effects[PBEffects::ZItemUsedThisRound] = :ZSPEED
+})
+
 ItemHandlers::BattleUseOnBattler.add(:XACCURACY, proc { |item, battler, scene|
   battler.pbRaiseStatStage(:ACCURACY, (Settings::X_STAT_ITEMS_RAISE_BY_TWO_STAGES) ? 2 : 1, battler)
   battler.pokemon.changeHappiness("battleitem")
@@ -679,6 +757,12 @@ ItemHandlers::BattleUseOnBattler.add(:XACCURACY3, proc { |item, battler, scene|
 ItemHandlers::BattleUseOnBattler.add(:XACCURACY6, proc { |item, battler, scene|
   battler.pbRaiseStatStage(:ACCURACY, 6, battler)
   battler.pokemon.changeHappiness("battleitem")
+})
+
+ItemHandlers::BattleUseOnBattler.add(:ZACCURACY, proc { |item, battler, scene|
+  battler.pbRaiseStatStage(:ACCURACY, 1, battler)
+  battler.pokemon.changeHappiness("battleitem")
+  battler.effects[PBEffects::ZItemUsedThisRound] = :ZACCURACY
 })
 
 ItemHandlers::BattleUseOnBattler.add(:MAXMUSHROOMS, proc { |item, battler, scene|

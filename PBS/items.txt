@@ -6697,7 +6697,7 @@ Name = Z Attack
 NamePlural = Z Attacks
 Pocket = 7
 Price = 0
-BattleUse = OnMove
+BattleUse = OnBattler
 Description = An item that raises the Attack of a Pokémon for one turn, allowing to use a move on the same turn.
 #-------------------------------
 [ZACCURACY]
@@ -6705,7 +6705,7 @@ Name = Z Accuracy
 NamePlural = Z Accuracies
 Pocket = 7
 Price = 0
-BattleUse = OnMove
+BattleUse = OnBattler
 Description = An item that raises the Accuracy of a Pokémon for one turn, allowing to use a move on the same turn.
 #-------------------------------
 [ZDEFENSE]
@@ -6713,7 +6713,7 @@ Name = Z Defense
 NamePlural = Z Defenses
 Pocket = 7
 Price = 0
-BattleUse = OnMove
+BattleUse = OnBattler
 Description = An item that raises the Defense of a Pokémon for one turn, allowing to use a move on the same turn.
 #-------------------------------
 [ZSPATK]
@@ -6721,7 +6721,7 @@ Name = Z Sp. Atk
 NamePlural = Z Sp. Atks
 Pocket = 7
 Price = 0
-BattleUse = OnMove
+BattleUse = OnBattler
 Description = An item that raises the Sp. Atk of a Pokémon for one turn, allowing to use a move on the same turn.
 #-------------------------------
 [ZSPDEF]
@@ -6729,7 +6729,7 @@ Name = Z Sp. Def
 NamePlural = Z Sp. Defs
 Pocket = 7
 Price = 0
-BattleUse = OnMove
+BattleUse = OnBattler
 Description = An item that raises the Sp. Def of a Pokémon for one turn, allowing to use a move on the same turn.
 #-------------------------------
 [ZSPEED]
@@ -6737,7 +6737,7 @@ Name = Z Speed
 NamePlural = Z Speeds
 Pocket = 7
 Price = 0
-BattleUse = OnMove
+BattleUse = OnBattler
 Description = An item that raises the Speed of a Pokémon for one turn, allowing to use a move on the same turn.
 #-------------------------------
 [BOTTLECAP]

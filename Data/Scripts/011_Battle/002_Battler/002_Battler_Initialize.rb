@@ -306,6 +306,7 @@ class Battle::Battler
     @effects[PBEffects::RoughRockEffectLost] = false
     @effects[PBEffects::LightNutActive]      = false
     @effects[PBEffects::RisciBerryActive]    = false
+    @effects[PBEffects::ZItemUsedThisRound]  = nil
   end
 
   #=============================================================================

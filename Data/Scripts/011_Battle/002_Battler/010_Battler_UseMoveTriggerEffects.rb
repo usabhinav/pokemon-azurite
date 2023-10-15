@@ -36,6 +36,10 @@ class Battle::Battler
         Battle::AbilityEffects.triggerOnDealingHit(user.ability, user, target, move, @battle)
         user.pbItemHPHealCheck
       end
+      # Leech Tooth
+      if user.hasActiveItem?(:LEECHTOOTH) && user.pbHasType?(:BUG) && target.damageState.hpLost > 0
+        user.pbRecoverHPFromDrain((target.damageState.hpLost / 4.0).round, target)
+      end
       # Target's item
       if target.itemActive?(true)
         oldHP = user.hp
@@ -228,7 +232,7 @@ class Battle::Battler
       move.pbEndOfMoveUsageEffect(user, targets, numHits, switched_battlers)
     end
     # User's ability/item that switches the user out (all negated by Sheer Force)
-    if !(user.hasActiveAbility?(:SHEERFORCE) && move.addlEffect > 0)
+    if !(user.hasActiveAbility?([:SHEERFORCE, :MORALPACT]) && move.addlEffect > 0)
       pbEffectsAfterMove3(user, targets, move, numHits, switched_battlers)
     end
     if numHits > 0

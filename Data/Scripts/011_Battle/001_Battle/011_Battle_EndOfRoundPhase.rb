@@ -803,6 +803,25 @@ class Battle
       battler.pbLowerStatStage(:SPECIAL_DEFENSE, 1, nil) if battler.pbCanLowerStatStage?(:SPECIAL_DEFENSE)
       battler.pbItemOnStatDropped
     end
+    # Lower stats raised by Z-items
+    priority.each do |battler|
+      z_item_used_this_round = battler.effects[PBEffects::ZItemUsedThisRound]
+      battler.effects[PBEffects::ZItemUsedThisRound] = nil
+      next if battler.fainted? || z_item_used_this_round.nil?
+      z_item_stat_map = {
+        :ZATTACK     => :ATTACK,
+        :ZDEFENSE    => :DEFENSE,
+        :ZSPATK      => :SPECIAL_ATTACK,
+        :ZSPDEF      => :SPECIAL_DEFENSE,
+        :ZSPEED      => :SPEED,
+        :ZACCURACY   => :ACCURACY
+      }
+      stat_to_lower = z_item_stat_map[z_item_used_this_round]
+      next if !battler.pbCanLowerStatStage?(stat_to_lower)
+      pbDisplay(_INTL("The effect of {1}'s {2} wore off.", battler.pbThis, GameData::Item.get(z_item_used_this_round).name))
+      battler.pbLowerStatStage(stat_to_lower, 1, nil)
+      battler.pbItemOnStatDropped
+    end
     # Effects that apply to a battler that wear off after a number of rounds
     pbEOREndBattlerEffects(priority)
     # Check for end of battle (i.e. because of Perish Song)

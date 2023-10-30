@@ -40,4 +40,3 @@ Jingle Ball
 Crystal Ball
 Deity Ball
 Prismatic Ball
-Helper Ball

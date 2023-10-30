@@ -242,7 +242,7 @@ class PokemonReadyMenu
   def pbStartReadyMenu(moves, items)
     commands = [[], []]   # Moves, items
     moves.each do |i|
-      commands[0].push([i[0], GameData::Move.get(i[0]).name, true, i[1]])
+      commands[0].push([i[0], GameData::Move.get(i[0]).name, true])
     end
     commands[0].sort! { |a, b| a[1] <=> b[1] }
     items.each do |i|
@@ -255,7 +255,6 @@ class PokemonReadyMenu
       break if command == -1
       if command[0] == 0   # Use a move
         move = commands[0][command[1]][0]
-        user = $player.party[commands[0][command[1]][3]]
         if move == :FLY
           ret = nil
           pbFadeOutInWithUpdate(99999, @scene.sprites) {
@@ -268,14 +267,14 @@ class PokemonReadyMenu
           if ret
             $game_temp.fly_destination = ret
             $game_temp.in_menu = false
-            pbUseHiddenMove(user, move)
+            pbUseHiddenMove(move)
             break
           end
         else
           pbHideMenu
-          if pbConfirmUseHiddenMove(user, move)
+          if pbConfirmUseHiddenMove(move)
             $game_temp.in_menu = false
-            pbUseHiddenMove(user, move)
+            pbUseHiddenMove(move)
             break
           else
             pbShowMenu
@@ -305,10 +304,7 @@ def pbUseKeyItem
            :WATERFALL, :WHIRLPOOL]
   real_moves = []
   moves.each do |move|
-    $player.party.each_with_index do |pkmn, i|
-      next if pkmn.egg? || !pkmn.hasMove?(move)
-      real_moves.push([move, i]) if pbCanUseHiddenMove?(pkmn, move, false)
-    end
+    real_moves.push(move) if $player.hm_unlocked?(move)
   end
   real_items = []
   $bag.registered_items.each do |i|

@@ -40,6 +40,8 @@ class Player < Trainer
   attr_accessor :mystery_gifts
   # @return [ObservableOutfitState] the player's outfit state
   attr_accessor :outfitstate
+  # @return [Array<Symbol>] list of all HMs the player has unlocked
+  attr_reader   :unlocked_hms
 
   def character_ID=(value)
     return if @character_ID == value
@@ -112,6 +114,19 @@ class Player < Trainer
 
   #=============================================================================
 
+  # Adds an HM to list of player's unlocked HMs
+  # @param hm [Symbol] HM to unlock
+  def unlock_hm(hm)
+    @unlocked_hms.push(hm) unless @unlocked_hms.include?(hm)
+  end
+
+  # @return [Boolean] whether the player has unlocked this HM
+  def hm_unlocked?(hm)
+    return @unlocked_hms.include?(hm)
+  end
+
+  #=============================================================================
+
   def initialize(name, trainer_type)
     super
     @uuid                  = SecureRandom.uuid
@@ -136,5 +151,6 @@ class Player < Trainer
     @outfitstate = ObservableOutfitState.new(OutfitState.new(trainer_type, "Walking"))
     @outfitstate.setDryLayerState("Base", 1)
     @outfitstate.setWetLayerState("Base", 1)
+    @unlocked_hms          = []
   end
 end

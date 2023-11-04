@@ -403,6 +403,46 @@ ItemHandlers::UseInField.add(:EXPALLOFF, proc { |item|
   next true
 })
 
+ItemHandlers::UseInField.add(:HELPERBALL, proc { |item|
+  if $player.unlocked_hms.empty?
+    pbMessage(_INTL("There are no tools available."))
+    next false
+  end
+  loop do
+    commands = $player.unlocked_hms.map { |move| GameData::Move.get(move).name }
+    commands.push("Exit")
+    command = pbMessage(_INTL("Which tool would you like to use?"), commands, commands.length)
+    break if command == commands.length - 1
+    move = $player.unlocked_hms[command]
+    if pbCanUseHiddenMove?(move)
+      if move == :FLY
+        ret = nil
+        pbFadeOutIn {
+          scene = PokemonRegionMap_Scene.new(-1, false)
+          screen = PokemonRegionMapScreen.new(scene)
+          ret = screen.pbStartFlyScreen
+        }
+        if ret
+          $game_temp.fly_destination = ret
+          pbUseHiddenMove(move)
+          break
+        end
+      else
+        if pbConfirmUseHiddenMove(move)
+          pbUseHiddenMove(move)
+          break
+        end
+      end
+    end
+  end
+  next true
+})
+
+ItemHandlers::UseInField.add(:LAPTOP, proc { |item|
+  pbPokeCenterPC(true)
+  next true
+})
+
 #===============================================================================
 # UseOnPokemon handlers
 #===============================================================================
@@ -1545,5 +1585,21 @@ ItemHandlers::UseOnPokemon.add(:ALOLANPANCAKES, proc { |item, qty, pkmn, scene|
   pkmn.alolan_pancakes_consumed = true
   scene.pbRefresh
   scene.pbDisplay(_INTL("{1} looks a little happier.", pkmn.name))
+  next true
+})
+
+ItemHandlers::UseOnPokemon.add(:KAIZURESFRAGMENTS, proc { |item, qty, pkmn, scene|
+  if !pkmn.isSpecies?(:KAIZURE)
+    scene.pbDisplay(_INTL("It had no effect."))
+    next false
+  elsif pkmn.fainted?
+    scene.pbDisplay(_INTL("This can't be used on the fainted Pokémon."))
+    next false
+  end
+  newForm = (pkmn.form == 0) ? 1 : 0
+  pkmn.setForm(newForm) {
+    scene.pbRefresh
+    scene.pbDisplay(_INTL("{1} changed form!", pkmn.name))
+  }
   next true
 })

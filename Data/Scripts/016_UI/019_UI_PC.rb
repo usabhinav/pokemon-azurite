@@ -131,8 +131,8 @@ end
 #===============================================================================
 #
 #===============================================================================
-def pbPokeCenterPC
-  pbMessage(_INTL("\\se[PC open]{1} booted up the PC.", $player.name))
+def pbPokeCenterPC(is_laptop = false)
+  pbMessage(_INTL("\\se[PC open]{1} booted up the {2}.", $player.name, is_laptop ? "laptop" : "PC"))
   # Get all commands
   command_list = []
   commands = []

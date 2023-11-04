@@ -7305,7 +7305,7 @@ NamePlural = Helper Balls
 Pocket = 8
 Price = 0
 FieldUse = Direct
-Flags = PokeBall
+Flags = KeyItem
 Description = Accesses the Helper Ditto interface.
 #-------------------------------
 [KAIZURESFRAGMENTS]

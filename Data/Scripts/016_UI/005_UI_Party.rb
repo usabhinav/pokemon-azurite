@@ -1316,8 +1316,7 @@ class PokemonPartyScreen
       if !pkmn.egg?
         insert_index = ($DEBUG) ? 2 : 1
         pkmn.moves.each_with_index do |move, i|
-          next if !HiddenMoveHandlers.hasHandler(move.id) &&
-                  ![:MILKDRINK, :SOFTBOILED].include?(move.id)
+          next if ![:MILKDRINK, :SOFTBOILED].include?(move.id)
           command_list.insert(insert_index, [move.name, 1])
           commands.insert(insert_index, i)
           insert_index += 1
@@ -1362,24 +1361,6 @@ class PokemonPartyScreen
           end
           @scene.pbSelect(old_party_idx)
           pbRefresh
-        elsif pbCanUseHiddenMove?(pkmn, move.id)
-          if pbConfirmUseHiddenMove(pkmn, move.id)
-            @scene.pbEndScene
-            if move.id == :FLY
-              scene = PokemonRegionMap_Scene.new(-1, false)
-              screen = PokemonRegionMapScreen.new(scene)
-              ret = screen.pbStartFlyScreen
-              if ret
-                $game_temp.fly_destination = ret
-                return [pkmn, move.id]
-              end
-              @scene.pbStartScene(
-                @party, (@party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel.")
-              )
-              next
-            end
-            return [pkmn, move.id]
-          end
         end
       end
     end

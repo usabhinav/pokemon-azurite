@@ -1,45 +1,4 @@
 #-------------------------------------------------------------------------------
-# New animation to show the Following Pokemon execcuting a field move in the
-# overworld
-#-------------------------------------------------------------------------------
-alias __followingpkmn__pbHiddenMoveAnimation pbHiddenMoveAnimation unless defined?(__followingpkmn__pbHiddenMoveAnimation)
-def pbHiddenMoveAnimation(pokemon, no_field_move = false)
-  no_field_move = no_field_move || $game_temp.no_follower_field_move
-  ret = __followingpkmn__pbHiddenMoveAnimation(pokemon)
-  return ret if !ret || no_field_move || !FollowingPkmn.active? || pokemon != FollowingPkmn.get_pokemon
-  pbTurnTowardEvent(FollowingPkmn.get_event, $game_player)
-  pbWait(Graphics.frame_rate / 5)
-  value = $game_player.direction
-  FollowingPkmn.move_route([PBMoveRoute::Forward])
-  case FollowingPkmn.get_event.direction
-  when 2; pbMoveRoute($game_player, [PBMoveRoute::Up], true)
-  when 4; pbMoveRoute($game_player, [PBMoveRoute::Right], true)
-  when 6; pbMoveRoute($game_player, [PBMoveRoute::Left], true)
-  when 8; pbMoveRoute($game_player, [PBMoveRoute::Down], true)
-  end
-  pbWait(Graphics.frame_rate / 5)
-  pbTurnTowardEvent($game_player, FollowingPkmn.get_event)
-  pbWait(Graphics.frame_rate / 5)
-  case value
-  when 2; FollowingPkmn.move_route([PBMoveRoute::TurnDown])
-  when 4; FollowingPkmn.move_route([PBMoveRoute::TurnLeft])
-  when 6; FollowingPkmn.move_route([PBMoveRoute::TurnRight])
-  when 8; FollowingPkmn.move_route([PBMoveRoute::TurnUp])
-  end
-  pbWait(Graphics.frame_rate / 5)
-  case value
-  when 2; pbMoveRoute($game_player, [PBMoveRoute::TurnDown], true)
-  when 4; pbMoveRoute($game_player, [PBMoveRoute::TurnLeft], true)
-  when 6; pbMoveRoute($game_player, [PBMoveRoute::TurnRight], true)
-  when 8; pbMoveRoute($game_player, [PBMoveRoute::TurnUp], true)
-  end
-  pbSEPlay("Player jump")
-  FollowingPkmn.move_route([PBMoveRoute::Jump, 0, 0])
-  pbWait(Graphics.frame_rate / 5)
-  return ret
-end
-
-#-------------------------------------------------------------------------------
 # New sendout animation for Following Pokemon to slide in when sent out for
 # the first time in battle. Toggleable.
 #-------------------------------------------------------------------------------

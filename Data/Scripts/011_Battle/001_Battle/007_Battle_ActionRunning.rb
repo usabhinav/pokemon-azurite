@@ -56,6 +56,12 @@ class Battle
       end
       return 0
     end
+    if obscureMundimeaForm?(self, @battlers[1].species, true)
+      pbSEPlay("Battle flee")
+      pbDisplayPaused(_INTL("You got away safely!"))
+      @decision = 3
+      return 1
+    end
     # Fleeing from wild battles
     if $DEBUG && Input.press?(Input::CTRL)
       pbSEPlay("Battle flee")

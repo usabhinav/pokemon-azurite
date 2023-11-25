@@ -5,6 +5,11 @@ class Battle::AI
   #=============================================================================
   def pbChooseMoves(idxBattler)
     user        = @battle.battlers[idxBattler]
+    # Mundimea should never attack if it is obscured
+    if obscureMundimeaForm?(@battle, user.species, @battle.opposes?(idxBattler))
+      @battle.pbDisplay(_INTL("Ghost: Get out... get out..."))
+      return
+    end
     wildBattler = user.wild?
     skill       = 0
     if !wildBattler

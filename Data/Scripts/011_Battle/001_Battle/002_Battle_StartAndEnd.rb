@@ -123,10 +123,20 @@ class Battle
       # Set up wild Pokémon
       if side == 1 && wildBattle?
         pbParty(1).each_with_index do |pkmn, idxPkmn|
+          # Change certain attributes for Mundimea battle
+          if obscureMundimeaForm?(self, pkmn.species, true, false)
+            if !$bag.has?(:TRUEENIGMACHAIN)
+              pkmn.name = "Ghost"
+              pkmn.gender = 2
+            end
+            # Change the form so that we can use pbChangeForm to animate the True Enigma Chain revealing Mundimea later on
+            pkmn.form_simple = 1
+          end
           pbCreateBattler((2 * idxPkmn) + side, pkmn, idxPkmn)
           # Changes the Pokémon's form upon entering battle (if it should)
           @peer.pbOnEnteringBattle(self, @battlers[(2 * idxPkmn) + side], pkmn, true)
-          pbSetSeen(@battlers[(2 * idxPkmn) + side])
+          # Do not register Mundimea as seen if it is obscured
+          pbSetSeen(@battlers[(2 * idxPkmn) + side]) if !obscureMundimeaForm?(self, pkmn.species, true)
           @usedInBattle[side][idxPkmn] = true
         end
         next

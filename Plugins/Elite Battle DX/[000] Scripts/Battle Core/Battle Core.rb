@@ -38,7 +38,18 @@ class Battle
       text += "{#{i+1}}"
     end
     text += wildBattle? ? " appeared!" : "!"
-    pbDisplayPaused(EliteBattle.battle_text(text, *memb))
+    if !obscureMundimeaForm?(self, wildBattle? ? foes[0].species : foes[0].party[0].species, true, false)
+      pbDisplayPaused(EliteBattle.battle_text(text, *memb))
+    else
+      pbDisplayPaused(_INTL("The Ghost appeared!"))
+      if $bag.has?(:TRUEENIGMACHAIN)
+        pbDisplayPaused(_INTL("{1} unveiled the Ghost's identity!", GameData::Item.get(:TRUEENIGMACHAIN).name))
+        @battlers[1].pbChangeForm(0, nil)
+        pbDisplayPaused(EliteBattle.battle_text(text, *memb))
+      else
+        pbDisplayPaused(_INTL("Darn!\nThe Ghost can't be ID'd!"))
+      end
+    end
     if wildBattle? && foes.length < 2
       # set boss immunities
       @battlers[1].immunity = true if EliteBattle.get(:setBoss)

@@ -301,3 +301,15 @@ def pbGiveRandomPokemon
     $PokemonStorage[0, j] = Pokemon.new(species_data.species, 15)
   end
 end
+
+#===============================================================================
+# Returns true if Mundimea's form should be obscured
+#===============================================================================
+# @param battle [Battle] current battle
+# @param species [Symbol] species of Pokemon to check
+# @param is_opposing [Boolean] If Pokemon is an opponent or not. Mundimea on the player's or partner's team should not be obscured.
+# @param item_check [Boolean] If this method should check the player's bag for True Enigma Chain or not. This is false when called
+#   at the start of battle, where even if the player has the item, Mundimea should initially be obscured until the item reveals it.
+def obscureMundimeaForm?(battle, species, is_opposing, item_check = true)
+  return battle.wildBattle? && battle.pbSideSize(1) == 1 && species == :MUNDIMEA && is_opposing && (!item_check || !$bag.has?(:TRUEENIGMACHAIN))
+end

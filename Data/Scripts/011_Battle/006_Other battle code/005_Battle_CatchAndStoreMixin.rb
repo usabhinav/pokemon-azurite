@@ -144,6 +144,10 @@ module Battle::CatchAndStoreMixin
       pbDisplay(_INTL("The Trainer blocked your Poké Ball! Don't be a thief!"))
       return
     end
+    if obscureMundimeaForm?(self, battler.species, true)
+      pbDisplay(_INTL("It dodged your Poké Ball! This Pokémon can't be caught!"))
+      return
+    end
     # Calculate the number of shakes (4=capture)
     pkmn = battler.pokemon
     @criticalCapture = false

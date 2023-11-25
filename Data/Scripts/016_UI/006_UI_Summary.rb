@@ -434,6 +434,7 @@ class PokemonSummary_Scene
     imagepos = []
     # Show the Poké Ball containing the Pokémon
     ballimage = sprintf("Graphics/Pictures/Summary/icon_ball_%s", @pokemon.poke_ball)
+    ballimage += "_#{@pokemon.types[0].to_s}" if @pokemon.poke_ball == :PRISMATICBALL
     imagepos.push([ballimage, 14, 60])
     # Show status/fainted/Pokérus infected icon
     status = -1
@@ -631,6 +632,7 @@ class PokemonSummary_Scene
     imagepos = []
     # Show the Poké Ball containing the Pokémon
     ballimage = sprintf("Graphics/Pictures/Summary/icon_ball_%s", @pokemon.poke_ball)
+    ballimage += "_#{@pokemon.types[0].to_s}" if @pokemon.poke_ball == :PRISMATICBALL
     imagepos.push([ballimage, 14, 60])
     # Draw all images
     pbDrawImagePositions(overlay, imagepos)
@@ -784,6 +786,7 @@ class PokemonSummary_Scene
     imagepos = []
     # Show the Poké Ball containing the Pokémon
     ballimage = sprintf("Graphics/Pictures/Summary/icon_ball_%s", @pokemon.poke_ball)
+    ballimage += "_#{@pokemon.types[0].to_s}" if @pokemon.poke_ball == :PRISMATICBALL
     imagepos.push([ballimage, 14, 60])
     # Draw all images
     pbDrawImagePositions(overlay, imagepos)

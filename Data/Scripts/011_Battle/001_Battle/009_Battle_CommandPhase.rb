@@ -234,6 +234,12 @@ class Battle
         end
         case cmd
         when 0    # Fight
+          # All of the player's Pokemon should not attack Mundimea if it is obscured
+          if obscureMundimeaForm?(self, @battlers[1].species, true)
+            pbDisplay(_INTL("{1} is too scared to move!", @battlers[idxBattler].pbThis))
+            commandsEnd = true
+            break
+          end
           break if pbFightMenu(idxBattler)
         when 1    # Bag
           # This check is necessary so that Pokemon with Unstable don't get a free item turn

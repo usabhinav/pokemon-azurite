@@ -6083,13 +6083,22 @@ Price = 0
 Flags = KeyItem
 Description = A faded sea chart that shows the way to a certain island.
 #-------------------------------
-[EXPSHAREALL]
-Name = Exp. Share 2
-NamePlural = EXp. Share 2s
+[EXPALL]
+Name = Exp. Share All
+NamePlural = Exp. Share Alls
 Pocket = 8
 Price = 0
 FieldUse = Direct
-Flags = Fling_30
+Flags = Fling_30,KeyItem
+Description = Turning on this special device will allow all the Pokémon on your team to receive Exp. Points from battles.
+#-------------------------------
+[EXPALLOFF]
+Name = Exp. Share All
+NamePlural = Exp. Share Alls
+Pocket = 8
+Price = 0
+FieldUse = Direct
+Flags = Fling_30,KeyItem
 Description = Turning on this special device will allow all the Pokémon on your team to receive Exp. Points from battles.
 #-------------------------------
 [MEGABRACELET]

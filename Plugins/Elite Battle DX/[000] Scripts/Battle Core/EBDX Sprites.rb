@@ -377,9 +377,9 @@ class DynamicPokemonSprite
     @isShadow = true if @pokemon.shadowPokemon?
     # loads Pokemon bitmap
     if !species.nil?
-      @bitmap = pbLoadPokemonBitmapSpecies(pokemon, species, back)
+      @bitmap = pbLoadPokemonBitmapSpecies(pokemon, species, back, EliteBattle::FRONT_SPRITE_SCALE, 2, obscureMundimeaForm?(@battle, @species, @battle.opposes?(@index), @form != 1))
     else
-      @bitmap = pbLoadPokemonBitmap(pokemon, back)
+      @bitmap = pbLoadPokemonBitmap(pokemon, back, EliteBattle::FRONT_SPRITE_SCALE, 2, obscureMundimeaForm?(@battle, @species, @battle.opposes?(@index), @form != 1))
     end
     # applies scale
     @scale = back ? EliteBattle::BACK_SPRITE_SCALE : EliteBattle::FRONT_SPRITE_SCALE

@@ -26695,6 +26695,30 @@ Habitat = Grassland
 Category = Echidna
 Pokedex = NOTHING
 #-------------------------------
+[MUNDIMEA]
+Name = Mundimea
+Types = COSMIC
+BaseStats = 35,70,40,20,40,45
+GenderRatio = Genderless
+GrowthRate = Parabolic
+BaseExp = 64
+EVs = SPECIAL_ATTACK,1
+CatchRate = 45
+Happiness = 70
+Abilities = TORRENT
+HiddenAbilities = CHLOROPHYLL
+Moves = 1,TACKLE,3,GROWL
+EggMoves = AMNESIA
+EggGroups = Monster,Grass
+HatchSteps = 5355
+Height = 1.9
+Weight = 32.6
+Color = Blue
+Shape = Bipedal
+Habitat = Grassland
+Category = Echidna
+Pokedex = NOTHING
+#-------------------------------
 [TYPHON]
 Name = Typhon
 Types = COSMIC

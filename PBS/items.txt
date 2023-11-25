@@ -6085,7 +6085,7 @@ Description = A faded sea chart that shows the way to a certain island.
 #-------------------------------
 [EXPALL]
 Name = Exp. Share All
-NamePlural = EXp. Share Alls
+NamePlural = Exp. Share Alls
 Pocket = 8
 Price = 0
 FieldUse = Direct
@@ -6094,7 +6094,7 @@ Description = Turning on this special device will allow all the Pokémon on your
 #-------------------------------
 [EXPALLOFF]
 Name = Exp. Share All
-NamePlural = EXp. Share Alls
+NamePlural = Exp. Share Alls
 Pocket = 8
 Price = 0
 FieldUse = Direct

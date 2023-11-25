@@ -8,7 +8,7 @@ end
 #  Loads an animated BitmapWrapper for Pokemon species
 #===============================================================================
 def pbLoadPokemonBitmapSpecies(pokemon, species, back = false, scale = EliteBattle::FRONT_SPRITE_SCALE, speed = 2, obscureMundimeaForm = false)
-  # return obscured Mundiea form if flag provided
+  # return obscured Mundimea sprite if flag provided
   return BitmapEBDX.new("Graphics/EBDX/Battlers/MundimeaObscured", scale) if obscureMundimeaForm
   ret = nil
   pokemon = pokemon.pokemon if pokemon.respond_to?(:pokemon)

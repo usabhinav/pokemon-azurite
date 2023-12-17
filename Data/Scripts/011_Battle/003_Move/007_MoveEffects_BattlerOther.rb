@@ -1485,7 +1485,7 @@ class Battle::Move::NegateTargetAbilityForThreeTurns < Battle::Move
     target.effects[PBEffects::Truant] = false
     # Message
     @battle.pbDisplay(_INTL("{1} is scared and can no longer use its ability!", target.pbThis))
-    target.pbOnAbilityChanged(target.ability)
+    target.pbOnLosingAbility(target.ability)
   end
 end
 

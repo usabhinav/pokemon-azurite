@@ -85,12 +85,13 @@ class Battle
   end
 
   def pbCanMegaEvolve?(idxBattler)
+    return false if @battlers[idxBattler].mega? || @battlers[idxBattler].megaEqualizer?
     return false if $game_switches[Settings::NO_MEGA_EVOLUTION]
-    return false if !@battlers[idxBattler].hasMega?
+    return false if !@battlers[idxBattler].hasMega? && @battlers[idxBattler].item != :EQUALIZERM
     return false if @battlers[idxBattler].wild?
     return true if $DEBUG && Input.press?(Input::CTRL)
     return false if @battlers[idxBattler].effects[PBEffects::SkyDrop] >= 0
-    return false if !pbHasMegaRing?(idxBattler)
+    return false if !pbHasMegaRing?(idxBattler) && @battlers[idxBattler].item != :EQUALIZERM
     return false if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
@@ -132,7 +133,8 @@ class Battle
   def pbMegaEvolve(idxBattler)
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
-    return if !battler.hasMega? || battler.mega?
+    return if !battler.hasMega? && battler.item != :EQUALIZERM
+    return if battler.mega? || battler.megaEqualizer?
     return if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     $stats.mega_evolution_count += 1 if battler.pbOwnedByPlayer?
     trainerName = pbGetOwnerName(idxBattler)
@@ -142,23 +144,35 @@ class Battle
       Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     # Mega Evolve
-    case battler.pokemon.megaMessage
-    when 1   # Rayquaza
-      pbDisplay(_INTL("{1}'s fervent wish has reached {2}!", trainerName, battler.pbThis))
+    if battler.item == :EQUALIZERM
+      pbDisplay(_INTL("{1}'s {2} is taking effect!", battler.pbThis, battler.itemName))
     else
-      pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s {4}!",
-                      battler.pbThis, battler.itemName, trainerName, pbGetMegaRingName(idxBattler)))
+      case battler.pokemon.megaMessage
+      when 1   # Rayquaza
+        pbDisplay(_INTL("{1}'s fervent wish has reached {2}!", trainerName, battler.pbThis))
+      else
+        pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s {4}!",
+                        battler.pbThis, battler.itemName, trainerName, pbGetMegaRingName(idxBattler)))
+      end
     end
     pbCommonAnimation("MegaEvolution", battler)
-    battler.pokemon.makeMega
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
-    @scene.pbChangePokemon(battler, battler.pokemon)
-    @scene.pbRefreshOne(idxBattler)
-    pbCommonAnimation("MegaEvolution2", battler)
-    megaName = battler.pokemon.megaName
-    megaName = _INTL("Mega {1}", battler.pokemon.speciesName) if nil_or_empty?(megaName)
-    pbDisplay(_INTL("{1} has Mega Evolved into {2}!", battler.pbThis, megaName))
+    if battler.item == :EQUALIZERM
+      battler.pokemon.makeMegaEqualizer
+      pbCommonAnimation("MegaEvolution2", battler)
+      activateAura(idxBattler)
+      EliteBattle.playCommonAnimation(:AURAON, @scene, battler.index)
+      pbDisplay(_INTL("{1} has achieved the power of Mega Evolution through the {2}!", battler.pbThis, battler.itemName))
+    else
+      battler.pokemon.makeMega
+      battler.form = battler.pokemon.form
+      battler.pbUpdate(true)
+      @scene.pbChangePokemon(battler, battler.pokemon)
+      @scene.pbRefreshOne(idxBattler)
+      pbCommonAnimation("MegaEvolution2", battler)
+      megaName = battler.pokemon.megaName
+      megaName = _INTL("Mega {1}", battler.pokemon.speciesName) if nil_or_empty?(megaName)
+      pbDisplay(_INTL("{1} has Mega Evolved into {2}!", battler.pbThis, megaName))
+    end
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     @megaEvolution[side][owner] = -2
@@ -178,23 +192,28 @@ class Battle
   def pbUnMegaEvolve(idxBattler)
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
-    return if !battler.mega?
+    return if !battler.mega? && !battler.megaEqualizer?
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
       Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     pbCommonAnimation("MegaEvolution",battler)
-    battler.pokemon.makeUnmega
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
-    @scene.pbChangePokemon(battler,battler.pokemon)
-    @scene.pbRefreshOne(idxBattler)
-    pbCommonAnimation("MegaEvolution2",battler)
-    pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
-    side  = battler.idxOwnSide
-    owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
+    if battler.item == :EQUALIZERM
+      pbCommonAnimation("MegaEvolution2", battler)
+      deactivateAura(idxBattler)
+      battler.pokemon.makeUnEqualizer
+      @scene.pbRefreshOne(idxBattler)
+    else
+      battler.pokemon.makeUnmega
+      battler.form = battler.pokemon.form
+      battler.pbUpdate(true)
+      @scene.pbChangePokemon(battler,battler.pokemon)
+      @scene.pbRefreshOne(idxBattler)
+      pbCommonAnimation("MegaEvolution2", battler)
+    end
+    pbDisplay(_INTL("{1} has reverted to its base form!", battler.pbThis))
+    pbCalculatePriority(false, [idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
   end
 
   #=============================================================================
@@ -206,13 +225,14 @@ class Battle
   end
 
   def pbCanCrystallize?(idxBattler)
+    return false if @battlers[idxBattler].crystal? || @battlers[idxBattler].crystalEqualizer?
     return false if $game_switches[Settings::NO_MEGA_EVOLUTION]
-    return false if !@battlers[idxBattler].hasCrystal?
+    return false if !@battlers[idxBattler].hasCrystal? && @battlers[idxBattler].item != :EQUALIZERC
     return false if @battlers[idxBattler].wild?
     return true if $DEBUG && Input.press?(Input::CTRL)
     return true if pbCheckGlobalAbility(:CRYSTALENERGY)
     return false if @battlers[idxBattler].effects[PBEffects::SkyDrop] >= 0
-    return false if !pbHasCrystalData?(idxBattler)
+    return false if !pbHasCrystalData?(idxBattler) && @battlers[idxBattler].item != :EQUALIZERC
     return false if pbCheckGlobalAbility(:NEGATION)
     side  = @battlers[idxBattler].idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
@@ -254,7 +274,8 @@ class Battle
   def pbCrystallize(idxBattler)
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
-    return if !battler.hasCrystal? || battler.crystal?
+    return if !battler.hasCrystal? && battler.item != :EQUALIZERC
+    return if battler.crystal? || battler.crystalEqualizer?
     return if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     $stats.crystallization_count += 1 if battler.pbOwnedByPlayer?
     trainerName = pbGetOwnerName(idxBattler)
@@ -264,23 +285,34 @@ class Battle
       Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     # Crystallize
-    case battler.pokemon.megaMessage
-    when 1   # Rayquaza
-      pbDisplay(_INTL("{1}'s fervent wish has reached {2}!",trainerName,battler.pbThis))
+    if battler.item == :EQUALIZERC
+      pbDisplay(_INTL("{1}'s {2} is taking effect!", battler.pbThis, battler.itemName))
     else
-      pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s crystal data!",
-         battler.pbThis,battler.itemName,trainerName))
+      case battler.pokemon.megaMessage
+      when 1   # Rayquaza
+        pbDisplay(_INTL("{1}'s fervent wish has reached {2}!",trainerName,battler.pbThis))
+      else
+        pbDisplay(_INTL("{1}'s {2} is reacting to {3}'s crystal data!",
+          battler.pbThis,battler.itemName,trainerName))
+      end
     end
-    pbCommonAnimation("MegaEvolution",battler)
-    battler.pokemon.makeCrystal
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
-    @scene.pbChangePokemon(battler,battler.pokemon)
-    @scene.pbRefreshOne(idxBattler)
-    pbCommonAnimation("MegaEvolution2",battler)
-    megaName = battler.pokemon.megaName
-    megaName = _INTL("Crystal {1}", battler.pokemon.speciesName) if nil_or_empty?(megaName)
-    pbDisplay(_INTL("{1} has Crystallized into {2}!",battler.pbThis,megaName))
+    pbCommonAnimation("MegaEvolution", battler)
+    if battler.item == :EQUALIZERC
+      battler.pokemon.makeCrystalEqualizer
+      pbCommonAnimation("MegaEvolution2", battler)
+      activateAura(idxBattler)
+      pbDisplay(_INTL("{1} has achieved the power of Crystallization through the {2}!", battler.pbThis, battler.itemName))
+    else
+      battler.pokemon.makeCrystal
+      battler.form = battler.pokemon.form
+      battler.pbUpdate(true)
+      @scene.pbChangePokemon(battler,battler.pokemon)
+      @scene.pbRefreshOne(idxBattler)
+      pbCommonAnimation("MegaEvolution2",battler)
+      crystalName = battler.pokemon.crystalName
+      crystalName = _INTL("Crystal {1}", battler.pokemon.speciesName) if nil_or_empty?(crystalName)
+      pbDisplay(_INTL("{1} has Crystallized into {2}!", battler.pbThis, crystalName))
+    end
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     @crystallization[side][owner] = -2
@@ -294,37 +326,51 @@ class Battle
   def pbCrystallizeWithoutItemCheck(idxBattler)
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
-    return if !battler.hasCrystalWithoutItemCheck? || battler.crystal?
+    return if !battler.hasCrystalWithoutItemCheck? && battler.item != :EQUALIZERC
+    return if battler.crystal? || battler.crystalEqualizer?
     return if pbCheckGlobalAbility(:NEGATION) && !pbCheckGlobalAbility(:CRYSTALENERGY)
     trainerName = pbGetOwnerName(idxBattler)
+    old_ability = battler.ability_id
     # Break Illusion
     if battler.hasActiveAbility?(:ILLUSION)
       Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     # Crystallize
-    case battler.pokemon.megaMessage
-    when 1   # Rayquaza
-      pbDisplay(_INTL("{1}'s fervent wish has reached {2}!",trainerName,battler.pbThis))
+    if battler.item == :EQUALIZERC
+      pbDisplay(_INTL("{1}'s {2} is taking effect!", battler.pbThis, battler.itemName))
     else
-      pbDisplay(_INTL("{1} is crystallizing!", battler.pbThis))
+      case battler.pokemon.megaMessage
+      when 1   # Rayquaza
+        pbDisplay(_INTL("{1}'s fervent wish has reached {2}!", trainerName, battler.pbThis))
+      else
+        pbDisplay(_INTL("{1} is Crystallizing!", battler.pbThis))
+      end
     end
-    pbCommonAnimation("MegaEvolution",battler)
-    battler.pokemon.makeCrystalWithoutItemCheck
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
-    @scene.pbChangePokemon(battler,battler.pokemon)
-    @scene.pbRefreshOne(idxBattler)
-    pbCommonAnimation("MegaEvolution2",battler)
-    megaName = battler.pokemon.megaName
-    megaName = _INTL("Crystal {1}", battler.pokemon.speciesName) if nil_or_empty?(megaName)
-    pbDisplay(_INTL("{1} has Crystallized into {2}!",battler.pbThis,megaName))
+    pbCommonAnimation("MegaEvolution", battler)
+    if battler.item == :EQUALIZERC
+      battler.pokemon.makeCrystalEqualizer
+      pbCommonAnimation("MegaEvolution2", battler)
+      activateAura(idxBattler)
+      pbDisplay(_INTL("{1} has achieved the power of Crystallization through the {2}!", battler.pbThis, battler.itemName))
+    else
+      battler.pokemon.makeCrystalWithoutItemCheck
+      battler.form = battler.pokemon.form
+      battler.pbUpdate(true)
+      @scene.pbChangePokemon(battler,battler.pokemon)
+      @scene.pbRefreshOne(idxBattler)
+      pbCommonAnimation("MegaEvolution2",battler)
+      crystalName = battler.pokemon.crystalName
+      crystalName = _INTL("Crystal {1}", battler.pokemon.speciesName) if nil_or_empty?(crystalName)
+      pbDisplay(_INTL("{1} has Crystallized into {2}!", battler.pbThis, crystalName))
+    end
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
     @crystallization[side][owner] = -2
     @powerWithin[battler.index&1][battler.pokemonIndex] = 4 if battler.ability == :POWERWITHIN
-    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
     # Trigger ability
-    battler.pbEffectsOnSwitchIn
+    battler.pbOnLosingAbility(old_ability)
+    battler.pbTriggerAbilityOnGainingIt
+    pbCalculatePriority(false,[idxBattler]) if Settings::RECALCULATE_TURN_ORDER_AFTER_MEGA_EVOLUTION
   end
 
   #=============================================================================
@@ -333,7 +379,7 @@ class Battle
   def pbUnCrystallize(idxBattler)
     battler = @battlers[idxBattler]
     return if !battler || !battler.pokemon
-    return if !battler.crystal?
+    return if !battler.crystal? && !battler.crystalEqualizer?
     return if pbCheckGlobalAbility(:CRYSTALENERGY)
     trainerName = pbGetOwnerName(idxBattler)
     # Break Illusion
@@ -341,12 +387,19 @@ class Battle
       Battle::AbilityEffects.triggerOnBeingHit(battler.ability, nil, battler, nil, self)
     end
     pbCommonAnimation("MegaEvolution",battler)
-    battler.pokemon.makeUncrystal
-    battler.form = battler.pokemon.form
-    battler.pbUpdate(true)
-    @scene.pbChangePokemon(battler,battler.pokemon)
-    @scene.pbRefreshOne(idxBattler)
-    pbCommonAnimation("MegaEvolution2",battler)
+    if battler.item == :EQUALIZERC
+      pbCommonAnimation("MegaEvolution2", battler)
+      deactivateAura(idxBattler)
+      battler.pokemon.makeUnEqualizer
+      @scene.pbRefreshOne(idxBattler)
+    else
+      battler.pokemon.makeUncrystal
+      battler.form = battler.pokemon.form
+      battler.pbUpdate(true)
+      @scene.pbChangePokemon(battler, battler.pokemon)
+      @scene.pbRefreshOne(idxBattler)
+      pbCommonAnimation("MegaEvolution2", battler)
+    end
     pbDisplay(_INTL("{1} has reverted to its base form!",battler.pbThis))
     side  = battler.idxOwnSide
     owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
@@ -403,5 +456,16 @@ class Battle
       pbCommonAnimation("PrimalGroudon2",battler)
     end
     pbDisplay(_INTL("{1} went back to its regular form!",battler.pbThis))
+  end
+
+  #=============================================================================
+  # Get Aura type of battler
+  #=============================================================================
+  def auraTypeOfBattler(idxBattler)
+    battler = @battlers[idxBattler]
+    return nil if !battler || !battler.pokemon
+    return "equalizerm" if battler.megaEqualizer?
+    return "equalizerc" if battler.crystalEqualizer?
+    return nil
   end
 end

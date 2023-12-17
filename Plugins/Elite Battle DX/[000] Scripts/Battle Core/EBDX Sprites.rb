@@ -59,6 +59,7 @@ class DynamicPokemonSprite
   attr_accessor :shadow, :sprite, :index
   attr_accessor :showshadow, :hidden, :fainted, :isShadow, :charged, :noshadow
   attr_accessor :status, :anim, :dynamax, :scale_y, :legacy_anim
+  attr_accessor :aura
   attr_reader :loaded, :selected, :isSub, :pulse
   attr_reader :viewport, :pokemon, :species, :form
   #-----------------------------------------------------------------------------
@@ -329,6 +330,7 @@ class DynamicPokemonSprite
   def dispose
     @sprite.dispose
     @shadow.dispose
+    @aura.dispose if !@aura.nil?
     @overlay.dispose
     @substitute.dispose if @substitute
     pbDisposeSpriteHash(@fp) if @fp
@@ -501,6 +503,40 @@ class DynamicPokemonSprite
     @shadow.visible = false if !@showshadow || @noshadow
   end
   #-----------------------------------------------------------------------------
+  # initialize aura sprite
+  #-----------------------------------------------------------------------------
+  def initializeAura
+    removeAura if !@aura.nil?
+    filename = "aura_loop_#{@battle.auraTypeOfBattler(@index)}"
+    @aura = AnimatedSprite.new("Graphics/EBDX/Animations/Auras/#{filename}", 6, 256, 256, 2, @viewport)
+    @aura.play
+    self.formatAura
+  end
+  #-----------------------------------------------------------------------------
+  # remove aura sprite
+  #-----------------------------------------------------------------------------
+  def removeAura
+    return if @aura.nil?
+    @aura.visible = false
+    @aura.dispose
+    @aura = nil
+  end
+  #-----------------------------------------------------------------------------
+  # update aura attributes
+  #-----------------------------------------------------------------------------
+  def formatAura
+    return if @bitmap.nil? || @bitmap.disposed?
+    return if @aura.nil?
+    cx, cy = getCenter(true)
+    @aura.x = cx - (@aura.framewidth * self.zoom_x) / 2
+    @aura.y = cy - (@aura.frameheight * self.zoom_y) / 2
+    @aura.zoom_x = self.zoom_x
+    @aura.zoom_y = self.zoom_y
+    @aura.z = self.z - 1
+    @aura.mirror = (@index % 2 == 0)
+    @aura.visible = @sprite.visible
+  end
+  #-----------------------------------------------------------------------------
   # plays animation frames
   #-----------------------------------------------------------------------------
   def play
@@ -524,6 +560,8 @@ class DynamicPokemonSprite
   #-----------------------------------------------------------------------------
   def update(scale_y = nil)
     @scale_y = scale_y if !scale_y.nil?
+    self.formatAura
+    @aura.update if !@aura.nil?
     # skips animation if sprite is supposed to be still
     if @still
       @still = false

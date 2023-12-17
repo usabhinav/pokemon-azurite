@@ -190,6 +190,8 @@ module Battle::CatchAndStoreMixin
       Battle::PokeBallEffects.onCatch(ball, self, pkmn)
       pkmn.poke_ball = ball
       pkmn.makeUnmega if pkmn.mega?
+      pkmn.makeUncrystal if pkmn.crystal?
+      pkmn.makeUnEqualizer if pkmn.anyEqualizer?
       pkmn.makeUnprimal
       pkmn.update_shadow_moves if pkmn.shadowPokemon?
       pkmn.record_first_moves

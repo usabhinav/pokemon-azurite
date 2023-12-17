@@ -87,8 +87,16 @@ class Battle::Battler
 
   # Stat readers/writers modified for Dynamic Power and Power Within abilities
 
+  # Returns 40 for the highest stat, then 30, 20, 10, and 0
+  def equalizer_modifier(stat)
+    return 0 if !anyEqualizer?
+    stats = @pokemon.baseStatsSortedAscending.slice(-4, 4)
+    return 0 if !stats.include?(stat)
+    return 10 * (stats.index(stat) + 1)
+  end
+
   def attack
-    atk_stat = @attack + @effects[PBEffects::DynamicPower]
+    atk_stat = @attack + @effects[PBEffects::DynamicPower] + equalizer_modifier(:ATTACK)
     atk_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
     return atk_stat
   end
@@ -99,6 +107,7 @@ class Battle::Battler
     def_stat = @defense
     def_stat = @spdef if @battle.field.effects[PBEffects::WonderRoom] > 0 && @battle.pbCheckAllyCosmoCube(@index).nil?
     def_stat += @effects[PBEffects::DynamicPower]
+    def_stat += equalizer_modifier(:DEFENSE)
     def_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
     return def_stat
   end
@@ -106,7 +115,7 @@ class Battle::Battler
   attr_writer :defense
 
   def spatk
-    spatk_stat = @spatk + @effects[PBEffects::DynamicPower]
+    spatk_stat = @spatk + @effects[PBEffects::DynamicPower] + equalizer_modifier(:SPECIAL_ATTACK)
     spatk_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
     return spatk_stat
   end
@@ -117,6 +126,7 @@ class Battle::Battler
     spdef_stat = @spdef
     spdef_stat = @defense if @battle.field.effects[PBEffects::WonderRoom] > 0 && @battle.pbCheckAllyCosmoCube(@index).nil?
     spdef_stat += @effects[PBEffects::DynamicPower]
+    spdef_stat += equalizer_modifier(:SPECIAL_DEFENSE)
     spdef_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
     return spdef_stat
   end
@@ -124,7 +134,7 @@ class Battle::Battler
   attr_writer :spdef
 
   def speed
-    speed_stat = @speed + @effects[PBEffects::DynamicPower]
+    speed_stat = @speed + @effects[PBEffects::DynamicPower] + equalizer_modifier(:SPEED)
     speed_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
     return speed_stat
   end
@@ -210,7 +220,7 @@ class Battle::Battler
   def pokerusStage;    return @pokemon ? @pokemon.pokerusStage : 0;    end
 
   #=============================================================================
-  # Mega Evolution, Crystallization, Primal Reversion, Shadow Pokémon
+  # Mega Evolution, Crystallization, Equalizers, Primal Reversion, Shadow Pokémon
   #=============================================================================
   def hasMega?
     return false if @effects[PBEffects::Transform]
@@ -237,6 +247,10 @@ class Battle::Battler
 
   def crystal?; return @pokemon && @pokemon.crystal?; end
   alias isCrystal? crystal?
+
+  def megaEqualizer?; return @pokemon&.megaEqualizer?; end
+  def crystalEqualizer?; return @pokemon&.crystalEqualizer?; end
+  def anyEqualizer?; return @pokemon&.anyEqualizer?; end
 
   def hasPrimal?
     return false if @effects[PBEffects::Transform]
@@ -431,6 +445,14 @@ class Battle::Battler
     if @effects[PBEffects::Roost]
       ret.delete(:FLYING)
       ret.push(:NORMAL) if ret.length == 0
+    end
+    # Crystal Equalizer replaces the second type with Crystal-type, or adds it if no second type was there.
+    if crystalEqualizer? && !ret.include?(:CRYSTAL)
+      if ret.length == 1
+        ret.push(:CRYSTAL)
+      else
+        ret[1] = :CRYSTAL
+      end
     end
     # Add the third type specially.
     if withType3 && @effects[PBEffects::Type3] && !ret.include?(@effects[PBEffects::Type3])

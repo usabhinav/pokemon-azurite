@@ -177,7 +177,11 @@ class FightWindowEBDX
     @typImg = "types"
     @catImg = "category"
     @megaImg = "megaButton"
-    @megaImg = "crystalButton" if @battler && (@battle.pbCanCrystallize?(@battler.index) || @battler.crystal?)
+    if @battler
+      side  = @battler.idxOwnSide
+      owner = pbGetOwnerIndexFromBattlerIndex(@battler.index)
+      @megaImg = "crystalButton" if @battle.pbCanCrystallize?(@battler.index) || @battle.crystallization[side][owner] == @battler.index
+    end
     @barImg = nil
     @showTypeAdvantage = false
     # looks up next cached metrics first

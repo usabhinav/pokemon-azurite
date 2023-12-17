@@ -27,7 +27,17 @@ class EliteBattle_BasicTrainerAnimations
     elsif EliteBattle.can_transition?("teamSkull", foe[0].trainer_type, :Trainer, foe[0].name, foe[0].partyID)
       return self.teamSkull(@viewport, foe[0].trainer_type)
     # plays override if applicable
-    elsif !handled && pbBattleAnimationOverride(viewport, battletype, foe)
+    # TODO: This method needs to handle SpecialBattleIntroAnimations as defined in v20.1, see lines 91-98 of 002_Overworld_BattleIntroAnim
+    # 
+    # handled = false
+    # SpecialBattleIntroAnimations.each do |name, priority, condition, animation|
+    #   next if !condition.call(battletype, foe, location)
+    #   animation.call(viewport, battletype, foe, location)
+    #   handled = true
+    #   break
+    # end
+    # 
+    #elsif !handled && pbBattleAnimationOverride(viewport, battletype, foe)
     # plays random trainer animation
     elsif !handled && self.respond_to?(sel.to_sym)
       eval("self.#{sel}")

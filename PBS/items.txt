@@ -7068,8 +7068,8 @@ Price = 0
 Description = The mask that belongs to The Masked Royal. This pro wrestler apparently sews his mask on a machine himself.
 #-------------------------------
 [EQUALIZERM]
-Name = Equalizer M
-NamePlural = Equalizers M
+Name = Equalizer-M
+NamePlural = Equalizer-Ms
 Pocket = 1
 Price = 0
 Description = Allows Pokemon without Mega Forms to gain a power similar to mega-evolution.
@@ -7138,8 +7138,8 @@ Flags = KeyItem
 Description = A device that allows you to access the PC from anywhere.
 #-------------------------------
 [EQUALIZERC]
-Name = Equalizer C
-NamePlural = Equalizers C
+Name = Equalizer-C
+NamePlural = Equalizer-Cs
 Pocket = 1
 Price = 0
 Description = Allows Pokemon without Crystallizations to gain a power similar to crystallization.

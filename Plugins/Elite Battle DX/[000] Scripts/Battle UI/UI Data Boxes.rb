@@ -441,9 +441,9 @@ class DataBoxEBDX  <  SpriteWrapper
     str = "Lv.#{@battler.level}"
     pbDrawOutlineText(@sprites["textName"].bitmap,18+o,3,@sprites["textName"].bitmap.width-40,@sprites["textName"].bitmap.height,str,Color.white,Color.new(0,0,0,125),2)
     # changes the Mega symbol graphics (depending on Mega, Crystal, or Primal)
-    if @battler.mega?
+    if @battler.mega? || @battler.megaEqualizer?
       @sprites["mega"].bitmap = @megaBmp.clone
-    elsif @battler.crystal?
+    elsif @battler.crystal? || @battler.crystalEqualizer?
       @sprites["mega"].bitmap = @crystalBmp.clone
     elsif @battler.primal?
       @sprites["mega"].bitmap = @prKyogre.clone if @battler.isSpecies?(:KYOGRE)

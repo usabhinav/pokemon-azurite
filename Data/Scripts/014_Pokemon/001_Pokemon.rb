@@ -102,6 +102,8 @@ class Pokemon
   attr_accessor :family_tree
   # Whether this Pokémon was fed an Alolan Pancakes
   attr_accessor :alolan_pancakes_consumed
+  # The Equalizer that is currently being used by this Pokémon in battle
+  attr_accessor :equalizer
 
   # Max total IVs
   IV_STAT_LIMIT = 31
@@ -518,7 +520,7 @@ class Pokemon
       # This version slightly changes the method of determining super shininess, but
       # allows albino Pokemon to be super shiny
       if !regular?
-        @super_shiny = (rand(Settings::SHINY_POKEMON_CHANCE + ALBINO_POKEMON_CHANCE) == 0)
+        @super_shiny = (rand(Settings::SHINY_POKEMON_CHANCE + Settings::ALBINO_POKEMON_CHANCE) == 0)
       else
         @super_shiny = false
       end
@@ -1189,6 +1191,19 @@ class Pokemon
     return ret
   end
 
+  # @return [Array<Symbol>] this Pokémon's base stats symbols (excluding HP), sorted in ascending order by value
+  def baseStatsSortedAscending
+    return {
+      :ATTACK => @attack,
+      :DEFENSE => @defense,
+      :SPECIAL_ATTACK => @spatk,
+      :SPECIAL_DEFENSE => @spdef,
+      :SPEED => @speed
+    }
+      .sort_by {|s, v| v}
+      .map {|arr| arr[0]}
+  end
+
   # Returns this Pokémon's effective IVs, taking into account Hyper Training.
   # Only used for calculating stats.
   # @return [Hash<Integer>] hash containing this Pokémon's effective IVs
@@ -1416,6 +1431,7 @@ class Pokemon
     calc_stats
     @standwatchhp     = @hp
     @alolan_pancakes_consumed = false
+    @equalizer        = nil
     if @form == 0 && recheck_form
       f = MultipleForms.call("getFormOnCreation", self)
       if f

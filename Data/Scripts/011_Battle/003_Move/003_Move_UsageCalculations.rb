@@ -243,7 +243,7 @@ class Battle::Move
     # Calculation
     r = @battle.pbRandom(100)
     if Settings::AFFECTION_EFFECTS && @battle.internalBattle &&
-       target.pbOwnedByPlayer? && target.affection_level == 5 && !target.mega?
+       target.pbOwnedByPlayer? && target.affection_level == 5 && !target.mega? && !target.megaEqualizer?
       return true if r < threshold - 10
       target.damageState.affection_missed = true if r < threshold
       return false
@@ -352,7 +352,7 @@ class Battle::Move
     r = @battle.pbRandom(ratios[c])
     return true if r == 0
     if r == 1 && Settings::AFFECTION_EFFECTS && @battle.internalBattle &&
-       user.pbOwnedByPlayer? && user.affection_level == 5 && !target.mega?
+       user.pbOwnedByPlayer? && user.affection_level == 5 && !target.mega? && !target.megaEqualizer?
       target.damageState.affection_critical = true
       return true
     end

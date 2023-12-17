@@ -312,6 +312,7 @@ def pbBugContestStartOver
     pkmn.makeUnmega
     pkmn.makeUnprimal
     pkmn.makeUncrystal
+    pkmn.makeUnEqualizer
   end
   pbBugContestState.pbStartJudging
 end

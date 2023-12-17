@@ -72,7 +72,9 @@ class Battle
       when -1   # Cancel
       when -2   # Toggle Mega Evolution or Crystallization
         # Both should not be toggled at the same time
-        if pbCanMegaEvolve?(idxBattler) || @battlers[idxBattler].mega?
+        side  = @battlers[idxBattler].idxOwnSide
+        owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
+        if pbCanMegaEvolve?(idxBattler) || @megaEvolution[side][owner] == idxBattler
           pbToggleRegisteredMegaEvolution(idxBattler)
         else
           pbToggleRegisteredCrystallization(idxBattler)

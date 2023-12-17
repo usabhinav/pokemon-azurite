@@ -760,7 +760,7 @@ class Battle
     if Settings::AFFECTION_EFFECTS && @internalBattle
       priority.each do |battler|
         next if battler.fainted? || battler.status == :NONE
-        next if !battler.pbOwnedByPlayer? || battler.affection_level < 4 || battler.mega?
+        next if !battler.pbOwnedByPlayer? || battler.affection_level < 4 || battler.mega? || battler.megaEqualizer?
         next if pbRandom(100) < 80
         old_status = battler.status
         battler.pbCureStatus(false)
@@ -927,9 +927,9 @@ class Battle
         pbDisplay(_INTL("{1}'s ability changed to {2}!", b.pbThis, GameData::Ability.get(newAbil).name))
         pbHideAbilitySplash(b)
         b.ability = newAbil
-        b.pbOnAbilityChanged(oldAbil)
+        b.pbOnLosingAbility(oldAbil)
+        b.pbTriggerAbilityOnGainingIt
         b.effects[PBEffects::Incomprehensible] = true
-        b.pbEffectsOnSwitchIn
       end
     end
     # Stare
@@ -937,7 +937,7 @@ class Battle
     # don't get triggered immediately after Stare effect ends
     pbEORCountDownBattlerEffect(priority,PBEffects::Stare) { |battler|
       pbDisplay(_INTL("{1} was freed from the stare!", battler.pbThis))
-      battler.pbEffectsOnSwitchIn if !battler.unstoppableAbility?
+      battler.pbTriggerAbilityOnGainingIt if !battler.unstoppableAbility?
     }
     pbGainExp
     return if @decision > 0

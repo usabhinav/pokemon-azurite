@@ -289,6 +289,14 @@ class Battle
   # sendOuts is an array; each element is itself an array: [idxBattler,pkmn]
   def pbSendOut(sendOuts, startBattle = false)
     sendOuts.each { |b| @peer.pbOnEnteringBattle(self, @battlers[b[0]], b[1]) }
+    sendOuts.each do |b|
+      index = @battlers[b[0]].index
+      if !auraTypeOfBattler(index).nil?
+        @scene.sprites["pokemon_#{index}"].initializeAura
+      else
+        @scene.sprites["pokemon_#{index}"].removeAura
+      end
+    end
     @scene.pbSendOutBattlers(sendOuts, startBattle)
     sendOuts.each do |b|
       @scene.pbResetMoveIndex(b[0])

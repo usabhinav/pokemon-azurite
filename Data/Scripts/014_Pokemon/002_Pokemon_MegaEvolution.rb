@@ -110,6 +110,10 @@ class Pokemon
   end
 
   def makeCrystalWithoutItemCheck
+    if hasItem?(:EQUALIZERC)
+      makeCrystalEqualizer
+      return
+    end
     crystalForm = self.getCrystalFormWithoutItemCheck
     # If mega, crystal check needs to be against Pokemon of base species, not against the mega form
     if self.mega?
@@ -130,10 +134,33 @@ class Pokemon
     return (formName && !formName.empty?) ? formName : _INTL("Crystal {1}", species_data.name)
   end
 
-  def crystalMessage   # 0=default message, 1=Rayquaza message
-    crystalForm = self.getCrystalForm
-    message_number = GameData::Species.get_species_form(@species, crystalForm)&.mega_message
-    return message_number || 0
+  #=============================================================================
+  # Equalizers
+  # NOTE: These are NOT treated as form changes.
+  #=============================================================================
+
+  def megaEqualizer?
+    return @equalizer == :EQUALIZERM
+  end
+
+  def makeMegaEqualizer
+    @equalizer = :EQUALIZERM
+  end
+
+  def crystalEqualizer?
+    return @equalizer == :EQUALIZERC
+  end
+
+  def makeCrystalEqualizer
+    @equalizer = :EQUALIZERC
+  end
+
+  def makeUnEqualizer
+    @equalizer = nil
+  end
+
+  def anyEqualizer?
+    return !@equalizer.nil?
   end
 
   #=============================================================================

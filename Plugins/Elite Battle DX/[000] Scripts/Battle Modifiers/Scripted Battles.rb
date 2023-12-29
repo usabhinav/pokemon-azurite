@@ -42,8 +42,8 @@ class Battle
   alias pbMegaEvolve_ebdx pbMegaEvolve unless self.method_defined?(:pbMegaEvolve_ebdx)
   def pbMegaEvolve(index)
     return if !@battlers[index] || !@battlers[index].pokemon
-    return if !(@battlers[index].hasMega? rescue false)
-    return if (@battlers[index].mega? rescue true)
+    return if !(@battlers[index].hasMega? rescue false) && @battlers[index].item != :EQUALIZERM
+    return if (@battlers[index].mega? rescue true) || @battlers[index].megaEqualizer?
     # displays trainer dialogue if applicable
     @scene.pbTrainerBattleSpeech(playerBattler?(@battlers[index]) ? "mega" : "megaOpp")
     return pbMegaEvolve_ebdx(index)
@@ -54,8 +54,8 @@ class Battle
   alias pbCrystallize_ebdx pbCrystallize unless self.method_defined?(:pbCrystallize_ebdx)
   def pbCrystallize(index)
     return if !@battlers[index] || !@battlers[index].pokemon
-    return if !(@battlers[index].hasCrystal? rescue false)
-    return if (@battlers[index].crystal? rescue true)
+    return if !(@battlers[index].hasCrystal? rescue false) && @battlers[index].item != :EQUALIZERC
+    return if (@battlers[index].crystal? rescue true) || @battlers[index].crystalEqualizer?
     # displays trainer dialogue if applicable
     @scene.pbTrainerBattleSpeech(playerBattler?(@battlers[index]) ? "crystal" : "crystalOpp")
     return pbCrystallize_ebdx(index)

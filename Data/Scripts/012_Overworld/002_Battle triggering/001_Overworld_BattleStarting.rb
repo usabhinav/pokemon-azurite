@@ -300,6 +300,7 @@ module BattleCreationHelperMethods
       pkmn.makeUnmega
       pkmn.makeUnprimal
       pkmn.makeUncrystal
+      pkmn.makeUnEqualizer
     end
     if $PokemonGlobal.partner
       $player.heal_party
@@ -308,6 +309,7 @@ module BattleCreationHelperMethods
         pkmn.makeUnmega
         pkmn.makeUnprimal
         pkmn.makeUncrystal
+        pkmn.makeUnEqualizer
       end
     end
     if [2, 5].include?(outcome) && can_lose   # if loss or draw

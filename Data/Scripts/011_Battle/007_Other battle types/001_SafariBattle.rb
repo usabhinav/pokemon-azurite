@@ -41,6 +41,9 @@ class Battle::FakeBattler
   def hasCrystal?;    return false; end
   def crystal?;       return false; end
   alias isCrystal? crystal?
+  def megaEqualizer?; return false; end
+  def crystalEqualizer?; return false; end
+  def anyEqualizer?;  return false; end
   def hasPrimal?;     return false; end
   def primal?;        return false; end
   def captured;       return false; end

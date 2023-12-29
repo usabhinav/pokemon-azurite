@@ -1294,7 +1294,7 @@ Battle::ItemEffects::DamageCalcFromUser.add(:LIGHTSEED,
 
 Battle::ItemEffects::DamageCalcFromUser.add(:COUNTERFORMAMULET,
   proc { |item, user, target, move, mults, baseDmg, type|
-    if target.mega? || target.crystal? || target.primal? ||
+    if target.mega? || target.crystal? || target.anyEqualizer? || target.primal? ||
        (target.isSpecies?(:GRENINJA) && target.form == 2) || (target.isSpecies?(:KOSURITE) && target.form == 1)
       mults[:base_damage_multiplier] *= 1.5
     end

@@ -155,7 +155,7 @@ class Battle
     end
     exp = i if i >= 0
     # Boost Exp gained with high affection
-    if Settings::AFFECTION_EFFECTS && @internalBattle && pkmn.affection_level >= 4 && !pkmn.mega?
+    if Settings::AFFECTION_EFFECTS && @internalBattle && pkmn.affection_level >= 4 && !pkmn.mega? && !pkmn.megaEqualizer?
       exp = exp * 6 / 5
       isOutsider = true   # To show the "boosted Exp" message
     end

@@ -103,6 +103,7 @@ class Battle::Battler
     end
     @battle.pbDisplayBrief(_INTL("{1} fainted!", pbThis)) if showMessage
     PBDebug.log("[Pokémon fainted] #{pbThis} (#{@index})") if !showMessage
+    @battle.deactivateAura(@index)
     @battle.scene.pbFaintBattler(self)
     @battle.pbSetDefeated(self) if opposes?
     pbInitEffects(false)
@@ -117,8 +118,9 @@ class Battle::Battler
     # Reset form
     @battle.peer.pbOnLeavingBattle(@battle, @pokemon, @battle.usedInBattle[idxOwnSide][@index / 2])
     @pokemon.makeUnmega if mega?
-    @pokemon.makeUnprimal if primal?
     @pokemon.makeUncrystal if crystal?
+    @pokemon.makeUnEqualizer if anyEqualizer?
+    @pokemon.makeUnprimal if primal?
     # Do other things
     @battle.pbClearChoice(@index)   # Reset choice
     pbOwnSide.effects[PBEffects::LastRoundFainted] = @battle.turnCount

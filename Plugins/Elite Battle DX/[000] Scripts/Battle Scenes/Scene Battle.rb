@@ -155,6 +155,7 @@ class Battle::Scene
         @sprites["pokemon_#{i*2 + 1}"].setPokemonBitmap(pkmn, false)
         @sprites["pokemon_#{i*2 + 1}"].tone = Tone.new(-255, -255, -255, -255)
         @sprites["pokemon_#{i*2 + 1}"].visible = true
+        @sprites["pokemon_#{i*2 + 1}"].initializeAura if !@battle.auraTypeOfBattler(i*2 + 1).nil?
       end
       # renders databoxes
       for m in 0...@battle.pbParty(1).length

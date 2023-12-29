@@ -430,7 +430,7 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
 
   def refreshMegaEvolutionButton
     return if !USE_GRAPHICS
-    if @battler && (@battler.hasCrystal? || @battler.crystal?)
+    if @battler && (@battler.hasCrystal? || @battler.crystal? || @battler.item == :EQUALIZERC || @battler.crystalEqualizer?)
       @megaButton.src_rect.y = ((@mode == 1) ? 2 : 3) * @megaEvoBitmap.height/4
     else
       @megaButton.src_rect.y = ((@mode == 1) ? 0 : 1) * @megaEvoBitmap.height/4

@@ -257,9 +257,9 @@ class Battle::Scene::PokemonDataBox < Sprite
 
   def draw_special_form_icon
     # Mega Evolution/Primal Reversion icon
-    if @battler.mega?
+    if @battler.mega? || @battler.megaEqualizer?
       pbDrawImagePositions(self.bitmap, [["Graphics/Pictures/Battle/icon_mega", @spriteBaseX + 8, 34]])
-    elsif @battler.crystal?
+    elsif @battler.crystal? || @battler.crystalEqualizer?
         # TODO: Add a crystal icon sprite to this folder
         pbDrawImagePositions(self.bitmap, [["Graphics/Pictures/Battle/icon_mega", @spriteBaseX + 8, 34]])
     elsif @battler.primal?

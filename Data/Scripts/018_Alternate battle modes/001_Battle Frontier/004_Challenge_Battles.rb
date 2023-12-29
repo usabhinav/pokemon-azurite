@@ -76,6 +76,7 @@ def pbOrganizedBattleEx(opponent, challengedata)
     pkmn.makeUnmega
     pkmn.makeUnprimal
     pkmn.makeUncrystal
+    pkmn.makeUnEqualizer
     pkmn.item = olditems[i]
   end
   opponent.party.each_with_index do |pkmn, i|
@@ -83,6 +84,7 @@ def pbOrganizedBattleEx(opponent, challengedata)
     pkmn.makeUnmega
     pkmn.makeUnprimal
     pkmn.makeUncrystal
+    pkmn.makeUnEqualizer
     pkmn.item = olditems2[i]
   end
   # Save the record of the battle

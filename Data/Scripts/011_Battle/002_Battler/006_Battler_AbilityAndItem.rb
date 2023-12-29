@@ -25,17 +25,19 @@ class Battle::Battler
     if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
       # Revert battlers on field
       @battle.allBattlers.each do |b|
-        if b.crystal?
+        if b.crystal? || b.crystalEqualizer?
           @battle.pbUnCrystallize(b.index)
         end
       end
       # Revert player side Pokemon
       @battle.pbParty(0).each do |pkmn|
         pkmn.makeUncrystal
+        pkmn.makeUnEqualizer
       end
       # Revert opponent side Pokemon
       @battle.pbParty(1).each do |pkmn|
         pkmn.makeUncrystal
+        pkmn.makeUnEqualizer
       end
     end
   end
@@ -57,17 +59,19 @@ class Battle::Battler
     if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
       # Revert battlers on field
       @battle.allBattlers.each do |b|
-        if b.crystal?
+        if b.crystal? || b.crystalEqualizer?
           @battle.pbUnCrystallize(b.index)
         end
       end
       # Revert player side Pokemon
       @battle.pbParty(0).each do |pkmn|
         pkmn.makeUncrystal
+        pkmn.makeUnEqualizer
       end
       # Revert opponent side Pokemon
       @battle.pbParty(1).each do |pkmn|
         pkmn.makeUncrystal
+        pkmn.makeUnEqualizer
       end
     end
   end
@@ -105,7 +109,7 @@ class Battle::Battler
   # and at the end of each round.
   def pbContinualAbilityChecks(onSwitchIn = false)
     # Crystal Energy switch in message
-    if hasActiveAbility?(:CRYSTALENERGY)
+    if hasActiveAbility?(:CRYSTALENERGY) && onSwitchIn
       @battle.pbShowAbilitySplash(self)
       @battle.pbDisplay(_INTL("{1} is exuding a powerful crystal energy on the field!", self.pbThis))
       @battle.pbHideAbilitySplash(self)
@@ -201,9 +205,9 @@ class Battle::Battler
       # Revert battlers on field
       @battle.allBattlers.each do |b|
         next if b.index == self.index
-        if b.mega?
+        if b.mega? || b.megaEqualizer?
           @battle.pbUnMegaEvolve(b.index)
-        elsif b.crystal?
+        elsif b.crystal? || b.crystalEqualizer?
           @battle.pbUnCrystallize(b.index)
         elsif b.primal?
           @battle.pbPrimalUnReversion(b.index)
@@ -218,6 +222,7 @@ class Battle::Battler
       @battle.pbParty(0).each do |pkmn|
         pkmn.makeUnmega
         pkmn.makeUncrystal
+        pkmn.makeUnEqualizer
         pkmn.makeUnprimal
         if pkmn.isSpecies?(:GRENINJA) && pkmn.form == 2
           pkmn.form = 1
@@ -229,6 +234,7 @@ class Battle::Battler
       @battle.pbParty(1).each do |pkmn|
         pkmn.makeUnmega
         pkmn.makeUncrystal
+        pkmn.makeUnEqualizer
         pkmn.makeUnprimal
         if pkmn.isSpecies?(:GRENINJA) && pkmn.form == 2
           pkmn.form = 1
@@ -241,11 +247,10 @@ class Battle::Battler
     if hasActiveAbility?(:CRYSTALENERGY)
       # Crystallize battlers on field
       @battle.allBattlers.each do |b|
-        if b.hasCrystalWithoutItemCheck? && !b.crystal?
-          if b.mega?
+        if (b.hasCrystalWithoutItemCheck? && !b.crystal?) || (b.item == :EQUALIZERC && !b.crystalEqualizer?)
+          if b.mega? || b.megaEqualizer?
             side  = self.idxOwnSide
             owner = @battle.pbGetOwnerIndexFromBattlerIndex(b.index)
-            @battle.megaEvolution[side][owner] = -1
             @battle.pbUnMegaEvolve(b.index)
           end
           @battle.pbCrystallizeWithoutItemCheck(b.index)
@@ -253,22 +258,20 @@ class Battle::Battler
       end
       # Crystallize player side Pokemon
       @battle.pbParty(0).each_with_index do |pkmn, i|
-        if pkmn.hasCrystalFormWithoutItemCheck? && !pkmn.crystal?
-          if pkmn.mega?
+        if (pkmn.hasCrystalFormWithoutItemCheck? && !pkmn.crystal?) || (pkmn.hasItem?(:EQUALIZERC) && !pkmn.crystalEqualizer?)
+          if pkmn.mega? || pkmn.megaEqualizer?
             owner = @battle.pbGetOwnerIndexFromPartyIndex(0, i)
-            @battle.megaEvolution[0][owner] = -1
-            pkmn.makeUnmega
+            pkmn.mega? ? pkmn.makeUnmega : pkmn.makeUnEqualizer
           end
           pkmn.makeCrystalWithoutItemCheck
         end
       end
       # Crystallize opponent side Pokemon
       @battle.pbParty(1).each_with_index do |pkmn, i|
-        if pkmn.hasCrystalFormWithoutItemCheck? && !pkmn.crystal?
-          if pkmn.mega?
+        if (pkmn.hasCrystalFormWithoutItemCheck? && !pkmn.crystal?) || (pkmn.hasItem?(:EQUALIZERC) && !pkmn.crystalEqualizer?)
+          if pkmn.mega? || pkmn.megaEqualizer?
             owner = @battle.pbGetOwnerIndexFromPartyIndex(1, i)
-            @battle.megaEvolution[1][owner] = -1
-            pkmn.makeUnmega
+            pkmn.mega? ? pkmn.makeUnmega : pkmn.makeUnEqualizer
           end
           pkmn.makeCrystalWithoutItemCheck
         end

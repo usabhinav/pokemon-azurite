@@ -76,7 +76,7 @@ EliteBattle.defineMoveAnimation(:AURORABEAM) do
   end
   @sprites["battlebg"].focus
   @targetSprite.ox = @targetSprite.bitmap.width/2
-  @targetSprite.tone = @targetSprite.pokemon.item_id == :GREYSCALE ? Tone.new(0, 0, 0, 255) :  Tone.new(0,0,0,0)
+  @targetSprite.tone = @battlers[@targetIndex].item_id == :GREYSCALE ? Tone.new(0, 0, 0, 255) :  Tone.new(0,0,0,0)
   @vector.reset if !@multiHit
   @vector.inc = 0.2
   pbDisposeSpriteHash(fp)

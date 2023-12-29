@@ -183,7 +183,7 @@ class Battle::Scene
 
   def pbCreatePokemonSprite(idxBattler)
     sideSize = @battle.pbSideSize(idxBattler)
-    batSprite = BattlerSprite.new(@viewport, sideSize, idxBattler, @animations)
+    batSprite = BattlerSprite.new(@viewport, sideSize, idxBattler, @animations, @battle)
     @sprites["pokemon_#{idxBattler}"] = batSprite
     shaSprite = BattlerShadowSprite.new(@viewport, sideSize, idxBattler)
     shaSprite.visible = false

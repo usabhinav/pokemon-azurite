@@ -156,7 +156,7 @@ EliteBattle.defineCommonAnimation(:MEGAEVOLUTION2) do
   fp["impact"].center!(true)
   fp["impact"].z = 999
   fp["impact"].opacity = 0
-  @targetSprite.setPokemonBitmap(pokemon, back)
+  @targetSprite.setPokemonBitmap(pokemon, back) if ![:EQUALIZERC, :EQUALIZERM].include?(pokemon.item_id)
   @targetDatabox.refresh
   playBattlerCry(@battlers[@targetIndex])
   k = -2

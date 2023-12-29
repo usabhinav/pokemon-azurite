@@ -62,6 +62,7 @@ class DynamicPokemonSprite
   attr_accessor :aura
   attr_reader :loaded, :selected, :isSub, :pulse
   attr_reader :viewport, :pokemon, :species, :form
+  attr_reader :battle
   #-----------------------------------------------------------------------------
   #  class inspector
   #-----------------------------------------------------------------------------
@@ -368,7 +369,7 @@ class DynamicPokemonSprite
   #-----------------------------------------------------------------------------
   # loads bitmap based on battler data
   #-----------------------------------------------------------------------------
-  def setPokemonBitmap(pokemon, back = false, species = nil)
+  def setPokemonBitmap(pokemon, back = false, species = nil, custom_bitmap = nil)
     # resets all particles
     self.resetParticles
     # safety check
@@ -378,21 +379,29 @@ class DynamicPokemonSprite
     @form = (@pokemon.form rescue 0)
     @isShadow = true if @pokemon.shadowPokemon?
     # loads Pokemon bitmap
-    if !species.nil?
-      @bitmap = pbLoadPokemonBitmapSpecies(pokemon, species, back, EliteBattle::FRONT_SPRITE_SCALE, 2, obscureMundimeaForm?(@battle, @species, @battle.opposes?(@index), @form != 1))
+    obscureMundimeaForm = obscureMundimeaForm?(@battle, @species, @battle.opposes?(@index), @form != 1)
+    if !custom_bitmap.nil?
+      @bitmap = custom_bitmap
+    elsif obscureMundimeaForm
+      @bitmap = BitmapEBDX.new("Graphics/EBDX/Battlers/MundimeaObscured")
+    elsif !species.nil?
+      @bitmap = pbLoadPokemonBitmapSpecies(pokemon, species, back)
     else
-      @bitmap = pbLoadPokemonBitmap(pokemon, back, EliteBattle::FRONT_SPRITE_SCALE, 2, obscureMundimeaForm?(@battle, @species, @battle.opposes?(@index), @form != 1))
+      @bitmap = pbLoadPokemonBitmap(pokemon, back)
     end
     # applies scale
     @scale = back ? EliteBattle::BACK_SPRITE_SCALE : EliteBattle::FRONT_SPRITE_SCALE
     # gets additional scale (if applicable)
-    s = EliteBattle.get_data(species, :Species, (back ? :BACKSCALE : :SCALE), (form rescue 0))
-    @scale = s if !s.nil? && s.is_a?(Numeric)
+    species_metrics_data = EliteBattle.get_data(species, :Species, nil, (@form rescue 0))
+    if !species_metrics_data.nil?
+      s = species_metrics_data[back ? :BACKSCALE : :SCALE]
+      @scale = s if !s.nil? && s.is_a?(Numeric)
+    end
     # assigns bitmap to sprite
     @sprite.bitmap = @bitmap.bitmap.clone
     @shadow.bitmap = @bitmap.bitmap.clone
     # applies battler positioning on screen
-    self.refreshMetrics
+    self.refreshMetrics(species_metrics_data.nil? ? "skip" : species_metrics_data)
     # refreshes process variables
     @fainted = false
     @loaded = true
@@ -402,6 +411,13 @@ class DynamicPokemonSprite
     @k = 1
     # formats battler shadow
     self.formatShadow
+  end
+  #-----------------------------------------------------------------------------
+  # loads bitmap without touching anything else (extracted from setPokemonBitmap)
+  #-----------------------------------------------------------------------------
+  def setBitmapForced(pokemon, back = false)
+    # loads Pokemon bitmap
+    @bitmap = pbLoadPokemonBitmap(pokemon, back)
   end
   #-----------------------------------------------------------------------------
   # resets additional animation particles to original state
@@ -419,7 +435,7 @@ class DynamicPokemonSprite
   #-----------------------------------------------------------------------------
   # refreshes metrics for the Pokemon
   #-----------------------------------------------------------------------------
-  def refreshMetrics(metrics = nil, species = nil)
+  def refreshMetrics(species_metrics_data = nil, species = nil)
     # applies sprite positioning
     @sprite.ox = @bitmap.width/2
     @sprite.oy = @bitmap.height
@@ -428,16 +444,19 @@ class DynamicPokemonSprite
     # sauce
     species = :BIDOOF if GameData::Species.exists?(:BIDOOF) && defined?(firstApr?) && firstApr?
     if species
-      x = EliteBattle.get_data(species, :Species, (@index%2 == 0) ? :PX : :EX, (@pokemon.form rescue 0))
-      y = EliteBattle.get_data(species, :Species, (@index%2 == 0) ? :PY : :EY, (@pokemon.form rescue 0))
-      a = EliteBattle.get_data(species, :Species, :ALTITUDE, (@pokemon.form rescue 0))
-      @sprite.ox -= x if !x.nil? && x.is_a?(Numeric)
-      @sprite.oy -= y if !y.nil? && y.is_a?(Numeric)
-      @sprite.oy += a if !a.nil? && a.is_a?(Numeric)
+      species_metrics_data = EliteBattle.get_data(species, :Species, nil, (@pokemon.form rescue 0)) if species_metrics_data.nil?
+      if !species_metrics_data.nil? && !species_metrics_data.is_a?(String)
+        x = species_metrics_data[(@index%2 == 0) ? :PX : :EX]
+        y = species_metrics_data[(@index%2 == 0) ? :PY : :EY]
+        a = species_metrics_data[:ALTITUDE]
+        @sprite.ox -= x if !x.nil? && x.is_a?(Numeric)
+        @sprite.oy -= y if !y.nil? && y.is_a?(Numeric)
+        @sprite.oy += a if !a.nil? && a.is_a?(Numeric)
+      end
       # refresh anchor metrics
       anchor = @index%2 == 0 ? :BACKANCHOR : :ANCHOR
       # get anchor from data
-      @anchor = EliteBattle.get_data(species, :Species, anchor, (@pokemon.form rescue 0))
+      @anchor = (!species_metrics_data.nil? && !species_metrics_data.is_a?(String)) ? species_metrics_data[anchor] : nil
     end
     @ox = @sprite.ox
     @oy = @sprite.oy

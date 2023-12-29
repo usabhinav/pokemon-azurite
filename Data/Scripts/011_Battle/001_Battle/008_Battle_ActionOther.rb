@@ -464,6 +464,7 @@ class Battle
   def auraTypeOfBattler(idxBattler)
     battler = @battlers[idxBattler]
     return nil if !battler || !battler.pokemon
+    # TODO: Use an enum for values returned in this function
     return "equalizerm" if battler.megaEqualizer?
     return "equalizerc" if battler.crystalEqualizer?
     return nil

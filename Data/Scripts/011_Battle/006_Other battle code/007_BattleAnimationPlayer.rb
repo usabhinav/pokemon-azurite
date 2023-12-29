@@ -642,7 +642,7 @@ def pbSpriteSetAnimFrame(sprite, frame, user = nil, target = nil, inEditor = fal
   # Pokemon with Grey Scale should keep their gray color even during move animations
   if (sprite == user || sprite == target) && sprite.respond_to?(:index)
     # First option belongs to DynamicPokemonSprite from EBDX, second is the default Battle::Scene::BattlerSprite
-    pokemon = sprite.respond_to?(:pokemon) ? sprite.pokemon : sprite.pkmn
+    pokemon = sprite.respond_to?(:pokemon) ? sprite.battle.battlers[sprite.index].pokemon : sprite.pkmn
     if pokemon.item_id == :GREYSCALE
       gray_tone = 255
     end

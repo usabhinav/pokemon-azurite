@@ -1,15 +1,13 @@
 #===============================================================================
 #  Loads an animated BitmapWrapper for Pokemon
 #===============================================================================
-def pbLoadPokemonBitmap(pokemon, back = false, scale = EliteBattle::FRONT_SPRITE_SCALE, speed = 2, obscureMundimeaForm = false)
-  return pbLoadPokemonBitmapSpecies(pokemon, pokemon.species, back, scale, speed, obscureMundimeaForm)
+def pbLoadPokemonBitmap(pokemon, back = false, scale = EliteBattle::FRONT_SPRITE_SCALE, speed = 2)
+  return pbLoadPokemonBitmapSpecies(pokemon, pokemon.species, back, scale, speed)
 end
 #===============================================================================
 #  Loads an animated BitmapWrapper for Pokemon species
 #===============================================================================
-def pbLoadPokemonBitmapSpecies(pokemon, species, back = false, scale = EliteBattle::FRONT_SPRITE_SCALE, speed = 2, obscureMundimeaForm = false)
-  # return obscured Mundimea sprite if flag provided
-  return BitmapEBDX.new("Graphics/EBDX/Battlers/MundimeaObscured", scale) if obscureMundimeaForm
+def pbLoadPokemonBitmapSpecies(pokemon, species, back = false, scale = EliteBattle::FRONT_SPRITE_SCALE, speed = 2)
   ret = nil
   pokemon = pokemon.pokemon if pokemon.respond_to?(:pokemon)
   species = pokemon.species if species.nil? && pokemon.respond_to?(:species)
@@ -20,10 +18,11 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back = false, scale = EliteBatt
   # applies scale
   scale = back ? EliteBattle::BACK_SPRITE_SCALE : EliteBattle::FRONT_SPRITE_SCALE
   # gets additional scale (if applicable)
-  s = EliteBattle.get_data(species, :Species, (back ? :BACKSCALE : :SCALE), (pokemon.form rescue 0))
+  species_data = EliteBattle.get_data(species, :Species, nil, (pokemon.form rescue 0))
+  s = !species_data.nil? ? species_data[back ? :BACKSCALE : :SCALE] : nil
   scale = s if !s.nil? && s.is_a?(Numeric)
   # get more metrics
-  s = EliteBattle.get_data(species, :Species, :SPRITESPEED, (pokemon.form rescue 0))
+  s = !species_data.nil? ? species_data[:SPRITESPEED] : nil
   speed = s if !s.nil? && s.is_a?(Numeric)
   if pokemon.egg?
     bitmapFileName = sprintf("Graphics/EBDX/Battlers/Eggs/%s", species) rescue nil
@@ -59,7 +58,7 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back = false, scale = EliteBatt
     ret = animatedBitmap
   end
   # adjusts for custom animation loops
-  data = EliteBattle.get_data(species, :Species, :FRAMEANIMATION, (pokemon.form rescue 0))
+  data = !species_data.nil? ? species_data[:FRAMEANIMATION] : nil
   unless data.nil?
     ret.compile_loop(data)
   end
@@ -68,6 +67,32 @@ def pbLoadPokemonBitmapSpecies(pokemon, species, back = false, scale = EliteBatt
   # refreshes bitmap
   ret.deanimate if ret.respond_to?(:deanimate)
   return ret
+end
+#===============================================================================
+#  Gets battler sprite file name for Pokemon (extracted from pbLoadPokemonBitmapSpecies)
+#===============================================================================
+def pbPokemonBitmapFileName(pokemon, species, back)
+  pokemon = pokemon.pokemon if pokemon.respond_to?(:pokemon)
+  species = pokemon.species if species.nil? && pokemon.respond_to?(:species)
+  # sauce
+  species = :BIDOOF if GameData::Species.exists?(:BIDOOF) && defined?(firstApr?) && firstApr?
+  if pokemon.egg?
+    bitmapFileName = sprintf("Graphics/EBDX/Battlers/Eggs/%s", species) rescue nil
+    if !pbResolveBitmap(bitmapFileName)
+      bitmapFileName = sprintf("Graphics/EBDX/Battlers/Eggs/000")
+    end
+    bitmapFileName = pbResolveBitmap(bitmapFileName)
+  else
+    shiny_variant = pokemon.shiny_variant
+    shiny_variant = Pokemon::SHINY if (!pokemon.superVariant.nil? && pokemon.superShiny? && pokemon.superVariant)
+    params = [species, back, pokemon.female?, shiny_variant, (pokemon.form rescue 0), (pokemon.shadowPokemon? rescue false), (pokemon.dynamax rescue false), (pokemon.dynamax && pokemon.gfactor rescue false)]
+    bitmapFileName = pbCheckPokemonBitmapFiles(params)
+  end
+  if bitmapFileName.nil?
+    bitmapFileName = "Graphics/EBDX/Battlers/000"
+    EliteBattle.log.warn(missingPokeSpriteError(pokemon, back))
+  end
+  return bitmapFileName
 end
 #===============================================================================
 #  Pokemon icon aditions

@@ -3,14 +3,14 @@
 #  Creates an animated bitmap (different from regular bitmaps)
 #===============================================================================
 class BitmapEBDX
-  attr_reader :width, :height, :totalFrames, :animationFrames, :currentIndex
-  attr_accessor :constrict, :scale, :frameSkip
+  attr_reader :width, :height, :totalFrames, :animationFrames
+  attr_accessor :constrict, :scale, :frameSkip, :currentIndex
   #-----------------------------------------------------------------------------
   @@disableBitmapAnimation = false
   #-----------------------------------------------------------------------------
   #  class constructor
   #-----------------------------------------------------------------------------
-  def initialize(file, scale = 2, skip = 1)
+  def initialize(file, scale = 2, skip = 1, skip_refresh = false)
     # failsafe checks
     EliteBattle.log.error("BitmapEBDX filename is nil.") if file == nil
     EliteBattle.log.error("BitmapEBDX does not support GIF files.") if File.extname(file) == ".gif"
@@ -36,7 +36,7 @@ class BitmapEBDX
     # initializes full Pokemon bitmap
     @bitmaps = []
     #---------------------------------------------------------------------------
-    self.refresh
+    self.refresh if !skip_refresh
     #---------------------------------------------------------------------------
   end
   #-----------------------------------------------------------------------------
@@ -155,6 +155,44 @@ class BitmapEBDX
       @animationFrames = @totalFrames*@frames
       @tempBmp = Bitmap.new(@bitmaps[0].width, @bitmaps[0].width)
     end
+  end
+  #-----------------------------------------------------------------------------
+  #  refreshes the metric parameters and generates a mosaic transform animation sequence
+  #-----------------------------------------------------------------------------
+  def refresh_mosaic(frame_count, pixelate_forward = true)
+    # dispose existing
+    self.dispose
+    # temporarily load the full file
+    # calculate initial metrics
+    f_bmp = Bitmap.new(@bitmapFile)
+    @width = f_bmp.height*@scale
+    @height = f_bmp.height*@scale
+    @totalFrames = (f_bmp.width.to_f/f_bmp.height).ceil
+    # construct frames
+    # each frame gets progressively more or less pixelated, depending on the value of pixelate_forward
+    for i in 0...frame_count
+      x = ((@currentIndex + i) % @totalFrames) * f_bmp.height
+      mosaic = (i + 1) * 2
+      mosaic = ((frame_count + 1) * 2) - mosaic if !pixelate_forward
+      new_width = @width / mosaic
+      new_height = @height / mosaic
+      pixelated_bitmap = Bitmap.new(new_width, new_height)
+      pixelated_bitmap.stretch_blt(pixelated_bitmap.rect, f_bmp, Rect.new(x, 0, f_bmp.height, f_bmp.height))
+      bitmap = Bitmap.new(@width, @height)
+      bitmap.stretch_blt(bitmap.rect, pixelated_bitmap, pixelated_bitmap.rect)
+      pixelated_bitmap.dispose
+      @bitmaps.push(bitmap)
+    end
+    f_bmp.dispose
+    if @bitmaps.length < 1 && !self.is_bitmap?
+      EliteBattle.log.error("Unable to construct proper bitmap sheet from `#{@bitmapFile}`")
+    end
+    # calculates the total number of frames
+    @totalFrames = @bitmaps.length
+    @animationFrames = @totalFrames*@frames
+    @tempBmp = Bitmap.new(@bitmaps[0].width, @bitmaps[0].width)
+    @currentIndex = 0
+    @frame = 1
   end
   #-----------------------------------------------------------------------------
   #  reverses the animation

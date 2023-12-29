@@ -136,7 +136,7 @@ EliteBattle.defineMoveAnimation(:ICYWIND) do
     @targetSprite = @sprites["pokemon_#{indexes[m]}"]
     next if !@targetSprite || @targetSprite.disposed? || @targetSprite.fainted || !@targetSprite.visible
     @targetSprite.ox = @targetSprite.bitmap.width/2
-    @targetSprite.tone = @targetSprite.pokemon.item_id == :GREYSCALE ? Tone.new(0, 0, 0, 255) : Tone.new(0,0,0,0)
+    @targetSprite.tone = @battlers[@targetIndex].item_id == :GREYSCALE ? Tone.new(0, 0, 0, 255) : Tone.new(0,0,0,0)
   end
   @vector.reset if !@multiHit
   @vector.inc = 0.2

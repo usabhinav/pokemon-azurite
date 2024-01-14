@@ -31,5 +31,12 @@ Magic Coat
 Reflect
 Rest
 Iron Defense
+Air Carry
 Volt Spikes
+Black Hole
+Portal Rebound
+Magma Shield
+Pollen Shield
 Charged Spikes
+Bark Armor
+Scrunch

@@ -12,6 +12,7 @@ Snatch
 Taunt
 Torment
 Thunder Wave
+Mach Punch
 Sunny Day
 Extreme Speed
 Swift
@@ -33,3 +34,5 @@ Trick
 Trick Room
 Wonder Room
 Rain Dance
+Lightspeed
+Crystal Shard

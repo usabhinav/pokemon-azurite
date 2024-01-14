@@ -11,3 +11,10 @@ Seismic Toss
 Sky Drop
 Roar
 Whirlwind
+Wormhole
+Ozone Throw
+Lure
+Nippy Yip
+Vacuum Pull
+Flush
+Scare Off

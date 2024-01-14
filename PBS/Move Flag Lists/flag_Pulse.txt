@@ -12,6 +12,7 @@ Terrain Pulse
 Heal Pulse
 Origin Pulse
 Water Pulse
+Sound Pulse
 Magnet Pulse
 Force Pulse
 Secret Pulse

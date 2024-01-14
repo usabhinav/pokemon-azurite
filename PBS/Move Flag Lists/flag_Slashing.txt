@@ -28,6 +28,7 @@ Behemoth Blade
 Metal Claw
 Rock Claw
 Crystal Pierce
+Scale Scrape
 Thunder Blade
 Fire Blade
 Ice Blade

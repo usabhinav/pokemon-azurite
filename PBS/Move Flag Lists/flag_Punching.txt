@@ -25,6 +25,7 @@ Meteor Mash
 Double Iron Bash
 Bullet Punch
 Consecutive Punch
+Flash Punch
 Magnum Punch
 Blink Punch
 Hydro Punch

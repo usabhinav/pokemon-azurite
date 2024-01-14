@@ -591,13 +591,13 @@ Cosmic Test
 One Punch
 Storm Splash
 Consecutive Punch
+Fever Pollen
 Splinter
 Crashing Sun
 Cold Shower
 Tidal Splash
 Shower
 Deter Drain
-Air Carry
 Sunder Surge
 Volt Attract
 Volt Ball
@@ -678,6 +678,7 @@ Magic Ring
 Rocket Punch
 Volt Tail
 Flame Tackle
+Dimensional Gap
 Frubble
 Aura Storm
 Thunder Jolt
@@ -853,6 +854,7 @@ Cute Fang
 Pixie Dust
 Whimsy Tackle
 Suplex
+Air Support
 Luminous Gust
 Swoop In
 Tornado Tackle

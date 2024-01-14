@@ -52,14 +52,18 @@ Octazooka
 Bubble
 Water Gun
 Water Shuriken
+Crashing Sun
 Volt Seed
 Shiny Shots
 Star Shot
 Shimmer Shot
+Chain Lightning
 Crystal Shard
 Gem Shots
 Fireball
 Magic Shot
+Lucky Shot
 Flame Missile
 Light Missiles
 Fireworks
+Web Tie

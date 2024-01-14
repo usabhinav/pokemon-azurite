@@ -842,6 +842,7 @@ Cute Fang
 Pixie Dust
 Whimsy Tackle
 Suplex
+Air Support
 Luminous Gust
 Swoop In
 Tornado Tackle
@@ -850,3 +851,4 @@ Mystic Edge
 Counter Shield
 Bassquake
 Sugar Power Move
+Air Lense

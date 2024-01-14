@@ -512,7 +512,7 @@ class Battle::Scene::BattlerSprite < RPG::Sprite
   attr_accessor :selected
   attr_reader   :sideSize
 
-  def initialize(viewport, sideSize, index, battleAnimations)
+  def initialize(viewport, sideSize, index, battleAnimations, battle)
     super(viewport)
     @pkmn             = nil
     @sideSize         = sideSize
@@ -529,6 +529,7 @@ class Battle::Scene::BattlerSprite < RPG::Sprite
     @spriteYExtra     = 0   # Offset due to "bobbing" animation
     @_iconBitmap      = nil
     self.visible      = false
+    @battle           = battle
   end
 
   def dispose
@@ -588,7 +589,7 @@ class Battle::Scene::BattlerSprite < RPG::Sprite
     @_iconBitmap = GameData::Species.sprite_bitmap_from_pokemon(@pkmn, back)
     self.bitmap = (@_iconBitmap) ? @_iconBitmap.bitmap : nil
     pbSetPosition
-    if pkmn.item_id == :GREYSCALE
+    if @battle.battlers[@index].pokemon.item_id == :GREYSCALE
       self.tone = Tone.new(0, 0, 0, 255)
     else
       self.tone = Tone.new(0, 0, 0, 0)

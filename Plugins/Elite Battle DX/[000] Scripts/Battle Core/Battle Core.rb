@@ -44,7 +44,8 @@ class Battle
       pbDisplayPaused(_INTL("The Ghost appeared!"))
       if $bag.has?(:TRUEENIGMACHAIN)
         pbDisplayPaused(_INTL("{1} unveiled the Ghost's identity!", GameData::Item.get(:TRUEENIGMACHAIN).name))
-        @battlers[1].pbChangeForm(0, nil)
+        @battlers[1].form = 0
+        EliteBattle.playCommonAnimation(:MOSAICTRANSFORM, @scene, 1, 1, 0, foes[0])
         pbDisplayPaused(EliteBattle.battle_text(text, *memb))
       else
         pbDisplayPaused(_INTL("Darn!\nThe Ghost can't be ID'd!"))

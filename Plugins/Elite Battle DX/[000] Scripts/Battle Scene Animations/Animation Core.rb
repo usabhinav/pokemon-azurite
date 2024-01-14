@@ -201,7 +201,7 @@ class Battle::Scene
   def pbCommonAnimation(animname, user = nil, targets = nil)
     # skips certain common animations from playing
     return false if ["Rain", "HeavyRain", "Hail", "Sandstorm", "Sun", "HarshSun", "StrongWinds", "ShadowSky", "HealthDown"].include?(animname)
-    $skipMegaChange = true if animname == "MegaEvolution" && !EliteBattle::CUSTOM_COMMON_ANIM
+    $skipMegaChange = true if animname == "MegaEvolution" && !EliteBattle::CUSTOM_COMMON_ANIM && ![:EQUALIZERC, :EQUALIZERM].include?(user.item_id)
     return false if ["MegaEvolution", "Shadow"].include?(animname) && !EliteBattle::CUSTOM_COMMON_ANIM
     # plays common animation unless specified to use custom ones
     unless EliteBattle::CUSTOM_COMMON_ANIM || animname.nil? || user.nil?
@@ -383,10 +383,11 @@ class Battle::Scene
   #  override the change form function
   #-----------------------------------------------------------------------------
   alias pbChangePokemon_ebdx pbChangePokemon unless self.method_defined?(:pbChangePokemon_ebdx)
-  def pbChangePokemon(index, pokemon)
+  def pbChangePokemon(index, pokemon, use_mosaic = false)
     return $skipMegaChange = false if $skipMegaChange
     ndx = index.respond_to?("index") ? index.index : index
-    handled = EliteBattle.playCommonAnimation(:FORMCHANGE, self, ndx, ndx, 0, pokemon)
+    handled = EliteBattle.playCommonAnimation(:MOSAICTRANSFORM, self, ndx, ndx, 0, pokemon) if use_mosaic
+    handled = EliteBattle.playCommonAnimation(:FORMCHANGE, self, ndx, ndx, 0, pokemon) if !handled
     return pbChangePokemon_ebdx(index, pokemon) if !handled
   end
   #-----------------------------------------------------------------------------

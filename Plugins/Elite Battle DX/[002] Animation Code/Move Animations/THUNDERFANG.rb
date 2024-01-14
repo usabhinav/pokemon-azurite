@@ -87,7 +87,7 @@ EliteBattle.defineMoveAnimation(:THUNDERFANG) do
     end
     fp["bg"].opacity += 4 if  i < 40
     fp["bg"].opacity -= 10 if i >= 56
-    @targetSprite.tone = (@targetSprite.pokemon.item_id == :GREYSCALE ? Tone.new(100, 80, 60, 255) : Tone.new(100,80,60)) if i == 32
+    @targetSprite.tone = (@battlers[@targetIndex].item_id == :GREYSCALE ? Tone.new(100, 80, 60, 255) : Tone.new(100,80,60)) if i == 32
     if i >= 32
       if (i-32)/3 > l
         m += 1

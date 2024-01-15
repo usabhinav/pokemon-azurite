@@ -134,6 +134,49 @@ class Battle::Move::BadPoisonTarget < Battle::Move::PoisonTarget
 end
 
 #===============================================================================
+# Poisons or sleeps or paralyzes the target.
+#===============================================================================
+class Battle::Move::PoisonTargetOrSleepTargetOrParalyzeTarget < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def initialize(battle, move)
+    super
+    @toxic = false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
+    return !target.pbCanPoison?(user, show_message, self) && !target.pbCanSleep?(user, show_message, self) && !target.pbCanParalyze?(user, show_message, self)
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    chance = rand(3)
+    case chance
+    when 0
+      target.pbPoison(user, nil, @toxic)
+    when 1
+      target.pbSleep
+    else
+      target.pbParalyze(user)
+    end
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    chance = rand(3)
+    case chance
+    when 0
+      target.pbPoison(user, nil, @toxic) if target.pbCanPoison?(user, false, self)
+    when 1
+      target.pbSleep if target.pbCanSleep?(user, false, self)
+    else
+      target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
+    end
+  end
+end
+
+#===============================================================================
 # Paralyzes the target.
 #===============================================================================
 class Battle::Move::ParalyzeTarget < Battle::Move
@@ -500,7 +543,7 @@ end
 
 #===============================================================================
 # Safeguards the user's side from being inflicted with status problems.
-# (Safeguard)
+# (Safeguard, Pollen Shield)
 #===============================================================================
 class Battle::Move::StartUserSideImmunityToInflictedStatus < Battle::Move
   def canSnatch?; return true; end
@@ -515,7 +558,13 @@ class Battle::Move::StartUserSideImmunityToInflictedStatus < Battle::Move
 
   def pbEffectGeneral(user)
     user.pbOwnSide.effects[PBEffects::Safeguard] = 5
-    @battle.pbDisplay(_INTL("{1} became cloaked in a mystical veil!", user.pbTeam))
+    user.pbOwnSide.effects[PBEffects::SafeguardMoveName] = self.name
+    case @id
+    when :POLLENSHIELD
+      @battle.pbDisplay(_INTL("{1} became surrounded by pollen!", user.pbTeam))
+    else
+      @battle.pbDisplay(_INTL("{1} became cloaked in a mystical veil!", user.pbTeam))
+    end
   end
 end
 

@@ -72,6 +72,8 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "PowerHigherWithConsecutiveUseOnUserSide"
     #---------------------------------------------------------------------------
+    when "PowerHigherWithMoreBugTypesInParty"
+    #---------------------------------------------------------------------------
     when "RandomPowerDoublePowerIfTargetUnderground"
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetHPLessThanHalf"
@@ -1084,6 +1086,8 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
+    when "UseRandomCosmicTypeMove"
+    #---------------------------------------------------------------------------
     when "BounceBackProblemCausingStatusMoves"
     #---------------------------------------------------------------------------
     when "StealAndUseBeneficialStatusMove"
@@ -1203,7 +1207,9 @@ class Battle::AI
       if score > 20
         score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
+        score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
     #---------------------------------------------------------------------------
     when "SwitchOutTargetDamagingMove"
@@ -1211,7 +1217,9 @@ class Battle::AI
          !(skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS))
         score += 40 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+        score += 40 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::StealthRock]
+        score += 40 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
     #---------------------------------------------------------------------------
     when "BindTarget"

@@ -364,6 +364,16 @@ class Battle::Move::PowerHigherWithConsecutiveUseOnUserSide < Battle::Move
 end
 
 #===============================================================================
+# Power is multiplied by the number of Bug-type Pokemon in the user's and
+# allies' parties. (Swarm Attack)
+#===============================================================================
+class Battle::Move::PowerHigherWithMoreBugTypesInParty < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    return baseDmg * [@battle.pbGetTypeListsOfBattlersAndParty(user.index).count {|types| types.include?(:BUG)}, 1].max
+  end
+end
+
+#===============================================================================
 # Power is chosen at random. Power is doubled if the target is using Dig. Hits
 # some semi-invulnerable targets. (Magnitude)
 #===============================================================================

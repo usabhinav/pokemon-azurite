@@ -706,7 +706,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
       "UseRandomMove",                                     # Metronome
-      "UseRandomCosmicMove",                               # Astronomy
+      "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
@@ -933,7 +933,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
       "UseRandomMove",                                     # Metronome
-      "UseRandomCosmicMove",                               # Astronomy
+      "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
@@ -1025,7 +1025,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
       "UseRandomMove",                                     # Metronome
-      "UseRandomCosmicMove",                               # Astronomy
+      "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
@@ -1126,7 +1126,7 @@ class Battle::Move::UseRandomUserMoveIfAsleep < Battle::Move
       "UseRandomUserMoveIfAsleep",                       # Sleep Talk
       "UseRandomMoveFromUserParty",                      # Assist
       "UseRandomMove",                                   # Metronome
-      "UseRandomCosmicMove",                             # Astronomy
+      "UseRandomCosmicTypeMove",                         # Astronomy
       "UseRandomMysticMove",                             # Wild Magic
       # Two-turn attacks
       "TwoTurnAttack",                                   # Razor Wind
@@ -1296,9 +1296,9 @@ class Battle::Move::ReplaceMoveWithTargetLastMoveUsed < Battle::Move
 end
 
 #===============================================================================
-# Uses a random cosmic move that exists. (Astronomy)
+# Uses a random Cosmic-type move that exists. (Astronomy)
 #===============================================================================
-class Battle::Move::UseRandomCosmicMove < Battle::Move::UseRandomMove
+class Battle::Move::UseRandomCosmicTypeMove < Battle::Move::UseRandomMove
   def pbMoveFailed?(user, targets)
     @metronomeMove = nil
     move_keys = GameData::Move.keys

@@ -5029,12 +5029,14 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
     userSide.effects[PBEffects::ToxicSpikes] = 0
     userSide.effects[PBEffects::VoltSpikes] = 0
     userSide.effects[PBEffects::StickyWeb] = false
+    userSide.effects[PBEffects::AsteroidBelt] = 0
     # Clear opposing side hazards
     targetSide.effects[PBEffects::StealthRock] = false
     targetSide.effects[PBEffects::Spikes] = 0
     targetSide.effects[PBEffects::ToxicSpikes] = 0
     targetSide.effects[PBEffects::VoltSpikes] = 0
     targetSide.effects[PBEffects::StickyWeb] = false
+    targetSide.effects[PBEffects::AsteroidBelt] = 0
     # Clear all battlers' stat changes
     battle.allBattlers.each do |b|
       b.pbResetStatStages

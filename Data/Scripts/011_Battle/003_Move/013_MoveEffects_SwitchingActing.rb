@@ -562,6 +562,7 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       "UseRandomUserMoveIfAsleep",                       # Sleep Talk
       "UseRandomMoveFromUserParty",                      # Assist
       "UseRandomMove",                                   # Metronome
+      "UseRandomCosmicTypeMove",                         # Astronomy
       # Moves that require a recharge turn
       "AttackAndSkipNextTurn",                           # Hyper Beam
       # Two-turn attacks
@@ -782,7 +783,8 @@ class Battle::Move::DisableTargetUsingDifferentMove < Battle::Move
         "UseMoveDependingOnEnvironment",   # Nature Power
         "UseRandomUserMoveIfAsleep",   # Sleep Talk
         "UseRandomMoveFromUserParty",   # Assist
-        "UseRandomMove"   # Metronome
+        "UseRandomMove",   # Metronome
+        "UseRandomCosmicTypeMove",   # Astronomy
       ]
     end
   end

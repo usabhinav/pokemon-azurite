@@ -455,6 +455,27 @@ class Battle::Move::AddStickyWebToFoeSide < Battle::Move
 end
 
 #===============================================================================
+# Entry hazard. Puts asteroid belt on the opposing side. (Asteroid Belt)
+#===============================================================================
+class Battle::Move::AddAsteroidBeltToFoeSide < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] >= 1
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::AsteroidBelt] = 8
+    @battle.pbDisplay(_INTL("A ring filled with jagged asteroids has appeared around {1}!",
+                            user.pbOpposingTeam(true)))
+  end
+end
+
+#===============================================================================
 # All effects that apply to one side of the field are swapped to the opposite
 # side. (Court Change)
 #===============================================================================
@@ -472,7 +493,9 @@ class Battle::Move::SwapSideEffects < Battle::Move
       PBEffects::Spikes,
       PBEffects::Swamp,
       PBEffects::Tailwind,
-      PBEffects::ToxicSpikes
+      PBEffects::ToxicSpikes,
+      PBEffects::VoltSpikes,
+      PBEffects::AsteroidBelt
     ]
     @boolean_effects = [
       PBEffects::StealthRock,
@@ -509,6 +532,10 @@ class Battle::Move::SwapSideEffects < Battle::Move
     side1 = @battle.sides[1]
     @number_effects.each do |e|
       side0.effects[e], side1.effects[e] = side1.effects[e], side0.effects[e]
+      if e == PBEffects::Safeguard
+        se = PBEffects::SafeguardMoveName
+        side0.effects[se], side1.effects[se] = side1.effects[se], side0.effects[se]
+      end
     end
     @boolean_effects.each do |e|
       side0.effects[e], side1.effects[e] = side1.effects[e], side0.effects[e]
@@ -585,9 +612,17 @@ class Battle::Move::RemoveUserBindingAndEntryHazards < Battle::Move::StatUpMove
       user.pbOwnSide.effects[PBEffects::ToxicSpikes] = 0
       @battle.pbDisplay(_INTL("{1} blew away poison spikes!", user.pbThis))
     end
+    if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+      user.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
+      @battle.pbDisplay(_INTL("{1} blew away volt spikes!", user.pbThis))
+    end
     if user.pbOwnSide.effects[PBEffects::StickyWeb]
       user.pbOwnSide.effects[PBEffects::StickyWeb] = false
       @battle.pbDisplay(_INTL("{1} blew away sticky webs!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
+      user.pbOwnSide.effects[PBEffects::AsteroidBelt] = 0
+      @battle.pbDisplay(_INTL("{1} blew away asteroids!", user.pbThis))
     end
   end
 

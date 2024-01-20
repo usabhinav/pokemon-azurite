@@ -125,6 +125,16 @@ class Battle::AI
         score += [26, 13][user.pbOpposingSide.effects[PBEffects::ToxicSpikes]]
       end
     #---------------------------------------------------------------------------
+    when "AddVoltSpikesToFoeSide"
+      if user.pbOpposingSide.effects[PBEffects::VoltSpikes] >= 2
+        score -= 90
+      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+        score -= 90  # Opponent can't switch in any Pokemon
+      else
+        score += 8 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
+        score += [26, 13][user.pbOpposingSide.effects[PBEffects::VoltSpikes]]
+      end
+    #---------------------------------------------------------------------------
     when "AddStealthRocksToFoeSide"
       if user.pbOpposingSide.effects[PBEffects::StealthRock]
         score -= 90
@@ -137,12 +147,15 @@ class Battle::AI
     when "AddStickyWebToFoeSide"
       score -= 95 if user.pbOpposingSide.effects[PBEffects::StickyWeb]
     #---------------------------------------------------------------------------
+    when "AddAsteroidBeltToFoeSide"
+      score -= 95 if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
+    #---------------------------------------------------------------------------
     when "SwapSideEffects"
       if skill >= PBTrainerAI.mediumSkill
         good_effects = [:Reflect, :LightScreen, :AuroraVeil, :SeaOfFire,
                         :Swamp, :Rainbow, :Mist, :Safeguard,
                         :Tailwind].map! { |e| PBEffects.const_get(e) }
-        bad_effects = [:Spikes, :StickyWeb, :ToxicSpikes, :StealthRock].map! { |e| PBEffects.const_get(e) }
+        bad_effects = [:Spikes, :StickyWeb, :ToxicSpikes, :VoltSpikes, :StealthRock, :AsteroidBelt].map! { |e| PBEffects.const_get(e) }
         bad_effects.each do |e|
           score += 10 if ![0, false, nil].include?(user.pbOwnSide.effects[e])
           score -= 10 if ![0, 1, false, nil].include?(user.pbOpposingSide.effects[e])
@@ -168,7 +181,9 @@ class Battle::AI
       if @battle.pbAbleNonActiveCount(user.idxOwnSide) > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
+        score += 80 if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
     #---------------------------------------------------------------------------
     when "AttackTwoTurnsLater"
@@ -1009,7 +1024,7 @@ class Battle::AI
       end
       score += 30 if @battle.field.effects[PBEffects::Gravity] > 0
     #---------------------------------------------------------------------------
-    when "LowerTargetDefense2", "LowerTargetDefense3"
+    when "LowerTargetDefense2", "LowerTargetDefense2BypassReflect", "LowerTargetDefense3"
       if move.statusMove?
         if target.pbCanLowerStatStage?(:DEFENSE, user)
           score += 40 if user.turnCount == 0
@@ -1219,7 +1234,9 @@ class Battle::AI
                      target.pbOwnSide.effects[PBEffects::Safeguard] > 0
       score -= 30 if target.pbOwnSide.effects[PBEffects::Spikes] > 0 ||
                      target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 ||
-                     target.pbOwnSide.effects[PBEffects::StealthRock]
+                     target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0 ||
+                     target.pbOwnSide.effects[PBEffects::StealthRock] ||
+                     target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
     #---------------------------------------------------------------------------
     when "LowerTargetEvasion2", "LowerTargetEvasion3"
       if move.statusMove?

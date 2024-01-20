@@ -103,6 +103,13 @@ class Battle::AI
         score -= 90 if move.statusMove?
       end
     #---------------------------------------------------------------------------
+    when "PoisonTargetOrSleepTargetOrParalyzeTarget"
+      if target.pbCanPoison?(user, false) || target.pbCanSleep?(user, false) || target.pbCanParalyze?(user, false)
+        score += 30
+      elsif skill >= PBTrainerAI.mediumSkill
+        score -= 90 if move.statusMove?
+      end
+    #---------------------------------------------------------------------------
     when "ParalyzeTarget", "ParalyzeTargetIfNotTypeImmune",
          "ParalyzeTargetAlwaysHitsInRainHitsTargetInSky", "ParalyzeFlinchTarget"
       if target.pbCanParalyze?(user, false) &&

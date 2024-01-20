@@ -112,7 +112,7 @@ def addMove(moves, move, base)
     count = base
   end
   if data.base_damage >= 60 ||
-     [:REFLECT, :LIGHTSCREEN, :SAFEGUARD, :SUBSTITUTE, :FAKEOUT].include?(data.id)
+     [:REFLECT, :LIGHTSCREEN, :SAFEGUARD, :POLLENSHIELD, :SUBSTITUTE, :FAKEOUT].include?(data.id)
     count = base + 2
   end
   if data.base_damage >= 80 && data.type == :NORMAL

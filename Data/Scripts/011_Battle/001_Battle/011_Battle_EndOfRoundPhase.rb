@@ -506,7 +506,7 @@ class Battle
                              _INTL("{1}'s Light Screen wore off!", @battlers[side].pbTeam))
     # Safeguard
     pbEORCountDownSideEffect(side, PBEffects::Safeguard,
-                             _INTL("{1} is no longer protected by Safeguard!", @battlers[side].pbTeam))
+                             _INTL("{1} is no longer protected by {2}!", @battlers[side].pbTeam, @sides[side].effects[PBEffects::SafeguardMoveName]))
     # Mist
     pbEORCountDownSideEffect(side, PBEffects::Mist,
                              _INTL("{1} is no longer protected by mist!", @battlers[side].pbTeam))
@@ -528,6 +528,9 @@ class Battle
     # Aurora Veil
     pbEORCountDownSideEffect(side, PBEffects::AuroraVeil,
                              _INTL("{1}'s Aurora Veil wore off!", @battlers[side].pbTeam))
+    # Asteroid Belt
+    pbEORCountDownSideEffect(side, PBEffects::AsteroidBelt,
+                             _INTL("The asteroids on {1}'s side disappeared!", @battlers[side].pbTeam(true)))
   end
 
   #=============================================================================

@@ -511,5 +511,17 @@ class Battle
         battler.pbItemStatRestoreCheck
       end
     end
+    # Asteroid Belt
+    if battler.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0 && battler.takesIndirectDamage? &&
+      !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?([:IRONSHELL, :HEAVYDUTYBOOTS])
+      bTypes = battler.pbTypes(true)
+      eff = Effectiveness.calculate(:COSMIC, bTypes[0], bTypes[1], bTypes[2])
+      if !Effectiveness.ineffective?(eff)
+        eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+        battler.pbReduceHP(battler.totalhp * eff / 16, false)
+        pbDisplay(_INTL("{1} was hit by stray asteroids!", battler.pbThis))
+        battler.pbItemHPHealCheck
+      end
+    end
   end
 end

@@ -211,6 +211,7 @@ class Battle::AI
          "TypeDependsOnUserIVs",
          "PowerHigherWithConsecutiveUse",
          "PowerHigherWithConsecutiveUseOnUserSide",
+         "PowerHigherWithMoreBugTypesInParty",
          "PowerHigherWithLessPP",
          "PowerLowerWithUserHP",
          "PowerHigherWithUserFasterThanTarget",

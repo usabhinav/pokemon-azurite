@@ -7,6 +7,8 @@ class Battle::DamageState
   attr_accessor :protected
   attr_accessor :magicCoat
   attr_accessor :magicBounce
+  attr_accessor :blackHole
+  attr_accessor :portalRebound
   attr_accessor :totalHPLost     # Like hpLost, but cumulative over all hits
   attr_accessor :fainted         # Whether battler was knocked out by the move
 
@@ -38,6 +40,8 @@ class Battle::DamageState
     @invulnerable     = false
     @magicCoat        = false
     @magicBounce      = false
+    @blackHole        = false
+    @portalRebound    = false
     @totalHPLost      = 0
     @fainted          = false
     resetPerHit

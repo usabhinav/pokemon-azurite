@@ -299,6 +299,9 @@ class Battle::AI
     when "RecoilHalfOfDamageDealt"
       score -= 40
     #---------------------------------------------------------------------------
+    when "Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil"
+      score -= 30
+    #---------------------------------------------------------------------------
     when "EffectivenessIncludesFlyingType"
     #---------------------------------------------------------------------------
     when "CategoryDependsOnHigherDamagePoisonTarget"
@@ -392,7 +395,7 @@ class Battle::AI
         score += 50 if targets.stages[stat] > 1
       end
     #---------------------------------------------------------------------------
-    when "HitTwoToFiveTimes"
+    when "HitTwoToFiveTimes", "HitThreeToFiveTimes"
     #---------------------------------------------------------------------------
     when "HitTwoToFiveTimesOrThreeForAshGreninja"
     #---------------------------------------------------------------------------
@@ -1088,7 +1091,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "UseRandomCosmicTypeMove"
     #---------------------------------------------------------------------------
-    when "BounceBackProblemCausingStatusMoves"
+    when "BounceBackProblemCausingStatusMoves", "BounceBackAllMoves", "BounceBackAllMovesIncludingForAllyIfLegendary"
     #---------------------------------------------------------------------------
     when "StealAndUseBeneficialStatusMove"
     #---------------------------------------------------------------------------

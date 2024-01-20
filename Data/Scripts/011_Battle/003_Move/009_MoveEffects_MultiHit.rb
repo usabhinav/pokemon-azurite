@@ -161,6 +161,24 @@ class Battle::Move::HitTwoToFiveTimesRaiseUserSpd1LowerUserDef1 < Battle::Move
 end
 
 #===============================================================================
+# Hits 3-5 times.
+#===============================================================================
+class Battle::Move::HitThreeToFiveTimes < Battle::Move
+  def multiHitMove?; return true; end
+
+  def pbNumHits(user, targets)
+    hitChances = [
+      3, 3, 3, 3, 3, 3, 3,
+      4, 4, 4,
+      5, 5, 5
+    ]
+    r = @battle.pbRandom(hitChances.length)
+    r = hitChances.length - 1 if user.hasActiveAbility?(:SKILLLINK)
+    return hitChances[r]
+  end
+end
+
+#===============================================================================
 # Hits X times, where X is the number of non-user unfainted status-free Pokémon
 # in the user's party (not including partner trainers). Fails if X is 0.
 # Base power of each hit depends on the base Attack stat for the species of that
@@ -480,6 +498,8 @@ class Battle::Move::TwoTurnAttackInvulnerableRemoveProtections < Battle::Move::T
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::BlackHoleActive]        = false
+    target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false

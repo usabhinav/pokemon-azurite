@@ -632,6 +632,81 @@ class Battle::Move::RemoveUserBindingAndEntryHazards < Battle::Move::StatUpMove
 end
 
 #===============================================================================
+# Removes weather and all entry hazards. (Cosmic Void)
+#===============================================================================
+class Battle::Move::RemoveWeatherAndEntryHazards < Battle::Move
+  def pbMoveFailed?(user, targets)
+    userSide = user.pbOwnSide
+    userOpposingSide = user.pbOpposingSide
+    return false if userSide.effects[PBEffects::StealthRock] ||
+                    userSide.effects[PBEffects::Spikes] > 0 ||
+                    userSide.effects[PBEffects::ToxicSpikes] > 0 ||
+                    userSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    userSide.effects[PBEffects::StickyWeb] ||
+                    userSide.effects[PBEffects::AsteroidBelt] > 0 ||
+                    userOpposingSide.effects[PBEffects::StealthRock] ||
+                    userOpposingSide.effects[PBEffects::Spikes] > 0 ||
+                    userOpposingSide.effects[PBEffects::ToxicSpikes] > 0 ||
+                    userOpposingSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    userOpposingSide.effects[PBEffects::StickyWeb] ||
+                    userOpposingSide.effects[PBEffects::AsteroidBelt] > 0
+    return false if @battle.field.weather != :None
+    @battle.pbDisplay(_INTL("But it failed!"))
+    return true
+  end
+
+  def pbEffectGeneral(user)
+    if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]
+      user.pbOwnSide.effects[PBEffects::StealthRock]      = false
+      user.pbOpposingSide.effects[PBEffects::StealthRock] = false
+      @battle.pbDisplay(_INTL("{1} cleared stealth rocks!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::Spikes] > 0 || user.pbOpposingSide.effects[PBEffects::Spikes] > 0
+      user.pbOwnSide.effects[PBEffects::Spikes]      = 0
+      user.pbOpposingSide.effects[PBEffects::Spikes] = 0
+      @battle.pbDisplay(_INTL("{1} cleared spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes] > 0
+      user.pbOwnSide.effects[PBEffects::ToxicSpikes]      = 0
+      user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+      @battle.pbDisplay(_INTL("{1} cleared poison spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0 || user.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0
+      user.pbOwnSide.effects[PBEffects::VoltSpikes]      = 0
+      user.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0
+      @battle.pbDisplay(_INTL("{1} cleared volt spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::StickyWeb] || user.pbOpposingSide.effects[PBEffects::StickyWeb]
+      user.pbOwnSide.effects[PBEffects::StickyWeb]      = false
+      user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
+      @battle.pbDisplay(_INTL("{1} cleared sticky webs!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0 || user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
+      user.pbOwnSide.effects[PBEffects::AsteroidBelt]      = 0
+      user.pbOpposingSide.effects[PBEffects::AsteroidBelt] = 0
+      @battle.pbDisplay(_INTL("{1} cleared asteroids!", user.pbThis))
+    end
+    if @battle.field.weather != :None
+      case @battle.field.weather
+      when :Sun       then @battle.pbDisplay(_INTL("The sunlight faded."))
+      when :Rain      then @battle.pbDisplay(_INTL("The rain stopped."))
+      when :Sandstorm then @battle.pbDisplay(_INTL("The sandstorm subsided."))
+      when :Hail      then @battle.pbDisplay(_INTL("The hail stopped."))
+      when :ShadowSky then @battle.pbDisplay(_INTL("The shadow sky faded."))
+      when :Thunderstorm then @battle.pbDisplay(_INTL("The thunderstorm subsided."))	
+      when :Windstorm then @battle.pbDisplay(_INTL("The windstorm subsided."))
+      end
+      @battle.field.weather = :None
+      @battle.field.weatherDuration = 0
+      # Check for form changes caused by the weather changing
+      @battle.allBattlers.each { |battler| battler.pbCheckFormOnWeatherChange }
+      # Start up the default weather
+      @battle.pbStartWeather(nil, @battle.field.defaultWeather) if @battle.field.defaultWeather != :None
+    end
+  end
+end
+
+#===============================================================================
 # Attacks 2 rounds in the future. (Doom Desire, Future Sight)
 #===============================================================================
 class Battle::Move::AttackTwoTurnsLater < Battle::Move
@@ -743,18 +818,16 @@ class Battle::Move::StartDarkenedEffect < Battle::Move
 end
 
 #===============================================================================
-# If attack misses, user takes crash damage equal to its speed.
-# (Crash Landing)
+# If attack misses, user takes crash damage equal to its speed. (Crash Landing)
 #===============================================================================
-class Battle::Move::CrashDamageWithSpeedIfFailsUnusableInGravity < Battle::Move
+class Battle::Move::CrashDamageWithSpeedIfFails < Battle::Move
   def recoilMove?;        return true; end
-  def unusableInGravity?; return true; end
 
   def pbCrashDamage(user)
     return if !user.takesIndirectDamage?
     @battle.pbDisplay(_INTL("{1} kept going and crashed!", user.pbThis))
     @battle.scene.pbDamageAnimation(user)
-    user.pbReduceHP(user.speed, false)
+    user.pbReduceHP(user.pbSpeed, false)
     user.pbItemHPHealCheck
     user.pbFaint if user.fainted?
   end

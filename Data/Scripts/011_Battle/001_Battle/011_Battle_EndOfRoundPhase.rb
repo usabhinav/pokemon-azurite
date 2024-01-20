@@ -466,6 +466,18 @@ class Battle
         battler.pbSleep
       end
     }
+    # Black Hole
+    priority.each do |battler|
+      next if battler.fainted? || !battler.effects[PBEffects::BlackHoleActive]
+      battler.effects[PBEffects::BlackHoleActive] = false
+      pbDisplay(_INTL("{1}'s Black Hole dissipated!", battler.pbThis))
+    end
+    # Portal Rebound
+    priority.each do |battler|
+      next if battler.fainted? || !battler.effects[PBEffects::PortalReboundActive]
+      battler.effects[PBEffects::PortalReboundActive] = false
+      pbDisplay(_INTL("{1}'s portal disappeared!", battler.pbThis))
+    end
     # Perish Song
     perishSongUsers = []
     priority.each do |battler|
@@ -958,6 +970,7 @@ class Battle
     allBattlers.each do |battler|
       battler.effects[PBEffects::BanefulBunker]    = false
       battler.effects[PBEffects::Charge]           -= 1 if battler.effects[PBEffects::Charge] > 0
+      battler.effects[PBEffects::CometSwingEffectsActive] = false
       battler.effects[PBEffects::Counter]          = -1
       battler.effects[PBEffects::CounterTarget]    = -1
       battler.effects[PBEffects::Electrify]        = false

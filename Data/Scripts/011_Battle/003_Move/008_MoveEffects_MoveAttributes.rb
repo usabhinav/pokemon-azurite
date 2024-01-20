@@ -995,6 +995,8 @@ class Battle::Move::RemoveProtections < Battle::Move
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::BlackHoleActive]        = false
+    target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
@@ -1014,6 +1016,8 @@ class Battle::Move::RemoveProtectionsBypassSubstitute < Battle::Move
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::BlackHoleActive]        = false
+    target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
@@ -1050,6 +1054,8 @@ class Battle::Move::HoopaRemoveProtectionsBypassSubstituteLowerUserDef1 < Battle
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::BlackHoleActive]        = false
+    target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
@@ -1847,5 +1853,31 @@ class Battle::Move::RecoilHalfOfUserHP < Battle::Move::RecoilMove
     recoilDmg = user.totalhp / 2
     recoilDmg = (recoilDmg * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
     return recoilDmg
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 30% of the damage this move dealt, unless
+# the user was hit by a contact move in the same turn, in which case, this
+# move's power increases by 50%, won't miss, and no recoil. (Comet Swing)
+#===============================================================================
+class Battle::Move::Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil < Battle::Move::RecoilMove
+  def pbRecoilDamage(user, target)
+    return (target.damageState.totalHPLost * 0.3).round
+  end
+
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg = baseDmg * 3 / 2 if user.effects[PBEffects::CometSwingEffectsActive]
+    return baseDmg
+  end
+
+  def pbBaseAccuracy(user, target)
+    return 0 if user.effects[PBEffects::CometSwingEffectsActive]
+    return super
+  end
+
+  def pbEffectAfterAllHits(user, target)
+    return if user.effects[PBEffects::CometSwingEffectsActive]
+    super
   end
 end

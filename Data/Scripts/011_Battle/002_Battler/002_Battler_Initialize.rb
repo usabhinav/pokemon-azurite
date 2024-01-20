@@ -307,6 +307,9 @@ class Battle::Battler
     @effects[PBEffects::LightNutActive]      = false
     @effects[PBEffects::RisciBerryActive]    = false
     @effects[PBEffects::ZItemUsedThisRound]  = nil
+    @effects[PBEffects::BlackHoleActive]     = false
+    @effects[PBEffects::CometSwingEffectsActive] = false
+    @effects[PBEffects::PortalReboundActive] = false
   end
 
   #=============================================================================

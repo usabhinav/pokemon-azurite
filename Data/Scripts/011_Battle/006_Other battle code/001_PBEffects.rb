@@ -144,6 +144,9 @@ module PBEffects
   LightNutActive      = 139
   RisciBerryActive    = 140
   ZItemUsedThisRound  = 141
+  BlackHoleActive     = 142
+  CometSwingEffectsActive = 143
+  PortalReboundActive = 144
 
   #=============================================================================
   # These effects apply to a battler position

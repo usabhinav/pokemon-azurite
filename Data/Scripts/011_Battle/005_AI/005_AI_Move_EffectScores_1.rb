@@ -49,7 +49,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "FailsIfTargetActed"
     #---------------------------------------------------------------------------
-    when "CrashDamageIfFailsUnusableInGravity"
+    when "CrashDamageIfFailsUnusableInGravity", "CrashDamageWithSpeedIfFailsUnusableInGravity"
       score += 10 * (user.stages[:ACCURACY] - target.stages[:EVASION])
     #---------------------------------------------------------------------------
     when "StartSunWeather"
@@ -178,6 +178,15 @@ class Battle::AI
     when "RemoveUserBindingAndEntryHazards"
       score += 30 if user.effects[PBEffects::Trapping] > 0
       score += 30 if user.effects[PBEffects::LeechSeed] >= 0
+      if @battle.pbAbleNonActiveCount(user.idxOwnSide) > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
+        score += 80 if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
+      end
+    #---------------------------------------------------------------------------
+    when "RemoveWeatherAndEntryHazards"
       if @battle.pbAbleNonActiveCount(user.idxOwnSide) > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0

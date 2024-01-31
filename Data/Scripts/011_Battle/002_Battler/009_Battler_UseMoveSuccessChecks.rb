@@ -434,6 +434,26 @@ class Battle::Battler
         return false
       end
     end
+    # Black Hole/Portal Rebound
+    if !target.semiInvulnerable? && target.opposes?(user)
+      # Get any Legendary ally with Portal Rebound active
+      portal_rebound_legendary_ally = nil
+      target.eachAlly do |t|
+        next if !t.effects[PBEffects::PortalReboundActive]
+        species_data = t.pokemon.species_data
+        next if !species_data.has_flag?("Legendary") && !species_data.has_flag?("Mythical")
+        portal_rebound_legendary_ally = t
+        break
+      end
+      if !portal_rebound_legendary_ally.nil? || target.effects[PBEffects::PortalReboundActive]
+        target.damageState.portalRebound = true
+        return false
+      end
+      if target.effects[PBEffects::BlackHoleActive]
+        target.damageState.blackHole = true
+        return false
+      end
+    end
     # Ungrounded
     if user.hasActiveAbility?(:UNGROUNDED) && move.pbContactMove?(user) && !@battle.moldBreaker
       return true

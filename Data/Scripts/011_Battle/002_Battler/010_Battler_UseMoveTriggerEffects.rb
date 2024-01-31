@@ -238,6 +238,13 @@ class Battle::Battler
     if numHits > 0
       @battle.allBattlers.each { |b| b.pbItemEndOfMoveCheck }
     end
+    # Comet Swing
+    if move.damagingMove? && move.pbContactMove?(user)
+      targets.each do |b|
+        next if b.damageState.unaffected || b.damageState.substitute
+        b.effects[PBEffects::CometSwingEffectsActive] = true
+      end
+    end
   end
 
   # Everything in this method is negated by Sheer Force.

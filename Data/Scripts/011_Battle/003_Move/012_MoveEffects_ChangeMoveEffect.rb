@@ -710,6 +710,8 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
+      "BounceBackAllMoves",                                # Black Hole
+      "BounceBackAllMovesIncludingForAllyIfLegendary",     # Portal Rebound
       "StealAndUseBeneficialStatusMove",                   # Snatch
       "RedirectAllMovesToUser",                            # Follow Me, Rage Powder
       "RedirectAllMovesToTarget",                          # Spotlight
@@ -937,6 +939,8 @@ class Battle::Move::UseRandomMove < Battle::Move
       "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
+      "BounceBackAllMoves",                                # Black Hole
+      "BounceBackAllMovesIncludingForAllyIfLegendary",     # Portal Rebound
       "StealAndUseBeneficialStatusMove",                   # Snatch
       "RedirectAllMovesToUser",                            # Follow Me, Rage Powder
       "RedirectAllMovesToTarget",                          # Spotlight
@@ -1029,6 +1033,8 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "UseRandomMysticMove",                               # Wild Magic
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
+      "BounceBackAllMoves",                                # Black Hole
+      "BounceBackAllMovesIncludingForAllyIfLegendary",     # Portal Rebound
       "StealAndUseBeneficialStatusMove",                   # Snatch
       "RedirectAllMovesToUser",                            # Follow Me, Rage Powder
       "RedirectAllMovesToTarget",                          # Spotlight
@@ -1178,6 +1184,36 @@ class Battle::Move::BounceBackProblemCausingStatusMoves < Battle::Move
   def pbEffectGeneral(user)
     user.effects[PBEffects::MagicCoat] = true
     @battle.pbDisplay(_INTL("{1} shrouded itself with Magic Coat!", user.pbThis))
+  end
+end
+
+#===============================================================================
+# This round, reflects all moves targeting the user back at their origin.
+# (Black Hole)
+#===============================================================================
+class Battle::Move::BounceBackAllMoves < Battle::Move::ProtectMove
+  def initialize(battle, move)
+    super
+    @effect = PBEffects::BlackHoleActive
+  end
+
+  def pbProtectMessage(user)
+    @battle.pbDisplay(_INTL("{1} set up a black hole in front of itself!", user.pbThis))
+  end
+end
+
+#===============================================================================
+# This round, reflects all moves targeting the user back at their origin. Covers
+# allies if user is a Legendary. (Portal Rebound)
+#===============================================================================
+class Battle::Move::BounceBackAllMovesIncludingForAllyIfLegendary < Battle::Move::ProtectMove
+  def initialize(battle, move)
+    super
+    @effect = PBEffects::PortalReboundActive
+  end
+
+  def pbProtectMessage(user)
+    @battle.pbDisplay(_INTL("{1} set up a portal in front of itself!", user.pbThis))
   end
 end
 

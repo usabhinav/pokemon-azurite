@@ -473,6 +473,10 @@ class Battle::Battler
             magicCoater = b.index
             b.effects[PBEffects::MagicCoat] = false
             break
+          # We don't need to check for a Legendary ally with Portal Rebound because this loops over all battlers on the opposing side
+          elsif b.effects[PBEffects::BlackHoleActive] || b.effects[PBEffects::PortalReboundActive]
+            magicCoater = b.index
+            break
           elsif b.hasActiveAbility?(:MAGICBOUNCE) && !@battle.moldBreaker &&
                 !b.effects[PBEffects::MagicBounce]
             magicBouncer = b.index
@@ -577,7 +581,7 @@ class Battle::Battler
       # Magic Coat's bouncing back (move has targets)
       targets.each do |b|
         next if b.fainted?
-        next if !b.damageState.magicCoat && !b.damageState.magicBounce
+        next if !b.damageState.magicCoat && !b.damageState.magicBounce && !b.damageState.blackHole && !b.damageState.portalRebound
         @battle.pbShowAbilitySplash(b) if b.damageState.magicBounce
         @battle.pbDisplay(_INTL("{1} bounced the {2} back!", b.pbThis, move.name))
         @battle.pbHideAbilitySplash(b) if b.damageState.magicBounce

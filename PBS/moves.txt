@@ -9770,7 +9770,7 @@ TotalPP = 15
 Target = AllNearFoes
 FunctionCode = HitThreeToFiveTimes
 Flags = Contact,CanProtect,CanMirrorMove,Kicking
-Description = The user jumps up and rains down a barrage of kicks. Hits 3-5 times and hits all adjecent foes.
+Description = The user jumps up and rains down a barrage of kicks. Hits 3-5 times and hits all adjacent foes.
 #-------------------------------
 [STARSHOT]
 Name = Star Shot
@@ -9862,7 +9862,7 @@ Power = 125
 Accuracy = 90
 TotalPP = 5
 Target = NearOther
-FunctionCode = RecoilBasedOnSpeedIfMisses
+FunctionCode = CrashDamageWithSpeedIfFails
 Flags = Contact,CanProtect,CanMirrorMove
 Description = If it misses, the user takes damage equal to it's current Speed.
 #-------------------------------
@@ -10644,7 +10644,7 @@ Target = NearOther
 FunctionCode = FlinchTarget
 Flags = Contact,CanProtect,CanMirrorMove,Kicking	
 EffectChance = 10
-Description = A flying kick with a low-gravity leap.  May cause the foe to flinch.
+Description = A flying kick with a low-gravity leap. May cause the foe to flinch.
 #-------------------------------
 [MYSTERIOUSLIGHT]
 Name = Mysterious Light

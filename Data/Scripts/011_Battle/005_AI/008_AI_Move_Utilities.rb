@@ -254,6 +254,12 @@ class Battle::AI
       else
         baseDmg = (baseDmg * 31 / 10).floor   # Average damage dealt
       end
+    when "HitThreeToFiveTimes"
+      if user.hasActiveAbility?(:SKILLLINK)
+        baseDmg *= 5
+      else
+        baseDmg = (baseDmg * 48 / 13).floor   # Average damage dealt
+      end
     when "HitOncePerUserTeamMember"   # Beat Up
       mult = 0
       @battle.eachInTeamFromBattlerIndex(user.index) do |pkmn, _i|

@@ -98,7 +98,18 @@ class Battle::Move::LowerTargetAtkSpAtk1SwitchOutUser < Battle::Move::TargetMult
     switcher = user
     targets.each do |b|
       next if switchedBattlers.include?(b.index)
-      switcher = b if b.effects[PBEffects::MagicCoat] || b.effects[PBEffects::MagicBounce]
+      # Get any Legendary ally with Portal Rebound active
+      portal_rebound_legendary_ally = nil
+      b.eachAlly do |t|
+        next if !t.effects[PBEffects::PortalReboundActive]
+        species_data = t.pokemon.species_data
+        next if !species_data.has_flag?("Legendary") && !species_data.has_flag?("Mythical")
+        portal_rebound_legendary_ally = t
+        break
+      end
+      switcher = b if b.effects[PBEffects::MagicCoat] || b.effects[PBEffects::MagicBounce] ||
+                      b.effects[PBEffects::BlackHoleActive] || b.effects[PBEffects::PortalReboundActive] ||
+                      !portal_rebound_legendary_ally.nil?
     end
     return if switcher.fainted? || numHits == 0
     return if !@battle.pbCanChooseNonActive?(switcher.index)

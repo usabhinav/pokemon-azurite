@@ -412,6 +412,7 @@ Battle::AbilityEffects::OnHPDroppedBelowHalf.add(:EMERGENCYEXIT,
     battle.pbDisplay(_INTL("{1} went back to {2}!",
        battler.pbThis, battle.pbGetOwnerName(battler.index)))
     if battle.endOfRound   # Just switch out
+      battle.pbAsteroidBeltDamage(battler)
       battle.scene.pbRecall(battler.index) if !battler.fainted?
       battler.pbAbilitiesOnSwitchOut   # Inc. primordial weather check
       next true

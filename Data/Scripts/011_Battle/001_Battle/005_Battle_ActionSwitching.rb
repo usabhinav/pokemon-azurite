@@ -219,6 +219,7 @@ class Battle
 
   # Actually performs the recalling and sending out in all situations.
   def pbRecallAndReplace(idxBattler, idxParty, randomReplacement = false, batonPass = false)
+    pbAsteroidBeltDamage(@battlers[idxBattler])
     @scene.pbRecall(idxBattler) if !@battlers[idxBattler].fainted?
     @battlers[idxBattler].pbAbilitiesOnSwitchOut   # Inc. primordial weather check
     @scene.pbShowPartyLineup(idxBattler & 1) if pbSideSize(idxBattler) == 1
@@ -512,8 +513,12 @@ class Battle
       end
     end
     # Asteroid Belt
+    pbAsteroidBeltDamage(battler)
+  end
+
+  def pbAsteroidBeltDamage(battler)
     if battler.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0 && battler.takesIndirectDamage? &&
-      !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?([:IRONSHELL, :HEAVYDUTYBOOTS])
+       !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?(:IRONSHELL)
       bTypes = battler.pbTypes(true)
       eff = Effectiveness.calculate(:COSMIC, bTypes[0], bTypes[1], bTypes[2])
       if !Effectiveness.ineffective?(eff)
@@ -521,6 +526,11 @@ class Battle
         battler.pbReduceHP(battler.totalhp * eff / 16, false)
         pbDisplay(_INTL("{1} was hit by stray asteroids!", battler.pbThis))
         battler.pbItemHPHealCheck
+        if battler.fainted?
+          battler.pbFaint
+          pbGainExp
+          pbJudge
+        end        
       end
     end
   end

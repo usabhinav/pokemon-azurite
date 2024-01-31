@@ -1190,10 +1190,15 @@ end
 # custom class to store data related to the invert BG animation
 #===============================================================================
 class InvertBGAnimationData
+  # Radius of the current circle in animation
   attr_accessor :current_outer_radius
+  # X value of center of circle on bitmap
   attr_reader :start_center_x
+  # Y value of center of circle on bitmap
   attr_reader :start_center_y
+  # New BG sprite
   attr_reader :new_battlebg
+  # List of x values (index is y value) of current circle in animation
   attr_accessor :current_inner_circle_x_coords
   
   def initialize(start_center_x, start_center_y, new_battlebg)

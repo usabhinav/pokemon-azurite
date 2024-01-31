@@ -83,10 +83,9 @@ class Battle::Battler
       @battle.allBattlers.each { |b| pbAddTarget(targets, user, b, move) }
     when :AllBattlers
       @battle.allBattlers.each { |b| pbAddTarget(targets, user, b, move, false, true) }
-    else
-      # Used by Counter/Mirror Coat/Metal Burst/Bide
-      move.pbAddTarget(targets, user)   # Move-specific pbAddTarget, not the def below
     end
+    # Used by Counter/Mirror Coat/Metal Burst/Bide
+    move.pbAddTarget(targets, user)   # Move-specific pbAddTarget, not the def below
     return targets
   end
 

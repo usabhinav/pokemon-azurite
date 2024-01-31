@@ -289,6 +289,16 @@ class Battle::AI
         score -= 90 if move.statusMove?
       end
     #---------------------------------------------------------------------------
+    when "ConfuseTargetAndPossiblyUser"
+      if target.pbCanConfuse?(user, false)
+        score += 30
+        if !user.pbCanConfuseSelf?(false)
+          score += 30
+        end
+      elsif skill >= PBTrainerAI.mediumSkill
+        score -= 90 if move.statusMove?
+      end
+    #---------------------------------------------------------------------------
     when "AttractTarget"
       canattract = true
       agender = user.gender
@@ -526,6 +536,11 @@ class Battle::AI
       if user.effects[PBEffects::MagnetRise] > 0 ||
          user.effects[PBEffects::Ingrain] ||
          user.effects[PBEffects::SmackDown]
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
+    when "StartUserBypassImmunityAndAccuracy"
+      if user.effects[PBEffects::SignalBoostMoveActive]
         score -= 90
       end
     #---------------------------------------------------------------------------

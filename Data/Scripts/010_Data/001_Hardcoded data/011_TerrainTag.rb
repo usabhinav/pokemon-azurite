@@ -20,6 +20,7 @@ module GameData
     attr_reader :shows_mirror_reflections
     attr_reader :must_walk
     attr_reader :ignore_passability
+    attr_reader :tile_shifts_when_stepped_on
 
     DATA = {}
 
@@ -60,6 +61,7 @@ module GameData
       @shows_mirror_reflections = hash[:shows_mirror_reflections] || false
       @must_walk              = hash[:must_walk]              || false
       @ignore_passability     = hash[:ignore_passability]     || false
+      @tile_shifts_when_stepped_on = hash[:tile_shifts_when_stepped_on] || false
     end
 
     alias name real_name
@@ -207,4 +209,10 @@ GameData::TerrainTag.register({
   :id                     => :Mirror,
   :id_number              => 18,
   :shows_mirror_reflections => true
+})
+
+GameData::TerrainTag.register({
+  :id                     => :Mushroom,
+  :id_number              => 19,
+  :tile_shifts_when_stepped_on => true
 })

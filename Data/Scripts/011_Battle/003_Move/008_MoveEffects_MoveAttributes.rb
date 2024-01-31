@@ -162,6 +162,30 @@ class Battle::Move::DamageTargetAlly < Battle::Move
 end
 
 #===============================================================================
+# The user brings the target to the ozone layer and throws it back to the ground.
+# In Doubles, its ally gets lightly damaged too (base power 40). (Ozone Throw)
+#===============================================================================
+class Battle::Move::DamageTargetAllyWithPower40 < Battle::Move
+  def pbAddTarget(targets, user)
+    @ally_targets = []
+    targets.each do |t|
+      next if !t.opposes?(user)
+      t.eachAlly do |t_ally|
+        if t.near?(t_ally) && !targets.include?(t_ally) && !@ally_targets.include?(t_ally)
+          @ally_targets.push(t_ally)
+          user.pbAddTarget(targets, user, t_ally, self, false)
+        end
+      end
+    end
+  end
+
+  def pbBaseDamage(baseDmg, user, target)
+    return 40 if @ally_targets.include?(target)
+    return super
+  end
+end
+
+#===============================================================================
 # Power increases with the user's HP. (Eruption, Water Spout)
 #===============================================================================
 class Battle::Move::PowerHigherWithUserHP < Battle::Move
@@ -370,6 +394,16 @@ end
 class Battle::Move::PowerHigherWithMoreBugTypesInParty < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
     return baseDmg * [@battle.pbGetTypeListsOfBattlersAndParty(user.index).count {|types| types.include?(:BUG)}, 1].max
+  end
+end
+
+#===============================================================================
+# Power is multiplied by the number of Cosmic-type Pokemon in the user's and
+# allies' parties (20 per Cosmic-type, minimum of 50). (Star Line)
+#===============================================================================
+class Battle::Move::PowerHigherWithMoreCosmicTypesInParty < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    return baseDmg + (20 * @battle.pbGetTypeListsOfBattlersAndParty(user.index).count {|types| types.include?(:COSMIC)})
   end
 end
 
@@ -1137,6 +1171,19 @@ class Battle::Move::EffectivenessIncludesFlyingType < Battle::Move
 end
 
 #===============================================================================
+# Type effectiveness is multiplied by the Fire-type's effectiveness against
+# the target. (Searing Meteor)
+#===============================================================================
+class Battle::Move::EffectivenessIncludesFireType < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    ret = super
+    fireEff = Effectiveness.calculate_one(:FIRE, defType)
+    ret *= fireEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    return ret
+  end
+end
+
+#===============================================================================
 # Poisons the target. This move becomes physical or special, whichever will deal
 # more damage (only considers stats, stat stages and Wonder Room). Makes contact
 # if it is a physical move. Has a different animation depending on the move's
@@ -1239,7 +1286,7 @@ end
 
 #===============================================================================
 # Target's Defense is used instead of its Special Defense for this move's
-# calculations. (Psyshock, Psystrike, Secret Sword)
+# calculations. (Psyshock, Psystrike, Secret Sword, Star Shock)
 #===============================================================================
 class Battle::Move::UseTargetDefenseInsteadOfTargetSpDef < Battle::Move
   def pbGetDefenseStats(user, target)
@@ -1720,18 +1767,6 @@ class Battle::Move::PowerDependsOnTargetDefenseStats < Battle::Move
 end
 
 #===============================================================================
-# Searing Meteor
-#===============================================================================
-class Battle::Move::EffectivenessIncludesFireType < Battle::Move
-  def pbCalcTypeModSingle(moveType,defType,user,target)
-    ret = super(moveType,defType,user,target)
-    fireEff = Effectiveness.calculate_one(:FIRE, defType)
-    ret *= fireEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
-    return ret
-  end
-end
-
-#===============================================================================
 # Crystal Overload
 #===============================================================================
 class Battle::Move::DoublePowerIfTargetHasCrystalType < Battle::Move
@@ -1807,9 +1842,9 @@ end
 
 #===============================================================================
 # Target's Special Defense is used instead of its Defense for this move's
-# calculations. (Arcane Strike)
+# calculations. (Arcane Strike, Throw Hands)
 #===============================================================================
-class Battle::Move::UseTargetDefenseInsteadOfTargetSpDef < Battle::Move
+class Battle::Move::UseTargetSpDefInsteadOfTargetDefense < Battle::Move
   def pbGetDefenseStats(user, target)
     return target.spdef, target.stages[:SPECIAL_DEFENSE] + 6
   end

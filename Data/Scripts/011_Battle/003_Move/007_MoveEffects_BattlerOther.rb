@@ -672,6 +672,16 @@ class Battle::Move::ConfuseTargetAlwaysHitsInRainHitsTargetInSky < Battle::Move:
 end
 
 #===============================================================================
+# Confuses the target and possibly the user. (Space Out)
+#===============================================================================
+class Battle::Move::ConfuseTargetAndPossiblyUser < Battle::Move::ConfuseTarget
+  def pbEffectGeneral(user)
+    super
+    user.pbConfuseSelf if user.pbCanConfuseSelf?(false) && @battle.pbRandom(2) == 0
+  end
+end
+
+#===============================================================================
 # Attracts the target. (Attract)
 #===============================================================================
 class Battle::Move::AttractTarget < Battle::Move
@@ -1278,6 +1288,27 @@ class Battle::Move::StartUserAirborne < Battle::Move
   def pbEffectGeneral(user)
     user.effects[PBEffects::MagnetRise] = 5
     @battle.pbDisplay(_INTL("{1} levitated with electromagnetism!", user.pbThis))
+  end
+end
+
+#===============================================================================
+# The user's attacks will never miss, and will hit regardless of immunities.
+# (Signal Boost)
+#===============================================================================
+class Battle::Move::StartUserBypassImmunityAndAccuracy < Battle::Move
+  def canSnatch?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::SignalBoostMoveActive]
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::SignalBoostMoveActive] = true
+    @battle.pbDisplay(_INTL("{1} amplified its signal output!", user.pbThis))
   end
 end
 

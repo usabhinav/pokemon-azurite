@@ -38,7 +38,7 @@ class Battle::AI
       score -= 90 if target.hasActiveAbility?(:STURDY)
       score -= 90 if target.level > user.level
     #---------------------------------------------------------------------------
-    when "DamageTargetAlly"
+    when "DamageTargetAlly", "DamageTargetAllyWithPower40"
       target.allAllies.each do |b|
         next if !b.near?(target)
         score += 10
@@ -72,7 +72,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "PowerHigherWithConsecutiveUseOnUserSide"
     #---------------------------------------------------------------------------
-    when "PowerHigherWithMoreBugTypesInParty"
+    when "PowerHigherWithMoreBugTypesInParty", "PowerHigherWithMoreCosmicTypesInParty"
     #---------------------------------------------------------------------------
     when "RandomPowerDoublePowerIfTargetUnderground"
     #---------------------------------------------------------------------------
@@ -302,7 +302,7 @@ class Battle::AI
     when "Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil"
       score -= 30
     #---------------------------------------------------------------------------
-    when "EffectivenessIncludesFlyingType"
+    when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType"
     #---------------------------------------------------------------------------
     when "CategoryDependsOnHigherDamagePoisonTarget"
       score += 5 if target.pbCanPoison?(user, false)

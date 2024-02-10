@@ -156,4 +156,10 @@ class Battle::Scene
     end
   end
   #-----------------------------------------------------------------------------
+  #  start invert BG animation
+  #-----------------------------------------------------------------------------
+  def invertBG(idxBattler = nil)
+    @sprites["battlebg"].startInvertBG(idxBattler.nil? ? nil : @sprites["pokemon_#{idxBattler}"])
+  end
+  #-----------------------------------------------------------------------------
 end

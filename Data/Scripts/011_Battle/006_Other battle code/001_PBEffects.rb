@@ -147,6 +147,7 @@ module PBEffects
   BlackHoleActive     = 142
   CometSwingEffectsActive = 143
   PortalReboundActive = 144
+  SignalBoostMoveActive = 145
 
   #=============================================================================
   # These effects apply to a battler position

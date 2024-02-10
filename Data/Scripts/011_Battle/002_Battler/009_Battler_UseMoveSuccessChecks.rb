@@ -298,6 +298,8 @@ class Battle::Battler
     target.damageState.typeMod = typeMod
     # Two-turn attacks can't fail here in the charging turn
     return true if user.effects[PBEffects::TwoTurnAttack]
+    # Signal Boost (move)
+    return true if user.effects[PBEffects::SignalBoostMoveActive]
     # Move-specific failures
     return false if move.pbFailsAgainstTarget?(user, target, show_message)
     # Immunity to priority moves because of Psychic Terrain

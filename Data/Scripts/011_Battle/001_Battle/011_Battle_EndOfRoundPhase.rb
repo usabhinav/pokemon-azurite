@@ -556,6 +556,7 @@ class Battle
     if effect == PBEffects::MagicRoom
       pbPriority(true).each { |battler| battler.pbItemTerrainStatBoostCheck }
     end
+    @scene.invertBG if effect == PBEffects::InverseRoom
   end
 
   def pbEOREndFieldEffects(priority)
@@ -579,7 +580,7 @@ class Battle
                               _INTL("Magic Room wore off, and held items' effects returned to normal!"))
     # Inverse Room
     pbEORCountDownFieldEffect(PBEffects::InverseRoom,
-    _INTL("Inverse Room wore off, and type resistances returned to normal!"))
+                              _INTL("Type resistances returned to normal!"))
   end
 
   #=============================================================================

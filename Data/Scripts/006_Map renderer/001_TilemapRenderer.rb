@@ -593,10 +593,34 @@ class TilemapRenderer
       # Update all tile sprites representing this map
       (start_x..end_x).each do |i|
         tile_x = i + map_display_x_tile
+        tile_real_x = tile_x * Game_Map::REAL_RES_X
         (start_y..end_y).each do |j|
           tile_y = j + map_display_y_tile
+          tile_real_y = tile_y * Game_Map::REAL_RES_Y
           @tiles[i][j].each_with_index do |tile, layer|
             tile_id = map.data[tile_x, tile_y, layer]
+            # Shift by one tile to the right if player steps on this tile
+            terrain_tag = map.terrain_tags[tile_id] || 0
+            terrain_tag_data = GameData::TerrainTag.try_get(terrain_tag)
+            if terrain_tag_data&.tile_shifts_when_stepped_on
+              if $game_player.real_x <= tile_real_x + Game_Map::REAL_RES_X / 2 &&
+                 $game_player.real_x >= tile_real_x - Game_Map::REAL_RES_X / 2 &&
+                 $game_player.real_y <= tile_real_y + Game_Map::REAL_RES_Y / 2 &&
+                 $game_player.real_y >= tile_real_y - Game_Map::REAL_RES_Y / 2
+                # Player stepping on the tile
+                if map.tiles_stepped_on[tile_x, tile_y, layer] == 0
+                  map.tiles_stepped_on[tile_x, tile_y, layer] = 1
+                  # Tile IDs 0-383 are reserved for autotiles, and each autotile takes up 48 tiles
+                  map.data[tile_x, tile_y, layer] += (tile_id > 0 && tile_id < 384) ? 48 : 1
+                  tile_id = map.data[tile_x, tile_y, layer]
+                end
+              else
+                # Player stepping off the tile
+                if map.tiles_stepped_on[tile_x, tile_y, layer] == 1
+                  map.tiles_stepped_on[tile_x, tile_y, layer] = 0
+                end
+              end
+            end
             if do_full_refresh || tile.need_refresh || tile.tile_id != tile_id
               refresh_tile(tile, i, j, map, layer, tile_id)
             else

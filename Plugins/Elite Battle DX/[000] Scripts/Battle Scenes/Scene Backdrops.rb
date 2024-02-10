@@ -207,6 +207,7 @@ class BattleSceneRoom
     self.adjustMetrics
     # applies daylight tinting
     self.daylightTint
+    @invertbgdata = []
   end
   #-----------------------------------------------------------------------------
   # sets color of sprite to match the environment
@@ -228,6 +229,8 @@ class BattleSceneRoom
     sx, sy = @scene.vector.spoof(@defaultvector)
     @sprites["bg"].zoom_x = @scale*((@scene.vector.x2 - @scene.vector.x)*1.0/(sx - @defaultvector[0])*1.0)**0.6
     @sprites["bg"].zoom_y = @scale*((@scene.vector.y2 - @scene.vector.y)*1.0/(sy - @defaultvector[1])*1.0)**0.6
+    # continues invert BG animation if still active
+    self.updateInvertBG
     # updates the vacuum waves
     for j in 0...3
       next if j > @fpIndex/50 || !@sprites["ec#{j}"]
@@ -911,6 +914,120 @@ class BattleSceneRoom
   def drawStrongWind; @strongwind = true; end
   def deleteStrongWind; @strongwind = false; end
   #-----------------------------------------------------------------------------
+  # starts invert BG animation
+  #-----------------------------------------------------------------------------
+  def startInvertBG(battler_sprite = nil)
+    # Create a copy of the previous bg sprite with invert transformation applied
+    old_battlebg = @invertbgdata.empty? ? @sprites["bg"] : @invertbgdata[@invertbgdata.length - 1].new_battlebg
+    old_battlebg_bitmap = old_battlebg.bitmap
+    new_battlebg = Sprite.new(@viewport)
+    new_battlebg.z = old_battlebg.z - 1
+    new_battlebg.center!
+    new_battlebg.ox = old_battlebg.ox
+    new_battlebg.oy = old_battlebg.oy
+    new_battlebg.bitmap = Bitmap.new(old_battlebg_bitmap.width, old_battlebg_bitmap.height)
+    new_battlebg.bitmap.blt(0, 0, old_battlebg_bitmap, old_battlebg_bitmap.rect)
+    new_battlebg.invert = !old_battlebg.invert
+    # Get coordinates to start invert BG animation from
+    battler_center_x, battler_center_y = battler_sprite.nil? ? [Graphics.width / 2, Graphics.height / 2] : battler_sprite.getCenter(true)
+    bg_center = getSpriteCenter(old_battlebg)
+    # coordinates on BG bitmap = (coordinates of BG bitmap relative to game screen) + (coordinates of battler relative to game screen)
+    start_center_x = (((old_battlebg.width * old_battlebg.zoom_x / 2) - bg_center[0] + battler_center_x) / old_battlebg.zoom_x).floor
+    start_center_y = (((old_battlebg.height * old_battlebg.zoom_y / 2) - bg_center[1] + battler_center_y) / old_battlebg.zoom_y).floor
+    # Push info to invert BG animation queue
+    @invertbgdata.push(InvertBGAnimationData.new(start_center_x, start_center_y, new_battlebg))
+  end
+  #-----------------------------------------------------------------------------
+  # updates invert BG animation
+  #-----------------------------------------------------------------------------
+  def updateInvertBG
+    # Align all pending inverted BGs with current BG
+    @invertbgdata.each_with_index do |invert_bg_animation_data, i|
+      invert_bg_animation_data.new_battlebg.x = @sprites["bg"].x
+      invert_bg_animation_data.new_battlebg.y = @sprites["bg"].y
+      invert_bg_animation_data.new_battlebg.zoom_x = @sprites["bg"].zoom_x
+      invert_bg_animation_data.new_battlebg.zoom_y = @sprites["bg"].zoom_y
+      invert_bg_animation_data.new_battlebg.z = @sprites["bg"].z - (i + 1)
+    end
+    # Update current BG
+    if @invertbgdata.length > 0
+      invert_bg_animation_data = @invertbgdata[0]
+      x = invert_bg_animation_data.start_center_x
+      y = invert_bg_animation_data.start_center_y
+      # Get on-screen coordinates of circle center
+      bg_center = getSpriteCenter(@sprites["bg"])
+      start_center_x_screen = (x * @sprites["bg"].zoom_x) + bg_center[0] - (@sprites["bg"].width * @sprites["bg"].zoom_x / 2)
+      start_center_y_screen = (y * @sprites["bg"].zoom_y) + bg_center[1] - (@sprites["bg"].height * @sprites["bg"].zoom_y / 2)
+      # Maximum value that radius can reach before the entire BG is inverted
+      # We calculate the largest distance from the center to any point on the game screen, and we use that distance (plus some buffer)
+      # as the maximum allowed radius.
+      game_screen_corner_x = (start_center_x_screen <= Graphics.width / 2) ? Graphics.width : 0
+      game_screen_corner_y = (start_center_y_screen <= Graphics.height / 2) ? Graphics.height : 0
+      x_diff_with_zoom = ((game_screen_corner_x - start_center_x_screen) / @sprites["bg"].zoom_x).ceil
+      y_diff_with_zoom = ((game_screen_corner_y - start_center_y_screen) / @sprites["bg"].zoom_y).ceil
+      max_radius = Math.sqrt(x_diff_with_zoom ** 2 + y_diff_with_zoom ** 2).ceil
+      max_radius += 4 # Arbitrary buffer
+      current_inner_radius = invert_bg_animation_data.current_inner_circle_x_coords.length > 0 ?
+                              invert_bg_animation_data.current_inner_circle_x_coords[0] : 0
+      if current_inner_radius < max_radius
+        new_innercircle = []
+        x_diff = invert_bg_animation_data.current_outer_radius
+        y_diff = 0
+        error = 0
+        while x_diff >= y_diff
+          # Stores x_diff of current circle to be used in the next iteration
+          new_innercircle.push(x_diff)
+          innercoord = invert_bg_animation_data.current_inner_circle_x_coords[y_diff]
+          # Draws either from previous circle or line y = x, whichever is closer to current circle
+          mini_offset = ((innercoord && innercoord > y_diff) ? innercoord + 1 : y_diff)
+          mini_length = x_diff - mini_offset + 1
+          # Octants start from the mathematical definition of 0 degrees (the positive x-axis) and go counter-clockwise
+          # Note that we could simplify this logic using loops and functions, however, we do not do this because using those
+          # constructs adds additional overhead and makes the overall animation slower.
+          # Octant 1
+          @sprites["bg"].bitmap.fill_rect(x + mini_offset, y - y_diff, mini_length, 1, Color.new(0, 0, 0, 0))
+          # Octant 2
+          @sprites["bg"].bitmap.fill_rect(x + y_diff, y - x_diff, 1, mini_length, Color.new(0, 0, 0, 0))
+          # Octant 3
+          @sprites["bg"].bitmap.fill_rect(x - y_diff, y - x_diff, 1, mini_length, Color.new(0, 0, 0, 0))
+          # Octant 4
+          @sprites["bg"].bitmap.fill_rect(x - x_diff, y - y_diff, mini_length, 1, Color.new(0, 0, 0, 0))
+          # Octant 5
+          @sprites["bg"].bitmap.fill_rect(x - x_diff, y + y_diff, mini_length, 1, Color.new(0, 0, 0, 0))
+          # Octant 6
+          @sprites["bg"].bitmap.fill_rect(x - y_diff, y + mini_offset, 1, mini_length, Color.new(0, 0, 0, 0))
+          # Octant 7
+          @sprites["bg"].bitmap.fill_rect(x + y_diff, y + mini_offset, 1, mini_length, Color.new(0, 0, 0, 0))
+          # Octant 8
+          @sprites["bg"].bitmap.fill_rect(x + mini_offset, y + y_diff, mini_length, 1, Color.new(0, 0, 0, 0))
+          # Bresenham Circle Algorithm (derived from Midpoint Circle Algorithm)
+          x_change = 1 - 2*x_diff
+          y_change = 1 + 2*y_diff
+          # If error in true radius decreases by decrementing x, do so
+          if 2*(error + y_change) + x_change > 0
+            x_diff -= 1
+            error += x_change
+          end
+          y_diff += 1
+          error += y_change
+        end
+        # Update current invert BG animation data
+        invert_bg_animation_data.current_outer_radius += (2 ** (invert_bg_animation_data.current_outer_radius / 40))
+        invert_bg_animation_data.current_inner_circle_x_coords = new_innercircle
+      end
+      # Dispose current BG to display the inverted BG behind it in full, and update the remaining inverted BGs in the queue
+      if invert_bg_animation_data.current_outer_radius >= max_radius
+        @sprites["bg"].visible = false
+        @sprites["bg"].dispose
+        @sprites["bg"] = invert_bg_animation_data.new_battlebg
+        @invertbgdata.each do |data|
+          data.new_battlebg.z += 1
+        end
+        @invertbgdata.delete_at(0)
+      end
+    end
+  end
+  #-----------------------------------------------------------------------------
   # records the proper positioning
   #-----------------------------------------------------------------------------
   def adjustMetrics
@@ -966,12 +1083,18 @@ class BattleSceneRoom
     for key in @sprites.keys
       @sprites[key].z -= 100
     end
+    @invertbgdata.each do |data|
+      data.new_battlebg.z -= 100
+    end
     @focused = false
   end
   def focus
     return if @sprites["bg"].z >= 0
     for key in @sprites.keys
       @sprites[key].z += 100
+    end
+    @invertbgdata.each do |data|
+      data.new_battlebg.z += 100
     end
     @focused = true
   end
@@ -1062,4 +1185,27 @@ class BattleSceneRoom
     self.reconfigure(@backup, transition)
   end
   #-----------------------------------------------------------------------------
+end
+#===============================================================================
+# custom class to store data related to the invert BG animation
+#===============================================================================
+class InvertBGAnimationData
+  # Radius of the current circle in animation
+  attr_accessor :current_outer_radius
+  # X value of center of circle on bitmap
+  attr_reader :start_center_x
+  # Y value of center of circle on bitmap
+  attr_reader :start_center_y
+  # New BG sprite
+  attr_reader :new_battlebg
+  # List of x values (index is y value) of current circle in animation
+  attr_accessor :current_inner_circle_x_coords
+  
+  def initialize(start_center_x, start_center_y, new_battlebg)
+    @current_outer_radius = 0
+    @start_center_x = start_center_x
+    @start_center_y = start_center_y
+    @new_battlebg = new_battlebg
+    @current_inner_circle_x_coords = []
+  end
 end

@@ -449,7 +449,7 @@ class Battle::Move::CounterPhysicalDamage < Battle::Move::FixedDamageMove
 end
 
 #===============================================================================
-# Counters a specical move used against the user this round, with 2x the power.
+# Counters a special move used against the user this round, with 2x the power.
 # (Mirror Coat)
 #===============================================================================
 class Battle::Move::CounterSpecialDamage < Battle::Move::FixedDamageMove

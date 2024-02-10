@@ -1951,13 +1951,15 @@ class Battle::Move::StartSwapAllBattlersBaseDefensiveStats < Battle::Move
 end
 
 #===============================================================================
-# For 5 rounds, inverts each battlers' type resistances. (Inverse Room)
+# For 5 rounds, inverts each battlers' type resistances. (Inverse Room,
+# Dimensional Gap)
 #===============================================================================
 class Battle::Move::StartInvertAllBattlersTypeResistances < Battle::Move
   def pbEffectGeneral(user)
+    @battle.scene.invertBG(user.index)
     if @battle.field.effects[PBEffects::InverseRoom] > 0
       @battle.field.effects[PBEffects::InverseRoom] = 0
-      @battle.pbDisplay(_INTL("Inverse Room wore off, and type resistances returned to normal!"))
+      @battle.pbDisplay(_INTL("Type resistances returned to normal!"))
     else
       @battle.field.effects[PBEffects::InverseRoom] = 5
       @battle.pbDisplay(_INTL("It created a bizarre area in which each Pokémon's type resistances were inverted!"))

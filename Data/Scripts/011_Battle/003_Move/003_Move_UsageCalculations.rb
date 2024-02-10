@@ -217,6 +217,7 @@ class Battle::Move
     # "Always hit" effects and "always hit" accuracy
     return true if target.effects[PBEffects::Telekinesis] > 0
     return true if target.effects[PBEffects::Minimize] && tramplesMinimize? && Settings::MECHANICS_GENERATION >= 6
+    return true if user.effects[PBEffects::SignalBoostMoveActive]
     baseAcc = pbBaseAccuracy(user, target)
     return true if baseAcc == 0
     # Calculate all multiplier effects

@@ -392,7 +392,7 @@ class Battle::AI
     when "HitThreeTimesAlwaysCriticalHit"
       if skill >= PBTrainerAI.highSkill
         stat = (move.physicalMove?) ? :DEFENSE : :SPECIAL_DEFENSE
-        score += 50 if targets.stages[stat] > 1
+        score += 50 if target.get_modified_stat_stage(stat, targets.stages[stat]) > 1
       end
     #---------------------------------------------------------------------------
     when "HitTwoToFiveTimes", "HitThreeToFiveTimes"
@@ -1199,6 +1199,26 @@ class Battle::AI
     when "SwitchOutTargetStatusMove"
       if target.effects[PBEffects::Ingrain] ||
          (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS))
+        score -= 90
+      else
+        ch = 0
+        @battle.pbParty(target.index).each_with_index do |pkmn, i|
+          ch += 1 if @battle.pbCanSwitchLax?(target.index, i)
+        end
+        score -= 90 if ch == 0
+      end
+      if score > 20
+        score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
+        score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
+      end
+    #---------------------------------------------------------------------------
+    when "SwitchOutTargetStatusMoveAndSkipNextTurn"
+      if target.effects[PBEffects::Ingrain] ||
+         (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS)) ||
+         target.effects[PBEffects::HyperBeam] > 0
         score -= 90
       else
         ch = 0

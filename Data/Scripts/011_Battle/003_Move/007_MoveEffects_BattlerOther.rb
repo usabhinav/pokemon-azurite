@@ -370,6 +370,19 @@ class Battle::Move::ParalyzeBurnOrFreezeTarget < Battle::Move
 end
 
 #===============================================================================
+# Burns or freezes the target. (Warp Storm)
+#===============================================================================
+class Battle::Move::BurnOrFreezeTarget < Battle::Move
+  def pbAdditionalEffect(user,target)
+    return if target.damageState.substitute
+    case @battle.pbRandom(2)
+    when 0; target.pbBurn(user) if target.pbCanBurn?(user, false, self)
+    when 1; target.pbFreeze if target.pbCanFreeze?(user, false, self)
+    end
+  end
+end
+
+#===============================================================================
 # User passes its status problem to the target. (Psycho Shift)
 #===============================================================================
 class Battle::Move::GiveUserStatusToTarget < Battle::Move
@@ -1461,19 +1474,6 @@ class Battle::Move::SuperEffectiveAgainstFireRockGround < Battle::Move
       return Effectiveness::SUPER_EFFECTIVE_ONE
     end
     return super
-  end
-end
-
-#===============================================================================
-# Warp Storm
-#===============================================================================
-class Battle::Move::BurnOrFreezeTarget < Battle::Move
-  def pbAdditionalEffect(user,target)
-    return if target.damageState.substitute
-    case @battle.pbRandom(2)
-    when 0; target.pbBurn(user) if target.pbCanBurn?(user,false,self)
-    when 1; target.pbFreeze if target.pbCanFreeze?(user,false,self)
-    end
   end
 end
 

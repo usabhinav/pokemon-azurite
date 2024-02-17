@@ -90,9 +90,18 @@ class Battle::Battler
   # Returns 40 for the highest stat, then 30, 20, 10, and 0
   def equalizer_modifier(stat)
     return 0 if !anyEqualizer?
+    # Returns the last 4 elements (the 4 highest stats)
     stats = @pokemon.baseStatsSortedAscending.slice(-4, 4)
     return 0 if !stats.include?(stat)
     return 10 * (stats.index(stat) + 1)
+  end
+
+  # Returns modified value based on the stat and various effects
+  def get_modified_stat_stage(stat, value)
+    # Creation Gem activates even before the move is used. This code assumes that the move is not going to fail.
+    value += 1 if @effects[PBEffects::CreationGem] > 5 ||
+                  (@battle.pbChoseMove?(@index, :CREATIONGEM) && @effects[PBEffects::CreationGem] <= 0)
+    return value
   end
 
   def attack
@@ -140,6 +149,19 @@ class Battle::Battler
   end
 
   attr_writer :speed
+
+  # returns this battler's stats symbols (excluding HP), sorted in ascending order by value
+  def battlerStatsSortedAscending
+    return {
+      :ATTACK => self.attack,
+      :DEFENSE => self.defense,
+      :SPECIAL_ATTACK => self.spatk,
+      :SPECIAL_DEFENSE => self.spdef,
+      :SPEED => self.speed
+    }
+      .sort_by {|s, v| v}
+      .map {|arr| arr[0]}
+  end
 
   attr_reader :hp
 
@@ -375,9 +397,9 @@ class Battle::Battler
   #=============================================================================
   def pbSpeed
     return 1 if fainted?
-    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8]
-    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2]
-    stage = @stages[:SPEED] + 6
+    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
+    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
+    stage = get_modified_stat_stage(:SPEED, @stages[:SPEED] + 6)
     speed = self.speed * stageMul[stage] / stageDiv[stage]
     speedMult = 1.0
     # Ability effects that alter calculated Speed

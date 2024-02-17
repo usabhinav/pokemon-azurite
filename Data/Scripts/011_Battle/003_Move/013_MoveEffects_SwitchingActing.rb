@@ -229,6 +229,16 @@ class Battle::Move::SwitchOutTargetStatusMove < Battle::Move
 end
 
 #===============================================================================
+# Roar/Whirlwind effect but with a recharge effect. (Wormhole)
+#===============================================================================
+class Battle::Move::SwitchOutTargetStatusMoveAndSkipNextTurn < Battle::Move::SwitchOutTargetStatusMove
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::HyperBeam] = 2
+    user.currentMove = @id
+  end
+end
+
+#===============================================================================
 # In wild battles, makes target flee. Fails if target is a higher level than the
 # user.
 # In trainer battles, target switches out.
@@ -576,6 +586,7 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       "UseRandomCosmicTypeMove",                         # Astronomy
       # Moves that require a recharge turn
       "AttackAndSkipNextTurn",                           # Hyper Beam
+      "SwitchOutTargetStatusMoveAndSkipNextTurn",        # Wormhole
       # Two-turn attacks
       "TwoTurnAttack",                                   # Razor Wind
       "TwoTurnAttackOneTurnInSun",                       # Solar Beam, Solar Blade
@@ -927,15 +938,5 @@ class Battle::Move::DisableTargetMovesKnownByUser < Battle::Move
   def pbEffectGeneral(user)
     user.effects[PBEffects::Imprison] = true
     @battle.pbDisplay(_INTL("{1} sealed any moves its target shares with it!", user.pbThis))
-  end
-end
-
-#===============================================================================
-# Roar/Whirlwind effect but with a recharge effect. (Wormhole)
-#===============================================================================
-class Battle::Move::SwitchOutTargetStatusMoveWithRecharge < Battle::Move::SwitchOutTargetStatusMove
-  def pbEffectGeneral(user)
-    user.effects[PBEffects::HyperBeam] = 2
-    user.currentMove = @id
   end
 end

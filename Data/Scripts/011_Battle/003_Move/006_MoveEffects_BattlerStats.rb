@@ -2002,3 +2002,53 @@ class Battle::Move::LowerRandomTargetStat < Battle::Move::TargetStatDownMove
     end
   end
 end
+
+#===============================================================================
+# Increases the target's lowest stat by 2 stages and decreases the target's
+# highest stat by 2 stages. (Calming Shine)
+#===============================================================================
+class Battle::Move::RaiseTargetLowestStat2AndLowerTargetHighestStat2 < Battle::Move
+  def pbFailsAgainstTarget?(user, target, show_message)
+    @statArray = target.battlerStatsSortedAscending
+    if !target.pbCanRaiseStatStage?(@statArray[0], user, self) &&
+       !target.pbCanLowerStatStage?(@statArray[@statArray.length - 1], user, self)
+      @battle.pbDisplay(_INTL("{1}'s lowest stat won't go any higher and highest stat won't go any lower!", target.pbThis)) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    lowest_stat = @statArray[0]
+    if target.pbCanRaiseStatStage?(lowest_stat, user, self)
+      target.pbRaiseStatStage(lowest_stat, 2, user)
+    end
+    highest_stat = @statArray[@statArray.length - 1]
+    if target.pbCanLowerStatStage?(highest_stat, user, self)
+      target.pbLowerStatStage(highest_stat, 2, user)
+    end
+  end
+end
+
+#===============================================================================
+# Increases the user's base stats by 1 stage for the next two turns. Has a
+# recharge of 5 turns. Stat boosts happen before speed calculations.
+# (Creation Gem)
+#===============================================================================
+class Battle::Move::RaiseUserBaseStats1ForTwoTurnsAndFailConsecutive < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::CreationGem] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return super
+  end
+
+  def pbEffectGeneral(user)
+    # This effect will decrement every turn. The stat boost will apply when this
+    # value is at 7 and 6, and will not apply between 1-5. When it reaches 0, the
+    # user can use this move again.
+    user.effects[PBEffects::CreationGem] = 7
+    @battle.pbDisplay(_INTL("{1}'s stats were temporarily boosted!", user.pbThis))
+  end
+end

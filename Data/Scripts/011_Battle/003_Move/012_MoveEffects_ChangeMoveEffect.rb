@@ -734,7 +734,8 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       @moveBlacklist += [
         # Target-switching moves
         "SwitchOutTargetStatusMove",                       # Roar, Whirlwind
-        "SwitchOutTargetDamagingMove"                      # Circle Throw, Dragon Tail
+        "SwitchOutTargetDamagingMove",                     # Circle Throw, Dragon Tail
+        "SwitchOutTargetStatusMoveAndSkipNextTurn"         # Wormhole
       ]
     end
   end
@@ -1076,7 +1077,8 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
         "AllBattlersLoseHalfHPUserSkipsNextTurn",          # Shadow Half
         "TwoTurnAttackRaiseUserSpAtkSpDefSpd2",            # Geomancy                  # Not listed on Bulbapedia
         # Target-switching moves
-        "SwitchOutTargetStatusMove"                        # Roar, Whirlwind
+        "SwitchOutTargetStatusMove",                       # Roar, Whirlwind
+        "SwitchOutTargetStatusMoveAndSkipNextTurn"         # Wormhole
       ]
     end
   end

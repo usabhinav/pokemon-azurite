@@ -191,7 +191,7 @@ class Battle::AI
         score -= 90 if move.statusMove?
       end
     #---------------------------------------------------------------------------
-    when "ParalyzeBurnOrFreezeTarget"
+    when "ParalyzeBurnOrFreezeTarget", "BurnOrFreezeTarget"
       score += 30 if target.status == :NONE
     #---------------------------------------------------------------------------
     when "GiveUserStatusToTarget"

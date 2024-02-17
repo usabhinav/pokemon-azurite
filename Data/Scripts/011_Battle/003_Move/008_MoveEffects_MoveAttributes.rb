@@ -1201,17 +1201,17 @@ class Battle::Move::CategoryDependsOnHigherDamagePoisonTarget < Battle::Move::Po
 
   def pbOnStartUse(user, targets)
     target = targets[0]
-    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8]
-    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2]
+    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
+    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
     # Calculate user's effective attacking values
-    attack_stage         = user.stages[:ATTACK] + 6
+    attack_stage         = user.get_modified_stat_stage(:ATTACK, user.stages[:ATTACK] + 6)
     real_attack          = (user.attack.to_f * stageMul[attack_stage] / stageDiv[attack_stage]).floor
-    special_attack_stage = user.stages[:SPECIAL_ATTACK] + 6
+    special_attack_stage = user.get_modified_stat_stage(:SPECIAL_ATTACK, user.stages[:SPECIAL_ATTACK] + 6)
     real_special_attack  = (user.spatk.to_f * stageMul[special_attack_stage] / stageDiv[special_attack_stage]).floor
     # Calculate target's effective defending values
-    defense_stage         = target.stages[:DEFENSE] + 6
+    defense_stage         = target.get_modified_stat_stage(:DEFENSE, target.stages[:DEFENSE] + 6)
     real_defense          = (target.defense.to_f * stageMul[defense_stage] / stageDiv[defense_stage]).floor
-    special_defense_stage = target.stages[:SPECIAL_DEFENSE] + 6
+    special_defense_stage = target.get_modified_stat_stage(:SPECIAL_DEFENSE, target.stages[:SPECIAL_DEFENSE] + 6)
     real_special_defense  = (target.spdef.to_f * stageMul[special_defense_stage] / stageDiv[special_defense_stage]).floor
     # Perform simple damage calculation
     physical_damage = real_attack.to_f / real_defense
@@ -1246,13 +1246,13 @@ class Battle::Move::CategoryDependsOnHigherDamageIgnoreTargetAbility < Battle::M
 
   def pbOnStartUse(user, targets)
     # Calculate user's effective attacking value
-    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8]
-    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2]
+    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
+    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
     atk        = user.attack
-    atkStage   = user.stages[:ATTACK] + 6
+    atkStage   = user.get_modified_stat_stage(:ATTACK, user.stages[:ATTACK] + 6)
     realAtk    = (atk.to_f * stageMul[atkStage] / stageDiv[atkStage]).floor
     spAtk      = user.spatk
-    spAtkStage = user.stages[:SPECIAL_ATTACK] + 6
+    spAtkStage = user.get_modified_stat_stage(:SPECIAL_ATTACK, user.stages[:SPECIAL_ATTACK] + 6)
     realSpAtk  = (spAtk.to_f * stageMul[spAtkStage] / stageDiv[spAtkStage]).floor
     # Determine move's category
     @calcCategory = (realAtk > realSpAtk) ? 0 : 1
@@ -1267,7 +1267,7 @@ end
 #===============================================================================
 class Battle::Move::UseUserBaseDefenseInsteadOfUserBaseAttack < Battle::Move
   def pbGetAttackStats(user, target)
-    return user.defense, user.stages[:DEFENSE] + 6
+    return user.defense, user.get_modified_stat_stage(:DEFENSE, user.stages[:DEFENSE] + 6)
   end
 end
 
@@ -1278,9 +1278,9 @@ end
 class Battle::Move::UseTargetAttackInsteadOfUserAttack < Battle::Move
   def pbGetAttackStats(user, target)
     if pbSpecialMove?(user)
-      return target.spatk, target.stages[:SPECIAL_ATTACK] + 6
+      return target.spatk, target.get_modified_stat_stage(:SPECIAL_ATTACK, target.stages[:SPECIAL_ATTACK] + 6)
     end
-    return target.attack, target.stages[:ATTACK] + 6
+    return target.attack, target.get_modified_stat_stage(:ATTACK, target.stages[:ATTACK] + 6)
   end
 end
 
@@ -1290,7 +1290,7 @@ end
 #===============================================================================
 class Battle::Move::UseTargetDefenseInsteadOfTargetSpDef < Battle::Move
   def pbGetDefenseStats(user, target)
-    return target.defense, target.stages[:DEFENSE] + 6
+    return target.defense, target.get_modified_stat_stage(:DEFENSE, target.stages[:DEFENSE] + 6)
   end
 end
 
@@ -1736,7 +1736,7 @@ end
 #===============================================================================
 class Battle::Move::DoublePowerIfTargetEvasionAtLeastOne < Battle::Move
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if target.stages[:EVASION]>=1
+    baseDmg *= 2 if target.get_modified_stat_stage(:EVASION, target.stages[:EVASION]) >= 1
     return baseDmg
   end
 end
@@ -1846,7 +1846,7 @@ end
 #===============================================================================
 class Battle::Move::UseTargetSpDefInsteadOfTargetDefense < Battle::Move
   def pbGetDefenseStats(user, target)
-    return target.spdef, target.stages[:SPECIAL_DEFENSE] + 6
+    return target.spdef, target.get_modified_stat_stage(:SPECIAL_DEFENSE, target.stages[:SPECIAL_DEFENSE] + 6)
   end
 end
 

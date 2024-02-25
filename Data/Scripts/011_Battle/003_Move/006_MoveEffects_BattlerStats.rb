@@ -2052,3 +2052,24 @@ class Battle::Move::RaiseUserBaseStats1ForTwoTurnsAndFailConsecutive < Battle::M
     @battle.pbDisplay(_INTL("{1}'s stats were temporarily boosted!", user.pbThis))
   end
 end
+
+#===============================================================================
+# Increases the user's highest stat by 2 stages. (Crystal Instinct)
+#===============================================================================
+class Battle::Move::RaiseUserHighestStat2 < Battle::Move
+  def pbMoveFailed?(user, targets)
+    @statArray = user.battlerStatsSortedAscending
+    if !user.pbCanRaiseStatStage?(@statArray[@statArray.length - 1], user, self)
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    highest_stat = @statArray[@statArray.length - 1]
+    if user.pbCanRaiseStatStage?(highest_stat, user, self)
+      user.pbRaiseStatStage(highest_stat, 2, user)
+    end
+  end
+end

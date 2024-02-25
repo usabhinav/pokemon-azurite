@@ -1564,6 +1564,10 @@ class Battle::AI
     when "RaiseUserBaseStats1ForTwoTurnsAndFailConsecutive"
       scope -= 90 if user.effects[PBEffects::CreationGem] > 0
     #---------------------------------------------------------------------------
+    when "RaiseUserHighestStat2"
+      stats = user.battlerStatsSortedAscending
+      scope -= 90 if user.statStageAtMax?(stats[stats.length - 1])
+    #---------------------------------------------------------------------------
     end
     return score
   end

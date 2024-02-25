@@ -201,6 +201,7 @@ class Battle::AI
          "DoublePowerIfTargetStatusProblem",
          "DoublePowerIfTargetHPLessThanHalf",
          "DoublePowerIfAllyFaintedLastTurn",
+         "DoublePowerIfTargetHasCrystalType",
          "TypeAndPowerDependOnWeather",
          "PowerHigherWithUserHappiness",
          "PowerLowerWithUserHappiness",

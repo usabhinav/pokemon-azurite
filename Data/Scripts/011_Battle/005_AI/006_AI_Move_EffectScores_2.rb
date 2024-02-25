@@ -437,6 +437,10 @@ class Battle::AI
     when "UserLosesFireType"
       score -= 90 if !user.pbHasType?(:FIRE)
     #---------------------------------------------------------------------------
+    when "ReplaceTargetSecondTypeWithCrystalTypeAndConfuseTargetAndLowerTargetHP30Percent"
+      score -= 45 if !target.canChangeType? || target.pbHasType?(:CRYSTAL)
+      score -= 45 if !target.pbCanConfuse?(user, false)
+    #---------------------------------------------------------------------------
     when "SetTargetAbilityToSimple"
       if target.effects[PBEffects::Substitute] > 0
         score -= 90

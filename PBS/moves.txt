@@ -8897,6 +8897,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 20
 Target = User
+Priority = -6
 FunctionCode = SwitchOutUserStatusMove
 Description = The user flees from a wild battle.
 #-------------------------------
@@ -10034,7 +10035,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = User
-FunctionCode = IncreaseUserHPAndRaiseUserSpeed1AndLowerUserDefSpDef1
+FunctionCode = HealUserBy10PercentOfTotalHPAndRaiseUserSpeed1AndLowerUserDefSpDef1
 Flags = CanMirrorMove
 Description = The Pokémon polishes itself up, regaining back some health and boosting it's speed, but reducing it's defenses.
 #-------------------------------
@@ -10239,7 +10240,7 @@ TotalPP = 15
 Target = NearOther
 Priority = 1
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,Punching
 Description = No special effect.
 #-------------------------------
 [VOLTTAIL]
@@ -10888,7 +10889,7 @@ Target = NearOther
 FunctionCode = FlinchTarget
 Flags = CanProtect,CanMirrorMove
 EffectChance = 30
-Description = The user fires an enormous jolt of energy.  May cause the target to flinch.
+Description = The user fires an enormous jolt of energy. May cause the target to flinch.
 #-------------------------------
 [THUNDERBLADE]
 Name = Thunder Blade
@@ -10953,7 +10954,7 @@ Target = NearOther
 FunctionCode = BurnTarget
 Flags = Contact,CanProtect,CanMirrorMove,Slashing
 EffectChance = 10
-Description = Attacks with a blade wreathed in flame.  May cause a burn.
+Description = Attacks with a blade wreathed in flame. May cause a burn.
 #-------------------------------
 [FIREBALL]
 Name = Fireball

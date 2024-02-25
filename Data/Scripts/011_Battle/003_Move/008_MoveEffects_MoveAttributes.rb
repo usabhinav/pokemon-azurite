@@ -65,6 +65,16 @@ class Battle::Move::LowerTargetHPToUserHP < Battle::Move::FixedDamageMove
 end
 
 #===============================================================================
+# Reduces the target's HP by an additional 20 HP. (Crystal Breath)
+#===============================================================================
+class Battle::Move::LowerTargetHP20 < Battle::Move
+  def pbAdditionalEffect(user, target)
+    target.pbReduceHP(20, false)
+    @battle.pbDisplay(_INTL("Some crystal shards hit {1}!", target.pbThis(true)))
+  end
+end
+
+#===============================================================================
 # OHKO. Accuracy increases by difference between levels of user and target.
 #===============================================================================
 class Battle::Move::OHKO < Battle::Move::FixedDamageMove
@@ -672,6 +682,16 @@ class Battle::Move::DoublePowerIfTargetNotActed < Battle::Move
        ([:UseMove, :Shift].include?(@battle.choices[target.index][0]) && !target.movedThisRound?)
       baseDmg *= 2
     end
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target has the Crystal-type. (Crystal Overload)
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetHasCrystalType < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg *= 2 if target.pbHasType?(:CRYSTAL)
     return baseDmg
   end
 end
@@ -1763,16 +1783,6 @@ class Battle::Move::PowerDependsOnTargetDefenseStats < Battle::Move
     else
       return target.spdef
     end
-  end
-end
-
-#===============================================================================
-# Crystal Overload
-#===============================================================================
-class Battle::Move::DoublePowerIfTargetHasCrystalType < Battle::Move
-  def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if target.pbHasType?(:CRYSTAL)
-    return baseDmg
   end
 end
 

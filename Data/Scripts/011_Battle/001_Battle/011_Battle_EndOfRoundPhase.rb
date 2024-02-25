@@ -974,6 +974,7 @@ class Battle
       battler.effects[PBEffects::CometSwingEffectsActive] = false
       battler.effects[PBEffects::Counter]          = -1
       battler.effects[PBEffects::CounterTarget]    = -1
+      battler.effects[PBEffects::CreationGem]      -= 1 if battler.effects[PBEffects::CreationGem] > 0
       battler.effects[PBEffects::Electrify]        = false
       battler.effects[PBEffects::Endure]           = false
       battler.effects[PBEffects::FirstPledge]      = nil

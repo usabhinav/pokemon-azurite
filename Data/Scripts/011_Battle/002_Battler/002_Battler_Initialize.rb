@@ -311,6 +311,7 @@ class Battle::Battler
     @effects[PBEffects::CometSwingEffectsActive] = false
     @effects[PBEffects::PortalReboundActive] = false
     @effects[PBEffects::SignalBoostMoveActive] = false
+    @effects[PBEffects::CreationGem]         = 0
   end
 
   #=============================================================================

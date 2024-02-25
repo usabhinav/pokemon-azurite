@@ -148,6 +148,7 @@ module PBEffects
   CometSwingEffectsActive = 143
   PortalReboundActive = 144
   SignalBoostMoveActive = 145
+  CreationGem         = 146
 
   #=============================================================================
   # These effects apply to a battler position

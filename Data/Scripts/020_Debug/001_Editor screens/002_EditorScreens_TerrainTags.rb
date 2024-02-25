@@ -43,6 +43,11 @@ class PokemonTilesetScene
         $scene.dispose
         $scene.createSpritesets
       end
+      # Reset map objects in each follower event
+      followers = $PokemonGlobal.followers.clone
+      $game_temp.followers.remove_all_followers
+      $PokemonGlobal.followers = followers
+      $game_temp.followers = Game_FollowerFactory.new
     end
   end
 

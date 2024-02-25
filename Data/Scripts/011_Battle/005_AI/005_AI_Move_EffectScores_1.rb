@@ -50,7 +50,7 @@ class Battle::AI
     when "FailsIfTargetActed"
     #---------------------------------------------------------------------------
     when "CrashDamageIfFailsUnusableInGravity", "CrashDamageWithSpeedIfFailsUnusableInGravity"
-      score += 10 * (user.stages[:ACCURACY] - target.stages[:EVASION])
+      score += 10 * (user.get_modified_stat_stage(:ACCURACY, user.stages[:ACCURACY]) - target.get_modified_stat_stage(:EVASION, target.stages[:EVASION]))
     #---------------------------------------------------------------------------
     when "StartSunWeather"
       if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
@@ -1556,6 +1556,13 @@ class Battle::AI
       score -= 90 if user.pbOwnSide.effects[PBEffects::Tailwind] > 0
     #---------------------------------------------------------------------------
     when "StartSwapAllBattlersBaseDefensiveStats"
+    #---------------------------------------------------------------------------
+    when "RaiseTargetLowestStat2AndLowerTargetHighestStat2"
+      stats = target.battlerStatsSortedAscending
+      scope -= 90 if target.statStageAtMax?(stats[0]) && target.statStageAtMin?(stats[stats.length - 1])
+    #---------------------------------------------------------------------------
+    when "RaiseUserBaseStats1ForTwoTurnsAndFailConsecutive"
+      scope -= 90 if user.effects[PBEffects::CreationGem] > 0
     #---------------------------------------------------------------------------
     end
     return score

@@ -223,8 +223,8 @@ class Battle::Move
     # Calculate all multiplier effects
     modifiers = {}
     modifiers[:base_accuracy]  = baseAcc
-    modifiers[:accuracy_stage] = user.stages[:ACCURACY]
-    modifiers[:evasion_stage]  = target.stages[:EVASION]
+    modifiers[:accuracy_stage] = user.get_modified_stat_stage(:ACCURACY, user.stages[:ACCURACY])
+    modifiers[:evasion_stage]  = target.get_modified_stat_stage(:EVASION, target.stages[:EVASION])
     modifiers[:accuracy_multiplier] = 1.0
     modifiers[:evasion_multiplier]  = 1.0
     pbCalcAccuracyModifiers(user, target, modifiers)
@@ -233,8 +233,8 @@ class Battle::Move
     # Calculation
     accStage = [[modifiers[:accuracy_stage], -6].max, 6].min + 6
     evaStage = [[modifiers[:evasion_stage], -6].max, 6].min + 6
-    stageMul = [3, 3, 3, 3, 3, 3, 3, 4, 5, 6, 7, 8, 9]
-    stageDiv = [9, 8, 7, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3]
+    stageMul = [3, 3, 3, 3, 3, 3, 3, 4, 5, 6, 7, 8, 9, 10]
+    stageDiv = [9, 8, 7, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3, 3]
     accuracy = 100.0 * stageMul[accStage] / stageDiv[accStage]
     evasion  = 100.0 * stageMul[evaStage] / stageDiv[evaStage]
     accuracy = (accuracy * modifiers[:accuracy_multiplier]).round
@@ -369,16 +369,16 @@ class Battle::Move
 
   def pbGetAttackStats(user, target)
     if pbSpecialMove?(user)
-      return user.spatk, user.stages[:SPECIAL_ATTACK] + 6
+      return user.spatk, user.get_modified_stat_stage(:SPECIAL_ATTACK, user.stages[:SPECIAL_ATTACK] + 6)
     end
-    return user.attack, user.stages[:ATTACK] + 6
+    return user.attack, user.get_modified_stat_stage(:ATTACK, user.stages[:ATTACK] + 6)
   end
 
   def pbGetDefenseStats(user, target)
     if pbSpecialMove?(user) || (pbContactMove?(user) && user.hasActiveAbility?(:CACOPHONY))
-      return target.spdef, target.stages[:SPECIAL_DEFENSE] + 6
+      return target.spdef, target.get_modified_stat_stage(:SPECIAL_DEFENSE, target.stages[:SPECIAL_DEFENSE] + 6)
     end
-    return target.defense, target.stages[:DEFENSE] + 6
+    return target.defense, target.get_modified_stat_stage(:DEFENSE, target.stages[:DEFENSE] + 6)
   end
 
   def pbCalcDamage(user, target, numTargets = 1)
@@ -387,8 +387,8 @@ class Battle::Move
       target.damageState.calcDamage = 1
       return
     end
-    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8]
-    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2]
+    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
+    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
     # Get the move's type
     type = @calcType   # nil is treated as physical
     # Calculate whether this hit deals critical damage

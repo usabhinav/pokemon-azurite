@@ -321,6 +321,8 @@ class Battle
       pbDisplay(_INTL("The battlefield is weird!"))
     when :Lava
       pbDisplay(_INTL("Lava is covering the battlefield!"))
+    when :Crystal
+      pbDisplay(_INTL("The battlefield remains crystallized!"))
     end
     # Abilities upon entering battle
     @initialSwitchIn = true

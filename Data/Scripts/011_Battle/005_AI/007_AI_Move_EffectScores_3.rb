@@ -76,6 +76,8 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "PowerHigherWithMoreBugTypesInParty", "PowerHigherWithMoreCosmicTypesInParty"
     #---------------------------------------------------------------------------
+    when "PowerHigherIfUserHitBySpecialAttack"
+    #---------------------------------------------------------------------------
     when "RandomPowerDoublePowerIfTargetUnderground"
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetHPLessThanHalf"
@@ -414,9 +416,11 @@ class Battle::AI
       end
       score += user.stages[:DEFENSE] * 30
     #---------------------------------------------------------------------------
+    when "HitTwoToFiveTimesAndGrantMoneyAtEndOfBattle"
+    #---------------------------------------------------------------------------
     when "HitOncePerUserTeamMember"
     #---------------------------------------------------------------------------
-    when "AttackAndSkipNextTurn"
+    when "AttackAndSkipNextTurn", "AttackAndSkipNextThreeTurns"
     #---------------------------------------------------------------------------
     when "TwoTurnAttack", "TwoTurnAttackOneTurnInSun"
     #---------------------------------------------------------------------------
@@ -523,7 +527,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "MultiTurnAttackPreventSleeping"
     #---------------------------------------------------------------------------
-    when "MultiTurnAttackConfuseUserAtEnd"
+    when "MultiTurnAttackConfuseUserAtEnd", "MultiTurnAttackLowersDefSpDef1EveryTurnConfuseUserAtEnd"
     #---------------------------------------------------------------------------
     when "MultiTurnAttackPowersUpEachTurn"
     #---------------------------------------------------------------------------
@@ -658,6 +662,15 @@ class Battle::AI
           score += ally_amt
         end
         score += ally_amt / 2 if b.pbHasAnyStatus?
+      end
+    #---------------------------------------------------------------------------
+    when "HealUserHalfOfTotalHPAndRaiseUserRandomStatExceptEvasivenessAndFailsIfUserHPAboveHalfOfTotalHP"
+      if user.hp >= (user.totalhp / 2.0).round
+        score -= 90
+      else
+        score += 50
+        score -= user.hp * 100 / user.totalhp
+        score += 30 if user.effectiveWeather == :Sandstorm
       end
     #---------------------------------------------------------------------------
     when "HealTargetHalfOfTotalHP"

@@ -480,6 +480,10 @@ class Battle::Battler
     if withType3 && @effects[PBEffects::Type3] && !ret.include?(@effects[PBEffects::Type3])
       ret.push(@effects[PBEffects::Type3])
     end
+    # Crystal Terrain replaces the Pokémon's types with Crystal.
+    if @battle.field.terrain == :Crystal
+      ret = [:CRYSTAL]
+    end
     return ret
   end
 

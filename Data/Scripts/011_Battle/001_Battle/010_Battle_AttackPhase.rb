@@ -219,7 +219,8 @@ class Battle
         b.effects[PBEffects::DestinyBond] = false
         b.effects[PBEffects::Grudge]      = false
       end
-      b.effects[PBEffects::Rage] = false if !pbChoseMoveFunctionCode?(i, "StartRaiseUserAtk1WhenDamaged")
+      b.effects[PBEffects::Rage] = false if !pbChoseMoveFunctionCode?(i, "StartRaiseUserAtk1WhenDamaged") &&
+                                            !pbChoseMoveFunctionCode?(i, "MultiTurnAttackLowersDefSpDef1EveryTurnConfuseUserAtEnd")
     end
     PBDebug.log("")
     # Calculate move order for this round

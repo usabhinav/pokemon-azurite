@@ -586,6 +586,7 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       "UseRandomCosmicTypeMove",                         # Astronomy
       # Moves that require a recharge turn
       "AttackAndSkipNextTurn",                           # Hyper Beam
+      "AttackAndSkipNextThreeTurns",                     # Crystallized Beam
       "SwitchOutTargetStatusMoveAndSkipNextTurn",        # Wormhole
       # Two-turn attacks
       "TwoTurnAttack",                                   # Razor Wind

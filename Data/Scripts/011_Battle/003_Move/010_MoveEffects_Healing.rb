@@ -271,6 +271,38 @@ class Battle::Move::HealUserAndAlliesQuarterOfTotalHPCureStatus < Battle::Move
 end
 
 #===============================================================================
+# Heals user by 1/2 of its max HP and raises a random stat (except Evasion) by 1
+# stage. However, this move fails if the user's HP is at more than 1/2 of its
+# max HP. (Regrowth)
+#===============================================================================
+class Battle::Move::HealUserHalfOfTotalHPAndRaiseUserRandomStatExceptEvasivenessAndFailsIfUserHPAboveHalfOfTotalHP < Battle::Move::HealingMove
+  def pbMoveFailed?(user, targets)
+    if user.hp >= (user.totalhp / 2.0).round
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    @statArray = []
+    GameData::Stat.each_battle do |s|
+      @statArray.push(s.id) if user.pbCanRaiseStatStage?(s.id, user, self) && s.id != :EVASION
+    end
+    if @statArray.length == 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return super
+  end
+
+  def pbHealAmount(user)
+    return (user.totalhp / 2.0).round
+  end
+
+  def pbEffectGeneral(user)
+    super
+    user.pbRaiseStatStage(@statArray[@battle.pbRandom(@statArray.length)], 1, user)
+  end
+end
+
+#===============================================================================
 # Heals target by 1/2 of its max HP. (Heal Pulse)
 #===============================================================================
 class Battle::Move::HealTargetHalfOfTotalHP < Battle::Move

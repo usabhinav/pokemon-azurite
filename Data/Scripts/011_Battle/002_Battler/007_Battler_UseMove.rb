@@ -91,7 +91,7 @@ class Battle::Battler
     @effects[PBEffects::Outrage]       = 0
     @effects[PBEffects::Uproar]        = 0
     @effects[PBEffects::Bide]          = 0
-    @currentMove = nil
+    @currentMove = nil unless @effects[PBEffects::HyperBeam] > 0
     # Reset counters for moves which increase them when used in succession
     @effects[PBEffects::FuryCutter] = 0
   end

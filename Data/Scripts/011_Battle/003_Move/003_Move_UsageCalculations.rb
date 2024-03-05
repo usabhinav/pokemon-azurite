@@ -525,6 +525,8 @@ class Battle::Move
       multipliers[:base_damage_multiplier] /= 2 if type == :DRAGON && target.affectedByTerrain?
     when :Lava
       multipliers[:base_damage_multiplier] *= 1.3 if type == :FIRE && user.affectedByTerrain?
+    when :Crystal
+      multipliers[:base_damage_multiplier] *= terrain_multiplier if type == :CRYSTAL && user.affectedByTerrain?
     end
     # Badge multipliers
     if @battle.internalBattle

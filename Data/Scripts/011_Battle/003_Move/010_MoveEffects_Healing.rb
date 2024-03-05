@@ -349,6 +349,46 @@ class Battle::Move::HealUserPositionNextTurn < Battle::Move
 end
 
 #===============================================================================
+# Heals user by 10% of its total HP and raises its Speed by 1 stage, but also
+# lowers its Defense and Sp. Def. by 1 stage each. (Crystal Polish)
+#===============================================================================
+class Battle::Move::HealUserBy10PercentOfTotalHPAndRaiseUserSpeed1AndLowerUserDefSpDef1 < Battle::Move
+  def healingMove?;       return true; end
+  def canSnatch?;         return true; end
+
+  def pbMoveFailed?(user, targets)
+    return false if user.hp < user.totalhp ||
+                    user.pbCanRaiseStatStage?(:SPEED, user, self) ||
+                    user.pbCanLowerStatStage?(:DEFENSE, user, self) ||
+                    user.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user, self)
+    @battle.pbDisplay(_INTL("But it failed!"))
+    return true
+  end
+
+  def pbHealAmount(user)
+    return (user.totalhp / 10.0).round
+  end
+
+  def pbEffectGeneral(user)
+    if user.hp < user.totalhp
+      amt = pbHealAmount(user)
+      user.pbRecoverHP(amt)
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+    end
+    if user.pbCanRaiseStatStage?(:SPEED, user, self)
+      user.pbRaiseStatStage(:SPEED, 1, user)
+    end
+    if user.pbCanLowerStatStage?(:DEFENSE, user, self)
+      user.pbLowerStatStage(:DEFENSE, 1, user)
+    end
+    if user.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user, self)
+      user.pbLowerStatStage(:SPECIAL_DEFENSE, 1, user)
+    end
+    super
+  end
+end
+
+#===============================================================================
 # Rings the user. Ringed Pokémon gain 1/16 of max HP at the end of each round.
 # (Aqua Ring)
 #===============================================================================

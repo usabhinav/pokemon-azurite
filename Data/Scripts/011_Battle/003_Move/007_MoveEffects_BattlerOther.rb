@@ -1015,6 +1015,30 @@ class Battle::Move::UserLosesFireType < Battle::Move
 end
 
 #===============================================================================
+# Target's second type is replaced with Crystal, it becomes confused, and
+# loses 30% of its HP. (Crystal Curse)
+#===============================================================================
+class Battle::Move::ReplaceTargetSecondTypeWithCrystalTypeAndConfuseTargetAndLowerTargetHP30Percent < Battle::Move
+  def ignoresSubstitute?(user); return true; end
+  def canMagicCoat?; return true; end
+
+  def pbEffectAgainstTarget(user, target)
+    if target.canChangeType? && !target.pbHasType?(:CRYSTAL)
+      previous_second_type = target.types[1]
+      target.types[1] = :CRYSTAL
+      typeName = GameData::Type.get(:CRYSTAL).name
+      if previous_second_type.nil?
+        @battle.pbDisplay(_INTL("{1} transformed into the {2} type!", target.pbThis, typeName))
+      else
+        @battle.pbDisplay(_INTL("{1}'s second type was replaced with the {2} type!", target.pbThis, typeName))
+      end
+    end
+    target.pbConfuse if target.pbCanConfuse?(user, false, self)
+    target.pbReduceHP(target.totalhp * 3 / 10)
+  end
+end
+
+#===============================================================================
 # Target's ability becomes Simple. (Simple Beam)
 #===============================================================================
 class Battle::Move::SetTargetAbilityToSimple < Battle::Move

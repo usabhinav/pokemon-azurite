@@ -34,6 +34,8 @@ class Battle::AI
         score += 50
       end
     #---------------------------------------------------------------------------
+    when "LowerTargetHP20"
+    #---------------------------------------------------------------------------
     when "OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"
       score -= 90 if target.hasActiveAbility?(:STURDY)
       score -= 90 if target.level > user.level
@@ -122,6 +124,9 @@ class Battle::AI
       score += 30 if oppspeed > attspeed
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetNotActed"
+    #---------------------------------------------------------------------------
+    when "DoublePowerIfTargetHasCrystalType"
+      score += 20 if target.pbHasType?(:CRYSTAL)
     #---------------------------------------------------------------------------
     when "AlwaysCriticalHit"
     #---------------------------------------------------------------------------
@@ -675,6 +680,12 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "HealUserPositionNextTurn"
       score -= 90 if @battle.positions[user.index].effects[PBEffects::Wish] > 0
+    #---------------------------------------------------------------------------
+    when "HealUserBy10PercentOfTotalHPAndRaiseUserSpeed1AndLowerUserDefSpDef1"
+      score -= 90 if user.hp == user.totalhp &&
+                     !user.pbCanRaiseStatStage?(:SPEED, user, self) &&
+                     !user.pbCanLowerStatStage?(:DEFENSE, user, self) &&
+                     !user.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user, self)
     #---------------------------------------------------------------------------
     when "StartHealUserEachTurn"
       score -= 90 if user.effects[PBEffects::AquaRing]

@@ -26,6 +26,7 @@ Double Iron Bash
 Bullet Punch
 Consecutive Punch
 Flash Punch
+Rocket Punch
 Magnum Punch
 Blink Punch
 Hydro Punch

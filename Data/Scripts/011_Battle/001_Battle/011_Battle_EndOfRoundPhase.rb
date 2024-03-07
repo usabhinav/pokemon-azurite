@@ -442,6 +442,11 @@ class Battle
       battler.effects[PBEffects::DisableMove] = nil
       pbDisplay(_INTL("{1} is no longer disabled!", battler.pbThis))
     }
+    #Dragon's pride
+    pbEORCountDownBattlerEffect(priority, PBEffects::DragonsPride) { |battler|
+      battler.effects[PBEffects::DragonsPride] = 0
+      pbDisplay(_INTL("{1} is no longer standing tall!", battler.pbThis))
+    }
     # Magnet Rise
     pbEORCountDownBattlerEffect(priority, PBEffects::MagnetRise) { |battler|
       pbDisplay(_INTL("{1}'s electromagnetism wore off!", battler.pbThis))

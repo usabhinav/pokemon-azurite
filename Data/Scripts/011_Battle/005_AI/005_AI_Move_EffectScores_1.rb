@@ -1568,6 +1568,9 @@ class Battle::AI
       stats = user.battlerStatsSortedAscending
       scope -= 90 if user.statStageAtMax?(stats[stats.length - 1])
     #---------------------------------------------------------------------------
+    when "RaiseAtkSpAtk2IfKOForFiveTurns"
+      scope -= 90 if user.effects[PBEffects::DragonsPride] > 0
+    #---------------------------------------------------------------------------
     end
     return score
   end

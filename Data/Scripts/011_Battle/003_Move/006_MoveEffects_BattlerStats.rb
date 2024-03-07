@@ -31,6 +31,33 @@ class Battle::Move::RaiseUserAttack2IfTargetFaints < Battle::Move
 end
 
 #===============================================================================
+# For each target the user KO's within the next five turns, increases the 
+# user's Attack and Special Attack by 2 stages. 
+# (Dragon's Pride)
+#===============================================================================
+class Battle::Move::RaiseAtkSpAtk2IfKOForFiveTurns < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::DragonsPride] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return super
+  end
+
+  def pbEffectAfterAllHits(user, target)
+    if target.damageState.fainted
+      user.pbRaiseStatStage(:ATTACK, 2, user)
+      user.pbRaiseStatStage(:SPECIAL_ATTACK, 2, user)
+    end
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::DragonsPride] = 5
+    @battle.pbDisplay(_INTL("{1} stood tall!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # Increases the user's Attack by 3 stages.
 #===============================================================================
 class Battle::Move::RaiseUserAttack3 < Battle::Move::StatUpMove

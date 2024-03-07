@@ -167,6 +167,7 @@ class Battle::Battler
     @effects[PBEffects::DestinyBondTarget]   = -1
     @effects[PBEffects::Disable]             = 0
     @effects[PBEffects::DisableMove]         = nil
+    @effects[PBEffects::DragonsPride]        = 0
     @effects[PBEffects::Electrify]           = false
     @effects[PBEffects::Encore]              = 0
     @effects[PBEffects::EncoreMove]          = nil

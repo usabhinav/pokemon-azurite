@@ -133,6 +133,11 @@ class Battle::Battler
         target.effects[PBEffects::MoveNext] = true
         target.effects[PBEffects::Quash]    = 0
       end
+      # Dragon's Pride (Raise atk + sp atk if target is KO'd)
+      if user.effects[PBEffects::DragonsPride] > 0 && target.fainted?
+        user.pbRaiseStatStage(:ATTACK, 2, user)
+        user.pbRaiseStatStage(:SPECIAL_ATTACK, 2, user)
+      end
       # Grudge
       if target.effects[PBEffects::Grudge] && target.fainted?
         user.pbSetPP(move, 0)

@@ -308,6 +308,14 @@ class Battle::AI
         end
       end
     #---------------------------------------------------------------------------
+    when "MaxUserRandomStatLoseHalfOfTotalHP"
+      if user.statStageAtMax?(:ATTACK) ||
+        user.hp <= user.totalhp / 2
+        score -= 100
+      else
+        score += 90
+      end
+    #---------------------------------------------------------------------------  
     when "RaiseUserDefense1", "RaiseUserDefense1CurlUpUser"
       if move.statusMove?
         if user.statStageAtMax?(:DEFENSE)

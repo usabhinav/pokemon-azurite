@@ -116,6 +116,38 @@ class Battle::Move::MaxUserAttackLoseHalfOfTotalHP < Battle::Move
 end
 
 #===============================================================================
+# Cuts HP in half and maximises a random stat (Energy Conversion)
+#===============================================================================
+class Battle::Move::MaxUserRandomStatLoseHalfOfTotalHP < Battle::Move
+  def canSnatch?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    hpLoss = [user.totalhp / 2, 1].max
+    if user.hp <= hpLoss
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return true if !user.pbCanRaiseStatStage?(:ATTACK, user, self, true)
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    hpLoss = [user.totalhp / 2, 1].max
+    user.pbReduceHP(hpLoss, false, false)
+    @statArray = []
+    GameData::Stat.each_battle do |s|
+      @statArray.push(s.id) if user.pbCanRaiseStatStage?(s.id, user, self)
+    end
+    stat = @statArray[@battle.pbRandom(@statArray.length)]
+    user.stages[stat] = 6
+    user.statsRaisedThisRound = true
+    @battle.pbCommonAnimation("StatUp", user)
+    @battle.pbDisplay(_INTL("{1} cut its own HP and maximized its {2}!", user.pbThis, stat.name))
+    user.pbItemHPHealCheck
+  end
+end
+
+#===============================================================================
 # Increases the user's Defense by 1 stage. (Harden, Steel Wing, Withdraw)
 #===============================================================================
 class Battle::Move::RaiseUserDefense1 < Battle::Move::StatUpMove

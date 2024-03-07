@@ -125,6 +125,16 @@ class Battle::AI
         score += [26, 13][user.pbOpposingSide.effects[PBEffects::ToxicSpikes]]
       end
     #---------------------------------------------------------------------------
+    when "AddChargedSpikesToFoeSide"
+      if user.pbOpposingSide.effects[PBEffects::ChargedSpikes] >= 2
+        score -= 90
+      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+        score -= 90  # Opponent can't switch in any Pokemon
+      else
+        score += 8 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
+        score += [26, 13][user.pbOpposingSide.effects[PBEffects::ChargedSpikes]]
+      end
+    #---------------------------------------------------------------------------
     when "AddVoltSpikesToFoeSide"
       if user.pbOpposingSide.effects[PBEffects::VoltSpikes] >= 2
         score -= 90

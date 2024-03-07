@@ -491,6 +491,14 @@ class Battle
         end
       end
     end
+    # Charged Spikes
+    if battler_side.effects[PBEffects::ChargedSpikes] > 0 && !battler.fainted? && !battler.airborne?
+      if battler.pbHasType?(:GROUND) || battler.pbHasType?(:ELECTRIC) || battler.pbHasType?(:FLYING) || battler.pbHasType?(:COSMIC)
+        pbDisplay(_INTL("{1} is unaffected by the charged spikes!", battler.pbThis))
+      elsif battler.pbCanParalyze?(nil, false) 
+          battler.pbParalyze(nil, _INTL("{1} was paralyzed by the charged spikes!", battler.pbThis))
+      end
+    end
     # Volt Spikes
     if battler.pbOwnSide.effects[PBEffects::VoltSpikes]>0 && battler.takesIndirectDamage? &&
       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?([:IRONSHELL, :HEAVYDUTYBOOTS])

@@ -192,6 +192,7 @@ module PBEffects
   VoltSpikes         = 22
   SafeguardMoveName  = 23
   AsteroidBelt       = 24
+  ChargedSpikes      = 25
 
   #=============================================================================
   # These effects apply to the battle (i.e. both sides)

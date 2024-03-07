@@ -65,6 +65,7 @@ class Battle::ActiveSide
     @effects[PBEffects::Swamp]              = 0
     @effects[PBEffects::Tailwind]           = 0
     @effects[PBEffects::ToxicSpikes]        = 0
+    @effects[PBEffects::ChargedSpikes]      = 0
     @effects[PBEffects::WideGuard]          = false
     @effects[PBEffects::VoltSpikes]         = 0
     @effects[PBEffects::SafeguardMoveName]  = nil

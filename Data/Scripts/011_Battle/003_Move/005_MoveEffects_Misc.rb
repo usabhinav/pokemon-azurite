@@ -861,3 +861,13 @@ class Battle::Move::AddVoltSpikesToFoeSide < Battle::Move
                             user.pbOpposingTeam(true)))
   end
 end
+
+#===============================================================================
+# Confuses the user before the move is used (Ravage)
+#===============================================================================
+class Battle::Move::ConfuseUserAtStart < Battle::Move
+  def pbOnStartUse(user, target)
+    return if !user.pbCanConfuse?(user, false, self)
+    user.pbConfuse
+  end
+end

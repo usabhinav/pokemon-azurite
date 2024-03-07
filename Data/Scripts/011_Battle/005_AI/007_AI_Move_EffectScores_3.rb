@@ -649,6 +649,16 @@ class Battle::AI
         end
       end
     #---------------------------------------------------------------------------
+    when "LoseHalfOfTotalHPAndHealPartyMembers"
+      ally_amt = 30
+      @battle.allSameSideBattlers(user.index).each do |b|
+        if b.hp == b.totalhp || (skill >= PBTrainerAI.mediumSkill && !b.canHeal?)
+          score -= ally_amt / 2
+        elsif b.hp < b.totalhp * 3 / 4
+          score += ally_amt
+        end
+      end
+    #---------------------------------------------------------------------------
     when "HealUserAndAlliesQuarterOfTotalHPCureStatus"
       ally_amt = 80 / @battle.pbSideSize(user.index)
       @battle.allSameSideBattlers(user.index).each do |b|

@@ -228,6 +228,43 @@ class Battle::Move::HealUserAndAlliesQuarterOfTotalHP < Battle::Move
 end
 
 #===============================================================================
+# The user sacrifices half their max HP and donates it to their allies equally
+# (Energy Share)
+#===============================================================================
+class Battle::Move::LoseHalfOfTotalHPAndHealPartyMembers < Battle::Move
+  def healingMove?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    hpLoss = [user.totalhp / 2, 1].max
+    if @battle.allSameSideBattlers(user).none? { |b| b.canHeal? } || user.hp <= hpLoss
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return !target.canHeal?
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if target == user
+    count = @battle.pbSideBattlerCount(user) - 1
+    hpToShare = [user.totalhp / 2, 1].max
+    target.pbRecoverHP(hpToShare / count)
+    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+  end
+
+  def pbEffectGeneral(user)
+    hpLoss = [user.totalhp / 2, 1].max
+    user.pbReduceHP(hpLoss, false, false)
+    @battle.pbDisplay(_INTL("{1} cut its own HP and shared it around!", user.pbThis))
+    user.pbItemHPHealCheck
+  end
+
+end
+
+#===============================================================================
 # The user and its allies gain 25% of their total HP and are cured of their
 # permanent status problems. (Jungle Healing)
 #===============================================================================

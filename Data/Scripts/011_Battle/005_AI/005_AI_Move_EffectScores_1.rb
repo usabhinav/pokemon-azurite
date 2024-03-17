@@ -102,6 +102,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "StartPsychicTerrain"
     #---------------------------------------------------------------------------
+    when "StartCrystalTerrain"
+      score -= 90 if @battle.field.terrain == :Crystal
+    #---------------------------------------------------------------------------
     when "RemoveTerrain"
       score -= 100 if @battle.field.terrain == :None
     #---------------------------------------------------------------------------
@@ -1286,6 +1289,11 @@ class Battle::AI
         end
       end
       score -= 95 if count == 0
+    #---------------------------------------------------------------------------  
+    when "LowerTargetDefSpDef3"
+      avg  = target.stages[:DEFENSE] * 10
+      avg += target.stages[:SPECIAL_DEFENSE] * 10
+      score += avg / 2
     #---------------------------------------------------------------------------
     when "RaiseUserAndAlliesAtkDef1"
       has_ally = false

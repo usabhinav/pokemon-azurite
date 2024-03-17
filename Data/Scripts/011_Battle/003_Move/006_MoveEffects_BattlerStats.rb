@@ -1419,6 +1419,16 @@ class Battle::Move::LowerPoisonedTargetAtkSpAtkSpd1 < Battle::Move
 end
 
 #===============================================================================
+# Decreases the target's Defense and Special Defense by 3 stages each. (Shatter)
+#===============================================================================
+class Battle::Move::LowerTargetDefSpDef3 < Battle::Move::TargetMultiStatDownMove
+  def initialize(battle, move)
+    super
+    @statDown = [:DEFENSE, 3, :SPECIAL_DEFENSE, 3]
+  end
+end
+
+#===============================================================================
 # Raises the Attack and Defense of all user's allies by 1 stage each. Bypasses
 # protections, including Crafty Shield. Fails if there is no ally. (Coaching)
 #===============================================================================

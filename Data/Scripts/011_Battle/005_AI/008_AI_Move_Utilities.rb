@@ -214,6 +214,7 @@ class Battle::AI
          "PowerHigherWithConsecutiveUseOnUserSide",
          "PowerHigherWithMoreBugTypesInParty",
          "PowerHigherWithMoreCosmicTypesInParty",
+         "PowerHigherIfUserHitBySpecialAttack",
          "PowerHigherWithLessPP",
          "PowerLowerWithUserHP",
          "PowerHigherWithUserFasterThanTarget",
@@ -242,7 +243,7 @@ class Battle::AI
       baseDmg *= 2
     when "HitThreeTimesPowersUpWithEachHit"   # Triple Kick
       baseDmg *= 6   # Hits do x1, x2, x3 baseDmg in turn, for x6 in total
-    when "HitTwoToFiveTimes"   # Fury Attack
+    when "HitTwoToFiveTimes", "HitTwoToFiveTimesAndGrantMoneyAtEndOfBattle"   # Fury Attack, Gem Shots
       if user.hasActiveAbility?(:SKILLLINK)
         baseDmg *= 5
       else

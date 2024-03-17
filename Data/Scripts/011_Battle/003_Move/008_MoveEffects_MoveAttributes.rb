@@ -418,6 +418,19 @@ class Battle::Move::PowerHigherWithMoreCosmicTypesInParty < Battle::Move
 end
 
 #===============================================================================
+# Power is raised to 135 if the user was hit by a special attack this turn.
+# (Reflective Blast)
+#===============================================================================
+class Battle::Move::PowerHigherIfUserHitBySpecialAttack < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    # The MirrorCoat effect is set under the same conditions, when the user has
+    # been hit by a special attack this turn, so we can just reuse it.
+    return 135 if user.effects[PBEffects::MirrorCoat] >= 0
+    return super
+  end
+end
+
+#===============================================================================
 # Power is chosen at random. Power is doubled if the target is using Dig. Hits
 # some semi-invulnerable targets. (Magnitude)
 #===============================================================================

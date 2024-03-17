@@ -268,8 +268,8 @@ class Battle::AI
     # Account for accuracy of move
     accuracy = pbRoughAccuracy(move, user, target, skill)
     realDamage *= accuracy / 100.0
-    # Two-turn attacks waste 2 turns to deal one lot of damage
-    if move.chargingTurnMove? || move.function == "AttackAndSkipNextTurn"   # Hyper Beam
+    # Two-turn attacks waste 2 turns to deal one lot of damage (ex. Hyper Beam, Crystallized Beam)
+    if move.chargingTurnMove? || move.function == "AttackAndSkipNextTurn" || move.function == "AttackAndSkipNextThreeTurns"
       realDamage *= 2 / 3   # Not halved because semi-invulnerable during use or hits first turn
     end
     # Prefer flinching external effects (note that move effects which cause

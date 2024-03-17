@@ -161,6 +161,20 @@ class Battle::Move::HitTwoToFiveTimesRaiseUserSpd1LowerUserDef1 < Battle::Move
 end
 
 #===============================================================================
+# Hits 2-5 times. If the user is owned by the player and is a Crystal type,
+# grants money after the battle. (Gem Shots)
+#===============================================================================
+class Battle::Move::HitTwoToFiveTimesAndGrantMoneyAtEndOfBattle < Battle::Move::HitTwoToFiveTimes
+  def pbEffectAfterAllHits(user, target)
+    return if user.fainted? || target.damageState.unaffected
+    if user.pbOwnedByPlayer? && user.pbHasType?(:CRYSTAL)
+      @battle.field.effects[PBEffects::PayDay] += 5 * user.level
+      @battle.pbDisplay(_INTL("Coins were scattered everywhere!"))
+    end
+  end
+end
+
+#===============================================================================
 # Hits 3-5 times.
 #===============================================================================
 class Battle::Move::HitThreeToFiveTimes < Battle::Move
@@ -217,6 +231,16 @@ end
 class Battle::Move::AttackAndSkipNextTurn < Battle::Move
   def pbEffectGeneral(user)
     user.effects[PBEffects::HyperBeam] = 2
+    user.currentMove = @id
+  end
+end
+
+#===============================================================================
+# Attacks first turn, skips three turns (if successful). (Crystallized Beam)
+#===============================================================================
+class Battle::Move::AttackAndSkipNextThreeTurns < Battle::Move
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::HyperBeam] = 4
     user.currentMove = @id
   end
 end
@@ -530,7 +554,7 @@ end
 
 #===============================================================================
 # User must use this move for 1 or 2 more rounds. At end, user becomes confused.
-# (Outrage, Petal Dange, Thrash)
+# (Outrage, Petal Dance, Thrash)
 #===============================================================================
 class Battle::Move::MultiTurnAttackConfuseUserAtEnd < Battle::Move
   def pbEffectAfterAllHits(user, target)
@@ -539,6 +563,40 @@ class Battle::Move::MultiTurnAttackConfuseUserAtEnd < Battle::Move
       user.currentMove = @id
     end
     if user.effects[PBEffects::Outrage] > 0
+      user.effects[PBEffects::Outrage] -= 1
+      if user.effects[PBEffects::Outrage] == 0 && user.pbCanConfuseSelf?(false)
+        user.pbConfuse(_INTL("{1} became confused due to fatigue!", user.pbThis))
+      end
+    end
+  end
+end
+
+#===============================================================================
+# User must use this move for 1 or 2 more rounds. Each round, the user's Defense
+# and Sp. Def. is lowered by 1 stat stage. If the user used Rage before, then
+# power is increased, but stats are lowered by 2 stages instead. At end, user
+# becomes confused. (Crystal Rampage)
+#===============================================================================
+class Battle::Move::MultiTurnAttackLowersDefSpDef1EveryTurnConfuseUserAtEnd < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    return 150 if user.effects[PBEffects::Rage]
+    return super
+  end
+
+  def pbEffectAfterAllHits(user, target)
+    if !target.damageState.unaffected && user.effects[PBEffects::Outrage] == 0
+      user.effects[PBEffects::Outrage] = 2 + @battle.pbRandom(2)
+      user.currentMove = @id
+    end
+    if user.effects[PBEffects::Outrage] > 0
+      stat_stages_to_lower = user.effects[PBEffects::Rage] ? 2 : 1
+      showAnim = true
+      [:DEFENSE, :SPECIAL_DEFENSE].each do |stat|
+        if user.pbCanLowerStatStage?(stat, user, self)
+          user.pbLowerStatStage(stat, stat_stages_to_lower, user, showAnim)
+          showAnim = false
+        end
+      end
       user.effects[PBEffects::Outrage] -= 1
       if user.effects[PBEffects::Outrage] == 0 && user.pbCanConfuseSelf?(false)
         user.pbConfuse(_INTL("{1} became confused due to fatigue!", user.pbThis))
@@ -635,19 +693,5 @@ class Battle::Move::MultiTurnAttackBideThenReturnDoubleDamage < Battle::Move::Fi
   def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
     hitNum = 1 if !@damagingTurn   # Charging anim
     super
-  end
-end
-
-#===============================================================================
-# Attacks first turn, skips three turns (if successful).
-#===============================================================================
-class Battle::Move::AttackAndSkipThreeTurns < Battle::Move
-  def pbEffectGeneral(user)
-    user.effects[PBEffects::HyperBeam] = 4
-    user.currentMove = @id
-  end
-
-  def rollingBasedMove?
-    return true
   end
 end

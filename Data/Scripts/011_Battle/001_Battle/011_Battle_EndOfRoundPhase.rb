@@ -600,8 +600,10 @@ class Battle
         pbDisplay(_INTL("The mist disappeared from the battlefield!"))
       when :Psychic
         pbDisplay(_INTL("The weirdness disappeared from the battlefield!"))
-      when :Lava	
+      when :Lava
         pbDisplay(_INTL("The lava disappeared from the battlefield!"))
+      when :Crystal
+        pbDisplay(_INTL("The crystals disappeared from the battlefield!"))
       end
       @field.terrain = :None
       allBattlers.each { |battler| battler.pbAbilityOnTerrainChange }
@@ -622,6 +624,7 @@ class Battle
     when :Misty    then pbDisplay(_INTL("Mist is swirling about the battlefield."))
     when :Psychic  then pbDisplay(_INTL("The battlefield is weird."))
     when :Lava     then pbDisplay(_INTL("Lava is covering the battlefield!"))
+    when :Crystal  then pbDisplay(_INTL("The battlefield remains crystallized!"))
     end
     # Lava terrain passive damage
     if @field.terrain == :Lava

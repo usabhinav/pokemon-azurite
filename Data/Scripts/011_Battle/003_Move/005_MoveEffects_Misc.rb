@@ -342,6 +342,24 @@ class Battle::Move::StartPsychicTerrain < Battle::Move
 end
 
 #===============================================================================
+# For 5 rounds, creates a crystal terrain which boosts Crystal-type moves and
+# treats Pokémon as Crystal types. (Crystal Terrain)
+#===============================================================================
+class Battle::Move::StartCrystalTerrain < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.terrain == :Crystal
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbStartTerrain(user, :Crystal)
+  end
+end
+
+#===============================================================================
 # Removes the current terrain. Fails if there is no terrain in effect.
 # (Steel Roller)
 #===============================================================================

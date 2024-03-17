@@ -10024,7 +10024,7 @@ Power = 200
 Accuracy = 100
 TotalPP = 5
 Target = NearOther
-FunctionCode = AttackAndSkipNext3Turns
+FunctionCode = AttackAndSkipNextThreeTurns
 Flags = CanProtect,CanMirrorMove
 Description = Hyper Beam shot through a Crystal Prism. The ultimate attack, but heavily exhausts the user.
 #-------------------------------
@@ -10049,6 +10049,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetDefSpDef3
 Flags = Contact,CanProtect,CanMirrorMove
+EffectChance = 100
 Description = Completely shatters the opponent's Defense and Special Defense, reducing them drastically.
 #-------------------------------
 [SHIMMER]
@@ -10146,7 +10147,7 @@ Power = 90
 Accuracy = 95
 TotalPP = 10
 Target = NearOther
-FunctionCode = RaisePowerTo135IfUserHitBySpecialAttack
+FunctionCode = PowerHigherIfUserHitBySpecialAttack
 Flags = CanProtect,CanMirrorMove
 Description = Does more damage if the user is hit by a Special Attack prior.
 #-------------------------------

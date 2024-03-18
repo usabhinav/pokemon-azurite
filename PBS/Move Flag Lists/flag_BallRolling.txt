@@ -35,6 +35,7 @@ Gyro Ball
 Octazooka
 Volt Ball
 Volt Seed
+Cruel Beatdown
 Fireball
 Bubble Bomb
 Color Sphere

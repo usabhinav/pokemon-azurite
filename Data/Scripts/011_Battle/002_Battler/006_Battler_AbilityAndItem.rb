@@ -478,11 +478,13 @@ class Battle::Battler
     # Cheek Pouch
     if hasActiveAbility?(:CHEEKPOUCH) && GameData::Item.get(item_to_use).is_berry? && canHeal?
       @battle.pbShowAbilitySplash(self)
-      pbRecoverHP(@totalhp / 3)
-      if Battle::Scene::USE_ABILITY_SPLASH
-        @battle.pbDisplay(_INTL("{1}'s HP was restored.", pbThis))
-      else
-        @battle.pbDisplay(_INTL("{1}'s {2} restored its HP.", pbThis, abilityName))
+      heal_amt = pbRecoverHP(@totalhp / 3)
+      if heal_amt > 0
+        if Battle::Scene::USE_ABILITY_SPLASH
+          @battle.pbDisplay(_INTL("{1}'s HP was restored.", pbThis))
+        else
+          @battle.pbDisplay(_INTL("{1}'s {2} restored its HP.", pbThis, abilityName))
+        end
       end
       @battle.pbHideAbilitySplash(self)
     end

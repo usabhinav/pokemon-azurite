@@ -2083,3 +2083,15 @@ class Battle::Move::RaiseUserHighestStat2 < Battle::Move
     end
   end
 end
+
+#===============================================================================
+# Decreases the target's accuracy by 2 stages and the user's evasion by 1
+# stage. (Shimmer)
+#===============================================================================
+class Battle::Move::LowerTargetAccuracy2AndLowerUserEvasion1 < Battle::Move::LowerTargetAccuracy2
+  def pbEffectGeneral(user)
+    if user.pbCanLowerStatStage?(:EVASION, user, self, true)
+      user.pbLowerStatStage(:EVASION, 1, user)
+    end
+  end
+end

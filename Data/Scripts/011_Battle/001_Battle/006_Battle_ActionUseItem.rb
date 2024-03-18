@@ -91,8 +91,14 @@ class Battle
     battler = pbFindBattler(idxParty, userBattler.index)
     ch = @choices[userBattler.index]
     if ItemHandlers.triggerCanUseInBattle(item, pkmn, battler, ch[3], true, self, @scene, false)
-      ItemHandlers.triggerBattleUseOnPokemon(item, pkmn, battler, ch, @scene)
+      item_used = ItemHandlers.triggerBattleUseOnPokemon(item, pkmn, battler, ch, @scene)
       ch[1] = nil   # Delete item from choice
+      # Explicitly check for false because some BattleUseOnPokemon procs return nothing, which defaults to nil. In those cases,
+      # the item should still be consumed.
+      if item_used == false
+        # Return unused item to Bag
+        pbReturnUnusedItemToBag(item, userBattler.index)
+      end
       return
     end
     pbDisplay(_INTL("But it had no effect!"))

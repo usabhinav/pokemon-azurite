@@ -76,8 +76,9 @@ class Battle::Move::RandomlyDamageOrHealTarget < Battle::Move
 
   def pbEffectAgainstTarget(user, target)
     return if @presentDmg > 0
-    target.pbRecoverHP(target.totalhp / 4)
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    if target.pbRecoverHP(target.totalhp / 4) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    end
   end
 
   def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
@@ -121,8 +122,9 @@ class Battle::Move::HealAllyOrDamageFoe < Battle::Move
 
   def pbEffectAgainstTarget(user, target)
     return if !@healing
-    target.pbRecoverHP(target.totalhp / 2)
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    if target.pbRecoverHP(target.totalhp / 2) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    end
   end
 
   def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)

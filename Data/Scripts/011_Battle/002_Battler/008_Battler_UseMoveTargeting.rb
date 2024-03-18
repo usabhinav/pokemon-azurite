@@ -95,6 +95,7 @@ class Battle::Battler
   def pbChangeTargets(move, user, targets)
     target_data = move.pbTarget(user)
     return targets if @battle.switching   # For Pursuit interrupting a switch
+    return targets if @battle.denyInUse   # For Deny interrupting a heal
     return targets if move.cannotRedirect? || move.targetsPosition?
     return targets if !target_data.can_target_one_foe? || targets.length != 1
     move.pbModifyTargets(targets, user)   # For Dragon Darts

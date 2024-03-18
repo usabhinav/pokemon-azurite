@@ -20,6 +20,30 @@ class Battle::Battler
   end
 
   def pbRecoverHP(amt, anim = true, anyAnim = true, from_bag = false)
+    # Deny (opponents that are targeting this Pokemon with Deny should hit before the HP recovery occurs).
+    @battle.pbPriority.each do |b|
+      next if b.fainted? || !b.opposes?(@index)   # Shouldn't hit an ally
+      next if b.movedThisRound? || !@battle.pbChoseMoveFunctionCode?(b.index, "AlwaysHitsBeforeHealingEffects")
+      # Check whether Deny can be used
+      next unless @battle.pbMoveCanTarget?(b.index, @index, @battle.choices[b.index][2].pbTarget(b))
+      next unless @battle.pbCanChooseMove?(b.index, @battle.choices[b.index][1], false)
+      next if b.status == :SLEEP || b.status == :FROZEN
+      next if b.effects[PBEffects::SkyDrop] >= 0
+      next if b.hasActiveAbility?(:TRUANT) && b.effects[PBEffects::Truant]
+      @battle.denyInUse = true
+      @battle.pbDisplay(_INTL("{1} denied {2} the chance to heal!", b.pbThis, pbThis(true)))
+      # Mega Evolve
+      if !b.wild?
+        owner = @battle.pbGetOwnerIndexFromBattlerIndex(b.index)
+        @battle.pbMegaEvolve(b.index) if @battle.megaEvolution[b.idxOwnSide][owner] == b.index
+        @battle.pbCrystallize(b.index) if @battle.crystallization[b.idxOwnSide][owner] == b.index
+      end
+      # Use Deny
+      @battle.choices[b.index][3] = @index   # Change Deny's target
+      b.pbProcessTurn(@battle.choices[b.index], false)
+      @battle.denyInUse = false
+      return 0 if @battle.decision > 0 || fainted?
+    end
     # Healing Crown (boosts healing amount from ALL effects (drain, self-healing, etc.) except items used from bags (ex. Potions))
     has_healing_crown = false
     @battle.eachSameSideBattler(self.index) do |b|

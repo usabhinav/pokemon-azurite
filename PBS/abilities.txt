@@ -1715,3 +1715,7 @@ Description = Switches to Blade form when using physical attacks. Switches to Sh
 [MAGICSHOW]
 Name = Magic Show
 Description = Keeps Magic Room up while the user is on the field.
+#-------------------------------
+[IAISLASH]
+Name = Iai Slash
+Description = Slashing moves get +1 priority.

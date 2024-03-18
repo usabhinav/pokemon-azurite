@@ -817,9 +817,9 @@ class Battle::Move::BurnAttackerBeforeUserActs < Battle::Move
   end
 end
 
-################################################################################
+#===============================================================================
 # Envelops the field in darkness. (Darken)
-################################################################################
+#===============================================================================
 class Battle::Move::StartDarkenedEffect < Battle::Move
   def pbMoveFailed?(user,targets)
     if @battle.field.effects[PBEffects::Darkened]

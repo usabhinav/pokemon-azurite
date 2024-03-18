@@ -211,6 +211,11 @@ class Battle::AI
     when "BurnAttackerBeforeUserActs"
       score += 20   # Because of possible burning
     #---------------------------------------------------------------------------
+    when "StartDarkenedEffect"
+      if @battle.field.effects[PBEffects::Darkened]
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
     when "RaiseUserAttack1"
       if move.statusMove?
         if user.statStageAtMax?(:ATTACK)
@@ -1207,7 +1212,7 @@ class Battle::AI
         score += 30 if target.stages[:SPEED] > 0
       end
     #---------------------------------------------------------------------------
-    when "LowerTargetAccuracy1", "LowerTargetAccuracy2", "LowerTargetAccuracy3"
+    when "LowerTargetAccuracy1", "LowerTargetAccuracy2", "LowerTargetAccuracy3", "LowerTargetAccuracy2AndLowerUserEvasion1"
       if move.statusMove?
         if target.pbCanLowerStatStage?(:ACCURACY, user)
           score += target.stages[:ACCURACY] * 10

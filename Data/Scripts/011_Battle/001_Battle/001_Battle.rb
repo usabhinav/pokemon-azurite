@@ -87,6 +87,7 @@ class Battle
   attr_accessor :first_poke_ball  # ID of the first thrown Poké Ball that failed
   attr_accessor :poke_ball_failed # Set after first_poke_ball to prevent it being set again
   attr_reader   :switching        # True if during the switching phase of the round
+  attr_accessor :denyInUse        # True if Deny is hitting
   attr_reader   :futureSight      # True if Future Sight is hitting
   attr_reader   :endOfRound       # True during the end of round
   attr_accessor :moldBreaker      # True if Mold Breaker applies
@@ -169,6 +170,7 @@ class Battle
     @lastMoveUsed      = nil
     @lastMoveUser      = -1
     @switching         = false
+    @denyInUse         = false
     @futureSight       = false
     @endOfRound        = false
     @moldBreaker       = false

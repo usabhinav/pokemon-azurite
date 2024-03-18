@@ -149,8 +149,9 @@ class Battle::Move::HealUserByTargetAttackLowerTargetAttack1 < Battle::Move
       user.pbItemHPHealCheck
     elsif user.canHeal?
       healAmt = (healAmt * 1.3).floor if user.hasActiveItem?(:BIGROOT)
-      user.pbRecoverHP(healAmt)
-      @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+      if user.pbRecoverHP(healAmt) > 0
+        @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+      end
     end
   end
 end
@@ -222,8 +223,9 @@ class Battle::Move::HealUserAndAlliesQuarterOfTotalHP < Battle::Move
   end
 
   def pbEffectAgainstTarget(user, target)
-    target.pbRecoverHP(target.totalhp / 4)
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    if target.pbRecoverHP(target.totalhp / 4) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    end
   end
 end
 
@@ -247,8 +249,7 @@ class Battle::Move::HealUserAndAlliesQuarterOfTotalHPCureStatus < Battle::Move
   end
 
   def pbEffectAgainstTarget(user, target)
-    if target.canHeal?
-      target.pbRecoverHP(target.totalhp / 4)
+    if target.canHeal? && target.pbRecoverHP(target.totalhp / 4) > 0
       @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
     end
     if target.status != :NONE
@@ -325,8 +326,9 @@ class Battle::Move::HealTargetHalfOfTotalHP < Battle::Move
     if pulseMove? && user.hasActiveAbility?(:MEGALAUNCHER)
       hpGain = (target.totalhp * 3 / 4.0).round
     end
-    target.pbRecoverHP(hpGain)
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    if target.pbRecoverHP(hpGain) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    end
   end
 end
 
@@ -352,8 +354,9 @@ class Battle::Move::HealTargetDependingOnGrassyTerrain < Battle::Move
   def pbEffectAgainstTarget(user, target)
     hpGain = (target.totalhp / 2.0).round
     hpGain = (target.totalhp * 2 / 3.0).round if @battle.field.terrain == :Grassy
-    target.pbRecoverHP(hpGain)
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    if target.pbRecoverHP(hpGain) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    end
   end
 end
 
@@ -404,8 +407,9 @@ class Battle::Move::HealUserBy10PercentOfTotalHPAndRaiseUserSpeed1AndLowerUserDe
   def pbEffectGeneral(user)
     if user.hp < user.totalhp
       amt = pbHealAmount(user)
-      user.pbRecoverHP(amt)
-      @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+      if user.pbRecoverHP(amt) > 0
+        @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+      end
     end
     if user.pbCanRaiseStatStage?(:SPEED, user, self)
       user.pbRaiseStatStage(:SPEED, 1, user)
@@ -589,6 +593,13 @@ class Battle::Move::UserFaintsExplosive < Battle::Move
 end
 
 #===============================================================================
+# User faints, even if the move does nothing else, but not explosive.
+# (Disconnect)
+#===============================================================================
+class Battle::Move::UserFaints < Battle::Move::UserFaintsExplosive
+end
+
+#===============================================================================
 # User faints. If Misty Terrain applies, base power is multiplied by 1.5.
 # (Misty Explosion)
 #===============================================================================
@@ -766,7 +777,8 @@ class Battle::Move::HealTargetByCustomAmount < Battle::Move::HealTargetHalfOfTot
   def pbDisplayUseMessage(user); end
 
   def pbEffectAgainstTarget(user, target)
-    target.pbRecoverHP(@healAmt)
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    if target.pbRecoverHP(@healAmt) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    end
   end
 end

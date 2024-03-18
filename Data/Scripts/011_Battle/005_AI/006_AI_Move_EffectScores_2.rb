@@ -282,6 +282,11 @@ class Battle::AI
                        target.effects[PBEffects::Substitute] == 0
       end
     #---------------------------------------------------------------------------
+    when "FlinchTargetIfTargetSpAtkLessThan70"
+      if skill >= PBTrainerAI.highSkill
+        score += 30 if target.spatk < 70
+      end
+    #---------------------------------------------------------------------------
     when "ConfuseTarget", "ConfuseTargetAlwaysHitsInRainHitsTargetInSky"
       if target.pbCanConfuse?(user, false)
         score += 30
@@ -532,6 +537,11 @@ class Battle::AI
         end
       else
         score += 30
+      end
+    #---------------------------------------------------------------------------
+    when "NegateTargetAbilityForThreeTurns"
+      if target.effects[PBEffects::Stare] > 0 || (skill >= PBTrainerAI.highSkill && target.unstoppableAbility?)
+        score -= 90
       end
     #---------------------------------------------------------------------------
     when "IgnoreTargetAbility"

@@ -367,11 +367,14 @@ Battle::ItemEffects::HPHeal.add(:BERRYJUICE,
     itemName = GameData::Item.get(item).name
     PBDebug.log("[Item triggered] Forced consuming of #{itemName}") if forced
     battle.pbCommonAnimation("UseItem", battler) if !forced
-    battler.pbRecoverHP(20)
-    if forced
-      battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+    if battler.pbRecoverHP(20) > 0
+      if forced
+        battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} restored its health using its {2}!", battler.pbThis, itemName))
+      end
     else
-      battle.pbDisplay(_INTL("{1} restored its health using its {2}!", battler.pbThis, itemName))
+      next false
     end
     next true
   }
@@ -460,13 +463,16 @@ Battle::ItemEffects::HPHeal.add(:ORANBERRY,
     end
     battle.pbCommonAnimation("EatBerry", battler) if !forced
     battle.pbHideAbilitySplash(battler) if ripening
-    battler.pbRecoverHP(amt)
-    itemName = GameData::Item.get(item).name
-    if forced
-      PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
-      battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+    if battler.pbRecoverHP(amt) > 0
+      itemName = GameData::Item.get(item).name
+      if forced
+        PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
+        battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!", battler.pbThis, itemName))
+      end
     else
-      battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!", battler.pbThis, itemName))
+      next false
     end
     next true
   }
@@ -497,13 +503,16 @@ Battle::ItemEffects::HPHeal.add(:SITRUSBERRY,
     end
     battle.pbCommonAnimation("EatBerry", battler) if !forced
     battle.pbHideAbilitySplash(battler) if ripening
-    battler.pbRecoverHP(amt)
-    itemName = GameData::Item.get(item).name
-    if forced
-      PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
-      battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+    if battler.pbRecoverHP(amt) > 0
+      itemName = GameData::Item.get(item).name
+      if forced
+        PBDebug.log("[Item triggered] Forced consuming of #{itemName}")
+        battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} restored its health using its {2}!", battler.pbThis, itemName))
+      end
     else
-      battle.pbDisplay(_INTL("{1} restored its health using its {2}!", battler.pbThis, itemName))
+      next false
     end
     next true
   }
@@ -1766,11 +1775,14 @@ Battle::ItemEffects::OnBeingHitPositiveBerry.add(:ENIGMABERRY,
     end
     battle.pbCommonAnimation("EatBerry", battler) if !forced
     battle.pbHideAbilitySplash(battler) if ripening
-    battler.pbRecoverHP(amt)
-    if forced
-      battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+    if battler.pbRecoverHP(amt) > 0
+      if forced
+        battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1} restored its health using its {2}!", battler.pbThis, itemName))
+      end
     else
-      battle.pbDisplay(_INTL("{1} restored its health using its {2}!", battler.pbThis, itemName))
+      next false
     end
     next true
   }
@@ -1913,9 +1925,10 @@ Battle::ItemEffects::AfterMoveUseFromUser.add(:SHELLBELL,
     totalDamage = 0
     targets.each { |b| totalDamage += b.damageState.totalHPLost }
     next if totalDamage <= 0
-    user.pbRecoverHP(totalDamage / 8)
-    battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
-       user.pbThis, user.itemName))
+    if user.pbRecoverHP(totalDamage / 8) > 0
+      battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
+        user.pbThis, user.itemName))
+    end
   }
 )
 
@@ -2295,9 +2308,10 @@ Battle::ItemEffects::EndOfRoundHealing.add(:BLACKSLUDGE,
     if battler.pbHasType?(:POISON)
       next false if !battler.canHeal?
       battle.pbCommonAnimation("UseItem", battler)
-      battler.pbRecoverHP(battler.totalhp / 16)
-      battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
-         battler.pbThis, battler.itemName))
+      if battler.pbRecoverHP(battler.totalhp / 16) > 0
+        battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
+          battler.pbThis, battler.itemName))
+      end
       next true
     elsif battler.takesIndirectDamage?
       battle.pbCommonAnimation("UseItem", battler)
@@ -2314,9 +2328,10 @@ Battle::ItemEffects::EndOfRoundHealing.add(:LEFTOVERS,
   proc { |item, battler, battle|
     next false if !battler.canHeal?
     battle.pbCommonAnimation("UseItem", battler)
-    battler.pbRecoverHP(battler.totalhp / 16)
-    battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
-       battler.pbThis, battler.itemName))
+    if battler.pbRecoverHP(battler.totalhp / 16) > 0
+      battle.pbDisplay(_INTL("{1} restored a little HP using its {2}!",
+        battler.pbThis, battler.itemName))
+    end
     next true
   }
 )

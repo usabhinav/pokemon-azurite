@@ -742,7 +742,7 @@ class Battle::AI
         score -= (user.totalhp - user.hp) * 75 / user.totalhp
       end
     #---------------------------------------------------------------------------
-    when "UserFaintsExplosive", "UserFaints"
+    when "UserFaintsExplosive"
       reserves = @battle.pbAbleNonActiveCount(user.idxOwnSide)
       foes     = @battle.pbAbleNonActiveCount(user.idxOpposingSide)
       if @battle.pbCheckGlobalAbility(:DAMP)
@@ -754,6 +754,9 @@ class Battle::AI
       else
         score -= user.hp * 100 / user.totalhp
       end
+    #---------------------------------------------------------------------------
+    when "UserFaints"
+      score -= user.hp * 100 / user.totalhp
     #---------------------------------------------------------------------------
     when "UserFaintsPowersUpInMistyTerrainExplosive"
       reserves = @battle.pbAbleNonActiveCount(user.idxOwnSide)

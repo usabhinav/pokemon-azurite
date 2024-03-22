@@ -1924,8 +1924,8 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:BERSERKER,
 
 Battle::AbilityEffects::DamageCalcFromUser.add(:EXPLOSIVEEXHAUST,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    # Recoil move or move function for Explosion (or Self-Destruct), Final Gambit, or Mind Blown
-    explosiveMoves = ["UserFaintsExplosive", "UserFaintsFixedDamageUserHP", "UserLosesHalfOfTotalHPExplosive"]
+    # Recoil move or move function for Explosion (or Self-Destruct), Final Gambit, Mind Blown, or Misty Explosion
+    explosiveMoves = ["UserFaintsExplosive", "UserFaintsFixedDamageUserHP", "UserLosesHalfOfTotalHPExplosive", "UserFaintsPowersUpInMistyTerrainExplosive"]
     mults[:base_damage_multiplier] *= 1.5 if move.recoilMove? || explosiveMoves.include?(move.function)
   }
 )

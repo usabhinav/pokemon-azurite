@@ -593,10 +593,14 @@ class Battle::Move::UserFaintsExplosive < Battle::Move
 end
 
 #===============================================================================
-# User faints, even if the move does nothing else, but not explosive.
-# (Disconnect)
+# User faints. (Disconnect)
 #===============================================================================
-class Battle::Move::UserFaints < Battle::Move::UserFaintsExplosive
+class Battle::Move::UserFaints < Battle::Move
+  def pbSelfKO(user)
+    return if user.fainted?
+    user.pbReduceHP(user.hp, false)
+    user.pbItemHPHealCheck
+  end
 end
 
 #===============================================================================

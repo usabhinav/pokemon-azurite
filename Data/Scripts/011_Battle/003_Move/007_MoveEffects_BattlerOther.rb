@@ -644,6 +644,22 @@ class Battle::Move::FlinchTargetDoublePowerIfTargetInSky < Battle::Move::FlinchT
 end
 
 #===============================================================================
+# Causes the target to flinch, only if the target's Special Attack is less than
+# 70. (Shimmer Shot)
+#===============================================================================
+class Battle::Move::FlinchTargetIfTargetSpAtkLessThan70 < Battle::Move::FlinchTarget
+  def pbEffectAgainstTarget(user, target)
+    return if target.spatk >= 70
+    super
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.spatk >= 70
+    super
+  end
+end
+
+#===============================================================================
 # Confuses the target.
 #===============================================================================
 class Battle::Move::ConfuseTarget < Battle::Move
@@ -1295,6 +1311,32 @@ class Battle::Move::NegateTargetAbilityIfTargetActed < Battle::Move
 end
 
 #===============================================================================
+# Negates the target's ability for 3 turns. (Stare)
+#===============================================================================
+class Battle::Move::NegateTargetAbilityForThreeTurns < Battle::Move
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if target.fainted? || target.damageState.substitute || target.unstoppableAbility?
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    if target.effects[PBEffects::Stare] > 0
+      @battle.pbDisplay(_INTL("{1} is already being stared at!", target.pbThis)) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    # Set trapping effect duration and info
+    target.effects[PBEffects::Stare] = 3
+    target.effects[PBEffects::Truant] = false
+    # Message
+    @battle.pbDisplay(_INTL("{1} is scared and can no longer use its ability!", target.pbThis))
+    target.pbOnLosingAbility(target.ability)
+  end
+end
+
+#===============================================================================
 # Ignores all abilities that alter this move's success or damage.
 # (Moongeist Beam, Sunsteel Strike)
 #===============================================================================
@@ -1564,32 +1606,6 @@ class Battle::Move::SuperEffectiveAgainstDarkGhostFlying < Battle::Move
       return Effectiveness::SUPER_EFFECTIVE_ONE
     end
     return super
-  end
-end
-
-#===============================================================================
-# Stare
-#===============================================================================
-class Battle::Move::NegateTargetAbilityForThreeTurns < Battle::Move
-  def pbFailsAgainstTarget?(user, target)
-    if target.fainted? || target.damageState.substitute || target.unstoppableAbility?
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    if target.effects[PBEffects::Stare] > 0
-      @battle.pbDisplay(_INTL("{1} is already being stared at!", target.pbThis))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectAgainstTarget(user, target)
-    # Set trapping effect duration and info
-    target.effects[PBEffects::Stare] = 3
-    target.effects[PBEffects::Truant] = false
-    # Message
-    @battle.pbDisplay(_INTL("{1} is scared and can no longer use its ability!", target.pbThis))
-    target.pbOnLosingAbility(target.ability)
   end
 end
 

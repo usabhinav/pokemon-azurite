@@ -874,38 +874,40 @@ Battle::AbilityEffects::PriorityChange.add(:TRIAGE,
 )
 
 Battle::AbilityEffects::PriorityChange.add(:SPEEDBALL,
-  proc { |ability,battler,move,pri|
+  proc { |ability, battler, move, pri|
     next pri+1 if move.rollingBasedMove? || battler.usingMultiTurnAttack?
   }
 )
 
 Battle::AbilityEffects::PriorityChange.add(:FREESTYLE,
-  proc { |ability,battler,move,pri|
+  proc { |ability, battler, move, pri|
     next pri+1 if move.type == :SOUND || move.pbSoundMove?(battler)
   }
 )
 
 Battle::AbilityEffects::PriorityChange.add(:RAPIDSTREAM,
-  proc { |ability,battler,move,pri|
+  proc { |ability, battler, move, pri|
     next pri+1 if move.type == :WATER && battler.hp == battler.totalhp
   }
 )
 
 # Lowest possible bracket
 Battle::AbilityEffects::PriorityChange.add(:IMMOVABLE,
-  proc { |ability,battler,move,pri|
+  proc { |ability, battler, move, pri|
     next -7
   }
 )
 
 Battle::AbilityEffects::PriorityChange.add(:QUICKBLADE,
-  proc { |ability,battler,move,pri|
-    next pri+1 if move.slashingMove?
+  proc { |ability, battler, move, pri|
+    next pri + 1 if move.slashingMove?
   }
 )
 
+Battle::AbilityEffects::PriorityChange.copy(:QUICKBLADE, :IAISLASH)
+
 Battle::AbilityEffects::PriorityChange.add(:PROXY,
-  proc { |ability,battler,move,pri|
+  proc { |ability, battler, move, pri|
     next pri+1 if battler.isSpecies?(:PHANTITUTE) && move.id == :SUBSTITUTE
   }
 )
@@ -1922,8 +1924,8 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:BERSERKER,
 
 Battle::AbilityEffects::DamageCalcFromUser.add(:EXPLOSIVEEXHAUST,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    # Recoil move or move function for Explosion (or Self-Destruct), Final Gambit, or Mind Blown
-    explosiveMoves = ["UserFaintsExplosive", "UserFaintsFixedDamageUserHP", "UserLosesHalfOfTotalHPExplosive"]
+    # Recoil move or move function for Explosion (or Self-Destruct), Final Gambit, Mind Blown, or Misty Explosion
+    explosiveMoves = ["UserFaintsExplosive", "UserFaintsFixedDamageUserHP", "UserLosesHalfOfTotalHPExplosive", "UserFaintsPowersUpInMistyTerrainExplosive"]
     mults[:base_damage_multiplier] *= 1.5 if move.recoilMove? || explosiveMoves.include?(move.function)
   }
 )
@@ -3111,11 +3113,12 @@ Battle::AbilityEffects::OnDealingHit.add(:HEALTHYDIET,
     next if !move.bitingMove?
     next if !user.canHeal?
     battle.pbShowAbilitySplash(user)
-    user.pbRecoverHP(target.damageState.hpLost * 0.6)
-    if Battle::Scene::USE_ABILITY_SPLASH
-      battle.pbDisplay(_INTL("{1}'s HP was restored.",user.pbThis))
-    else
-      battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",user.pbThis,user.abilityName))
+    if user.pbRecoverHP(target.damageState.hpLost * 0.6) > 0
+      if Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s HP was restored.",user.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",user.pbThis,user.abilityName))
+      end
     end
     battle.pbHideAbilitySplash(user)
   }
@@ -3476,8 +3479,9 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TASTYTREAT,
            b.pbThis(true), old_target_item.name, user.abilityName))
       end
       # All items consumed with Tasty Treat will at least restore 25% HP
-      user.pbRecoverHP(user.totalhp / 4) if user.canHeal?
-      battle.pbDisplay(_INTL("{1} restored some of its HP.", user.pbThis))
+      if user.canHeal? && user.pbRecoverHP(user.totalhp / 4) > 0
+        battle.pbDisplay(_INTL("{1} restored some of its HP.", user.pbThis))
+      end
       # Additional effects
       # Temporarily "give" the user the item to hold, in case one of the item handlers removes the item after use.
       old_user_item = user.item
@@ -3513,18 +3517,15 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TASTYTREAT,
       if !effect_triggered
         case old_target_item.id
         when :TINYMUSHROOM
-          if user.canHeal?
-            user.pbRecoverHP(10)
+          if user.canHeal? && user.pbRecoverHP(10) > 0
             battle.pbDisplay(_INTL("{1} restored a little more HP from the {2}!", user.pbThis, old_target_item.real_name))
           end
         when :BIGMUSHROOM, :BIGROOT
-          if user.canHeal?
-            user.pbRecoverHP(20)
+          if user.canHeal? && user.pbRecoverHP(20) > 0
             battle.pbDisplay(_INTL("{1} restored a little more HP from the {2}!", user.pbThis, old_target_item.real_name))
           end
         when :BALMMUSHROOM
-          if user.canHeal?
-            user.pbRecoverHP(50)
+          if user.canHeal? && user.pbRecoverHP(50) > 0
             battle.pbDisplay(_INTL("{1} restored some more HP from the {2}!", user.pbThis, old_target_item.real_name))
           end
         when :REVIVALHERB, :MAXHONEY
@@ -3533,7 +3534,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TASTYTREAT,
           end
           user.pbCureStatus(false)
           user.pbCureConfusion
-          battle.pbDisplay(_INTL("{1} became healthy.", user.pbThis))
+          battle.pbDisplay(_INTL("{1} became healthy.", user.pbThis)) unless user.fainted?
         when :ABSORBBULB
           if user.pbCanRaiseStatStage?(:SPECIAL_ATTACK, user)
             user.pbRaiseStatStage(:SPECIAL_ATTACK, 1, user)
@@ -3688,11 +3689,12 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:DRYSKIN,
     when :Rain, :HeavyRain, :Thunderstorm
       next if !battler.canHeal?
       battle.pbShowAbilitySplash(battler)
-      battler.pbRecoverHP(battler.totalhp / 8)
-      if Battle::Scene::USE_ABILITY_SPLASH
-        battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
-      else
-        battle.pbDisplay(_INTL("{1}'s {2} restored its HP.", battler.pbThis, battler.abilityName))
+      if battler.pbRecoverHP(battler.totalhp / 8) > 0
+        if Battle::Scene::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+        else
+          battle.pbDisplay(_INTL("{1}'s {2} restored its HP.", battler.pbThis, battler.abilityName))
+        end
       end
       battle.pbHideAbilitySplash(battler)
     end
@@ -3704,11 +3706,12 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:ICEBODY,
     next unless weather == :Hail
     next if !battler.canHeal?
     battle.pbShowAbilitySplash(battler)
-    battler.pbRecoverHP(battler.totalhp / 16)
-    if Battle::Scene::USE_ABILITY_SPLASH
-      battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
-    else
-      battle.pbDisplay(_INTL("{1}'s {2} restored its HP.", battler.pbThis, battler.abilityName))
+    if battler.pbRecoverHP(battler.totalhp / 16) > 0
+      if Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} restored its HP.", battler.pbThis, battler.abilityName))
+      end
     end
     battle.pbHideAbilitySplash(battler)
   }
@@ -3732,11 +3735,12 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:RAINDISH,
     next unless [:Rain, :HeavyRain, :Thunderstorm].include?(weather)
     next if !battler.canHeal?
     battle.pbShowAbilitySplash(battler)
-    battler.pbRecoverHP(battler.totalhp / 16)
-    if Battle::Scene::USE_ABILITY_SPLASH
-      battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
-    else
-      battle.pbDisplay(_INTL("{1}'s {2} restored its HP.", battler.pbThis, battler.abilityName))
+    if battler.pbRecoverHP(battler.totalhp / 16) > 0
+      if Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} restored its HP.", battler.pbThis, battler.abilityName))
+      end
     end
     battle.pbHideAbilitySplash(battler)
   }
@@ -3887,11 +3891,12 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:DEEPSLEEPER,
   proc { |ability,battler,battle|
     next if !battler.asleep? || battler.hp == battler.totalhp
     battle.pbShowAbilitySplash(battler)
-    battler.pbRecoverHP(battler.totalhp/8)
-    if Battle::Scene::USE_ABILITY_SPLASH
-      battle.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
-    else
-      battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",battler.pbThis,battler.abilityName))
+    if battler.pbRecoverHP(battler.totalhp/8) > 0
+      if Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",battler.pbThis,battler.abilityName))
+      end
     end
     battle.pbHideAbilitySplash(battler)
   }
@@ -3907,11 +3912,12 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:SYNTHESIZE,
     next if PBDayNight.isNight?
     battle.pbShowAbilitySplash(battler)
     healfactor = [:Sun, :HarshSun].include?(battle.pbWeather) ? 8 : 16
-    battler.pbRecoverHP(battler.totalhp/healfactor)
-    if Battle::Scene::USE_ABILITY_SPLASH
-      battle.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
-    else
-      battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",battler.pbThis,battler.abilityName))
+    if battler.pbRecoverHP(battler.totalhp/healfactor) > 0
+      if Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("{1}'s HP was restored.",battler.pbThis))
+      else
+        battle.pbDisplay(_INTL("{1}'s {2} restored its HP.",battler.pbThis,battler.abilityName))
+      end
     end
     battle.pbHideAbilitySplash(battler)
   }
@@ -3930,11 +3936,12 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:SOOTHINGSHINE,
     healfactor = [:Sun, :HarshSun].include?(battle.pbWeather) ? 8 : 16
     battle.allSameSideBattlers(battler.index).each do |b|
       next if !b.canHeal?
-      b.pbRecoverHP(b.totalhp/healfactor)
-      if Battle::Scene::USE_ABILITY_SPLASH
-        battle.pbDisplay(_INTL("{1}'s HP was restored.",b.pbThis))
-      else
-        battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s HP.",battler.pbThis,battler.abilityName,b.pbThis(true)))
+      if b.pbRecoverHP(b.totalhp/healfactor) > 0
+        if Battle::Scene::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1}'s HP was restored.",b.pbThis))
+        else
+          battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s HP.",battler.pbThis,battler.abilityName,b.pbThis(true)))
+        end
       end
     end
     battle.pbHideAbilitySplash(battler)
@@ -3954,11 +3961,12 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:ADDITION,
     healmult = battle.pbCheckAllyAbility(:SUBTRACTION, battler.index) ? 0.3 : 0.1
     battle.allSameSideBattlers(battler.index).each do |b|
       next if !b.canHeal?
-      b.pbRecoverHP(b.totalhp * healmult)
-      if Battle::Scene::USE_ABILITY_SPLASH
-        battle.pbDisplay(_INTL("{1}'s HP was restored.",b.pbThis))
-      else
-        battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s HP.",battler.pbThis,battler.abilityName,b.pbThis(true)))
+      if b.pbRecoverHP(b.totalhp * healmult) > 0
+        if Battle::Scene::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1}'s HP was restored.",b.pbThis))
+        else
+          battle.pbDisplay(_INTL("{1}'s {2} restored {3}'s HP.",battler.pbThis,battler.abilityName,b.pbThis(true)))
+        end
       end
     end
     battle.pbHideAbilitySplash(battler)
@@ -4037,12 +4045,13 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SWEETDREAMS,
       next if !b.near?(battler) || !b.asleep?
       next if !b.canHeal?
       battle.pbShowAbilitySplash(battler)
-      b.pbRecoverHP(b.totalhp/8)
-      if Battle::Scene::USE_ABILITY_SPLASH
-        battle.pbDisplay(_INTL("{1} is having a nice dream!",b.pbThis))
-      else
-        battle.pbDisplay(_INTL("{1} is having a nice dream thanks to {2}'s {3}!",b.pbThis,
-           battler.pbThis(true),battler.abilityName))
+      if b.pbRecoverHP(b.totalhp/8) > 0
+        if Battle::Scene::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1} is having a nice dream!",b.pbThis))
+        else
+          battle.pbDisplay(_INTL("{1} is having a nice dream thanks to {2}'s {3}!",b.pbThis,
+            battler.pbThis(true),battler.abilityName))
+        end
       end
       battle.pbHideAbilitySplash(battler)
     end
@@ -4115,12 +4124,13 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
       next if !b.takesIndirectDamage?(Battle::Scene::USE_ABILITY_SPLASH)
       oldHP = b.hp
       b.pbReduceHP(hpDrain)
-      battler.pbRecoverHP(hpDrain) if battler.canHeal?
-      if Battle::Scene::USE_ABILITY_SPLASH
-        battle.pbDisplay(_INTL("{1} absorbed {2}'s HP!",battler.pbThis,b.pbThis(true)))
-      else
-        battle.pbDisplay(_INTL("{1} absorbed {2}'s HP with {3}!",battler.pbThis,
-           b.pbThis(true),battler.abilityName))
+      if battler.canHeal? && battler.pbRecoverHP(hpDrain) > 0
+        if Battle::Scene::USE_ABILITY_SPLASH
+          battle.pbDisplay(_INTL("{1} absorbed {2}'s HP!",battler.pbThis,b.pbThis(true)))
+        else
+          battle.pbDisplay(_INTL("{1} absorbed {2}'s HP with {3}!",battler.pbThis,
+            b.pbThis(true),battler.abilityName))
+        end
       end
       b.pbItemHPHealCheck
       b.pbTakeEffectDamage(oldHP)
@@ -5446,13 +5456,13 @@ Battle::AbilityEffects::OnBattlerFainting.add(:LASTBASTION,
 Battle::AbilityEffects::OnBattlerFainting.add(:EFFULGE,
   proc { |ability,battler,fainted,battle|
     next if !battler.isSpecies?(:KINDESHU)
-    next if !battler.opposes?(fainted)
-    hp_gain = (battler.totalhp/4) + 1 - battler.hp
+    hp_gain = (battler.totalhp / 4) + 1 - battler.hp
     next if hp_gain <= 0
     battle.pbShowAbilitySplash(battler)
-    battler.pbRecoverHP(hp_gain)
-    battler.pbChangeForm(0, nil)
-    battle.pbDisplay(_INTL("{1} fed off of {2}'s light energy and recovered HP!", battler.pbThis, fainted.pbThis(true)))
+    if battler.pbRecoverHP(hp_gain) > 0
+      battler.pbChangeForm(0, nil)
+      battle.pbDisplay(_INTL("{1} fed off of {2}'s light energy and recovered HP!", battler.pbThis, fainted.pbThis(true)))
+    end
     battle.pbHideAbilitySplash(battler)
   }
 )

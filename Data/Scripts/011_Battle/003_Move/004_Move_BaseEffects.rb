@@ -402,8 +402,9 @@ class Battle::Move::HealingMove < Battle::Move
 
   def pbEffectGeneral(user)
     amt = pbHealAmount(user)
-    user.pbRecoverHP(amt)
-    @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+    if user.pbRecoverHP(amt) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+    end
   end
 end
 

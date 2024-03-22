@@ -755,6 +755,9 @@ class Battle::AI
         score -= user.hp * 100 / user.totalhp
       end
     #---------------------------------------------------------------------------
+    when "UserFaints"
+      score -= user.hp * 100 / user.totalhp
+    #---------------------------------------------------------------------------
     when "UserFaintsPowersUpInMistyTerrainExplosive"
       reserves = @battle.pbAbleNonActiveCount(user.idxOwnSide)
       foes     = @battle.pbAbleNonActiveCount(user.idxOpposingSide)
@@ -1429,6 +1432,12 @@ class Battle::AI
       else
         score -= 110
       end
+    #---------------------------------------------------------------------------
+    when "AlwaysHitsBeforeHealingEffects"
+      # Based on the assumption that if the target has lower health, it's more
+      # likely that they might try to heal in some way.
+      score += 20 if target.hp <= (target.totalhp / 2.0).round
+      score += 20 if target.hp <= (target.totalhp / 4.0).round
     #---------------------------------------------------------------------------
     else
       return aiEffectScorePart2_pbGetMoveScoreFunctionCode(score, move, user, target, skill)

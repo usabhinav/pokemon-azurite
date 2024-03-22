@@ -9283,7 +9283,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = BothSides
-FunctionCode = StartDarken
+FunctionCode = StartDarkenedEffect
 Description = Shrouds the battlefield in darkness, reducing the accuracy of all moves that aren't Dark, Light, Fire, Cosmic or Electric. Lasts until a Light, Fire or Electric type move is used.
 #-------------------------------
 [DENY]
@@ -9294,8 +9294,7 @@ Power = 80
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-Priority = 5
-FunctionCode = AlwaysBeforeHealingEffects
+FunctionCode = AlwaysHitsBeforeHealingEffects
 Flags = Contact,CanProtect,CanMirrorMove
 Description = Always attacks before any kind of healing.
 #-------------------------------
@@ -10059,7 +10058,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = NearOther
-FunctionCode = LowerTargetAccuracy2Evasion1
+FunctionCode = LowerTargetAccuracy2AndLowerUserEvasion1
 Flags = CanProtect,CanMirrorMove
 Description = Shine brightly to tamper with your opponent's sight, but be more easily noticed in the process.
 #-------------------------------
@@ -10816,7 +10815,7 @@ Accuracy = 80
 TotalPP = 10
 Target = NearOther
 FunctionCode = MultiTurnAttackPowersUpEachTurn
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,BallRolling
 Description = The user mercilessly pounds the opponent for five turns, increasing in power each turn.
 #-------------------------------
 [THREATEN]

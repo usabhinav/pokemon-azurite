@@ -9050,7 +9050,7 @@ Category = Status
 Accuracy = 60
 TotalPP = 20
 Target = NearOther
-FunctionCode = ParalyzeTargetOrAttractTargetOrConfuseTarget
+FunctionCode = ParalyzeTargetAndAttractOrConfuseTargetDependingOnSpecies
 Flags = CanProtect,CanMirrorMove
 Description = Although innaccurate, it can both paralyze and infatuate/confuse the target, depending on the species.
 #-------------------------------
@@ -10219,17 +10219,6 @@ FunctionCode = HitsAgainAtStartOfNextTurnAgainstRandomFoe
 Flags = CanProtect,CanMirrorMove
 Description = The user throws a ring of mystic of energy at the foe that loops around and hits again after a turn.
 #-------------------------------
-[SLEEPTEST]
-Name = Sleeptest
-Type = CRYSTAL
-Category = Status
-Accuracy = 0
-TotalPP = 15
-Target = NearOther
-Priority = 5
-FunctionCode = 21B
-Description = sleeptest
-#-------------------------------
 [ROCKETPUNCH]
 Name = Rocket Punch
 Type = ELECTRIC
@@ -11015,33 +11004,9 @@ Power = 20
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = 254
+FunctionCode = ExtraEffect
 Flags = Contact,CanProtect
 Description = Modified Fire Punch, used in the Forest Fire ability's effect.
-#-------------------------------
-[THUNDERSTORMWEAK]
-Name = Thunderstorm Weak
-Type = ELECTRIC
-Category = Special
-Power = 60
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = 254
-Flags = CanProtect
-Description = Modified Thunderbolt, used as the weak attack in thunderstorm weather.
-#-------------------------------
-[THUNDERSTORMSTRONG]
-Name = Thunderstorm Strong
-Type = ELECTRIC
-Category = Special
-Power = 110
-Accuracy = 100
-TotalPP = 10
-Target = NearOther
-FunctionCode = 254
-Flags = CanProtect
-Description = Modified Thunder, used as the strong attack in thunderstorm weather.
 #-------------------------------
 [MUDSLIDE]
 Name = Mud Slide
@@ -12702,7 +12667,7 @@ Power = 200
 Accuracy = 100
 TotalPP = 5
 Target = AllNearOthers
-FunctionCode = 29E
+FunctionCode = UserFaintsExplosiveTypeIsUserFirstType
 Flags = CanProtect,CanMirrorMove
 Description = The user blows up to inflict damage on all Pokémon in battle. The user faints upon using this move.
 #-------------------------------

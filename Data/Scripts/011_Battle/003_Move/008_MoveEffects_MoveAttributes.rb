@@ -1135,7 +1135,9 @@ end
 #===============================================================================
 class Battle::Move::RecoilQuarterOfDamageDealt < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
-    return (target.damageState.totalHPLost / 4.0).round
+    recoil_damage = (target.damageState.totalHPLost / 4.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
   end
 end
 
@@ -1144,7 +1146,9 @@ end
 #===============================================================================
 class Battle::Move::RecoilThirdOfDamageDealt < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
-    return (target.damageState.totalHPLost / 3.0).round
+    recoil_damage = (target.damageState.totalHPLost / 3.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
   end
 end
 
@@ -1154,7 +1158,9 @@ end
 #===============================================================================
 class Battle::Move::RecoilThirdOfDamageDealtParalyzeTarget < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
-    return (target.damageState.totalHPLost / 3.0).round
+    recoil_damage = (target.damageState.totalHPLost / 3.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
   end
 
   def pbAdditionalEffect(user, target)
@@ -1169,7 +1175,9 @@ end
 #===============================================================================
 class Battle::Move::RecoilThirdOfDamageDealtBurnTarget < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
-    return (target.damageState.totalHPLost / 3.0).round
+    recoil_damage = (target.damageState.totalHPLost / 3.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
   end
 
   def pbAdditionalEffect(user, target)
@@ -1184,7 +1192,20 @@ end
 #===============================================================================
 class Battle::Move::RecoilHalfOfDamageDealt < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
-    return (target.damageState.totalHPLost / 2.0).round
+    recoil_damage = (target.damageState.totalHPLost / 2.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 1/2 of their current HP. (Sunder Surge)
+#===============================================================================
+class Battle::Move::RecoilHalfOfUserCurrentHP < Battle::Move::RecoilMove
+  def pbRecoilDamage(user,target)
+    recoil_damage = (user.hp / 2.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
   end
 end
 
@@ -1384,7 +1405,7 @@ class Battle::Move::IgnoreTargetDefSpDefEvaStatStages < Battle::Move
 end
 
 #===============================================================================
-# This move's type is the same as the user's first type. (Revelation Dance, Kamikaze)
+# This move's type is the same as the user's first type. (Revelation Dance)
 #===============================================================================
 class Battle::Move::TypeIsUserFirstType < Battle::Move
   def pbBaseType(user)
@@ -1836,7 +1857,9 @@ end
 #===============================================================================
 class Battle::Move::RecoilThirdOfDamageDealtFreezeTarget < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
-    return (target.damageState.totalHPLost / 3.0).round
+    recoil_damage = (target.damageState.totalHPLost / 3.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
   end
 
   def pbAdditionalEffect(user, target)
@@ -1904,24 +1927,15 @@ class Battle::Move::DoublePowerIfNoBattlersActed < Battle::Move
 end
 
 #===============================================================================
-# Sunder Surge
-#===============================================================================
-class Battle::Move::RecoilHalfOfUserHP < Battle::Move::RecoilMove
-  def pbRecoilDamage(user,target)
-    recoilDmg = user.totalhp / 2
-    recoilDmg = (recoilDmg * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
-    return recoilDmg
-  end
-end
-
-#===============================================================================
 # User takes recoil damage equal to 30% of the damage this move dealt, unless
 # the user was hit by a contact move in the same turn, in which case, this
 # move's power increases by 50%, won't miss, and no recoil. (Comet Swing)
 #===============================================================================
 class Battle::Move::Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
-    return (target.damageState.totalHPLost * 0.3).round
+    recoil_damage = (target.damageState.totalHPLost * 0.3).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
   end
 
   def pbBaseDamage(baseDmg, user, target)

@@ -56,11 +56,14 @@ class Battle
       targets = []
       target = nil
       priority.each do |b|
+        next if b.effectiveWeather != :Thunderstorm
         next if !b.takesThunderstormDamage?
         if b.hasActiveAbility?(:LIGHTNINGROD)
           target = b
           break
         else
+          bTypes = b.pbTypes(true)
+          next if Effectiveness.ineffective?(Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2]))
           targets.push(b)
         end
       end
@@ -91,22 +94,21 @@ class Battle
         else
           # Deal Electric-type damage
           bTypes = target.pbTypes(true)
+          # Effectiveness will be non-zero because we already filtered out immune battlers before this.
           eff = Effectiveness.calculate(:ELECTRIC, bTypes[0], bTypes[1], bTypes[2])
-          if !Effectiveness.ineffective?(eff)
-            # Choose weak or strong
-            strongAttack = pbRandom(25) < 5
-            div = strongAttack ? 8 : 16
-            eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
-            @scene.pbDamageAnimation(target)
-            target.pbReduceHP(target.totalhp*eff/div)
-            if strongAttack
-              pbDisplay(_INTL("{1} was struck directly by heavy lightning!", target.pbThis))
-            else
-              pbDisplay(_INTL("{1} was struck by lightning!", target.pbThis))
-            end
-            target.pbItemHPHealCheck
-            target.pbFaint if target.fainted?
+          # Choose weak or strong
+          strongAttack = pbRandom(25) < 5
+          div = strongAttack ? 8 : 16
+          eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+          @scene.pbDamageAnimation(target)
+          target.pbReduceHP(target.totalhp * eff / div)
+          if strongAttack
+            pbDisplay(_INTL("{1} was struck directly by heavy lightning!", target.pbThis))
+          else
+            pbDisplay(_INTL("{1} was struck by lightning!", target.pbThis))
           end
+          target.pbItemHPHealCheck
+          target.pbFaint if target.fainted?
         end
       end
     end

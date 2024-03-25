@@ -370,7 +370,9 @@ end
 #===============================================================================
 class Battle::Move::UserLosesHalfHP < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
-    return (target.damageState.totalHPLost / 2.0).round
+    recoil_damage = (target.damageState.totalHPLost / 2.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
   end
 
   def pbEffectAfterAllHits(user, target)

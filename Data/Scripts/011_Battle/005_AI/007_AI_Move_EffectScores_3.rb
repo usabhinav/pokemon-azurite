@@ -306,6 +306,12 @@ class Battle::AI
     when "RecoilHalfOfDamageDealt"
       score -= 40
     #---------------------------------------------------------------------------
+    when "RecoilHalfOfUserCurrentHP"
+      # If they are at full health, losing 50% is a huge loss. On the other
+      # hand, if they are very close to zero HP, especially if they are at one
+      # HP, they would make themselves even closer to being KO'd.
+      score -= 40
+    #---------------------------------------------------------------------------
     when "Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil"
       score -= 30
     #---------------------------------------------------------------------------

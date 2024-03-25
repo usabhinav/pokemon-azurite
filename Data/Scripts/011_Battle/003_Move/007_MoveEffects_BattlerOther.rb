@@ -134,7 +134,7 @@ class Battle::Move::BadPoisonTarget < Battle::Move::PoisonTarget
 end
 
 #===============================================================================
-# Poisons or sleeps or paralyzes the target.
+# Poisons or sleeps or paralyzes the target. (Powder Storm)
 #===============================================================================
 class Battle::Move::PoisonTargetOrSleepTargetOrParalyzeTarget < Battle::Move
   def canMagicCoat?; return true; end
@@ -244,6 +244,63 @@ class Battle::Move::ParalyzeFlinchTarget < Battle::Move
       target.pbParalyze(user)
     end
     target.pbFlinch(user) if @battle.pbRandom(100) < chance
+  end
+end
+
+#===============================================================================
+# Paralyzes and either infatuates or confuses the target, depending on the
+# species (always infatuate for Kurian Plusle, always confuse for Kurian Minun,
+# otherwise it randomly picks one of the two). (Volt Attract)
+#===============================================================================
+class Battle::Move::ParalyzeTargetAndAttractOrConfuseTargetDependingOnSpecies < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if user.isSpecies?(:PLUSLE) && user.form == 1
+      ret = !target.pbCanParalyze?(user, false, self) &&
+            !target.pbCanAttract?(user, false)
+    elsif user.isSpecies?(:MINUN) && user.form == 1
+      ret = !target.pbCanParalyze?(user, false, self) &&
+            !target.pbCanConfuse?(user, false, self)
+    else
+      ret = !target.pbCanParalyze?(user, false, self) &&
+            !target.pbCanConfuse?(user, false, self) &&
+            !target.pbCanAttract?(user, false)
+    end
+    if ret
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+    end
+    return ret
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    if target.pbCanParalyze?(user, false, self)
+      target.pbParalyze(user)
+    end
+    should_attempt_infatuate_instead_of_confuse = nil
+    can_attract = target.pbCanAttract?(user, false)
+    can_confuse = target.pbCanConfuse?(user, false, self)
+    if user.isSpecies?(:PLUSLE) && user.form == 1
+      # Infatuate
+      should_attempt_infatuate_instead_of_confuse = true
+    elsif user.isSpecies?(:MINUN) && user.form == 1
+      # Confuse
+      should_attempt_infatuate_instead_of_confuse = false
+    elsif !can_attract
+      # Confuse because infatuation is not possible
+      should_attempt_infatuate_instead_of_confuse = false
+    elsif !can_confuse
+      # Infatuate because confusion is not possible
+      should_attempt_infatuate_instead_of_confuse = true
+    else
+      # Either infatuate or confuse
+      should_attempt_infatuate_instead_of_confuse = (@battle.pbRandom(2) == 0)
+    end
+    if should_attempt_infatuate_instead_of_confuse
+      target.pbAttract(user) if can_attract
+    else
+      target.pbConfuse if can_confuse
+    end
   end
 end
 

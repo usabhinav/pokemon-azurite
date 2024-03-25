@@ -219,7 +219,9 @@ class Battle::Move::CrashDamageIfFailsUnusableInGravity < Battle::Move
     return if !user.takesIndirectDamage?
     @battle.pbDisplay(_INTL("{1} kept going and crashed!", user.pbThis))
     @battle.scene.pbDamageAnimation(user)
-    user.pbReduceHP(user.totalhp / 2, false)
+    crash_damage = user.totalhp / 2
+    crash_damage = (crash_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    user.pbReduceHP(crash_damage, false)
     user.pbItemHPHealCheck
     user.pbFaint if user.fainted?
   end
@@ -262,6 +264,16 @@ class Battle::Move::StartHailWeather < Battle::Move::WeatherMove
   def initialize(battle, move)
     super
     @weatherType = :Hail
+  end
+end
+
+#===============================================================================
+# Starts thunderstorm weather. (Thunderstorm)
+#===============================================================================
+class Battle::Move::StartThunderstormWeather < Battle::Move::WeatherMove
+  def initialize(battle, move)
+    super
+    @weatherType = :Thunderstorm
   end
 end
 
@@ -494,6 +506,28 @@ class Battle::Move::AddAsteroidBeltToFoeSide < Battle::Move
 end
 
 #===============================================================================
+# Entry hazard. Lays volt spikes on the opposing side (max. 2 layers).
+# (Volt Spikes)
+#===============================================================================
+class Battle::Move::AddVoltSpikesToFoeSide < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.pbOpposingSide.effects[PBEffects::VoltSpikes] >= 2
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::VoltSpikes] += 1
+    @battle.pbDisplay(_INTL("Electric spikes were scattered all around {1}'s feet!",
+                            user.pbOpposingTeam(true)))
+  end
+end
+
+#===============================================================================
 # All effects that apply to one side of the field are swapped to the opposite
 # side. (Court Change)
 #===============================================================================
@@ -633,6 +667,11 @@ class Battle::Move::RemoveUserBindingAndEntryHazards < Battle::Move::StatUpMove
     if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
       user.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
       @battle.pbDisplay(_INTL("{1} blew away volt spikes!", user.pbThis))
+      @battle.eachSameSideBattler(target.index) do |t|
+        if t.pbCanParalyze?(user, false, self)
+          t.pbParalyze(user)
+        end
+      end
     end
     if user.pbOwnSide.effects[PBEffects::StickyWeb]
       user.pbOwnSide.effects[PBEffects::StickyWeb] = false
@@ -845,7 +884,9 @@ class Battle::Move::CrashDamageWithSpeedIfFails < Battle::Move
     return if !user.takesIndirectDamage?
     @battle.pbDisplay(_INTL("{1} kept going and crashed!", user.pbThis))
     @battle.scene.pbDamageAnimation(user)
-    user.pbReduceHP(user.pbSpeed, false)
+    crash_damage = user.pbSpeed
+    crash_damage = (crash_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    user.pbReduceHP(crash_damage, false)
     user.pbItemHPHealCheck
     user.pbFaint if user.fainted?
   end
@@ -856,26 +897,4 @@ end
 #===============================================================================
 class Battle::Move::ExtraEffect < Battle::Move
   def pbDisplayUseMessage(user); end
-end
-
-#===============================================================================
-# Entry hazard. Lays poison spikes on the opposing side (max. 2 layers).
-# (Toxic Spikes)
-#===============================================================================
-class Battle::Move::AddVoltSpikesToFoeSide < Battle::Move
-  def canMagicCoat?; return true; end
-
-  def pbMoveFailed?(user, targets)
-    if user.pbOpposingSide.effects[PBEffects::VoltSpikes] >= 2
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    user.pbOpposingSide.effects[PBEffects::VoltSpikes] += 1
-    @battle.pbDisplay(_INTL("Electric spikes were scattered all around {1}'s feet!",
-                            user.pbOpposingTeam(true)))
-  end
 end

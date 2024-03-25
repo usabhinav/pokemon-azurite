@@ -1575,6 +1575,45 @@ class Battle::Move::RaisePlusMinusUserAndAlliesDefSpDef1 < Battle::Move
 end
 
 #===============================================================================
+# Increases the user's and its ally's Attack and Speed by 1 stage each.
+# (Thunder Armor)
+#===============================================================================
+class Battle::Move::RaiseUserAndAlliesAttack1Speed1 < Battle::Move
+  def ignoresSubstitute?(user); return true; end
+  def canSnatch?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    @validTargets = []
+    @battle.allSameSideBattlers(user).each do |b|
+      next if !b.pbCanRaiseStatStage?(:ATTACK, user, self) &&
+              !b.pbCanRaiseStatStage?(:SPEED, user, self)
+      @validTargets.push(b)
+    end
+    if @validTargets.length == 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if @validTargets.any? { |b| b.index == target.index }
+    @battle.pbDisplay(_INTL("{1}'s stats can't be raised further!", target.pbThis)) if show_message
+    return true
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    showAnim = true
+    if target.pbCanRaiseStatStage?(:ATTACK, user, self)
+      showAnim = false if target.pbRaiseStatStage(:ATTACK, 1, user, showAnim)
+    end
+    if target.pbCanRaiseStatStage?(:SPEED, user, self)
+      target.pbRaiseStatStage(:SPEED, 1, user, showAnim)
+    end
+  end
+end
+
+#===============================================================================
 # Increases the Attack and Special Attack of all Grass-type Pokémon in battle by
 # 1 stage each. Doesn't affect airborne Pokémon. (Rototiller)
 #===============================================================================

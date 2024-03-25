@@ -290,7 +290,7 @@ class Battle::Move
       user.effects[PBEffects::MicleBerry] = false
       modifiers[:accuracy_multiplier] *= 1.2
     end
-    if @battle.pbWeather == :Thunderstorm && @calcType == :ELECTRIC
+    if user.effectiveWeather == :Thunderstorm && @calcType == :ELECTRIC
       modifiers[:accuracy_multiplier] *= 1.1
     end
     if @battle.field.effects[PBEffects::Darkened] && ![:DARK, :LIGHT, :FIRE, :COSMIC, :ELECTRIC].include?(@calcType)

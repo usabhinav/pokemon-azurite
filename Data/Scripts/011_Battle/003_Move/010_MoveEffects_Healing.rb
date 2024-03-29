@@ -615,6 +615,17 @@ class Battle::Move::UserFaintsPowersUpInMistyTerrainExplosive < Battle::Move::Us
 end
 
 #===============================================================================
+# User faints, even if the move does nothing else. This move's type is the same
+# as the user's first type. (Kamikaze ability's attack move)
+#===============================================================================
+class Battle::Move::UserFaintsExplosiveTypeIsUserFirstType < Battle::Move::UserFaintsExplosive
+  def pbBaseType(user)
+    userTypes = user.pbTypes(true)
+    return userTypes[0] || @type
+  end
+end
+
+#===============================================================================
 # Inflicts fixed damage equal to user's current HP. (Final Gambit)
 # User faints (if successful).
 #===============================================================================

@@ -730,8 +730,6 @@ Magnum Punch
 Vine Tangle
 Field Collapse
 Forest Fire Attack
-Thunderstorm Weak
-Thunderstorm Strong
 Mud Slide
 Tunnel
 Deep Freeze

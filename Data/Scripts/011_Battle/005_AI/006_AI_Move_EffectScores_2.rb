@@ -133,6 +133,43 @@ class Battle::AI
         score -= 90 if move.statusMove?
       end
     #---------------------------------------------------------------------------
+    when "ParalyzeTargetAndAttractOrConfuseTargetDependingOnSpecies"
+      has_any_effect = false
+      if target.pbCanParalyze?(user, false)
+        score += 30
+        if skill >= PBTrainerAI.mediumSkill
+          aspeed = pbRoughStat(user, :SPEED, skill)
+          ospeed = pbRoughStat(target, :SPEED, skill)
+          if aspeed < ospeed
+            score += 30
+          elsif aspeed > ospeed
+            score -= 40
+          end
+        end
+        if skill >= PBTrainerAI.highSkill
+          score -= 40 if target.hasActiveAbility?([:GUTS, :MARVELSCALE, :QUICKFEET])
+        end
+        has_any_effect = true
+      end
+      if user.isSpecies?(:PLUSLE) && user.form == 1
+        if target.pbCanAttract?(user, false)
+          score += 30
+          has_any_effect = true
+        end
+      elsif user.isSpecies?(:MINUN) && user.form == 1
+        if target.pbCanConfuse?(user, false)
+          score += 30
+          has_any_effect = true
+        end
+      elsif target.pbCanAttract?(user, false) || target.pbCanConfuse?(user, false)
+        score += 30
+        has_any_effect = true
+      end
+      # If none of the above can happen, no point in using this move.
+      if !has_any_effect && skill >= PBTrainerAI.mediumSkill
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
     when "BurnTarget"
       if target.pbCanBurn?(user, false)
         score += 30

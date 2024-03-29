@@ -94,6 +94,14 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
+    when "StartThunderstormWeather"
+      if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
+         @battle.pbCheckGlobalAbility(:CLOUDNINE)
+        score -= 90
+      elsif @battle.field.weather == :Thunderstorm
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
     when "StartElectricTerrain"
     #---------------------------------------------------------------------------
     when "StartGrassyTerrain"
@@ -128,16 +136,6 @@ class Battle::AI
         score += [26, 13][user.pbOpposingSide.effects[PBEffects::ToxicSpikes]]
       end
     #---------------------------------------------------------------------------
-    when "AddVoltSpikesToFoeSide"
-      if user.pbOpposingSide.effects[PBEffects::VoltSpikes] >= 2
-        score -= 90
-      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
-        score -= 90  # Opponent can't switch in any Pokemon
-      else
-        score += 8 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
-        score += [26, 13][user.pbOpposingSide.effects[PBEffects::VoltSpikes]]
-      end
-    #---------------------------------------------------------------------------
     when "AddStealthRocksToFoeSide"
       if user.pbOpposingSide.effects[PBEffects::StealthRock]
         score -= 90
@@ -152,6 +150,16 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "AddAsteroidBeltToFoeSide"
       score -= 95 if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
+    #---------------------------------------------------------------------------
+    when "AddVoltSpikesToFoeSide"
+      if user.pbOpposingSide.effects[PBEffects::VoltSpikes] >= 2
+        score -= 90
+      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+        score -= 90  # Opponent can't switch in any Pokemon
+      else
+        score += 8 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
+        score += [26, 13][user.pbOpposingSide.effects[PBEffects::VoltSpikes]]
+      end
     #---------------------------------------------------------------------------
     when "SwapSideEffects"
       if skill >= PBTrainerAI.mediumSkill
@@ -1344,6 +1352,22 @@ class Battle::AI
       if hasEffect
         score -= user.stages[:DEFENSE] * 10
         score -= user.stages[:SPECIAL_DEFENSE] * 10
+      else
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
+    when "RaiseUserAndAlliesAttack1Speed1"
+      hasEffect = user.statStageAtMax?(:ATTACK) &&
+                  user.statStageAtMax?(:SPEED)
+      user.allAllies.each do |b|
+        next if b.statStageAtMax?(:ATTACK) && b.statStageAtMax?(:SPEED)
+        hasEffect = true
+        score -= b.stages[:ATTACK] * 10
+        score -= b.stages[:SPEED] * 10
+      end
+      if hasEffect
+        score -= user.stages[:ATTACK] * 10
+        score -= user.stages[:SPEED] * 10
       else
         score -= 90
       end

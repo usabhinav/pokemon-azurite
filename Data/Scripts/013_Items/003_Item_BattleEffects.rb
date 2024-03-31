@@ -519,13 +519,15 @@ ItemHandlers::BattleUseOnPokemon.add(:MAXREVIVE, proc { |item, pokemon, battler,
 ItemHandlers::BattleUseOnPokemon.copy(:MAXREVIVE, :MAXHONEY)
 
 ItemHandlers::BattleUseOnPokemon.add(:ENERGYPOWDER, proc { |item, pokemon, battler, choices, scene|
-  if pbBattleHPItem(pokemon, battler, (Settings::REBALANCED_HEALING_ITEM_AMOUNTS) ? 60 : 50, scene)
+  # Explicitly check for true because pbBattleHPItem can return a string, which means that it was not successfully used.
+  if pbBattleHPItem(pokemon, battler, (Settings::REBALANCED_HEALING_ITEM_AMOUNTS) ? 60 : 50, scene) == true
     pokemon.changeHappiness("powder")
   end
 })
 
 ItemHandlers::BattleUseOnPokemon.add(:ENERGYROOT, proc { |item, pokemon, battler, choices, scene|
-  if pbBattleHPItem(pokemon, battler, (Settings::REBALANCED_HEALING_ITEM_AMOUNTS) ? 120 : 200, scene)
+  # Explicitly check for true because pbBattleHPItem can return a string, which means that it was not successfully used.
+  if pbBattleHPItem(pokemon, battler, (Settings::REBALANCED_HEALING_ITEM_AMOUNTS) ? 120 : 200, scene) == true
     pokemon.changeHappiness("energyroot")
   end
 })

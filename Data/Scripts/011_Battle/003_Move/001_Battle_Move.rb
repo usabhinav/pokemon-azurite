@@ -200,4 +200,32 @@ class Battle::Move
   end
 
   def display_accuracy(battler); return @realMove.display_accuracy(battler.pokemon); end
+
+  def inflictRandomStatusOnTarget(user, target, choose_from_statuses)
+    possible_statuses = []
+    possible_statuses.push(:BURN) if choose_from_statuses.include?(:BURN) && target.pbCanBurn?(user, false, self)
+    possible_statuses.push(:PARALYZE) if choose_from_statuses.include?(:PARALYZE) && target.pbCanParalyze?(user, false, self)
+    possible_statuses.push(:POISON) if choose_from_statuses.include?(:POISON) && target.pbCanPoison?(user, false, self)
+    possible_statuses.push(:SLEEP) if choose_from_statuses.include?(:SLEEP) && target.pbCanSleep?(user, false, self)
+    possible_statuses.push(:FREEZE) if choose_from_statuses.include?(:FREEZE) && target.pbCanFreeze?(user, false, self)
+    possible_statuses.push(:CONFUSE) if choose_from_statuses.include?(:CONFUSE) && target.pbCanConfuse?(user, false, self)
+    possible_statuses.push(:ATTRACT) if choose_from_statuses.include?(:ATTRACT) && target.pbCanAttract?(user, false)
+    return if possible_statuses.length == 0
+    case possible_statuses.sample
+    when :BURN
+      target.pbBurn(user)
+    when :PARALYZE
+      target.pbParalyze(user)
+    when :POISON
+      target.pbPoison(user, nil, @toxic)
+    when :SLEEP
+      target.pbSleep
+    when :FREEZE
+      target.pbFreeze
+    when :CONFUSE
+      target.pbConfuse
+    else
+      target.pbAttract(user)
+    end
+  end
 end

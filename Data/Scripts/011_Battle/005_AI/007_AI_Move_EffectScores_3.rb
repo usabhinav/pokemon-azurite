@@ -315,7 +315,8 @@ class Battle::AI
     when "Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil"
       score -= 30
     #---------------------------------------------------------------------------
-    when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType"
+    when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType",
+         "EffectivenessIncludesSoundType"
     #---------------------------------------------------------------------------
     when "CategoryDependsOnHigherDamagePoisonTarget"
       score += 5 if target.pbCanPoison?(user, false)

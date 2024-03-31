@@ -304,6 +304,18 @@ class Battle::AI
         )
       end
       baseDmg = (baseDmg.to_f * mult / Effectiveness::NORMAL_EFFECTIVE).round
+    when "EffectivenessIncludesSoundType"   # Volt Wave
+      if skill >= PBTrainerAI.highSkill
+        targetTypes = target.pbTypes(true)
+        mult = Effectiveness.calculate(
+          :SOUND, targetTypes[0], targetTypes[1], targetTypes[2]
+        )
+      else
+        mult = Effectiveness.calculate(
+          :SOUND, target.types[0], target.types[1], target.effects[PBEffects::Type3]
+        )
+      end
+      baseDmg = (baseDmg.to_f * mult / Effectiveness::NORMAL_EFFECTIVE).round
     when "DoublePowerIfUserLastMoveFailed"   # Stomping Tantrum
       baseDmg *= 2 if user.lastRoundMoveFailed
     when "HitTwoTimesFlinchTarget"   # Double Iron Bash

@@ -104,7 +104,7 @@ class Battle::AI
       end
     #---------------------------------------------------------------------------
     when "PoisonTargetOrSleepTargetOrParalyzeTarget"
-      if target.pbCanPoison?(user, false) || target.pbCanSleep?(user, false) || target.pbCanParalyze?(user, false)
+      if target.pbCanParalyze?(user, false) || target.pbCanPoison?(user, false) || target.pbCanSleep?(user, false)
         score += 30
       elsif skill >= PBTrainerAI.mediumSkill
         score -= 90 if move.statusMove?
@@ -361,6 +361,25 @@ class Battle::AI
           score -= 30
         end
       end
+    #---------------------------------------------------------------------------
+    when "InflictRandomStatusOnTarget"
+      score -= 90 if move.statusMove? &&
+                     !target.pbCanBurn?(user, false) &&
+                     !target.pbCanParalyze?(user, false) &&
+                     !target.pbCanPoison?(user, false) &&
+                     !target.pbCanSleep?(user, false) &&
+                     !target.pbCanFreeze?(user, false) &&
+                     !target.pbCanConfuse?(user, false) &&
+                     !target.pbCanAttract?(user, false)
+    #---------------------------------------------------------------------------
+    when "InflictRandomStatusOnTargetExceptFreeze"
+      score -= 90 if move.statusMove? &&
+                     !target.pbCanBurn?(user, false) &&
+                     !target.pbCanParalyze?(user, false) &&
+                     !target.pbCanPoison?(user, false) &&
+                     !target.pbCanSleep?(user, false) &&
+                     !target.pbCanConfuse?(user, false) &&
+                     !target.pbCanAttract?(user, false)
     #---------------------------------------------------------------------------
     when "SetUserTypesBasedOnEnvironment"
       if !user.canChangeType?

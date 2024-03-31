@@ -134,7 +134,7 @@ class Battle::Move::BadPoisonTarget < Battle::Move::PoisonTarget
 end
 
 #===============================================================================
-# Poisons or sleeps or paralyzes the target. (Powder Storm)
+# Poisons or sleeps or paralyzes the target. (Powder Storm, Pixie Dust)
 #===============================================================================
 class Battle::Move::PoisonTargetOrSleepTargetOrParalyzeTarget < Battle::Move
   def canMagicCoat?; return true; end
@@ -146,33 +146,23 @@ class Battle::Move::PoisonTargetOrSleepTargetOrParalyzeTarget < Battle::Move
 
   def pbFailsAgainstTarget?(user, target, show_message)
     return false if damagingMove?
-    return !target.pbCanPoison?(user, show_message, self) && !target.pbCanSleep?(user, show_message, self) && !target.pbCanParalyze?(user, show_message, self)
+    if !target.pbCanParalyze?(user, false, self) &&
+       !target.pbCanPoison?(user, false, self) &&
+       !target.pbCanSleep?(user, false, self)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
   end
 
   def pbEffectAgainstTarget(user, target)
     return if damagingMove?
-    chance = rand(3)
-    case chance
-    when 0
-      target.pbPoison(user, nil, @toxic)
-    when 1
-      target.pbSleep
-    else
-      target.pbParalyze(user)
-    end
+    inflictRandomStatusOnTarget(user, target, [:PARALYZE, :POISON, :SLEEP])
   end
 
   def pbAdditionalEffect(user, target)
     return if target.damageState.substitute
-    chance = rand(3)
-    case chance
-    when 0
-      target.pbPoison(user, nil, @toxic) if target.pbCanPoison?(user, false, self)
-    when 1
-      target.pbSleep if target.pbCanSleep?(user, false, self)
-    else
-      target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
-    end
+    inflictRandomStatusOnTarget(user, target, [:PARALYZE, :POISON, :SLEEP])
   end
 end
 
@@ -789,6 +779,70 @@ class Battle::Move::AttractTarget < Battle::Move
   def pbAdditionalEffect(user, target)
     return if target.damageState.substitute
     target.pbAttract(user) if target.pbCanAttract?(user, false)
+  end
+end
+
+#===============================================================================
+# Inflicts a random status on the target. (Pixie Powder)
+#===============================================================================
+class Battle::Move::InflictRandomStatusOnTarget < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
+    if !target.pbCanBurn?(user, false, self) &&
+       !target.pbCanParalyze?(user, false, self) &&
+       !target.pbCanPoison?(user, false, self) &&
+       !target.pbCanSleep?(user, false, self) &&
+       !target.pbCanFreeze?(user, false, self) &&
+       !target.pbCanConfuse?(user, false, self) &&
+       !target.pbCanAttract?(user, false)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    inflictRandomStatusOnTarget(user, target, [:BURN, :PARALYZE, :POISON, :SLEEP, :FREEZE, :CONFUSE, :ATTRACT])
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    inflictRandomStatusOnTarget(user, target, [:BURN, :PARALYZE, :POISON, :SLEEP, :FREEZE, :CONFUSE, :ATTRACT])
+  end
+end
+
+#===============================================================================
+# Inflicts a random status on the target EXCEPT Freeze. (Magic Dust,
+# Strange Powder)
+#===============================================================================
+class Battle::Move::InflictRandomStatusOnTargetExceptFreeze < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
+    if !target.pbCanBurn?(user, false, self) &&
+       !target.pbCanParalyze?(user, false, self) &&
+       !target.pbCanPoison?(user, false, self) &&
+       !target.pbCanSleep?(user, false, self) &&
+       !target.pbCanConfuse?(user, false, self) &&
+       !target.pbCanAttract?(user, false)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    inflictRandomStatusOnTarget(user, target, [:BURN, :PARALYZE, :POISON, :SLEEP, :CONFUSE, :ATTRACT])
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    inflictRandomStatusOnTarget(user, target, [:BURN, :PARALYZE, :POISON, :SLEEP, :CONFUSE, :ATTRACT])
   end
 end
 
@@ -1618,23 +1672,6 @@ class Battle::Move::ConfuseAndOrFlinchTarget < Battle::Move
 end
 
 #===============================================================================
-# Inflicts a random status on the target. (Magic Dust, Strange Powder)
-#===============================================================================
-class Battle::Move::InflictRandomStatusOnTarget < Battle::Move
-  def pbAdditionalEffect(user, target)
-    return if target.damageState.substitute
-    case @battle.pbRandom(6)
-    when 0; target.pbBurn(user) if target.pbCanBurn?(user,false,self)
-    when 1; target.pbParalyze(user) if target.pbCanParalyze?(user,false,self)
-    when 2; target.pbPoison(user) if target.pbCanPoison?(user,false,self)
-    when 3; target.pbSleep if target.pbCanSleep?(user,false,self)
-    when 4; target.pbConfuse if target.pbCanConfuse?(user,false,self)
-    when 5; target.pbAttract if target.pbCanAttract?(user,false,self)
-    end
-  end
-end
-
-#===============================================================================
 # Dream Dance
 #===============================================================================
 class Battle::Move::SleepTargetAndUser < Battle::Move::SleepTarget
@@ -1663,19 +1700,5 @@ class Battle::Move::SuperEffectiveAgainstDarkGhostFlying < Battle::Move
       return Effectiveness::SUPER_EFFECTIVE_ONE
     end
     return super
-  end
-end
-
-#===============================================================================
-# Paralyzes, poisons, or sleeps the target. (Powder Storm)
-#===============================================================================
-class Battle::Move::ParalyzePoisonOrSleepTarget < Battle::Move
-  def pbAdditionalEffect(user, target)
-    return if target.damageState.substitute
-    case @battle.pbRandom(3)
-    when 0; target.pbParalyze(user) if target.pbCanParalyze?(user,false,self)
-    when 1; target.pbPoison(user) if target.pbCanPoison?(user,false,self)
-    when 2; target.pbSleep if target.pbCanSleep?(user,false,self)
-    end
   end
 end

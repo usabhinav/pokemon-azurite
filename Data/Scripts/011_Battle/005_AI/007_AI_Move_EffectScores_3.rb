@@ -40,6 +40,9 @@ class Battle::AI
       score -= 90 if target.hasActiveAbility?(:STURDY)
       score -= 90 if target.level > user.level
     #---------------------------------------------------------------------------
+    when "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"
+      score -= 30 if move.shouldTriggerOHKO(user, target)
+    #---------------------------------------------------------------------------
     when "DamageTargetAlly", "DamageTargetAllyWithPower40"
       target.allAllies.each do |b|
         next if !b.near?(target)
@@ -315,6 +318,10 @@ class Battle::AI
     when "Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil"
       score -= 30
     #---------------------------------------------------------------------------
+    when "Recoil30PercentAndConfuseTarget"
+      score -= 30
+      score -= 30 if !target.pbCanConfuse?(user, false)
+    #---------------------------------------------------------------------------
     when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType",
          "EffectivenessIncludesSoundType"
     #---------------------------------------------------------------------------
@@ -424,6 +431,9 @@ class Battle::AI
       score += user.stages[:DEFENSE] * 30
     #---------------------------------------------------------------------------
     when "HitTwoToFiveTimesAndGrantMoneyAtEndOfBattle"
+    #---------------------------------------------------------------------------
+    when "HitSixToTwelveTimes"
+      score += 20 if user.hasActiveAbility?(:SKILLLINK)
     #---------------------------------------------------------------------------
     when "HitOncePerUserTeamMember"
     #---------------------------------------------------------------------------
@@ -1303,6 +1313,9 @@ class Battle::AI
       end
     #---------------------------------------------------------------------------
     when "TrapAllBattlersInBattleForOneTurn"
+    #---------------------------------------------------------------------------
+    when "TrapAllBattlersInBattleAndRaiseAllBattlersAtkSpAtk1ExceptForFightingTypesThen2"
+      score -= 90 if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
     #---------------------------------------------------------------------------
     when "PursueSwitchingFoe"
     #---------------------------------------------------------------------------

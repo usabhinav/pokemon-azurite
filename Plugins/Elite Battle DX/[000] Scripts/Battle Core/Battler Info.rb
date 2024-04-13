@@ -97,3 +97,15 @@ class Battle::Move::HitThreeToFiveTimes
   def ebNumHits; return @ebNumHits; end
   #-----------------------------------------------------------------------------
 end
+#-------------------------------------------------------------------------------
+class Battle::Move::HitSixToTwelveTimes
+  # alias original class
+  alias pbNumHits_ebdx pbNumHits unless self.method_defined?(:pbNumHits_ebdx)
+  def pbNumHits(*args)
+    @ebNumHits = pbNumHits_ebdx(*args)
+    return @ebNumHits
+  end
+  # EBDX override
+  def ebNumHits; return @ebNumHits; end
+  #-----------------------------------------------------------------------------
+end

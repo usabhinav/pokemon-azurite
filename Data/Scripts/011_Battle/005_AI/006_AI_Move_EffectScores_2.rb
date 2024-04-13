@@ -614,6 +614,9 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
+    when "StartUserNeverMissesUnlessHitThisTurn"
+      score -= 90 if user.effects[PBEffects::DropGuardAccuracy]
+    #---------------------------------------------------------------------------
     when "StartTargetAirborneAndAlwaysHitByMoves"
       if target.effects[PBEffects::Telekinesis] > 0 ||
          target.effects[PBEffects::Ingrain] ||

@@ -419,6 +419,35 @@ class Battle::Move::TrapAllBattlersInBattleForOneTurn < Battle::Move
 end
 
 #===============================================================================
+# No Pokémon can switch out or flee as long as the user remains active. All
+# battlers' Attack and Defense are raised by 1 stat stage each (2 each for
+# Fighting-types). (Cage Match)
+#===============================================================================
+class Battle::Move::TrapAllBattlersInBattleAndRaiseAllBattlersAtkSpAtk1ExceptForFightingTypesThen2 < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.allBattlers.each do |b|
+      increment = b.pbHasType?(:FIGHTING) ? 2 : 1
+      showAnim = true
+      [:ATTACK, :DEFENSE].each do |stat|
+        if b.pbCanRaiseStatStage?(stat, user, self)
+          showAnim = false if b.pbRaiseStatStage(stat, increment, user, showAnim)
+        end
+      end
+    end
+    user.effects[PBEffects::CageMatch] = true
+    @battle.pbDisplay(_INTL("The cage match has begun! No one will be able to run away!"))
+  end
+end
+
+#===============================================================================
 # Interrupts a foe switching out or using U-turn/Volt Switch/Parting Shot. Power
 # is doubled in that case. (Pursuit)
 # (Handled in Battle's pbAttackPhase): Makes this attack happen before switching.

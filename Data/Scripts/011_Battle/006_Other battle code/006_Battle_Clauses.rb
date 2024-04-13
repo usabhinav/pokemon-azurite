@@ -230,6 +230,22 @@ end
 
 
 
+class Battle::Move::OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn
+  unless method_defined?(:__clauses__pbFailsAgainstTarget?)
+    alias __clauses__pbFailsAgainstTarget? pbFailsAgainstTarget?
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if @battle.rules["ohkoclause"] && shouldTriggerOHKO(user, target)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return __clauses__pbFailsAgainstTarget?(user, target, show_message)
+  end
+end
+
+
+
 class Battle::Move::UserFaintsExplosive   # Self-Destruct
   unless method_defined?(:__clauses__pbMoveFailed?)
     alias __clauses__pbMoveFailed? pbMoveFailed?

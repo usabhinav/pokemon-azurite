@@ -152,6 +152,21 @@ class Battle::Move::OHKO
   end
 end
 #===============================================================================
+#  OHKO immunity
+#===============================================================================
+class Battle::Move::OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn
+  alias ohkomove_ebdx pbFailsAgainstTarget? unless self.method_defined?(:ohkomove_ebdx)
+  def pbFailsAgainstTarget?(*args)
+    rule = EliteBattle.get_data(:BOSSBATTLES, :Metrics, :IMMUNITIES)
+    rule = rule.nil? ? false : rule.include?(:OHKO)
+    if args[1] && args[1].immunity && rule && shouldTriggerOHKO(args[0], args[1])
+      @battle.pbDisplay(_INTL("{1} is unaffected!", args[1].pbThis))
+      return true
+    end
+    return ohkomove_ebdx(*args)
+  end
+end
+#===============================================================================
 #  Perish Song immunity
 #===============================================================================
 class Battle::Move::StartPerishCountsForAllBattlers

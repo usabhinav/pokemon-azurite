@@ -193,6 +193,18 @@ class Battle::Move::HitThreeToFiveTimes < Battle::Move
 end
 
 #===============================================================================
+# Hits 6-12 times. (Consecutive Punch)
+#===============================================================================
+class Battle::Move::HitSixToTwelveTimes < Battle::Move
+  def multiHitMove?; return true; end
+
+  def pbNumHits(user, targets)
+    return 12 if user.hasActiveAbility?(:SKILLLINK)
+    return @battle.pbRandom(7) + 6
+  end
+end
+
+#===============================================================================
 # Hits X times, where X is the number of non-user unfainted status-free Pokémon
 # in the user's party (not including partner trainers). Fails if X is 0.
 # Base power of each hit depends on the base Attack stat for the species of that

@@ -12585,7 +12585,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 Priority = 3
-FunctionCode = StartUserDropGuard
+FunctionCode = StartUserNeverMissesUnlessHitThisTurn
 Description = Focusing, the user raises speed and hit chance. If the user is hit, the move fails and the hit is critical.
 #-------------------------------
 [DELAYEDATTACK]

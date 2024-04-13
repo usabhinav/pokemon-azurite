@@ -205,7 +205,7 @@ class Battle::Move::PowerHigherWithUserHP < Battle::Move
 end
 
 #===============================================================================
-# Power increases the less HP the user has. (Flail, Reversal)
+# Power increases the less HP the user has. (Flail, Reversal, Aura Storm)
 #===============================================================================
 class Battle::Move::PowerLowerWithUserHP < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
@@ -1233,6 +1233,19 @@ class Battle::Move::EffectivenessIncludesFireType < Battle::Move
     ret = super
     fireEff = Effectiveness.calculate_one(:FIRE, defType)
     ret *= fireEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    return ret
+  end
+end
+
+#===============================================================================
+# Type effectiveness is multiplied by the Sound-type's effectiveness against
+# the target. (Volt Wave)
+#===============================================================================
+class Battle::Move::EffectivenessIncludesSoundType < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    ret = super
+    eff = Effectiveness.calculate_one(:SOUND, defType)
+    ret *= eff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     return ret
   end
 end

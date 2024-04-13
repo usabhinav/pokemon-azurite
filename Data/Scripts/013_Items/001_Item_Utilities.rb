@@ -356,7 +356,10 @@ def pbBattleHPItem(pkmn, battler, restoreHP, scene)
     if battler.pbRecoverHP(restoreHP, true, true, true) > 0
       scene.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
     else
-      return false
+      # Return an unambiguous string. The reason for this is that false can be returned randomly by many different statements
+      # in other BattleUseOnPokemon handlers, in some cases even if the item was used successfully, so the value false is not a good
+      # indicator on whether or not the item needs to be returned to the bag.
+      return "RETURN_UNUSED_ITEM_TO_BAG"
     end
   elsif pbItemRestoreHP(pkmn, restoreHP) > 0
     scene.pbDisplay(_INTL("{1}'s HP was restored.", pkmn.name))

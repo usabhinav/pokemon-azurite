@@ -106,9 +106,14 @@ class Battle::Battler
       if target.effects[PBEffects::LightNutActive]
         target.stages[:DEFENSE] = 0 if target.stages[:DEFENSE] > 0
         target.stages[:SPECIAL_DEFENSE] = 0 if target.stages[:SPECIAL_DEFENSE] > 0
-        battle.pbDisplay(_INTL("{1}'s Defense and Sp. Def returned to normal!", target.pbThis))
+        @battle.pbDisplay(_INTL("{1}'s Defense and Sp. Def returned to normal!", target.pbThis))
         target.effects[PBEffects::LightNutActive] = false
       end
+    end
+    # Drop Guard
+    if target.effects[PBEffects::DropGuardActive]
+      target.effects[PBEffects::DropGuardAccuracy] = false
+      @battle.pbDisplay(_INTL("{1} was hit with its guard down and lost focus!", target.pbThis))
     end
     if target.opposes?(user)
       # Rage

@@ -183,6 +183,8 @@ class Battle::AI
       baseDmg = user.level
     when "OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"
       baseDmg = 200
+    when "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"
+      baseDmg = 200 if move.shouldTriggerOHKO(user, target)
     when "CounterPhysicalDamage", "CounterSpecialDamage", "CounterDamagePlusHalf"
       baseDmg = 60
     when "DoublePowerIfTargetUnderwater", "DoublePowerIfTargetUnderground",
@@ -262,6 +264,12 @@ class Battle::AI
         baseDmg *= 5
       else
         baseDmg = (baseDmg * 48 / 13).floor   # Average damage dealt
+      end
+    when "HitSixToTwelveTimes"
+      if user.hasActiveAbility?(:SKILLLINK)
+        baseDmg *= 12
+      else
+        baseDmg = (baseDmg * 63 / 7).floor   # Average damage dealt
       end
     when "HitOncePerUserTeamMember"   # Beat Up
       mult = 0
@@ -720,7 +728,8 @@ class Battle::AI
          Settings::MORE_TYPE_EFFECTS && move.statusMove? && user.pbHasType?(:POISON)
         modifiers[:base_accuracy] = 0
       end
-      if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"].include?(move.function)
+      if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"].include?(move.function) ||
+         (move.function == "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn" && move.shouldTriggerOHKO(user, target))
         modifiers[:base_accuracy] = move.accuracy + user.level - target.level
         modifiers[:accuracy_multiplier] = 0 if target.level > user.level
         if skill >= PBTrainerAI.bestSkill && target.hasActiveAbility?(:STURDY)

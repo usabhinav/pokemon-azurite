@@ -149,6 +149,9 @@ module PBEffects
   PortalReboundActive = 144
   SignalBoostMoveActive = 145
   CreationGem         = 146
+  CageMatch           = 147
+  DropGuardActive     = 148
+  DropGuardAccuracy   = 149
 
   #=============================================================================
   # These effects apply to a battler position

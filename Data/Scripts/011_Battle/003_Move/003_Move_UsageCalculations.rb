@@ -218,6 +218,7 @@ class Battle::Move
     return true if target.effects[PBEffects::Telekinesis] > 0
     return true if target.effects[PBEffects::Minimize] && tramplesMinimize? && Settings::MECHANICS_GENERATION >= 6
     return true if user.effects[PBEffects::SignalBoostMoveActive]
+    return true if user.effects[PBEffects::DropGuardAccuracy]
     baseAcc = pbBaseAccuracy(user, target)
     return true if baseAcc == 0
     # Calculate all multiplier effects
@@ -341,6 +342,7 @@ class Battle::Move
     return true if c > 50   # Merciless
     return true if user.effects[PBEffects::LaserFocus] > 0
     return true if user.hasActiveItem?(:BERSERKERBRACELET)
+    return true if target.effects[PBEffects::DropGuardActive]
     c += 1 if highCriticalRate?
     c += user.effects[PBEffects::FocusEnergy]
 	  c += 1 if user.hasActiveItem?(:CHOICESCOPE) && (self.accuracy == 0 || self.accuracy == 100)

@@ -106,7 +106,7 @@ class Battle::Battler
 
   def attack
     atk_stat = @attack + @effects[PBEffects::DynamicPower] + equalizer_modifier(:ATTACK)
-    atk_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    atk_stat = (atk_stat * 1.3).floor if hasActiveAbility?(:POWERWITHIN)
     return atk_stat
   end
 
@@ -117,7 +117,8 @@ class Battle::Battler
     def_stat = @spdef if @battle.field.effects[PBEffects::WonderRoom] > 0 && @battle.pbCheckAllyCosmoCube(@index).nil?
     def_stat += @effects[PBEffects::DynamicPower]
     def_stat += equalizer_modifier(:DEFENSE)
-    def_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    def_stat = (def_stat * 1.3).floor if hasActiveAbility?(:POWERWITHIN)
+    def_stat /= 2 if @battle.pbChoseMove?(@index, :FINISHER)
     return def_stat
   end
 
@@ -125,7 +126,7 @@ class Battle::Battler
 
   def spatk
     spatk_stat = @spatk + @effects[PBEffects::DynamicPower] + equalizer_modifier(:SPECIAL_ATTACK)
-    spatk_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    spatk_stat = (spatk_stat * 1.3).floor if hasActiveAbility?(:POWERWITHIN)
     return spatk_stat
   end
 
@@ -136,7 +137,8 @@ class Battle::Battler
     spdef_stat = @defense if @battle.field.effects[PBEffects::WonderRoom] > 0 && @battle.pbCheckAllyCosmoCube(@index).nil?
     spdef_stat += @effects[PBEffects::DynamicPower]
     spdef_stat += equalizer_modifier(:SPECIAL_DEFENSE)
-    spdef_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    spdef_stat = (spdef_stat * 1.3).floor if hasActiveAbility?(:POWERWITHIN)
+    spdef_stat /= 2 if @battle.pbChoseMove?(@index, :FINISHER)
     return spdef_stat
   end
 
@@ -144,7 +146,7 @@ class Battle::Battler
 
   def speed
     speed_stat = @speed + @effects[PBEffects::DynamicPower] + equalizer_modifier(:SPEED)
-    speed_stat *= 1.3 if hasActiveAbility?(:POWERWITHIN)
+    speed_stat = (speed_stat * 1.3).floor if hasActiveAbility?(:POWERWITHIN)
     return speed_stat
   end
 
@@ -815,6 +817,7 @@ class Battle::Battler
     return true if @effects[PBEffects::Ingrain]
     return true if @effects[PBEffects::NoRetreat]
     return true if @battle.field.effects[PBEffects::FairyLock] > 0
+    return true if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
     return false
   end
 

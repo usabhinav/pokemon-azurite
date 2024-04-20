@@ -146,6 +146,48 @@ class Battle::Move::OHKOHitsUndergroundTarget < Battle::Move::OHKO
 end
 
 #===============================================================================
+# OHKO, only if the target's HP is less than 30%. Also lowers the user's
+# defenses by 50% for the turn of use, regardless of the move's success.
+# (Finisher)
+#===============================================================================
+class Battle::Move::OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn < Battle::Move
+  def pbCalcDamage(user, target, numTargets = 1)
+    if !shouldTriggerOHKO(user, target)
+      @ohkoTriggered = false
+      super
+      return
+    end
+    @ohkoTriggered = true
+    target.damageState.critical   = false
+    target.damageState.calcDamage = pbFixedDamage(user, target)
+    target.damageState.calcDamage = 1 if target.damageState.calcDamage < 1
+  end
+
+  def pbAccuracyCheck(user, target)
+    return super if !shouldTriggerOHKO(user, target)
+    acc = @accuracy + user.level - target.level
+    return @battle.pbRandom(100) < acc
+  end
+
+  def pbFixedDamage(user, target)
+    return target.totalhp
+  end
+
+  def pbHitEffectivenessMessages(user, target, numTargets = 1)
+    super
+    if target.fainted? && @ohkoTriggered
+      @battle.pbDisplay(_INTL("It's a one-hit KO!"))
+    end
+  end
+
+  def shouldTriggerOHKO(user, target)
+    return target.hp < (target.totalhp * 0.3).ceil &&
+           target.level <= user.level &&
+           !(target.hasActiveAbility?(:STURDY) && !@battle.moldBreaker)
+  end
+end
+
+#===============================================================================
 # The target's ally loses 1/16 of its max HP. (Flame Burst)
 #===============================================================================
 class Battle::Move::DamageTargetAlly < Battle::Move
@@ -1210,6 +1252,52 @@ class Battle::Move::RecoilHalfOfUserCurrentHP < Battle::Move::RecoilMove
 end
 
 #===============================================================================
+# User takes recoil damage equal to 30% of the damage this move dealt, unless
+# the user was hit by a contact move in the same turn, in which case, this
+# move's power increases by 50%, won't miss, and no recoil. (Comet Swing)
+#===============================================================================
+class Battle::Move::Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil < Battle::Move::RecoilMove
+  def pbRecoilDamage(user, target)
+    recoil_damage = (target.damageState.totalHPLost * 0.3).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
+  end
+
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg = baseDmg * 3 / 2 if user.effects[PBEffects::CometSwingEffectsActive]
+    return baseDmg
+  end
+
+  def pbBaseAccuracy(user, target)
+    return 0 if user.effects[PBEffects::CometSwingEffectsActive]
+    return super
+  end
+
+  def pbEffectAfterAllHits(user, target)
+    return if user.effects[PBEffects::CometSwingEffectsActive]
+    super
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 30% of the damage this move dealt and may
+# confuse the target. (Suplex)
+#===============================================================================
+class Battle::Move::Recoil30PercentAndConfuseTarget < Battle::Move::RecoilMove
+  def pbRecoilDamage(user, target)
+    recoil_damage = (target.damageState.totalHPLost * 0.3).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    return if !target.pbCanConfuse?(user, false, self)
+    target.pbConfuse
+  end
+end
+
+#===============================================================================
 # Type effectiveness is multiplied by the Flying-type's effectiveness against
 # the target. (Flying Press)
 #===============================================================================
@@ -1936,33 +2024,5 @@ class Battle::Move::DoublePowerIfNoBattlersActed < Battle::Move
     end
     baseDmg *= 2 if noneMoved
     return baseDmg
-  end
-end
-
-#===============================================================================
-# User takes recoil damage equal to 30% of the damage this move dealt, unless
-# the user was hit by a contact move in the same turn, in which case, this
-# move's power increases by 50%, won't miss, and no recoil. (Comet Swing)
-#===============================================================================
-class Battle::Move::Recoil30PercentUnlessHitByContactMoveThenPowerHigherBy50PercentAndNoRecoil < Battle::Move::RecoilMove
-  def pbRecoilDamage(user, target)
-    recoil_damage = (target.damageState.totalHPLost * 0.3).round
-    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
-    return recoil_damage
-  end
-
-  def pbBaseDamage(baseDmg, user, target)
-    baseDmg = baseDmg * 3 / 2 if user.effects[PBEffects::CometSwingEffectsActive]
-    return baseDmg
-  end
-
-  def pbBaseAccuracy(user, target)
-    return 0 if user.effects[PBEffects::CometSwingEffectsActive]
-    return super
-  end
-
-  def pbEffectAfterAllHits(user, target)
-    return if user.effects[PBEffects::CometSwingEffectsActive]
-    super
   end
 end

@@ -1503,6 +1503,29 @@ class Battle::Move::StartUserBypassImmunityAndAccuracy < Battle::Move
 end
 
 #===============================================================================
+# The user's Speed is increased by 3 stat stages and their attacks will never
+# miss unless they are hit on the turn of use of this move, in which case, all
+# hits will be critical hits for this turn. (Drop Guard)
+#===============================================================================
+class Battle::Move::StartUserNeverMissesUnlessHitThisTurn < Battle::Move
+  def canSnatch?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::DropGuardAccuracy]
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::DropGuardActive] = true
+    user.effects[PBEffects::DropGuardAccuracy] = true
+    @battle.pbDisplay(_INTL("{1} dropped its guard to focus!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # For 3 rounds, target becomes airborne and can always be hit. (Telekinesis)
 #===============================================================================
 class Battle::Move::StartTargetAirborneAndAlwaysHitByMoves < Battle::Move

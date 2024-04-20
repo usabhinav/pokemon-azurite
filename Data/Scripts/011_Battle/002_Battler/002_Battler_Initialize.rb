@@ -312,6 +312,9 @@ class Battle::Battler
     @effects[PBEffects::PortalReboundActive] = false
     @effects[PBEffects::SignalBoostMoveActive] = false
     @effects[PBEffects::CreationGem]         = 0
+    @effects[PBEffects::CageMatch]           = false
+    @effects[PBEffects::DropGuardActive]     = false
+    @effects[PBEffects::DropGuardAccuracy]   = false
   end
 
   #=============================================================================

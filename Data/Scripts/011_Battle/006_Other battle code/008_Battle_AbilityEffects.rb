@@ -4282,8 +4282,8 @@ Battle::AbilityEffects::OnSwitchIn.add(:ANTICIPATION,
           eff = Effectiveness.calculate(moveType, types[0], types[1], types[2])
           next if Effectiveness.ineffective?(eff)
           next if !Effectiveness.super_effective?(eff) &&
-                  !["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"].include?(m.function)
-        elsif !["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"].include?(m.function)
+                  !["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
+        elsif !["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
           next
         end
         found = true
@@ -4423,7 +4423,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:FOREWARN,
     battle.allOtherSideBattlers(battler.index).each do |b|
       b.eachMove do |m|
         power = m.baseDamage
-        power = 160 if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"].include?(m.function)
+        power = 160 if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
         power = 150 if ["PowerHigherWithUserHP"].include?(m.function)    # Eruption
         # Counter, Mirror Coat, Metal Burst
         power = 120 if ["CounterPhysicalDamage",

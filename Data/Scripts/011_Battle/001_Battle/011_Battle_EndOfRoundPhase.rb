@@ -480,6 +480,17 @@ class Battle
       battler.effects[PBEffects::PortalReboundActive] = false
       pbDisplay(_INTL("{1}'s portal disappeared!", battler.pbThis))
     end
+    # Drop Guard
+    priority.each do |battler|
+      next if battler.fainted? || !battler.effects[PBEffects::DropGuardActive]
+      battler.effects[PBEffects::DropGuardActive] = false
+      if battler.effects[PBEffects::DropGuardAccuracy]
+        if battler.pbCanRaiseStatStage?(:SPEED, battler)
+          battler.pbRaiseStatStage(:SPEED, 3, battler)
+        end
+        pbDisplay(_INTL("{1} heightened its focus and increased its accuracy!", battler.pbThis))
+      end
+    end
     # Perish Song
     perishSongUsers = []
     priority.each do |battler|

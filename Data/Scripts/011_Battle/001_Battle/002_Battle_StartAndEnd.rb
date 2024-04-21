@@ -306,6 +306,7 @@ class Battle
     when :ShadowSky   then pbDisplay(_INTL("The sky is shadowy."))
     when :Thunderstorm then pbDisplay(_INTL("Thunder is booming in the sky."))
     when :Windstorm   then pbDisplay(_INTL("The windstorm is raging."))
+    when :Firestorm   then pbDisplay(_INTL("Fire is raining down from the sky."))
     end
     # Terrain announcement
     terrain_data = GameData::BattleTerrain.try_get(@field.terrain)

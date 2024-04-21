@@ -124,6 +124,18 @@ class Battle::Move::RaiseUserDefense2 < Battle::Move::StatUpMove
 end
 
 #===============================================================================
+# Increases the user's Defense by 2 stages and burns all battlers that make
+# contact with the user this turn. (Magma Shield)
+#===============================================================================
+class Battle::Move::RaiseUserDefense2AndBurnTargetIfMakesContactWithUserThisTurn < Battle::Move::RaiseUserDefense2
+  def pbEffectGeneral(user)
+    super
+    user.effects[PBEffects::MagmaShieldActive] = true
+    @battle.pbDisplay(_INTL("{1} surrounded itself with a layer of magma!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # Increases the user's Defense by 3 stages. (Cotton Guard)
 #===============================================================================
 class Battle::Move::RaiseUserDefense3 < Battle::Move::StatUpMove

@@ -115,6 +115,10 @@ class Battle::Battler
       target.effects[PBEffects::DropGuardAccuracy] = false
       @battle.pbDisplay(_INTL("{1} was hit with its guard down and lost focus!", target.pbThis))
     end
+    # Magma Shield
+    if target.effects[PBEffects::MagmaShieldActive] && user.pbCanBurn?(target, false) && move.pbContactMove?(user)
+      user.pbBurn(target)
+    end
     if target.opposes?(user)
       # Rage
       if target.effects[PBEffects::Rage] && !target.fainted? &&

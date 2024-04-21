@@ -164,7 +164,8 @@ module Battle::DebugVariables
     PBEffects::WaterSportField => { name: "Water Sport duration (Gen 6+)",    default: 0 },
     PBEffects::WonderRoom      => { name: "Wonder Room duration",             default: 0 },
     PBEffects::Darkened        => { name: "Darken was used",                  default: false },
-    PBEffects::InverseRoom     => { name: "Inverse Room duration",            default: 0 }
+    PBEffects::InverseRoom     => { name: "Inverse Room duration",            default: 0 },
+    PBEffects::FlameRing       => { name: "Flame Ring was used",              default: 0 }
   }
 
   POSITION_EFFECTS = {

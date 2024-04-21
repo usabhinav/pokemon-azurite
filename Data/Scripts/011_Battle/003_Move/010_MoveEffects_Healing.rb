@@ -304,6 +304,20 @@ class Battle::Move::HealUserHalfOfTotalHPAndRaiseUserRandomStatExceptEvasiveness
 end
 
 #===============================================================================
+# Heals user by 1/2 of its max HP if any of the targets have fainted.
+# (Phoenix Flame)
+#===============================================================================
+class Battle::Move::HealUserHalfOfTotalHPIfKOsTarget < Battle::Move
+  def pbEffectAfterAllHits(user, target)
+    return if user.fainted? || target.damageState.unaffected
+    return if !target.damageState.fainted
+    if user.canHeal? && user.pbRecoverHP((user.totalhp / 2.0).round) > 0
+      @battle.pbDisplay(_INTL("{1}'s rises stronger from the ashes!", user.pbThis))
+    end
+  end
+end
+
+#===============================================================================
 # Heals target by 1/2 of its max HP. (Heal Pulse)
 #===============================================================================
 class Battle::Move::HealTargetHalfOfTotalHP < Battle::Move

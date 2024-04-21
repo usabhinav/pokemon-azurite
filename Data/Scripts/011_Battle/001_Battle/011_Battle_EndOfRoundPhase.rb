@@ -17,6 +17,7 @@ class Battle
       when :ShadowSky then pbDisplay(_INTL("The shadow sky faded."))
       when :Thunderstorm then pbDisplay(_INTL("The thunderstorm subsided."))	
       when :Windstorm then pbDisplay(_INTL("The windstorm subsided."))
+      when :Firestorm then pbDisplay(_INTL("The firestorm subsided."))
       end
       @field.weather = :None
       # Check for form changes caused by the weather changing
@@ -39,6 +40,7 @@ class Battle
     when :ShadowSky   then pbDisplay(_INTL("The shadow sky continues."))
     when :Thunderstorm then pbDisplay(_INTL("Thunder is booming in the sky."))	
     when :Windstorm   then pbDisplay(_INTL("The windstorm is raging."))
+    when :Firestorm   then pbDisplay(_INTL("Fire is raining down from the sky."))
     end
     # Effects due to weather
     priority.each do |battler|
@@ -130,6 +132,10 @@ class Battle
       return if !battler.takesShadowSkyDamage?
       pbDisplay(_INTL("{1} is hurt by the shadow sky!", battler.pbThis))
       amt = battler.totalhp / 16
+    when :Firestorm
+      return if !battler.takesFirestormDamage?
+      pbDisplay(_INTL("{1} is hurt by the firestorm!", battler.pbThis))
+      amt = 30
     end
     return if amt < 0
     @scene.pbDamageAnimation(battler)
@@ -594,6 +600,9 @@ class Battle
     # Inverse Room
     pbEORCountDownFieldEffect(PBEffects::InverseRoom,
                               _INTL("Type resistances returned to normal!"))
+    # Flame Ring
+    pbEORCountDownFieldEffect(PBEffects::FlameRing,
+                              _INTL("The ring of fire died out!"))
   end
 
   #=============================================================================
@@ -776,6 +785,16 @@ class Battle
     pbEORWishHealing
     # Sea of Fire damage (Fire Pledge + Grass Pledge combination)
     pbEORSeaOfFireDamage(priority)
+    # Flame Ring damage
+    if @field.effects[PBEffects::FlameRing] > 0
+      priority.each do |battler|
+        next if !battler.takesIndirectDamage? || battler.pbHasType?(:FIRE)
+        @scene.pbDamageAnimation(battler)
+        battler.pbTakeEffectDamage(battler.totalhp / 16, false) { |hp_lost|
+          pbDisplay(_INTL("{1} is hurt by the ring of fire!", battler.pbThis))
+        }
+      end
+    end
     # Status-curing effects/abilities and HP-healing items
     priority.each do |battler|
       pbEORTerrainHealing(battler)
@@ -1007,6 +1026,7 @@ class Battle
       end
       battler.effects[PBEffects::MagicBounce]      = false
       battler.effects[PBEffects::MagicCoat]        = false
+      battler.effects[PBEffects::MagmaShieldActive] = false
       battler.effects[PBEffects::MirrorCoat]       = -1
       battler.effects[PBEffects::MirrorCoatTarget] = -1
       battler.effects[PBEffects::Obstruct]         = false

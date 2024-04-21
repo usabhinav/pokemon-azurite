@@ -208,6 +208,7 @@ class Battle::AI
          "PowerHigherWithUserHappiness",
          "PowerLowerWithUserHappiness",
          "PowerHigherWithUserHP",
+         "PowerLowerWithUserHPByPercent",
          "PowerHigherWithTargetHP",
          "PowerHigherWithUserPositiveStatStages",
          "PowerHigherWithTargetPositiveStatStages",

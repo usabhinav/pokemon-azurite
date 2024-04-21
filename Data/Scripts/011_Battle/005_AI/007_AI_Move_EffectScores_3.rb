@@ -53,6 +53,10 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "PowerLowerWithUserHP"
     #---------------------------------------------------------------------------
+    when "PowerLowerWithUserHPByPercent"
+      # Score modifier can be between -20 and +20
+      score += 20 * (1 - (((user.hp.to_f / user.totalhp) * 2).ceil))
+    #---------------------------------------------------------------------------
     when "PowerHigherWithTargetHP"
     #---------------------------------------------------------------------------
     when "PowerHigherWithUserHappiness"
@@ -322,8 +326,15 @@ class Battle::AI
       score -= 30
       score -= 30 if !target.pbCanConfuse?(user, false)
     #---------------------------------------------------------------------------
+    when "Recoil40PercentAndBurnTarget"
+      score -= 30
+      score -= 30 if !target.pbCanBurn?(user, false)
+    #---------------------------------------------------------------------------
     when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType",
          "EffectivenessIncludesSoundType"
+    #---------------------------------------------------------------------------
+    when "SuperEffectiveAgainstFireNeutralEffectiveAgainstIce"
+      # Type mod calculations will automatically adjust the score appropriately.
     #---------------------------------------------------------------------------
     when "CategoryDependsOnHigherDamagePoisonTarget"
       score += 5 if target.pbCanPoison?(user, false)
@@ -689,6 +700,9 @@ class Battle::AI
         score -= user.hp * 100 / user.totalhp
         score += 30 if user.effectiveWeather == :Sandstorm
       end
+    #---------------------------------------------------------------------------
+    when "HealUserHalfOfTotalHPIfKOsTarget"
+      score += 20 if target.hp <= target.totalhp / 4 && user.hp <= user.totalhp / 2
     #---------------------------------------------------------------------------
     when "HealTargetHalfOfTotalHP"
       if user.opposes?(target)

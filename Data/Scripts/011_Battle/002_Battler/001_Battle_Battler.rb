@@ -757,6 +757,16 @@ class Battle::Battler
     return true
   end
 
+  def takesFirestormDamage?
+    return false if !takesIndirectDamage?
+    return false if inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderground",
+                                     "TwoTurnAttackInvulnerableUnderwater")
+    return false if pbHasType?(:FIRE)
+    return false if hasActiveAbility?([:WEATHERBENEFIT])
+    return false if hasActiveItem?([:IRONSHELL, :UMBRELLA])
+    return true
+  end
+
   def effectiveWeather
     ret = @battle.pbWeather
     ret = :None if [:Sun, :Rain, :HarshSun, :HeavyRain, :Thunderstorm].include?(ret) && hasActiveItem?(:UTILITYUMBRELLA)
@@ -818,6 +828,7 @@ class Battle::Battler
     return true if @effects[PBEffects::NoRetreat]
     return true if @battle.field.effects[PBEffects::FairyLock] > 0
     return true if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
+    return true if @battle.field.effects[PBEffects::FlameRing] > 0
     return false
   end
 

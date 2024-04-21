@@ -269,6 +269,16 @@ class Battle::Move::PowerLowerWithUserHP < Battle::Move
 end
 
 #===============================================================================
+# Power increases the less HP the user has. Specifically, base damage increases
+# +1 for every 1% max HP the user has lost. (Flaring Pride)
+#===============================================================================
+class Battle::Move::PowerLowerWithUserHPByPercent < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    return baseDmg + ((user.totalhp - user.hp).to_f * 100 / user.totalhp).floor
+  end
+end
+
+#===============================================================================
 # Power increases with the target's HP. (Crush Grip, Wring Out)
 #===============================================================================
 class Battle::Move::PowerHigherWithTargetHP < Battle::Move
@@ -1298,6 +1308,23 @@ class Battle::Move::Recoil30PercentAndConfuseTarget < Battle::Move::RecoilMove
 end
 
 #===============================================================================
+# User takes recoil damage equal to 40% of the damage this move dealt and may
+# burn the target. (Flare Blitz)
+#===============================================================================
+class Battle::Move::Recoil40PercentAndBurnTarget < Battle::Move::RecoilMove
+  def pbRecoilDamage(user, target)
+    recoil_damage = (target.damageState.totalHPLost * 4 / 10.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    target.pbBurn(user) if target.pbCanBurn?(user, false, self)
+  end
+end
+
+#===============================================================================
 # Type effectiveness is multiplied by the Flying-type's effectiveness against
 # the target. (Flying Press)
 #===============================================================================
@@ -1335,6 +1362,18 @@ class Battle::Move::EffectivenessIncludesSoundType < Battle::Move
     eff = Effectiveness.calculate_one(:SOUND, defType)
     ret *= eff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     return ret
+  end
+end
+
+#===============================================================================
+# Super effective against Fire-types, and neutral effective against Ice-types.
+# (Heat Drop)
+#===============================================================================
+class Battle::Move::SuperEffectiveAgainstFireNeutralEffectiveAgainstIce < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    return Effectiveness::SUPER_EFFECTIVE_ONE if defType == :FIRE
+    return Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :ICE
+    return super
   end
 end
 
@@ -1778,7 +1817,7 @@ class Battle::Move::TypeAndPowerDependOnWeather < Battle::Move
   def pbBaseType(user)
     ret = :NORMAL
     case user.effectiveWeather
-    when :Sun, :HarshSun
+    when :Sun, :HarshSun, :Firestorm
       ret = :FIRE if GameData::Type.exists?(:FIRE)
     when :Rain, :HeavyRain, :Thunderstorm
       ret = :WATER if GameData::Type.exists?(:WATER)

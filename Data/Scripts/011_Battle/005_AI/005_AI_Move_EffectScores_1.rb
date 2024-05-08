@@ -102,6 +102,14 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
+    when "StartFirestormWeather"
+      if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
+        @battle.pbCheckGlobalAbility(:CLOUDNINE)
+        score -= 90
+      elsif @battle.field.weather == :Firestorm
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
     when "StartElectricTerrain"
     #---------------------------------------------------------------------------
     when "StartGrassyTerrain"
@@ -220,9 +228,10 @@ class Battle::AI
       score += 20   # Because of possible burning
     #---------------------------------------------------------------------------
     when "StartDarkenedEffect"
-      if @battle.field.effects[PBEffects::Darkened]
-        score -= 90
-      end
+      score -= 90 if @battle.field.effects[PBEffects::Darkened]
+    #---------------------------------------------------------------------------
+    when "StartFlameRing"
+      score -= 90 if @battle.field.effects[PBEffects::FlameRing]
     #---------------------------------------------------------------------------
     when "RaiseUserAttack1"
       if move.statusMove?
@@ -325,7 +334,7 @@ class Battle::AI
         score += 20
       end
     #---------------------------------------------------------------------------
-    when "RaiseUserDefense2"
+    when "RaiseUserDefense2", "RaiseUserDefense2AndBurnTargetIfMakesContactWithUserThisTurn"
       if move.statusMove?
         if user.statStageAtMax?(:DEFENSE)
           score -= 90

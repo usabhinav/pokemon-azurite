@@ -27,6 +27,7 @@ class Battle::ActiveField
     @effects[PBEffects::WonderRoom]      = 0
     @effects[PBEffects::Darkened]        = false
     @effects[PBEffects::InverseRoom]     = 0
+    @effects[PBEffects::FlameRing]       = 0
     @defaultWeather  = :None
     @weather         = :None
     @weatherDuration = 0

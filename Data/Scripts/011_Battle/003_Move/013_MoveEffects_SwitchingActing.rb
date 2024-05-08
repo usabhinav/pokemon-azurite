@@ -282,6 +282,9 @@ class Battle::Move::BindTarget < Battle::Move
     # Set trapping effect duration and info
     if user.hasActiveItem?(:GRIPCLAW)
       target.effects[PBEffects::Trapping] = (Settings::MECHANICS_GENERATION >= 5) ? 8 : 6
+    elsif @id == :FLAMETACKLE
+      # 2-5 turns
+      target.effects[PBEffects::Trapping] = 2 + @battle.pbRandom(4)
     else
       target.effects[PBEffects::Trapping] = 5 + @battle.pbRandom(2)
     end
@@ -306,6 +309,10 @@ class Battle::Move::BindTarget < Battle::Move
       msg = _INTL("{1} became trapped in the vortex!", target.pbThis)
     when :WRAP
       msg = _INTL("{1} was wrapped by {2}!", target.pbThis, user.pbThis(true))
+    when :FLAMETACKLE
+      msg = _INTL("{1} became surrounded in flames!", target.pbThis)
+    when :SHADOWBIND
+      msg = _INTL("{1}'s shadow was bound by {2}!", target.pbThis, user.pbThis(true))
     end
     @battle.pbDisplay(msg)
   end

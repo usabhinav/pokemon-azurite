@@ -278,6 +278,16 @@ class Battle::Move::StartThunderstormWeather < Battle::Move::WeatherMove
 end
 
 #===============================================================================
+# Starts firestorm weather. (Firestorm)
+#===============================================================================
+class Battle::Move::StartFirestormWeather < Battle::Move::WeatherMove
+  def initialize(battle, move)
+    super
+    @weatherType = :Firestorm
+  end
+end
+
+#===============================================================================
 # For 5 rounds, creates an electric terrain which boosts Electric-type moves and
 # prevents Pokémon from falling asleep. Affects non-airborne Pokémon only.
 # (Electric Terrain)
@@ -752,6 +762,7 @@ class Battle::Move::RemoveWeatherAndEntryHazards < Battle::Move
       when :ShadowSky then @battle.pbDisplay(_INTL("The shadow sky faded."))
       when :Thunderstorm then @battle.pbDisplay(_INTL("The thunderstorm subsided."))	
       when :Windstorm then @battle.pbDisplay(_INTL("The windstorm subsided."))
+      when :Firestorm then @battle.pbDisplay(_INTL("The firestorm subsided."))
       end
       @battle.field.weather = :None
       @battle.field.weatherDuration = 0
@@ -871,6 +882,25 @@ class Battle::Move::StartDarkenedEffect < Battle::Move
   def pbEffectGeneral(user)
     @battle.pbDisplay(_INTL("Darkness shrouded the battlefield!"))
     @battle.field.effects[PBEffects::Darkened] = true
+  end
+end
+
+#===============================================================================
+# Traps battlers in the field for 5 turns, and non-Fire types take damage
+# (1/16th of their max HP). (Flame Ring)
+#===============================================================================
+class Battle::Move::StartFlameRing < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.effects[PBEffects::FlameRing] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbDisplay(_INTL("A ring of fire surrounded the battlefield!"))
+    @battle.field.effects[PBEffects::FlameRing] = 5
   end
 end
 

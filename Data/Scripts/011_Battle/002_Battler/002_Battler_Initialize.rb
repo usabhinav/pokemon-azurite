@@ -315,6 +315,7 @@ class Battle::Battler
     @effects[PBEffects::CageMatch]           = false
     @effects[PBEffects::DropGuardActive]     = false
     @effects[PBEffects::DropGuardAccuracy]   = false
+    @effects[PBEffects::MagmaShieldActive]   = false
   end
 
   #=============================================================================

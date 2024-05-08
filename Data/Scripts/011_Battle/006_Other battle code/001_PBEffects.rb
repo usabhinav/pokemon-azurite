@@ -152,6 +152,7 @@ module PBEffects
   CageMatch           = 147
   DropGuardActive     = 148
   DropGuardAccuracy   = 149
+  MagmaShieldActive   = 150
 
   #=============================================================================
   # These effects apply to a battler position
@@ -213,4 +214,5 @@ module PBEffects
   WonderRoom      = 12
   Darkened        = 13
   InverseRoom     = 14
+  FlameRing       = 15
 end

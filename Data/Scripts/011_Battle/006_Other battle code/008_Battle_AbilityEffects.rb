@@ -2637,14 +2637,14 @@ Battle::AbilityEffects::OnBeingHit.add(:ENTANGLINGMESS,
   proc { |ability,user,target,move,battle|
     next if !move.pbContactMove?(user)
     next if battle.pbRandom(10) < 5
-    next if user.effects[PBEffects::Trapping]>0
+    next if user.effects[PBEffects::Trapping] > 0
     next if !user.affectedByContactEffect?(Battle::Scene::USE_ABILITY_SPLASH)
     battle.pbShowAbilitySplash(target)
     # Set trapping effect duration and info
-    user.effects[PBEffects::Trapping] = 2+battle.pbRandom(2)
+    user.effects[PBEffects::Trapping] = 2 + battle.pbRandom(2)
     user.effects[PBEffects::TrappingMove] = :BIND
     user.effects[PBEffects::TrappingUser] = target.index
-    battle.pbDisplay(_INTL("{1} was squeezed by {2}!",user.pbThis,target.pbThis(true)))
+    battle.pbDisplay(_INTL("{1} was squeezed by {2}!", user.pbThis, target.pbThis(true)))
     battle.pbHideAbilitySplash(target)
   }
 )
@@ -3789,7 +3789,7 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:WEATHERBENEFIT,
   proc { |ability,weather,battler,battle|
     stat = nil
     case weather
-    when :Sun, :HarshSun
+    when :Sun, :HarshSun, :Firestorm
       stat = :ATTACK
     when :Rain, :HeavyRain, :Thunderstorm
       stat = :SPECIAL_ATTACK
@@ -4423,6 +4423,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:FOREWARN,
     battle.allOtherSideBattlers(battler.index).each do |b|
       b.eachMove do |m|
         power = m.baseDamage
+        power = 200 if ["PowerLowerWithUserHPByPercent"].include?(m.function)
         power = 160 if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
         power = 150 if ["PowerHigherWithUserHP"].include?(m.function)    # Eruption
         # Counter, Mirror Coat, Metal Burst

@@ -527,6 +527,18 @@ class Battle::Battler
         @battle.pbDisplay(_INTL("{1} makes Ground moves miss with Telekinesis!", target.pbThis)) if show_message
         return false
       end
+      if target.effects[PBEffects::AirCarryUserIndex] >= 0
+        if target.effects[PBEffects::AirCarryUserIndex] == target.index
+          @battle.pbDisplay(_INTL("{1} makes Ground moves miss with Air Carry!", target.pbThis)) if show_message
+        else
+          @battle.pbDisplay(_INTL("{1} avoided the attack by being carried in the air!", target.pbThis)) if show_message
+        end
+        return false
+      end
+      if target.effects[PBEffects::AirSupportTurnCount] > 0
+        @battle.pbDisplay(_INTL("{1} makes Ground moves miss with Air Support!", target.pbThis)) if show_message
+        return false
+      end
     end
     # Immunity to powder-based moves
     if move.powderMove?

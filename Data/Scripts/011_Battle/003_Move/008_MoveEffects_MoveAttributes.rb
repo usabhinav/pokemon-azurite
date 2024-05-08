@@ -656,7 +656,8 @@ class Battle::Move::DoublePowerIfTargetInSky < Battle::Move
     baseDmg *= 2 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
                                             "TwoTurnAttackInvulnerableInSkyParalyzeTarget",
                                             "TwoTurnAttackInvulnerableInSkyTargetCannotAct") ||
-                    target.effects[PBEffects::SkyDrop] >= 0
+                    target.effects[PBEffects::SkyDrop] >= 0 ||
+                    target.effects[PBEffects::AirSupportTurnCount] > 0
     return baseDmg
   end
 end
@@ -1309,7 +1310,7 @@ end
 
 #===============================================================================
 # User takes recoil damage equal to 40% of the damage this move dealt and may
-# burn the target. (Flare Blitz)
+# burn the target. (Flare Fist)
 #===============================================================================
 class Battle::Move::Recoil40PercentAndBurnTarget < Battle::Move::RecoilMove
   def pbRecoilDamage(user, target)
@@ -1362,6 +1363,19 @@ class Battle::Move::EffectivenessIncludesSoundType < Battle::Move
     eff = Effectiveness.calculate_one(:SOUND, defType)
     ret *= eff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     return ret
+  end
+end
+
+#===============================================================================
+# Type effectiveness is overridden in cases where Light-type would be super
+# effective against the defending type. (Luminous Gust)
+#===============================================================================
+class Battle::Move::EffectivenessIncludesLightTypeOnlyIfSuperEffective < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    if Effectiveness.calculate_one(:LIGHT, defType) == Effectiveness::SUPER_EFFECTIVE_ONE
+      return Effectiveness::SUPER_EFFECTIVE_ONE
+    end
+    return super
   end
 end
 

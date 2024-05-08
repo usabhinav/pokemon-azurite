@@ -181,3 +181,18 @@ class Battle::Move::StartPerishCountsForAllBattlers
     return perishsong_ebdx(*args)
   end
 end
+#===============================================================================
+#  Doomed Serenade immunity
+#===============================================================================
+class Battle::Move::StartTargetDoomedSerenadeCount
+  alias perishsong_ebdx pbFailsAgainstTarget? unless self.method_defined?(:perishsong_ebdx)
+  def pbFailsAgainstTarget?(*args)
+    rule = EliteBattle.get_data(:BOSSBATTLES, :Metrics, :IMMUNITIES)
+    rule = rule.nil? ? false : rule.include?(:PERISHSONG)
+    if args[1] && args[1].immunity && rule
+      @battle.pbDisplay(_INTL("{1} is unaffected!", args[1].pbThis))
+      return true
+    end
+    return perishsong_ebdx(*args)
+  end
+end

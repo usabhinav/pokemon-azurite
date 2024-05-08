@@ -49,7 +49,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "FailsIfTargetActed"
     #---------------------------------------------------------------------------
-    when "CrashDamageIfFailsUnusableInGravity", "CrashDamageWithSpeedIfFailsUnusableInGravity"
+    when "CrashDamageIfFailsUnusableInGravity", "CrashDamageWithSpeedIfFails"
       score += 10 * (user.get_modified_stat_stage(:ACCURACY, user.stages[:ACCURACY]) - target.get_modified_stat_stage(:EVASION, target.stages[:EVASION]))
     #---------------------------------------------------------------------------
     when "StartSunWeather"
@@ -232,6 +232,11 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "StartFlameRing"
       score -= 90 if @battle.field.effects[PBEffects::FlameRing]
+    #---------------------------------------------------------------------------
+    when "FailsOnConsecutiveUseInvulnerableInSky"
+      score -= 90 if user.effects[PBEffects::Ingrain] ||
+                     user.effects[PBEffects::SmackDown] ||
+                     user.effects[PBEffects::AirSupportTurnCount] > 0
     #---------------------------------------------------------------------------
     when "RaiseUserAttack1"
       if move.statusMove?

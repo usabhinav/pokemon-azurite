@@ -693,6 +693,8 @@ class Battle::Battler
     return true if hasActiveItem?(:AIRBALLOON)
     return true if @effects[PBEffects::MagnetRise] > 0
     return true if @effects[PBEffects::Telekinesis] > 0
+    return true if @effects[PBEffects::AirCarryUserIndex] >= 0
+    return true if @effects[PBEffects::AirSupportTurnCount] > 0
     return false
   end
 
@@ -829,6 +831,7 @@ class Battle::Battler
     return true if @battle.field.effects[PBEffects::FairyLock] > 0
     return true if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
     return true if @battle.field.effects[PBEffects::FlameRing] > 0
+    return true if @effects[PBEffects::DoomedSerenadeCount] > 0
     return false
   end
 
@@ -854,6 +857,7 @@ class Battle::Battler
   end
 
   def semiInvulnerable?
+    return true if @effects[PBEffects::AirSupportTurnCount] > 0
     return inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
                             "TwoTurnAttackInvulnerableUnderground",
                             "TwoTurnAttackInvulnerableUnderwater",

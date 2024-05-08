@@ -753,6 +753,7 @@ class Battle
     effectsToSwap = [PBEffects::Attract,
                      PBEffects::BideTarget,
                      PBEffects::CounterTarget,
+                     PBEffects::DoomedSerenadeUser,
                      PBEffects::JawLock,
                      PBEffects::LockOnPos,
                      PBEffects::MeanLook,

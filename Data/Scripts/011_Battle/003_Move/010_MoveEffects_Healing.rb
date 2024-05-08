@@ -205,6 +205,28 @@ class Battle::Move::HealUserByThreeQuartersOfDamageDone < Battle::Move
 end
 
 #===============================================================================
+# User gains half the HP it inflicts as damage. Also, base damage increases by
+# 10 and healing amount by 10% for every raised stat the target has. (Qi Drain)
+#===============================================================================
+class Battle::Move::HealUserByHalfOfDamageDoneAndBoostPower10Healing10PercentPerStatBoostOnTarget < Battle::Move
+  def healingMove?; return Settings::MECHANICS_GENERATION >= 6; end
+
+  def pbBaseDamage(baseDmg, user, target)
+    power_mult = 0
+    GameData::Stat.each_battle { |s| power_mult += target.stages[s.id] if target.stages[s.id] > 0 }
+    return baseDmg + (10 * power_mult)
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if target.damageState.hpLost <= 0
+    drain_multiplier = 5
+    GameData::Stat.each_battle { |s| drain_multiplier += target.stages[s.id] if target.stages[s.id] > 0 }
+    hpGain = (target.damageState.hpLost * drain_multiplier.to_f / 10).round
+    user.pbRecoverHPFromDrain(hpGain, target)
+  end
+end
+
+#===============================================================================
 # The user and its allies gain 25% of their total HP. (Life Dew)
 #===============================================================================
 class Battle::Move::HealUserAndAlliesQuarterOfTotalHP < Battle::Move
@@ -764,6 +786,35 @@ class Battle::Move::StartPerishCountsForAllBattlers < Battle::Move
   def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
     super
     @battle.pbDisplay(_INTL("All Pokémon that hear the song will faint in three turns!"))
+  end
+end
+
+#===============================================================================
+# The target will perish after 3 more rounds and cannot escape. The effect is
+# lifted if the user of this move faints or switches out. (Doomed Serenade)
+#===============================================================================
+class Battle::Move::StartTargetDoomedSerenadeCount < Battle::Move
+  def pbMoveFailed?(user, targets)
+    failed = true
+    targets.each do |b|
+      next if b.effects[PBEffects::DoomedSerenadeCount] > 0   # Heard it before
+      failed = false
+      break
+    end
+    if failed
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return target.effects[PBEffects::DoomedSerenadeCount] > 0   # Heard it before
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::DoomedSerenadeCount] = 4
+    target.effects[PBEffects::DoomedSerenadeUser] = user.index
   end
 end
 

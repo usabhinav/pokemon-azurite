@@ -124,6 +124,7 @@ class Battle::Battler
       @effects[PBEffects::PowerTrick]        = false
       @effects[PBEffects::Substitute]        = 0
       @effects[PBEffects::Telekinesis]       = 0
+      @effects[PBEffects::AirSupportTurnCount] = 0
     end
     @fainted               = (@hp == 0)
     @lastAttacker          = []
@@ -316,6 +317,16 @@ class Battle::Battler
     @effects[PBEffects::DropGuardActive]     = false
     @effects[PBEffects::DropGuardAccuracy]   = false
     @effects[PBEffects::MagmaShieldActive]   = false
+    @effects[PBEffects::AirCarryTurnCount]   = 0
+    @effects[PBEffects::AirCarryUserIndex]   = -1
+    @effects[PBEffects::DoomedSerenadeCount] = 0
+    @effects[PBEffects::DoomedSerenadeUser]  = -1
+    @battle.allBattlers.each do |b|   # Other battlers no longer blocked by self
+      if b.effects[PBEffects::DoomedSerenadeUser] == @index
+        b.effects[PBEffects::DoomedSerenadeCount] = 0
+        b.effects[PBEffects::DoomedSerenadeUser] = -1
+      end
+    end
   end
 
   #=============================================================================

@@ -474,6 +474,14 @@ class Battle
         battler.pbSleep
       end
     }
+    # Air Carry
+    pbEORCountDownBattlerEffect(priority, PBEffects::AirCarryTurnCount) { |battler|
+      endAirCarryForBattlerAndAllies(battler, 1)
+    }
+    # Air Support
+    pbEORCountDownBattlerEffect(priority, PBEffects::AirSupportTurnCount) { |battler|
+      pbDisplay(_INTL("{1} returned to the ground!", battler.pbThis))
+    }
     # Black Hole
     priority.each do |battler|
       next if battler.fainted? || !battler.effects[PBEffects::BlackHoleActive]
@@ -517,6 +525,17 @@ class Battle
       pbJudgeCheckpoint(@battlers[perishSongUsers[0]])
     end
     return if @decision > 0
+    # Doomed Serenade
+    priority.each do |battler|
+      next if battler.fainted? || battler.effects[PBEffects::DoomedSerenadeCount] == 0
+      battler.effects[PBEffects::DoomedSerenadeCount] -= 1
+      pbDisplay(_INTL("{1}'s doomed serenade count fell to {2}!", battler.pbThis, battler.effects[PBEffects::DoomedSerenadeCount]))
+      if battler.effects[PBEffects::DoomedSerenadeCount] == 0
+        battler.pbReduceHP(battler.hp)
+      end
+      battler.pbItemHPHealCheck
+      battler.pbFaint if battler.fainted?
+    end
   end
 
   #=============================================================================

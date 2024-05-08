@@ -125,6 +125,14 @@ class Battle::Battler
       @effects[PBEffects::VoltSpikesArmor] = 0
       @battle.pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", pbThis)) if showMessage
     end
+    # Air Carry
+    if @effects[PBEffects::AirCarryTurnCount] > 0
+      @battle.allSameSideBattlers(@index).each do |b|
+        b.effects[PBEffects::AirCarryUserIndex] = -1 if b.effects[PBEffects::AirCarryUserIndex] == @index
+      end
+      @effects[PBEffects::AirCarryTurnCount] = 0
+      @battle.pbDisplay(_INTL("{1} crashed to the ground!", pbThis)) if showMessage
+    end
     @battle.pbDisplayBrief(_INTL("{1} fainted!", pbThis)) if showMessage
     PBDebug.log("[Pokémon fainted] #{pbThis} (#{@index})") if !showMessage
     @battle.deactivateAura(@index)

@@ -923,6 +923,29 @@ class Battle::Move::CrashDamageWithSpeedIfFails < Battle::Move
 end
 
 #===============================================================================
+# The user becomes airborne for two turns, attacking on the first. Fails if
+# used consecutively. (Air Support)
+#===============================================================================
+class Battle::Move::FailsOnConsecutiveUseInvulnerableInSky < Battle::Move
+  def unusableInGravity?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::Ingrain] ||
+       user.effects[PBEffects::SmackDown] ||
+       user.effects[PBEffects::AirSupportTurnCount] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::AirSupportTurnCount] = 2
+    @battle.pbDisplay(_INTL("{1} flew into the sky to attack!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # Used for extra effect moves. (Forest Fire, thunderstorm weather)
 #===============================================================================
 class Battle::Move::ExtraEffect < Battle::Move

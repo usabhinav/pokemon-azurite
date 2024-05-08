@@ -3,6 +3,7 @@
 #===============================================================================
 module Battle::DebugVariables
   BATTLER_EFFECTS = {
+    PBEffects::AirSupportTurnCount => { name: "Air Support airborne rounds remaining",      default: 0 },
     PBEffects::AquaRing       => { name: "Aqua Ring applies",                               default: false },
     PBEffects::Attract        => { name: "Battler that self is attracted to",               default: -1 },   # Battler index
     PBEffects::BanefulBunker  => { name: "Baneful Bunker applies this round",               default: false },
@@ -24,6 +25,8 @@ module Battle::DebugVariables
 #    PBEffects::DestinyBondTarget - not suitable for setting via debug
     PBEffects::Disable        => { name: "Disable number of rounds remaining",              default: 0 },
     PBEffects::DisableMove    => { name: "Disabled move",                                   default: nil, type: :move },
+    PBEffects::DoomedSerenadeCount => { name: "Doomed Serenade number of rounds remaining", default: 0 },
+    PBEffects::DoomedSerenadeUser => { name: "Battler that used Doomed Serenade on self",   default: -1 },   # Battler index
     PBEffects::Electrify      => { name: "Electrify making moves Electric",                 default: false },
     PBEffects::Embargo        => { name: "Embargo number of rounds remaining",              default: 0 },
     PBEffects::Encore         => { name: "Encore number of rounds remaining",               default: 0 },

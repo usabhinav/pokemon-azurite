@@ -153,6 +153,11 @@ module PBEffects
   DropGuardActive     = 148
   DropGuardAccuracy   = 149
   MagmaShieldActive   = 150
+  AirCarryTurnCount   = 151
+  AirCarryUserIndex   = 152
+  AirSupportTurnCount = 153
+  DoomedSerenadeCount = 154
+  DoomedSerenadeUser  = 155
 
   #=============================================================================
   # These effects apply to a battler position

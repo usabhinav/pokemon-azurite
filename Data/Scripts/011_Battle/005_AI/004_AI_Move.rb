@@ -184,6 +184,7 @@ class Battle::AI
         if miss && pbRoughStat(user, :SPEED, skill) > pbRoughStat(target, :SPEED, skill)
           # Knows what can get past semi-invulnerability
           if target.effects[PBEffects::SkyDrop] >= 0 ||
+             target.effects[PBEffects::AirSupportTurnCount] > 0 ||
              target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
                                      "TwoTurnAttackInvulnerableInSkyParalyzeTarget",
                                      "TwoTurnAttackInvulnerableInSkyTargetCannotAct")

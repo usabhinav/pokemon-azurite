@@ -116,7 +116,7 @@ Resistances = FIRE,WATER,GRASS,ELECTRIC
 Name = Dark
 IconPosition = 17
 IsSpecialType = true
-Weaknesses = FIGHTING,BUG,FAIRY
+Weaknesses = FIGHTING,BUG,FAIRY,LIGHT
 Resistances = GHOST,DARK
 Immunities = PSYCHIC
 #-------------------------------

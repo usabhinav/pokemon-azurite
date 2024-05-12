@@ -219,7 +219,7 @@ class Battle
 
   # Actually performs the recalling and sending out in all situations.
   def pbRecallAndReplace(idxBattler, idxParty, randomReplacement = false, batonPass = false)
-    pbAsteroidBeltDamage(@battlers[idxBattler])
+    effectsOnBattlerSwitchingOut(@battlers[idxBattler])
     @scene.pbRecall(idxBattler) if !@battlers[idxBattler].fainted?
     @battlers[idxBattler].pbAbilitiesOnSwitchOut   # Inc. primordial weather check
     @scene.pbShowPartyLineup(idxBattler & 1) if pbSideSize(idxBattler) == 1
@@ -513,10 +513,10 @@ class Battle
       end
     end
     # Asteroid Belt
-    pbAsteroidBeltDamage(battler)
+    asteroidBeltDamage(battler)
   end
 
-  def pbAsteroidBeltDamage(battler)
+  def asteroidBeltDamage(battler)
     if battler.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0 && battler.takesIndirectDamage? &&
        !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?(:IRONSHELL)
       bTypes = battler.pbTypes(true)
@@ -533,5 +533,19 @@ class Battle
         end        
       end
     end
+  end
+
+  def endAirCarryForBattlerAndAllies(battler, turn_count, show_message = true)
+    return if turn_count == 0
+    allSameSideBattlers(battler.index).each do |b|
+      b.effects[PBEffects::AirCarryUserIndex] = -1 if b.effects[PBEffects::AirCarryUserIndex] == battler.index
+    end
+    battler.effects[PBEffects::AirCarryTurnCount] = 0
+    pbDisplay(_INTL("{1} returned to the ground!", battler.pbThis)) if show_message
+  end
+
+  def effectsOnBattlerSwitchingOut(battlerSwitchingOut)
+    asteroidBeltDamage(battlerSwitchingOut)
+    endAirCarryForBattlerAndAllies(battlerSwitchingOut, battlerSwitchingOut.effects[PBEffects::AirCarryTurnCount])
   end
 end

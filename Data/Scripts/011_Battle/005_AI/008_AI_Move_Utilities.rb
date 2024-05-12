@@ -173,6 +173,8 @@ class Battle::AI
     baseDmg = move.baseDamage
     baseDmg = 60 if baseDmg == 1
     return baseDmg if skill < PBTrainerAI.mediumSkill
+    # Get the move's type
+    type = pbRoughType(move, user, skill)
     # Covers all function codes which have their own def pbBaseDamage
     case move.function
     # Sonic Boom, Dragon Rage, Super Fang, Night Shade, Endeavor
@@ -325,6 +327,19 @@ class Battle::AI
         )
       end
       baseDmg = (baseDmg.to_f * mult / Effectiveness::NORMAL_EFFECTIVE).round
+    when "EffectivenessIncludesLightTypeOnlyIfSuperEffective" # Luminous Gust
+      defTypes = []
+      if skill >= PBTrainerAI.highSkill
+        targetTypes = target.pbTypes(true)
+        defTypes = [targetTypes[0], targetTypes[1], targetTypes[2]].uniq
+      else
+        defTypes = [target.types[0], target.types[1], target.effects[PBEffects::Type3]].uniq
+      end
+      defTypes.each do |defType|
+        next if !Effectiveness.super_effective_type?(:LIGHT, defType)
+        next if Effectiveness.ineffective_type?(type, defType)
+        baseDmg *= (Effectiveness::SUPER_EFFECTIVE_ONE / Effectiveness.calculate_one(type, defType))
+      end
     when "DoublePowerIfUserLastMoveFailed"   # Stomping Tantrum
       baseDmg *= 2 if user.lastRoundMoveFailed
     when "HitTwoTimesFlinchTarget"   # Double Iron Bash

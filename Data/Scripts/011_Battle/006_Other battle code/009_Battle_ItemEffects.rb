@@ -307,7 +307,7 @@ Battle::ItemEffects::DamageTaken.add(:RETREATORDER,
       battler.pbThis, battle.pbGetOwnerName(battler.index)))
     if battle.endOfRound   # Just switch out
       battler.pbConsumeItem
-      battle.pbAsteroidBeltDamage(battler)
+      battle.effectsOnBattlerSwitchingOut(battler)
       battle.scene.pbRecall(target.index) if !battler.fainted?
       battler.pbAbilitiesOnSwitchOut   # Inc. primordial weather check
       next true
@@ -551,7 +551,7 @@ Battle::ItemEffects::OnStatLoss.add(:EJECTPACK,
     battle.pbDisplay(_INTL("{1} is switched out by the {2}!", battler.pbThis, battler.itemName))
     battler.pbConsumeItem(true, false)
     if battle.endOfRound   # Just switch out
-      battle.pbAsteroidBeltDamage(battler)
+      battle.effectsOnBattlerSwitchingOut(battler)
       battle.scene.pbRecall(battler.index) if !battler.fainted?
       battler.pbAbilitiesOnSwitchOut   # Inc. primordial weather check
       next true

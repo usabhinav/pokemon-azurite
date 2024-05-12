@@ -671,6 +671,14 @@ class Battle::AI
         score += 40
       end
     #---------------------------------------------------------------------------
+    when "HealUserByHalfOfDamageDoneAndBoostPower10Healing10PercentPerStatBoostOnTarget"
+      if skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:LIQUIDOOZE)
+        score -= 70
+      else
+        score += 20 if user.hp <= user.totalhp / 2
+        score += 20 if target.hasRaisedStatStages?
+      end
+    #---------------------------------------------------------------------------
     when "HealUserAndAlliesQuarterOfTotalHP"
       ally_amt = 30
       @battle.allSameSideBattlers(user.index).each do |b|
@@ -827,6 +835,9 @@ class Battle::AI
       elsif target.effects[PBEffects::PerishSong] > 0
         score -= 90
       end
+    #---------------------------------------------------------------------------
+    when "StartTargetDoomedSerenadeCount"
+      score -= 90 if target.effects[PBEffects::DoomedSerenadeCount] > 0
     #---------------------------------------------------------------------------
     when "AttackerFaintsIfUserFaints"
       score += 50

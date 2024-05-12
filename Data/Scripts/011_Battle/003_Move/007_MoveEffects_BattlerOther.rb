@@ -476,6 +476,57 @@ class Battle::Move::GiveUserStatusToTarget < Battle::Move
 end
 
 #===============================================================================
+# User passes its status problems and stat debuffs to the target. (Curse Tag)
+#===============================================================================
+class Battle::Move::GiveUserStatusAndStatDebuffsToTarget < Battle::Move
+  def pbEffectAgainstTarget(user, target)
+    # Normal status conditions
+    msg = ""
+    case user.status
+    when :SLEEP
+      target.pbSleep if target.pbCanSleep?(user, false, self)
+      msg = _INTL("{1} woke up.", user.pbThis)
+    when :POISON
+      target.pbPoison(user, nil, user.statusCount != 0) if target.pbCanPoison?(user, false, self)
+      msg = _INTL("{1} was cured of its poisoning.", user.pbThis)
+    when :BURN
+      target.pbBurn(user) if target.pbCanBurn?(user, false, self)
+      msg = _INTL("{1}'s burn was healed.", user.pbThis)
+    when :PARALYSIS
+      target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
+      msg = _INTL("{1} was cured of paralysis.", user.pbThis)
+    when :FROZEN
+      target.pbFreeze if target.pbCanFreeze?(user, false, self)
+      msg = _INTL("{1} was thawed out.", user.pbThis)
+    end
+    if msg != ""
+      user.pbCureStatus(false)
+      @battle.pbDisplay(msg)
+    end
+    # Confusion
+    if user.effects[PBEffects::Confusion] > 0 && !user.hasActiveAbility?(:ROUNDRECORD)
+      target.pbConfuse if target.pbCanConfuse?(user, false, self)
+      user.pbCureConfusion
+      @battle.pbDisplay(_INTL("{1} snapped out of its confusion.", user.pbThis))
+    end
+    # Attract
+    if user.effects[PBEffects::Attract] >= 0
+      target.pbAttract(user) if target.pbCanAttract?(user, false)
+      user.pbCureAttract
+      @battle.pbDisplay(_INTL("{1} got over its infatuation.", user.pbThis))
+    end
+    # Stat debuffs
+    GameData::Stat.each_battle do |s|
+      if user.stages[s.id] < 0
+        target.stages[s.id] = user.stages[s.id] if target.stages[s.id] > user.stages[s.id]
+        user.stages[s.id] = 0
+        @battle.pbDisplay(_INTL("{1} passed on its lowered {2} to {3}!", user.pbThis, s.real_name, target.pbThis(true)))
+      end
+    end
+  end
+end
+
+#===============================================================================
 # Cures user of burn, poison and paralysis. (Refresh)
 #===============================================================================
 class Battle::Move::CureUserBurnPoisonParalysis < Battle::Move
@@ -685,7 +736,8 @@ class Battle::Move::FlinchTargetDoublePowerIfTargetInSky < Battle::Move::FlinchT
     baseDmg *= 2 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
                                             "TwoTurnAttackInvulnerableInSkyParalyzeTarget",
                                             "TwoTurnAttackInvulnerableInSkyTargetCannotAct") ||
-                    target.effects[PBEffects::SkyDrop] >= 0
+                    target.effects[PBEffects::SkyDrop] >= 0 ||
+                    target.effects[PBEffects::AirSupportTurnCount] > 0
     return baseDmg
   end
 end
@@ -754,6 +806,16 @@ class Battle::Move::ConfuseTargetAndPossiblyUser < Battle::Move::ConfuseTarget
   def pbEffectGeneral(user)
     super
     user.pbConfuseSelf if user.pbCanConfuseSelf?(false) && @battle.pbRandom(2) == 0
+  end
+end
+
+#===============================================================================
+# Confuses the target. 100% chance of confusion in rain. (Tornado Tackle)
+#===============================================================================
+class Battle::Move::ConfuseTargetAlwaysInRain < Battle::Move::ConfuseTarget
+  def pbAdditionalEffectChance(user, target, effectChance = 0)
+    return 100 if [:Rain, :HeavyRain, :Thunderstorm].include?(user.effectiveWeather)
+    return super
   end
 end
 
@@ -1482,6 +1544,44 @@ class Battle::Move::StartUserAirborne < Battle::Move
 end
 
 #===============================================================================
+# For a certain number of rounds, the user and its allies become airborne.
+# Number of rounds depends on total weight of carried Pokemon. (Air Carry)
+#===============================================================================
+class Battle::Move::StartUserAndAlliesAirborneBasedOnWeight < Battle::Move
+  def unusableInGravity?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    # Cannot do an Air Carry itself if it's already part of another Air Carry.
+    if user.effects[PBEffects::AirCarryUserIndex] >= 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    # Cannot pick up allies that are part of another Air Carry.
+    return target.effects[PBEffects::AirCarryUserIndex] >= 0
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::AirCarryUserIndex] = user.index
+  end
+
+  def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    carried_ally_weight = targets.map {|b|
+      (b.effects[PBEffects::AirCarryUserIndex] != user.index || user.index == b.index) ? 0 : b.pbWeight
+    }.sum
+    turns_carried = 5
+    turns_carried = 4 if carried_ally_weight >= 500
+    turns_carried = 3 if carried_ally_weight >= 1000
+    turns_carried = 2 if carried_ally_weight >= 2000
+    user.effects[PBEffects::AirCarryTurnCount] = turns_carried
+    @battle.pbDisplay(_INTL("{1} lifted itself{2} off the ground!", user.pbThis, carried_ally_weight > 0 ? " and its allies" : ""))
+  end
+end
+
+#===============================================================================
 # The user's attacks will never miss, and will hit regardless of immunities.
 # (Signal Boost)
 #===============================================================================
@@ -1590,6 +1690,9 @@ class Battle::Move::HitsTargetInSkyGroundsTarget < Battle::Move
     end
     target.effects[PBEffects::MagnetRise]  = 0
     target.effects[PBEffects::Telekinesis] = 0
+    @battle.endAirCarryForBattlerAndAllies(target, target.effects[PBEffects::AirCarryTurnCount], false)
+    target.effects[PBEffects::AirCarryUserIndex] = -1 # If it's a battler being carried by Air Carry
+    target.effects[PBEffects::AirSupportTurnCount] = 0
     @battle.pbDisplay(_INTL("{1} fell straight down!", target.pbThis))
   end
 end
@@ -1621,10 +1724,17 @@ class Battle::Move::StartGravity < Battle::Move
       end
       if b.effects[PBEffects::MagnetRise] > 0 ||
          b.effects[PBEffects::Telekinesis] > 0 ||
-         b.effects[PBEffects::SkyDrop] >= 0
+         b.effects[PBEffects::SkyDrop] >= 0 ||
+         b.effects[PBEffects::AirSupportTurnCount] > 0
         b.effects[PBEffects::MagnetRise]  = 0
         b.effects[PBEffects::Telekinesis] = 0
         b.effects[PBEffects::SkyDrop]     = -1
+        b.effects[PBEffects::AirSupportTurnCount] = 0
+        showMessage = true
+      end
+      if b.effects[PBEffects::AirCarryUserIndex] >= 0
+        @battle.endAirCarryForBattlerAndAllies(b, b.effects[PBEffects::AirCarryTurnCount], false)
+        b.effects[PBEffects::AirCarryUserIndex] = -1 # If it's a battler being carried by Air Carry
         showMessage = true
       end
       if showMessage
@@ -1711,17 +1821,5 @@ class Battle::Move::SleepTargetAndUser < Battle::Move::SleepTarget
   def pbEffectGeneral(user)
     user.pbSleepSelf(_INTL("{1} and it's target both fell asleep",user.pbThis),3)
     super
-  end
-end
-
-#===============================================================================
-# Luminous Gust
-#===============================================================================
-class Battle::Move::SuperEffectiveAgainstDarkGhostFlying < Battle::Move
-  def pbCalcTypeModSingle(moveType,defType,user,target)
-    if [:DARK, :GHOST, :FLYING].include?(defType)
-      return Effectiveness::SUPER_EFFECTIVE_ONE
-    end
-    return super
   end
 end

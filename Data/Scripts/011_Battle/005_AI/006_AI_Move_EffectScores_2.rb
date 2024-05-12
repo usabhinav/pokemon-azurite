@@ -238,6 +238,12 @@ class Battle::AI
         score += 40
       end
     #---------------------------------------------------------------------------
+    when "GiveUserStatusAndStatDebuffsToTarget"
+      score += 40 if user.status != :NONE ||
+                     user.effects[PBEffects::Confusion] > 0 ||
+                     user.effects[PBEffects::Attract] >= 0 ||
+                     user.hasLoweredStatStages?
+    #---------------------------------------------------------------------------
     when "CureUserBurnPoisonParalysis"
       case user.status
       when :POISON
@@ -335,6 +341,16 @@ class Battle::AI
       if target.pbCanConfuse?(user, false)
         score += 30
         if !user.pbCanConfuseSelf?(false)
+          score += 30
+        end
+      elsif skill >= PBTrainerAI.mediumSkill
+        score -= 90 if move.statusMove?
+      end
+    #---------------------------------------------------------------------------      
+    when "ConfuseTargetAlwaysInRain"
+      if target.pbCanConfuse?(user, false)
+        score += 30
+        if [:Rain, :HeavyRain, :Thunderstorm].include?(user.effectiveWeather)
           score += 30
         end
       elsif skill >= PBTrainerAI.mediumSkill
@@ -609,6 +625,9 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
+    when "StartUserAndAlliesAirborneBasedOnWeight"
+      score -= 90 if user.effects[PBEffects::AirCarryUserIndex] >= 0
+    #---------------------------------------------------------------------------
     when "StartUserBypassImmunityAndAccuracy"
       if user.effects[PBEffects::SignalBoostMoveActive]
         score -= 90
@@ -630,6 +649,8 @@ class Battle::AI
       if skill >= PBTrainerAI.mediumSkill
         score += 20 if target.effects[PBEffects::MagnetRise] > 0
         score += 20 if target.effects[PBEffects::Telekinesis] > 0
+        score += 20 if target.effects[PBEffects::AirCarryUserIndex] >= 0
+        score += 20 if target.effects[PBEffects::AirSupportTurnCount] > 0
         score += 20 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
                                                "TwoTurnAttackInvulnerableInSkyParalyzeTarget")
         score += 20 if target.pbHasType?(:FLYING)
@@ -645,12 +666,16 @@ class Battle::AI
         score -= 20 if user.effects[PBEffects::SkyDrop] >= 0
         score -= 20 if user.effects[PBEffects::MagnetRise] > 0
         score -= 20 if user.effects[PBEffects::Telekinesis] > 0
+        score -= 20 if user.effects[PBEffects::AirCarryUserIndex] >= 0
+        score -= 20 if user.effects[PBEffects::AirSupportTurnCount] > 0
         score -= 20 if user.pbHasType?(:FLYING)
         score -= 20 if user.hasActiveAbility?(:LEVITATE)
         score -= 20 if user.hasActiveItem?(:AIRBALLOON)
         score += 20 if target.effects[PBEffects::SkyDrop] >= 0
         score += 20 if target.effects[PBEffects::MagnetRise] > 0
         score += 20 if target.effects[PBEffects::Telekinesis] > 0
+        score += 20 if target.effects[PBEffects::AirCarryUserIndex] >= 0
+        score += 20 if target.effects[PBEffects::AirSupportTurnCount] > 0
         score += 20 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
                                                "TwoTurnAttackInvulnerableInSkyParalyzeTarget",
                                                "TwoTurnAttackInvulnerableInSkyTargetCannotAct")

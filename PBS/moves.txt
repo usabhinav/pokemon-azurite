@@ -9026,8 +9026,8 @@ Type = FLYING
 Category = Status
 Accuracy = 0
 TotalPP = 15
-Target = AllAllies
-FunctionCode = ProtectAlliesForDurationDependingOnAllyWeight
+Target = UserAndAllies
+FunctionCode = StartUserAndAlliesAirborneBasedOnWeight
 Flags = Defense
 Description = The user carries its allies into the air, making them immune to Ground. However, duration depends on carried pokemon's weight.
 #-------------------------------
@@ -9193,7 +9193,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 5
 Target = NearOther
-FunctionCode = StartDoomedSerenadeCountForTarget
+FunctionCode = StartTargetDoomedSerenadeCount
 Flags = Sound
 Description = The target will faint after 3 turns, and can't escape the battle until it has fainted. If the target knocks out the user of this move or the user switches out, the effect is lifted.
 #-------------------------------
@@ -11937,7 +11937,7 @@ Power = 80
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = HealUserByHalfOfTotalHPAndBoostPower10Healing10PercentPerStatBoostOnTarget
+FunctionCode = HealUserByHalfOfDamageDoneAndBoostPower10Healing10PercentPerStatBoostOnTarget
 Flags = Contact,CanProtect,CanMirrorMove
 Description = The user devours the target's vitality, healing themselves. More powerful if the foe is boosted.
 #-------------------------------
@@ -12269,7 +12269,7 @@ Power = 60
 Accuracy = 100
 TotalPP = 20
 Target = NearOther
-FunctionCode = GiveUserStatDebuffsToTarget
+FunctionCode = GiveUserStatusAndStatDebuffsToTarget
 Flags = Contact,CanProtect,CanMirrorMove
 Description = With a dark grudge, the Pokémon transfers all its negative stats and status onto the target.
 #-------------------------------
@@ -12805,7 +12805,7 @@ Power = 90
 Accuracy = 95
 TotalPP = 15
 Target = NearOther
-FunctionCode = TwoTurnAttackInvulnerableInSkyAttackFirstTurn
+FunctionCode = FailsOnConsecutiveUseInvulnerableInSky
 Flags = Contact,CanProtect,CanMirrorMove
 Description = The user flies up and attacks the target on the first turn, then takes a second turn to come back down.
 #-------------------------------

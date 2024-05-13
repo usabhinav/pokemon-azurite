@@ -85,6 +85,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "PowerHigherIfUserHitBySpecialAttack"
     #---------------------------------------------------------------------------
+    when "PowerHigherWithMoreFaintedPokemonInTargetParty"
+      score += (5 * @battle.pbParty(target.index).count {|pokemon| pokemon.fainted?})
+    #---------------------------------------------------------------------------
     when "RandomPowerDoublePowerIfTargetUnderground"
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetHPLessThanHalf"
@@ -148,6 +151,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "StartPreventCriticalHitsAgainstUserSide"
       score -= 90 if user.pbOwnSide.effects[PBEffects::LuckyChant] > 0
+    #---------------------------------------------------------------------------
+    when "AlwaysSuperEffective"
+      # No score modifiers currently.
     #---------------------------------------------------------------------------
     when "CannotMakeTargetFaint"
       if target.hp == 1
@@ -677,6 +683,14 @@ class Battle::AI
       else
         score += 20 if user.hp <= user.totalhp / 2
         score += 20 if target.hasRaisedStatStages?
+      end
+    #---------------------------------------------------------------------------
+    when "HealUserByHalfOfDamageDoneAndIncreaseDamageDoneByBurnPoisonFor5Turns"
+      if skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:LIQUIDOOZE)
+        score -= 70
+      else
+        score += 20 if user.hp <= user.totalhp / 2
+        score += 20 if target.burned? || target.poisoned?
       end
     #---------------------------------------------------------------------------
     when "HealUserAndAlliesQuarterOfTotalHP"

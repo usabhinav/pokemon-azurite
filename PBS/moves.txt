@@ -12293,7 +12293,7 @@ Power = 55
 Accuracy = 90
 TotalPP = 10
 Target = NearOther
-FunctionCode = PowerIncreasesBy25PerFaintedPokemonInTargetParty
+FunctionCode = PowerHigherWithMoreFaintedPokemonInTargetParty
 Flags = Contact,CanProtect,CanMirrorMove
 Description = Drawing hate from fallen souls, its power increases for each fainted Pokémon in the target's party.
 #-------------------------------

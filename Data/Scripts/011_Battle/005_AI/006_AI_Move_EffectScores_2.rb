@@ -244,6 +244,9 @@ class Battle::AI
                      user.effects[PBEffects::Attract] >= 0 ||
                      user.hasLoweredStatStages?
     #---------------------------------------------------------------------------
+    when "GiveUserBerryEffectToTarget"
+      score -= 90 if user.item.nil? || !user.item.is_berry?
+    #---------------------------------------------------------------------------
     when "CureUserBurnPoisonParalysis"
       case user.status
       when :POISON

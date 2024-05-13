@@ -312,6 +312,7 @@ class Battle
         battler.droppedBelowHalfHP = false
         dmg = battler.totalhp / 8
         dmg = battler.totalhp * battler.effects[PBEffects::Toxic] / 16 if battler.statusCount > 0
+        dmg *= 2 if battler.effects[PBEffects::DeterDrainActive] > 0
         battler.pbContinueStatus { battler.pbReduceHP(dmg, false) }
         battler.pbItemHPHealCheck
         battler.pbAbilitiesOnDamageTaken
@@ -326,6 +327,7 @@ class Battle
       battler.droppedBelowHalfHP = false
       dmg = (Settings::MECHANICS_GENERATION >= 7) ? battler.totalhp / 16 : battler.totalhp / 8
       dmg = (dmg / 2.0).round if battler.hasActiveAbility?(:HEATPROOF)
+      dmg *= 2 if battler.effects[PBEffects::DeterDrainActive] > 0
       battler.pbContinueStatus { battler.pbReduceHP(dmg, false) }
       battler.pbItemHPHealCheck
       battler.pbAbilitiesOnDamageTaken
@@ -1029,6 +1031,7 @@ class Battle
       battler.effects[PBEffects::Counter]          = -1
       battler.effects[PBEffects::CounterTarget]    = -1
       battler.effects[PBEffects::CreationGem]      -= 1 if battler.effects[PBEffects::CreationGem] > 0
+      battler.effects[PBEffects::DeterDrainActive] -= 1 if battler.effects[PBEffects::DeterDrainActive] > 0
       battler.effects[PBEffects::Electrify]        = false
       battler.effects[PBEffects::Endure]           = false
       battler.effects[PBEffects::FirstPledge]      = nil

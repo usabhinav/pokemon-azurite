@@ -527,6 +527,25 @@ class Battle::Move::GiveUserStatusAndStatDebuffsToTarget < Battle::Move
 end
 
 #===============================================================================
+# User passes its berry effect to the target, if it's holding a berry. Fails
+# if the user is not holding a berry. (Berry Share)
+#===============================================================================
+class Battle::Move::GiveUserBerryEffectToTarget < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.item.nil? || !user.item.is_berry?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    @battle.pbDisplay(_INTL("{1} shared its {2} with {3}!", user.pbThis, user.itemName, target.pbThis(true)))
+    target.pbHeldItemTriggerCheck(user.item, false)
+  end
+end
+
+#===============================================================================
 # Cures user of burn, poison and paralysis. (Refresh)
 #===============================================================================
 class Battle::Move::CureUserBurnPoisonParalysis < Battle::Move

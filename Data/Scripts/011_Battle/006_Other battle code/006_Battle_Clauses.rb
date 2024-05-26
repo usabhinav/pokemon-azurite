@@ -25,7 +25,11 @@ class Battle
   def pbJudgeCheckpoint(user, move = nil)
     if pbAllFainted?(0) && pbAllFainted?(1)
       if @rules["drawclause"]   # NOTE: Also includes Life Orb (not implemented)
-        if !(move && move.function == "HealUserByHalfOfDamageDone")
+        if !(move && ["HealUserByHalfOfDamageDone",
+                      "HealUserByHalfOfDamageDoneIfTargetAsleep",
+                      "HealUserByThreeQuartersOfDamageDone",
+                      "HealUserByHalfOfDamageDoneAndBoostPower10Healing10PercentPerStatBoostOnTarget",
+                      "HealUserByHalfOfDamageDoneAndIncreaseDamageDoneByBurnPoisonFor5Turns"].include?(move.function))
           # Not a draw if fainting occurred due to Liquid Ooze
           @decision = (user.opposes?) ? 1 : 2   # win / loss
         end

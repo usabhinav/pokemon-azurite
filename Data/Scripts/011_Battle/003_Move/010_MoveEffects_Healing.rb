@@ -227,6 +227,22 @@ class Battle::Move::HealUserByHalfOfDamageDoneAndBoostPower10Healing10PercentPer
 end
 
 #===============================================================================
+# User gains half the HP it inflicts as damage. Also, doubles the damage of burn
+# and poison effects on the target for 5 turns. (Deter Drain)
+#===============================================================================
+class Battle::Move::HealUserByHalfOfDamageDoneAndIncreaseDamageDoneByBurnPoisonFor5Turns < Battle::Move
+  def healingMove?; return Settings::MECHANICS_GENERATION >= 6; end
+
+  def pbEffectAgainstTarget(user, target)
+    return if target.damageState.hpLost <= 0
+    hpGain = (target.damageState.hpLost / 2.0).round
+    user.pbRecoverHPFromDrain(hpGain, target)
+    target.effects[PBEffects::DeterDrainActive] = 5
+    @battle.pbDisplay(_INTL("{1} became weaker to burns and poison!", target.pbThis))
+  end
+end
+
+#===============================================================================
 # The user and its allies gain 25% of their total HP. (Life Dew)
 #===============================================================================
 class Battle::Move::HealUserAndAlliesQuarterOfTotalHP < Battle::Move

@@ -483,6 +483,17 @@ class Battle::Move::PowerHigherIfUserHitBySpecialAttack < Battle::Move
 end
 
 #===============================================================================
+# Power is increased by 25 for each fainted Pokemon in the opponent's party.
+# Includes all trainers on the opposing side if there is more than one.
+# (Tomb Raid)
+#===============================================================================
+class Battle::Move::PowerHigherWithMoreFaintedPokemonInTargetParty < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    return baseDmg + (25 * @battle.pbParty(target.index).count {|pokemon| pokemon.fainted?})
+  end
+end
+
+#===============================================================================
 # Power is chosen at random. Power is doubled if the target is using Dig. Hits
 # some semi-invulnerable targets. (Magnitude)
 #===============================================================================
@@ -799,6 +810,17 @@ class Battle::Move::StartPreventCriticalHitsAgainstUserSide < Battle::Move
   def pbEffectGeneral(user)
     user.pbOwnSide.effects[PBEffects::LuckyChant] = 5
     @battle.pbDisplay(_INTL("The Lucky Chant shielded {1} from critical hits!", user.pbTeam(true)))
+  end
+end
+
+#===============================================================================
+# This attack is always super effective. (Surprise Attack)
+#===============================================================================
+class Battle::Move::AlwaysSuperEffective < Battle::Move
+  def pbCalcTypeMod(movetype, user, target)
+    ret = super
+    # If multiplier is 4x or more, keep that, otherwise minimum should be 2x.
+    return [ret, Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE].max
   end
 end
 

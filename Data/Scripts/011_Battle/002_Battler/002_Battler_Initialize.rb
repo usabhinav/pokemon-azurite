@@ -327,6 +327,7 @@ class Battle::Battler
         b.effects[PBEffects::DoomedSerenadeUser] = -1
       end
     end
+    @effects[PBEffects::DeterDrainActive]    = 0
   end
 
   #=============================================================================

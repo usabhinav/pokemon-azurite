@@ -534,6 +534,7 @@ class Battle::Move::TwoTurnAttackInvulnerableRemoveProtections < Battle::Move::T
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::BarkArmor]              = false
     target.effects[PBEffects::BlackHoleActive]        = false
     target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false

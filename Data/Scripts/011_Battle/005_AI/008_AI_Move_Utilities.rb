@@ -221,6 +221,7 @@ class Battle::AI
          "PowerHigherWithMoreCosmicTypesInParty",
          "PowerHigherIfUserHitBySpecialAttack",
          "PowerHigherWithMoreFaintedPokemonInTargetParty",
+         "PowerHigherWithMoreNidokingsInParty",
          "PowerHigherWithLessPP",
          "PowerLowerWithUserHP",
          "PowerHigherWithUserFasterThanTarget",

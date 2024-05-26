@@ -656,6 +656,76 @@ class Battle::Move::UserFaints < Battle::Move
 end
 
 #===============================================================================
+# User faints and removes all screens, entry hazards, and terrains.
+# (Field Collapse)
+#===============================================================================
+class Battle::Move::UserFaintsRemoveEntryHazardsAndScreensAndTerrains < Battle::Move
+  def pbAddTarget(targets, user)
+    # No need to target itself, there is separate code to faint the user below.
+    targets.reject! {|t| t.index == user.index}
+  end
+
+  def pbEffectGeneral(user)
+    # Remove screens
+    @battle.sides.each do |i|
+      i.effects[PBEffects::AuroraVeil]  = 0
+      i.effects[PBEffects::Reflect]     = 0
+      i.effects[PBEffects::LightScreen] = 0
+      i.effects[PBEffects::Safeguard]   = 0
+    end
+    @battle.pbDisplay(_INTL("It broke all barriers!"))
+    # Remove entry hazards
+    if user.pbOwnSide.effects[PBEffects::StealthRock] || user.pbOpposingSide.effects[PBEffects::StealthRock]
+      user.pbOwnSide.effects[PBEffects::StealthRock]      = false
+      user.pbOpposingSide.effects[PBEffects::StealthRock] = false
+      @battle.pbDisplay(_INTL("{1} cleared stealth rocks!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::Spikes] > 0 || user.pbOpposingSide.effects[PBEffects::Spikes] > 0
+      user.pbOwnSide.effects[PBEffects::Spikes]      = 0
+      user.pbOpposingSide.effects[PBEffects::Spikes] = 0
+      @battle.pbDisplay(_INTL("{1} cleared spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 || user.pbOpposingSide.effects[PBEffects::ToxicSpikes] > 0
+      user.pbOwnSide.effects[PBEffects::ToxicSpikes]      = 0
+      user.pbOpposingSide.effects[PBEffects::ToxicSpikes] = 0
+      @battle.pbDisplay(_INTL("{1} cleared poison spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0 || user.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0
+      user.pbOwnSide.effects[PBEffects::VoltSpikes]      = 0
+      user.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0
+      @battle.pbDisplay(_INTL("{1} cleared volt spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::StickyWeb] || user.pbOpposingSide.effects[PBEffects::StickyWeb]
+      user.pbOwnSide.effects[PBEffects::StickyWeb]      = false
+      user.pbOpposingSide.effects[PBEffects::StickyWeb] = false
+      @battle.pbDisplay(_INTL("{1} cleared sticky webs!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0 || user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
+      user.pbOwnSide.effects[PBEffects::AsteroidBelt]      = 0
+      user.pbOpposingSide.effects[PBEffects::AsteroidBelt] = 0
+      @battle.pbDisplay(_INTL("{1} cleared asteroids!", user.pbThis))
+    end
+    # Remove terrain
+    case @battle.field.terrain
+    when :Electric
+      @battle.pbDisplay(_INTL("The electricity disappeared from the battlefield."))
+    when :Grassy
+      @battle.pbDisplay(_INTL("The grass disappeared from the battlefield."))
+    when :Misty
+      @battle.pbDisplay(_INTL("The mist disappeared from the battlefield."))
+    when :Psychic
+      @battle.pbDisplay(_INTL("The weirdness disappeared from the battlefield."))
+    end
+    @battle.field.terrain = :None
+    # Faint user
+    if !user.fainted?
+      user.pbReduceHP(user.hp, false)
+      user.pbItemHPHealCheck
+    end
+  end
+end
+
+#===============================================================================
 # User faints. If Misty Terrain applies, base power is multiplied by 1.5.
 # (Misty Explosion)
 #===============================================================================

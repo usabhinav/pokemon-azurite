@@ -1026,6 +1026,7 @@ class Battle
     # Reset/count down battler-specific effects (no messages)
     allBattlers.each do |battler|
       battler.effects[PBEffects::BanefulBunker]    = false
+      battler.effects[PBEffects::BarkArmor]        = false
       battler.effects[PBEffects::Charge]           -= 1 if battler.effects[PBEffects::Charge] > 0
       battler.effects[PBEffects::CometSwingEffectsActive] = false
       battler.effects[PBEffects::Counter]          = -1

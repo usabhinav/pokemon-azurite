@@ -544,8 +544,23 @@ class Battle
     pbDisplay(_INTL("{1} returned to the ground!", battler.pbThis)) if show_message
   end
 
+  def thornTrapDamage(battler)
+    if battler.effects[PBEffects::ThornTrap] && battler.takesIndirectDamage? &&
+       !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?(:IRONSHELL)
+      battler.pbReduceHP(battler.totalhp / 8, false)
+      pbDisplay(_INTL("{1} was pierced by the thorny vines surrounding it!", battler.pbThis))
+      battler.pbItemHPHealCheck
+      if battler.fainted?
+        battler.pbFaint
+        pbGainExp
+        pbJudge
+      end  
+    end
+  end
+
   def effectsOnBattlerSwitchingOut(battlerSwitchingOut)
     asteroidBeltDamage(battlerSwitchingOut)
     endAirCarryForBattlerAndAllies(battlerSwitchingOut, battlerSwitchingOut.effects[PBEffects::AirCarryTurnCount])
+    thornTrapDamage(battlerSwitchingOut)
   end
 end

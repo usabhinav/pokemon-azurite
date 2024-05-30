@@ -648,7 +648,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "HitsTargetInSky"
     #---------------------------------------------------------------------------
-    when "HitsTargetInSkyGroundsTarget"
+    when "HitsTargetInSkyGroundsTarget", "HitsTargetInSkyGroundsTargetSuperEffectiveAgainstAirborneTarget"
       if skill >= PBTrainerAI.mediumSkill
         score += 20 if target.effects[PBEffects::MagnetRise] > 0
         score += 20 if target.effects[PBEffects::Telekinesis] > 0

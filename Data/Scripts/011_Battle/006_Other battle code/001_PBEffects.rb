@@ -159,6 +159,8 @@ module PBEffects
   DoomedSerenadeCount = 154
   DoomedSerenadeUser  = 155
   DeterDrainActive    = 156
+  ThornTrap           = 157
+  BarkArmor           = 158
 
   #=============================================================================
   # These effects apply to a battler position

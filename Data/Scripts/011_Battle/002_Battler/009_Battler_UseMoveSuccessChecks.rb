@@ -422,6 +422,20 @@ class Battle::Battler
         end
       end
     end
+    # Bark Armor
+    if move.canProtectAgainst? && target.effects[PBEffects::BarkArmor] && move.damagingMove?
+      if show_message
+        @battle.pbCommonAnimation("BarkArmor", target)
+        @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
+      end
+      target.damageState.protected = true
+      @battle.successStates[user.index].protected = true
+      stat_to_raise = move.pbPhysicalMove?(user) ? :ATTACK : :SPECIAL_ATTACK
+      if target.pbCanRaiseStatStage?(stat_to_raise, target, move)
+        target.pbRaiseStatStage(stat_to_raise, 1, target, move)
+      end
+      return false
+    end
     # Magic Coat/Magic Bounce
     if move.statusMove? && move.canMagicCoat? && !target.semiInvulnerable? && target.opposes?(user)
       if target.effects[PBEffects::MagicCoat]

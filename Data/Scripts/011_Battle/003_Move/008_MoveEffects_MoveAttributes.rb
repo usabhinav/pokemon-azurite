@@ -494,6 +494,16 @@ class Battle::Move::PowerHigherWithMoreFaintedPokemonInTargetParty < Battle::Mov
 end
 
 #===============================================================================
+# Power is increased by 10 for each Nidoking in the user's and allies' parties.
+# (Boyfriends)
+#===============================================================================
+class Battle::Move::PowerHigherWithMoreNidokingsInParty < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    return baseDmg + (10 * @battle.pbParty(user.index).count {|pokemon| !pokemon.egg? && pokemon.isSpecies?(:NIDOKING)})
+  end
+end
+
+#===============================================================================
 # Power is chosen at random. Power is doubled if the target is using Dig. Hits
 # some semi-invulnerable targets. (Magnitude)
 #===============================================================================
@@ -1060,6 +1070,18 @@ class Battle::Move::ProtectUserFromTargetingMovesSpikyShield < Battle::Move::Pro
 end
 
 #===============================================================================
+# User is protected against moves that target it this round. Raises the user's
+# Attack or Special Attack depending on the category of the move that targets
+# it. (Bark Armor)
+#===============================================================================
+class Battle::Move::ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack < Battle::Move::ProtectMove
+  def initialize(battle, move)
+    super
+    @effect = PBEffects::BarkArmor
+  end
+end
+
+#===============================================================================
 # This round, the user's side is unaffected by damaging moves. (Mat Block)
 #===============================================================================
 class Battle::Move::ProtectUserSideFromDamagingMovesIfUserFirstTurn < Battle::Move
@@ -1137,6 +1159,7 @@ class Battle::Move::RemoveProtections < Battle::Move
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::BarkArmor]              = false
     target.effects[PBEffects::BlackHoleActive]        = false
     target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
@@ -1158,6 +1181,7 @@ class Battle::Move::RemoveProtectionsBypassSubstitute < Battle::Move
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::BarkArmor]              = false
     target.effects[PBEffects::BlackHoleActive]        = false
     target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
@@ -1196,6 +1220,7 @@ class Battle::Move::HoopaRemoveProtectionsBypassSubstituteLowerUserDef1 < Battle
     target.effects[PBEffects::Obstruct]               = false
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
+    target.effects[PBEffects::BarkArmor]              = false
     target.effects[PBEffects::BlackHoleActive]        = false
     target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
@@ -1410,6 +1435,24 @@ class Battle::Move::SuperEffectiveAgainstFireNeutralEffectiveAgainstIce < Battle
     return Effectiveness::SUPER_EFFECTIVE_ONE if defType == :FIRE
     return Effectiveness::NORMAL_EFFECTIVE_ONE if defType == :ICE
     return super
+  end
+end
+
+#===============================================================================
+# Super effective against Flying-types. Lowers the user's Defense if it misses.
+# (Sand Hammer)
+#===============================================================================
+class Battle::Move::SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    return Effectiveness::SUPER_EFFECTIVE_ONE if defType == :FLYING
+    return super
+  end
+
+  # Re-using this method since it triggers on all targets missed.
+  def pbCrashDamage(user)
+    if user.pbCanLowerStatStage?(:DEFENSE, user, self)
+      user.pbLowerStatStage(:DEFENSE, 1, user)
+    end
   end
 end
 

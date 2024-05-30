@@ -88,6 +88,9 @@ class Battle::AI
     when "PowerHigherWithMoreFaintedPokemonInTargetParty"
       score += (5 * @battle.pbParty(target.index).count {|pokemon| pokemon.fainted?})
     #---------------------------------------------------------------------------
+    when "PowerHigherWithMoreNidokingsInParty"
+      score += (2 * @battle.pbParty(user.index).count {|pokemon| !pokemon.egg? && pokemon.isSpecies?(:NIDOKING)})
+    #---------------------------------------------------------------------------
     when "RandomPowerDoublePowerIfTargetUnderground"
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetHPLessThanHalf"
@@ -197,7 +200,7 @@ class Battle::AI
       score += 20 if user.pbOpposingSide.effects[PBEffects::Reflect] > 0
       score += 20 if user.pbOpposingSide.effects[PBEffects::LightScreen] > 0
     #---------------------------------------------------------------------------
-    when "ProtectUser"
+    when "ProtectUser", "ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack"
       if user.effects[PBEffects::ProtectRate] > 1 ||
          target.effects[PBEffects::HyperBeam] > 0
         score -= 90
@@ -339,7 +342,8 @@ class Battle::AI
     when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType",
          "EffectivenessIncludesSoundType"
     #---------------------------------------------------------------------------
-    when "SuperEffectiveAgainstFireNeutralEffectiveAgainstIce"
+    when "SuperEffectiveAgainstFireNeutralEffectiveAgainstIce",
+         "SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses"
       # Type mod calculations will automatically adjust the score appropriately.
     #---------------------------------------------------------------------------
     when "CategoryDependsOnHigherDamagePoisonTarget"
@@ -810,6 +814,38 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "UserFaints"
       score -= user.hp * 100 / user.totalhp
+    #---------------------------------------------------------------------------
+    when "UserFaintsRemoveEntryHazardsAndScreensAndTerrains"
+      # Terrain
+      score -= 100 if @battle.field.terrain == :None
+      # Entry hazards
+      if @battle.pbAbleNonActiveCount(user.idxOwnSide) > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
+        score += 80 if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
+      end
+      if @battle.pbAbleNonActiveCount(user.idxOpposingSide) > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::Spikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::StealthRock]
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
+      end
+      # Screens
+      if user.pbOpposingSide.effects[PBEffects::AuroraVeil] > 0 ||
+         user.pbOpposingSide.effects[PBEffects::Reflect] > 0 ||
+         user.pbOpposingSide.effects[PBEffects::LightScreen] > 0 ||
+         user.pbOpposingSide.effects[PBEffects::Safeguard] > 0
+        score += 30
+        score -= 90 if user.pbOwnSide.effects[PBEffects::AuroraVeil] > 0 ||
+                       user.pbOwnSide.effects[PBEffects::Reflect] > 0 ||
+                       user.pbOwnSide.effects[PBEffects::LightScreen] > 0 ||
+                       user.pbOwnSide.effects[PBEffects::Safeguard] > 0
+      end
+      # User fainting
+      score -= user.hp * 50 / user.totalhp
     #---------------------------------------------------------------------------
     when "UserFaintsPowersUpInMistyTerrainExplosive"
       reserves = @battle.pbAbleNonActiveCount(user.idxOwnSide)
@@ -1395,6 +1431,9 @@ class Battle::AI
       end
     #---------------------------------------------------------------------------
     when "StartSlowerBattlersActFirst"
+    #---------------------------------------------------------------------------
+    when "StartTargetDamagedWhenSwitchedOut"
+      score -= 90 if target.effects[PBEffects::ThornTrap]
     #---------------------------------------------------------------------------
     when "HigherPriorityInGrassyTerrain"
       if skill >= PBTrainerAI.mediumSkill && @battle.field.terrain == :Grassy

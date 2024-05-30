@@ -704,6 +704,27 @@ class Battle::Move::StartSlowerBattlersActFirst < Battle::Move
 end
 
 #===============================================================================
+# Soft-traps the target, where they can still switch out, but will lose 1/8th
+# of their max HP when they do. (Thorn Trap)
+#===============================================================================
+class Battle::Move::StartTargetDamagedWhenSwitchedOut < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if target.effects[PBEffects::ThornTrap]
+      @battle.pbDisplay(_INTL("{1} is already tangled in thorns!", target.pbThis)) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::ThornTrap] = true
+    @battle.pbDisplay(_INTL("{1} was trapped in a web of thorny vines!", target.pbThis))
+  end
+end
+
+#===============================================================================
 # If Grassy Terrain applies, priority is increased by 1. (Grassy Glide)
 #===============================================================================
 class Battle::Move::HigherPriorityInGrassyTerrain < Battle::Move

@@ -10415,7 +10415,7 @@ Power = 50
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = PowerIncreasesBy10PerNidokingInUserParty
+FunctionCode = PowerHigherWithMoreNidokingsInParty
 Flags = Contact,CanProtect,CanMirrorMove
 Description = Damage increases for each Nidoking in the party.
 #-------------------------------
@@ -10994,7 +10994,7 @@ Target = AllBattlers
 Priority = -1
 FunctionCode = UserFaintsRemoveEntryHazardsAndScreensAndTerrains
 Flags = CanProtect,CanMirrorMove
-Description = The user expends all of their power to utterly wreck the battlefield.  The user faints upon using this move.
+Description = The user expends all of their power to utterly wreck the battlefield. The user faints upon using this move.
 #-------------------------------
 [FORESTFIREATTACK]
 Name = Forest Fire Attack
@@ -12131,7 +12131,7 @@ Power = 70
 Accuracy = 95
 TotalPP = 15
 Target = NearOther
-FunctionCode = SuperEffectiveAgainstTargetInSkyGroundsTarget
+FunctionCode = HitsTargetInSkyGroundsTargetSuperEffectiveAgainstAirborneTarget
 Flags = CanProtect,CanMirrorMove
 Description = The user yanks the target to the ground with powerful vines. Deals more damage to flying opponents.
 #-------------------------------
@@ -12302,7 +12302,7 @@ Name = Sand Hammer
 Type = GROUND
 Category = Physical
 Power = 100
-Accuracy = 100
+Accuracy = 90
 TotalPP = 10
 Target = NearOther
 FunctionCode = SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses
@@ -12443,7 +12443,7 @@ Power = 70
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = StartThornTrapOnTarget
+FunctionCode = StartTargetDamagedWhenSwitchedOut
 Flags = CanProtect,CanMirrorMove
 Description = The target is bound in thorny vines that stick around, dealing extra damage if they swap out.
 #-------------------------------

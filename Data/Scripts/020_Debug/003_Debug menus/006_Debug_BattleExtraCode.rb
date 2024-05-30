@@ -7,6 +7,7 @@ module Battle::DebugVariables
     PBEffects::AquaRing       => { name: "Aqua Ring applies",                               default: false },
     PBEffects::Attract        => { name: "Battler that self is attracted to",               default: -1 },   # Battler index
     PBEffects::BanefulBunker  => { name: "Baneful Bunker applies this round",               default: false },
+    PBEffects::BarkArmor      => { name: "Bark Armor applies this round",                   default: false },
 #    PBEffects::BeakBlast - only applies to use of specific move, not suitable for setting via debug
     PBEffects::Bide           => { name: "Bide number of rounds remaining",                 default: 0 },
     PBEffects::BideDamage     => { name: "Bide damage accumulated",                         default: 0, max: 999 },

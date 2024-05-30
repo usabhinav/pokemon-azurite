@@ -328,6 +328,8 @@ class Battle::Battler
       end
     end
     @effects[PBEffects::DeterDrainActive]    = 0
+    @effects[PBEffects::ThornTrap]           = false
+    @effects[PBEffects::BarkArmor]           = false
   end
 
   #=============================================================================

@@ -213,6 +213,13 @@ class Battle::AI
         score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
         score += 80 if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
+      if @battle.pbAbleNonActiveCount(user.idxOpposingSide) > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::Spikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::StealthRock]
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
+      end
     #---------------------------------------------------------------------------
     when "AttackTwoTurnsLater"
       if @battle.positions[target.index].effects[PBEffects::FutureSightCounter] > 0

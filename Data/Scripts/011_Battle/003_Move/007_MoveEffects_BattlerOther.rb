@@ -1717,6 +1717,22 @@ class Battle::Move::HitsTargetInSkyGroundsTarget < Battle::Move
 end
 
 #===============================================================================
+# Grounds the target while it remains active. Hits some semi-invulnerable
+# targets. Always super-effective against airborne targets. (Vine Takedown)
+#===============================================================================
+class Battle::Move::HitsTargetInSkyGroundsTargetSuperEffectiveAgainstAirborneTarget < Battle::Move::HitsTargetInSkyGroundsTarget
+  def pbCalcTypeMod(movetype, user, target)
+    ret = super
+    if target.airborne? || target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
+                                                   "TwoTurnAttackInvulnerableInSkyParalyzeTarget")
+      # If multiplier is 4x or more, keep that, otherwise minimum should be 2x.
+      return [ret, Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    return ret
+  end
+end
+
+#===============================================================================
 # For 5 rounds, increases gravity on the field. Pokémon cannot become airborne.
 # (Gravity)
 #===============================================================================

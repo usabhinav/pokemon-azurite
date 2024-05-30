@@ -382,6 +382,25 @@ class Battle::Move::StartCrystalTerrain < Battle::Move
 end
 
 #===============================================================================
+# For 5 rounds, creates an icy terrain that weakens Fighting-type moves and
+# boosts Ice-type moves. It raises the Speed of all Ice-types. Affects
+# non-airborne Pokémon only. (Icy Terrain)
+#===============================================================================
+class Battle::Move::StartIcyTerrain < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.terrain == :Icy
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbStartTerrain(user, :Icy)
+  end
+end
+
+#===============================================================================
 # Removes the current terrain. Fails if there is no terrain in effect.
 # (Steel Roller)
 #===============================================================================
@@ -404,6 +423,12 @@ class Battle::Move::RemoveTerrain < Battle::Move
       @battle.pbDisplay(_INTL("The mist disappeared from the battlefield."))
     when :Psychic
       @battle.pbDisplay(_INTL("The weirdness disappeared from the battlefield."))
+    when :Lava
+      @battle.pbDisplay(_INTL("The lava disappeared from the battlefield."))
+    when :Crystal
+      @battle.pbDisplay(_INTL("The crystals disappeared from the battlefield."))
+    when :Icy
+      @battle.pbDisplay(_INTL("The ice on the ground melted."))
     end
     @battle.field.terrain = :None
   end

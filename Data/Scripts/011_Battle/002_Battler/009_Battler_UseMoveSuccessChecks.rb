@@ -470,6 +470,16 @@ class Battle::Battler
         return false
       end
     end
+    # Grand Rebound
+    if target.pbOwnSide.effects[PBEffects::GrandRebound] && user.index != target.index
+      if show_message
+        @battle.pbCommonAnimation("GrandRebound", target)
+        @battle.pbDisplay(_INTL("Grand Rebound protected {1}!", target.pbThis(true)))
+      end
+      target.damageState.protected = true
+      @battle.successStates[user.index].protected = true
+      return false
+    end
     # Ungrounded
     if user.hasActiveAbility?(:UNGROUNDED) && move.pbContactMove?(user) && !@battle.moldBreaker
       return true

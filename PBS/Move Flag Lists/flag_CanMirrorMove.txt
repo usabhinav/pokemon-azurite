@@ -582,12 +582,6 @@ Whirlpool
 Surging Strikes
 Water Shuriken
 Soak
-Crystal Test
-Sound Test
-Light Test
-Mystic Test
-Cosmic Test
-??? Test
 One Punch
 Storm Splash
 Consecutive Punch

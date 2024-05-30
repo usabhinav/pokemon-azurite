@@ -946,6 +946,9 @@ class Battle
       pbDisplay(_INTL("Lava appeared on the battlefield!"))
     when :Crystal
       pbDisplay(_INTL("The battlefield crystallized!"))
+    when :Icy
+      pbDisplay(_INTL("The ground turned to ice!"))
+      allBattlers.each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
     end
     # Check for abilities/items that trigger upon the terrain changing
     allBattlers.each { |b| b.pbAbilityOnTerrainChange }

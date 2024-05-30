@@ -715,6 +715,12 @@ class Battle::Move::UserFaintsRemoveEntryHazardsAndScreensAndTerrains < Battle::
       @battle.pbDisplay(_INTL("The mist disappeared from the battlefield."))
     when :Psychic
       @battle.pbDisplay(_INTL("The weirdness disappeared from the battlefield."))
+    when :Lava
+      @battle.pbDisplay(_INTL("The lava disappeared from the battlefield."))
+    when :Crystal
+      @battle.pbDisplay(_INTL("The crystals disappeared from the battlefield."))
+    when :Icy
+      @battle.pbDisplay(_INTL("The ice on the ground melted."))
     end
     @battle.field.terrain = :None
     # Faint user

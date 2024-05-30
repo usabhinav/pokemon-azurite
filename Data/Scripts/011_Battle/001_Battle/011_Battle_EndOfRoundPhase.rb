@@ -647,6 +647,8 @@ class Battle
         pbDisplay(_INTL("The lava disappeared from the battlefield!"))
       when :Crystal
         pbDisplay(_INTL("The crystals disappeared from the battlefield!"))
+      when :Icy
+        pbDisplay(_INTL("The ice on the ground melted!"))
       end
       @field.terrain = :None
       allBattlers.each { |battler| battler.pbAbilityOnTerrainChange }
@@ -668,6 +670,7 @@ class Battle
     when :Psychic  then pbDisplay(_INTL("The battlefield is weird."))
     when :Lava     then pbDisplay(_INTL("Lava is covering the battlefield!"))
     when :Crystal  then pbDisplay(_INTL("The battlefield remains crystallized!"))
+    when :Icy      then pbDisplay(_INTL("Ice covers the ground."))
     end
     # Lava terrain passive damage
     if @field.terrain == :Lava
@@ -1088,6 +1091,7 @@ class Battle
       @sides[side].effects[PBEffects::QuickGuard]           = false
       @sides[side].effects[PBEffects::Round]                = false
       @sides[side].effects[PBEffects::WideGuard]            = false
+      @sides[side].effects[PBEffects::GrandRebound]         = false
     end
     # Reset/count down field-specific effects (no messages)
     @field.effects[PBEffects::IonDeluge]   = false

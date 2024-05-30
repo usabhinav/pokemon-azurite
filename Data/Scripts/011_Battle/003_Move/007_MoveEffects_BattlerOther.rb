@@ -403,6 +403,23 @@ class Battle::Move::FreezeFlinchTarget < Battle::Move
 end
 
 #===============================================================================
+# Freezes the target. May cause the target to flinch. (Frost Bite)
+#===============================================================================
+class Battle::Move::FreezeFlinchTarget30Percent < Battle::Move
+  def flinchingMove?; return true; end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    chance = pbAdditionalEffectChance(user, target, 30)
+    return if chance == 0
+    if target.pbCanFreeze?(user, false, self) && @battle.pbRandom(100) < chance
+      target.pbFreeze
+    end
+    target.pbFlinch(user) if @battle.pbRandom(100) < chance
+  end
+end
+
+#===============================================================================
 # Burns, freezes or paralyzes the target. (Tri Attack)
 #===============================================================================
 class Battle::Move::ParalyzeBurnOrFreezeTarget < Battle::Move
@@ -961,6 +978,15 @@ class Battle::Move::SetUserTypesBasedOnEnvironment < Battle::Move
         @newType = :PSYCHIC
         checkedTerrain = true
       end
+    when :Lava
+      @newType = :FIRE
+      checkedTerrain = true
+    when :Crystal
+      @newType = :CRYSTAL
+      checkedTerrain = true
+    when :Icy
+      @newType = :ICE
+      checkedTerrain = true
     end
     if !checkedTerrain
       case @battle.environment

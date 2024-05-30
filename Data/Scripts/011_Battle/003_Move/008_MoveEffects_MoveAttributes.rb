@@ -784,6 +784,17 @@ class Battle::Move::DoublePowerIfTargetHasCrystalType < Battle::Move
 end
 
 #===============================================================================
+# Power is doubled if this move is not very effective against the target.
+# (Glass Blade)
+#===============================================================================
+class Battle::Move::DoublePowerIfResistedByTarget < Battle::Move
+  def pbModifyDamage(damageMult, user, target)
+    damageMult *= 2 if Effectiveness.resistant?(target.damageState.typeMod)
+    return damageMult
+  end
+end
+
+#===============================================================================
 # This attack is always a critical hit. (Frost Breath, Storm Throw)
 #===============================================================================
 class Battle::Move::AlwaysCriticalHit < Battle::Move
@@ -1150,6 +1161,19 @@ class Battle::Move::ProtectUserSideFromMultiTargetDamagingMoves < Battle::Move::
 end
 
 #===============================================================================
+# User's side is protected against all moves. (Grand Rebound)
+#===============================================================================
+class Battle::Move::ProtectUserSide < Battle::Move::ProtectMove
+  def canSnatch?; return true; end
+
+  def initialize(battle, move)
+    super
+    @effect      = PBEffects::GrandRebound
+    @sidedEffect = true
+  end
+end
+
+#===============================================================================
 # Ends target's protections immediately. (Feint)
 #===============================================================================
 class Battle::Move::RemoveProtections < Battle::Move
@@ -1166,6 +1190,7 @@ class Battle::Move::RemoveProtections < Battle::Move
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
     target.pbOwnSide.effects[PBEffects::WideGuard]    = false
+    target.pbOwnSide.effects[PBEffects::GrandRebound] = false
   end
 end
 
@@ -1188,6 +1213,7 @@ class Battle::Move::RemoveProtectionsBypassSubstitute < Battle::Move
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
     target.pbOwnSide.effects[PBEffects::WideGuard]    = false
+    target.pbOwnSide.effects[PBEffects::GrandRebound] = false
   end
 end
 
@@ -1227,6 +1253,7 @@ class Battle::Move::HoopaRemoveProtectionsBypassSubstituteLowerUserDef1 < Battle
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
     target.pbOwnSide.effects[PBEffects::WideGuard]    = false
+    target.pbOwnSide.effects[PBEffects::GrandRebound] = false
   end
 end
 
@@ -1283,6 +1310,17 @@ class Battle::Move::RecoilThirdOfDamageDealtBurnTarget < Battle::Move::RecoilMov
   def pbAdditionalEffect(user, target)
     return if target.damageState.substitute
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 1/3 of the damage this move dealt.
+# May freeze the target. (Frost Blitz)
+#===============================================================================
+class Battle::Move::RecoilThirdOfDamageDealtFreezeTarget < Battle::Move::RecoilThirdOfDamageDealt
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    target.pbFreeze if target.pbCanFreeze?(user, false, self)
   end
 end
 
@@ -1939,6 +1977,12 @@ class Battle::Move::TypeAndPowerDependOnTerrain < Battle::Move
       ret = :FAIRY if GameData::Type.exists?(:FAIRY)
     when :Psychic
       ret = :PSYCHIC if GameData::Type.exists?(:PSYCHIC)
+    when :Lava
+      ret = :FIRE
+    when :Crystal
+      ret = :CRYSTAL
+    when :Icy
+      ret = :ICE
     end
     return ret
   end
@@ -2067,23 +2111,6 @@ class Battle::Move::EnergyBomb < Battle::Move::RecoilMove
     recoilDmg = user.totalhp / 2
     recoilDmg = (recoilDmg * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
     return recoilDmg
-  end
-end
-
-#===============================================================================
-# User takes recoil damage equal to 1/3 of the damage this move dealt.
-# May freeze the target. (Frost Blitz)
-#===============================================================================
-class Battle::Move::RecoilThirdOfDamageDealtFreezeTarget < Battle::Move::RecoilMove
-  def pbRecoilDamage(user, target)
-    recoil_damage = (target.damageState.totalHPLost / 3.0).round
-    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
-    return recoil_damage
-  end
-
-  def pbAdditionalEffect(user, target)
-    return if target.damageState.substitute
-    target.pbFreeze(user) if target.pbCanFreeze?(user, false, self)
   end
 end
 

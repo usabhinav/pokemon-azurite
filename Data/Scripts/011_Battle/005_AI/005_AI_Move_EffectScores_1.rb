@@ -121,6 +121,9 @@ class Battle::AI
     when "StartCrystalTerrain"
       score -= 90 if @battle.field.terrain == :Crystal
     #---------------------------------------------------------------------------
+    when "StartIcyTerrain"
+      score -= 90 if @battle.field.terrain == :Icy
+    #---------------------------------------------------------------------------
     when "RemoveTerrain"
       score -= 100 if @battle.field.terrain == :None
     #---------------------------------------------------------------------------

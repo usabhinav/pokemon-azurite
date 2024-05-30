@@ -68,3 +68,9 @@ GameData::BattleTerrain.register({
   :name      => _INTL("Crystal"),
   :animation => "CrystalTerrain"
 })
+
+GameData::BattleTerrain.register({
+  :id        => :Icy,
+  :name      => _INTL("Icy"),
+  :animation => "IcyTerrain"
+})

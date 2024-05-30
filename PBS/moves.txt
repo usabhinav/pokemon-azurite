@@ -8752,78 +8752,6 @@ Target = User
 FunctionCode = RaiseUserDefense1
 Description = The user withdraws its body into its hard shell, raising its Defense stat.
 #-------------------------------
-[CRYSTALTEST]
-Name = Crystal Test
-Type = CRYSTAL
-Category = Physical
-Power = 50
-Accuracy = 100
-TotalPP = 35
-Target = NearOther
-FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
-Description = Clone of Tackle to test Crystal.
-#-------------------------------
-[SOUNDTEST2]
-Name = Sound Test
-Type = SOUND
-Category = Physical
-Power = 50
-Accuracy = 100
-TotalPP = 35
-Target = NearOther
-FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove,Sound
-Description = Clone of Tackle to test Sound.
-#-------------------------------
-[LIGHTTEST]
-Name = Light Test
-Type = LIGHT
-Category = Physical
-Power = 50
-Accuracy = 100
-TotalPP = 35
-Target = NearOther
-FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
-Description = Clone of Tackle to test Light.
-#-------------------------------
-[MYSTICTEST]
-Name = Mystic Test
-Type = MYSTIC
-Category = Physical
-Power = 50
-Accuracy = 100
-TotalPP = 35
-Target = NearOther
-FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
-Description = Clone of Tackle to test Mystic.
-#-------------------------------
-[COSMICTEST]
-Name = Cosmic Test
-Type = COSMIC
-Category = Physical
-Power = 50
-Accuracy = 100
-TotalPP = 35
-Target = NearOther
-FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
-Description = Clone of Tackle to test Cosmic.
-#-------------------------------
-[QMARKSTEST]
-Name = ??? Test
-Type = QMARKS
-Category = Physical
-Power = 50
-Accuracy = 100
-TotalPP = 35
-Target = NearOther
-FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove
-Description = Clone of Tackle to test ???.
-#-------------------------------
 [ONEPUNCH]
 Name = One Punch
 Type = CRYSTAL
@@ -10246,17 +10174,6 @@ Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 15
 Description = Chance to paralyze the target.
 #-------------------------------
-[NONAMEYET]
-Name = No Name Yet
-Type = GRASS
-Category = Status
-Accuracy = 0
-TotalPP = 10
-Target = User
-Priority = 4
-FunctionCode = 239
-Description = Protects from damage and boosts special attack or attack depending on what hit it.
-#-------------------------------
 [FLAMETACKLE]
 Name = Flame Tackle
 Type = FIRE
@@ -10559,10 +10476,9 @@ Power = 10
 Accuracy = 70
 TotalPP = 15
 Target = NearOther
-Priority = -6
-FunctionCode = FreezeFlinchTarget
+FunctionCode = FreezeFlinchTarget30Percent
 Flags = Contact,CanProtect,CanMirrorMove,Biting
-EffectChance = 30
+EffectChance = 100
 Description = The user bites with cold-infused fangs. It may also make the target flinch or leave it frozen.
 #-------------------------------
 [ASTEROIDBELT]
@@ -10863,8 +10779,7 @@ Accuracy = 0
 TotalPP = 5
 Target = UserSide
 Priority = 4
-FunctionCode = 250
-EffectChance = 5
+FunctionCode = ProtectUserSide
 Description = Creates a massive spacial rift that protects the user's entire team.
 #-------------------------------
 [GIGASPARK]
@@ -11313,7 +11228,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = None
-Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Sound
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Sound,Slashing
 Description = The user strikes with a sonic wave that cuts the air itself. Critical hits land more easily.
 #-------------------------------
 [ALLEGRO]
@@ -11708,7 +11623,7 @@ Power = 120
 Accuracy = 100
 TotalPP = 5
 Target = NearOther
-FunctionCode = FreezeTargetAndRecoilThirdOfDamageDealt
+FunctionCode = RecoilThirdOfDamageDealtFreezeTarget
 Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 10
 Description = Wreathing themselves in ice, the Pokémon makes a reckless, full-body tackle. Causes recoil damage.
@@ -11723,6 +11638,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = LowerUserDefense2
 Flags = Contact,CanProtect,CanMirrorMove,Sound
+EffectChance = 100
 Description = Riding the wave of a sonic boom, the user tackles, harshly lowering their defense.
 #-------------------------------
 [PLUNDER]
@@ -11972,9 +11888,8 @@ Power = 120
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = 271
+FunctionCode = RecoilThirdOfDamageDealt
 Flags = Contact,CanProtect,CanMirrorMove
-EffectChance = 10
 Description = Lifting the foe upwards, the Pokémon jumps and slams them headfirst into the ground. Causes recoil.
 #-------------------------------
 [ROARINGFLAME]
@@ -12363,7 +12278,7 @@ Power = 90
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = PowerIncreasesWhenNotVeryEffective
+FunctionCode = DoublePowerIfResistedByTarget
 Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = A beautiful sword of glass. Has a high critical-hit rate, and deals strong damage even when resisted.
 #-------------------------------

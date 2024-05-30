@@ -150,7 +150,8 @@ module Battle::DebugVariables
     PBEffects::ToxicSpikes        => { name: "Toxic Spikes layers (0-2)",              default: 0, max: 2 },
     PBEffects::VoltSpikes         => { name: "Volt Spikes layers (0-2)",               default: 0, max: 2 },
     PBEffects::WideGuard          => { name: "Wide Guard applies this round",          default: false },
-    PBEffects::AsteroidBelt       => { name: "Asteroid Belt duration (0-8)",           default: 0, max: 8 }
+    PBEffects::AsteroidBelt       => { name: "Asteroid Belt duration (0-8)",           default: 0, max: 8 },
+    PBEffects::GrandRebound       => { name: "Grand Rebound applies this round",       default: false }
   }
 
   FIELD_EFFECTS = {

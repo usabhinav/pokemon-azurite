@@ -9179,7 +9179,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 Priority = 4
-FunctionCode = ProtectUserChangeUserTypeToTargetAttackType
+FunctionCode = ProtectUserChangeUserTypeToIncomingAttackType
 Description = The user protects itself from incoming damage. If the user is attacked this turn, its typing changes to the blocked attack's.
 #-------------------------------
 [ICYTERRAIN]
@@ -9504,7 +9504,7 @@ Accuracy = 0
 TotalPP = 5
 Target = User
 Priority = 2
-FunctionCode = RedirectAllMovesToUserAndHealUserAlliesOver4Turns
+FunctionCode = RedirectAllMovesToUserAndHealAlliesOver4Turns
 Description = The user draws attention to itself, making all targets take aim only at the user, also healing its allies progressively.
 #-------------------------------
 [SOUNDPULSE]

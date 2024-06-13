@@ -281,6 +281,16 @@ class Battle
       }
       recipient.pbFaint if recipient.fainted?
     end
+    # Beacon
+    priority.each do |battler|
+      next if battler.effects[PBEffects::BeaconTurnCount] <= 0
+      battler.allAllies.each do |ally|
+        next if !ally.canHeal?
+        ally.pbRecoverHP(ally.totalhp / 4)
+        pbDisplay(_INTL("{1} basked in the glow of the beacon from {2}!", ally.pbThis, battler.pbThis(true)))
+      end
+      battler.effects[PBEffects::BeaconTurnCount] -= 1
+    end
   end
 
   #=============================================================================
@@ -454,7 +464,13 @@ class Battle
     }
     # Magnet Rise
     pbEORCountDownBattlerEffect(priority, PBEffects::MagnetRise) { |battler|
-      pbDisplay(_INTL("{1}'s electromagnetism wore off!", battler.pbThis))
+      case battler.effects[PBEffects::MagnetRiseMove]
+      when :ASCENSION
+        pbDisplay(_INTL("{1} returned to the ground!", battler.pbThis))
+      else
+        pbDisplay(_INTL("{1}'s electromagnetism wore off!", battler.pbThis))
+      end
+      battler.effects[PBEffects::MagnetRiseMove] = nil
     }
     # Telekinesis
     pbEORCountDownBattlerEffect(priority, PBEffects::Telekinesis) { |battler|
@@ -1049,6 +1065,7 @@ class Battle
       if battler.effects[PBEffects::LockOn] > 0   # Also Mind Reader
         battler.effects[PBEffects::LockOn]         -= 1
         battler.effects[PBEffects::LockOnPos]      = -1 if battler.effects[PBEffects::LockOn] == 0
+        battler.effects[PBEffects::LockOnMove]     = nil if battler.effects[PBEffects::LockOn] == 0
       end
       battler.effects[PBEffects::MagicBounce]      = false
       battler.effects[PBEffects::MagicCoat]        = false
@@ -1062,6 +1079,7 @@ class Battle
       battler.effects[PBEffects::PriorityItem]     = false
       battler.effects[PBEffects::Protect]          = false
       battler.effects[PBEffects::RagePowder]       = false
+      battler.effects[PBEffects::Refraction]       = false
       battler.effects[PBEffects::Roost]            = false
       battler.effects[PBEffects::Snatch]           = 0
       battler.effects[PBEffects::SpikyShield]      = false

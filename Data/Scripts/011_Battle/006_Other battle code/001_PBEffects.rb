@@ -161,6 +161,11 @@ module PBEffects
   DeterDrainActive    = 156
   ThornTrap           = 157
   BarkArmor           = 158
+  Refraction          = 159
+  MagnetRiseMove      = 160
+  BlindRage           = 161
+  LockOnMove          = 162
+  BeaconTurnCount     = 163
 
   #=============================================================================
   # These effects apply to a battler position

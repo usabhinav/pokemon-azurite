@@ -756,6 +756,7 @@ class Battle
                      PBEffects::DoomedSerenadeUser,
                      PBEffects::JawLock,
                      PBEffects::LockOnPos,
+                     PBEffects::LockOnMove,
                      PBEffects::MeanLook,
                      PBEffects::MirrorCoatTarget,
                      PBEffects::Octolock,

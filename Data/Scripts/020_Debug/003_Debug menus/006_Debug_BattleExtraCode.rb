@@ -8,10 +8,12 @@ module Battle::DebugVariables
     PBEffects::Attract        => { name: "Battler that self is attracted to",               default: -1 },   # Battler index
     PBEffects::BanefulBunker  => { name: "Baneful Bunker applies this round",               default: false },
     PBEffects::BarkArmor      => { name: "Bark Armor applies this round",                   default: false },
+    PBEffects::BeaconTurnCount => { name: "Beacon healing rounds remaining",                default: 0 },
 #    PBEffects::BeakBlast - only applies to use of specific move, not suitable for setting via debug
     PBEffects::Bide           => { name: "Bide number of rounds remaining",                 default: 0 },
     PBEffects::BideDamage     => { name: "Bide damage accumulated",                         default: 0, max: 999 },
     PBEffects::BideTarget     => { name: "Bide last battler to hurt self",                  default: -1 },   # Battler index
+    PBEffects::BlindRage      => { name: "Used Blind Rage",                                 default: false },
     PBEffects::BurnUp         => { name: "Burn Up has removed self's Fire type",            default: false },
     PBEffects::Charge         => { name: "Charge number of rounds remaining",               default: 0 },
     PBEffects::ChoiceBand     => { name: "Move locked into by Choice items",                default: nil, type: :move },
@@ -58,10 +60,12 @@ module Battle::DebugVariables
     PBEffects::LaserFocus     => { name: "Laser Focus certain critial hit duration",        default: 0 },
     PBEffects::LeechSeed      => { name: "Battler that used Leech Seed on self",            default: -1 },   # Battler index
     PBEffects::LockOn         => { name: "Lock-On number of rounds remaining",              default: 0 },
+    PBEffects::LockOnMove     => { name: "Lock-On move ID",                                 default: nil },
     PBEffects::LockOnPos      => { name: "Battler that self is targeting with Lock-On",     default: -1 },   # Battler index
 #    PBEffects::MagicBounce - only applies during use of move, not suitable for setting via debug
 #    PBEffects::MagicCoat - only applies to use of specific move, not suitable for setting via debug
     PBEffects::MagnetRise     => { name: "Magnet Rise number of rounds remaining",          default: 0 },
+    PBEffects::MagnetRiseMove => { name: "Magnet Rise move ID",                             default: nil },
     PBEffects::MeanLook       => { name: "Battler trapping self with Mean Look, etc.",      default: -1 },   # Battler index
 #    PBEffects::MeFirst - only applies to use of specific move, not suitable for setting via debug
     PBEffects::Metronome      => { name: "Metronome item power multiplier 1 + 0.2*x (0-5)", default: 0, max: 5 },
@@ -92,6 +96,7 @@ module Battle::DebugVariables
     PBEffects::ProtectRate    => { name: "Protect success chance 1/x",                      default: 1, max: 999 },
 #    PBEffects::Quash - not suitable for setting via debug
 #    PBEffects::Rage - only applies to use of specific move, not suitable for setting via debug
+    PBEffects::Refraction     => { name: "Refraction applies this round",                   default: false },
     PBEffects::Rollout        => { name: "Rollout rounds remaining (lower=stronger)",       default: 0 },
     PBEffects::Roost          => { name: "Roost removing Flying type this round",           default: false },
 #    PBEffects::ShellTrap - only applies to use of specific move, not suitable for setting via debug

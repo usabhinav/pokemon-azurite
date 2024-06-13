@@ -436,6 +436,18 @@ class Battle::Battler
       end
       return false
     end
+    # Refraction
+    if move.canProtectAgainst? && target.effects[PBEffects::Refraction] && move.damagingMove?
+      if show_message
+        @battle.pbCommonAnimation("Refraction", target)
+        @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
+      end
+      target.damageState.protected = true
+      @battle.successStates[user.index].protected = true
+      target.pbChangeTypes(move.calcType)
+      @battle.pbDisplay(_INTL("{1}'s type changed to {2}!", target.pbThis, GameData::Type.get(move.calcType).name))
+      return false
+    end
     # Magic Coat/Magic Bounce
     if move.statusMove? && move.canMagicCoat? && !target.semiInvulnerable? && target.opposes?(user)
       if target.effects[PBEffects::MagicCoat]
@@ -544,7 +556,8 @@ class Battle::Battler
         return false
       end
       if target.effects[PBEffects::MagnetRise] > 0
-        @battle.pbDisplay(_INTL("{1} makes Ground moves miss with Magnet Rise!", target.pbThis)) if show_message
+        magnetRiseMoveName = GameData::Move.get(target.effects[PBEffects::MagnetRiseMove]).name
+        @battle.pbDisplay(_INTL("{1} makes Ground moves miss with {2}!", target.pbThis, magnetRiseMoveName)) if show_message
         return false
       end
       if target.effects[PBEffects::Telekinesis] > 0

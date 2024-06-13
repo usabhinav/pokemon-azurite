@@ -53,6 +53,22 @@ class Battle::Move::RaiseUserAttack3IfTargetFaints < Battle::Move
 end
 
 #===============================================================================
+# Increases the user's Attack by 3 stages. User's Attack is lowered by 1 stage
+# for every attack that targets it until it switches out or faints. (Blind Rage)
+#===============================================================================
+class Battle::Move::RaiseUserAttack3AndLowerAttack1PerUserDamagingMove < Battle::Move::StatUpMove
+  def initialize(battle, move)
+    super
+    @statUp = [:ATTACK, 3]
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::BlindRage] = true
+    super
+  end
+end
+
+#===============================================================================
 # Reduces the user's HP by half of max, and sets its Attack to maximum.
 # (Belly Drum)
 #===============================================================================
@@ -899,6 +915,35 @@ class Battle::Move::RaiseTargetAtkSpAtk2 < Battle::Move
     end
     if target.pbCanRaiseStatStage?(:SPECIAL_ATTACK, user, self)
       target.pbRaiseStatStage(:SPECIAL_ATTACK, 2, user)
+    end
+  end
+end
+
+#===============================================================================
+# Increases the target's Defense and Special Defense by 1 stage each. (Bless)
+#===============================================================================
+class Battle::Move::RaiseTargetDefSpDef1 < Battle::Move
+  def pbMoveFailed?(user, targets)
+    failed = true
+    targets.each do |b|
+      next if !b.pbCanRaiseStatStage?(:DEFENSE, user, self) &&
+              !b.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, user, self)
+      failed = false
+      break
+    end
+    if failed
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    if target.pbCanRaiseStatStage?(:DEFENSE, user, self)
+      target.pbRaiseStatStage(:DEFENSE, 1, user)
+    end
+    if target.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, user, self)
+      target.pbRaiseStatStage(:SPECIAL_DEFENSE, 1, user)
     end
   end
 end

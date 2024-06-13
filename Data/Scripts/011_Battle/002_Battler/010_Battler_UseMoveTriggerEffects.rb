@@ -254,6 +254,16 @@ class Battle::Battler
         b.effects[PBEffects::CometSwingEffectsActive] = true
       end
     end
+    # Blind Rage
+    if move.damagingMove? && user.effects[PBEffects::BlindRage] && user.pbCanLowerStatStage?(:ATTACK, user)
+      user.pbLowerStatStage(:ATTACK, 1, user)
+    end
+    # Beacon Recon
+    if move.damagingMove? && user.effects[PBEffects::LockOn] > 0 && targets.any? {|t| t.index == user.effects[PBEffects::LockOnPos]} &&
+       user.effects[PBEffects::LockOnMove] == :BEACONRECON
+      # Set it to 1 so that it gets decremented to 0 at the end of the round
+      user.effects[PBEffects::LockOn] = 1
+    end
   end
 
   # Everything in this method is negated by Sheer Force.

@@ -1566,7 +1566,7 @@ class Battle::Move::IgnoreTargetAbility < Battle::Move
 end
 
 #===============================================================================
-# For 5 rounds, user becomes airborne. (Magnet Rise)
+# For 5 rounds, user becomes airborne. (Magnet Rise, Ascension)
 #===============================================================================
 class Battle::Move::StartUserAirborne < Battle::Move
   def unusableInGravity?; return true; end
@@ -1584,7 +1584,13 @@ class Battle::Move::StartUserAirborne < Battle::Move
 
   def pbEffectGeneral(user)
     user.effects[PBEffects::MagnetRise] = 5
-    @battle.pbDisplay(_INTL("{1} levitated with electromagnetism!", user.pbThis))
+    user.effects[PBEffects::MagnetRiseMove] = @id
+    case @id
+    when :ASCENSION
+      @battle.pbDisplay(_INTL("{1} ascended into the air!", user.pbThis))
+    else
+      @battle.pbDisplay(_INTL("{1} levitated with electromagnetism!", user.pbThis))
+    end
   end
 end
 
@@ -1734,6 +1740,7 @@ class Battle::Move::HitsTargetInSkyGroundsTarget < Battle::Move
       @battle.pbClearChoice(target.index) if !target.movedThisRound?
     end
     target.effects[PBEffects::MagnetRise]  = 0
+    target.effects[PBEffects::MagnetRiseMove] = nil
     target.effects[PBEffects::Telekinesis] = 0
     @battle.endAirCarryForBattlerAndAllies(target, target.effects[PBEffects::AirCarryTurnCount], false)
     target.effects[PBEffects::AirCarryUserIndex] = -1 # If it's a battler being carried by Air Carry
@@ -1788,6 +1795,7 @@ class Battle::Move::StartGravity < Battle::Move
          b.effects[PBEffects::SkyDrop] >= 0 ||
          b.effects[PBEffects::AirSupportTurnCount] > 0
         b.effects[PBEffects::MagnetRise]  = 0
+        b.effects[PBEffects::MagnetRiseMove] = nil
         b.effects[PBEffects::Telekinesis] = 0
         b.effects[PBEffects::SkyDrop]     = -1
         b.effects[PBEffects::AirSupportTurnCount] = 0

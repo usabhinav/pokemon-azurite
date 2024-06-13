@@ -70,6 +70,7 @@ class Battle::ActiveSide
     @effects[PBEffects::VoltSpikes]         = 0
     @effects[PBEffects::SafeguardMoveName]  = nil
     @effects[PBEffects::AsteroidBelt]       = 0
+    @effects[PBEffects::GrandRebound]       = false
   end
 end
 

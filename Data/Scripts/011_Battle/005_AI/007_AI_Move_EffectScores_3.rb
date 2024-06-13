@@ -143,6 +143,9 @@ class Battle::AI
     when "DoublePowerIfTargetHasCrystalType"
       score += 20 if target.pbHasType?(:CRYSTAL)
     #---------------------------------------------------------------------------
+    when "DoublePowerIfResistedByTarget"
+      # Score modifier handled when base damage is calculated for each move.
+    #---------------------------------------------------------------------------
     when "AlwaysCriticalHit"
     #---------------------------------------------------------------------------
     when "EnsureNextCriticalHit"
@@ -275,6 +278,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "ProtectUserSideFromMultiTargetDamagingMoves"
     #---------------------------------------------------------------------------
+    when "ProtectUserSide"
+      score -= 45 * (user.effects[PBEffects::ProtectRate] - 1)
+    #---------------------------------------------------------------------------
     when "RemoveProtections"
     #---------------------------------------------------------------------------
     when "RemoveProtectionsBypassSubstitute"
@@ -318,6 +324,10 @@ class Battle::AI
           score -= 40 if target.hasActiveAbility?([:GUTS, :MARVELSCALE, :QUICKFEET, :FLAREBOOST])
         end
       end
+    #---------------------------------------------------------------------------
+    when "RecoilThirdOfDamageDealtFreezeTarget"
+      score -= 30
+      score += 40 if target.pbCanFreeze?(user, false)
     #---------------------------------------------------------------------------
     when "RecoilHalfOfDamageDealt"
       score -= 40

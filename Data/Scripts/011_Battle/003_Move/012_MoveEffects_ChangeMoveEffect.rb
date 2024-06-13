@@ -217,6 +217,10 @@ class Battle::Move::EffectDependsOnEnvironment < Battle::Move
       @secretPower = 3   # Fairy Wind, lower Sp. Atk by 1
     when :Psychic
       @secretPower = 4   # Confusion, lower Speed by 1
+    when :Lava
+      @secretPower = 10  # (Same as Volcano environment)
+    when :Icy
+      @secretPower = 9   # (Same as Snow and Ice environments)
     else
       case @battle.environment
       when :Grass, :TallGrass, :Forest, :ForestGrass
@@ -693,6 +697,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "ProtectUser",                                       # Detect, Protect
       "ProtectUserSideFromPriorityMoves",                  # Quick Guard        # Not listed on Bulbapedia
       "ProtectUserSideFromMultiTargetDamagingMoves",       # Wide Guard         # Not listed on Bulbapedia
+      "ProtectUserSide",                                   # Grand Rebound
       "UserEnduresFaintingThisTurn",   # Endure
       "ProtectUserSideFromDamagingMovesIfUserFirstTurn",   # Mat Block
       "ProtectUserSideFromStatusMoves",                    # Crafty Shield      # Not listed on Bulbapedia
@@ -853,6 +858,10 @@ class Battle::Move::UseMoveDependingOnEnvironment < Battle::Move
       @npMove = :MOONBLAST if GameData::Move.exists?(:MOONBLAST)
     when :Psychic
       @npMove = :PSYCHIC if GameData::Move.exists?(:PSYCHIC)
+    when :Lava
+      @npMove = :LAVAPLUME
+    when :Icy
+      @npMove = :ICEBEAM
     else
       try_move = nil
       case @battle.environment
@@ -924,6 +933,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "ProtectUser",                                       # Detect, Protect
       "ProtectUserSideFromPriorityMoves",                  # Quick Guard
       "ProtectUserSideFromMultiTargetDamagingMoves",       # Wide Guard
+      "ProtectUserSide",                                   # Grand Rebound
       "UserEnduresFaintingThisTurn",                       # Endure
       "ProtectUserSideFromDamagingMovesIfUserFirstTurn",   # Mat Block
       "ProtectUserSideFromStatusMoves",                    # Crafty Shield
@@ -1019,6 +1029,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "ProtectUser",                                       # Detect, Protect
       "ProtectUserSideFromPriorityMoves",                  # Quick Guard        # Not listed on Bulbapedia
       "ProtectUserSideFromMultiTargetDamagingMoves",       # Wide Guard         # Not listed on Bulbapedia
+      "ProtectUserSide",                                   # Grand Rebound
       "UserEnduresFaintingThisTurn",                       # Endure
       "ProtectUserSideFromDamagingMovesIfUserFirstTurn",   # Mat Block
       "ProtectUserSideFromStatusMoves",                    # Crafty Shield      # Not listed on Bulbapedia

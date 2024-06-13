@@ -324,6 +324,9 @@ class Battle
       pbDisplay(_INTL("Lava is covering the battlefield!"))
     when :Crystal
       pbDisplay(_INTL("The battlefield remains crystallized!"))
+    when :Icy
+      pbDisplay(_INTL("Ice covers the ground!"))
+      allBattlers.each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
     end
     # Abilities upon entering battle
     @initialSwitchIn = true

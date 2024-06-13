@@ -5486,7 +5486,10 @@ Battle::AbilityEffects::OnTerrainChange.add(:MIMICRY,
         :Electric => :ELECTRIC,
         :Grassy   => :GRASS,
         :Misty    => :FAIRY,
-        :Psychic  => :PSYCHIC
+        :Psychic  => :PSYCHIC,
+        :Lava     => :FIRE,
+        :Crystal  => :CRYSTAL,
+        :Icy      => :ICE
       }
       new_type = terrain_hash[battle.field.terrain]
       new_type_name = nil

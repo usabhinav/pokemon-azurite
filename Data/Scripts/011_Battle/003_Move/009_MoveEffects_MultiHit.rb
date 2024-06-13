@@ -541,6 +541,7 @@ class Battle::Move::TwoTurnAttackInvulnerableRemoveProtections < Battle::Move::T
     target.pbOwnSide.effects[PBEffects::MatBlock]     = false
     target.pbOwnSide.effects[PBEffects::QuickGuard]   = false
     target.pbOwnSide.effects[PBEffects::WideGuard]    = false
+    target.pbOwnSide.effects[PBEffects::GrandRebound] = false
   end
 end
 

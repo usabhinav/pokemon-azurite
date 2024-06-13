@@ -240,12 +240,6 @@ Flip Turn
 Aqua Jet
 Clamp
 Surging Strikes
-Crystal Test
-Sound Test
-Light Test
-Mystic Test
-Cosmic Test
-??? Test
 Consecutive Punch
 Splinter
 Tidal Splash

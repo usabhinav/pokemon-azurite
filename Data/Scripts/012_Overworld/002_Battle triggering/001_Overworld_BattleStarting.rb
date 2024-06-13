@@ -233,6 +233,8 @@ module BattleCreationHelperMethods
         battle.defaultTerrain = :Electric
       when :Fog
         battle.defaultTerrain = :Misty
+      when :Snow, :Blizzard
+        battle.defaultTerrain = :Icy
       end
     else
       battle.defaultTerrain = battleRules["defaultTerrain"]

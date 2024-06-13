@@ -218,7 +218,7 @@ class Battle::AI
         end
       end
     #---------------------------------------------------------------------------
-    when "FreezeTargetAlwaysHitsInHail", "FreezeFlinchTarget"
+    when "FreezeTargetAlwaysHitsInHail", "FreezeFlinchTarget", "FreezeFlinchTarget30Percent"
       if target.pbCanFreeze?(user, false)
         score += 30
         if skill >= PBTrainerAI.highSkill
@@ -414,6 +414,12 @@ class Battle::AI
           new_type = :FAIRY if GameData::Type.exists?(:FAIRY)
         when :Psychic
           new_type = :PSYCHIC if GameData::Type.exists?(:PSYCHIC)
+        when :Lava
+          new_type = :FIRE
+        when :Crystal
+          new_type = :CRYSTAL
+        when :Icy
+          new_type = :ICE
         end
         if !new_type
           envtypes = {

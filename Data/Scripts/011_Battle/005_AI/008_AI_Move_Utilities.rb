@@ -190,7 +190,7 @@ class Battle::AI
     when "CounterPhysicalDamage", "CounterSpecialDamage", "CounterDamagePlusHalf"
       baseDmg = 60
     when "DoublePowerIfTargetUnderwater", "DoublePowerIfTargetUnderground",
-         "BindTargetDoublePowerIfTargetUnderwater"
+         "BindTargetDoublePowerIfTargetUnderwater", "DoublePowerIfResistedByTarget"
       baseDmg = move.pbModifyDamage(baseDmg, user, target)
     # Gust, Twister, Venoshock, Smelling Salts, Wake-Up Slap, Facade, Hex, Brine,
     # Retaliate, Weather Ball, Return, Frustration, Eruption, Crush Grip,
@@ -509,6 +509,13 @@ class Battle::AI
         multipliers[:base_damage_multiplier] *= 1.5 if type == :PSYCHIC && user.affectedByTerrain?
       when :Misty
         multipliers[:base_damage_multiplier] /= 2 if type == :DRAGON && target.affectedByTerrain?
+      when :Lava
+        multipliers[:base_damage_multiplier] *= 1.3 if type == :FIRE && user.affectedByTerrain?
+      when :Crystal
+        multipliers[:base_damage_multiplier] *= terrain_multiplier if type == :CRYSTAL && user.affectedByTerrain?
+      when :Icy
+        multipliers[:base_damage_multiplier] /= 2 if type == :FIGHTING && target.affectedByTerrain?
+        multipliers[:base_damage_multiplier] *= terrain_multiplier if type == :ICE && user.affectedByTerrain?
       end
     end
     # Badge multipliers

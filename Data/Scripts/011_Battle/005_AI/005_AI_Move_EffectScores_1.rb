@@ -243,10 +243,16 @@ class Battle::AI
     when "StartFlameRing"
       score -= 90 if @battle.field.effects[PBEffects::FlameRing]
     #---------------------------------------------------------------------------
+    when "StartDoubleScaleOfTypeEffectiveness"
+      score -= 90 if @battle.field.effects[PBEffects::BrightContrast]
+    #---------------------------------------------------------------------------
     when "FailsOnConsecutiveUseInvulnerableInSky"
       score -= 90 if user.effects[PBEffects::Ingrain] ||
                      user.effects[PBEffects::SmackDown] ||
                      user.effects[PBEffects::AirSupportTurnCount] > 0
+    #---------------------------------------------------------------------------
+    when "DoubleAdditionalEffectChanceForAlliesThisTurn"
+      # No clear indicator to know when to use this move.
     #---------------------------------------------------------------------------
     when "RaiseUserAttack1"
       if move.statusMove?
@@ -1271,6 +1277,19 @@ class Battle::AI
         end
       elsif target.stages[:ACCURACY] > 0
         score += 20
+      end
+    #---------------------------------------------------------------------------
+    when "LowerTargetDefense1AndRaiseAllyAttack1"
+      if move.statusMove?
+        if user.opposes?(target)
+          if target.pbCanLowerStatStage?(:DEFENSE, user)
+            score += target.stages[:DEFENSE] * 10
+          end
+        else
+          if target.pbCanRaiseStatStage?(:ATTACK, user)
+            score -= target.stages[:ATTACK] * 10
+          end
+        end
       end
     #---------------------------------------------------------------------------
     when "LowerTargetEvasion1"

@@ -344,6 +344,25 @@ class Battle::Move::BurnFlinchTarget < Battle::Move
 end
 
 #===============================================================================
+# Burns the target at the end of the next round unless they swap out.
+# (Fireworks)
+#===============================================================================
+class Battle::Move::BurnTargetAtEndOfNextTurn < Battle::Move
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if target.effects[PBEffects::Fireworks] > 0
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::Fireworks] = 2
+    @battle.pbDisplay(_INTL("{1} launched fireworks towards {2}!", user.pbThis, target.pbThis(true)))
+  end
+end
+
+#===============================================================================
 # Freezes the target.
 #===============================================================================
 class Battle::Move::FreezeTarget < Battle::Move

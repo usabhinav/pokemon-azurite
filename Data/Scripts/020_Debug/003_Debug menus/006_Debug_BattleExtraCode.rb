@@ -34,9 +34,11 @@ module Battle::DebugVariables
     PBEffects::Embargo        => { name: "Embargo number of rounds remaining",              default: 0 },
     PBEffects::Encore         => { name: "Encore number of rounds remaining",               default: 0 },
     PBEffects::EncoreMove     => { name: "Encored move",                                    default: nil, type: :move },
+    PBEffects::Encourage      => { name: "Encourage effect this round",                     default: false },
     PBEffects::Endure         => { name: "Endures all lethal damage this round",            default: false },
 #    PBEffects::FirstPledge - only applies to use of specific move, not suitable for setting via debug
     PBEffects::FlashFire      => { name: "Flash Fire powering up Fire moves",               default: false },
+    PBEffects::Fireworks      => { name: "Fireworks turn count",                            default: 0 },
     PBEffects::Flinch         => { name: "Will flinch this round",                          default: false },
     PBEffects::FocusEnergy    => { name: "Focus Energy critical hit stages (0-4)",          default: 0, max: 4 },
 #    PBEffects::FocusPunch - only applies to use of specific move, not suitable for setting via debug
@@ -175,7 +177,8 @@ module Battle::DebugVariables
     PBEffects::WonderRoom      => { name: "Wonder Room duration",             default: 0 },
     PBEffects::Darkened        => { name: "Darken was used",                  default: false },
     PBEffects::InverseRoom     => { name: "Inverse Room duration",            default: 0 },
-    PBEffects::FlameRing       => { name: "Flame Ring was used",              default: 0 }
+    PBEffects::FlameRing       => { name: "Flame Ring was used",              default: 0 },
+    PBEffects::BrightContrast  => { name: "Bright Contrast was used",         default: 0 }
   }
 
   POSITION_EFFECTS = {

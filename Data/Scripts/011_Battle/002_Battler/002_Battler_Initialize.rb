@@ -336,6 +336,8 @@ class Battle::Battler
     @effects[PBEffects::Refraction]          = false
     @effects[PBEffects::BlindRage]           = false
     @effects[PBEffects::BeaconTurnCount]     = 0
+    @effects[PBEffects::Encourage]           = false
+    @effects[PBEffects::Fireworks]           = 0
   end
 
   #=============================================================================

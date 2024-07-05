@@ -146,6 +146,12 @@ class Battle::AI
     when "DoublePowerIfResistedByTarget"
       # Score modifier handled when base damage is calculated for each move.
     #---------------------------------------------------------------------------
+    when "DoublePowerIfTargetHasMoreHPThanUser"
+      score += 20 if (target.hp.to_f / target.totalhp) > (user.hp.to_f / user.totalhp)
+    #---------------------------------------------------------------------------
+    when "DoublePowerIfTargetHasDarkType"
+      score += 20 if target.pbHasType?(:DARK)
+    #---------------------------------------------------------------------------
     when "AlwaysCriticalHit"
     #---------------------------------------------------------------------------
     when "EnsureNextCriticalHit"
@@ -348,6 +354,9 @@ class Battle::AI
     when "Recoil40PercentAndBurnTarget"
       score -= 30
       score -= 30 if !target.pbCanBurn?(user, false)
+    #---------------------------------------------------------------------------
+    when "RecoilHalfOfUserTotalHPFailsIfUserHPNotGreaterThanHalfOfTotalHP"
+      score -= user.hp <= (user.totalhp / 2) ? 90 : 50
     #---------------------------------------------------------------------------
     when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType",
          "EffectivenessIncludesSoundType"

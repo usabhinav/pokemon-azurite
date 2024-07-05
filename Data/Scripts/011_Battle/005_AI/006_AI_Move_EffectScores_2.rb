@@ -200,6 +200,9 @@ class Battle::AI
         score -= 90 if move.statusMove?
       end
     #---------------------------------------------------------------------------
+    when "BurnTargetAtEndOfNextTurn"
+      score -= 90 if target.effects[PBEffects::Fireworks] || !target.pbCanBurn?(nil, false)
+    #---------------------------------------------------------------------------
     when "FreezeTarget"
       if target.pbCanFreeze?(user, false)
         score += 30

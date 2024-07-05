@@ -28,6 +28,15 @@ class Battle::AI
   #=============================================================================
   def pbCalcTypeModSingle(moveType, defType, user, target)
     ret = Effectiveness.calculate_one(moveType, defType)
+    # Crystal Adaptation (MUST go be FIRST in list of type modifier effects in this function)
+    # Allows all other abilities/items/moves to override this effect
+    if target.hasActiveAbility?(:CRYSTALADAPTATION) && target.effects[PBEffects::TypeModsI]
+      ret = target.effects[PBEffects::TypeModsI]
+    end
+    # Crystal Surge (MUST be SECOND in list of type modifier effects in this function)
+    if @battle.pbCheckGlobalAbility(:CRYSTALSURGE)
+      ret = Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
     if Effectiveness.ineffective_type?(moveType, defType)
       # Ring Target
       if target.hasActiveItem?(:RINGTARGET)
@@ -52,6 +61,79 @@ class Battle::AI
     if !target.airborne? && defType == :FLYING && moveType == :GROUND
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE
     end
+    # Entersphere
+    if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
+      ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Crystal Hammer
+    if user.hasActiveItem?(:CRYSTALHAMMER)
+      ret = Effectiveness::SUPER_EFFECTIVE_ONE if defType == :CRYSTAL
+    end
+    # Joyful Globe
+    if user.hasActiveItem?(:JOYFULGLOBE) && user.pbHasType?(:NORMAL) && moveType == :NORMAL 
+      ret = Effectiveness::SUPER_EFFECTIVE_ONE if defType == :FIGHTING
+    end
+    # Fire Red Medal (fire moves are at least neutral effective against target if the user has fire typing)
+    if user.hasActiveItem?(:FIREREDMEDAL) && user.pbHasType?(:FIRE) && moveType == :FIRE
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Leaf Green Medal (grass moves are at least neutral effective against target if the user has grass typing)
+    if user.hasActiveItem?(:LEAFGREENMEDAL) && user.pbHasType?(:GRASS) && moveType == :GRASS
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Aqua Blue Medal (water moves are at least neutral effective against target if the user has water typing)
+    if user.hasActiveItem?(:AQUABLUEMEDAL) && user.pbHasType?(:WATER) && moveType == :WATER
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Volt Yellow Medal (water moves are at least neutral effective against target if the user has water typing)
+    if user.hasActiveItem?(:VOLTYELLOWMEDAL) && user.pbHasType?(:ELECTRIC) && moveType == :ELECTRIC
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Torrent (water moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALTORRENT) && moveType == :WATER
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Blaze (fire moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALBLAZE) && moveType == :FIRE
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Overgrow (grass moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALOVERGROW) && moveType == :GRASS
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Crystal Aura (aura/pulse moves are at least neutral effective against target)
+    if user.hasActiveAbility?(:CRYSTALAURA) && pulseMove?
+      ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].max
+    end
+    # Deceptive (moves are at most neutral effective except fire/water/grass)
+    if target.hasActiveAbility?(:DECEPTIVE)
+      if ![:FIRE, :WATER, :GRASS].include?(moveType)
+        ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].min
+      end
+    end
+    # Subtraction (target loses certain weaknesses, or all weaknesses if one of its allies has Addition)
+    subtractionCount = 0
+    @battle.allSameSideBattlers(target.index).each do |b|
+      subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
+    end
+    if subtractionCount > 0
+      if @battle.pbCheckAllyAbility(:ADDITION, target.index) || target.effects[PBEffects::SubtractionTypes][0...subtractionCount].include?(moveType)
+        ret = [ret, Effectiveness::NORMAL_EFFECTIVE_ONE].min
+      end
+    end
+    # Bizarre Band (all resistances become weaknesses)
+    has_bizarre_band = @battle.pbCheckGlobalItem(:BIZARREBAND)
+    if has_bizarre_band && has_bizarre_band.pbHasType?(:MYSTIC) && ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      ret = Effectiveness::SUPER_EFFECTIVE_ONE
+    end
+    # Inverse Room (type resistances are inverted)
+    if @battle.field.effects[PBEffects::InverseRoom] > 0 && @battle.pbCheckAllyCosmoCube(target.index).nil?
+      if ret == Effectiveness::SUPER_EFFECTIVE_ONE
+        ret = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      elsif ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
+        ret = Effectiveness::SUPER_EFFECTIVE_ONE
+      end
+    end
     return ret
   end
 
@@ -64,6 +146,17 @@ class Battle::AI
     tTypes = target.pbTypes(true)
     # Get effectivenesses
     typeMods = [Effectiveness::NORMAL_EFFECTIVE_ONE] * 3   # 3 types max
+    # Crystal Adaptation
+    # Values are used in pbCalcTypeModSingle
+    res = target.effects[PBEffects::CrystalAdaptation]
+    if target.hasActiveAbility?(:CRYSTALADAPTATION) && res[moveType]
+      if res[moveType] < Effectiveness::NORMAL_EFFECTIVE
+        typeMods[0] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      end
+      if res[moveType] < Effectiveness::NORMAL_EFFECTIVE/2
+        typeMods[1] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      end
+    end
     if moveType == :SHADOW
       if target.shadowPokemon?
         typeMods[0] = Effectiveness::NOT_VERY_EFFECTIVE_ONE
@@ -72,12 +165,51 @@ class Battle::AI
       end
     else
       tTypes.each_with_index do |type, i|
+        target.effects[PBEffects::TypeModsI] = typeMods[i]
         typeMods[i] = pbCalcTypeModSingle(moveType, type, user, target)
+        target.effects[PBEffects::TypeModsI] = nil
       end
     end
     # Multiply all effectivenesses together
     ret = 1
     typeMods.each { |m| ret *= m }
+    # Unholy
+    if target.hasActiveAbility?(:UNHOLY) && [:LIGHT, :GHOST, :FAIRY].include?(moveType)
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Spice Tank
+    if target.hasActiveAbility?(:SPICETANK) && [:FIRE, :ICE].include?(moveType)
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Flytrap
+    if target.hasActiveAbility?(:FLYTRAP) && moveType == :BUG
+      ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Deceptive (fire/water/grass moves are super-effective)
+    # Placed here and not in pbCalcTypeModSingle because multi-typed Pokemon shouldn't get stacked
+    # weakness type mods. If it did, then a dual-type Pokemon would receive 4x damage instead of
+    # only 2x.
+    if target.hasActiveAbility?(:DECEPTIVE) && [:FIRE, :WATER, :GRASS].include?(moveType)
+      ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Crystal Energy
+    if @battle.pbCheckGlobalAbility(:CRYSTALENERGY) && target.pbHasType?(:CRYSTAL)
+      ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Tar Shot
+    ret *= 2 if target.effects[PBEffects::TarShot] && moveType == :FIRE
+    # Bright Contrast
+    if @battle.field.effects[PBEffects::BrightContrast] > 0
+      if Effectiveness.not_very_effective?(ret)
+        ret /= 2
+      elsif Effectiveness.super_effective?(ret)
+        ret *= 2
+      end
+    end
+    return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
+          user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
+    return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&
+          user.hasActiveAbility?(:DARKLIGHT) && ret == Effectiveness::INEFFECTIVE && target.pbHasType?(:DARK)
     return ret
   end
 
@@ -190,7 +322,8 @@ class Battle::AI
     when "CounterPhysicalDamage", "CounterSpecialDamage", "CounterDamagePlusHalf"
       baseDmg = 60
     when "DoublePowerIfTargetUnderwater", "DoublePowerIfTargetUnderground",
-         "BindTargetDoublePowerIfTargetUnderwater", "DoublePowerIfResistedByTarget"
+         "BindTargetDoublePowerIfTargetUnderwater", "DoublePowerIfResistedByTarget",
+         "DoublePowerIfTargetHasMoreHPThanUser"
       baseDmg = move.pbModifyDamage(baseDmg, user, target)
     # Gust, Twister, Venoshock, Smelling Salts, Wake-Up Slap, Facade, Hex, Brine,
     # Retaliate, Weather Ball, Return, Frustration, Eruption, Crush Grip,
@@ -206,6 +339,7 @@ class Battle::AI
          "DoublePowerIfTargetHPLessThanHalf",
          "DoublePowerIfAllyFaintedLastTurn",
          "DoublePowerIfTargetHasCrystalType",
+         "DoublePowerIfTargetHasDarkType",
          "TypeAndPowerDependOnWeather",
          "PowerHigherWithUserHappiness",
          "PowerLowerWithUserHappiness",

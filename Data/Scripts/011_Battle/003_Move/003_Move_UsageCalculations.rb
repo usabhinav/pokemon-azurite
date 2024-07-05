@@ -176,7 +176,6 @@ class Battle::Move
     # Multiply all effectivenesses together
     ret = 1
     typeMods.each { |m| ret *= m }
-    ret *= 2 if target.effects[PBEffects::TarShot] && moveType == :FIRE
     # Unholy
     if target.hasActiveAbility?(:UNHOLY) && [:LIGHT, :GHOST, :FAIRY].include?(moveType)
       ret /= Effectiveness::NORMAL_EFFECTIVE_ONE
@@ -199,6 +198,16 @@ class Battle::Move
     # Crystal Energy
     if @battle.pbCheckGlobalAbility(:CRYSTALENERGY) && target.pbHasType?(:CRYSTAL)
       ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
+    end
+    # Tar Shot
+    ret *= 2 if target.effects[PBEffects::TarShot] && moveType == :FIRE
+    # Bright Contrast
+    if @battle.field.effects[PBEffects::BrightContrast] > 0
+      if Effectiveness.not_very_effective?(ret)
+        ret /= 2
+      elsif Effectiveness.super_effective?(ret)
+        ret *= 2
+      end
     end
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
           user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
@@ -686,7 +695,7 @@ class Battle::Move
     return 0 if target.hasActiveAbility?(:SHIELDDUST) && !@battle.moldBreaker
     ret = (effectChance > 0) ? effectChance : @addlEffect
     if (Settings::MECHANICS_GENERATION >= 6 || @function != "EffectDependsOnEnvironment") &&
-       (user.hasActiveAbility?(:SERENEGRACE) || user.pbOwnSide.effects[PBEffects::Rainbow] > 0)
+       (user.hasActiveAbility?(:SERENEGRACE) || user.pbOwnSide.effects[PBEffects::Rainbow] > 0 || user.effects[PBEffects::Encourage])
       ret *= 2
     end
     ret = 100 if $DEBUG && Input.press?(Input::CTRL)
@@ -704,7 +713,8 @@ class Battle::Move
       ret = 10
     end
     ret *= 2 if user.hasActiveAbility?(:SERENEGRACE) ||
-                user.pbOwnSide.effects[PBEffects::Rainbow] > 0
+                user.pbOwnSide.effects[PBEffects::Rainbow] > 0 ||
+                user.effects[PBEffects::Encourage]
     return ret
   end
 end

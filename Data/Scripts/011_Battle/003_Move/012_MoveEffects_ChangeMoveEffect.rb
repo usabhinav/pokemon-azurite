@@ -15,6 +15,18 @@ class Battle::Move::RedirectAllMovesToUser < Battle::Move
 end
 
 #===============================================================================
+# This round, user becomes the target of attacks that have single targets.
+# Also, begins a healing effect that heals all allies by 25% of their max HP
+# for 4 turns. (Beacon)
+#===============================================================================
+class Battle::Move::RedirectAllMovesToUserAndHealAlliesOver4Turns < Battle::Move::RedirectAllMovesToUser
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::BeaconTurnCount] = 4
+    super
+  end
+end
+
+#===============================================================================
 # This round, target becomes the target of attacks that have single targets.
 # (Spotlight)
 #===============================================================================
@@ -706,6 +718,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "ProtectUserFromTargetingMovesSpikyShield",          # Spiky Shield
       "ProtectUserBanefulBunker",                          # Baneful Bunker
       "ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack",  # Bark Armor
+      "ProtectUserChangeUserTypeToIncomingAttackType",     # Refraction
       # Moves that call other moves
       "UseLastMoveUsedByTarget",                           # Mirror Move
       "UseLastMoveUsed",                                   # Copycat (this move)
@@ -722,6 +735,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "BounceBackAllMovesIncludingForAllyIfLegendary",     # Portal Rebound
       "StealAndUseBeneficialStatusMove",                   # Snatch
       "RedirectAllMovesToUser",                            # Follow Me, Rage Powder
+      "RedirectAllMovesToUserAndHealAlliesOver4Turns",     # Beacon
       "RedirectAllMovesToTarget",                          # Spotlight
       # Set up effects that trigger upon KO
       "ReduceAttackerMovePPTo0IfUserFaints",               # Grudge             # Not listed on Bulbapedia
@@ -942,6 +956,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "ProtectUserFromTargetingMovesSpikyShield",          # Spiky Shield
       "ProtectUserBanefulBunker",                          # Baneful Bunker
       "ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack",  # Bark Armor
+      "ProtectUserChangeUserTypeToIncomingAttackType",     # Refraction
       # Moves that call other moves
       "UseLastMoveUsedByTarget",                           # Mirror Move
       "UseLastMoveUsed",                                   # Copycat
@@ -958,6 +973,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "BounceBackAllMovesIncludingForAllyIfLegendary",     # Portal Rebound
       "StealAndUseBeneficialStatusMove",                   # Snatch
       "RedirectAllMovesToUser",                            # Follow Me, Rage Powder
+      "RedirectAllMovesToUserAndHealAlliesOver4Turns",     # Beacon
       "RedirectAllMovesToTarget",                          # Spotlight
       # Set up effects that trigger upon KO
       "ReduceAttackerMovePPTo0IfUserFaints",               # Grudge             # Not listed on Bulbapedia
@@ -1038,6 +1054,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "ProtectUserFromTargetingMovesSpikyShield",          # Spiky Shield
       "ProtectUserBanefulBunker",                          # Baneful Bunker
       "ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack",  # Bark Armor
+      "ProtectUserChangeUserTypeToIncomingAttackType",     # Refraction
       # Moves that call other moves
       "UseLastMoveUsedByTarget",                           # Mirror Move
       "UseLastMoveUsed",                                   # Copycat
@@ -1054,6 +1071,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "BounceBackAllMovesIncludingForAllyIfLegendary",     # Portal Rebound
       "StealAndUseBeneficialStatusMove",                   # Snatch
       "RedirectAllMovesToUser",                            # Follow Me, Rage Powder
+      "RedirectAllMovesToUserAndHealAlliesOver4Turns",     # Beacon
       "RedirectAllMovesToTarget",                          # Spotlight
       # Set up effects that trigger upon KO
       "ReduceAttackerMovePPTo0IfUserFaints",               # Grudge             # Not listed on Bulbapedia

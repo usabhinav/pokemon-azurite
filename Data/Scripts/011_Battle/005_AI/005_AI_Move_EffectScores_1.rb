@@ -317,6 +317,14 @@ class Battle::AI
         end
       end
     #---------------------------------------------------------------------------
+    when "RaiseUserAttack3AndLowerAttack1PerUserDamagingMove"
+      if user.statStageAtMax?(:ATTACK)
+        score -= 90
+      else
+        # Generally not favorable as this move will destroy the user's Attack over time.
+        score -= 45
+      end
+    #---------------------------------------------------------------------------
     when "MaxUserAttackLoseHalfOfTotalHP"
       if user.statStageAtMax?(:ATTACK) ||
          user.hp <= user.totalhp / 2
@@ -963,6 +971,16 @@ class Battle::AI
       else
         score -= target.stages[:ATTACK] * 20
         score -= target.stages[:SPECIAL_ATTACK] * 20
+      end
+    #---------------------------------------------------------------------------
+    when "RaiseTargetDefSpDef1"
+      if target.opposes?(user)
+        score -= 100
+      elsif skill >= PBTrainerAI.mediumSkill && target.hasActiveAbility?(:CONTRARY)
+        score -= 90
+      else
+        score -= target.stages[:DEFENSE] * 10
+        score -= target.stages[:SPECIAL_DEFENSE] * 10
       end
     #---------------------------------------------------------------------------
     when "LowerTargetAttack1"

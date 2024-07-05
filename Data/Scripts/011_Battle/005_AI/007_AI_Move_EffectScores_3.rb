@@ -203,7 +203,7 @@ class Battle::AI
       score += 20 if user.pbOpposingSide.effects[PBEffects::Reflect] > 0
       score += 20 if user.pbOpposingSide.effects[PBEffects::LightScreen] > 0
     #---------------------------------------------------------------------------
-    when "ProtectUser", "ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack"
+    when "ProtectUser", "ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack", "ProtectUserChangeUserTypeToIncomingAttackType"
       if user.effects[PBEffects::ProtectRate] > 1 ||
          target.effects[PBEffects::HyperBeam] > 0
         score -= 90
@@ -370,6 +370,11 @@ class Battle::AI
     when "EnsureNextMoveAlwaysHits"
       score -= 90 if target.effects[PBEffects::Substitute] > 0
       score -= 90 if user.effects[PBEffects::LockOn] > 0
+    #---------------------------------------------------------------------------
+    when "EnsureNextMovesFromAlliesAlwaysHits"
+      score -= 90 if target.effects[PBEffects::Substitute] > 0
+      score -= 90 if user.allAllies.empty?
+      score -= 90 if user.allAllies.any? { |b| b.effects[PBEffects::LockOn] > 0 }
     #---------------------------------------------------------------------------
     when "StartNegateTargetEvasionStatStageAndGhostImmunity"
       if target.effects[PBEffects::Foresight]
@@ -1056,7 +1061,7 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
-    when "RedirectAllMovesToUser"
+    when "RedirectAllMovesToUser", "RedirectAllMovesToUserAndHealAlliesOver4Turns"
       score -= 90 if user.allAllies.length == 0
     #---------------------------------------------------------------------------
     when "RedirectAllMovesToTarget"

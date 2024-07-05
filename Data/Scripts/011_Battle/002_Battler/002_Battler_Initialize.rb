@@ -118,7 +118,9 @@ class Battle::Battler
       @effects[PBEffects::LeechSeed]         = -1
       @effects[PBEffects::LockOn]            = 0
       @effects[PBEffects::LockOnPos]         = -1
+      @effects[PBEffects::LockOnMove]        = nil
       @effects[PBEffects::MagnetRise]        = 0
+      @effects[PBEffects::MagnetRiseMove]    = nil
       @effects[PBEffects::PerishSong]        = 0
       @effects[PBEffects::PerishSongUser]    = -1
       @effects[PBEffects::PowerTrick]        = false
@@ -204,6 +206,7 @@ class Battle::Battler
       next if b.effects[PBEffects::LockOnPos] != @index
       b.effects[PBEffects::LockOn]    = 0
       b.effects[PBEffects::LockOnPos] = -1
+      b.effects[PBEffects::LockOnMove] = nil
     end
     @effects[PBEffects::MagicBounce]         = false
     @effects[PBEffects::MagicCoat]           = false
@@ -330,6 +333,9 @@ class Battle::Battler
     @effects[PBEffects::DeterDrainActive]    = 0
     @effects[PBEffects::ThornTrap]           = false
     @effects[PBEffects::BarkArmor]           = false
+    @effects[PBEffects::Refraction]          = false
+    @effects[PBEffects::BlindRage]           = false
+    @effects[PBEffects::BeaconTurnCount]     = 0
   end
 
   #=============================================================================

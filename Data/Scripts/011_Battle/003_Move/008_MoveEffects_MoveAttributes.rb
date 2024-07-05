@@ -1093,6 +1093,17 @@ class Battle::Move::ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack < Battle::M
 end
 
 #===============================================================================
+# User is protected against moves that target it this round. The user's typing
+# changes to the type of the move that targets it. (Refraction)
+#===============================================================================
+class Battle::Move::ProtectUserChangeUserTypeToIncomingAttackType < Battle::Move::ProtectMove
+  def initialize(battle, move)
+    super
+    @effect = PBEffects::Refraction
+  end
+end
+
+#===============================================================================
 # This round, the user's side is unaffected by damaging moves. (Mat Block)
 #===============================================================================
 class Battle::Move::ProtectUserSideFromDamagingMovesIfUserFirstTurn < Battle::Move
@@ -1184,6 +1195,7 @@ class Battle::Move::RemoveProtections < Battle::Move
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
     target.effects[PBEffects::BarkArmor]              = false
+    target.effects[PBEffects::Refraction]             = false
     target.effects[PBEffects::BlackHoleActive]        = false
     target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
@@ -1207,6 +1219,7 @@ class Battle::Move::RemoveProtectionsBypassSubstitute < Battle::Move
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
     target.effects[PBEffects::BarkArmor]              = false
+    target.effects[PBEffects::Refraction]             = false
     target.effects[PBEffects::BlackHoleActive]        = false
     target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
@@ -1247,6 +1260,7 @@ class Battle::Move::HoopaRemoveProtectionsBypassSubstituteLowerUserDef1 < Battle
     target.effects[PBEffects::Protect]                = false
     target.effects[PBEffects::SpikyShield]            = false
     target.effects[PBEffects::BarkArmor]              = false
+    target.effects[PBEffects::Refraction]             = false
     target.effects[PBEffects::BlackHoleActive]        = false
     target.effects[PBEffects::PortalReboundActive]    = false
     target.pbOwnSide.effects[PBEffects::CraftyShield] = false
@@ -1613,7 +1627,31 @@ class Battle::Move::EnsureNextMoveAlwaysHits < Battle::Move
   def pbEffectAgainstTarget(user, target)
     user.effects[PBEffects::LockOn]    = 2
     user.effects[PBEffects::LockOnPos] = target.index
+    user.effects[PBEffects::LockOnMove] = @id
     @battle.pbDisplay(_INTL("{1} took aim at {2}!", user.pbThis, target.pbThis(true)))
+  end
+end
+
+#===============================================================================
+# User's allies' attacks next round against the target will definitely hit.
+# (Beacon Recon)
+#===============================================================================
+class Battle::Move::EnsureNextMovesFromAlliesAlwaysHits < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.allAllies.empty?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    user.allAllies.each do |b|
+      b.effects[PBEffects::LockOn]    = 2
+      b.effects[PBEffects::LockOnPos] = target.index
+      b.effects[PBEffects::LockOnMove] = @id
+    end
+    @battle.pbDisplay(_INTL("{1} helped its allies take aim at {2}!", user.pbThis, target.pbThis(true)))
   end
 end
 

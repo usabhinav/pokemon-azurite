@@ -2197,3 +2197,40 @@ class Battle::Move::LowerTargetAccuracy2AndLowerUserEvasion1 < Battle::Move::Low
     end
   end
 end
+
+#===============================================================================
+# Decreases the target's Defense by 1 stage if it is opposing the user,
+# otherwise increases their Attack by 1 stage if it is an ally. (Bright Smile)
+#===============================================================================
+class Battle::Move::LowerTargetDefense1AndRaiseAllyAttack1 < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
+    if user.opposes?(target)
+      return !target.pbCanLowerStatStage?(:DEFENSE, user, self, show_message)
+    else
+      return !target.pbCanRaiseStatStage?(:ATTACK, user, self, show_message)
+    end
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    if user.opposes?(target)
+      target.pbLowerStatStage(:DEFENSE, 1, user)
+    else
+      target.pbRaiseStatStage(:ATTACK, 1, user)
+    end
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    if user.opposes?(target)
+      return if !target.pbCanLowerStatStage?(:DEFENSE, user, self)
+      target.pbLowerStatStage(:DEFENSE, 1, user)
+    else
+      return if !target.pbCanRaiseStatStage?(:ATTACK, user, self)
+      target.pbRaiseStatStage(:ATTACK, 1, user)
+    end
+  end
+end

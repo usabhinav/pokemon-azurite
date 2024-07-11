@@ -795,6 +795,27 @@ class Battle::Move::DoublePowerIfResistedByTarget < Battle::Move
 end
 
 #===============================================================================
+# Power is doubled if the target has a higher percentage of their HP remaining
+# than the user. (Delta Beam)
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetHasMoreHPThanUser < Battle::Move
+  def pbModifyDamage(damageMult, user, target)
+    damageMult *= 2 if (target.hp.to_f / target.totalhp) > (user.hp.to_f / user.totalhp)
+    return damageMult
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target has the Dark-type. (Flash Kick)
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetHasDarkType < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg *= 2 if target.pbHasType?(:DARK)
+    return baseDmg
+  end
+end
+
+#===============================================================================
 # This attack is always a critical hit. (Frost Breath, Storm Throw)
 #===============================================================================
 class Battle::Move::AlwaysCriticalHit < Battle::Move
@@ -1421,6 +1442,25 @@ class Battle::Move::Recoil40PercentAndBurnTarget < Battle::Move::RecoilMove
   def pbAdditionalEffect(user, target)
     return if target.damageState.substitute
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 1/2 of their max HP. Fails if the user's
+# current HP is less than or equal to half of their max HP. (Energy Bomb)
+#===============================================================================
+class Battle::Move::RecoilHalfOfUserTotalHPFailsIfUserHPNotGreaterThanHalfOfTotalHP < Battle::Move::RecoilMove
+  def pbMoveFailed?(user, targets)
+    if user.hp <= (user.totalhp / 2)
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbRecoilDamage(user,target)
+    # Not affected by Explosive Exhaust
+    return user.totalhp / 2
   end
 end
 
@@ -2077,16 +2117,6 @@ class Battle::Move::NormalMovesBecomeElectric < Battle::Move
 end
 
 #===============================================================================
-# Flash Kick
-#===============================================================================
-class Battle::Move::DoublePowerIfTargetHasDarkType < Battle::Move
-  def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if target.pbHasType?(:DARK)
-    return baseDmg
-  end
-end
-
-#===============================================================================
 # Sound Pulse
 #===============================================================================
 class Battle::Move::DoublePowerIfTargetEvasionAtLeastOne < Battle::Move
@@ -2130,25 +2160,6 @@ class Battle::Move::EffectivenessIncludesGrassType < Battle::Move
     grassEff = Effectiveness.calculate_one(:GRASS, defType)
     ret *= grassEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     return ret
-  end
-end
-
-#===============================================================================
-# Energy Bomb
-#===============================================================================
-class Battle::Move::EnergyBomb < Battle::Move::RecoilMove
-  def pbMoveFailed?(user,targets)
-    if user.hp<=user.totalhp/2
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-  
-  def pbRecoilDamage(user,target)
-    recoilDmg = user.totalhp / 2
-    recoilDmg = (recoilDmg * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
-    return recoilDmg
   end
 end
 

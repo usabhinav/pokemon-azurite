@@ -500,6 +500,12 @@ class Battle
     pbEORCountDownBattlerEffect(priority, PBEffects::AirSupportTurnCount) { |battler|
       pbDisplay(_INTL("{1} returned to the ground!", battler.pbThis))
     }
+    # Fireworks
+    pbEORCountDownBattlerEffect(priority, PBEffects::Fireworks) { |battler|
+      if battler.pbCanBurn?(nil, false)
+        battler.pbBurn(nil, _INTL("{1} was burned by the fireworks!", battler.pbThis))
+      end
+    }
     # Black Hole
     priority.each do |battler|
       next if battler.fainted? || !battler.effects[PBEffects::BlackHoleActive]
@@ -640,6 +646,9 @@ class Battle
     # Flame Ring
     pbEORCountDownFieldEffect(PBEffects::FlameRing,
                               _INTL("The ring of fire died out!"))
+    # Bright Contrast
+    pbEORCountDownFieldEffect(PBEffects::BrightContrast,
+                              _INTL("The light shining on the battlefield dimmed out!"))
   end
 
   #=============================================================================
@@ -1053,6 +1062,7 @@ class Battle
       battler.effects[PBEffects::CreationGem]      -= 1 if battler.effects[PBEffects::CreationGem] > 0
       battler.effects[PBEffects::DeterDrainActive] -= 1 if battler.effects[PBEffects::DeterDrainActive] > 0
       battler.effects[PBEffects::Electrify]        = false
+      battler.effects[PBEffects::Encourage]        = false
       battler.effects[PBEffects::Endure]           = false
       battler.effects[PBEffects::FirstPledge]      = nil
       battler.effects[PBEffects::Flinch]           = false

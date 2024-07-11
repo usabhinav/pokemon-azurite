@@ -9310,7 +9310,7 @@ Accuracy = 100
 TotalPP = 5
 Target = AllNearOthers
 FunctionCode = LowerTargetDefense1AndRaiseAllyAttack1
-Description = Lowers enemy's defense. In Doubles, it affects all enemies, and ally Pokémon also get a boost in Attack.
+Description = Lowers Defense of all enemies, and raises Attack of all allies.
 #-------------------------------
 [LIGHTRAY]
 Name = Light Ray
@@ -9379,7 +9379,7 @@ Power = 75
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = PowerDoublesAgainstDark
+FunctionCode = DoublePowerIfTargetHasDarkType
 Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = Does double damage against Dark Types.
 #-------------------------------
@@ -11425,7 +11425,7 @@ Power = 175
 Accuracy = 100
 TotalPP = 5
 Target = NearOther
-FunctionCode = LowerUserHPBy50PercentOfTotalHPFailsIfUserHPLessThan50Percent
+FunctionCode = RecoilHalfOfUserTotalHPFailsIfUserHPNotGreaterThanHalfOfTotalHP
 Flags = CanProtect,CanMirrorMove,Bomb
 Description = The user unleashes a massive explosion at the cost of half their own hit points.
 #-------------------------------
@@ -11457,7 +11457,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = BothSides
-FunctionCode = DoubleScaleOfTypeEffectiveness
+FunctionCode = StartDoubleScaleOfTypeEffectiveness
 Description = For five turns, type effectiveness is amplified.
 #-------------------------------
 [SIGNALBOOST]
@@ -11768,7 +11768,7 @@ Power = 90
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = RemoveScreensAndIgnoreReflect
+FunctionCode = RemoveScreens
 Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = With a sword of light, the user cleaves through Reflect and Light Screen. High critical-hit rate.
 #-------------------------------
@@ -12336,7 +12336,7 @@ Power = 65
 Accuracy = 100
 TotalPP = 20
 Target = NearOther
-FunctionCode = PowerDoublesIfTargetHasMoreHPThanUser
+FunctionCode = DoublePowerIfTargetHasMoreHPThanUser
 Flags = CanProtect,CanMirrorMove
 Description = The Pokémon fires a beam of energy that deals more damage if the target has more HP.
 #-------------------------------

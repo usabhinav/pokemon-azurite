@@ -930,6 +930,26 @@ class Battle::Move::StartFlameRing < Battle::Move
 end
 
 #===============================================================================
+# Amplifies the effects of type effectiveness for 5 turns. Specifically, a
+# super-effective move will do 2x damage, and a not very effective move will do
+# 1/2x damage. (Bright Contrast)
+#===============================================================================
+class Battle::Move::StartDoubleScaleOfTypeEffectiveness < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.effects[PBEffects::BrightContrast] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbDisplay(_INTL("A light shines brightly on the battlefield!"))
+    @battle.field.effects[PBEffects::BrightContrast] = 5
+  end
+end
+
+#===============================================================================
 # If attack misses, user takes crash damage equal to its speed. (Crash Landing)
 #===============================================================================
 class Battle::Move::CrashDamageWithSpeedIfFails < Battle::Move
@@ -967,6 +987,32 @@ class Battle::Move::FailsOnConsecutiveUseInvulnerableInSky < Battle::Move
   def pbEffectGeneral(user)
     user.effects[PBEffects::AirSupportTurnCount] = 2
     @battle.pbDisplay(_INTL("{1} flew into the sky to attack!", user.pbThis))
+  end
+end
+
+#===============================================================================
+# The target's additional effect chance is doubled for this turn. (Encourage)
+#===============================================================================
+class Battle::Move::DoubleAdditionalEffectChanceForAlliesThisTurn < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if !targets.any? { |t| !t.effects[PBEffects::Encourage] }
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if target.effects[PBEffects::Encourage]
+      @battle.pbDisplay(_INTL("{1} is already encouraged!", target.pbThis)) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::Encourage] = true
+    @battle.pbDisplay(_INTL("{1} encouraged {2}!", user.pbThis, target.pbThis(true)))
   end
 end
 

@@ -166,6 +166,8 @@ module PBEffects
   BlindRage           = 161
   LockOnMove          = 162
   BeaconTurnCount     = 163
+  Encourage           = 164
+  Fireworks           = 165
 
   #=============================================================================
   # These effects apply to a battler position
@@ -229,4 +231,5 @@ module PBEffects
   Darkened        = 13
   InverseRoom     = 14
   FlameRing       = 15
+  BrightContrast  = 16
 end

@@ -91,6 +91,9 @@ class Battle::AI
     when "PowerHigherWithMoreNidokingsInParty"
       score += (2 * @battle.pbParty(user.index).count {|pokemon| !pokemon.egg? && pokemon.isSpecies?(:NIDOKING)})
     #---------------------------------------------------------------------------
+    when "PowerHigherAndAccuracyHigherInSunlight"
+      score += 30 if [:Sun, :HarshSun].include?(user.effectiveWeather)
+    #---------------------------------------------------------------------------
     when "RandomPowerDoublePowerIfTargetUnderground"
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetHPLessThanHalf"
@@ -151,6 +154,13 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetHasDarkType"
       score += 20 if target.pbHasType?(:DARK)
+    #---------------------------------------------------------------------------
+    when "DoublePowerIfNoBattlersActed"
+      # Best-effort guess based on speed
+      score += 10 if !@battle.allBattlers.any? {|b| b.pbSpeed >= user.pbSpeed }
+    #---------------------------------------------------------------------------
+    when "DoublePowerIfTargetSharesTypeWithUser"
+      score += 30 if !(user.pbTypes(true) & target.pbTypes(true)).empty?
     #---------------------------------------------------------------------------
     when "AlwaysCriticalHit"
     #---------------------------------------------------------------------------
@@ -1283,7 +1293,7 @@ class Battle::AI
     when "FleeFromBattle"
       score -= 100 if @battle.trainerBattle?
     #---------------------------------------------------------------------------
-    when "SwitchOutUserStatusMove"
+    when "SwitchOutUserStatusMove", "SwitchOutUserStatusMoveAndHealReplacementBy25PercentOfTotalHP"
       if !@battle.pbCanChooseNonActive?(user.index) ||
          @battle.pbTeamAbleNonActiveCount(user.index) > 1   # Don't switch in ace
         score -= 100

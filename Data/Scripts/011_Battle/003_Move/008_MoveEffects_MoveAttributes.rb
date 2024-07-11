@@ -504,6 +504,22 @@ class Battle::Move::PowerHigherWithMoreNidokingsInParty < Battle::Move
 end
 
 #===============================================================================
+# Power and accuracy are increased by 50% in sunlight. (Light Beam)
+#===============================================================================
+class Battle::Move::PowerHigherAndAccuracyHigherInSunlight < Battle::Move
+  def pbBaseAccuracy(user, target)
+    ret = super
+    ret = [(ret * 1.5).floor, 100].min if [:Sun, :HarshSun].include?(user.effectiveWeather)
+    return ret
+  end
+
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg = (baseDmg * 1.5).floor if [:Sun, :HarshSun].include?(user.effectiveWeather)
+    return baseDmg
+  end
+end
+
+#===============================================================================
 # Power is chosen at random. Power is doubled if the target is using Dig. Hits
 # some semi-invulnerable targets. (Magnitude)
 #===============================================================================
@@ -811,6 +827,29 @@ end
 class Battle::Move::DoublePowerIfTargetHasDarkType < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
     baseDmg *= 2 if target.pbHasType?(:DARK)
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Power is doubled if this move strikes before all other moves. (Flash Strike)
+#===============================================================================
+class Battle::Move::DoublePowerIfNoBattlersActed < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    anyMoved = @battle.allBattlers.any? do |b|
+      b.index != user.index && [:UseMove, :Shift].include?(@battle.choices[b.index][0]) && b.movedThisRound?
+    end
+    baseDmg *= 2 if !anyMoved
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target shares a type with the user. (Gleam Beam)
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetSharesTypeWithUser < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg *= 2 if !(user.pbTypes(true) & target.pbTypes(true)).empty?
     return baseDmg
   end
 end
@@ -2164,24 +2203,6 @@ class Battle::Move::EffectivenessIncludesGrassType < Battle::Move
 end
 
 #===============================================================================
-# Gleam Beam
-#===============================================================================
-class Battle::Move::DoublePowerIfTargetSharesTypeWithUser < Battle::Move
-  def pbBaseDamage(baseDmg,user,target)
-    userTypes = user.pbTypes(true)
-    targetTypes = target.pbTypes(true)
-    sharesType = false
-    userTypes.each do |t|
-      next if !targetTypes.include?(t)
-      sharesType = true
-      break
-    end
-    baseDmg *= 2 if sharesType
-    return baseDmg
-  end
-end
-
-#===============================================================================
 # Target's Special Defense is used instead of its Defense for this move's
 # calculations. (Arcane Strike, Throw Hands)
 #===============================================================================
@@ -2199,24 +2220,6 @@ class Battle::Move::DoublePowerIfTargetIsBurnedNoSubstitute < Battle::Move
     if target.burned? && (target.effects[PBEffects::Substitute]==0 || ignoresSubstitute?(user))
       baseDmg *= 2
     end
-    return baseDmg
-  end
-end
-
-#===============================================================================
-# Flash Strike
-#===============================================================================
-class Battle::Move::DoublePowerIfNoBattlersActed < Battle::Move
-  def pbBaseDamage(baseDmg,user,target)
-    noneMoved = true
-    @battle.allBattlers.each do |b|
-      next if b.index==user.index
-      next if @battle.choices[b.index][0]!=:UseMove && @battle.choices[b.index][0]!=:Shift
-      next if !b.movedThisRound?
-      noneMoved = false
-      break
-    end
-    baseDmg *= 2 if noneMoved
     return baseDmg
   end
 end

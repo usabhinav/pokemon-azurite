@@ -9391,7 +9391,7 @@ Power = 90
 Accuracy = 90
 TotalPP = 10
 Target = NearOther
-FunctionCode = PowerAndAccuracyIncreasesBy50PercentInSunlight
+FunctionCode = PowerHigherAndAccuracyHigherInSunlight
 Flags = CanProtect,CanMirrorMove
 Description = Its accuracy and damage is increased in sunlight.
 #-------------------------------
@@ -11744,7 +11744,7 @@ Power = 150
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = TwoTurnAttack
+FunctionCode = AttackOneTurnLater
 Flags = Projectile
 Description = The user fires off missiles of light which crash down the turn after. Can't be protected.
 #-------------------------------
@@ -11962,7 +11962,7 @@ Power = 75
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = PowerDoublesIfUserSharesAnyTypeWithTarget
+FunctionCode = DoublePowerIfTargetSharesTypeWithUser
 Flags = CanProtect,CanMirrorMove
 Description = A bouncing beam of light which amplifies in power if the target shares a type with the user.
 #-------------------------------
@@ -12303,7 +12303,7 @@ Power = 70
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = PowerDoublesIfUserMovesBeforeTarget
+FunctionCode = DoublePowerIfNoBattlersActed
 Flags = Contact,CanProtect,CanMirrorMove
 Description = A hit designed to catch the foe off-guard. The power is doubled if the user moves first.
 #-------------------------------

@@ -58,6 +58,21 @@ class Battle::Move::SwitchOutUserStatusMove < Battle::Move
 end
 
 #===============================================================================
+# User switches out, and the Pokémon switching in is healed by 25% of their max
+# HP. If user is a wild Pokémon, ends the battle instead. (Lifelight)
+#===============================================================================
+class Battle::Move::SwitchOutUserStatusMoveAndHealReplacementBy25PercentOfTotalHP < Battle::Move::SwitchOutUserStatusMove
+  def healingMove?; return true; end
+
+  def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    super
+    if user.canHeal? && user.pbRecoverHP(user.totalhp / 4) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+    end
+  end
+end
+
+#===============================================================================
 # After inflicting damage, user switches out. Ignores trapping moves.
 # (U-turn, Volt Switch)
 #===============================================================================

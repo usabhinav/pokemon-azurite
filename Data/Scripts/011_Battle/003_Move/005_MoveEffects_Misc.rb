@@ -849,6 +849,21 @@ class Battle::Move::AttackTwoTurnsLater < Battle::Move
 end
 
 #===============================================================================
+# Attacks 1 round in the future. (Light Missiles)
+#===============================================================================
+class Battle::Move::AttackOneTurnLater < Battle::Move::AttackTwoTurnsLater
+  def pbEffectAgainstTarget(user, target)
+    return if @battle.futureSight   # Attack is hitting
+    effects = @battle.positions[target.index].effects
+    effects[PBEffects::FutureSightCounter]        = 2
+    effects[PBEffects::FutureSightMove]           = @id
+    effects[PBEffects::FutureSightUserIndex]      = user.index
+    effects[PBEffects::FutureSightUserPartyIndex] = user.pokemonIndex
+    @battle.pbDisplay(_INTL("{1} launched missiles of light high into the air!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # User switches places with its ally. (Ally Switch)
 #===============================================================================
 class Battle::Move::UserSwapsPositionsWithAlly < Battle::Move

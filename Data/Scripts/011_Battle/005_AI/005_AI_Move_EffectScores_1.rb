@@ -224,7 +224,7 @@ class Battle::AI
         score -= 80 if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
       end
     #---------------------------------------------------------------------------
-    when "AttackTwoTurnsLater"
+    when "AttackTwoTurnsLater", "AttackOneTurnLater"
       if @battle.positions[target.index].effects[PBEffects::FutureSightCounter] > 0
         score -= 100
       elsif @battle.pbAbleNonActiveCount(user.idxOwnSide) == 0

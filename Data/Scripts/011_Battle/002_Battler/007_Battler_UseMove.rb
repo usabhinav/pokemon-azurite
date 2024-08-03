@@ -170,49 +170,51 @@ class Battle::Battler
     # Start using the move
     pbBeginTurn(choice)
     # Force the use of certain moves if they're already being used
-    if usingMultiTurnAttack?
-      choice[2] = Battle::Move.from_pokemon_move(@battle, Pokemon::Move.new(@currentMove))
-      specialUsage = true
-    elsif @effects[PBEffects::Encore] > 0 && choice[1] >= 0 &&
-          @battle.pbCanShowCommands?(@index)
-      idxEncoredMove = pbEncoredMoveIndex
-      if idxEncoredMove >= 0 && choice[1] != idxEncoredMove &&
-         @battle.pbCanChooseMove?(@index, idxEncoredMove, false)   # Change move if battler was Encored mid-round
-        choice[1] = idxEncoredMove
-        choice[2] = @moves[idxEncoredMove]
-        choice[3] = -1   # No target chosen
-      end
-    # Sugar Power
-    elsif hasActiveAbility?(:SUGARPOWER) && choice[2].type == :WATER && choice[2].damagingMove?
-      targets = pbFindTargets(choice, choice[2], self)
-      if targets && targets.length > 0
-        @battle.pbShowAbilitySplash(self)
-        @battle.pbDisplayBrief(_INTL("{1}'s move healed instead of causing damage!", pbThis))
-        pbReducePP(choice[2])
-        choice[2] = Battle::Move.from_pokemon_move(@battle, Pokemon::Move.new(:SUGARPOWERMOVE))
-        targets.each do |t|
-          choice[2].pbCalcDamage(self, t, targets.length)
-          choice[2].healAmt = t.damageState.calcDamage
-          t.damageState.calcDamage = 0
-          choice[3] = t.index
-          saveLastRoundMoved = self.lastRoundMoved
-          pbUseMove(choice, true)
-          self.lastRoundMoved = saveLastRoundMoved
+    if !@effects[PBEffects::DelayedAttackInUseNow]
+      if usingMultiTurnAttack?
+        choice[2] = Battle::Move.from_pokemon_move(@battle, Pokemon::Move.new(@currentMove))
+        specialUsage = true
+      elsif @effects[PBEffects::Encore] > 0 && choice[1] >= 0 &&
+            @battle.pbCanShowCommands?(@index)
+        idxEncoredMove = pbEncoredMoveIndex
+        if idxEncoredMove >= 0 && choice[1] != idxEncoredMove &&
+          @battle.pbCanChooseMove?(@index, idxEncoredMove, false)   # Change move if battler was Encored mid-round
+          choice[1] = idxEncoredMove
+          choice[2] = @moves[idxEncoredMove]
+          choice[3] = -1   # No target chosen
         end
-        @battle.pbHideAbilitySplash(self)
-        self.lastRoundMoved = @battle.turnCount
-        return
-      end
-    # Vermilingua
-    else
-      hasabil = @battle.pbCheckGlobalAbility(:VERMILINGUA)
-      if hasabil && pbHasType?(:BUG) && !hasActiveAbility?(:VERMILINGUA)
-        @battle.pbShowAbilitySplash(hasabil)
-        @battle.pbDisplay(_INTL("{1}'s move was changed to Struggle!", pbThis))
-        @battle.pbHideAbilitySplash(hasabil)
-        choice[1] = -1
-        choice[2] = @battle.struggle
-        choice[3] = -1
+      # Sugar Power
+      elsif hasActiveAbility?(:SUGARPOWER) && choice[2].type == :WATER && choice[2].damagingMove?
+        targets = pbFindTargets(choice, choice[2], self)
+        if targets && targets.length > 0
+          @battle.pbShowAbilitySplash(self)
+          @battle.pbDisplayBrief(_INTL("{1}'s move healed instead of causing damage!", pbThis))
+          pbReducePP(choice[2])
+          choice[2] = Battle::Move.from_pokemon_move(@battle, Pokemon::Move.new(:SUGARPOWERMOVE))
+          targets.each do |t|
+            choice[2].pbCalcDamage(self, t, targets.length)
+            choice[2].healAmt = t.damageState.calcDamage
+            t.damageState.calcDamage = 0
+            choice[3] = t.index
+            saveLastRoundMoved = self.lastRoundMoved
+            pbUseMove(choice, true)
+            self.lastRoundMoved = saveLastRoundMoved
+          end
+          @battle.pbHideAbilitySplash(self)
+          self.lastRoundMoved = @battle.turnCount
+          return
+        end
+      # Vermilingua
+      else
+        hasabil = @battle.pbCheckGlobalAbility(:VERMILINGUA)
+        if hasabil && pbHasType?(:BUG) && !hasActiveAbility?(:VERMILINGUA)
+          @battle.pbShowAbilitySplash(hasabil)
+          @battle.pbDisplay(_INTL("{1}'s move was changed to Struggle!", pbThis))
+          @battle.pbHideAbilitySplash(hasabil)
+          choice[1] = -1
+          choice[2] = @battle.struggle
+          choice[3] = -1
+        end
       end
     end
     # Labels the move being used as "move"
@@ -220,7 +222,7 @@ class Battle::Battler
     return if !move   # if move was not chosen somehow
     # Try to use the move (inc. disobedience)
     @lastMoveFailed = false
-    if !pbTryUseMove(choice, move, specialUsage, skipAccuracyCheck)
+    if !@effects[PBEffects::DelayedAttackInUseNow] && !pbTryUseMove(choice, move, specialUsage, skipAccuracyCheck)
       @lastMoveUsed     = nil
       @lastMoveUsedType = nil
       if !specialUsage

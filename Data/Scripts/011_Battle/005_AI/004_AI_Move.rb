@@ -59,6 +59,10 @@ class Battle::AI
           PBDebug.log("[AI] #{user.pbThis} (#{user.index}) prefers #{user.moves[m[0]].name}")
           @battle.pbRegisterMove(idxBattler, m[0], false)
           @battle.pbRegisterTarget(idxBattler, m[2]) if m[2] >= 0
+          if user.moves[m[0]].function == "SelectMoveAndAttackTwoTurnsLater"
+            validPreferredMoves = getChoicesEligibleForDelayedAttack(user, preferredMoves)
+            pbChooseDelayedAttack(user, m[0], (validPreferredMoves.length <= 1) ? choices.clone : validPreferredMoves.clone)
+          end
           return
         end
       end
@@ -104,6 +108,9 @@ class Battle::AI
       next if randNum >= 0
       @battle.pbRegisterMove(idxBattler, c[0], false)
       @battle.pbRegisterTarget(idxBattler, c[2]) if c[2] >= 0
+      if user.moves[c[0]].function == "SelectMoveAndAttackTwoTurnsLater"
+        pbChooseDelayedAttack(user, c[0], choices.clone)
+      end
       break
     end
     # Log the result
@@ -297,5 +304,28 @@ class Battle::AI
     damagePercentage += 40 if damagePercentage > 100   # Prefer moves likely to be lethal
     score += damagePercentage.to_i
     return score
+  end
+
+  def pbChooseDelayedAttack(user, delayedAttackMoveIndex, choices)
+    # Populate valid choices
+    delayedAttackMove = user.moves[delayedAttackMoveIndex]
+    choices = getChoicesEligibleForDelayedAttack(user, choices)
+    # It's possible for choices to be empty because some moves with a score of zero would have been filtered out earlier,
+    # so create a new array in the same format without filtering out those moves.
+    if choices.empty?
+      choices = getChoicesEligibleForDelayedAttackFromUserMoves(user)
+    end
+    # Save selected move info for use in the main effect of Delayed Attack
+    newChoice = choices[pbAIRandom(choices.length)]
+    delayedAttackMove.delayedAttackChoices = [:UseMove, newChoice[0], user.moves[newChoice[0]], newChoice[2]]
+  end
+
+  def getChoicesEligibleForDelayedAttackFromUserMoves(user)
+    # Maps to: [Move index, score (not used), target (-1 means chosen randomy during move use)]
+    return getChoicesEligibleForDelayedAttack(user, user.moves.each_with_index.map {|_m, i| [i, 100, -1] })
+  end
+
+  def getChoicesEligibleForDelayedAttack(user, choices)
+    return choices.select {|c| !Settings::DELAYED_ATTACK_MOVE_DENYLIST.include?(user.moves[c[0]].function) }
   end
 end

@@ -9300,7 +9300,7 @@ Accuracy = 0
 TotalPP = 5
 Target = UserAndAllies
 FunctionCode = HealTargetHalfOfTotalHP75PercentIfSingleBattleAndSkipNextTurn
-Description = Heals itself and allies by 50%, but has to recharge next turn. In Single Battles, heals Lumeny for 75%.
+Description = Heals itself and allies by 50% (75% in single battles), but has to recharge next turn.
 #-------------------------------
 [BRIGHTSMILE]
 Name = Bright Smile
@@ -11831,7 +11831,7 @@ Power = 90
 Accuracy = 90
 TotalPP = 15
 Target = NearOther
-FunctionCode = PowerIncreasesIfTargetAirborne
+FunctionCode = DoublePowerIfTargetIsAirborne
 Flags = Contact,CanProtect,CanMirrorMove,Kicking
 Description = A powerful kick that becomes even stronger when used against opponents in the air.
 #-------------------------------
@@ -12509,7 +12509,7 @@ Type = MYSTIC
 Category = Status
 Accuracy = 0
 TotalPP = 10
-Target = NearOther
+Target = User
 FunctionCode = SelectMoveAndAttackTwoTurnsLater
 Description = Imbuing one of their attacks into a magical spell, it takes place two turns later.
 #-------------------------------

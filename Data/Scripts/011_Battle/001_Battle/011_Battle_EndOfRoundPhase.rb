@@ -198,6 +198,28 @@ class Battle
   end
 
   #=============================================================================
+  # End Of Round use Delayed Attack
+  #=============================================================================
+  def pbEORUseDelayedAttack(battler)
+    return if !battler || battler.effects[PBEffects::DelayedAttackCounter] == 0
+    battler.effects[PBEffects::DelayedAttackCounter] -= 1
+    return if battler.effects[PBEffects::DelayedAttackCounter] > 0
+    return if battler.fainted?
+    pbDisplay(_INTL("{1}'s delayed attack activated!", battler.pbThis))
+    # Save some properties before using the move, then restore then after move use
+    battler.lastRoundMoved = @turnCount
+    userLastMoveFailed = battler.lastMoveFailed
+    battler.effects[PBEffects::DelayedAttackInUseNow] = true
+    battler.pbUseMove(battler.effects[PBEffects::DelayedAttackChoices], true)
+    battler.effects[PBEffects::DelayedAttackInUseNow] = false
+    battler.lastMoveFailed = userLastMoveFailed
+    # Clear remaining effects
+    battler.effects[PBEffects::DelayedAttackCounter] = 0
+    battler.effects[PBEffects::DelayedAttackChoices] = nil
+    battler.effects[PBEffects::DelayedAttackUserAttributes] = nil
+  end
+
+  #=============================================================================
   # End Of Round healing from Wish
   #=============================================================================
   def pbEORWishHealing
@@ -828,8 +850,10 @@ class Battle
     priority = pbPriority(true)   # in order of fastest -> slowest speeds only
     # Weather
     pbEOREndWeather(priority)
-    # Future Sight/Doom Desire
+    # Future Sight/Doom Desire/Light Missiles
     @positions.each_with_index { |pos, idxPos| pbEORUseFutureSight(pos, idxPos) }
+    # Delayed Attack
+    priority.each { |battler| pbEORUseDelayedAttack(battler) }
     # Wish
     pbEORWishHealing
     # Sea of Fire damage (Fire Pledge + Grass Pledge combination)

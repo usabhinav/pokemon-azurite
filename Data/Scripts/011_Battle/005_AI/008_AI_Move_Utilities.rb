@@ -286,7 +286,7 @@ class Battle::AI
     return battler.pbSpeed if skill >= PBTrainerAI.highSkill && stat == :SPEED
     stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
     stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
-    stage = battler.get_modified_stat_stage(stat, battler.stages[stat] + 6)
+    stage = battler.modifiedStages[stat] + 6
     value = 0
     case stat
     when :ATTACK          then value = battler.attack
@@ -342,6 +342,7 @@ class Battle::AI
          "DoublePowerIfTargetHasDarkType",
          "DoublePowerIfNoBattlersActed",
          "DoublePowerIfTargetSharesTypeWithUser",
+         "DoublePowerIfTargetIsAirborne",
          "TypeAndPowerDependOnWeather",
          "PowerHigherWithUserHappiness",
          "PowerLowerWithUserHappiness",
@@ -685,7 +686,7 @@ class Battle::AI
           multipliers[:final_damage_multiplier] *= 1.5
         end
       when :Sandstorm
-        if target.pbHasType?(:ROCK) && move.specialMove?(type) &&
+        if target.pbHasType?(:ROCK) && (move.specialMove?(type) || move.function == "UseTargetSpDefInsteadOfTargetDefense") &&
            move.function != "UseTargetDefenseInsteadOfTargetSpDef"   # Psyshock
           multipliers[:defense_multiplier] *= 1.5
         end
@@ -813,16 +814,16 @@ class Battle::AI
     # Calculate all modifier effects
     modifiers = {}
     modifiers[:base_accuracy]  = baseAcc
-    modifiers[:accuracy_stage] = user.get_modified_stat_stage(:ACCURACY, user.stages[:ACCURACY])
-    modifiers[:evasion_stage]  = target.get_modified_stat_stage(:EVASION, target.stages[:EVASION])
+    modifiers[:accuracy_stage] = user.modifiedStages[:ACCURACY]
+    modifiers[:evasion_stage]  = target.modifiedStages[:EVASION]
     modifiers[:accuracy_multiplier] = 1.0
     modifiers[:evasion_multiplier]  = 1.0
     pbCalcAccuracyModifiers(user, target, modifiers, move, type, skill)
     # Check if move can't miss
     return 125 if modifiers[:base_accuracy] == 0
     # Calculation
-    accStage = [[modifiers[:accuracy_stage], -6].max, 6].min + 6
-    evaStage = [[modifiers[:evasion_stage], -6].max, 6].min + 6
+    accStage = [[modifiers[:accuracy_stage], -6].max, 7].min + 6
+    evaStage = [[modifiers[:evasion_stage], -6].max, 7].min + 6
     stageMul = [3, 3, 3, 3, 3, 3, 3, 4, 5, 6, 7, 8, 9, 10]
     stageDiv = [9, 8, 7, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3, 3]
     accuracy = 100.0 * stageMul[accStage] / stageDiv[accStage]

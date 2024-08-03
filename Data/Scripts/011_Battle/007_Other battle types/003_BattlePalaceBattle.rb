@@ -135,6 +135,17 @@ class BattlePalaceBattle < Battle
     else
       chosenmove = moves[@battleAI.pbAIRandom(moves.length)]
       pbRegisterMove(idxBattler, chosenmove)
+      # Register a move for Delayed Attack
+      if this_battler.moves[chosenmove].function == "SelectMoveAndAttackTwoTurnsLater"
+        validChoices = @battleAI.getChoicesEligibleForDelayedAttackFromUserMoves(this_battler)
+        delayedAttackMove = validChoices[@battleAI.pbAIRandom(validChoices.length)]
+        this_battler.moves[chosenmove].delayedAttackChoices = [
+          :UseMove,
+          delayedAttackMove[0],
+          this_battler.moves[delayedAttackMove[0]],
+          delayedAttackMove[2]
+        ]
+      end
     end
     return true
   end

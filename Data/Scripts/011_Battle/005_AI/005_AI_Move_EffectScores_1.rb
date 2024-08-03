@@ -50,7 +50,7 @@ class Battle::AI
     when "FailsIfTargetActed"
     #---------------------------------------------------------------------------
     when "CrashDamageIfFailsUnusableInGravity", "CrashDamageWithSpeedIfFails"
-      score += 10 * (user.get_modified_stat_stage(:ACCURACY, user.stages[:ACCURACY]) - target.get_modified_stat_stage(:EVASION, target.stages[:EVASION]))
+      score += 10 * (user.modifiedStages[:ACCURACY] - target.modifiedStages[:EVASION])
     #---------------------------------------------------------------------------
     when "StartSunWeather"
       if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
@@ -229,6 +229,14 @@ class Battle::AI
         score -= 100
       elsif @battle.pbAbleNonActiveCount(user.idxOwnSide) == 0
         # Future Sight tends to be wasteful if down to last Pokemon
+        score -= 70
+      end
+    #---------------------------------------------------------------------------
+    when "SelectMoveAndAttackTwoTurnsLater"
+      if user.effects[PBEffects::DelayedAttackCounter] > 0
+        score -= 100
+      elsif @battle.pbAbleNonActiveCount(user.idxOwnSide) == 0
+        # Future Sight and similar moves tend to be wasteful if down to last Pokemon
         score -= 70
       end
     #---------------------------------------------------------------------------

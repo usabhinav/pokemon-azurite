@@ -864,6 +864,61 @@ class Battle::Move::AttackOneTurnLater < Battle::Move::AttackTwoTurnsLater
 end
 
 #===============================================================================
+# Allows the user to select a move (other than this one) and attacks 2 rounds in
+# the future, using the same stats, stat stages, and types that the user had at
+# the time the move was first selected. Effect is canceled if the user faints or
+# switches out. (Delayed Attack)
+#===============================================================================
+class Battle::Move::SelectMoveAndAttackTwoTurnsLater < Battle::Move
+  attr_accessor :delayedAttackChoices
+
+  def pbCanChooseMove?(user, commandPhase, showMessages)
+    anyOtherMove = false
+    user.eachMoveWithIndex do |m, i|
+      next if m.id == @id
+      next if !@battle.pbCanChooseMove?(user.index, i, false)
+      next if Settings::DELAYED_ATTACK_MOVE_DENYLIST.include?(m.function)
+      anyOtherMove = true
+      break
+    end
+    if !anyOtherMove
+      if showMessages
+        msg = _INTL("{1} has no moves it can select!", user.pbThis)
+        (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+      end
+      return false
+    end
+    return true
+  end
+
+  def pbMoveFailed?(user, targets)
+    if @delayedAttackChoices == nil || user.effects[PBEffects::DelayedAttackCounter] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::DelayedAttackCounter] = 3
+    user.effects[PBEffects::DelayedAttackChoices] = @delayedAttackChoices
+    user.effects[PBEffects::DelayedAttackUserAttributes] = {
+      :ATTACK => user.attack,
+      :DEFENSE => user.defense,
+      :SPECIAL_ATTACK => user.spatk,
+      :SPECIAL_DEFENSE => user.spdef,
+      :SPEED => user.speed,
+      :MODIFIEDSTAGES => user.modifiedStages,
+      :PBTYPESTRUE => user.pbTypes(true),
+      :PBTYPESFALSE => user.pbTypes(false),
+    }
+    @battle.pbDisplay(_INTL("{1} foresaw an attack!", user.pbThis))
+    user.pbReducePP(@delayedAttackChoices[2])
+    @delayedAttackChoices = nil
+  end
+end
+
+#===============================================================================
 # User switches places with its ally. (Ally Switch)
 #===============================================================================
 class Battle::Move::UserSwapsPositionsWithAlly < Battle::Move

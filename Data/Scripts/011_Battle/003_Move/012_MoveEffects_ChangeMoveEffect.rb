@@ -729,6 +729,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticMove",                               # Wild Magic
+      "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
       "BounceBackAllMoves",                                # Black Hole
@@ -817,6 +818,7 @@ class Battle::Move::UseMoveTargetIsAboutToUse < Battle::Move
   def initialize(battle, move)
     super
     @moveBlacklist = [
+      "SelectMoveAndAttackTwoTurnsLater",   # Delayed Attack
       "UserTakesTargetItem",                # Covet, Thief
       # Struggle, Belch
       "Struggle",                           # Struggle
@@ -967,6 +969,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticMove",                               # Wild Magic
+      "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
       "BounceBackAllMoves",                                # Black Hole
@@ -1065,6 +1068,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticMove",                               # Wild Magic
+      "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
       "BounceBackAllMoves",                                # Black Hole
@@ -1170,6 +1174,7 @@ class Battle::Move::UseRandomUserMoveIfAsleep < Battle::Move
       "UseRandomMove",                                   # Metronome
       "UseRandomCosmicTypeMove",                         # Astronomy
       "UseRandomMysticMove",                             # Wild Magic
+      "SelectMoveAndAttackTwoTurnsLater",                # Delayed Attack
       # Two-turn attacks
       "TwoTurnAttack",                                   # Razor Wind
       "TwoTurnAttackOneTurnInSun",                       # Solar Beam, Solar Blade

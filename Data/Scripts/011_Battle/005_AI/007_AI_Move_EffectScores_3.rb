@@ -162,6 +162,9 @@ class Battle::AI
     when "DoublePowerIfTargetSharesTypeWithUser"
       score += 30 if !(user.pbTypes(true) & target.pbTypes(true)).empty?
     #---------------------------------------------------------------------------
+    when "DoublePowerIfTargetIsAirborne"
+      score += 30 if target.airborne?
+    #---------------------------------------------------------------------------
     when "AlwaysCriticalHit"
     #---------------------------------------------------------------------------
     when "EnsureNextCriticalHit"
@@ -386,6 +389,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "UseTargetDefenseInsteadOfTargetSpDef"
     #---------------------------------------------------------------------------
+    when "UseTargetSpDefInsteadOfTargetDefense"
+      score += (target.defense - target.spdef).clamp(-20, 20)
+    #---------------------------------------------------------------------------
     when "EnsureNextMoveAlwaysHits"
       score -= 90 if target.effects[PBEffects::Substitute] > 0
       score -= 90 if user.effects[PBEffects::LockOn] > 0
@@ -468,7 +474,7 @@ class Battle::AI
     when "HitThreeTimesAlwaysCriticalHit"
       if skill >= PBTrainerAI.highSkill
         stat = (move.physicalMove?) ? :DEFENSE : :SPECIAL_DEFENSE
-        score += 50 if target.get_modified_stat_stage(stat, targets.stages[stat]) > 1
+        score += 50 if targets.modifiedStages[stat] > 1
       end
     #---------------------------------------------------------------------------
     when "HitTwoToFiveTimes", "HitThreeToFiveTimes"
@@ -764,7 +770,7 @@ class Battle::AI
     when "HealUserHalfOfTotalHPIfKOsTarget"
       score += 20 if target.hp <= target.totalhp / 4 && user.hp <= user.totalhp / 2
     #---------------------------------------------------------------------------
-    when "HealTargetHalfOfTotalHP"
+    when "HealTargetHalfOfTotalHP", "HealTargetHalfOfTotalHP75PercentIfSingleBattleAndSkipNextTurn"
       if user.opposes?(target)
         score -= 100
       elsif target.hp < target.totalhp / 2 && target.effects[PBEffects::Substitute] == 0

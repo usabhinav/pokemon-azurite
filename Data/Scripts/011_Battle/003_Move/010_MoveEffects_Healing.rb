@@ -134,7 +134,7 @@ class Battle::Move::HealUserByTargetAttackLowerTargetAttack1 < Battle::Move
     stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
     stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
     atk      = target.attack
-    atkStage = target.get_modified_stat_stage(:ATTACK, target.stages[:ATTACK] + 6)
+    atkStage = target.modifiedStages[:ATTACK] + 6
     healAmt = (atk.to_f * stageMul[atkStage] / stageDiv[atkStage]).floor
     # Reduce target's Attack stat
     if target.pbCanLowerStatStage?(:ATTACK, user, self)
@@ -213,14 +213,14 @@ class Battle::Move::HealUserByHalfOfDamageDoneAndBoostPower10Healing10PercentPer
 
   def pbBaseDamage(baseDmg, user, target)
     power_mult = 0
-    GameData::Stat.each_battle { |s| power_mult += target.stages[s.id] if target.stages[s.id] > 0 }
+    GameData::Stat.each_battle { |s| power_mult += target.modifiedStages[s.id] if target.modifiedStages[s.id] > 0 }
     return baseDmg + (10 * power_mult)
   end
 
   def pbEffectAgainstTarget(user, target)
     return if target.damageState.hpLost <= 0
     drain_multiplier = 5
-    GameData::Stat.each_battle { |s| drain_multiplier += target.stages[s.id] if target.stages[s.id] > 0 }
+    GameData::Stat.each_battle { |s| drain_multiplier += target.modifiedStages[s.id] if target.modifiedStages[s.id] > 0 }
     hpGain = (target.damageState.hpLost * drain_multiplier.to_f / 10).round
     user.pbRecoverHPFromDrain(hpGain, target)
   end
@@ -376,6 +376,27 @@ class Battle::Move::HealTargetHalfOfTotalHP < Battle::Move
   def pbEffectAgainstTarget(user, target)
     hpGain = (target.totalhp / 2.0).round
     if pulseMove? && user.hasActiveAbility?(:MEGALAUNCHER)
+      hpGain = (target.totalhp * 3 / 4.0).round
+    end
+    if target.pbRecoverHP(hpGain) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
+    end
+  end
+end
+
+#===============================================================================
+# Heals target by 1/2 of its max HP (3/4 in a single battle), but skips next
+# turn. (Soothing Gleam)
+#===============================================================================
+class Battle::Move::HealTargetHalfOfTotalHP75PercentIfSingleBattleAndSkipNextTurn < Battle::Move::HealTargetHalfOfTotalHP
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::HyperBeam] = 2
+    user.currentMove = @id
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    hpGain = (target.totalhp / 2.0).round
+    if @battle.pbSideSize(user.index) == 1
       hpGain = (target.totalhp * 3 / 4.0).round
     end
     if target.pbRecoverHP(hpGain) > 0

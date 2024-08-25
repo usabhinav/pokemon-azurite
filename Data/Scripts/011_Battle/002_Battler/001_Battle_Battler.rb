@@ -105,6 +105,7 @@ class Battle::Battler
   end
 
   def attack
+    return @effects[PBEffects::DelayedAttackUserAttributes][:ATTACK] if @effects[PBEffects::DelayedAttackInUseNow]
     atk_stat = @attack + @effects[PBEffects::DynamicPower] + equalizer_modifier(:ATTACK)
     atk_stat = (atk_stat * 1.3).floor if hasActiveAbility?(:POWERWITHIN)
     return atk_stat
@@ -113,6 +114,7 @@ class Battle::Battler
   attr_writer :attack
 
   def defense
+    return @effects[PBEffects::DelayedAttackUserAttributes][:DEFENSE] if @effects[PBEffects::DelayedAttackInUseNow]
     def_stat = @defense
     def_stat = @spdef if @battle.field.effects[PBEffects::WonderRoom] > 0 && @battle.pbCheckAllyCosmoCube(@index).nil?
     def_stat += @effects[PBEffects::DynamicPower]
@@ -125,6 +127,7 @@ class Battle::Battler
   attr_writer :defense
 
   def spatk
+    return @effects[PBEffects::DelayedAttackUserAttributes][:SPECIAL_ATTACK] if @effects[PBEffects::DelayedAttackInUseNow]
     spatk_stat = @spatk + @effects[PBEffects::DynamicPower] + equalizer_modifier(:SPECIAL_ATTACK)
     spatk_stat = (spatk_stat * 1.3).floor if hasActiveAbility?(:POWERWITHIN)
     return spatk_stat
@@ -133,6 +136,7 @@ class Battle::Battler
   attr_writer :spatk
 
   def spdef
+    return @effects[PBEffects::DelayedAttackUserAttributes][:SPECIAL_DEFENSE] if @effects[PBEffects::DelayedAttackInUseNow]
     spdef_stat = @spdef
     spdef_stat = @defense if @battle.field.effects[PBEffects::WonderRoom] > 0 && @battle.pbCheckAllyCosmoCube(@index).nil?
     spdef_stat += @effects[PBEffects::DynamicPower]
@@ -145,12 +149,19 @@ class Battle::Battler
   attr_writer :spdef
 
   def speed
+    return @effects[PBEffects::DelayedAttackUserAttributes][:SPEED] if @effects[PBEffects::DelayedAttackInUseNow]
     speed_stat = @speed + @effects[PBEffects::DynamicPower] + equalizer_modifier(:SPEED)
     speed_stat = (speed_stat * 1.3).floor if hasActiveAbility?(:POWERWITHIN)
     return speed_stat
   end
 
   attr_writer :speed
+
+  # Applies various modifications on each stat and returns a new hash. Used primarily for damage calculations.
+  def modifiedStages
+    return @effects[PBEffects::DelayedAttackUserAttributes][:MODIFIEDSTAGES] if @effects[PBEffects::DelayedAttackInUseNow]
+    return @stages.clone.map {|stat, value| [stat, get_modified_stat_stage(stat, value)] }.to_h
+  end
 
   # returns this battler's stats symbols (excluding HP), sorted in ascending order by value
   def battlerStatsSortedAscending
@@ -401,7 +412,7 @@ class Battle::Battler
     return 1 if fainted?
     stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
     stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
-    stage = get_modified_stat_stage(:SPEED, @stages[:SPEED] + 6)
+    stage = self.modifiedStages[:SPEED] + 6
     speed = self.speed * stageMul[stage] / stageDiv[stage]
     speedMult = 1.0
     # Ability effects that alter calculated Speed
@@ -461,6 +472,9 @@ class Battle::Battler
   # Returns the active types of this Pokémon. The array should not include the
   # same type more than once, and should not include any invalid types.
   def pbTypes(withType3 = false)
+    if @effects[PBEffects::DelayedAttackInUseNow]
+      return @effects[PBEffects::DelayedAttackUserAttributes][withType3 ? :PBTYPESTRUE : :PBTYPESFALSE]
+    end
     ret = @types.uniq
     # Burn Up erases the Fire-type.
     ret.delete(:FIRE) if @effects[PBEffects::BurnUp]
@@ -689,6 +703,7 @@ class Battle::Battler
     return false if @effects[PBEffects::SmackDown]
     return false if @battle.field.effects[PBEffects::Gravity] > 0
     return true if pbHasType?(:FLYING)
+    return true if pbHasType?(:COSMIC)
     return true if (hasActiveAbility?(:LEVITATE) || @battle.pbCheckGlobalAbility(:ZEROGRAVITY)) && !@battle.moldBreaker
     return true if hasActiveItem?(:AIRBALLOON)
     return true if @effects[PBEffects::MagnetRise] > 0

@@ -103,6 +103,7 @@ class Battle::Battler
           end
         end        
       end
+      # Light Nut
       if target.effects[PBEffects::LightNutActive]
         target.stages[:DEFENSE] = 0 if target.stages[:DEFENSE] > 0
         target.stages[:SPECIAL_DEFENSE] = 0 if target.stages[:SPECIAL_DEFENSE] > 0

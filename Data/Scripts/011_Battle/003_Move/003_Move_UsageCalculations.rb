@@ -233,16 +233,16 @@ class Battle::Move
     # Calculate all multiplier effects
     modifiers = {}
     modifiers[:base_accuracy]  = baseAcc
-    modifiers[:accuracy_stage] = user.get_modified_stat_stage(:ACCURACY, user.stages[:ACCURACY])
-    modifiers[:evasion_stage]  = target.get_modified_stat_stage(:EVASION, target.stages[:EVASION])
+    modifiers[:accuracy_stage] = user.modifiedStages[:ACCURACY]
+    modifiers[:evasion_stage]  = target.modifiedStages[:EVASION]
     modifiers[:accuracy_multiplier] = 1.0
     modifiers[:evasion_multiplier]  = 1.0
     pbCalcAccuracyModifiers(user, target, modifiers)
     # Check if move can't miss
     return true if modifiers[:base_accuracy] == 0
     # Calculation
-    accStage = [[modifiers[:accuracy_stage], -6].max, 6].min + 6
-    evaStage = [[modifiers[:evasion_stage], -6].max, 6].min + 6
+    accStage = [[modifiers[:accuracy_stage], -6].max, 7].min + 6
+    evaStage = [[modifiers[:evasion_stage], -6].max, 7].min + 6
     stageMul = [3, 3, 3, 3, 3, 3, 3, 4, 5, 6, 7, 8, 9, 10]
     stageDiv = [9, 8, 7, 6, 5, 4, 3, 3, 3, 3, 3, 3, 3, 3]
     accuracy = 100.0 * stageMul[accStage] / stageDiv[accStage]
@@ -380,16 +380,16 @@ class Battle::Move
 
   def pbGetAttackStats(user, target)
     if pbSpecialMove?(user)
-      return user.spatk, user.get_modified_stat_stage(:SPECIAL_ATTACK, user.stages[:SPECIAL_ATTACK] + 6)
+      return user.spatk, user.modifiedStages[:SPECIAL_ATTACK] + 6
     end
-    return user.attack, user.get_modified_stat_stage(:ATTACK, user.stages[:ATTACK] + 6)
+    return user.attack, user.modifiedStages[:ATTACK] + 6
   end
 
   def pbGetDefenseStats(user, target)
     if pbSpecialMove?(user) || (pbContactMove?(user) && user.hasActiveAbility?(:CACOPHONY))
-      return target.spdef, target.get_modified_stat_stage(:SPECIAL_DEFENSE, target.stages[:SPECIAL_DEFENSE] + 6)
+      return target.spdef, target.modifiedStages[:SPECIAL_DEFENSE] + 6
     end
-    return target.defense, target.get_modified_stat_stage(:DEFENSE, target.stages[:DEFENSE] + 6)
+    return target.defense, target.modifiedStages[:DEFENSE] + 6
   end
 
   def pbCalcDamage(user, target, numTargets = 1)
@@ -586,7 +586,7 @@ class Battle::Move
         multipliers[:final_damage_multiplier] *= 1.5 if user.effectiveWeather == :Thunderstorm
       end
     when :Sandstorm
-      if target.pbHasType?(:ROCK) && pbSpecialMove?(user) && @function != "UseTargetDefenseInsteadOfTargetSpDef"
+      if target.pbHasType?(:ROCK) && (pbSpecialMove?(user) || @function == "UseTargetSpDefInsteadOfTargetDefense") && @function != "UseTargetDefenseInsteadOfTargetSpDef"
         multipliers[:defense_multiplier] *= 1.5
       end
     end

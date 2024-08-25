@@ -107,4 +107,76 @@ module Settings
   CHECK_EVOLUTION_AFTER_ALL_BATTLES   = (MECHANICS_GENERATION >= 6)
   # Whether fainted Pokémon can try to evolve after a battle.
   CHECK_EVOLUTION_FOR_FAINTED_POKEMON = true
+
+  #=============================================================================
+
+  # The list of move function codes that are not usable by Delayed Attack.
+  DELAYED_ATTACK_MOVE_DENYLIST = [
+    # Helping Hand, Feint (always blacklisted together, don't know why)
+    "PowerUpAllyMove",                                   # Helping Hand
+    "RemoveProtections",                                 # Feint
+    # Protection moves
+    "ProtectUser",                                       # Detect, Protect
+    "ProtectUserSideFromPriorityMoves",                  # Quick Guard
+    "ProtectUserSideFromMultiTargetDamagingMoves",       # Wide Guard
+    "ProtectUserSide",                                   # Grand Rebound
+    "UserEnduresFaintingThisTurn",                       # Endure
+    "ProtectUserSideFromDamagingMovesIfUserFirstTurn",   # Mat Block
+    "ProtectUserSideFromStatusMoves",                    # Crafty Shield
+    "ProtectUserFromDamagingMovesKingsShield",           # King's Shield
+    "ProtectUserFromDamagingMovesObstruct",              # Obstruct
+    "ProtectUserFromTargetingMovesSpikyShield",          # Spiky Shield
+    "ProtectUserBanefulBunker",                          # Baneful Bunker
+    "ProtectUserBoostAttackOrSpAtkBasedOnTargetAttack",  # Bark Armor
+    "ProtectUserChangeUserTypeToIncomingAttackType",     # Refraction
+    # Moves that call other moves
+    "UseLastMoveUsedByTarget",                           # Mirror Move
+    "UseLastMoveUsed",                                   # Copycat
+    "UseMoveTargetIsAboutToUse",                         # Me First
+    "UseMoveDependingOnEnvironment",                     # Nature Power
+    "UseRandomUserMoveIfAsleep",                         # Sleep Talk
+    "UseRandomMoveFromUserParty",                        # Assist
+    "UseRandomMove",                                     # Metronome
+    "UseRandomCosmicTypeMove",                           # Astronomy
+    "UseRandomMysticMove",                               # Wild Magic
+    "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
+    # Move-redirecting and stealing moves
+    "BounceBackProblemCausingStatusMoves",               # Magic Coat
+    "BounceBackAllMoves",                                # Black Hole
+    "BounceBackAllMovesIncludingForAllyIfLegendary",     # Portal Rebound
+    "StealAndUseBeneficialStatusMove",                   # Snatch
+    "RedirectAllMovesToUser",                            # Follow Me, Rage Powder
+    "RedirectAllMovesToUserAndHealAlliesOver4Turns",     # Beacon
+    "RedirectAllMovesToTarget",                          # Spotlight
+    # Set up effects that trigger upon KO
+    "ReduceAttackerMovePPTo0IfUserFaints",               # Grudge
+    "AttackerFaintsIfUserFaints",                        # Destiny Bond
+    # Moves that start focussing at the start of the round
+    "FailsIfUserDamagedThisTurn",                        # Focus Punch
+    "UsedAfterUserTakesPhysicalDamage",                  # Shell Trap
+    "BurnAttackerBeforeUserActs",                        # Beak Blast
+    # Moves that affect the target's move
+    "TargetActsNext",                                    # After You
+    "TargetActsLast",                                    # Quash
+    # Moves that require a recharge turn
+    "AttackAndSkipNextTurn",                             # Hyper Beam
+    "AttackAndSkipNextThreeTurns",                       # Crystallized Beam
+    "SwitchOutTargetStatusMoveAndSkipNextTurn",          # Wormhole
+    "HealTargetHalfOfTotalHP75PercentIfSingleBattleAndSkipNextTurn", # Soothing Gleam
+    # Two-turn attacks
+    "TwoTurnAttack",                                     # Razor Wind
+    "TwoTurnAttackOneTurnInSun",                         # Solar Beam, Solar Blade
+    "TwoTurnAttackParalyzeTarget",                       # Freeze Shock
+    "TwoTurnAttackBurnTarget",                           # Ice Burn
+    "TwoTurnAttackFlinchTarget",                         # Sky Attack
+    "TwoTurnAttackChargeRaiseUserDefense1",              # Skull Bash
+    "TwoTurnAttackInvulnerableInSky",                    # Fly
+    "TwoTurnAttackInvulnerableUnderground",              # Dig
+    "TwoTurnAttackInvulnerableUnderwater",               # Dive
+    "TwoTurnAttackInvulnerableInSkyParalyzeTarget",      # Bounce
+    "TwoTurnAttackInvulnerableRemoveProtections",        # Shadow Force/Phantom Force
+    "TwoTurnAttackInvulnerableInSkyTargetCannotAct",     # Sky Drop
+    "AllBattlersLoseHalfHPUserSkipsNextTurn",            # Shadow Half
+    "TwoTurnAttackRaiseUserSpAtkSpDefSpd2",              # Geomancy
+  ]
 end

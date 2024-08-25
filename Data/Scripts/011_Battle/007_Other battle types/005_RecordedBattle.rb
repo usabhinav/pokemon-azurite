@@ -131,6 +131,14 @@ module RecordedBattleModule
     @randomnumbers.push(ret)
     return ret
   end
+
+  def pbChooseDelayedAttack(battler, move)
+    ret = super
+    if !move.delayedAttackChoices.nil?
+      @rounds[@roundindex][idxBattler][3] = move.delayedAttackChoices
+    end
+    return ret
+  end
 end
 
 #===============================================================================
@@ -210,6 +218,9 @@ module RecordedBattlePlaybackModule
         end
         if @rounds[@roundindex][i][2]
           pbRegisterTarget(i, @rounds[@roundindex][i][2])
+        end
+        if @rounds[@roundindex][i][3]
+          @battlers[i].moves[@rounds[@roundindex][i][1]].delayedAttackChoices = @rounds[@roundindex][i][3]
         end
       when Commands::BAG
         pbRegisterItem(i, @rounds[@roundindex][i][1], @rounds[@roundindex][i][2], @rounds[@roundindex][i][3])

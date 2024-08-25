@@ -168,6 +168,10 @@ module PBEffects
   BeaconTurnCount     = 163
   Encourage           = 164
   Fireworks           = 165
+  DelayedAttackCounter = 166
+  DelayedAttackChoices = 167
+  DelayedAttackUserAttributes = 168
+  DelayedAttackInUseNow = 169
 
   #=============================================================================
   # These effects apply to a battler position

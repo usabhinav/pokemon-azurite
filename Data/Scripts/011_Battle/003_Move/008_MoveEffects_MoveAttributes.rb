@@ -312,7 +312,7 @@ end
 class Battle::Move::PowerHigherWithUserPositiveStatStages < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
     mult = 1
-    GameData::Stat.each_battle { |s| mult += user.stages[s.id] if user.stages[s.id] > 0 }
+    GameData::Stat.each_battle { |s| mult += user.modifiedStages[s.id] if user.modifiedStages[s.id] > 0 }
     return 20 * mult
   end
 end
@@ -324,7 +324,7 @@ end
 class Battle::Move::PowerHigherWithTargetPositiveStatStages < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
     mult = 3
-    GameData::Stat.each_battle { |s| mult += target.stages[s.id] if target.stages[s.id] > 0 }
+    GameData::Stat.each_battle { |s| mult += target.modifiedStages[s.id] if target.modifiedStages[s.id] > 0 }
     return [20 * mult, 200].min
   end
 end
@@ -850,6 +850,16 @@ end
 class Battle::Move::DoublePowerIfTargetSharesTypeWithUser < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
     baseDmg *= 2 if !(user.pbTypes(true) & target.pbTypes(true)).empty?
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target is airborne. (Ascendance Kick)
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetIsAirborne < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg *= 2 if target.airborne?
     return baseDmg
   end
 end
@@ -1608,14 +1618,14 @@ class Battle::Move::CategoryDependsOnHigherDamagePoisonTarget < Battle::Move::Po
     stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
     stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
     # Calculate user's effective attacking values
-    attack_stage         = user.get_modified_stat_stage(:ATTACK, user.stages[:ATTACK] + 6)
+    attack_stage         = user.modifiedStages[:ATTACK] + 6
     real_attack          = (user.attack.to_f * stageMul[attack_stage] / stageDiv[attack_stage]).floor
-    special_attack_stage = user.get_modified_stat_stage(:SPECIAL_ATTACK, user.stages[:SPECIAL_ATTACK] + 6)
+    special_attack_stage = user.modifiedStages[:SPECIAL_ATTACK] + 6
     real_special_attack  = (user.spatk.to_f * stageMul[special_attack_stage] / stageDiv[special_attack_stage]).floor
     # Calculate target's effective defending values
-    defense_stage         = target.get_modified_stat_stage(:DEFENSE, target.stages[:DEFENSE] + 6)
+    defense_stage         = target.modifiedStages[:DEFENSE] + 6
     real_defense          = (target.defense.to_f * stageMul[defense_stage] / stageDiv[defense_stage]).floor
-    special_defense_stage = target.get_modified_stat_stage(:SPECIAL_DEFENSE, target.stages[:SPECIAL_DEFENSE] + 6)
+    special_defense_stage = target.modifiedStages[:SPECIAL_DEFENSE] + 6
     real_special_defense  = (target.spdef.to_f * stageMul[special_defense_stage] / stageDiv[special_defense_stage]).floor
     # Perform simple damage calculation
     physical_damage = real_attack.to_f / real_defense
@@ -1653,10 +1663,10 @@ class Battle::Move::CategoryDependsOnHigherDamageIgnoreTargetAbility < Battle::M
     stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
     stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
     atk        = user.attack
-    atkStage   = user.get_modified_stat_stage(:ATTACK, user.stages[:ATTACK] + 6)
+    atkStage   = user.modifiedStages[:ATTACK] + 6
     realAtk    = (atk.to_f * stageMul[atkStage] / stageDiv[atkStage]).floor
     spAtk      = user.spatk
-    spAtkStage = user.get_modified_stat_stage(:SPECIAL_ATTACK, user.stages[:SPECIAL_ATTACK] + 6)
+    spAtkStage = user.modifiedStages[:SPECIAL_ATTACK] + 6
     realSpAtk  = (spAtk.to_f * stageMul[spAtkStage] / stageDiv[spAtkStage]).floor
     # Determine move's category
     @calcCategory = (realAtk > realSpAtk) ? 0 : 1
@@ -1671,7 +1681,7 @@ end
 #===============================================================================
 class Battle::Move::UseUserBaseDefenseInsteadOfUserBaseAttack < Battle::Move
   def pbGetAttackStats(user, target)
-    return user.defense, user.get_modified_stat_stage(:DEFENSE, user.stages[:DEFENSE] + 6)
+    return user.defense, user.modifiedStages[:DEFENSE] + 6
   end
 end
 
@@ -1682,9 +1692,9 @@ end
 class Battle::Move::UseTargetAttackInsteadOfUserAttack < Battle::Move
   def pbGetAttackStats(user, target)
     if pbSpecialMove?(user)
-      return target.spatk, target.get_modified_stat_stage(:SPECIAL_ATTACK, target.stages[:SPECIAL_ATTACK] + 6)
+      return target.spatk, target.modifiedStages[:SPECIAL_ATTACK] + 6
     end
-    return target.attack, target.get_modified_stat_stage(:ATTACK, target.stages[:ATTACK] + 6)
+    return target.attack, target.modifiedStages[:ATTACK] + 6
   end
 end
 
@@ -1694,7 +1704,17 @@ end
 #===============================================================================
 class Battle::Move::UseTargetDefenseInsteadOfTargetSpDef < Battle::Move
   def pbGetDefenseStats(user, target)
-    return target.defense, target.get_modified_stat_stage(:DEFENSE, target.stages[:DEFENSE] + 6)
+    return target.defense, target.modifiedStages[:DEFENSE] + 6
+  end
+end
+
+#===============================================================================
+# Target's Special Defense is used instead of its Defense for this move's
+# calculations. (Arcane Strike, Throw Hands)
+#===============================================================================
+class Battle::Move::UseTargetSpDefInsteadOfTargetDefense < Battle::Move
+  def pbGetDefenseStats(user, target)
+    return target.spdef, target.modifiedStages[:SPECIAL_DEFENSE] + 6
   end
 end
 
@@ -2160,7 +2180,7 @@ end
 #===============================================================================
 class Battle::Move::DoublePowerIfTargetEvasionAtLeastOne < Battle::Move
   def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if target.get_modified_stat_stage(:EVASION, target.stages[:EVASION]) >= 1
+    baseDmg *= 2 if target.modifiedStages[:EVASION] >= 1
     return baseDmg
   end
 end
@@ -2199,16 +2219,6 @@ class Battle::Move::EffectivenessIncludesGrassType < Battle::Move
     grassEff = Effectiveness.calculate_one(:GRASS, defType)
     ret *= grassEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
     return ret
-  end
-end
-
-#===============================================================================
-# Target's Special Defense is used instead of its Defense for this move's
-# calculations. (Arcane Strike, Throw Hands)
-#===============================================================================
-class Battle::Move::UseTargetSpDefInsteadOfTargetDefense < Battle::Move
-  def pbGetDefenseStats(user, target)
-    return target.spdef, target.get_modified_stat_stage(:SPECIAL_DEFENSE, target.stages[:SPECIAL_DEFENSE] + 6)
   end
 end
 

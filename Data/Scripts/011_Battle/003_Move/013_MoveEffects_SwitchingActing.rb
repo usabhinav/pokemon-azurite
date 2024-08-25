@@ -635,10 +635,12 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       "UseRandomMoveFromUserParty",                      # Assist
       "UseRandomMove",                                   # Metronome
       "UseRandomCosmicTypeMove",                         # Astronomy
+      "SelectMoveAndAttackTwoTurnsLater",                # Delayed Attack
       # Moves that require a recharge turn
       "AttackAndSkipNextTurn",                           # Hyper Beam
       "AttackAndSkipNextThreeTurns",                     # Crystallized Beam
       "SwitchOutTargetStatusMoveAndSkipNextTurn",        # Wormhole
+      "HealTargetHalfOfTotalHP75PercentIfSingleBattleAndSkipNextTurn", # Soothing Gleam
       # Two-turn attacks
       "TwoTurnAttack",                                   # Razor Wind
       "TwoTurnAttackOneTurnInSun",                       # Solar Beam, Solar Blade
@@ -880,6 +882,7 @@ class Battle::Move::DisableTargetUsingDifferentMove < Battle::Move
         "UseRandomMoveFromUserParty",   # Assist
         "UseRandomMove",   # Metronome
         "UseRandomCosmicTypeMove",   # Astronomy
+        "SelectMoveAndAttackTwoTurnsLater", # Delayed Attack
       ]
     end
   end

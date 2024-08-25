@@ -2023,7 +2023,7 @@ Battle::AbilityEffects::DamageCalcFromTarget.add(:FLUFFY,
 
 Battle::AbilityEffects::DamageCalcFromTarget.add(:FURCOAT,
   proc { |ability, user, target, move, mults, baseDmg, type|
-    mults[:defense_multiplier] *= 2 if move.pbPhysicalMove?(user) ||
+    mults[:defense_multiplier] *= 2 if (move.pbPhysicalMove?(user) && move.function != "UseTargetSpDefInsteadOfTargetDefense") ||
                                        move.function == "UseTargetDefenseInsteadOfTargetSpDef"   # Psyshock
   }
 )
@@ -5179,30 +5179,66 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLAIRVOYANT,
 
 Battle::AbilityEffects::OnSwitchIn.add(:CLOAKCONTROL,
   proc { |ability, battler, battle, switch_in|
-    next if battler.opposes?
-    next if !battler.pbOwnedByPlayer?
-    types = []
-    typeNames = []
-    GameData::Type.each do |i|
-      if i != :QMARKS
-        types.push(i)
-        typeNames.push(GameData::Type.get(i).name)
+    newType = nil
+    newTypeName = nil
+    # AI controls this battler
+    if battle.controlPlayer || !battler.pbOwnedByPlayer?
+      # Get list of opposing types.
+      # Intentionally keeps duplicates. For example, in a double battle against two part Fire-types, it is presumably better to
+      # resist Fire than one of the other types.
+      opposing_types = []
+      battler.eachOpposing do |b|
+        opposing_types.concat(b.pbTypes)
+      end
+      # Get list of types that resist the highest number of opposing types.
+      numTypesResisted = 0
+      validTypes = []
+      GameData::Type.each do |i|
+        next if i == :QMARKS
+        count = opposing_types.select {|t| Effectiveness.resistant_type?(t, i) }.length
+        if count == numTypesResisted
+          validTypes.push(i)
+        elsif count > numTypesResisted
+          numTypesResisted = count
+          validTypes = [i]
+        end
+      end
+      # If no types resist any of the opposing types, just choose a type at random
+      if validTypes.empty?
+        GameData::Type.each do |i|
+          next if i == :QMARKS
+          validTypes.push(i)
+        end
+      end
+      # Change into a random type based on valid types collected above
+      newType = validTypes[battle.pbRandom(validTypes.length)]
+      newTypeName = GameData::Type.get(newType).name
+    else
+      # Player controls this battler
+      types = []
+      typeNames = []
+      GameData::Type.each do |i|
+        if i != :QMARKS
+          types.push(i)
+          typeNames.push(GameData::Type.get(i).name)
+        end
+      end
+      # Force player to select a type before continuing with battle
+      loop do
+        battle.scene.pbHideAllDataboxes
+        index = battle.pbShowCommands(_INTL("Which type should {1} take?",battler.pbThis), typeNames)
+        battle.scene.pbShowAllDataboxes
+        newType = types[index]
+        newTypeName = typeNames[index]
+        if index >= 0 && battle.pbDisplayConfirm(_INTL("{1} will become the {2} type. Is this OK?", battler.pbThis, newTypeName))
+          break
+        end
       end
     end
-    loop do
-      battle.scene.pbHideAllDataboxes
-      index = battle.pbShowCommands(_INTL("Which type should {1} take?",battler.pbThis), typeNames)
-      battle.scene.pbShowAllDataboxes
-      newType = types[index]
-      newTypeName = typeNames[index]
-      if index >= 0 && battle.pbDisplayConfirm(_INTL("{1} will become the {2} type. Is this OK?", battler.pbThis, newTypeName))
-        battle.pbShowAbilitySplash(battler)
-        battle.pbDisplay(_INTL("{1} changed into the {2} type!",battler.pbThis,newTypeName))
-        battler.pbChangeTypes(newType)
-        battle.pbHideAbilitySplash(battler)
-        break
-      end
-    end
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} changed into the {2} type!", battler.pbThis, newTypeName))
+    battler.pbChangeTypes(newType)
+    battle.pbHideAbilitySplash(battler)
   }
 )
 

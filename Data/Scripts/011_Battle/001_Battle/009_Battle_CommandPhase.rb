@@ -91,6 +91,8 @@ class Battle
         next false if !pbRegisterMove(idxBattler, cmd)
         next false if !singleBattle? &&
                       !pbChooseTarget(@battlers[idxBattler], @battlers[idxBattler].moves[cmd])
+        next false if @battlers[idxBattler].moves[cmd].function == "SelectMoveAndAttackTwoTurnsLater" &&
+                      !pbChooseDelayedAttack(@battlers[idxBattler], @battlers[idxBattler].moves[cmd])
         ret = true
       end
       next true
@@ -105,6 +107,49 @@ class Battle
     idxTarget = @scene.pbChooseTarget(battler.index, target_data)
     return false if idxTarget < 0
     pbRegisterTarget(battler.index, idxTarget)
+    return true
+  end
+
+  def pbChooseDelayedAttack(battler, move)
+    # Build list of moves to choose from
+    moves = battler.moves
+    movenames = []
+    moves.each do |i|
+      next if !i || !i.id
+      if i.total_pp <= 0
+        movenames.push(_INTL("{1} (PP: ---)", i.name))
+      else
+        movenames.push(_INTL("{1} (PP: {2}/{3})", i.name, i.pp, i.total_pp))
+      end
+    end
+    movenames.push(_INTL("Cancel"))
+    # Choose move
+    selectedMove = nil
+    cmd = nil
+    loop do
+      # Uses old command menu because text doesn't fit in new command menu buttons
+      @scene.pbHideAllDataboxes
+      cmd = @scene.pbShowCommands_ebdx(_INTL("Which move should {1} use?", battler.pbThis), movenames, movenames.length - 1)
+      @scene.pbShowAllDataboxes
+      return false if cmd < 0 || cmd >= movenames.length - 1
+      if !pbCanChooseMove?(battler.index, cmd, true)
+        # Above method already shows messages
+      elsif Settings::DELAYED_ATTACK_MOVE_DENYLIST.include?(moves[cmd].function)
+        pbDisplay(_INTL("This move cannot be selected!"))
+      else
+        selectedMove = moves[cmd]
+        break
+      end
+    end
+    # Choose target for selected move
+    idxTarget = -1 # Valid value only in single battles
+    if !singleBattle?
+      target_data = selectedMove.pbTarget(battler)
+      idxTarget = @scene.pbChooseTarget(battler.index, target_data)
+      return false if idxTarget < 0
+    end
+    # Save selected move info for use in the main effect of Delayed Attack
+    move.delayedAttackChoices = [:UseMove, cmd, selectedMove, idxTarget]
     return true
   end
 

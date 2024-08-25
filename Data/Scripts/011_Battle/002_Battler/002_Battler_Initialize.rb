@@ -338,6 +338,10 @@ class Battle::Battler
     @effects[PBEffects::BeaconTurnCount]     = 0
     @effects[PBEffects::Encourage]           = false
     @effects[PBEffects::Fireworks]           = 0
+    @effects[PBEffects::DelayedAttackCounter] = 0
+    @effects[PBEffects::DelayedAttackChoices] = nil
+    @effects[PBEffects::DelayedAttackUserAttributes] = nil
+    @effects[PBEffects::DelayedAttackInUseNow] = false
   end
 
   #=============================================================================

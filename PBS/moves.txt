@@ -9896,7 +9896,7 @@ TotalPP = 10
 Target = NearOther
 Priority = 5
 FunctionCode = UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower
-Description = Duplicates the attack of the target, hitting both targets if it was a single-target attack.
+Description = Duplicates the attack of the target.
 #-------------------------------
 [AZURESCREAM]
 Name = Azure Scream

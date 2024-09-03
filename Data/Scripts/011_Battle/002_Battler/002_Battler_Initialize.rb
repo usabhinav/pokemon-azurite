@@ -342,6 +342,9 @@ class Battle::Battler
     @effects[PBEffects::DelayedAttackChoices] = nil
     @effects[PBEffects::DelayedAttackUserAttributes] = nil
     @effects[PBEffects::DelayedAttackInUseNow] = false
+    @effects[PBEffects::DistractionTurnCount] = 0
+    @effects[PBEffects::DistractionActive]   = false
+    @effects[PBEffects::GoldenSpin]          = 0
   end
 
   #=============================================================================

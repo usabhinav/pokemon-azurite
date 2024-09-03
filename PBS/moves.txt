@@ -9836,7 +9836,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 15
 Target = NearOther
-FunctionCode = DisableTargetAttackAndIncreaseDamageToTargetThisTurnAndFailsOnConsecutiveUse
+FunctionCode = StartDisableTargetMoveAndIncreaseDamageToTargetThisTurnAndFailsOnConsecutiveUse
 Flags = CanProtect,CanMirrorMove
 Description = Distract an enemy Pokémon. This makes them unable to attack and take more damage from moves for this turn. Fails if used consecutively.
 #-------------------------------
@@ -9848,7 +9848,7 @@ Power = 5
 Accuracy = 95
 TotalPP = 5
 Target = NearOther
-FunctionCode = HealUserFullyIfTargetKOed
+FunctionCode = HealUserFullyIfTargetFaints
 Flags = Contact,CanProtect,CanMirrorMove
 Description = If this move is used as a finishing blow, the user recovers their health fully.
 #-------------------------------
@@ -9895,7 +9895,7 @@ Accuracy = 0
 TotalPP = 10
 Target = NearOther
 Priority = 5
-FunctionCode = UseMoveTargetIsAboutToUseOrUsingWithSamePower
+FunctionCode = UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower
 Description = Duplicates the attack of the target, hitting both targets if it was a single-target attack.
 #-------------------------------
 [AZURESCREAM]
@@ -11864,7 +11864,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 5
 Target = NearOther
-FunctionCode = SleepUserAndTarget
+FunctionCode = SleepTargetAndUser
 Flags = CanProtect,CanMirrorMove,Dance
 Description = The user performs a magical dance, putting their target and themselves to sleep.
 #-------------------------------

@@ -616,6 +616,12 @@ class Battle::AI
         score -= 50
       end
     #---------------------------------------------------------------------------
+    when "MultiTurnAttackAndRemoveScreensAndRecoil20PercentOfDamageDealt"
+      score -= 20 # Generally don't prefer moves with recoil
+      score += 20 if user.pbOpposingSide.effects[PBEffects::AuroraVeil] > 0
+      score += 20 if user.pbOpposingSide.effects[PBEffects::Reflect] > 0
+      score += 20 if user.pbOpposingSide.effects[PBEffects::LightScreen] > 0
+    #---------------------------------------------------------------------------
     when "HealUserFullyAndFallAsleep"
       if user.hp == user.totalhp || !user.pbCanSleep?(user, false, nil, true)
         score -= 90
@@ -624,6 +630,10 @@ class Battle::AI
         score -= user.hp * 140 / user.totalhp
         score += 30 if user.status != :NONE
       end
+    #---------------------------------------------------------------------------
+    when "HealUserFullyIfTargetFaints"
+      score -= 20 if target.hp > target.totalhp * 3 / 4
+      score += 20 if target.hp <= target.totalhp / 4
     #---------------------------------------------------------------------------
     when "HealUserHalfOfTotalHP"
       if user.hp == user.totalhp || (skill >= PBTrainerAI.mediumSkill && !user.canHeal?)
@@ -1235,6 +1245,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "UseMoveTargetIsAboutToUse"
     #---------------------------------------------------------------------------
+    when "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower"
+      # No clear indicator to know when to use this move.
+    #---------------------------------------------------------------------------
     when "UseMoveDependingOnEnvironment"
     #---------------------------------------------------------------------------
     when "UseRandomMove"
@@ -1299,7 +1312,8 @@ class Battle::AI
     when "FleeFromBattle"
       score -= 100 if @battle.trainerBattle?
     #---------------------------------------------------------------------------
-    when "SwitchOutUserStatusMove", "SwitchOutUserStatusMoveAndHealReplacementBy25PercentOfTotalHP"
+    when "SwitchOutUserStatusMove", "SwitchOutUserStatusMoveAndHealReplacementBy25PercentOfTotalHP",
+         "SwitchOutUserStatusMoveAndRaiseReplacementRandomStat2"
       if !@battle.pbCanChooseNonActive?(user.index) ||
          @battle.pbTeamAbleNonActiveCount(user.index) > 1   # Don't switch in ace
         score -= 100

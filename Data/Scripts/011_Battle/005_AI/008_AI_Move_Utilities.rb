@@ -747,6 +747,10 @@ class Battle::AI
     if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::RisciBerryActive] && Effectiveness.super_effective?(target.damageState.typeMod)
       multipliers[:final_damage_multiplier] *= 2
     end
+    # Distraction
+    if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::DistractionActive]
+      multipliers[:final_damage_multiplier] *= 1.5
+    end
     # Move-specific base damage modifiers
     # TODO
     # Move-specific final damage modifiers

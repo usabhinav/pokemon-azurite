@@ -48,6 +48,7 @@ module Battle::DebugVariables
     PBEffects::FuryCutter     => { name: "Fury Cutter power multiplier 2**x (0-4)",         default: 0, max: 4 },
     PBEffects::GastroAcid     => { name: "Gastro Acid is negating self's ability",          default: false },
 #    PBEffects::GemConsumed - only applies during use of move, not suitable for setting via debug
+    PBEffects::GoldenSpin     => { name: "Golden Spin number of rounds remaining",          default: 0 },
     PBEffects::Grudge         => { name: "Grudge will apply if self faints",                default: false },
     PBEffects::HealBlock      => { name: "Heal Block number of rounds remaining",           default: 0 },
     PBEffects::HelpingHand    => { name: "Helping Hand will power up self's move",          default: false },

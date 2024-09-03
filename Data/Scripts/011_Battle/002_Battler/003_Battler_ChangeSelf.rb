@@ -30,6 +30,7 @@ class Battle::Battler
       next if b.status == :SLEEP || b.status == :FROZEN
       next if b.effects[PBEffects::SkyDrop] >= 0
       next if b.hasActiveAbility?(:TRUANT) && b.effects[PBEffects::Truant]
+      next if b.effects[PBEffects::DistractionActive]
       @battle.denyInUse = true
       @battle.pbDisplay(_INTL("{1} denied {2} the chance to heal!", b.pbThis, pbThis(true)))
       # Mega Evolve

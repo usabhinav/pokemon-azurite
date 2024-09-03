@@ -23,6 +23,21 @@ class Battle::Move::HealUserFullyAndFallAsleep < Battle::Move::HealingMove
 end
 
 #===============================================================================
+# If this move KO's the target, fully recovers the user's HP. (Grab Life)
+#===============================================================================
+class Battle::Move::HealUserFullyIfTargetFaints < Battle::Move
+  def healingMove?;       return true; end
+
+  def pbEffectAfterAllHits(user, target)
+    return if !target.damageState.fainted
+    return if !user.canHeal?
+    if user.pbRecoverHP(user.totalhp - user.hp) > 0
+      @battle.pbDisplay(_INTL("{1} absorbed energy from its foe!", user.pbThis))
+    end
+  end
+end
+
+#===============================================================================
 # Heals user by 1/2 of its max HP.
 #===============================================================================
 class Battle::Move::HealUserHalfOfTotalHP < Battle::Move::HealingMove

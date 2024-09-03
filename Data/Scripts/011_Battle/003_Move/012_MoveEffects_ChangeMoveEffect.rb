@@ -723,6 +723,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "UseLastMoveUsedByTarget",                           # Mirror Move
       "UseLastMoveUsed",                                   # Copycat (this move)
       "UseMoveTargetIsAboutToUse",                         # Me First
+      "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower", # Duplicate
       "UseMoveDependingOnEnvironment",                     # Nature Power       # Not listed on Bulbapedia
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
@@ -852,6 +853,33 @@ class Battle::Move::UseMoveTargetIsAboutToUse < Battle::Move
 end
 
 #===============================================================================
+# Uses the move the target was about to use or already used this round.
+# (Duplicate)
+#===============================================================================
+class Battle::Move::UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower < Battle::Move::UseMoveTargetIsAboutToUse
+  def initialize(battle, move)
+    super
+    @moveBlacklist += [
+      "UseMoveTargetIsAboutToUse",                           # Me First
+      "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower"  # Duplicate
+    ]
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    oppMove = @battle.choices[target.index][2]
+    if !oppMove || @moveBlacklist.include?(oppMove.function)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    user.pbUseMoveSimple(@battle.choices[target.index][2].id)
+  end
+end
+
+#===============================================================================
 # Uses a different move depending on the environment. (Nature Power)
 # NOTE: This code does not support the Gen 5 and older definition of the move
 #       where it targets the user. It makes more sense for it to target another
@@ -963,6 +991,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "UseLastMoveUsedByTarget",                           # Mirror Move
       "UseLastMoveUsed",                                   # Copycat
       "UseMoveTargetIsAboutToUse",                         # Me First
+      "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower", # Duplicate
       "UseMoveDependingOnEnvironment",                     # Nature Power
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
@@ -1062,6 +1091,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "UseLastMoveUsedByTarget",                           # Mirror Move
       "UseLastMoveUsed",                                   # Copycat
       "UseMoveTargetIsAboutToUse",                         # Me First
+      "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower", # Duplicate
 #      "UseMoveDependingOnEnvironment",                    # Nature Power       # See below
       "UseRandomUserMoveIfAsleep",                         # Sleep Talk
       "UseRandomMoveFromUserParty",                        # Assist
@@ -1168,6 +1198,7 @@ class Battle::Move::UseRandomUserMoveIfAsleep < Battle::Move
       "UseLastMoveUsedByTarget",                         # Mirror Move
       "UseLastMoveUsed",                                 # Copycat
       "UseMoveTargetIsAboutToUse",                       # Me First
+      "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower", # Duplicate
       "UseMoveDependingOnEnvironment",                   # Nature Power         # Not listed on Bulbapedia
       "UseRandomUserMoveIfAsleep",                       # Sleep Talk
       "UseRandomMoveFromUserParty",                      # Assist

@@ -32,6 +32,7 @@ class Battle
       next if b.status == :SLEEP || b.status == :FROZEN
       next if b.effects[PBEffects::SkyDrop] >= 0
       next if b.hasActiveAbility?(:TRUANT) && b.effects[PBEffects::Truant]
+      next if b.effects[PBEffects::DistractionActive]
       # Mega Evolve
       if !b.wild?
         owner = pbGetOwnerIndexFromBattlerIndex(b.index)

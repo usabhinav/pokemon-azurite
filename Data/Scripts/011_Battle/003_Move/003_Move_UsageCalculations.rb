@@ -682,6 +682,10 @@ class Battle::Move
     if target.effects[PBEffects::RisciBerryActive] && Effectiveness.super_effective?(target.damageState.typeMod)
       multipliers[:final_damage_multiplier] *= 2
     end
+    # Distraction
+    if target.effects[PBEffects::DistractionActive]
+      multipliers[:final_damage_multiplier] *= 1.5
+    end
     # Move-specific base damage modifiers
     multipliers[:base_damage_multiplier] = pbBaseDamageMultiplier(multipliers[:base_damage_multiplier], user, target)
     # Move-specific final damage modifiers

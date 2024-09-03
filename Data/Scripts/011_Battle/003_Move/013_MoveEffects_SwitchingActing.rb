@@ -65,10 +65,29 @@ class Battle::Move::SwitchOutUserStatusMoveAndHealReplacementBy25PercentOfTotalH
   def healingMove?; return true; end
 
   def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    return if user.wild?
     super
     if user.canHeal? && user.pbRecoverHP(user.totalhp / 4) > 0
       @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
     end
+  end
+end
+
+#===============================================================================
+# User switches out, and the Pokémon switching in has a random stat raised by
+# 2 stages. If user is a wild Pokémon, ends the battle instead. (Divination)
+#===============================================================================
+class Battle::Move::SwitchOutUserStatusMoveAndRaiseReplacementRandomStat2 < Battle::Move::SwitchOutUserStatusMove
+  def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    return if user.wild?
+    super
+    statArray = []
+    GameData::Stat.each_battle do |s|
+      statArray.push(s.id) if user.pbCanRaiseStatStage?(s.id, user, self)
+    end
+    return if statArray.length == 0
+    stat = statArray[@battle.pbRandom(statArray.length)]
+    user.pbRaiseStatStage(stat, 2, user)
   end
 end
 
@@ -630,6 +649,7 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       "UseLastMoveUsedByTarget",                         # Mirror Move
       "UseLastMoveUsed",                                 # Copycat
       "UseMoveTargetIsAboutToUse",                       # Me First
+      "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower", # Duplicate
       "UseMoveDependingOnEnvironment",                   # Nature Power
       "UseRandomUserMoveIfAsleep",                       # Sleep Talk
       "UseRandomMoveFromUserParty",                      # Assist
@@ -877,6 +897,7 @@ class Battle::Move::DisableTargetUsingDifferentMove < Battle::Move
 #        "UseLastMoveUsedByTarget",   # Mirror Move                 # See above
         "UseLastMoveUsed",   # Copycat
         "UseMoveTargetIsAboutToUse",   # Me First
+        "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower", # Duplicate
         "UseMoveDependingOnEnvironment",   # Nature Power
         "UseRandomUserMoveIfAsleep",   # Sleep Talk
         "UseRandomMoveFromUserParty",   # Assist

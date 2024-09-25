@@ -199,6 +199,7 @@ class Battle::Move::FailsIfTargetActed < Battle::Move
     oppMove = @battle.choices[target.index][2]
     if !oppMove ||
        (oppMove.function != "UseMoveTargetIsAboutToUse" &&
+        oppMove.function != "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower" &&
        (target.movedThisRound? || oppMove.statusMove?))
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
@@ -1083,6 +1084,35 @@ class Battle::Move::DoubleAdditionalEffectChanceForAlliesThisTurn < Battle::Move
   def pbEffectAgainstTarget(user, target)
     target.effects[PBEffects::Encourage] = true
     @battle.pbDisplay(_INTL("{1} encouraged {2}!", user.pbThis, target.pbThis(true)))
+  end
+end
+
+#===============================================================================
+# Prevents the target from using their move (if they haven't already moved) and
+# increases damage to the target this turn. Fails on consecutive use.
+# (Distraction)
+#===============================================================================
+class Battle::Move::StartDisableTargetMoveAndIncreaseDamageToTargetThisTurnAndFailsOnConsecutiveUse < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::DistractionTurnCount] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if target.effects[PBEffects::DistractionActive]
+      @battle.pbDisplay(_INTL("{1} is already distracted!", target.pbThis)) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    user.effects[PBEffects::DistractionTurnCount] = 2
+    target.effects[PBEffects::DistractionActive] = true
+    @battle.pbDisplay(_INTL("{1} distracted {2}!", user.pbThis, target.pbThis(true)))
   end
 end
 

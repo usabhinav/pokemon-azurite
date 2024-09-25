@@ -70,6 +70,17 @@ class Battle::Move::SleepTargetNextTurn < Battle::Move
 end
 
 #===============================================================================
+# Puts the target and the user to sleep. (Dream Dance)
+#===============================================================================
+class Battle::Move::SleepTargetAndUser < Battle::Move::SleepTarget
+  def pbEffectGeneral(user)
+    if user.pbCanSleep?(user, true, self)
+      user.pbSleepSelf
+    end
+  end
+end
+
+#===============================================================================
 # Poisons the target.
 #===============================================================================
 class Battle::Move::PoisonTarget < Battle::Move
@@ -1889,25 +1900,5 @@ class Battle::Move::ConfuseAndOrFlinchTarget < Battle::Move
       target.pbConfuse(user) if target.pbCanConfuse?(user,false,self)
     end
     target.pbFlinch(user) if @battle.pbRandom(100)<chance
-  end
-end
-
-#===============================================================================
-# Dream Dance
-#===============================================================================
-class Battle::Move::SleepTargetAndUser < Battle::Move::SleepTarget
-  def pbMoveFailed?(user,targets)
-    if user.asleep?
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return true if !user.pbCanSleep?(user,true,self,true)
-    return true if super
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    user.pbSleepSelf(_INTL("{1} and it's target both fell asleep",user.pbThis),3)
-    super
   end
 end

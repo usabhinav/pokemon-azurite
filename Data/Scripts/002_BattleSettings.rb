@@ -133,6 +133,7 @@ module Settings
     "UseLastMoveUsedByTarget",                           # Mirror Move
     "UseLastMoveUsed",                                   # Copycat
     "UseMoveTargetIsAboutToUse",                         # Me First
+    "UseMoveTargetIsAboutToUseOrAlreadyUsedWithSamePower", # Duplicate
     "UseMoveDependingOnEnvironment",                     # Nature Power
     "UseRandomUserMoveIfAsleep",                         # Sleep Talk
     "UseRandomMoveFromUserParty",                        # Assist

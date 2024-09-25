@@ -262,6 +262,9 @@ class Battle::AI
     when "DoubleAdditionalEffectChanceForAlliesThisTurn"
       # No clear indicator to know when to use this move.
     #---------------------------------------------------------------------------
+    when "StartDisableTargetMoveAndIncreaseDamageToTargetThisTurnAndFailsOnConsecutiveUse"
+      score -= 90 if user.effects[PBEffects::DistractionTurnCount] > 0
+    #---------------------------------------------------------------------------
     when "RaiseUserAttack1"
       if move.statusMove?
         if user.statStageAtMax?(:ATTACK)

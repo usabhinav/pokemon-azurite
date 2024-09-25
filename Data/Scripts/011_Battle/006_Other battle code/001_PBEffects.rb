@@ -172,6 +172,9 @@ module PBEffects
   DelayedAttackChoices = 167
   DelayedAttackUserAttributes = 168
   DelayedAttackInUseNow = 169
+  DistractionTurnCount = 170
+  DistractionActive   = 171
+  GoldenSpin          = 172
 
   #=============================================================================
   # These effects apply to a battler position

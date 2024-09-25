@@ -7,7 +7,8 @@ class Battle::AI
   def pbGetMoveScoreFunctionCode(score, move, user, target, skill = 100)
     case move.function
     #---------------------------------------------------------------------------
-    when "SleepTarget", "SleepTargetIfUserDarkrai", "SleepTargetChangeUserMeloettaForm"
+    when "SleepTarget", "SleepTargetIfUserDarkrai", "SleepTargetChangeUserMeloettaForm",
+         "SleepTargetAndUser"
       if target.pbCanSleep?(user, false)
         score += 30
         if skill >= PBTrainerAI.mediumSkill

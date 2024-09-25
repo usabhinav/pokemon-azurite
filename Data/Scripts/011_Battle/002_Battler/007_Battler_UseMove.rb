@@ -89,6 +89,7 @@ class Battle::Battler
     @effects[PBEffects::TwoTurnAttack] = nil
     @effects[PBEffects::Rollout]       = 0
     @effects[PBEffects::Outrage]       = 0
+    @effects[PBEffects::GoldenSpin]    = 0
     @effects[PBEffects::Uproar]        = 0
     @effects[PBEffects::Bide]          = 0
     @currentMove = nil unless @effects[PBEffects::HyperBeam] > 0

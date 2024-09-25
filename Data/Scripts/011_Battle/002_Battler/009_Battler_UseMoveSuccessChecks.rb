@@ -85,7 +85,7 @@ class Battle::Battler
     end
     # Assault Vest (prevents choosing status moves but doesn't prevent
     # executing them)
-    if hasActiveItem?([:ASSAULTVEST, :PLATEBODY]) && move.statusMove? && move.id != :MEFIRST && commandPhase
+    if hasActiveItem?([:ASSAULTVEST, :PLATEBODY]) && move.statusMove? && ![:MEFIRST, :DUPLICATE].include?(move.id) && commandPhase
       if showMessages
         msg = _INTL("The effects of the {1} prevent status moves from being used!", itemName)
         (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
@@ -284,6 +284,12 @@ class Battle::Battler
         @lastMoveFailed = true
         return false
       end
+    end
+    # Distraction
+    if @effects[PBEffects::DistractionActive]
+      @battle.pbDisplay(_INTL("{1} is distracted!", pbThis))
+      @lastMoveFailed = true
+      return false
     end
     return true
   end

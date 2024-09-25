@@ -710,3 +710,43 @@ class Battle::Move::MultiTurnAttackBideThenReturnDoubleDamage < Battle::Move::Fi
     super
   end
 end
+
+#===============================================================================
+# User must use this move for 1 or 2 more rounds. Each hit breaks screens and
+# deals 20% recoil damage to the user. (Golden Spin)
+#===============================================================================
+class Battle::Move::MultiTurnAttackAndRemoveScreensAndRecoil20PercentOfDamageDealt < Battle::Move::RecoilMove
+  def ignoresReflect?; return true; end
+
+  def pbRecoilDamage(user, target)
+    recoil_damage = (target.damageState.totalHPLost / 5.0).round
+    recoil_damage = (recoil_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    return recoil_damage
+  end
+
+  def pbEffectGeneral(user)
+    if user.pbOpposingSide.effects[PBEffects::LightScreen] > 0
+      user.pbOpposingSide.effects[PBEffects::LightScreen] = 0
+      @battle.pbDisplay(_INTL("{1}'s Light Screen wore off!", user.pbOpposingTeam))
+    end
+    if user.pbOpposingSide.effects[PBEffects::Reflect] > 0
+      user.pbOpposingSide.effects[PBEffects::Reflect] = 0
+      @battle.pbDisplay(_INTL("{1}'s Reflect wore off!", user.pbOpposingTeam))
+    end
+    if user.pbOpposingSide.effects[PBEffects::AuroraVeil] > 0
+      user.pbOpposingSide.effects[PBEffects::AuroraVeil] = 0
+      @battle.pbDisplay(_INTL("{1}'s Aurora Veil wore off!", user.pbOpposingTeam))
+    end
+  end
+
+  def pbEffectAfterAllHits(user, target)
+    if !target.damageState.unaffected && user.effects[PBEffects::GoldenSpin] == 0
+      user.effects[PBEffects::GoldenSpin] = 2 + @battle.pbRandom(2)
+      user.currentMove = @id
+    end
+    if user.effects[PBEffects::GoldenSpin] > 0
+      user.effects[PBEffects::GoldenSpin] -= 1
+    end
+    super # Recoil effect
+  end
+end

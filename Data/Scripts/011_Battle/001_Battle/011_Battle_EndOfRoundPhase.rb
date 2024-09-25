@@ -1084,6 +1084,8 @@ class Battle
       battler.effects[PBEffects::Counter]          = -1
       battler.effects[PBEffects::CounterTarget]    = -1
       battler.effects[PBEffects::CreationGem]      -= 1 if battler.effects[PBEffects::CreationGem] > 0
+      battler.effects[PBEffects::DistractionActive] = false
+      battler.effects[PBEffects::DistractionTurnCount] -= 1 if battler.effects[PBEffects::DistractionTurnCount] > 0
       battler.effects[PBEffects::DeterDrainActive] -= 1 if battler.effects[PBEffects::DeterDrainActive] > 0
       battler.effects[PBEffects::Electrify]        = false
       battler.effects[PBEffects::Encourage]        = false

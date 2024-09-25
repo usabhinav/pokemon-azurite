@@ -859,6 +859,7 @@ class Battle::Battler
     return true if @effects[PBEffects::HyperBeam] > 0
     return true if @effects[PBEffects::Rollout] > 0
     return true if @effects[PBEffects::Outrage] > 0
+    return true if @effects[PBEffects::GoldenSpin] > 0
     return true if @effects[PBEffects::Uproar] > 0
     return true if @effects[PBEffects::Bide] > 0
     return false

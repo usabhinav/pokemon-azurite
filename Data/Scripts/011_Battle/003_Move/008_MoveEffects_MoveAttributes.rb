@@ -238,7 +238,7 @@ class Battle::Move::DamageTargetAllyWithPower40 < Battle::Move
 end
 
 #===============================================================================
-# Power increases with the user's HP. (Eruption, Water Spout)
+# Power increases with the user's HP. (Eruption, Water Spout, Inner Force)
 #===============================================================================
 class Battle::Move::PowerHigherWithUserHP < Battle::Move
   def pbBaseDamage(baseDmg, user, target)

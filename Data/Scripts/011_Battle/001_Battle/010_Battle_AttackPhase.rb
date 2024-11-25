@@ -142,6 +142,8 @@ class Battle
         b.effects[PBEffects::ReverbDamage] = 0
       end
     end
+    # Magic Ring
+    @positions.each_with_index { |pos, idxPos| pbUseMagicRing(pos, idxPos) }
     # Main move processing loop
     loop do
       priority = pbPriority
@@ -204,6 +206,42 @@ class Battle
       # All Pokémon have moved; end the loop
       break
     end
+  end
+
+  def pbUseMagicRing(position, position_index)
+    return if !position || position.effects[PBEffects::MagicRingMove].nil?
+    moveUser = nil
+    allBattlers.each do |battler|
+      next if battler.opposes?(position_index)
+      next if battler.pokemonIndex != position.effects[PBEffects::MagicRingUserPartyIndex]
+      moveUser = battler
+      break
+    end
+    if !moveUser   # User isn't in battle, get it from the party
+      party = pbParty(position_index)
+      pkmn = party[position.effects[PBEffects::MagicRingUserPartyIndex]]
+      if pkmn&.able?
+        moveUser = Battler.new(self, position_index)
+        moveUser.pbInitDummyPokemon(pkmn, position.effects[PBEffects::MagicRingUserPartyIndex])
+      end
+    end
+    return if !moveUser   # User is fainted
+    # Choose a random foe to target
+    random_target = allOtherSideBattlers(position_index).sample
+    return if !random_target
+    move = position.effects[PBEffects::MagicRingMove]
+    pbDisplay(_INTL("{1}'s {2} swung down on {3}!", moveUser.pbThis,
+                    GameData::Move.get(move).name, @battlers[random_target.index].pbThis(true)))
+    # NOTE: Magic Ring failing against the target here doesn't count towards
+    #       Stomping Tantrum.
+    userLastMoveFailed = moveUser.lastMoveFailed
+    @futureSight = true
+    moveUser.pbUseMoveExtra(move, random_target.index)
+    @futureSight = false
+    moveUser.lastMoveFailed = userLastMoveFailed
+    @battlers[position_index].pbFaint if @battlers[position_index].fainted?
+    position.effects[PBEffects::MagicRingMove]           = nil
+    position.effects[PBEffects::MagicRingUserPartyIndex] = -1
   end
 
   #=============================================================================

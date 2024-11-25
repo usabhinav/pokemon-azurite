@@ -29,6 +29,7 @@ class Battle::ActiveField
     @effects[PBEffects::InverseRoom]     = 0
     @effects[PBEffects::FlameRing]       = 0
     @effects[PBEffects::BrightContrast]  = 0
+    @effects[PBEffects::MysteryShroud]   = 0
     @defaultWeather  = :None
     @weather         = :None
     @weatherDuration = 0
@@ -92,5 +93,7 @@ class Battle::ActivePosition
     @effects[PBEffects::Wish]                      = 0
     @effects[PBEffects::WishAmount]                = 0
     @effects[PBEffects::WishMaker]                 = -1
+    @effects[PBEffects::MagicRingMove]             = nil
+    @effects[PBEffects::MagicRingUserPartyIndex]   = -1
   end
 end

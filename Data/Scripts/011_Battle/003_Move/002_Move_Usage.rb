@@ -18,8 +18,11 @@ class Battle::Move
     @battle.field.effects[PBEffects::FusionFlare] = false
   end
 
-  def pbDisplayUseMessage(user)
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil)
     @battle.pbDisplayBrief(_INTL("{1} used {2}!", user.pbThis, @name))
+    if @battle.field.effects[PBEffects::MysteryShroud] > 0 && !mystery_shroud_type.nil?
+      @battle.pbDisplayBrief(_INTL("It turned into the {1} type!", GameData::Type.get(mystery_shroud_type).name))
+    end
   end
 
   def pbShowFailMessages?(targets); return true; end

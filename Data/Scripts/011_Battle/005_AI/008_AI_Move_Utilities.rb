@@ -360,6 +360,7 @@ class Battle::AI
          "PowerHigherWithMoreFaintedPokemonInTargetParty",
          "PowerHigherWithMoreNidokingsInParty",
          "PowerHigherAndAccuracyHigherInSunlight",
+         "PowerHigherIfTargetActedElseStartReduceIncomingDamage",
          "PowerHigherWithLessPP",
          "PowerLowerWithUserHP",
          "PowerHigherWithUserFasterThanTarget",
@@ -464,6 +465,18 @@ class Battle::AI
       else
         mult = Effectiveness.calculate(
           :SOUND, target.types[0], target.types[1], target.effects[PBEffects::Type3]
+        )
+      end
+      baseDmg = (baseDmg.to_f * mult / Effectiveness::NORMAL_EFFECTIVE).round
+    when "EffectivenessIncludesGrassType"   # Magical Roots
+      if skill >= PBTrainerAI.highSkill
+        targetTypes = target.pbTypes(true)
+        mult = Effectiveness.calculate(
+          :GRASS, targetTypes[0], targetTypes[1], targetTypes[2]
+        )
+      else
+        mult = Effectiveness.calculate(
+          :GRASS, target.types[0], target.types[1], target.effects[PBEffects::Type3]
         )
       end
       baseDmg = (baseDmg.to_f * mult / Effectiveness::NORMAL_EFFECTIVE).round
@@ -750,6 +763,10 @@ class Battle::AI
     # Distraction
     if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::DistractionActive]
       multipliers[:final_damage_multiplier] *= 1.5
+    end
+    # Mystic Edge
+    if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::MysticEdgeActive]
+      multipliers[:defense_multiplier] *= 1.2
     end
     # Move-specific base damage modifiers
     # TODO

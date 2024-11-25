@@ -676,7 +676,7 @@ class Battle::Move::MultiTurnAttackBideThenReturnDoubleDamage < Battle::Move::Fi
     @damagingTurn = (user.effects[PBEffects::Bide] == 1)   # If attack turn
   end
 
-  def pbDisplayUseMessage(user)
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil)
     if @damagingTurn   # Attack turn
       @battle.pbDisplayBrief(_INTL("{1} unleashed energy!", user.pbThis))
     elsif user.effects[PBEffects::Bide] > 1   # Charging turns

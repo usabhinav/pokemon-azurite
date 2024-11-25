@@ -173,7 +173,7 @@ class Battle::Move::FailsIfUserDamagedThisTurn < Battle::Move
     @battle.pbDisplay(_INTL("{1} is tightening its focus!", user.pbThis))
   end
 
-  def pbDisplayUseMessage(user)
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil)
     super if !user.effects[PBEffects::FocusPunch] || user.lastHPLost == 0
   end
 
@@ -816,7 +816,7 @@ class Battle::Move::AttackTwoTurnsLater < Battle::Move
     return super
   end
 
-  def pbDisplayUseMessage(user)
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil)
     super if !@battle.futureSight
   end
 
@@ -916,6 +916,29 @@ class Battle::Move::SelectMoveAndAttackTwoTurnsLater < Battle::Move
     @battle.pbDisplay(_INTL("{1} foresaw an attack!", user.pbThis))
     user.pbReducePP(@delayedAttackChoices[2])
     @delayedAttackChoices = nil
+  end
+end
+
+#===============================================================================
+# Deals damage again against a random foe at the start of the next turn.
+# (Magic Ring)
+#===============================================================================
+class Battle::Move::HitsAgainAtStartOfNextTurnAgainstRandomFoe < Battle::Move
+  # Reuses futureSight flag to get same behavior as Future Sight attack turn
+  def pbAccuracyCheck(user, target)
+    return true if !@battle.futureSight
+    return super
+  end
+
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil)
+    super if !@battle.futureSight
+  end
+
+  def pbEffectGeneral(user)
+    return if @battle.futureSight   # Attack is hitting
+    effects = @battle.positions[user.index].effects
+    effects[PBEffects::MagicRingMove]             = @id
+    effects[PBEffects::MagicRingUserPartyIndex]   = user.pokemonIndex
   end
 end
 
@@ -1120,5 +1143,5 @@ end
 # Used for extra effect moves. (Forest Fire, thunderstorm weather)
 #===============================================================================
 class Battle::Move::ExtraEffect < Battle::Move
-  def pbDisplayUseMessage(user); end
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil); end
 end

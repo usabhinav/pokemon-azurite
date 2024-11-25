@@ -520,6 +520,23 @@ class Battle::Move::PowerHigherAndAccuracyHigherInSunlight < Battle::Move
 end
 
 #===============================================================================
+# Power is increased by 20% if the target has already moved; else, incoming
+# damage is reduced by 20%. (Mystic Edge)
+#===============================================================================
+class Battle::Move::PowerHigherIfTargetActedElseStartReduceIncomingDamage < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    if @battle.choices[target.index][0] != :None &&
+      ((@battle.choices[target.index][0] != :UseMove &&
+      @battle.choices[target.index][0] != :Shift) || target.movedThisRound?)
+      baseDmg *= 1.2
+    else
+      user.effects[PBEffects::MysticEdgeActive] = true
+    end
+    return baseDmg
+  end
+end
+
+#===============================================================================
 # Power is chosen at random. Power is doubled if the target is using Dig. Hits
 # some semi-invulnerable targets. (Magnitude)
 #===============================================================================
@@ -1555,6 +1572,19 @@ class Battle::Move::EffectivenessIncludesSoundType < Battle::Move
 end
 
 #===============================================================================
+# Type effectiveness is multiplied by the Grass-type's effectiveness against
+# the target. (Magical Roots)
+#===============================================================================
+class Battle::Move::EffectivenessIncludesGrassType < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    ret = super
+    eff = Effectiveness.calculate_one(:GRASS, defType)
+    ret *= eff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    return ret
+  end
+end
+
+#===============================================================================
 # Type effectiveness is overridden in cases where Light-type would be super
 # effective against the defending type. (Luminous Gust)
 #===============================================================================
@@ -2176,6 +2206,24 @@ class Battle::Move::NormalMovesBecomeElectric < Battle::Move
 end
 
 #===============================================================================
+# For 5 rounds, the types of all moves become randomized. (Mystery Shroud)
+#===============================================================================
+class Battle::Move::StartRandomTypeMoves < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.effects[PBEffects::MysteryShroud] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.field.effects[PBEffects::MysteryShroud] = 5
+    @battle.pbDisplay(_INTL("A chaotic mist descends on the battlefield!"))
+  end
+end
+
+#===============================================================================
 # Sound Pulse
 #===============================================================================
 class Battle::Move::DoublePowerIfTargetEvasionAtLeastOne < Battle::Move
@@ -2207,18 +2255,6 @@ class Battle::Move::PowerDependsOnTargetDefenseStats < Battle::Move
     else
       return target.spdef
     end
-  end
-end
-
-#===============================================================================
-# Magical Roots
-#===============================================================================
-class Battle::Move::EffectivenessIncludesGrassType < Battle::Move
-  def pbCalcTypeModSingle(moveType,defType,user,target)
-    ret = super(moveType,defType,user,target)
-    grassEff = Effectiveness.calculate_one(:GRASS, defType)
-    ret *= grassEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
-    return ret
   end
 end
 

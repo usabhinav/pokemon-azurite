@@ -119,6 +119,23 @@ class Battle::Move::CureTargetStatusHealUserHalfOfTotalHP < Battle::Move::Healin
 end
 
 #===============================================================================
+# Cures the target's permanent status problems. Heals user by 1/2 of its max HP.
+# Similar to above effect but for damaging moves. (Miracle Pulse)
+#===============================================================================
+class Battle::Move::CureTargetStatusHealUserHalfOfTotalHPDamagingMove < Battle::Move
+  def pbEffectAgainstTarget(user, target)
+    if target.status != :NONE
+      target.pbCureStatus
+      # Technically runs for every target, but Miracle Pulse only targets a
+      # single battler.
+      if user.pbRecoverHP((user.totalhp / 2.0).round) > 0
+        @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+      end
+    end
+  end
+end
+
+#===============================================================================
 # Decreases the target's Attack by 1 stage. Heals user by an amount equal to the
 # target's Attack stat (after applying stat stages, before this move decreases
 # it). (Strength Sap)
@@ -982,7 +999,7 @@ end
 class Battle::Move::HealTargetByCustomAmount < Battle::Move::HealTargetHalfOfTotalHP
   attr_accessor :healAmt
 
-  def pbDisplayUseMessage(user); end
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil); end
 
   def pbEffectAgainstTarget(user, target)
     if target.pbRecoverHP(@healAmt) > 0

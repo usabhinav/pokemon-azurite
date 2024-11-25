@@ -175,6 +175,7 @@ module PBEffects
   DistractionTurnCount = 170
   DistractionActive   = 171
   GoldenSpin          = 172
+  MysticEdgeActive    = 173
 
   #=============================================================================
   # These effects apply to a battler position
@@ -188,6 +189,8 @@ module PBEffects
   Wish                      = 6
   WishAmount                = 7
   WishMaker                 = 8
+  MagicRingMove             = 9
+  MagicRingUserPartyIndex   = 10
 
   #=============================================================================
   # These effects apply to a side
@@ -239,4 +242,5 @@ module PBEffects
   InverseRoom     = 14
   FlameRing       = 15
   BrightContrast  = 16
+  MysteryShroud   = 17
 end

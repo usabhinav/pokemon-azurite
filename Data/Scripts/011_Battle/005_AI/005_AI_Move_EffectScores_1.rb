@@ -240,6 +240,9 @@ class Battle::AI
         score -= 70
       end
     #---------------------------------------------------------------------------
+    when "HitsAgainAtStartOfNextTurnAgainstRandomFoe"
+      # No clear indicator to know when to use this move.
+    #---------------------------------------------------------------------------
     when "UserSwapsPositionsWithAlly"
     #---------------------------------------------------------------------------
     when "BurnAttackerBeforeUserActs"

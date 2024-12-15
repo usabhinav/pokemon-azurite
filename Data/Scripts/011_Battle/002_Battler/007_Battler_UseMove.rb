@@ -295,7 +295,15 @@ class Battle::Battler
     end
     #===========================================================================
     # Calculate the move's type during this usage
-    move.calcType = move.pbCalcType(self)
+    mystery_shroud_type = nil
+    # Doesn't affect moves with special usage since there are some cases where
+    # moves silently hit, in which case it may not make sense to silently change
+    # the type as well. This includes Future Sight, Copycat, abilities that
+    # triggered extra moves, etc.
+    if @battle.field.effects[PBEffects::MysteryShroud] > 0 && (@effects[PBEffects::DelayedAttackInUseNow] || !specialUsage) && move.pbDamagingMove?
+      mystery_shroud_type = GameData::Type.get(@battle.randomValidType).id
+    end
+    move.calcType = move.pbCalcType(self, mystery_shroud_type)
     # Start effect of Mold Breaker
     @battle.moldBreaker = hasMoldBreaker?
     # Remember that user chose a two-turn move
@@ -366,7 +374,7 @@ class Battle::Battler
     # NOTE: This intentionally passes self rather than user. The user is always
     #       self except if Snatched, but this message should state the original
     #       user (self) even if the move is Snatched.
-    move.pbDisplayUseMessage(self)
+    move.pbDisplayUseMessage(self, mystery_shroud_type)
     # Snatch's message (user is the new user, self is the original user)
     if move.snatched
       @lastMoveFailed = true   # Intentionally applies to self, not user

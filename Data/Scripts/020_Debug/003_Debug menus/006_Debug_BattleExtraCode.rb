@@ -179,7 +179,8 @@ module Battle::DebugVariables
     PBEffects::Darkened        => { name: "Darken was used",                  default: false },
     PBEffects::InverseRoom     => { name: "Inverse Room duration",            default: 0 },
     PBEffects::FlameRing       => { name: "Flame Ring was used",              default: 0 },
-    PBEffects::BrightContrast  => { name: "Bright Contrast was used",         default: 0 }
+    PBEffects::BrightContrast  => { name: "Bright Contrast was used",         default: 0 },
+    PBEffects::MysteryShroud   => { name: "Mystery Shroud duration",          default: 0 }
   }
 
   POSITION_EFFECTS = {

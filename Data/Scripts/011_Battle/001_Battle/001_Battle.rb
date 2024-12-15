@@ -1007,4 +1007,16 @@ class Battle
     return if !Scene::USE_ABILITY_SPLASH
     @scene.pbReplaceAbilitySplash(battler)
   end
+
+  #=============================================================================
+  # Misc.
+  #=============================================================================
+  def randomValidType
+    validTypes = []
+    GameData::Type.each do |i|
+      next if i == :QMARKS
+      validTypes.push(i)
+    end
+    return validTypes[pbRandom(validTypes.length)]
+  end
 end

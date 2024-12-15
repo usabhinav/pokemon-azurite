@@ -10,7 +10,7 @@ class Battle::Move
     return ret
   end
 
-  def pbCalcType(user)
+  def pbCalcType(user, mystery_shroud_type = nil)
     @powerBoost = false
     ret = pbBaseType(user)
     if ret && GameData::Type.exists?(:ELECTRIC)
@@ -22,6 +22,10 @@ class Battle::Move
         ret = :ELECTRIC
         @powerBoost = false
       end
+    end
+    if ret && @battle.field.effects[PBEffects::MysteryShroud] > 0 && !mystery_shroud_type.nil?
+      ret = mystery_shroud_type
+      @powerBoost = false
     end
     return ret
   end
@@ -685,6 +689,10 @@ class Battle::Move
     # Distraction
     if target.effects[PBEffects::DistractionActive]
       multipliers[:final_damage_multiplier] *= 1.5
+    end
+    # Mystic Edge
+    if target.effects[PBEffects::MysticEdgeActive]
+      multipliers[:defense_multiplier] *= 1.2
     end
     # Move-specific base damage modifiers
     multipliers[:base_damage_multiplier] = pbBaseDamageMultiplier(multipliers[:base_damage_multiplier], user, target)

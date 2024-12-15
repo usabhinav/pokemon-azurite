@@ -11529,9 +11529,9 @@ Power = 65
 Accuracy = 95
 TotalPP = 15
 Target = NearOther
-FunctionCode = ConfuseTargetOrFlinchTarget
+FunctionCode = ConfuseFlinchTarget
 Flags = Contact,CanProtect,CanMirrorMove,Biting
-EffectChance = 20
+EffectChance = 100
 Description = The user bites down with magically empowered fangs. May confuse or flinch.
 #-------------------------------
 [AUDIOCANNON]
@@ -12152,7 +12152,7 @@ Accuracy = 0
 TotalPP = 5
 Target = BothSides
 FunctionCode = StartRandomTypeMoves
-Description = A chaotic mist settles over the field, randomizing the type of every move used for 5 turns.
+Description = A chaotic mist settles over the field, randomizing the type of every damaging move used for 5 turns.
 #-------------------------------
 [ENERGYCONVERSION]
 Name = Energy Conversion
@@ -12447,9 +12447,9 @@ Power = 80
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = CureTargetStatusHealUserHalfOfTotalHP
+FunctionCode = CureTargetStatusHealUserHalfOfTotalHPDamagingMove
 Flags = CanProtect,CanMirrorMove,Pulse
-Description = A magical resonance will heal the user if the target has a status condition, but cure the condition.
+Description = A magical resonance will heal the user if the target has a status condition, but also cure the condition.
 #-------------------------------
 [FIREWORKS]
 Name = Fireworks
@@ -12794,7 +12794,7 @@ Power = 90
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = ReduceIncomingDamageBy20PercentIfTargetHasNotMovedElsePowerIncreasesBy20Percent
+FunctionCode = PowerHigherIfTargetActedElseStartReduceIncomingDamage
 Flags = Contact,CanProtect,CanMirrorMove,Slashing
 Description = If the target has not moved yet, damage dealt to K-Aegislash is reduced by 20%. If the target has already moved, this move's power is increased by 20%.
 #-------------------------------

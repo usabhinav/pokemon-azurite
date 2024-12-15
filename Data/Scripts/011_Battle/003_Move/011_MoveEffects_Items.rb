@@ -409,7 +409,7 @@ class Battle::Move::ThrowUserItemAtTarget < Battle::Move
     return false
   end
 
-  def pbDisplayUseMessage(user)
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil)
     super
     pbCheckFlingSuccess(user)
     if !@willFail

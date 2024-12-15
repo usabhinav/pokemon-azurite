@@ -671,6 +671,9 @@ class Battle
     # Bright Contrast
     pbEORCountDownFieldEffect(PBEffects::BrightContrast,
                               _INTL("The light shining on the battlefield dimmed out!"))
+    # Mystery Shroud
+    pbEORCountDownFieldEffect(PBEffects::MysteryShroud,
+                              _INTL("The chaotic mist on the battlefield dissipated!"))
   end
 
   #=============================================================================
@@ -1108,6 +1111,7 @@ class Battle
       battler.effects[PBEffects::MagmaShieldActive] = false
       battler.effects[PBEffects::MirrorCoat]       = -1
       battler.effects[PBEffects::MirrorCoatTarget] = -1
+      battler.effects[PBEffects::MysticEdgeActive] = false
       battler.effects[PBEffects::Obstruct]         = false
       battler.effects[PBEffects::Powder]           = false
       battler.effects[PBEffects::Prankster]        = false

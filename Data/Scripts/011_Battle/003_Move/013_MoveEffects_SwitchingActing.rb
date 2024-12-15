@@ -516,7 +516,7 @@ class Battle::Move::UsedAfterUserTakesPhysicalDamage < Battle::Move
     @battle.pbDisplay(_INTL("{1} set a shell trap!", user.pbThis))
   end
 
-  def pbDisplayUseMessage(user)
+  def pbDisplayUseMessage(user, mystery_shroud_type = nil)
     super if user.tookPhysicalHit
   end
 

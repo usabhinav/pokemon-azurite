@@ -337,7 +337,7 @@ class Battle::AI
         score += 30 if target.spatk < 70
       end
     #---------------------------------------------------------------------------
-    when "ConfuseTarget", "ConfuseTargetAlwaysHitsInRainHitsTargetInSky"
+    when "ConfuseTarget", "ConfuseTargetAlwaysHitsInRainHitsTargetInSky", "ConfuseFlinchTarget"
       if target.pbCanConfuse?(user, false)
         score += 30
       elsif skill >= PBTrainerAI.mediumSkill

@@ -886,6 +886,23 @@ class Battle::Move::ConfuseTargetAlwaysInRain < Battle::Move::ConfuseTarget
 end
 
 #===============================================================================
+# Confuses the target. May cause the target to flinch. (Magic Fang)
+#===============================================================================
+class Battle::Move::ConfuseFlinchTarget < Battle::Move
+  def flinchingMove?; return true; end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    chance = pbAdditionalEffectChance(user, target, 10)
+    return if chance == 0
+    if target.pbCanConfuse?(user, false, self) && @battle.pbRandom(100) < chance
+      target.pbConfuse(user)
+    end
+    target.pbFlinch(user) if @battle.pbRandom(100) < chance
+  end
+end
+
+#===============================================================================
 # Attracts the target. (Attract)
 #===============================================================================
 class Battle::Move::AttractTarget < Battle::Move
@@ -1883,22 +1900,5 @@ class Battle::Move::SuperEffectiveAgainstFireRockGround < Battle::Move
       return Effectiveness::SUPER_EFFECTIVE_ONE
     end
     return super
-  end
-end
-
-#===============================================================================
-# Magic Fang
-#===============================================================================
-class Battle::Move::ConfuseAndOrFlinchTarget < Battle::Move
-  def flinchingMove?; return true; end
-
-  def pbAdditionalEffect(user,target)
-    return if target.damageState.substitute
-    chance = pbAdditionalEffectChance(user,target,10)
-    return if chance==0
-    if @battle.pbRandom(100)<chance
-      target.pbConfuse(user) if target.pbCanConfuse?(user,false,self)
-    end
-    target.pbFlinch(user) if @battle.pbRandom(100)<chance
   end
 end

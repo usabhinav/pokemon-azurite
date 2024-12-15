@@ -94,6 +94,9 @@ class Battle::AI
     when "PowerHigherAndAccuracyHigherInSunlight"
       score += 30 if [:Sun, :HarshSun].include?(user.effectiveWeather)
     #---------------------------------------------------------------------------
+    when "PowerHigherIfTargetActedElseStartReduceIncomingDamage"
+      # No clear indicator to know when to use this move.
+    #---------------------------------------------------------------------------
     when "RandomPowerDoublePowerIfTargetUnderground"
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetHPLessThanHalf"
@@ -372,7 +375,7 @@ class Battle::AI
       score -= user.hp <= (user.totalhp / 2) ? 90 : 50
     #---------------------------------------------------------------------------
     when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType",
-         "EffectivenessIncludesSoundType"
+         "EffectivenessIncludesSoundType", "EffectivenessIncludesGrassType"
     #---------------------------------------------------------------------------
     when "SuperEffectiveAgainstFireNeutralEffectiveAgainstIce",
          "SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses"
@@ -444,6 +447,9 @@ class Battle::AI
       score -= 90 if aspeed > ospeed
     #---------------------------------------------------------------------------
     when "NormalMovesBecomeElectric"
+    #---------------------------------------------------------------------------
+    when "StartRandomTypeMoves"
+      score -= 90 if @battle.field.effects[PBEffects::MysteryShroud] > 0
     #---------------------------------------------------------------------------
     when "HitTwoTimes"
     #---------------------------------------------------------------------------
@@ -681,6 +687,12 @@ class Battle::AI
       elsif user.hp == user.totalhp && target.opposes?(user)
         score -= 90
       else
+        score += (user.totalhp - user.hp) * 50 / user.totalhp
+        score -= 30 if target.opposes?(user)
+      end
+    #---------------------------------------------------------------------------
+    when "CureTargetStatusHealUserHalfOfTotalHPDamagingMove"
+      if target.status != :NONE
         score += (user.totalhp - user.hp) * 50 / user.totalhp
         score -= 30 if target.opposes?(user)
       end

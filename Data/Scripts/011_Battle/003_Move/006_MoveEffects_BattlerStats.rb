@@ -615,6 +615,27 @@ class Battle::Move::RaiseUserMainStats1TrapUserInBattle < Battle::Move::RaiseUse
 end
 
 #===============================================================================
+# Increases the user's Attack, Defense, Speed, Special Attack and Special Defense
+# by 2 stages each after three turns. (Prophecy)
+#===============================================================================
+class Battle::Move::RaiseUserMainStats2InThreeTurns < Battle::Move
+  def canSnatch?;   return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::ProphecyCounter] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::ProphecyCounter] = 3
+    @battle.pbDisplay(_INTL("{1} has declared a prophecy that will come true in three turns' time!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # User rages until the start of a round in which they don't use this move. (Rage)
 # (Handled in Battler's pbProcessMoveAgainstTarget): Ups rager's Attack by 1
 # stage each time it loses HP due to a move.
@@ -1492,6 +1513,48 @@ class Battle::Move::LowerTargetDefSpDef3 < Battle::Move::TargetMultiStatDownMove
 end
 
 #===============================================================================
+# Decreases the target's Sp. Atk and/or Sp. Def by 1 stage. (Relic Wave)
+#===============================================================================
+class Battle::Move::LowerTargetSpAtkAndOrSpDef1 < Battle::Move::TargetMultiStatDownMove
+  def pbOnStartUse(user, targets)
+    @statDown = []
+    [:SPECIAL_ATTACK, :SPECIAL_DEFENSE].each do |stat|
+      if @battle.pbRandom(100) < 10
+        @statDown.push(stat)
+        @statDown.push(1)
+      end
+    end
+  end
+end
+
+#===============================================================================
+# Decreases one random stat of the target by 1 stage (except HP). (Secret Pulse)
+#===============================================================================
+class Battle::Move::LowerTargetRandomStat1 < Battle::Move
+  def canMagicCoat?; return true; end
+  
+  def pbOnStartUse(user, targets)
+    @statArrayMap = Hash.new
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    stat_pool = []
+    GameData::Stat.each_battle do |stat|
+      stat_pool.push(stat.id) if target.pbCanLowerStatStage?(stat.id, user, self)
+    end
+    @statArrayMap[target.index] = stat_pool
+    return false
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    stat = @statArrayMap[target.index].sample
+    return if stat.nil?
+    target.pbLowerStatStage(stat, 1, user)
+  end
+end
+
+#===============================================================================
 # Raises the Attack and Defense of all user's allies by 1 stage each. Bypasses
 # protections, including Crafty Shield. Fails if there is no ally. (Coaching)
 #===============================================================================
@@ -2081,37 +2144,6 @@ class Battle::Move::StartInvertAllBattlersTypeResistances < Battle::Move
   def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
     return if @battle.field.effects[PBEffects::InverseRoom] > 0   # No animation
     super
-  end
-end
-
-#===============================================================================
-# Decreases the target's Sp. Atk or Sp. Def by 1 stage. (Relic Wave)
-#===============================================================================
-class Battle::Move::LowerTargetSpAtkOrSpDef < Battle::Move::TargetStatDownMove
-  def initialize(battle, move)
-    super
-    case @battle.pbRandom(2)
-    when 0; @statDown = [:SPECIAL_ATTACK,1]
-    when 1; @statDown = [:SPECIAL_DEFENSE,1]
-    end
-  end
-end
-
-#===============================================================================
-# Decreases any of the target's stats by 1 stage. (Secret Pulse)
-#===============================================================================
-class Battle::Move::LowerRandomTargetStat < Battle::Move::TargetStatDownMove
-  def initialize(battle, move)
-    super
-    case @battle.pbRandom(7)
-    when 0; @statDown = [:SPECIAL_ATTACK,1]
-    when 1; @statDown = [:SPECIAL_DEFENSE,1]
-    when 2; @statDown = [:ATTACK,1]
-    when 3; @statDown = [:DEFENSE,1]
-    when 4; @statDown = [:SPEED,1]
-    when 5; @statDown = [:EVASION,1]
-    when 6; @statDown = [:ACCURACY,1]
-    end
   end
 end
 

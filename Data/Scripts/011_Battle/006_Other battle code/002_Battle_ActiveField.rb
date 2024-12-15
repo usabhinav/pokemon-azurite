@@ -30,6 +30,7 @@ class Battle::ActiveField
     @effects[PBEffects::FlameRing]       = 0
     @effects[PBEffects::BrightContrast]  = 0
     @effects[PBEffects::MysteryShroud]   = 0
+    @effects[PBEffects::Ritual]          = 0
     @defaultWeather  = :None
     @weather         = :None
     @weatherDuration = 0

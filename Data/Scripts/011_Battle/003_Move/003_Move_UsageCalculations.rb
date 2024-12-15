@@ -694,6 +694,14 @@ class Battle::Move
     if target.effects[PBEffects::MysticEdgeActive]
       multipliers[:defense_multiplier] *= 1.2
     end
+    # Ritual
+    if @battle.field.effects[PBEffects::Ritual] > 0
+      if [:GHOST, :DARK, :MYSTIC].include?(type)
+        multipliers[:final_damage_multiplier] *= 1.5
+      elsif [:LIGHT, :FAIRY, :PSYCHIC].include?(type)
+        multipliers[:final_damage_multiplier] /= 2
+      end
+    end
     # Move-specific base damage modifiers
     multipliers[:base_damage_multiplier] = pbBaseDamageMultiplier(multipliers[:base_damage_multiplier], user, target)
     # Move-specific final damage modifiers

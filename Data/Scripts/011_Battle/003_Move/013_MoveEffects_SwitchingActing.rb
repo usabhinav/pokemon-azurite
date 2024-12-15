@@ -306,6 +306,49 @@ class Battle::Move::SwitchOutTargetDamagingMove < Battle::Move
 end
 
 #===============================================================================
+# In wild battles, makes target flee. Fails if target is a higher level than the
+# user.
+# In trainer battles, user and target both switch out.
+# For status moves. (Removal Pulse)
+#===============================================================================
+class Battle::Move::SwitchOutUserAndTargetStatusMove < Battle::Move::SwitchOutTargetStatusMove
+  def pbMoveFailed?(user, targets)
+    if user.wild?
+      if !@battle.pbCanRun?(user.index)
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return true
+      end
+    elsif !@battle.pbCanChooseNonActive?(user.index)
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    return if user.wild? || numHits == 0 || @battle.wildBattle?
+    @battle.pbDisplay(_INTL("{1} went back to {2}!", user.pbThis,
+                            @battle.pbGetOwnerName(user.index)))
+    @battle.pbPursuit(user.index)
+    return if user.fainted?
+    newPkmn = @battle.pbGetReplacementPokemonIndex(user.index)   # Owner chooses
+    return if newPkmn < 0
+    @battle.pbRecallAndReplace(user.index, newPkmn)
+    @battle.pbClearChoice(user.index)   # Replacement Pokémon does nothing this round
+    @battle.moldBreaker = false
+    @battle.pbOnBattlerEnteringBattle(user.index)
+    switchedBattlers.push(user.index)
+  end
+
+  def pbEffectGeneral(user)
+    if @battle.wildBattle?
+      @battle.pbDisplay(_INTL("{1} fled from battle!", user.pbThis))
+      @battle.decision = 3   # Escaped
+    end
+  end
+end
+
+#===============================================================================
 # Trapping move. Traps for 5 or 6 rounds. Trapped Pokémon lose 1/16 of max HP
 # at end of each round.
 #===============================================================================
@@ -655,6 +698,7 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       "UseRandomMoveFromUserParty",                      # Assist
       "UseRandomMove",                                   # Metronome
       "UseRandomCosmicTypeMove",                         # Astronomy
+      "UseRandomMysticTypeMove",                         # Wild Magic
       "SelectMoveAndAttackTwoTurnsLater",                # Delayed Attack
       # Moves that require a recharge turn
       "AttackAndSkipNextTurn",                           # Hyper Beam
@@ -903,6 +947,7 @@ class Battle::Move::DisableTargetUsingDifferentMove < Battle::Move
         "UseRandomMoveFromUserParty",   # Assist
         "UseRandomMove",   # Metronome
         "UseRandomCosmicTypeMove",   # Astronomy
+        "UseRandomMysticTypeMove",   # Wild Magic
         "SelectMoveAndAttackTwoTurnsLater", # Delayed Attack
       ]
     end

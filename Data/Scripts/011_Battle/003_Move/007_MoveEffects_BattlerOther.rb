@@ -1190,6 +1190,48 @@ class Battle::Move::SetUserTypesToUserMoveType < Battle::Move
 end
 
 #===============================================================================
+# User and target swap types. (Role Reversal)
+#===============================================================================
+class Battle::Move::UserTargetSwapTypes < Battle::Move
+  def ignoresSubstitute?(user); return true; end
+
+  def pbMoveFailed?(user, targets)
+    if !user.canChangeType?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if !target.canChangeType?
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    newTypes = target.pbTypes(true)
+    if newTypes.length == 0   # Target has no type to copy
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    if user.pbTypes == target.pbTypes &&
+       user.effects[PBEffects::Type3] == target.effects[PBEffects::Type3]
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    old_user_types = user.pbTypes(false)
+    old_user_type3 = user.effects[PBEffects::Type3]
+    user.pbChangeTypes(target)
+    target.pbChangeTypes([old_user_types, old_user_type3])
+    @battle.pbDisplay(_INTL("{1} swapped types with {2}!",
+                            user.pbThis, target.pbThis(true)))
+  end
+end
+
+#===============================================================================
 # The target's types become Psychic. (Magic Powder)
 #===============================================================================
 class Battle::Move::SetTargetTypesToPsychic < Battle::Move

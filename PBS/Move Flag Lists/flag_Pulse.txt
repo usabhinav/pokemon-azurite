@@ -16,4 +16,5 @@ Sound Pulse
 Magnet Pulse
 Force Pulse
 Secret Pulse
+Removal Pulse
 Miracle Pulse

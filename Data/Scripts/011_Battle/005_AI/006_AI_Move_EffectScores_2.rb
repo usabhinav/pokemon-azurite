@@ -489,6 +489,14 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
+    when "UserTargetSwapTypes"
+      if !user.canChangeType? || !target.canChangeType? || target.pbTypes(true).length == 0
+        score -= 90
+      elsif user.pbTypes == target.pbTypes &&
+            user.effects[PBEffects::Type3] == target.effects[PBEffects::Type3]
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
     when "SetUserTypesToUserMoveType"
       if user.canChangeType?
         has_possible_type = false

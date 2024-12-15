@@ -911,6 +911,9 @@ class Battle::AI
         end
       end
     #---------------------------------------------------------------------------
+    when "RaiseUserMainStats2InThreeTurns"
+      score -= 90 if user.effects[PBEffects::ProphecyCounter] > 0
+    #---------------------------------------------------------------------------
     when "StartRaiseUserAtk1WhenDamaged"
       score += 25 if user.effects[PBEffects::Rage]
     #---------------------------------------------------------------------------
@@ -1382,6 +1385,23 @@ class Battle::AI
       avg  = target.stages[:DEFENSE] * 10
       avg += target.stages[:SPECIAL_DEFENSE] * 10
       score += avg / 2
+    #---------------------------------------------------------------------------  
+    when "LowerTargetSpAtkAndOrSpDef1"
+      avg  = target.stages[:SPECIAL_ATTACK] * 10
+      avg += target.stages[:SPECIAL_DEFENSE] * 10
+      score += avg / 2
+    #---------------------------------------------------------------------------  
+    when "LowerTargetRandomStat1"
+      avgStat = 0
+      canChangeStat = false
+      GameData::Stat.each_battle do |s|
+        next if target.statStageAtMin?(s.id)
+        avgStat += target.stages[s.id]
+        canChangeStat = true
+      end
+      if canChangeStat
+        score += avgStat
+      end
     #---------------------------------------------------------------------------
     when "RaiseUserAndAlliesAtkDef1"
       has_ally = false

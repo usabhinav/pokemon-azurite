@@ -204,6 +204,13 @@ class Battle::Battler
       newType3 = nil if newTypes.include?(newType3)
       @types = newTypes.clone
       @effects[PBEffects::Type3] = newType3
+    elsif newType.is_a?(Array)
+      newTypes = newType[0]
+      newTypes.push(:NORMAL) if newTypes.length == 0
+      newType3 = newType[1]
+      newType3 = nil if newTypes.include?(newType3)
+      @types = newTypes.clone
+      @effects[PBEffects::Type3] = newType3
     else
       newType = GameData::Type.get(newType).id
       @types = [newType]

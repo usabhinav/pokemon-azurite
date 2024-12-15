@@ -451,6 +451,9 @@ class Battle::AI
     when "StartRandomTypeMoves"
       score -= 90 if @battle.field.effects[PBEffects::MysteryShroud] > 0
     #---------------------------------------------------------------------------
+    when "StartBoostMysticGhostDarkWeakenFairyLightPsychic"
+      score -= 90 if @battle.field.effects[PBEffects::Ritual] > 0
+    #---------------------------------------------------------------------------
     when "HitTwoTimes"
     #---------------------------------------------------------------------------
     when "HitTwoTimesPoisonTarget"
@@ -1273,7 +1276,8 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
-    when "UseRandomCosmicTypeMove"
+    when "UseRandomCosmicTypeMove", "UseRandomMysticTypeMove"
+      # No clear indicator to know when to use this move.
     #---------------------------------------------------------------------------
     when "BounceBackProblemCausingStatusMoves", "BounceBackAllMoves", "BounceBackAllMovesIncludingForAllyIfLegendary"
     #---------------------------------------------------------------------------
@@ -1428,6 +1432,48 @@ class Battle::AI
         score += 40 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 40 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
+      end
+    #---------------------------------------------------------------------------
+    when "SwitchOutUserAndTargetStatusMove"
+      # Target-related scores
+      if target.effects[PBEffects::Ingrain] ||
+         (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS))
+        score -= 90
+      else
+        ch = 0
+        @battle.pbParty(target.index).each_with_index do |pkmn, i|
+          ch += 1 if @battle.pbCanSwitchLax?(target.index, i)
+        end
+        score -= 90 if ch == 0
+      end
+      if score > 20
+        score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
+        score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
+      end
+      # User-related scores
+      if !@battle.pbCanChooseNonActive?(user.index) ||
+         @battle.pbTeamAbleNonActiveCount(user.index) > 1   # Don't switch in ace
+        score -= 100
+      else
+        score += 40 if user.effects[PBEffects::Confusion] > 0
+        total = 0
+        GameData::Stat.each_battle { |s| total += user.stages[s.id] }
+        if total <= 0 || user.turnCount == 0
+          score += 60
+        else
+          score -= total * 10
+          # special case: user has no damaging moves
+          hasDamagingMove = false
+          user.eachMove do |m|
+            next if !m.damagingMove?
+            hasDamagingMove = true
+            break
+          end
+          score += 75 if !hasDamagingMove
+        end
       end
     #---------------------------------------------------------------------------
     when "BindTarget"

@@ -2224,6 +2224,25 @@ class Battle::Move::StartRandomTypeMoves < Battle::Move
 end
 
 #===============================================================================
+# For 5 rounds, boost Mystic, Ghost, and Dark-type moves by 50% and weaken
+# Fairy, Light, and Psychic-type moves by 50%. (Ritual)
+#===============================================================================
+class Battle::Move::StartBoostMysticGhostDarkWeakenFairyLightPsychic < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.effects[PBEffects::Ritual] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.field.effects[PBEffects::Ritual] = 5
+    @battle.pbDisplay(_INTL("{1} began a dark ritual!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # Sound Pulse
 #===============================================================================
 class Battle::Move::DoublePowerIfTargetEvasionAtLeastOne < Battle::Move

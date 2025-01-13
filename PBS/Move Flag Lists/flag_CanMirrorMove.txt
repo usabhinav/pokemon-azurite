@@ -830,6 +830,7 @@ Stone Grind
 Delta Beam
 Thorn Trap
 War Cry
+Stage Shift
 Fire Storm
 Golden Spin
 Track Punch

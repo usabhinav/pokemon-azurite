@@ -768,6 +768,14 @@ class Battle::AI
     if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::MysticEdgeActive]
       multipliers[:defense_multiplier] *= 1.2
     end
+    # Ritual
+    if skill >= PBTrainerAI.highSkill && @battle.field.effects[PBEffects::Ritual] > 0
+      if [:GHOST, :DARK, :MYSTIC].include?(type)
+        multipliers[:final_damage_multiplier] *= 1.5
+      elsif [:LIGHT, :FAIRY, :PSYCHIC].include?(type)
+        multipliers[:final_damage_multiplier] /= 2
+      end
+    end
     # Move-specific base damage modifiers
     # TODO
     # Move-specific final damage modifiers

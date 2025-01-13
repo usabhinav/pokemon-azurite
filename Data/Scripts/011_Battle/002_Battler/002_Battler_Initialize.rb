@@ -346,6 +346,7 @@ class Battle::Battler
     @effects[PBEffects::DistractionActive]   = false
     @effects[PBEffects::GoldenSpin]          = 0
     @effects[PBEffects::MysticEdgeActive]    = false
+    @effects[PBEffects::ProphecyCounter]     = 0
   end
 
   #=============================================================================

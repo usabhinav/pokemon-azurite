@@ -176,6 +176,7 @@ module PBEffects
   DistractionActive   = 171
   GoldenSpin          = 172
   MysticEdgeActive    = 173
+  ProphecyCounter     = 174
 
   #=============================================================================
   # These effects apply to a battler position
@@ -243,4 +244,5 @@ module PBEffects
   FlameRing       = 15
   BrightContrast  = 16
   MysteryShroud   = 17
+  Ritual          = 18
 end

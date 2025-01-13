@@ -9883,7 +9883,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = NearOther
-FunctionCode = SwitchTypesWithTarget
+FunctionCode = UserTargetSwapTypes
 Flags = CanProtect,CanMirrorMove
 Description = Switches types with a target.
 #-------------------------------
@@ -11516,9 +11516,9 @@ Power = 100
 Accuracy = 90
 TotalPP = 10
 Target = AllNearFoes
-FunctionCode = LowerTargetSpAtkOrSpDef1
+FunctionCode = LowerTargetSpAtkAndOrSpDef1
 Flags = CanProtect,CanMirrorMove
-EffectChance = 10
+EffectChance = 100
 Description = The user sends a blast of magic at the opposing team. May lower Sp. Atk or Sp. Def.
 #-------------------------------
 [MAGICFANG]
@@ -11999,6 +11999,7 @@ TotalPP = 25
 Target = NearOther
 Priority = -6
 FunctionCode = SwitchOutUserAndTargetStatusMove
+Flags = Pulse
 Description = The Pokémon forces itself and its target to randomly switch out. Causes wild Pokémon to flee.
 #-------------------------------
 [BOIL]
@@ -12380,7 +12381,8 @@ Category = Status
 Accuracy = 0
 TotalPP = 15
 Target = BothSides
-FunctionCode = StartSwapSideEffects
+FunctionCode = SwapSideEffects
+Flags = CanMirrorMove
 Description = The Pokémon twists the battlefield, swapping effects on either side of the field.
 #-------------------------------
 [SPUTTER]

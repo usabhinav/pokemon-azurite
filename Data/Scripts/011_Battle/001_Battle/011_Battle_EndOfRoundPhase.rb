@@ -528,6 +528,26 @@ class Battle
         battler.pbBurn(nil, _INTL("{1} was burned by the fireworks!", battler.pbThis))
       end
     }
+    # Prophecy
+    pbEORCountDownBattlerEffect(priority, PBEffects::ProphecyCounter) { |battler|
+      # Get list of stats that can be raised
+      stats_to_check = [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED]
+      stats_to_raise = []
+      stats_to_check.each do |stat|
+        next if !battler.pbCanRaiseStatStage?(stat, battler, self)
+        stats_to_raise.push(stat)
+      end
+      # Raise all possible stats
+      if stats_to_raise.length > 0
+        pbDisplay(_INTL("{1}'s prophecy came true!", battler.pbThis))
+        showAnim = true
+        stats_to_raise.each do |stat|
+          if battler.pbRaiseStatStage(stat, 2, battler, showAnim)
+            showAnim = false
+          end
+        end
+      end
+    }
     # Black Hole
     priority.each do |battler|
       next if battler.fainted? || !battler.effects[PBEffects::BlackHoleActive]
@@ -674,6 +694,9 @@ class Battle
     # Mystery Shroud
     pbEORCountDownFieldEffect(PBEffects::MysteryShroud,
                               _INTL("The chaotic mist on the battlefield dissipated!"))
+    # Ritual
+    pbEORCountDownFieldEffect(PBEffects::Ritual,
+                              _INTL("The ritual ended!"))
   end
 
   #=============================================================================

@@ -139,7 +139,7 @@ module Settings
     "UseRandomMoveFromUserParty",                        # Assist
     "UseRandomMove",                                     # Metronome
     "UseRandomCosmicTypeMove",                           # Astronomy
-    "UseRandomMysticMove",                               # Wild Magic
+    "UseRandomMysticTypeMove",                           # Wild Magic
     "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
     # Move-redirecting and stealing moves
     "BounceBackProblemCausingStatusMoves",               # Magic Coat

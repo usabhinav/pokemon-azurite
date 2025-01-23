@@ -110,7 +110,7 @@ class BattleArenaBattle < Battle
     return 1
   end
 
-  def pbCommandPhase
+  def pbCommandPhase(time_break_indices = nil)
     if @battlersChanged
       @scene.pbBattleArenaBattlers(@battlers[0], @battlers[1])
       @battlersChanged = false

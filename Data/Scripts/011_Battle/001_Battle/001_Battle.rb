@@ -92,6 +92,7 @@ class Battle
   attr_reader   :endOfRound       # True during the end of round
   attr_accessor :moldBreaker      # True if Mold Breaker applies
   attr_reader   :struggle         # The Struggle move
+  attr_reader   :timeBreakPhase   # True if any of the battlers have stopped time with Time Break
 
   def pbRandom(x); return rand(x); end
 
@@ -181,6 +182,7 @@ class Battle
     else
       @struggle = Move::Struggle.new(self, nil)
     end
+    @timeBreakPhase    = false
     @mega_rings = []
     GameData::Item.each { |item| @mega_rings.push(item.id) if item.has_flag?("MegaRing") }
     @battleAI          = AI.new(self)

@@ -158,8 +158,9 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   #  start invert BG animation
   #-----------------------------------------------------------------------------
-  def invertBG(idxBattler = nil)
-    @sprites["battlebg"].startInvertBG(idxBattler.nil? ? nil : @sprites["pokemon_#{idxBattler}"])
+  def invertBG(destination_radius_transform_proc = nil, is_shrinking = false, idxBattler = nil)
+    destination_radius_transform_proc = Proc.new {|r| (2 ** (r / 40)) } if destination_radius_transform_proc.nil?
+    @sprites["battlebg"].startInvertBG(destination_radius_transform_proc, is_shrinking, idxBattler.nil? ? nil : @sprites["pokemon_#{idxBattler}"])
   end
   #-----------------------------------------------------------------------------
 end

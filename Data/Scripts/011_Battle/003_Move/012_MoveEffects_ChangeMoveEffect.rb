@@ -752,7 +752,9 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "BurnAttackerBeforeUserActs",                        # Beak Blast
       # Event moves that do nothing
       "DoesNothingFailsIfNoAlly",                          # Hold Hands
-      "DoesNothingCongratulations"                         # Celebrate
+      "DoesNothingCongratulations",                        # Celebrate
+      # Misc.
+      "StopTimeAllowUserToChooseAnotherMove",              # Time Break
     ]
     if Settings::MECHANICS_GENERATION >= 6
       @moveBlacklist += [
@@ -1021,7 +1023,9 @@ class Battle::Move::UseRandomMove < Battle::Move
       "BurnAttackerBeforeUserActs",                        # Beak Blast
       # Event moves that do nothing
       "DoesNothingFailsIfNoAlly",                          # Hold Hands
-      "DoesNothingCongratulations"                         # Celebrate
+      "DoesNothingCongratulations",                        # Celebrate
+      # Misc.
+      "StopTimeAllowUserToChooseAnotherMove",              # Time Break
     ]
   end
 
@@ -1124,7 +1128,9 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "BurnAttackerBeforeUserActs",                        # Beak Blast
       # Event moves that do nothing
       "DoesNothingFailsIfNoAlly",                          # Hold Hands
-      "DoesNothingCongratulations"                         # Celebrate
+      "DoesNothingCongratulations",                        # Celebrate
+      # Misc.
+      "StopTimeAllowUserToChooseAnotherMove",              # Time Break
     ]
     if Settings::MECHANICS_GENERATION >= 6
       @moveBlacklist += [
@@ -1226,7 +1232,9 @@ class Battle::Move::UseRandomUserMoveIfAsleep < Battle::Move
       # Moves that start focussing at the start of the round
       "FailsIfUserDamagedThisTurn",                      # Focus Punch
       "UsedAfterUserTakesPhysicalDamage",                # Shell Trap
-      "BurnAttackerBeforeUserActs"                       # Beak Blast
+      "BurnAttackerBeforeUserActs",                      # Beak Blast
+      # Misc.
+      "StopTimeAllowUserToChooseAnotherMove",              # Time Break
     ]
   end
 

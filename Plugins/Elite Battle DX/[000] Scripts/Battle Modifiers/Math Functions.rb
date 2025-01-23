@@ -7,6 +7,7 @@ class Vector
   attr_reader :x2, :y2
   attr_accessor :zoom1, :zoom2
   attr_accessor :inc, :set, :battle
+  attr_accessor :incLinearly
   #-----------------------------------------------------------------------------
   #  class constructor
   #-----------------------------------------------------------------------------
@@ -23,6 +24,7 @@ class Vector
     @locked = false
     @force = false
     @constant = 1
+    @incLinearly = nil
     self.calculate
   end
   #-----------------------------------------------------------------------------
@@ -91,6 +93,7 @@ class Vector
   #  resets vector to original position
   #-----------------------------------------------------------------------------
   def reset
+    @incLinearly = nil
     @inc = 0.2
     self.set(EliteBattle.get_vector(:MAIN, @battle))
   end
@@ -106,6 +109,19 @@ class Vector
       @set = args
     end
     @constant = rand(4) + 1
+  end
+  #-----------------------------------------------------------------------------
+  #  sets next vector parameters to linearly go from old vector to new vector
+  #  in the specified number of frames
+  #-----------------------------------------------------------------------------
+  def set_linear(new_vector, total_frames)
+    old_vector = self.get
+    self.set(new_vector)
+    inc_linearly = []
+    for i in 0...new_vector.length
+      inc_linearly.push((new_vector[i] - old_vector[i]).to_f / total_frames)
+    end
+    self.incLinearly = inc_linearly
   end
   #-----------------------------------------------------------------------------
   #  sets both start X and Y
@@ -130,12 +146,39 @@ class Vector
   #  updates vector calculation based on incremental speed
   #-----------------------------------------------------------------------------
   def update
-    @x += ((@set[0] - @x)*@inc)/self.delta
-    @y += ((@set[1] - @y)*@inc)/self.delta
-    @angle += ((@set[2] - @angle)*@inc)/self.delta
-    @scale += ((@set[3] - @scale)*@inc)/self.delta
-    @zoom1 += ((@set[4] - @zoom1)*@inc)/self.delta
-    @zoom2 += ((@set[5] - @zoom2)*@inc)/self.delta
+    if @incLinearly
+      xIncreasing = @set[0] > @x
+      xClamp = [@x, @set[0]]
+      xClamp.reverse! if !xIncreasing
+      @x = (@x + (@incLinearly[0])/self.delta).clamp(xClamp[0], xClamp[1])
+      yIncreasing = @set[1] > @y
+      yClamp = [@y, @set[1]]
+      yClamp.reverse! if !yIncreasing
+      @y = (@y + @incLinearly[1]/self.delta).clamp(yClamp[0], yClamp[1])
+      angleIncreasing = @set[2] > @angle
+      angleClamp = [@angle, @set[2]]
+      angleClamp.reverse! if !angleIncreasing
+      @angle = (@angle + @incLinearly[2]/self.delta).clamp(angleClamp[0], angleClamp[1])
+      scaleIncreasing = @set[3] > @scale
+      scaleClamp = [@scale, @set[3]]
+      scaleClamp.reverse! if !scaleIncreasing
+      @scale = (@scale + @incLinearly[3]/self.delta).clamp(scaleClamp[0], scaleClamp[1])
+      zoom1Increasing = @set[4] > @zoom1
+      zoom1Clamp = [@zoom1, @set[4]]
+      zoom1Clamp.reverse! if !zoom1Increasing
+      @zoom1 = (@zoom1 + @incLinearly[4]/self.delta).clamp(zoom1Clamp[0], zoom1Clamp[1])
+      zoom2Increasing = @set[5] > @zoom2
+      zoom2Clamp = [@zoom2, @set[5]]
+      zoom2Clamp.reverse! if !zoom2Increasing
+      @zoom2 = (@zoom2 + @incLinearly[5]/self.delta).clamp(zoom2Clamp[0], zoom2Clamp[1])
+    else
+      @x += ((@set[0] - @x)*@inc)/self.delta
+      @y += ((@set[1] - @y)*@inc)/self.delta
+      @angle += ((@set[2] - @angle)*@inc)/self.delta
+      @scale += ((@set[3] - @scale)*@inc)/self.delta
+      @zoom1 += ((@set[4] - @zoom1)*@inc)/self.delta
+      @zoom2 += ((@set[5] - @zoom2)*@inc)/self.delta
+    end
     self.calculate
   end
   #-----------------------------------------------------------------------------

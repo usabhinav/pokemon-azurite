@@ -766,6 +766,11 @@ def pbUseKeyItemInField(item)
   return ret > 0
 end
 
+def pbItemNameWithArticle(item)
+  itemname = GameData::Item.get(item).name
+  return (itemname.starts_with_vowel? ? "an" : "a") + " " + itemname
+end
+
 def pbUseItemMessage(item)
   itemname = GameData::Item.get(item).name
   if itemname.starts_with_vowel?

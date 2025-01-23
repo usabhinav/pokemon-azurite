@@ -227,36 +227,49 @@ class Battle
   #=============================================================================
   # Command phase
   #=============================================================================
-  def pbCommandPhase
+  # @param time_break_indices [Array] list of battler positions that used Time
+  #   Break. In this case, the command phase will only triggered for these
+  #   battlers instead of all battlers.
+  def pbCommandPhase(time_break_indices = nil)
     @scene.pbBeginCommandPhase
     # Reset choices if commands can be shown
     @battlers.each_with_index do |b, i|
+      next if !time_break_indices.nil? && !time_break_indices.include?(i)
       next if !b
       pbClearChoice(i) if pbCanShowCommands?(i)
     end
     # Reset choices to perform Mega Evolution if it wasn't done somehow
     2.times do |side|
       @megaEvolution[side].each_with_index do |megaEvo, i|
-        @megaEvolution[side][i] = -1 if megaEvo >= 0
+        # Reset choice if Time Break user also decided to register mega evolution
+        # (they can register it again during this phase if they wish)
+        if time_break_indices.nil? || time_break_indices.include?(megaEvo)
+          @megaEvolution[side][i] = -1 if megaEvo >= 0
+        end
       end
     end
     # Reset choices to perform Crystallization if it wasn't done somehow
     for side in 0...2
-      @crystallization[side].each_with_index do |crystalEvo,i|
-        @crystallization[side][i] = -1 if crystalEvo >= 0
+      @crystallization[side].each_with_index do |crystalEvo, i|
+        # Reset choice if Time Break user also decided to register crystallization
+        # (they can register it again during this phase if they wish)
+        if time_break_indices.nil? || time_break_indices.include?(crystalEvo)
+          @crystallization[side][i] = -1 if crystalEvo >= 0
+        end
       end
     end
     # Choose actions for the round (player first, then AI)
-    pbCommandPhaseLoop(true)    # Player chooses their actions
+    pbCommandPhaseLoop(true, time_break_indices)    # Player chooses their actions
     return if @decision != 0   # Battle ended, stop choosing actions
-    pbCommandPhaseLoop(false)   # AI chooses their actions
+    pbCommandPhaseLoop(false, time_break_indices)   # AI chooses their actions
   end
 
-  def pbCommandPhaseLoop(isPlayer)
+  def pbCommandPhaseLoop(isPlayer, time_break_indices = nil)
     # NOTE: Doing some things (e.g. running, throwing a Poké Ball) takes up all
     #       your actions in a round.
     actioned = []
     idxBattler = -1
+    actionCountPerAI = {}
     loop do
       break if @decision != 0   # Battle ended, stop choosing actions
       idxBattler += 1
@@ -264,9 +277,30 @@ class Battle
       next if !@battlers[idxBattler] || pbOwnedByPlayer?(idxBattler) != isPlayer
       next if @choices[idxBattler][0] != :None    # Action is forced, can't choose one
       next if !pbCanShowCommands?(idxBattler)   # Action is forced, can't choose one
+      time_break_active_for_battler = time_break_indices&.include?(idxBattler)
       # AI controls this battler
       if @controlPlayer || !pbOwnedByPlayer?(idxBattler)
+        actionCountPerAI[idxBattler] = 0 if !actionCountPerAI.has_key?(idxBattler)
         @battleAI.pbDefaultChooseEnemyCommand(idxBattler)
+        # Allows the AI to also use multiple items and switch, but capping this to a fixed amount of turns so that the AI doesn't just
+        # endlessly do this, which would end up effectively freezing the battle and softlocking the game.
+        if time_break_active_for_battler && actionCountPerAI[idxBattler] < 3
+          actionCountPerAI[idxBattler] += 1
+          performedIntermediateAction = false
+          case @choices[idxBattler][0]
+          when :SwitchOut
+            pbAttackPhaseSwitch(idxBattler)
+            performedIntermediateAction = true
+          when :UseItem
+            pbAttackPhaseItems(idxBattler)
+            performedIntermediateAction = true
+          end
+          # Allows AI to choose another action
+          if performedIntermediateAction
+            pbCancelChoice(idxBattler)
+            idxBattler -= 1
+          end
+        end
         next
       end
       # Player chooses an action
@@ -299,11 +333,18 @@ class Battle
               pbClearChoice(idxBattler)
             else
               commandsEnd = true if pbItemUsesAllActions?(@choices[idxBattler][1])
-              break
+              pbAttackPhaseItems(idxBattler) if time_break_active_for_battler
+              break if !time_break_active_for_battler || commandsEnd
             end
           end
         when 2    # Pokémon
-          break if pbPartyMenu(idxBattler)
+          if pbPartyMenu(idxBattler)
+            if time_break_active_for_battler
+              pbAttackPhaseSwitch(idxBattler)
+            else
+              break
+            end
+          end
         when 3    # Run
           # NOTE: "Run" is only an available option for the first battler the
           #       player chooses an action for in a round. Attempting to run

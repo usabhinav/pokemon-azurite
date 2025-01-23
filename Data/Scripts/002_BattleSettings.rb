@@ -179,5 +179,7 @@ module Settings
     "TwoTurnAttackInvulnerableInSkyTargetCannotAct",     # Sky Drop
     "AllBattlersLoseHalfHPUserSkipsNextTurn",            # Shadow Half
     "TwoTurnAttackRaiseUserSpAtkSpDefSpd2",              # Geomancy
+    # Misc.
+    "StopTimeAllowUserToChooseAnotherMove",              # Time Break
   ]
 end

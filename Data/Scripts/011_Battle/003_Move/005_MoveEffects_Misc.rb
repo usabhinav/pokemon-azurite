@@ -920,6 +920,24 @@ class Battle::Move::SelectMoveAndAttackTwoTurnsLater < Battle::Move
 end
 
 #===============================================================================
+# Allows the user to see the opponent's action just before the turn starts, then
+# choose another move before continuing the turn. Before choosing their next
+# move, the user can also switch and use items multiple times. (Time Break)
+#===============================================================================
+class Battle::Move::StopTimeAllowUserToChooseAnotherMove < Battle::Move
+  def pbCanChooseMove?(user, commandPhase, showMessages)
+    if @battle.timeBreakPhase
+      if showMessages
+        msg = _INTL("{1} cannot select this move while time is stopped!", user.pbThis)
+        (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+      end
+      return false
+    end
+    return true
+  end
+end
+
+#===============================================================================
 # Deals damage again against a random foe at the start of the next turn.
 # (Magic Ring)
 #===============================================================================

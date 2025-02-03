@@ -2131,7 +2131,7 @@ end
 #===============================================================================
 class Battle::Move::StartInvertAllBattlersTypeResistances < Battle::Move
   def pbEffectGeneral(user)
-    @battle.scene.invertBG(user.index)
+    @battle.scene.invertBG(nil, false, user.index)
     if @battle.field.effects[PBEffects::InverseRoom] > 0
       @battle.field.effects[PBEffects::InverseRoom] = 0
       @battle.pbDisplay(_INTL("Type resistances returned to normal!"))

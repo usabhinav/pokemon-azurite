@@ -723,7 +723,9 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       # Moves that start focussing at the start of the round
       "FailsIfUserDamagedThisTurn",                      # Focus Punch
       "UsedAfterUserTakesPhysicalDamage",                # Shell Trap
-      "BurnAttackerBeforeUserActs"                       # Beak Blast
+      "BurnAttackerBeforeUserActs",                      # Beak Blast
+      # Misc.
+      "StopTimeAllowUserToChooseAnotherMove",              # Time Break
     ]
   end
 
@@ -933,7 +935,9 @@ class Battle::Move::DisableTargetUsingDifferentMove < Battle::Move
       "ReplaceMoveWithTargetLastMoveUsed",   # Sketch
       "TransformUserIntoTarget",   # Transform
       # Moves that call other moves (see also below)
-      "UseLastMoveUsedByTarget"   # Mirror Move
+      "UseLastMoveUsedByTarget",  # Mirror Move
+      # Misc.
+      "StopTimeAllowUserToChooseAnotherMove", # Time Break
     ]
     if Settings::MECHANICS_GENERATION >= 7
       @moveBlacklist += [

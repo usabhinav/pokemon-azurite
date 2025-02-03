@@ -873,6 +873,7 @@ class ScrollingSprite < Sprite
   #  updates sprite
   #-----------------------------------------------------------------------------
   def update
+    return if @speed == 0
     s = (1/@speed).to_i
     @frame += 1
     return if @frame < s.delta_add(false)

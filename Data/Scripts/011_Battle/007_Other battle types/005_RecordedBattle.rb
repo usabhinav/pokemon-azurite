@@ -118,7 +118,7 @@ module RecordedBattleModule
     return false
   end
 
-  def pbCommandPhase
+  def pbCommandPhase(time_break_indices = nil)
     @roundindex += 1
     @rounds[@roundindex] = [[], [], [], []]
     super
@@ -203,7 +203,7 @@ module RecordedBattlePlaybackModule
     pbDisplay(str)
   end
 
-  def pbCommandPhaseLoop(isPlayer)
+  def pbCommandPhaseLoop(isPlayer, time_break_indices = nil)
     return if !isPlayer
     @roundindex += 1
     4.times do |i|

@@ -47,8 +47,9 @@ class Battle
     @switching = false
   end
 
-  def pbAttackPhaseSwitch
+  def pbAttackPhaseSwitch(time_break_index = nil)
     pbPriority.each do |b|
+      next if !time_break_index.nil? && time_break_index != b.index
       next unless @choices[b.index][0] == :SwitchOut && !b.fainted?
       idxNewPkmn = @choices[b.index][1]   # Party index of Pokémon to switch to
       b.lastMoveFailed = false   # Counts as a successful move for Stomping Tantrum
@@ -56,7 +57,7 @@ class Battle
       # Switching message
       pbMessageOnRecall(b)
       # Pursuit interrupts switching
-      pbPursuit(b.index)
+      pbPursuit(b.index) if time_break_index.nil?
       return if @decision > 0
       # Switch Pokémon
       allBattlers.each do |b|
@@ -66,7 +67,7 @@ class Battle
       pbRecallAndReplace(b.index, idxNewPkmn)
       pbOnBattlerEnteringBattle(b.index, true)
       # Quick Switch
-      if b.hasActiveItem?(:QUICKSWITCH)
+      if b.hasActiveItem?(:QUICKSWITCH) && time_break_index.nil?
         pbDisplay(_INTL("{1}'s {2} allowed it to choose an attack!", b.name, b.itemName))
         loop do
           ret = pbFightMenu(b.index)
@@ -84,8 +85,9 @@ class Battle
     end
   end
 
-  def pbAttackPhaseItems
+  def pbAttackPhaseItems(time_break_index = nil)
     pbPriority.each do |b|
+      next if !time_break_index.nil? && time_break_index != b.index
       next unless @choices[b.index][0] == :UseItem && !b.fainted?
       b.lastMoveFailed = false   # Counts as a successful move for Stomping Tantrum
       item = @choices[b.index][1]
@@ -244,6 +246,53 @@ class Battle
     position.effects[PBEffects::MagicRingUserPartyIndex] = -1
   end
 
+  def pbTimeBreakPhase
+    # Get list of battlers that chose Time Break
+    time_break_battlers = allBattlers.select {|b| pbChoseMoveFunctionCode?(b.index, "StopTimeAllowUserToChooseAnotherMove") }
+    if time_break_battlers.length > 0
+      @timeBreakPhase = true
+      # Get list of battlers that did not choose Time Break, as well as list of battler positions for each case
+      time_break_indices = time_break_battlers.map {|tb| tb.index }
+      non_time_break_battlers = allBattlers.select {|b| !time_break_indices.include?(b.index) }
+      # Display the action for each battler that did not choose Time Break
+      non_time_break_battlers.each do |b|
+        case @choices[b.index][0]
+        when :UseMove
+          pbDisplay(_INTL("{1} is about to use {2}!", b.pbThis, @choices[b.index][2].name))
+        when :SwitchOut
+          pbDisplay(_INTL("{1} is about to switch with {2}!", b.pbThis, pbParty(b.index)[@choices[b.index][1]].name))
+        when :UseItem
+          pbDisplay(_INTL("{1} is about to use {2}!", b.pbThis, pbItemNameWithArticle(@choices[b.index][1])))
+        when :Call
+          pbDisplay(_INTL("{1} is about to be called!", b.pbThis))
+        when :Run
+          pbDisplay(_INTL("{1} is about to run!", b.pbThis))
+        when :Shift
+          pbDisplay(_INTL("{1} is about to shift positions!", b.pbThis))
+        end
+      end
+      # Display Time Break use message and reduce PP
+      time_break_battlers.each do |b|
+        pbDisplay(_INTL("{1} stopped time!", b.pbThis))
+        b.pbReducePP(@choices[b.index][2])
+      end
+      animEnabled = true
+      # Intro animation
+      if animEnabled
+        EliteBattle.playCommonAnimation(:TIMEBREAKINTRO, @scene, time_break_battlers[0].index, nil, 0, time_break_indices)
+      end
+      # Let Time Break users choose new actions
+      pbCommandPhase(time_break_indices)
+      @timeBreakPhase = false
+      return if @decision > 0
+      # Exit animation
+      if animEnabled
+        EliteBattle.playCommonAnimation(:TIMEBREAKEXIT, @scene, time_break_battlers[0].index, nil, 0, time_break_indices)
+      end
+      pbDisplay(_INTL("Time has started again!"))
+    end
+  end
+
   #=============================================================================
   # Attack phase
   #=============================================================================
@@ -262,6 +311,9 @@ class Battle
                                             !pbChoseMoveFunctionCode?(i, "MultiTurnAttackLowersDefSpDef1EveryTurnConfuseUserAtEnd")
     end
     PBDebug.log("")
+    # If any battlers chose to use Time Break, begin Time Break phase where all remaining battlers' actions get displayed,
+    # then Time Break users can choose their new actions before continuing the turn.
+    pbTimeBreakPhase
     # Calculate move order for this round
     pbCalculatePriority(true)
     # Perform actions

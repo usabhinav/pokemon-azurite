@@ -8792,9 +8792,8 @@ Type = MYSTIC
 Category = Status
 Accuracy = 0
 TotalPP = 1
-Target = FoeSide
-Priority = 6
-FunctionCode = TimeBreak
+Target = User
+FunctionCode = StopTimeAllowUserToChooseAnotherMove
 Description = The user shatters time, glimpsing the future moves of all foes before deciding further action.
 #-------------------------------
 [STRONGHOLD]

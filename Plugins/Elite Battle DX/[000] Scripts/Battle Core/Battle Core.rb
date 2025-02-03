@@ -161,10 +161,10 @@ class Battle
   #  enters command phase
   #-----------------------------------------------------------------------------
   alias pbCommandPhase_ebdx pbCommandPhase unless self.method_defined?(:pbCommandPhase_ebdx)
-  def pbCommandPhase
+  def pbCommandPhase(time_break_indices = nil)
     # displays trainer dialogue if applicable
     @scene.pbTrainerBattleSpeech("turnStart", "rand")
-    pbCommandPhase_ebdx
+    pbCommandPhase_ebdx(time_break_indices)
     @scene.idleTimer = -1
   end
   #-----------------------------------------------------------------------------

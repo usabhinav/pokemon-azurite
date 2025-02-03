@@ -917,6 +917,22 @@ class Battle::AI
     when "RaiseUserMainStats2InThreeTurns"
       score -= 90 if user.effects[PBEffects::ProphecyCounter] > 0
     #---------------------------------------------------------------------------
+    when "MaxUserMainStats"
+      if user.isSpecies?(:ARCEUS)
+        GameData::Stat.each_main_battle { |s| score += 10 if user.stages[s.id] < 0 }
+        if skill >= PBTrainerAI.mediumSkill
+          hasDamagingAttack = false
+          user.eachMove do |m|
+            next if !m.damagingMove?
+            hasDamagingAttack = true
+            break
+          end
+          score += 20 if hasDamagingAttack
+        end
+      else
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
     when "StartRaiseUserAtk1WhenDamaged"
       score += 25 if user.effects[PBEffects::Rage]
     #---------------------------------------------------------------------------

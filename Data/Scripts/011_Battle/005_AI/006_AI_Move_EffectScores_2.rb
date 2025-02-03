@@ -363,6 +363,10 @@ class Battle::AI
       elsif skill >= PBTrainerAI.mediumSkill
         score -= 90 if move.statusMove?
       end
+    #---------------------------------------------------------------------------      
+    when "ConfuseUser"
+      # Who in their right mind would use this move?
+      score -= 90 if move.statusMove?
     #---------------------------------------------------------------------------
     when "AttractTarget"
       canattract = true

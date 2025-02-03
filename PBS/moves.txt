@@ -8814,7 +8814,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 Priority = 4
-FunctionCode = MaxUserMainStatsTemporarily
+FunctionCode = MaxUserMainStats
 Description = The infinite power of the creator-god. Only known to be usable by divine beings.
 #-------------------------------
 [FLEE]
@@ -11720,7 +11720,8 @@ Power = 1
 Accuracy = 100
 TotalPP = 20
 Target = NearOther
-FunctionCode = FlinchTargetAndTrapTargetInBattle
+FunctionCode = TrapFlinchTargetForNextTurn
+EffectChance = 100
 Flags = Contact,CanProtect,CanMirrorMove
 Description = The user gives a big hug, flinching and preventing switching for 1 turn. Deals 1 damage.
 #-------------------------------
@@ -12120,9 +12121,9 @@ Power = 90
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = BypassSubstituteAndProtect
+FunctionCode = RemoveProtectionsBypassSubstitute
 Flags = CanMirrorMove
-Description = The user fires a wave of intangible energy that bypasses Substitute and Protect.
+Description = The user fires a wave of intangible energy that bypasses Substitute and removes protections.
 #-------------------------------
 [NAP]
 Name = Nap

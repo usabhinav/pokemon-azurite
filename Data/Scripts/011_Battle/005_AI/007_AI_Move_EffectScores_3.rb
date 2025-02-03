@@ -378,7 +378,8 @@ class Battle::AI
          "EffectivenessIncludesSoundType", "EffectivenessIncludesGrassType"
     #---------------------------------------------------------------------------
     when "SuperEffectiveAgainstFireNeutralEffectiveAgainstIce",
-         "SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses"
+         "SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses",
+         "SuperEffectiveAgainstUserWeaknesses"
       # Type mod calculations will automatically adjust the score appropriately.
     #---------------------------------------------------------------------------
     when "CategoryDependsOnHigherDamagePoisonTarget"
@@ -1492,6 +1493,13 @@ class Battle::AI
         score += 30 if !target.trappedInBattle?
         score -= 100 if !target.pbCanLowerStatStage?(:DEFENSE, user, move) &&
                         !target.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user, move)
+      end
+    #---------------------------------------------------------------------------
+    when "TrapFlinchTargetForNextTurn"
+      score -= 90 if target.effects[PBEffects::HugCounter] >= 0
+      if skill >= PBTrainerAI.highSkill
+        score += 30 if !target.hasActiveAbility?(:INNERFOCUS) &&
+                       target.effects[PBEffects::Substitute] == 0
       end
     #---------------------------------------------------------------------------
     when "TrapUserAndTargetInBattle"

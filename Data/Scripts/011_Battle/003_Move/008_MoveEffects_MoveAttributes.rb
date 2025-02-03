@@ -1294,7 +1294,7 @@ class Battle::Move::RemoveProtections < Battle::Move
 end
 
 #===============================================================================
-# Ends target's protections immediately. (Hyperspace Hole)
+# Ends target's protections immediately. (Hyperspace Hole, Energy Wave)
 #===============================================================================
 class Battle::Move::RemoveProtectionsBypassSubstitute < Battle::Move
   def ignoresSubstitute?(user); return true; end
@@ -1624,6 +1624,24 @@ class Battle::Move::SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses < Ba
     if user.pbCanLowerStatStage?(:DEFENSE, user, self)
       user.pbLowerStatStage(:DEFENSE, 1, user)
     end
+  end
+end
+
+#===============================================================================
+# Super effective against types that the user is weak to.
+# (Wonder Strike, Wonder Wind)
+#===============================================================================
+class Battle::Move::SuperEffectiveAgainstUserWeaknesses < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    user_types = user.pbTypes(true)
+    user_weak_types = []
+    GameData::Type.each do |i|
+      user_weak_types.push(i.id) if i != :QMARKS && Effectiveness.super_effective_type?(i.id, *user_types)
+    end
+    if user_weak_types.include?(defType)
+      return Effectiveness::SUPER_EFFECTIVE_ONE
+    end
+    return super
   end
 end
 

@@ -903,6 +903,47 @@ class Battle::Move::ConfuseFlinchTarget < Battle::Move
 end
 
 #===============================================================================
+# Confuses the user. (Tantrum, Headache)
+#===============================================================================
+class Battle::Move::ConfuseUser < Battle::Move
+  def pbMoveFailed?(user, targets)
+    return true if statusMove? && user.effects[PBEffects::Confusion] == 0 && !user.pbCanConfuseSelf?(true)
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    super
+    if statusMove? || @battle.pbRandom(100) < @addlEffect
+      if user.pbCanConfuseSelf?(false)
+        confuse_msg = nil
+        headache_messages = [
+          _INTL("{1} thought hard about if ketchup is a smoothie.", user.pbThis),
+          _INTL("{1} worried about their consiousness when it's stored in a computer.", user.pbThis),
+          _INTL("{1} tripped and smacked their noggin.", user.pbThis),
+          _INTL("{1} wondered how to know if they love someone when they've never loved before.", user.pbThis),
+          _INTL("{1} feared that the {1} that goes into the Pokéball is not the {1} that comes out.", user.pbThis),
+          _INTL("{1} gazed into the abyss, and the abyss gazed back.", user.pbThis),
+          _INTL("{1} wonders if the true pocket monster is man.", user.pbThis),
+          _INTL("{1} realizes there is no {1}. There is only {1}'s perceptions.", user.pbThis),
+          _INTL("{1} thinks too hard about what they want for lunch.", user.pbThis),
+          _INTL("{1} forgot to eat breakfast.", user.pbThis),
+          _INTL("{1} realized they left the oven on!", user.pbThis),
+          _INTL("{1} can't believe it's not butter!", user.pbThis),
+          _INTL("{1} wonders if electric sheep dream of androids.", user.pbThis),
+        ]
+        confuse_msg = headache_messages.sample if @id == :HEADACHE
+        user.pbConfuseSelf(confuse_msg)
+      elsif @id == :HEADACHE && user.effects[PBEffects::Confusion] > 0
+        user.effects[PBEffects::Confusion] += 1
+        @battle.pbDisplay(_INTL("{1} became even more confused!", user.pbThis))
+      elsif statusMove?
+        @battle.pbDisplay(_INTL("But it failed!"))
+      end
+    end
+  end
+end
+
+#===============================================================================
 # Attracts the target. (Attract)
 #===============================================================================
 class Battle::Move::AttractTarget < Battle::Move

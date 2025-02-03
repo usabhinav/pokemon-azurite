@@ -470,6 +470,34 @@ class Battle::Move::TrapTargetInBattleLowerTargetDefSpDef1EachTurn < Battle::Mov
 end
 
 #===============================================================================
+# Target can no longer switch out or flee, as long as the user remains active.
+# Also causes the target to flinch. (Hug)
+#===============================================================================
+class Battle::Move::TrapFlinchTargetForNextTurn < Battle::Move
+  def canMagicCoat?; return true; end
+  def flinchingMove?; return true; end
+
+  def pbAdditionalEffect(user, target)
+    return if target.fainted?
+    if target.damageState.substitute
+      @battle.pbDisplay(_INTL("The substitute was soft and nice to hug!"))
+      return
+    end
+    if target.effects[PBEffects::HugCounter] > 0
+      @battle.pbDisplay(_INTL("{1} needs personal space!", target.pbThis))
+      return
+    end
+    if Settings::MORE_TYPE_EFFECTS && target.pbHasType?(:GHOST)
+      @battle.pbDisplay(_INTL("If only {1} had more hugs in life!", target.pbThis))
+      return
+    end
+    target.effects[PBEffects::HugCounter] = 2
+    @battle.pbDisplay(_INTL("{1} has been embraced!", target.pbThis))
+    target.pbFlinch(user)
+  end
+end
+
+#===============================================================================
 # Prevents the user and the target from switching out or fleeing. This effect
 # isn't applied if either Pokémon is already prevented from switching out or
 # fleeing. (Jaw Lock)

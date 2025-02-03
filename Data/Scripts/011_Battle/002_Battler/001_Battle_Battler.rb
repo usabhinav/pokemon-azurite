@@ -847,6 +847,7 @@ class Battle::Battler
     return true if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
     return true if @battle.field.effects[PBEffects::FlameRing] > 0
     return true if @effects[PBEffects::DoomedSerenadeCount] > 0
+    return true if @effects[PBEffects::HugCounter] > 0
     return false
   end
 

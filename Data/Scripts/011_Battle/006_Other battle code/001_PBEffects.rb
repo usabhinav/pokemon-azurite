@@ -177,6 +177,7 @@ module PBEffects
   GoldenSpin          = 172
   MysticEdgeActive    = 173
   ProphecyCounter     = 174
+  HugCounter          = 175
 
   #=============================================================================
   # These effects apply to a battler position

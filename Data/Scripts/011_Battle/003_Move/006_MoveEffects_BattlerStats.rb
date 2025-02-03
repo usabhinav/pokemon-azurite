@@ -636,6 +636,27 @@ class Battle::Move::RaiseUserMainStats2InThreeTurns < Battle::Move
 end
 
 #===============================================================================
+# Maxes out the user's Attack, Defense, Speed, Special Attack and Special
+# Defense. (Divinity)
+#===============================================================================
+class Battle::Move::MaxUserMainStats < Battle::Move::MultiStatUpMove
+  def pbMoveFailed?(user, targets)
+    if !user.isSpecies?(:ARCEUS)
+      @battle.pbDisplay(_INTL("But if failed!"))
+      return true
+    end
+    return super
+  end
+
+  def initialize(battle, move)
+    super
+    # 12 stages in case the user's current stat level is at -6, in which case
+    # it would need +12 to get maxed out.
+    @statUp = [:ATTACK, 12, :DEFENSE, 12, :SPECIAL_ATTACK, 12, :SPECIAL_DEFENSE, 12, :SPEED, 12]
+  end
+end
+
+#===============================================================================
 # User rages until the start of a round in which they don't use this move. (Rage)
 # (Handled in Battler's pbProcessMoveAgainstTarget): Ups rager's Attack by 1
 # stage each time it loses HP due to a move.

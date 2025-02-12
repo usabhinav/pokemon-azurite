@@ -92,6 +92,21 @@ class Battle::Move::SwitchOutUserStatusMoveAndRaiseReplacementRandomStat2 < Batt
 end
 
 #===============================================================================
+# User switches out, and their HP is restored by a third of their max HP. If
+# user is a wild Pokémon, ends the battle instead. (Tap Out)
+#===============================================================================
+class Battle::Move::SwitchOutUserStatusMoveAndRecoverOneThirdOfTotalHP < Battle::Move::SwitchOutUserStatusMove
+  def healingMove?; return true; end
+
+  def pbEffectGeneral(user)
+    if user.canHeal? && user.pbRecoverHP((user.totalhp / 3.0).round) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+    end
+    super
+  end
+end
+
+#===============================================================================
 # After inflicting damage, user switches out. Ignores trapping moves.
 # (U-turn, Volt Switch)
 #===============================================================================

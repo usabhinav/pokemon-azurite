@@ -697,6 +697,9 @@ class Battle
     # Ritual
     pbEORCountDownFieldEffect(PBEffects::Ritual,
                               _INTL("The ritual ended!"))
+    # Air Lense
+    pbEORCountDownFieldEffect(PBEffects::AirLense,
+                              _INTL("Electric-type attacks have regained their power!"))
   end
 
   #=============================================================================
@@ -1149,6 +1152,7 @@ class Battle
       battler.effects[PBEffects::SpikyShield]      = false
       battler.effects[PBEffects::Spotlight]        = 0
       battler.effects[PBEffects::ThroatChop]       -= 1 if battler.effects[PBEffects::ThroatChop] > 0
+      battler.effects[PBEffects::TrackPunchUserIndex] = -1
       battler.lastHPLost                           = 0
       battler.lastHPLostFromFoe                    = 0
       battler.droppedBelowHalfHP                   = false

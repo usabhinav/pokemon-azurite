@@ -91,7 +91,7 @@ class Battle::AI
     when "PowerHigherWithMoreNidokingsInParty"
       score += (2 * @battle.pbParty(user.index).count {|pokemon| !pokemon.egg? && pokemon.isSpecies?(:NIDOKING)})
     #---------------------------------------------------------------------------
-    when "PowerHigherAndAccuracyHigherInSunlight"
+    when "PowerHigherAndAccuracyHigherInSunlight", "PowerHigherWithSunnyWeather"
       score += 30 if [:Sun, :HarshSun].include?(user.effectiveWeather)
     #---------------------------------------------------------------------------
     when "PowerHigherIfTargetActedElseStartReduceIncomingDamage"
@@ -338,7 +338,7 @@ class Battle::AI
         end
       end
     #---------------------------------------------------------------------------
-    when "RecoilThirdOfDamageDealtBurnTarget"
+    when "RecoilThirdOfDamageDealtBurnTarget", "RecoilTenPercentOfTotalHPBurnTarget"
       score -= 30
       if target.pbCanBurn?(user, false)
         score += 30
@@ -1118,6 +1118,9 @@ class Battle::AI
     when "RedirectAllMovesToTarget"
       score -= 90 if user.allAllies.length == 0
     #---------------------------------------------------------------------------
+    when "RedirectTargetMoveToUser"
+      # No clear indicator to know when to use this move.
+    #---------------------------------------------------------------------------
     when "CannotBeRedirected"
       redirection = false
       user.allOpposing.each do |b|
@@ -1125,6 +1128,7 @@ class Battle::AI
         if b.effects[PBEffects::RagePowder] ||
            b.effects[PBEffects::Spotlight] > 0 ||
            b.effects[PBEffects::FollowMe] > 0 ||
+           b.index == user.effects[PBEffects::TrackPunchUserIndex] ||
            (b.hasActiveAbility?(:LIGHTNINGROD) && move.pbCalcType == :ELECTRIC) ||
            (b.hasActiveAbility?(:STORMDRAIN) && move.pbCalcType == :WATER)
           redirection = true
@@ -1330,7 +1334,8 @@ class Battle::AI
       score -= 100 if @battle.trainerBattle?
     #---------------------------------------------------------------------------
     when "SwitchOutUserStatusMove", "SwitchOutUserStatusMoveAndHealReplacementBy25PercentOfTotalHP",
-         "SwitchOutUserStatusMoveAndRaiseReplacementRandomStat2"
+         "SwitchOutUserStatusMoveAndRaiseReplacementRandomStat2",
+         "SwitchOutUserStatusMoveAndRecoverOneThirdOfTotalHP"
       if !@battle.pbCanChooseNonActive?(user.index) ||
          @battle.pbTeamAbleNonActiveCount(user.index) > 1   # Don't switch in ace
         score -= 100
@@ -1350,6 +1355,9 @@ class Battle::AI
             break
           end
           score += 75 if !hasDamagingMove
+        end
+        if move.function == "SwitchOutUserStatusMoveAndRecoverOneThirdOfTotalHP"
+          score += 20 if user.hp <= user.totalhp / 2
         end
       end
     #---------------------------------------------------------------------------

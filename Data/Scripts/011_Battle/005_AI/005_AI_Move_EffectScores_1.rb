@@ -260,6 +260,9 @@ class Battle::AI
     when "StartDoubleScaleOfTypeEffectiveness"
       score -= 90 if @battle.field.effects[PBEffects::BrightContrast]
     #---------------------------------------------------------------------------
+    when "StartElectricImmunity"
+      score -= 90 if @battle.field.effects[PBEffects::AirLense]
+    #---------------------------------------------------------------------------
     when "FailsOnConsecutiveUseInvulnerableInSky"
       score -= 90 if user.effects[PBEffects::Ingrain] ||
                      user.effects[PBEffects::SmackDown] ||

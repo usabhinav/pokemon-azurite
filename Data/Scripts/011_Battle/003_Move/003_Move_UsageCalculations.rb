@@ -213,6 +213,10 @@ class Battle::Move
         ret *= 2
       end
     end
+    # Air Lense
+    if @battle.field.effects[PBEffects::AirLense] > 0
+      ret = Effectiveness::INEFFECTIVE
+    end
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
           user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&

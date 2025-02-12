@@ -102,6 +102,20 @@ class Battle::Battler
     return targets if user.hasActiveAbility?([:PROPELLERTAIL, :STALWART])
     priority = @battle.pbPriority(true)
     nearOnly = !target_data.can_choose_distant_target?
+    # Track Punch takes priority over the moves below
+    newTarget = nil
+    if user.effects[PBEffects::TrackPunchUserIndex] >= 0
+      b = @battle.battlers[user.effects[PBEffects::TrackPunchUserIndex]]
+      if !b.fainted? && b.opposes?(user) && (!nearOnly || b.near?(user))
+        newTarget = b
+      end
+    end
+    if newTarget
+      PBDebug.log("[Move target changed] #{user.pbThis} targeted the Track Punch user #{newTarget.pbThis}")
+      targets = []
+      pbAddTarget(targets, user, newTarget, move, nearOnly)
+      return targets
+    end
     # Spotlight (takes priority over Follow Me/Rage Powder/Lightning Rod/Storm Drain)
     newTarget = nil
     strength = 100   # Lower strength takes priority

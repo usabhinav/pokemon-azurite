@@ -178,6 +178,7 @@ module PBEffects
   MysticEdgeActive    = 173
   ProphecyCounter     = 174
   HugCounter          = 175
+  TrackPunchUserIndex = 176
 
   #=============================================================================
   # These effects apply to a battler position
@@ -246,4 +247,5 @@ module PBEffects
   BrightContrast  = 16
   MysteryShroud   = 17
   Ritual          = 18
+  AirLense        = 19
 end

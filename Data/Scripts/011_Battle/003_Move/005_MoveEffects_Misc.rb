@@ -1062,6 +1062,24 @@ class Battle::Move::StartDoubleScaleOfTypeEffectiveness < Battle::Move
 end
 
 #===============================================================================
+# For 5 turns, all battlers will be immune to Electric-type attacks. (Air Lense)
+#===============================================================================
+class Battle::Move::StartElectricImmunity < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.effects[PBEffects::AirLense] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbDisplay(_INTL("Electric-type attacks have lost their surge!"))
+    @battle.field.effects[PBEffects::AirLense] = 5
+  end
+end
+
+#===============================================================================
 # If attack misses, user takes crash damage equal to its speed. (Crash Landing)
 #===============================================================================
 class Battle::Move::CrashDamageWithSpeedIfFails < Battle::Move

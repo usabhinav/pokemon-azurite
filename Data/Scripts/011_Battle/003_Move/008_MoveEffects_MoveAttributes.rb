@@ -537,6 +537,21 @@ class Battle::Move::PowerHigherIfTargetActedElseStartReduceIncomingDamage < Batt
 end
 
 #===============================================================================
+# Power is doubled in sunlight, and 2.5x in Desolate Land. (Crashing Sun)
+#===============================================================================
+class Battle::Move::PowerHigherWithSunnyWeather < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    case user.effectiveWeather
+    when :HarshSun
+      baseDmg = (baseDmg * 2.5).floor
+    when :Sun
+      baseDmg = baseDmg * 2
+    end
+    return baseDmg
+  end
+end
+
+#===============================================================================
 # Power is chosen at random. Power is doubled if the target is using Dig. Hits
 # some semi-invulnerable targets. (Magnitude)
 #===============================================================================
@@ -1411,6 +1426,36 @@ class Battle::Move::RecoilThirdOfDamageDealtBurnTarget < Battle::Move::RecoilMov
   def pbAdditionalEffect(user, target)
     return if target.damageState.substitute
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
+  end
+end
+
+#===============================================================================
+# User takes recoil damage equal to 10% of their max HP. May burn the target.
+# (Combustion)
+#===============================================================================
+class Battle::Move::RecoilTenPercentOfTotalHPBurnTarget < Battle::Move
+  def recoilMove?;                 return true; end
+
+  def pbAddTarget(targets, user)
+    # Should not target itself.
+    targets.reject! {|t| t.index == user.index}
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    target.pbBurn(user) if target.pbCanBurn?(user, false, self)
+  end
+
+  def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    return if user.fainted? || numHits == 0
+    return if !user.takesIndirectDamage?
+    return if user.hasActiveAbility?(:ROCKHEAD)
+    amt = (user.totalhp / 10.0).round
+    amt = (amt * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    amt = 1 if amt < 1
+    user.pbReduceHP(amt, false)
+    @battle.pbDisplay(_INTL("{1} is damaged by recoil!", user.pbThis))
+    user.pbItemHPHealCheck
   end
 end
 

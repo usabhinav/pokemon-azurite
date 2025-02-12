@@ -44,6 +44,17 @@ class Battle::Move::RedirectAllMovesToTarget < Battle::Move
 end
 
 #===============================================================================
+# This round, user becomes the target of attacks that have single targets from
+# the opponent that they targeted. (Track Punch)
+#===============================================================================
+class Battle::Move::RedirectTargetMoveToUser < Battle::Move
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::TrackPunchUserIndex] = user.index
+    @battle.pbDisplay(_INTL("{1} switched its focus to {2}!", target.pbThis, user.pbThis(true)))
+  end
+end
+
+#===============================================================================
 # Unaffected by moves and abilities that would redirect this move. (Snipe Shot)
 #===============================================================================
 class Battle::Move::CannotBeRedirected < Battle::Move

@@ -348,6 +348,7 @@ class Battle::Battler
     @effects[PBEffects::MysticEdgeActive]    = false
     @effects[PBEffects::ProphecyCounter]     = 0
     @effects[PBEffects::HugCounter]          = 0
+    @effects[PBEffects::TrackPunchUserIndex] = -1
   end
 
   #=============================================================================

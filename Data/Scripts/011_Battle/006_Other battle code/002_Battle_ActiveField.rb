@@ -32,6 +32,7 @@ class Battle::ActiveField
     @effects[PBEffects::MysteryShroud]   = 0
     @effects[PBEffects::Ritual]          = 0
     @effects[PBEffects::AirLense]        = 0
+    @effects[PBEffects::Sputter]         = 0
     @defaultWeather  = :None
     @weather         = :None
     @weatherDuration = 0

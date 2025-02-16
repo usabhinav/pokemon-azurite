@@ -314,6 +314,12 @@ class Battle
     # If any battlers chose to use Time Break, begin Time Break phase where all remaining battlers' actions get displayed,
     # then Time Break users can choose their new actions before continuing the turn.
     pbTimeBreakPhase
+    # Activate Sputter
+    sputter_battler = @battlers.find {|b| b && !b.fainted? && pbChoseMoveFunctionCode?(b.index, "NegateAllAbilitiesThisTurn") }
+    if sputter_battler
+      @field.effects[PBEffects::Sputter] = true
+      pbDisplay(_INTL("{1} has negated all abilities this turn!", sputter_battler.pbThis))
+    end
     # Calculate move order for this round
     pbCalculatePriority(true)
     # Perform actions

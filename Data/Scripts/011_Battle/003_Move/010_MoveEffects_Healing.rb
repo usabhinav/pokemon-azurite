@@ -2,6 +2,8 @@
 # Heals user to full HP. User falls asleep for 2 more rounds. (Rest)
 #===============================================================================
 class Battle::Move::HealUserFullyAndFallAsleep < Battle::Move::HealingMove
+  def sleepTurnCount; return 3; end
+
   def pbMoveFailed?(user, targets)
     if user.asleep?
       @battle.pbDisplay(_INTL("But it failed!"))
@@ -17,8 +19,20 @@ class Battle::Move::HealUserFullyAndFallAsleep < Battle::Move::HealingMove
   end
 
   def pbEffectGeneral(user)
-    user.pbSleepSelf(_INTL("{1} slept and became healthy!", user.pbThis), 3)
+    user.pbSleepSelf(_INTL("{1} slept and became healthy!", user.pbThis), sleepTurnCount)
     super
+  end
+end
+
+#===============================================================================
+# Heals user by half of their total HP and cures any status condition. User
+# falls asleep for 1 more round. (Nap)
+#===============================================================================
+class Battle::Move::HealUserHalfOfTotalHPAndFallAsleep < Battle::Move::HealUserFullyAndFallAsleep
+  def sleepTurnCount; return 2; end
+
+  def pbHealAmount(user)
+    return (user.totalhp / 2.0).round
   end
 end
 

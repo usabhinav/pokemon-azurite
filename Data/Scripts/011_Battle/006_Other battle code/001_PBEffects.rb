@@ -248,4 +248,5 @@ module PBEffects
   MysteryShroud   = 17
   Ritual          = 18
   AirLense        = 19
+  Sputter         = 20
 end

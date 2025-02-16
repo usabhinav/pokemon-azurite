@@ -523,6 +523,7 @@ class Battle::Battler
   #       the item - the code existing is enough to cause the loop).
   def abilityActive?(ignore_fainted = false, check_ability = nil)
     return false if fainted? && !ignore_fainted
+    return false if @battle.field.effects[PBEffects::Sputter]
     return false if @effects[PBEffects::GastroAcid]
     return false if @effects[PBEffects::Stare] > 0
     return false if check_ability != :NEUTRALIZINGGAS && self.ability != :NEUTRALIZINGGAS &&

@@ -1184,6 +1184,7 @@ class Battle
     @field.effects[PBEffects::FairyLock]   -= 1 if @field.effects[PBEffects::FairyLock] > 0
     @field.effects[PBEffects::FusionBolt]  = false
     @field.effects[PBEffects::FusionFlare] = false
+    @field.effects[PBEffects::Sputter]     = false
     @endOfRound = false
   end
 end

@@ -938,6 +938,19 @@ class Battle::Move::StopTimeAllowUserToChooseAnotherMove < Battle::Move
 end
 
 #===============================================================================
+# Negates the abilities of all battlers this turn. Activates before all other
+# actions (except Time Break). However, it can also be triggered mid-round
+# via a move like Instruct. (Sputter)
+#===============================================================================
+class Battle::Move::NegateAllAbilitiesThisTurn < Battle::Move
+  def pbEffectGeneral(user)
+    return if @battle.field.effects[PBEffects::Sputter]
+    @battle.field.effects[PBEffects::Sputter] = true
+    @battle.pbDisplay(_INTL("{1} has negated all abilities this turn!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # Deals damage again against a random foe at the start of the next turn.
 # (Magic Ring)
 #===============================================================================

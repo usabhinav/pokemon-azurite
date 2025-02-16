@@ -328,6 +328,19 @@ class Battle::Move::RaiseUserEvasion1 < Battle::Move::StatUpMove
 end
 
 #===============================================================================
+# Increases the user's evasion by 1 stage. User copies the target's types.
+# (Counter Shield)
+#===============================================================================
+class Battle::Move::RaiseUserEvasion1AndCopyTargetTypesAfterMoveUse < Battle::Move::RaiseUserEvasion1
+  def ignoresSubstitute?(user); return true; end
+
+  def pbEffectAgainstTarget(user, target)
+    user.pbChangeTypes(target)
+    @battle.pbDisplay(_INTL("{1} copied {2}'s types!", user.pbThis, target.pbThis(true)))
+  end
+end
+
+#===============================================================================
 # Increases the user's evasion by 2 stages.
 #===============================================================================
 class Battle::Move::RaiseUserEvasion2 < Battle::Move::StatUpMove
@@ -441,6 +454,58 @@ class Battle::Move::LowerUserDefSpDef1RaiseUserAtkSpAtkSpd2 < Battle::Move
     super
     @statUp   = [:ATTACK, 2, :SPECIAL_ATTACK, 2, :SPEED, 2]
     @statDown = [:DEFENSE, 1, :SPECIAL_DEFENSE, 1]
+  end
+
+  def pbMoveFailed?(user, targets)
+    failed = true
+    (@statUp.length / 2).times do |i|
+      if user.pbCanRaiseStatStage?(@statUp[i * 2], user, self)
+        failed = false
+        break
+      end
+    end
+    (@statDown.length / 2).times do |i|
+      if user.pbCanLowerStatStage?(@statDown[i * 2], user, self)
+        failed = false
+        break
+      end
+    end
+    if failed
+      @battle.pbDisplay(_INTL("{1}'s stats can't be changed further!", user.pbThis))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    showAnim = true
+    (@statDown.length / 2).times do |i|
+      next if !user.pbCanLowerStatStage?(@statDown[i * 2], user, self)
+      if user.pbLowerStatStage(@statDown[i * 2], @statDown[(i * 2) + 1], user, showAnim)
+        showAnim = false
+      end
+    end
+    showAnim = true
+    (@statUp.length / 2).times do |i|
+      next if !user.pbCanRaiseStatStage?(@statUp[i * 2], user, self)
+      if user.pbRaiseStatStage(@statUp[i * 2], @statUp[(i * 2) + 1], user, showAnim)
+        showAnim = false
+      end
+    end
+  end
+end
+
+#===============================================================================
+# Increases the user's Defense and Special Defense by 2 stages each.
+# Decreases the user's Attack and Special Attack by 2 stages each. (Stronghold)
+#===============================================================================
+class Battle::Move::RaiseUserDefSpDef2AndLowerUserAtkSpAtk2 < Battle::Move
+  def canSnatch?; return true; end
+
+  def initialize(battle, move)
+    super
+    @statUp   = [:DEFENSE, 2, :SPECIAL_DEFENSE, 2]
+    @statDown = [:ATTACK, 2, :SPECIAL_ATTACK, 2]
   end
 
   def pbMoveFailed?(user, targets)
@@ -2244,8 +2309,30 @@ end
 # stage. (Shimmer)
 #===============================================================================
 class Battle::Move::LowerTargetAccuracy2AndLowerUserEvasion1 < Battle::Move::LowerTargetAccuracy2
+  def pbMoveFailed?(user, targets)
+    return false if damagingMove?
+    failed = true
+    targets.each do |target|
+      if target.pbCanLowerStatStage?(@statDown[0], user, self)
+        failed = false
+      end
+    end
+    if user.pbCanLowerStatStage?(:EVASION, user, self)
+      failed = false
+    end
+    if failed
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false
+  end
+
   def pbEffectGeneral(user)
-    if user.pbCanLowerStatStage?(:EVASION, user, self, true)
+    if user.pbCanLowerStatStage?(:EVASION, user, self)
       user.pbLowerStatStage(:EVASION, 1, user)
     end
   end
@@ -2284,6 +2371,40 @@ class Battle::Move::LowerTargetDefense1AndRaiseAllyAttack1 < Battle::Move
     else
       return if !target.pbCanRaiseStatStage?(:ATTACK, user, self)
       target.pbRaiseStatStage(:ATTACK, 1, user)
+    end
+  end
+end
+
+#===============================================================================
+# Decreases the target's Attack by 1 stage and increases the user's Defense by 1
+# stage. (Snivel)
+#===============================================================================
+class Battle::Move::LowerTargetAttack1AndRaiseUserDefense1 < Battle::Move::LowerTargetAttack1
+  def pbMoveFailed?(user, targets)
+    return false if damagingMove?
+    failed = true
+    targets.each do |target|
+      if target.pbCanLowerStatStage?(@statDown[0], user, self)
+        failed = false
+      end
+    end
+    if user.pbCanRaiseStatStage?(:DEFENSE, user, self)
+      failed = false
+    end
+    if failed
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    if user.pbCanRaiseStatStage?(:DEFENSE, user, self)
+      user.pbRaiseStatStage(:DEFENSE, 1, user)
     end
   end
 end

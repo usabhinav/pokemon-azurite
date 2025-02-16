@@ -243,6 +243,9 @@ class Battle::AI
     when "StopTimeAllowUserToChooseAnotherMove"
       # No clear indicator to know when to use this move.
     #---------------------------------------------------------------------------
+    when "NegateAllAbilitiesThisTurn"
+      # No clear indicator to know when to use this move.
+    #---------------------------------------------------------------------------
     when "HitsAgainAtStartOfNextTurnAgainstRandomFoe"
       # No clear indicator to know when to use this move.
     #---------------------------------------------------------------------------
@@ -590,7 +593,7 @@ class Battle::AI
         score += 20 if user.stages[:ACCURACY] < 0
       end
     #---------------------------------------------------------------------------
-    when "RaiseUserEvasion1"
+    when "RaiseUserEvasion1", "RaiseUserEvasion1AndCopyTargetTypesAfterMoveUse"
       if move.statusMove?
         if user.statStageAtMax?(:EVASION)
           score -= 90
@@ -710,6 +713,21 @@ class Battle::AI
           break
         end
         score += 20 if hasDamagingAttack
+      end
+    #---------------------------------------------------------------------------
+    when "RaiseUserDefSpDef2AndLowerUserAtkSpAtk2"
+      score += user.stages[:ATTACK] * 20
+      score += user.stages[:SPECIAL_ATTACK] * 20
+      score -= user.stages[:DEFENSE] * 20
+      score -= user.stages[:SPECIAL_DEFENSE] * 20
+      if skill >= PBTrainerAI.mediumSkill
+        hasDamagingAttack = false
+        user.eachMove do |m|
+          next if !m.damagingMove?
+          hasDamagingAttack = true
+          break
+        end
+        score -= 20 if hasDamagingAttack
       end
     #---------------------------------------------------------------------------
     when "RaiseUserAtkSpd1"
@@ -1028,7 +1046,7 @@ class Battle::AI
         score -= target.stages[:SPECIAL_DEFENSE] * 10
       end
     #---------------------------------------------------------------------------
-    when "LowerTargetAttack1"
+    when "LowerTargetAttack1", "LowerTargetAttack1AndRaiseUserDefense1"
       if move.statusMove?
         if target.pbCanLowerStatStage?(:ATTACK, user)
           score += target.stages[:ATTACK] * 20

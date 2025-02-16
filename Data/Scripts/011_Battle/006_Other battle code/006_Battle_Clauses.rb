@@ -122,6 +122,22 @@ end
 
 
 
+class Battle::Move::RaiseUserEvasion1AndCopyTargetTypesAfterMoveUse
+  unless method_defined?(:__clauses__pbMoveFailed?)
+    alias __clauses__pbMoveFailed? pbMoveFailed?
+  end
+
+  def pbMoveFailed?(user, targets)
+    if !damagingMove? && @battle.rules["evasionclause"]
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return __clauses__pbMoveFailed?(user, targets)
+  end
+end
+
+
+
 class Battle::Move::RaiseUserEvasion2MinimizeUser   # Minimize
   unless method_defined?(:__clauses__pbMoveFailed?)
     alias __clauses__pbMoveFailed? pbMoveFailed?

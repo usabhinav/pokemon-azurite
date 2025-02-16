@@ -182,7 +182,8 @@ module Battle::DebugVariables
     PBEffects::BrightContrast  => { name: "Bright Contrast duration",         default: 0 },
     PBEffects::MysteryShroud   => { name: "Mystery Shroud duration",          default: 0 },
     PBEffects::Ritual          => { name: "Ritual duration",                  default: 0 },
-    PBEffects::AirLense        => { name: "Air Lense duration",               default: 0 }
+    PBEffects::AirLense        => { name: "Air Lense duration",               default: 0 },
+    PBEffects::Sputter         => { name: "Sputter was used",                 default: false }
   }
 
   POSITION_EFFECTS = {

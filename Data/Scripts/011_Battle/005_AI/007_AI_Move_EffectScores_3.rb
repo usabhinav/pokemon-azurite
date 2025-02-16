@@ -632,7 +632,7 @@ class Battle::AI
       score += 20 if user.pbOpposingSide.effects[PBEffects::Reflect] > 0
       score += 20 if user.pbOpposingSide.effects[PBEffects::LightScreen] > 0
     #---------------------------------------------------------------------------
-    when "HealUserFullyAndFallAsleep"
+    when "HealUserFullyAndFallAsleep", "HealUserHalfOfTotalHPAndFallAsleep"
       if user.hp == user.totalhp || !user.pbCanSleep?(user, false, nil, true)
         score -= 90
       else

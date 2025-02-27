@@ -124,6 +124,9 @@ class Battle::AI
     when "StartIcyTerrain"
       score -= 90 if @battle.field.terrain == :Icy
     #---------------------------------------------------------------------------
+    when "StartStickyTerrain"
+      score -= 90 if @battle.field.terrain == :Sticky
+    #---------------------------------------------------------------------------
     when "RemoveTerrain"
       score -= 100 if @battle.field.terrain == :None
     #---------------------------------------------------------------------------
@@ -1420,17 +1423,29 @@ class Battle::AI
         end
       end
       score -= 95 if count == 0
-    #---------------------------------------------------------------------------  
+    #---------------------------------------------------------------------------
     when "LowerTargetDefSpDef3"
       avg  = target.stages[:DEFENSE] * 10
       avg += target.stages[:SPECIAL_DEFENSE] * 10
       score += avg / 2
+    #---------------------------------------------------------------------------  
+    when "LowerTargetDefSpDef2IfTargetNotBurnedElse3"
+      avg  = target.stages[:DEFENSE] * 10
+      avg += target.stages[:SPECIAL_DEFENSE] * 10
+      score += avg / 2
+      score += 20 if target.status == :BURN
     #---------------------------------------------------------------------------  
     when "LowerTargetSpAtkAndOrSpDef1"
       avg  = target.stages[:SPECIAL_ATTACK] * 10
       avg += target.stages[:SPECIAL_DEFENSE] * 10
       score += avg / 2
     #---------------------------------------------------------------------------  
+    when "LowerTargetDefSpDefByAmountDependingOnStockpile"
+      avg  = target.stages[:SPECIAL_ATTACK] * 10
+      avg += target.stages[:SPECIAL_DEFENSE] * 10
+      avg += user.effects[PBEffects::Stockpile] * 20
+      score += avg / 2
+    #------------------------------------to---------------------------------------  
     when "LowerTargetRandomStat1"
       avgStat = 0
       canChangeStat = false

@@ -74,3 +74,9 @@ GameData::BattleTerrain.register({
   :name      => _INTL("Icy"),
   :animation => "IcyTerrain"
 })
+
+GameData::BattleTerrain.register({
+  :id        => :Sticky,
+  :name      => _INTL("Sticky"),
+  :animation => "StickyTerrain"
+})

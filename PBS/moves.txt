@@ -9049,8 +9049,9 @@ Power = 20
 Accuracy = 85
 TotalPP = 15
 Target = NearOther
-FunctionCode = LowerTargetDefSpDef1IfStockpileNotUsedElse2
+FunctionCode = LowerTargetDefSpDefByAmountDependingOnStockpile
 Flags = Contact,CanProtect,CanMirrorMove
+EffectChance = 100
 Description = This attack corrodes the enemy's defenses. It lowers them even more if they've stockpiled.
 #-------------------------------
 [MUDDYTAKEDOWN]
@@ -10355,7 +10356,7 @@ Category = Status
 Accuracy = 65
 TotalPP = 10
 Target = NearOther
-FunctionCode = ConfuseTargetAndPoisonTarget
+FunctionCode = ConfusePoisonTarget
 Flags = CanProtect,CanMirrorMove,Powder
 Description = Confuses and poisons the target.
 #-------------------------------
@@ -10378,7 +10379,7 @@ Category = Status
 Accuracy = 90
 TotalPP = 10
 Target = NearOther
-FunctionCode = ConfuseUserAndTarget
+FunctionCode = ConfuseTargetAndUser
 Flags = CanProtect,CanMirrorMove
 Description = Confuses both the target and the user.
 #-------------------------------
@@ -11731,8 +11732,8 @@ Type = POISON
 Category = Status
 Accuracy = 0
 TotalPP = 5
-Target = UserSide
-FunctionCode = ForEachMemberInUserPartyCureMemberPoisonAndHealMemberByThirdOfTotalHPIfPoisonTypeElsePoisonMember
+Target = UserAndAllies
+FunctionCode = ForEachMemberInUserPartyPoisonMemberIfNotPoisonTypeElseCureMemberStatusAndHealMemberByThirdOfTotalHP
 Flags = CanMirrorMove
 Description = The user heals and cures the status of all allied Poison-type Pokémon, but poisons their other allies.
 #-------------------------------

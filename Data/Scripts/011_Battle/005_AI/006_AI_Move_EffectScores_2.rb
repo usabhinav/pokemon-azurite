@@ -111,6 +111,23 @@ class Battle::AI
         score -= 90 if move.statusMove?
       end
     #---------------------------------------------------------------------------
+    when "PoisonTargetBoostToxicityOnConsecutiveUseAndPowerIncreasesIfTargetPoisoned"
+      if target.status == :POISON || target.pbCanPoison?(user, false)
+        score += 30
+        if skill >= PBTrainerAI.mediumSkill
+          score += 30 if target.hp <= target.totalhp / 4
+          score += 50 if target.hp <= target.totalhp / 8
+          score -= 40 if target.effects[PBEffects::Yawn] > 0
+        end
+        if skill >= PBTrainerAI.highSkill
+          score += 10 if pbRoughStat(target, :DEFENSE, skill) > 100
+          score += 10 if pbRoughStat(target, :SPECIAL_DEFENSE, skill) > 100
+          score -= 40 if target.hasActiveAbility?([:GUTS, :MARVELSCALE, :TOXICBOOST])
+        end
+      elsif skill >= PBTrainerAI.mediumSkill
+        score -= 90 if move.statusMove?
+      end
+    #---------------------------------------------------------------------------
     when "ParalyzeTarget", "ParalyzeTargetIfNotTypeImmune",
          "ParalyzeTargetAlwaysHitsInRainHitsTargetInSky", "ParalyzeFlinchTarget"
       if target.pbCanParalyze?(user, false) &&
@@ -280,6 +297,18 @@ class Battle::AI
         score += 20 * statuses
       end
     #---------------------------------------------------------------------------
+    when "ForEachMemberInUserPartyPoisonMemberIfNotPoisonTypeElseCureMemberStatusAndHealMemberByThirdOfTotalHP"
+      eligible_poison_types = 0
+      eligible_non_poison_types = 0
+      @battle.pbParty(user.index).each do |pkmn|
+        if pkmn
+          eligible_poison_types += 1 if pkmn.hasType?(:POISON) && (pkmn.hp < pkmn.totalhp || pkmn.status != :NONE)
+          eligible_non_poison_types += 1 if !pkmn.hasType?(:POISON) && pkmn.status == :NONE
+        end
+      end
+      score += 20 * eligible_poison_types
+      score -= 30 * eligible_non_poison_types # Poisoning your own party members may be worse than healing them
+    #---------------------------------------------------------------------------
     when "CureTargetBurn"
       if target.opposes?(user)
         score -= 40 if target.status == :BURN
@@ -344,7 +373,29 @@ class Battle::AI
         score -= 90 if move.statusMove?
       end
     #---------------------------------------------------------------------------
-    when "ConfuseTargetAndPossiblyUser"
+    when "ConfusePoisonTarget"
+      if target.pbCanConfuse?(user, false) || target.pbCanPoison?(user, false)
+        if target.pbCanConfuse?(user, false)
+          score += 30
+        end
+        if target.pbCanPoison?(user, false)
+          score += 30
+          if skill >= PBTrainerAI.mediumSkill
+            score += 30 if target.hp <= target.totalhp / 4
+            score += 50 if target.hp <= target.totalhp / 8
+            score -= 40 if target.effects[PBEffects::Yawn] > 0
+          end
+          if skill >= PBTrainerAI.highSkill
+            score += 10 if pbRoughStat(target, :DEFENSE, skill) > 100
+            score += 10 if pbRoughStat(target, :SPECIAL_DEFENSE, skill) > 100
+            score -= 40 if target.hasActiveAbility?([:GUTS, :MARVELSCALE, :TOXICBOOST])
+          end
+        end
+      elsif skill >= PBTrainerAI.mediumSkill
+        score -= 90 if move.statusMove?
+      end
+    #---------------------------------------------------------------------------
+    when "ConfuseTargetAndPossiblyUser", "ConfuseTargetAndUser"
       if target.pbCanConfuse?(user, false)
         score += 30
         if !user.pbCanConfuseSelf?(false)
@@ -363,7 +414,14 @@ class Battle::AI
       elsif skill >= PBTrainerAI.mediumSkill
         score -= 90 if move.statusMove?
       end
-    #---------------------------------------------------------------------------      
+    #---------------------------------------------------------------------------
+    when "ConfuseTargetOrPoisonTarget"
+      if target.pbCanConfuse?(user, false) || target.pbCanPoison?(user, false)
+        score += 30
+      elsif skill >= PBTrainerAI.mediumSkill
+        score -= 90 if move.statusMove?
+      end
+    #---------------------------------------------------------------------------
     when "ConfuseUser"
       # Who in their right mind would use this move?
       score -= 90 if move.statusMove?
@@ -428,6 +486,8 @@ class Battle::AI
           new_type = :CRYSTAL
         when :Icy
           new_type = :ICE
+        when :Sticky
+          new_type = :POISON
         end
         if !new_type
           envtypes = {

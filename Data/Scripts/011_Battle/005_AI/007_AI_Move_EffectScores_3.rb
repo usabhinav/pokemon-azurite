@@ -1230,7 +1230,8 @@ class Battle::AI
       if user.effects[PBEffects::Stockpile] >= 3
         score -= 80
       elsif user.pbHasMoveFunction?("PowerDependsOnUserStockpile",
-                                    "HealUserDependingOnUserStockpile")   # Spit Up, Swallow
+                                    "HealUserDependingOnUserStockpile",
+                                    "LowerTargetDefSpDefByAmountDependingOnStockpile")   # Spit Up, Swallow, Corrosive Spit
         score += 20   # More preferable if user also has Spit Up/Swallow
       end
     #---------------------------------------------------------------------------

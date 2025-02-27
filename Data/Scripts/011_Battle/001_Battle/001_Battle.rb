@@ -420,13 +420,13 @@ class Battle
     # Stores information if each party Pokemon is on the field or not
     ally_indices = Array.new(Settings::MAX_PARTY_SIZE, -1)
     battler.eachAlly do |b|
-      next if pbGetOwnerIndexFromBattlerIndex(b) != pbGetOwnerIndexFromBattlerIndex(battler)
+      next if pbGetOwnerIndexFromBattlerIndex(b.index) != pbGetOwnerIndexFromBattlerIndex(idxBattler)
       ally_indices[b.pokemonIndex] = b.index # Stores value >= 0 at same index as party index
       battlers.push(b)
     end
     pbParty(battler.index).each_with_index { |pkmn, i|
       next if battler.pokemonIndex == i # Excludes self
-      next if ally_indices[i] >= 0 # Already counted in above loop as a battler
+      next if ally_indices[i] && ally_indices[i] >= 0 # Already counted in above loop as a battler
       party.push(pkmn)
     }
     return [battlers, party]
@@ -952,6 +952,8 @@ class Battle
     when :Icy
       pbDisplay(_INTL("The ground turned to ice!"))
       allBattlers.each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
+    when :Sticky
+      pbDisplay(_INTL("The battlefield got gross and sticky!"))
     end
     # Check for abilities/items that trigger upon the terrain changing
     allBattlers.each { |b| b.pbAbilityOnTerrainChange }

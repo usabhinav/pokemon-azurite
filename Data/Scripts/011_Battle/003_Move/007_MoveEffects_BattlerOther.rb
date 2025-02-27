@@ -178,6 +178,51 @@ class Battle::Move::PoisonTargetOrSleepTargetOrParalyzeTarget < Battle::Move
 end
 
 #===============================================================================
+# Poisons the target. If target is already poisoned, makes the poison toxic, and
+# if the target is already badly poisoned, makes the toxic worse. Also, if
+# target is already poisoned, power increases by 1.5x. (Inject)
+#===============================================================================
+class Battle::Move::PoisonTargetBoostToxicityOnConsecutiveUseAndPowerIncreasesIfTargetPoisoned < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg = (baseDmg * 1.5).round if target.status == :POISON
+    return baseDmg
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
+    return target.status != :POISON && !target.pbCanPoison?(user, show_message, self)
+  end
+
+  def poisonEffect(user, target)
+    can_poison = target.pbCanPoison?(user, false, self)
+    return if target.status != :POISON && !can_poison
+    if can_poison
+      target.pbPoison(user, nil, false)
+    elsif target.statusCount == 0
+      target.statusCount = 1
+      @battle.pbDisplay(_INTL("{1} was badly poisoned!", target.pbThis))
+    elsif target.effects[PBEffects::Toxic] < 16
+      target.effects[PBEffects::Toxic] += 1
+      @battle.pbDisplay(_INTL("{1}'s toxic poison became worse!", target.pbThis))
+    elsif !damagingMove?
+      @battle.pbDisplay(_INTL("{1}'s toxic poison is already at its worst!", target.pbThis))
+    end
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    poisonEffect(user, target)
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    poisonEffect(user, target)
+  end
+end
+
+#===============================================================================
 # Paralyzes the target.
 #===============================================================================
 class Battle::Move::ParalyzeTarget < Battle::Move
@@ -708,6 +753,105 @@ class Battle::Move::CureUserPartyStatus < Battle::Move
 end
 
 #===============================================================================
+# For each Pokémon in the party, if it is a Poison-type, it is cured of
+# permanent status problems and healed by a third of its total HP, otherwise it
+# is poisoned. (Sludge Bath)
+#===============================================================================
+class Battle::Move::ForEachMemberInUserPartyPoisonMemberIfNotPoisonTypeElseCureMemberStatusAndHealMemberByThirdOfTotalHP < Battle::Move
+  def canSnatch?;          return true; end
+  def worksWithNoTargets?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    has_effect = @battle.allSameSideBattlers(user).any? { |b| (b.pbHasType?(:POISON) && (b.status != :NONE || b.canHeal?)) || (!b.pbHasType?(:POISON) && b.pbCanPoison?(user, false, self)) }
+    if !has_effect
+      @battle.pbParty(user.index).each_with_index do |pkmn, i|
+        next if !pkmn || !pkmn.able?
+        next if @battle.pbFindBattler(i, user)   # Skip Pokémon in battle
+        if (pkmn.hasType?(:POISON) && (pkmn.status != :NONE || pkmn.hp < pkmn.totalhp)) || (!pkmn.hasType?(:POISON) && pkmn.status == :NONE)
+          has_effect = true
+          break
+        end
+      end
+    end
+    if !has_effect
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if target.pbHasType?(:POISON)
+      return target.status == :NONE && !target.canHeal?
+    else
+      return !target.pbCanPoison?(user, false, self)
+    end
+  end
+
+  def sludgeBathEffect(user, pkmn, battler = nil)
+    has_poison_type = battler ? battler.pbHasType?(:POISON) : pkmn.hasType?(:POISON)
+    if has_poison_type
+      # Cure status
+      oldStatus = (battler) ? battler.status : pkmn.status
+      if oldStatus != :NONE
+        curedName = (battler) ? battler.pbThis : pkmn.name
+        if battler
+          battler.pbCureStatus(false)
+        else
+          pkmn.status      = :NONE
+          pkmn.statusCount = 0
+        end
+        case oldStatus
+        when :SLEEP
+          @battle.pbDisplay(_INTL("{1} was woken from sleep.", curedName))
+        when :POISON
+          @battle.pbDisplay(_INTL("{1} was cured of its poisoning.", curedName))
+        when :BURN
+          @battle.pbDisplay(_INTL("{1}'s burn was healed.", curedName))
+        when :PARALYSIS
+          @battle.pbDisplay(_INTL("{1} was cured of paralysis.", curedName))
+        when :FROZEN
+          @battle.pbDisplay(_INTL("{1} was thawed out.", curedName))
+        end
+      end
+      # Heal
+      restoreHP = battler ? (battler.totalhp / 3.0).round : (pkmn.totalhp / 3.0).round
+      if battler
+        if battler.canHeal? && battler.pbRecoverHP(restoreHP, true, true, true) > 0
+          @battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+        end
+      elsif (pkmn.hp < pkmn.totalhp) && pbItemRestoreHP(pkmn, restoreHP) > 0
+        @battle.pbDisplay(_INTL("{1}'s HP was restored.", pkmn.name))
+      end
+    else
+      # Poison
+      if battler
+        battler.pbPoison(user) if battler.pbCanPoison?(user, false, self)
+      elsif pkmn.status == :NONE
+        pkmn.status = :POISON
+        @battle.pbDisplay(_INTL("{1} was poisoned!", pkmn.name))
+      end
+    end
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    # Sludge Bath all Pokémon in battle on the user's side.
+    sludgeBathEffect(user, target.pokemon, target)
+  end
+
+  def pbEffectGeneral(user)
+    # Sludge Bath all Pokémon in the user's and partner trainer's party.
+    # NOTE: This intentionally affects the partner trainer's inactive Pokémon
+    #       too.
+    @battle.pbParty(user.index).each_with_index do |pkmn, i|
+      next if !pkmn || !pkmn.able?
+      next if @battle.pbFindBattler(i, user)   # Skip Pokémon in battle
+      sludgeBathEffect(user, pkmn)
+    end
+  end
+end
+
+#===============================================================================
 # Cures the target's burn. (Sparkling Aria)
 #===============================================================================
 class Battle::Move::CureTargetBurn < Battle::Move
@@ -876,12 +1020,54 @@ class Battle::Move::ConfuseTargetAndPossiblyUser < Battle::Move::ConfuseTarget
 end
 
 #===============================================================================
+# Confuses the target and the user. (Foul Odor)
+#===============================================================================
+class Battle::Move::ConfuseTargetAndUser < Battle::Move::ConfuseTarget
+  def pbEffectGeneral(user)
+    super
+    user.pbConfuseSelf if user.pbCanConfuseSelf?(false)
+  end
+end
+
+#===============================================================================
 # Confuses the target. 100% chance of confusion in rain. (Tornado Tackle)
 #===============================================================================
 class Battle::Move::ConfuseTargetAlwaysInRain < Battle::Move::ConfuseTarget
   def pbAdditionalEffectChance(user, target, effectChance = 0)
     return 100 if [:Rain, :HeavyRain, :Thunderstorm].include?(user.effectiveWeather)
     return super
+  end
+end
+
+#===============================================================================
+# Confuses or poisons the target. (Foul Gas)
+#===============================================================================
+class Battle::Move::ConfuseTargetOrPoisonTarget < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def initialize(battle, move)
+    super
+    @toxic = false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
+    if !target.pbCanConfuse?(user, false, self) &&
+       !target.pbCanPoison?(user, false, self)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    inflictRandomStatusOnTarget(user, target, [:CONFUSE, :POISON])
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    inflictRandomStatusOnTarget(user, target, [:CONFUSE, :POISON])
   end
 end
 
@@ -899,6 +1085,29 @@ class Battle::Move::ConfuseFlinchTarget < Battle::Move
       target.pbConfuse(user)
     end
     target.pbFlinch(user) if @battle.pbRandom(100) < chance
+  end
+end
+
+#===============================================================================
+# Confuses and poisons the target. (Venom Powder)
+#===============================================================================
+class Battle::Move::ConfusePoisonTarget < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
+    if !target.pbCanConfuse?(user, false, self) &&
+       !target.pbCanPoison?(user, false, self)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    target.pbConfuse(user) if target.pbCanConfuse?(user, false, self)
+    target.pbPoison(user) if target.pbCanPoison?(user, false, self)
   end
 end
 
@@ -1074,6 +1283,9 @@ class Battle::Move::SetUserTypesBasedOnEnvironment < Battle::Move
       checkedTerrain = true
     when :Icy
       @newType = :ICE
+      checkedTerrain = true
+    when :Sticky
+      @newType = :POISON
       checkedTerrain = true
     end
     if !checkedTerrain

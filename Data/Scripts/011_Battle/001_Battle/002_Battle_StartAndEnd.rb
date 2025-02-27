@@ -327,6 +327,8 @@ class Battle
     when :Icy
       pbDisplay(_INTL("Ice covers the ground!"))
       allBattlers.each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
+    when :Sticky
+      pbDisplay(_INTL("The battlefield is sticky and gross!"))
     end
     # Abilities upon entering battle
     @initialSwitchIn = true

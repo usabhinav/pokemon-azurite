@@ -2213,6 +2213,8 @@ class Battle::Move::TypeAndPowerDependOnTerrain < Battle::Move
       ret = :CRYSTAL
     when :Icy
       ret = :ICE
+    when :Sticky
+      ret = :POISON
     end
     return ret
   end

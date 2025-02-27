@@ -549,6 +549,8 @@ class Battle::Move
     when :Icy
       multipliers[:base_damage_multiplier] /= 2 if type == :FIGHTING && target.affectedByTerrain?
       multipliers[:base_damage_multiplier] *= terrain_multiplier if type == :ICE && user.affectedByTerrain?
+    when :Sticky
+      multipliers[:base_damage_multiplier] /= 2 if pbContactMove?(user) && !user.pbHasType?(:POISON) && user.affectedByTerrain?
     end
     # Badge multipliers
     if @battle.internalBattle

@@ -1474,6 +1474,8 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
         @battle.pbDisplay(_INTL("The crystals disappeared from the battlefield."))
       when :Icy
         @battle.pbDisplay(_INTL("The ice on the ground melted."))
+      when :Sticky
+        @battle.pbDisplay(_INTL("The gunk on the battlefield has been wiped away!"))
       end
       @battle.field.terrain = :None
     end
@@ -1599,6 +1601,21 @@ class Battle::Move::LowerTargetDefSpDef3 < Battle::Move::TargetMultiStatDownMove
 end
 
 #===============================================================================
+# Decreases the target's Defense and Special Defense by 2 stages each, or by 3
+# stages each if the target is burned. (Pepper Spray)
+#===============================================================================
+class Battle::Move::LowerTargetDefSpDef2IfTargetNotBurnedElse3 < Battle::Move::TargetMultiStatDownMove
+  def pbLowerTargetMultipleStats(user, target)
+    @statDown = []
+    [:DEFENSE, :SPECIAL_DEFENSE].each do |stat|
+      @statDown.push(stat)
+      @statDown.push((target.status == :BURN) ? 3 : 2)
+    end
+    super
+  end
+end
+
+#===============================================================================
 # Decreases the target's Sp. Atk and/or Sp. Def by 1 stage. (Relic Wave)
 #===============================================================================
 class Battle::Move::LowerTargetSpAtkAndOrSpDef1 < Battle::Move::TargetMultiStatDownMove
@@ -1610,6 +1627,39 @@ class Battle::Move::LowerTargetSpAtkAndOrSpDef1 < Battle::Move::TargetMultiStatD
         @statDown.push(1)
       end
     end
+  end
+end
+
+#===============================================================================
+# Decreases the target's Defense and Sp. Def by 1 stage plus amount of stockpile
+# each. It then resets the Stockpile. (Corrosive Spit)
+#===============================================================================
+class Battle::Move::LowerTargetDefSpDefByAmountDependingOnStockpile < Battle::Move::TargetMultiStatDownMove
+  def pbOnStartUse(user, targets)
+    @statDown = []
+    [:DEFENSE, :SPECIAL_DEFENSE].each do |stat|
+      @statDown.push(stat)
+      @statDown.push(1 + user.effects[PBEffects::Stockpile])
+    end
+  end
+
+  def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    return if numHits == 0
+    return if user.fainted? || user.effects[PBEffects::Stockpile] == 0
+    @battle.pbDisplay(_INTL("{1}'s stockpiled effect wore off!", user.pbThis))
+    return if @battle.pbAllFainted?(user.idxOpposingSide)
+    showAnim = true
+    if user.effects[PBEffects::StockpileDef] > 0 &&
+       user.pbCanLowerStatStage?(:DEFENSE, user, self)
+      showAnim = false if user.pbLowerStatStage(:DEFENSE, user.effects[PBEffects::StockpileDef], user, showAnim)
+    end
+    if user.effects[PBEffects::StockpileSpDef] > 0 &&
+       user.pbCanLowerStatStage?(:SPECIAL_DEFENSE, user, self)
+      user.pbLowerStatStage(:SPECIAL_DEFENSE, user.effects[PBEffects::StockpileSpDef], user, showAnim)
+    end
+    user.effects[PBEffects::Stockpile]      = 0
+    user.effects[PBEffects::StockpileDef]   = 0
+    user.effects[PBEffects::StockpileSpDef] = 0
   end
 end
 

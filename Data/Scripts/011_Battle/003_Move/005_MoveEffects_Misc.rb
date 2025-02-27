@@ -402,6 +402,25 @@ class Battle::Move::StartIcyTerrain < Battle::Move
 end
 
 #===============================================================================
+# For 5 rounds, creates a sticky terrain that halves the speed of grounded
+# Pokémon by 1 stage each, and halves the damage of all contact moves. Does not
+# apply to Poison-type Pokémon. (Sticky Terrain)
+#===============================================================================
+class Battle::Move::StartStickyTerrain < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.terrain == :Sticky
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbStartTerrain(user, :Sticky)
+  end
+end
+
+#===============================================================================
 # Removes the current terrain. Fails if there is no terrain in effect.
 # (Steel Roller)
 #===============================================================================
@@ -430,6 +449,8 @@ class Battle::Move::RemoveTerrain < Battle::Move
       @battle.pbDisplay(_INTL("The crystals disappeared from the battlefield."))
     when :Icy
       @battle.pbDisplay(_INTL("The ice on the ground melted."))
+    when :Sticky
+      @battle.pbDisplay(_INTL("The gunk on the battlefield has been wiped away!"))
     end
     @battle.field.terrain = :None
   end

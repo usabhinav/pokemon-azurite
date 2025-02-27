@@ -725,6 +725,8 @@ class Battle
         pbDisplay(_INTL("The crystals disappeared from the battlefield!"))
       when :Icy
         pbDisplay(_INTL("The ice on the ground melted!"))
+      when :Sticky
+        pbDisplay(_INTL("The gunk on the battlefield has been wiped away!"))
       end
       @field.terrain = :None
       allBattlers.each { |battler| battler.pbAbilityOnTerrainChange }
@@ -747,6 +749,7 @@ class Battle
     when :Lava     then pbDisplay(_INTL("Lava is covering the battlefield!"))
     when :Crystal  then pbDisplay(_INTL("The battlefield remains crystallized!"))
     when :Icy      then pbDisplay(_INTL("Ice covers the ground."))
+    when :Sticky   then pbDisplay(_INTL("The battlefield is sticky and gross!"))
     end
     # Lava terrain passive damage
     if @field.terrain == :Lava

@@ -435,6 +435,8 @@ class Battle::Battler
        @battle.pbPlayer.badge_count >= Settings::NUM_BADGES_BOOST_SPEED
       speedMult *= 1.1
     end
+    # Sticky Terrain
+    speedMult /= 2 if @battle.field.terrain == :Sticky && !pbHasType?(:POISON) && affectedByTerrain?
     # Calculation
     return [(speed * speedMult).round, 1].max
   end

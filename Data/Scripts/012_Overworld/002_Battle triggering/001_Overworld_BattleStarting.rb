@@ -303,6 +303,7 @@ module BattleCreationHelperMethods
       pkmn.makeUnprimal
       pkmn.makeUncrystal
       pkmn.makeUnEqualizer
+      pkmn.unflip_dna if pkmn.dna_flip_active
     end
     if $PokemonGlobal.partner
       $player.heal_party
@@ -312,6 +313,7 @@ module BattleCreationHelperMethods
         pkmn.makeUnprimal
         pkmn.makeUncrystal
         pkmn.makeUnEqualizer
+        pkmn.unflip_dna if pkmn.dna_flip_active
       end
     end
     if [2, 5].include?(outcome) && can_lose   # if loss or draw

@@ -449,7 +449,8 @@ module Compiler
       "Projectile",
       "Throwing",
       "Speed",
-      "Defense"
+      "Defense",
+      "CanMirageCall",
     ]
     for i in 0...flags.length
       flag = flags[i]

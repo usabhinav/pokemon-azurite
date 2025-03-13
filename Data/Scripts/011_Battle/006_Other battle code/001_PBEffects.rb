@@ -179,6 +179,7 @@ module PBEffects
   ProphecyCounter     = 174
   HugCounter          = 175
   TrackPunchUserIndex = 176
+  DNAFlipCount        = 177
 
   #=============================================================================
   # These effects apply to a battler position

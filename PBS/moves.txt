@@ -354,7 +354,7 @@ Accuracy = 0
 TotalPP = 5
 Target = NearOther
 FunctionCode = HoopaRemoveProtectionsBypassSubstituteLowerUserDef1
-Flags = CanMirrorMove,CannotMetronome
+Flags = CanMirrorMove,CannotMetronome,CanMirageCall
 Description = Unleashes a barrage of multi-arm attacks, skipping protections. The user's Defense stat falls.
 #-------------------------------
 [FOULPLAY]
@@ -686,7 +686,7 @@ Accuracy = 50
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = SleepTargetIfUserDarkrai
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = Opposing Pokémon are dragged into a world of total darkness that makes them sleep.
 #-------------------------------
 [EMBARGO]
@@ -875,7 +875,7 @@ Accuracy = 90
 TotalPP = 5
 Target = NearOther
 FunctionCode = AttackAndSkipNextTurn
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The user blasts the target with power that distorts even time. The user must rest on the next turn.
 #-------------------------------
 [DRACOMETEOR]
@@ -960,7 +960,7 @@ Accuracy = 95
 TotalPP = 5
 Target = NearOther
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,CanMirageCall
 Description = The user tears the target along with the space around it. Critical hits land more easily.
 #-------------------------------
 [DRAGONHAMMER]
@@ -1130,7 +1130,7 @@ Accuracy = 85
 TotalPP = 5
 Target = NearOther
 FunctionCode = ParalyzeTarget
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,CanMirageCall
 EffectChance = 20
 Description = The user charges at its foe, surrounding itself with lightning. It may also leave the target paralyzed.
 #-------------------------------
@@ -1195,7 +1195,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = DoublePowerAfterFusionFlare
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The user throws down a giant thunderbolt. It does more damage if influenced by an enormous flame.
 #-------------------------------
 [PLASMAFISTS]
@@ -1775,6 +1775,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = TwoTurnAttackRaiseUserSpAtkSpDefSpd2
+Flags = CanMirageCall
 Description = The user absorbs energy and sharply raises its Sp. Atk, Sp. Def, and Speed stats on the next turn.
 #-------------------------------
 [MISTYTERRAIN]
@@ -1952,7 +1953,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = IgnoreTargetDefSpDefEvaStatStages
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,CanMirageCall
 Description = The user attacks by slicing with its long horns. The target's stat changes don't affect the damage.
 #-------------------------------
 [THUNDEROUSKICK]
@@ -1977,7 +1978,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = UseTargetDefenseInsteadOfTargetSpDef
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,CanMirageCall
 Description = The user cuts with its long horn. The odd power contained in it does physical damage to the foe.
 #-------------------------------
 [SKYUPPERCUT]
@@ -2460,7 +2461,7 @@ Accuracy = 85
 TotalPP = 5
 Target = NearOther
 FunctionCode = BurnTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 EffectChance = 20
 Description = The user attacks by engulfing the foe in a beautiful, yet intense, blue flame. It may also burn the foe.
 #-------------------------------
@@ -2536,7 +2537,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = DoublePowerAfterFusionBolt
-Flags = CanProtect,CanMirrorMove,ThawsUser
+Flags = CanProtect,CanMirrorMove,ThawsUser,CanMirageCall
 Description = The user brings down a giant flame. It does more damage if influenced by an enormous thunderbolt.
 #-------------------------------
 [INFERNO]
@@ -2561,7 +2562,7 @@ Accuracy = 75
 TotalPP = 5
 Target = NearOther
 FunctionCode = BindTarget
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The target becomes trapped within a maelstrom of fire that rages for four to five turns.
 #-------------------------------
 [SACREDFIRE]
@@ -2573,7 +2574,7 @@ Accuracy = 95
 TotalPP = 5
 Target = NearOther
 FunctionCode = BurnTarget
-Flags = CanProtect,CanMirrorMove,ThawsUser
+Flags = CanProtect,CanMirrorMove,ThawsUser,CanMirageCall
 EffectChance = 50
 Description = The target is razed with a mystical fire of great intensity. It may also leave the target with a burn.
 #-------------------------------
@@ -2900,7 +2901,7 @@ Accuracy = 95
 TotalPP = 5
 Target = Other
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate
+Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,CanMirageCall
 Description = A vortex of air is shot at the target to inflict damage. Critical hits land more easily.
 #-------------------------------
 [BEAKBLAST]
@@ -2962,7 +2963,7 @@ Accuracy = 100
 TotalPP = 10
 Target = Other
 FunctionCode = HealUserByThreeQuartersOfDamageDone
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The user absorbs its target's HP. The user's HP is restored by over half of the damage dealt.
 #-------------------------------
 [AIRSLASH]
@@ -3172,7 +3173,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = TwoTurnAttackInvulnerableRemoveProtections
-Flags = Contact,CanMirrorMove
+Flags = Contact,CanMirrorMove,CanMirageCall
 Description = The user disappears, then strikes the foe on the second turn. It hits even if the foe protects itself.
 #-------------------------------
 [POLTERGEIST]
@@ -3505,7 +3506,7 @@ Accuracy = 85
 TotalPP = 5
 Target = NearOther
 FunctionCode = LowerTargetSpDef2
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 EffectChance = 40
 Description = The user generates a shock wave from within its body. It may harshly lower the target's Sp. Def.
 #-------------------------------
@@ -4057,7 +4058,7 @@ Accuracy = 100
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = None
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The user gathers the energy of the land and focuses that power on foes to damage them.
 #-------------------------------
 [THOUSANDARROWS]
@@ -4319,7 +4320,7 @@ Accuracy = 90
 TotalPP = 5
 Target = NearOther
 FunctionCode = TwoTurnAttackParalyzeTarget
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,CanMirageCall
 EffectChance = 30
 Description = On the second turn, the user hits the foe with electrically charged ice. It may also paralyze the foe.
 #-------------------------------
@@ -4332,7 +4333,7 @@ Accuracy = 90
 TotalPP = 5
 Target = NearOther
 FunctionCode = TwoTurnAttackBurnTarget
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,CanMirageCall
 EffectChance = 30
 Description = On the second turn, an ultracold, freezing wind surrounds the foe. This may leave it with a burn.
 #-------------------------------
@@ -4447,7 +4448,7 @@ Accuracy = 95
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = LowerTargetSpeed1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 EffectChance = 100
 Description = The user attacks by blowing freezing cold air at the foe. This attack reduces the targets' Speed stat.
 #-------------------------------
@@ -4757,7 +4758,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = TypeDependsOnUserDrive
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,CanMirageCall
 Description = The user fires a beam of light at its target. The type changes depending on the Drive the user holds.
 #-------------------------------
 [THRASH]
@@ -4793,7 +4794,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = TypeDependsOnUserPlate
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The user releases countless shots of light. Its type varies with the kind of Plate the user is holding.
 #-------------------------------
 [HYPERVOICE]
@@ -4979,7 +4980,7 @@ Accuracy = 100
 TotalPP = 10
 Target = AllNearFoes
 FunctionCode = SleepTargetChangeUserMeloettaForm
-Flags = CanProtect,CanMirrorMove,Sound,CannotMetronome
+Flags = CanProtect,CanMirrorMove,Sound,CannotMetronome,CanMirageCall
 EffectChance = 10
 Description = An ancient song appeals to the hearts of those listening. It may also induce sleep.
 #-------------------------------
@@ -5532,7 +5533,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = PowerHigherWithTargetHP
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,CanMirageCall
 Description = The target is crushed with great force. The attack is more powerful the more HP the target has left.
 #-------------------------------
 [ENDEAVOR]
@@ -7039,7 +7040,7 @@ Accuracy = 90
 TotalPP = 5
 Target = NearOther
 FunctionCode = LowerUserSpAtk2
-Flags = CanProtect,CanMirrorMove,Projectile
+Flags = CanProtect,CanMirrorMove,Projectile,CanMirageCall
 Description = The user attacks the target at full power. The attack's recoil harshly reduces the user's Sp. Atk stat.
 #-------------------------------
 [FUTURESIGHT]
@@ -7098,7 +7099,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = UseTargetDefenseInsteadOfTargetSpDef
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The user materializes an odd psychic wave to attack the target. This attack does physical damage.
 #-------------------------------
 [FREEZINGGLARE]
@@ -7185,7 +7186,7 @@ Accuracy = 0
 TotalPP = 5
 Target = NearOther
 FunctionCode = RemoveProtectionsBypassSubstitute
-Flags = CanMirrorMove,CannotMetronome
+Flags = CanMirrorMove,CannotMetronome,CanMirageCall
 Description = Using a hyperspace hole, the user appears right next to the target and strikes. Skips protections.
 #-------------------------------
 [PSYSHOCK]
@@ -7222,7 +7223,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = LowerTargetSpDef1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 EffectChance = 50
 Description = The user lets loose a damaging burst of light. It may also reduce the target's Sp. Def stat.
 #-------------------------------
@@ -7235,7 +7236,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = LowerTargetSpAtk1
-Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile
+Flags = CanProtect,CanMirrorMove,Bomb,BallRolling,Projectile,CanMirageCall
 EffectChance = 50
 Description = A mistlike flurry of down envelops and damages the target. It may also lower the target's Sp. Atk.
 #-------------------------------
@@ -7466,7 +7467,7 @@ Accuracy = 0
 TotalPP = 10
 Target = NearOther
 FunctionCode = UserTargetSwapStatStages
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The user employs its psychic power to switch stat changes with the target.
 #-------------------------------
 [HYPNOSIS]
@@ -7531,7 +7532,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = UserFaintsHealAndCureReplacementRestorePP
-Flags = Dance
+Flags = Dance,CanMirageCall
 Description = The user faints. In return, the Pokémon taking its place will have its status and HP fully restored.
 #-------------------------------
 [MAGICCOAT]
@@ -7800,7 +7801,7 @@ Accuracy = 95
 TotalPP = 5
 Target = AllNearFoes
 FunctionCode = RaiseUserDefense2
-Flags = CanProtect,CanMirrorMove,CannotMetronome
+Flags = CanProtect,CanMirrorMove,CannotMetronome,CanMirageCall
 EffectChance = 50
 Description = The user whips up a storm of diamonds to damage foes. This may also sharply raise the user's Defense stat.
 #-------------------------------
@@ -7989,6 +7990,7 @@ Accuracy = 100
 TotalPP = 5
 Target = NearOther
 FunctionCode = AttackTwoTurnsLater
+Flags = CanMirageCall
 Description = Two turns after this move is used, the user blasts the target with a concentrated bundle of light.
 #-------------------------------
 [STEELBEAM]
@@ -8373,7 +8375,7 @@ Accuracy = 95
 TotalPP = 5
 Target = NearOther
 FunctionCode = BurnTarget
-Flags = CanProtect,CanMirrorMove,ThawsUser,CannotMetronome
+Flags = CanProtect,CanMirrorMove,ThawsUser,CannotMetronome,CanMirageCall
 EffectChance = 30
 Description = The user immerses the target in superheated steam. This may also leave the target with a burn.
 #-------------------------------
@@ -9144,7 +9146,7 @@ Category = Status
 Accuracy = 100
 TotalPP = 10
 Target = NearOther
-FunctionCode = HealUserByTargetSpAtkAndLowerTargetSpAtk1
+FunctionCode = HealUserByTargetSpAtkLowerTargetSpAtk1
 Flags = CanProtect,CanMirrorMove
 Description = The user restores its HP by the same amount as the target's Sp. Atk stat. It also lowers the target's Sp. Atk stat.
 #-------------------------------
@@ -9300,6 +9302,7 @@ Accuracy = 0
 TotalPP = 5
 Target = UserAndAllies
 FunctionCode = HealTargetHalfOfTotalHP75PercentIfSingleBattleAndSkipNextTurn
+Flags = CanMirageCall
 Description = Heals itself and allies by 50% (75% in single battles), but has to recharge next turn.
 #-------------------------------
 [BRIGHTSMILE]
@@ -9907,7 +9910,7 @@ Accuracy = 100
 TotalPP = 5
 Target = AllNearFoes
 FunctionCode = LowerUserDefSpDef1
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = The Pokémon releases a massive energy wave, leaving itself open.
 #-------------------------------
 [CRYSTALCURSE]
@@ -9918,7 +9921,7 @@ Accuracy = 0
 TotalPP = 5
 Target = NearOther
 FunctionCode = ReplaceTargetSecondTypeWithCrystalTypeAndConfuseTargetAndLowerTargetHP30Percent
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = Replaces the target's second type (or adds it) with Crystal, confuses the target and takes away 30% of their HP.
 #-------------------------------
 [CRYSTALOVERLOAD]
@@ -9930,7 +9933,7 @@ Accuracy = 95
 TotalPP = 5
 Target = NearOther
 FunctionCode = DoublePowerIfTargetHasCrystalType
-Flags = CanProtect,CanMirrorMove
+Flags = CanProtect,CanMirrorMove,CanMirageCall
 Description = Overloads Crystallized Pokémon with even more energy, causing the move to do double damage against Crystal Type Pokémon.
 #-------------------------------
 [CRYSTALTERRAIN]
@@ -9941,6 +9944,7 @@ Accuracy = 0
 TotalPP = 10
 Target = BothSides
 FunctionCode = StartCrystalTerrain
+Flags = CanMirageCall
 Description = All Pokémon on the field are treated as Crystal types for 5 turns. Damage of Crystal type moves are increase by 50%
 #-------------------------------
 [CRYSTALLIZEDBEAM]
@@ -11339,9 +11343,10 @@ Power = 55
 Accuracy = 95
 TotalPP = 15
 Target = NearOther
-FunctionCode = DisableTargetLastMoveUsedUntilTargetSwitchesOut
+FunctionCode = DisableTargetLastMoveUsed
 Flags = Contact,CanProtect,CanMirrorMove
-Description = The user deals a crushing blow to the target's head, making them forget their last used move.
+EffectChance = 100
+Description = The user deals a crushing blow to the target's head, making them forget their last used move for four turns.
 #-------------------------------
 [SLUDGEPUNCH]
 Name = Sludge Punch
@@ -11952,7 +11957,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = PowerLowerWithUserHPByPercent
-Flags = Contact,CanProtect,CanMirrorMove
+Flags = Contact,CanProtect,CanMirrorMove,CanMirageCall
 Description = A powerful fire attack that becomes even more powerful as the user loses health.
 #-------------------------------
 [GLEAMBEAM]
@@ -12023,7 +12028,7 @@ Power = 95
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = UseTargetSpAtkInsteadOfUserSpAtk
+FunctionCode = UseTargetAttackInsteadOfUserAttack
 Flags = CanProtect,CanMirrorMove
 Description = The user tricks the foe with superior tactics. Uses target's Sp. Attack for damage.
 #-------------------------------
@@ -12846,7 +12851,7 @@ Accuracy = 30
 TotalPP = 5
 Target = NearOther
 FunctionCode = OHKOUnstoppable
-Flags = CanMirrorMove
+Flags = CanMirrorMove,CanMirageCall
 Description = The user smites the target, causing it to faint instantly if it hits.
 #-------------------------------
 [SUGARPOWERMOVE]

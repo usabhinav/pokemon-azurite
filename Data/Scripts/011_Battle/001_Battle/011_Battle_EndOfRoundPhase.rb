@@ -548,6 +548,12 @@ class Battle
         end
       end
     }
+    # DNA Flip
+    pbEORCountDownBattlerEffect(priority, PBEffects::DNAFlipCount) { |battler|
+      battler.pokemon.unflip_dna
+      battler.pbUpdate(false)
+      pbDisplay(_INTL("{1}'s nature was flipped back to normal!", battler.pbThis))
+    }
     # Black Hole
     priority.each do |battler|
       next if battler.fainted? || !battler.effects[PBEffects::BlackHoleActive]

@@ -77,6 +77,7 @@ def pbOrganizedBattleEx(opponent, challengedata)
     pkmn.makeUnprimal
     pkmn.makeUncrystal
     pkmn.makeUnEqualizer
+    pkmn.unflip_dna if pkmn.dna_flip_active
     pkmn.item = olditems[i]
   end
   opponent.party.each_with_index do |pkmn, i|
@@ -85,6 +86,7 @@ def pbOrganizedBattleEx(opponent, challengedata)
     pkmn.makeUnprimal
     pkmn.makeUncrystal
     pkmn.makeUnEqualizer
+    pkmn.unflip_dna if pkmn.dna_flip_active
     pkmn.item = olditems2[i]
   end
   # Save the record of the battle

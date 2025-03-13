@@ -742,6 +742,7 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       "UseRandomMove",                                   # Metronome
       "UseRandomCosmicTypeMove",                         # Astronomy
       "UseRandomMysticTypeMove",                         # Wild Magic
+      "UseRandomLegendaryMove",                          # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                # Delayed Attack
       # Moves that require a recharge turn
       "AttackAndSkipNextTurn",                           # Hyper Beam
@@ -902,13 +903,14 @@ class Battle::Move::LowerPPOfTargetLastMoveBy4 < Battle::Move
 end
 
 #===============================================================================
-# For 5 rounds, disables the last move the target used. (Disable)
+# For 5 rounds, disables the last move the target used. (Disable, Concuss)
 #===============================================================================
 class Battle::Move::DisableTargetLastMoveUsed < Battle::Move
   def ignoresSubstitute?(user); return true; end
   def canMagicCoat?;            return true; end
 
   def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
     if target.effects[PBEffects::Disable] > 0 || !target.lastRegularMoveUsed
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
@@ -929,6 +931,26 @@ class Battle::Move::DisableTargetLastMoveUsed < Battle::Move
   end
 
   def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    target.effects[PBEffects::Disable]     = 5
+    target.effects[PBEffects::DisableMove] = target.lastRegularMoveUsed
+    @battle.pbDisplay(_INTL("{1}'s {2} was disabled!", target.pbThis,
+                            GameData::Move.get(target.lastRegularMoveUsed).name))
+    target.pbItemStatusCureCheck
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    return if target.effects[PBEffects::Disable] > 0 || !target.lastRegularMoveUsed
+    return if pbMoveFailedAromaVeil?(user, target, false)
+    canDisable = false
+    target.eachMove do |m|
+      next if m.id != target.lastRegularMoveUsed
+      next if m.pp == 0 && m.total_pp > 0
+      canDisable = true
+      break
+    end
+    return if !canDisable
     target.effects[PBEffects::Disable]     = 5
     target.effects[PBEffects::DisableMove] = target.lastRegularMoveUsed
     @battle.pbDisplay(_INTL("{1}'s {2} was disabled!", target.pbThis,
@@ -995,6 +1017,7 @@ class Battle::Move::DisableTargetUsingDifferentMove < Battle::Move
         "UseRandomMove",   # Metronome
         "UseRandomCosmicTypeMove",   # Astronomy
         "UseRandomMysticTypeMove",   # Wild Magic
+        "UseRandomLegendaryMove",    # Mirage Call
         "SelectMoveAndAttackTwoTurnsLater", # Delayed Attack
       ]
     end

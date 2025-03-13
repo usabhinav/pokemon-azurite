@@ -741,6 +741,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticTypeMove",                           # Wild Magic
+      "UseRandomLegendaryMove",                            # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
@@ -1012,6 +1013,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticTypeMove",                           # Wild Magic
+      "UseRandomLegendaryMove",                            # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
@@ -1114,6 +1116,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticTypeMove",                           # Wild Magic
+      "UseRandomLegendaryMove",                            # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
       "BounceBackProblemCausingStatusMoves",               # Magic Coat         # Not listed on Bulbapedia
@@ -1224,6 +1227,7 @@ class Battle::Move::UseRandomUserMoveIfAsleep < Battle::Move
       "UseRandomMove",                                   # Metronome
       "UseRandomCosmicTypeMove",                         # Astronomy
       "UseRandomMysticTypeMove",                         # Wild Magic
+      "UseRandomLegendaryMove",                          # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                # Delayed Attack
       # Two-turn attacks
       "TwoTurnAttack",                                   # Razor Wind
@@ -1318,6 +1322,33 @@ class Battle::Move::UseRandomMysticTypeMove < Battle::Move::UseRandomMove
       return true
     end
     return false
+  end
+end
+
+#===============================================================================
+# Uses a random move exclusive to Legendary and Mythical Pokemon. (Mirage Call)
+#===============================================================================
+class Battle::Move::UseRandomLegendaryMove < Battle::Move
+  def callsAnotherMove?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    @chosenMove = nil
+    move_keys = []
+    GameData::Move.keys.each do |k|
+      move_keys.push(k) if GameData::Move.get(k).has_flag?("CanMirageCall")
+    end
+    if move_keys.length == 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    move_id = move_keys[@battle.pbRandom(move_keys.length)]
+    move_data = GameData::Move.get(move_id)
+    @chosenMove = move_data.id
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbUseMoveSimple(@chosenMove)
   end
 end
 

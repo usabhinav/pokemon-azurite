@@ -1755,6 +1755,9 @@ class Battle::AI
       stats = user.battlerStatsSortedAscending
       scope -= 90 if user.statStageAtMax?(stats[stats.length - 1])
     #---------------------------------------------------------------------------
+    when "StartInvertTargetNature"
+      scope -= 90 if target.effects[PBEffects::DNAFlipCount] > 0
+    #---------------------------------------------------------------------------
     end
     return score
   end

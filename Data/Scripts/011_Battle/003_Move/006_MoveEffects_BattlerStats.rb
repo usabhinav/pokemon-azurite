@@ -2458,3 +2458,23 @@ class Battle::Move::LowerTargetAttack1AndRaiseUserDefense1 < Battle::Move::Lower
     end
   end
 end
+
+#===============================================================================
+# Inverts the stat change effects of the target's nature for 5 turns. (DNA Flip)
+#===============================================================================
+class Battle::Move::StartInvertTargetNature < Battle::Move
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if target.effects[PBEffects::DNAFlipCount] > 0
+      @battle.pbDisplay(_INTL("{1} already has its nature inverted!", target.pbThis)) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::DNAFlipCount] = 5
+    target.pokemon.flip_dna
+    target.pbUpdate(false)
+    @battle.pbDisplay(_INTL("{1} inverted the effects of {2}'s nature!", user.pbThis, target.pbThis(true)))
+  end
+end

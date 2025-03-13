@@ -563,5 +563,6 @@ class Battle
     asteroidBeltDamage(battlerSwitchingOut)
     endAirCarryForBattlerAndAllies(battlerSwitchingOut, battlerSwitchingOut.effects[PBEffects::AirCarryTurnCount])
     thornTrapDamage(battlerSwitchingOut)
+    battlerSwitchingOut.pokemon.unflip_dna if battlerSwitchingOut.pokemon.dna_flip_active
   end
 end

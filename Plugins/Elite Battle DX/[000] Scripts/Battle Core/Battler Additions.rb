@@ -106,7 +106,7 @@ class Pokemon
     GameData::Stat.each_main { |s| nature_mod[s.id] = 100 }
     this_nature = self.nature_for_stats
     if this_nature
-      this_nature.stat_changes.each { |change| nature_mod[change[0]] += change[1] }
+      this_nature.stat_changes.each { |change| nature_mod[change[0]] += change[1] * (@dna_flip_active ? -1 : 1) }
     end
     # Calculate stats
     stats = {}; i = 0

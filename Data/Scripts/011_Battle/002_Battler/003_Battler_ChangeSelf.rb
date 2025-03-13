@@ -155,6 +155,10 @@ class Battle::Battler
     @pokemon.makeUnEqualizer if anyEqualizer?
     @pokemon.makeUnprimal if primal?
     # Do other things
+    if @pokemon.dna_flip_active
+      @pokemon.unflip_dna
+      pbUpdate(false)
+    end
     @battle.pbClearChoice(@index)   # Reset choice
     pbOwnSide.effects[PBEffects::LastRoundFainted] = @battle.turnCount
     if $game_temp.party_direct_damage_taken &&

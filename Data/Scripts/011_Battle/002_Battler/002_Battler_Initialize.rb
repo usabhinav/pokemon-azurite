@@ -349,6 +349,7 @@ class Battle::Battler
     @effects[PBEffects::ProphecyCounter]     = 0
     @effects[PBEffects::HugCounter]          = 0
     @effects[PBEffects::TrackPunchUserIndex] = -1
+    @effects[PBEffects::DNAFlipCount]        = 0
   end
 
   #=============================================================================

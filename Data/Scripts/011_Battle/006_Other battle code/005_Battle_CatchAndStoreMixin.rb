@@ -193,6 +193,10 @@ module Battle::CatchAndStoreMixin
       pkmn.makeUncrystal if pkmn.crystal?
       pkmn.makeUnEqualizer if pkmn.anyEqualizer?
       pkmn.makeUnprimal
+      if pkmn.dna_flip_active
+        pkmn.unflip_dna
+        battler&.pbUpdate(false)
+      end
       pkmn.update_shadow_moves if pkmn.shadowPokemon?
       pkmn.record_first_moves
       # Reset form

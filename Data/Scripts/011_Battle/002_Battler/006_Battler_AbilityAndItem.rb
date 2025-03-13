@@ -638,7 +638,8 @@ class Battle::Battler
     end
     flavor_stat = [:ATTACK, :DEFENSE, :SPEED, :SPECIAL_ATTACK, :SPECIAL_DEFENSE][flavor]
     self.nature.stat_changes.each do |change|
-      next if change[1] > 0 || change[0] != flavor_stat
+      change_amount = change[1] * (@pokemon.dna_flip_active ? -1 : 1)
+      next if change_amount > 0 || change[0] != flavor_stat
       @battle.pbDisplay(confuse_msg)
       pbConfuse if pbCanConfuseSelf?(false)
       break

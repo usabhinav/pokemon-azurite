@@ -724,6 +724,29 @@ class Battle::AI
         score += (user.totalhp - user.hp) * 50 / user.totalhp
       end
     #---------------------------------------------------------------------------
+    when "HealUserByTargetSpAtkLowerTargetSpAtk1"
+      if target.statStageAtMin?(:SPECIAL_ATTACK)
+        score -= 90
+      else
+        if target.pbCanLowerStatStage?(:SPECIAL_ATTACK, user)
+          score += target.stages[:SPECIAL_ATTACK] * 20
+          if skill >= PBTrainerAI.mediumSkill
+            hasSpecialAttack = false
+            target.eachMove do |m|
+              next if !m.specialMove?(m.type)
+              hasSpecialAttack = true
+              break
+            end
+            if hasSpecialAttack
+              score += 20
+            elsif skill >= PBTrainerAI.highSkill
+              score -= 90
+            end
+          end
+        end
+        score += (user.totalhp - user.hp) * 50 / user.totalhp
+      end
+    #---------------------------------------------------------------------------
     when "HealUserByHalfOfDamageDone"
       if skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:LIQUIDOOZE)
         score -= 70
@@ -1282,7 +1305,7 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
-    when "UseRandomCosmicTypeMove", "UseRandomMysticTypeMove"
+    when "UseRandomCosmicTypeMove", "UseRandomMysticTypeMove", "UseRandomLegendaryMove"
       # No clear indicator to know when to use this move.
     #---------------------------------------------------------------------------
     when "BounceBackProblemCausingStatusMoves", "BounceBackAllMoves", "BounceBackAllMovesIncludingForAllyIfLegendary"
@@ -1581,7 +1604,7 @@ class Battle::AI
       score -= 40
     #---------------------------------------------------------------------------
     when "DisableTargetLastMoveUsed"
-      score -= 90 if target.effects[PBEffects::Disable] > 0
+      score -= 90 if target.effects[PBEffects::Disable] > 0 && !move.damagingMove?
     #---------------------------------------------------------------------------
     when "DisableTargetUsingSameMoveConsecutively"
       score -= 90 if target.effects[PBEffects::Torment]

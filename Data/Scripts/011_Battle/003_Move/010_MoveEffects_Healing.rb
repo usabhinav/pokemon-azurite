@@ -203,6 +203,54 @@ class Battle::Move::HealUserByTargetAttackLowerTargetAttack1 < Battle::Move
 end
 
 #===============================================================================
+# Decreases the target's Special Attack by 1 stage. Heals user by an amount
+# equal to the target's Special Attack stat (after applying stat stages, before
+# this move decreases it). (Brain Drain)
+#===============================================================================
+class Battle::Move::HealUserByTargetSpAtkLowerTargetSpAtk1 < Battle::Move
+  def healingMove?;  return true; end
+  def canMagicCoat?; return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if !@battle.moldBreaker && target.hasActiveAbility?(:CONTRARY) &&
+       target.statStageAtMax?(:SPECIAL_ATTACK)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    elsif target.statStageAtMin?(:SPECIAL_ATTACK)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    # Calculate target's effective special attack value
+    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8, 9]
+    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2]
+    spatk    = target.spatk
+    atkStage = target.modifiedStages[:SPECIAL_ATTACK] + 6
+    healAmt = (spatk.to_f * stageMul[atkStage] / stageDiv[atkStage]).floor
+    # Reduce target's Special Attack stat
+    if target.pbCanLowerStatStage?(:SPECIAL_ATTACK, user, self)
+      target.pbLowerStatStage(:SPECIAL_ATTACK, 1, user)
+    end
+    # Heal user
+    if target.hasActiveAbility?(:LIQUIDOOZE)
+      @battle.pbShowAbilitySplash(target)
+      user.pbReduceHP(healAmt)
+      @battle.pbDisplay(_INTL("{1} sucked up the liquid ooze!", user.pbThis))
+      @battle.pbHideAbilitySplash(target)
+      user.pbItemHPHealCheck
+    elsif user.canHeal?
+      healAmt = (healAmt * 1.3).floor if user.hasActiveItem?(:BIGROOT)
+      if user.pbRecoverHP(healAmt) > 0
+        @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+      end
+    end
+  end
+end
+
+#===============================================================================
 # User gains half the HP it inflicts as damage.
 #===============================================================================
 class Battle::Move::HealUserByHalfOfDamageDone < Battle::Move

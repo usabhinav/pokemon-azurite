@@ -313,6 +313,7 @@ def pbBugContestStartOver
     pkmn.makeUnprimal
     pkmn.makeUncrystal
     pkmn.makeUnEqualizer
+    pkmn.unflip_dna if pkmn.dna_flip_active
   end
   pbBugContestState.pbStartJudging
 end

@@ -104,6 +104,8 @@ class Pokemon
   attr_accessor :alolan_pancakes_consumed
   # The Equalizer that is currently being used by this Pokémon in battle
   attr_accessor :equalizer
+  # Whether this Pokémon currently has its DNA flipped in battle
+  attr_reader   :dna_flip_active
 
   # Max total IVs
   IV_STAT_LIMIT = 31
@@ -659,6 +661,16 @@ class Pokemon
   def hasNature?(check_nature = nil)
     return !@nature_id.nil? if check_nature.nil?
     return self.nature == check_nature
+  end
+  
+  def flip_dna
+    @dna_flip_active = true
+    calc_stats
+  end
+
+  def unflip_dna
+    @dna_flip_active = false
+    calc_stats
   end
 
   #=============================================================================
@@ -1237,7 +1249,7 @@ class Pokemon
     GameData::Stat.each_main { |s| nature_mod[s.id] = 100 }
     this_nature = self.nature_for_stats
     if this_nature
-      this_nature.stat_changes.each { |change| nature_mod[change[0]] += change[1] }
+      this_nature.stat_changes.each { |change| nature_mod[change[0]] += change[1] * (@dna_flip_active ? -1 : 1) }
     end
     # Calculate stats
     stats = {}
@@ -1432,6 +1444,7 @@ class Pokemon
     @standwatchhp     = @hp
     @alolan_pancakes_consumed = false
     @equalizer        = nil
+    @dna_flip_active  = false
     if @form == 0 && recheck_form
       f = MultipleForms.call("getFormOnCreation", self)
       if f

@@ -498,7 +498,7 @@ class Battle::Battler
     pbAbilityStatusCureCheck
   end
 
-  def pbConfuseSelf(msg=nil)
+  def pbConfuseSelf(msg = nil)
     # MUST go before pbConfuse because of item/ability status cure checks
     @effects[PBEffects::SelfInflictedConfusion] = true
     pbConfuse(msg)

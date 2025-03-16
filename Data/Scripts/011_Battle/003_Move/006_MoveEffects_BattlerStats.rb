@@ -548,12 +548,75 @@ class Battle::Move::RaiseUserDefSpDef2AndLowerUserAtkSpAtk2 < Battle::Move
 end
 
 #===============================================================================
+# Increases the user's Attack by 2 stages and Special Attack by 1 stage.
+# Decreases the user's Defense by 1 stage. (Stone Grind)
+#===============================================================================
+class Battle::Move::RaiseUserAtk2Spd1AndLowerUserDefense1 < Battle::Move
+  def canSnatch?; return true; end
+
+  def initialize(battle, move)
+    super
+    @statUp   = [:ATTACK, 2, :SPEED, 1]
+    @statDown = [:DEFENSE, 1]
+  end
+
+  def pbMoveFailed?(user, targets)
+    failed = true
+    (@statUp.length / 2).times do |i|
+      if user.pbCanRaiseStatStage?(@statUp[i * 2], user, self)
+        failed = false
+        break
+      end
+    end
+    (@statDown.length / 2).times do |i|
+      if user.pbCanLowerStatStage?(@statDown[i * 2], user, self)
+        failed = false
+        break
+      end
+    end
+    if failed
+      @battle.pbDisplay(_INTL("{1}'s stats can't be changed further!", user.pbThis))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    showAnim = true
+    (@statDown.length / 2).times do |i|
+      next if !user.pbCanLowerStatStage?(@statDown[i * 2], user, self)
+      if user.pbLowerStatStage(@statDown[i * 2], @statDown[(i * 2) + 1], user, showAnim)
+        showAnim = false
+      end
+    end
+    showAnim = true
+    (@statUp.length / 2).times do |i|
+      next if !user.pbCanRaiseStatStage?(@statUp[i * 2], user, self)
+      if user.pbRaiseStatStage(@statUp[i * 2], @statUp[(i * 2) + 1], user, showAnim)
+        showAnim = false
+      end
+    end
+  end
+end
+
+#===============================================================================
 # Increases the user's Attack and Speed by 1 stage each. (Dragon Dance)
 #===============================================================================
 class Battle::Move::RaiseUserAtkSpd1 < Battle::Move::MultiStatUpMove
   def initialize(battle, move)
     super
     @statUp = [:ATTACK, 1, :SPEED, 1]
+  end
+end
+
+#===============================================================================
+# Increases the user's Attack, Special Attack, and Speed by 1 stage each.
+# (Accelerando)
+#===============================================================================
+class Battle::Move::RaiseUserAtkSpAtkSpd1 < Battle::Move::MultiStatUpMove
+  def initialize(battle, move)
+    super
+    @statUp = [:ATTACK, 1, :SPECIAL_ATTACK, 1, :SPEED, 1]
   end
 end
 

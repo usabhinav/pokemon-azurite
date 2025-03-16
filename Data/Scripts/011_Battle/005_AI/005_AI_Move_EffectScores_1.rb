@@ -49,8 +49,15 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "FailsIfTargetActed"
     #---------------------------------------------------------------------------
-    when "CrashDamageIfFailsUnusableInGravity", "CrashDamageWithSpeedIfFails"
+    when "CrashDamageIfFailsUnusableInGravity", "CrashDamageWithSpeedIfFails", "ConfuseUserIfFails"
       score += 10 * (user.modifiedStages[:ACCURACY] - target.modifiedStages[:EVASION])
+    #---------------------------------------------------------------------------
+    when "RaiseUserAccuracy1IfFails"
+      if user.statStageAtMax?(:ACCURACY)
+        # Consider chances of hitting if accuracy is already maxed, if not yet maxed
+        # then there will be a positive outcome either way.
+        score += 10 * (user.modifiedStages[:ACCURACY] - target.modifiedStages[:EVASION])
+      end
     #---------------------------------------------------------------------------
     when "StartSunWeather"
       if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
@@ -733,6 +740,20 @@ class Battle::AI
         score -= 20 if hasDamagingAttack
       end
     #---------------------------------------------------------------------------
+    when "RaiseUserAtk2Spd1AndLowerUserDefense1"
+      score -= user.stages[:ATTACK] * 20
+      score -= user.stages[:SPEED] * 10
+      score += user.stages[:DEFENSE] * 10
+      if skill >= PBTrainerAI.mediumSkill
+        hasDamagingAttack = false
+        user.eachMove do |m|
+          next if !m.damagingMove?
+          hasDamagingAttack = true
+          break
+        end
+        score -= 20 if hasDamagingAttack
+      end
+    #---------------------------------------------------------------------------
     when "RaiseUserAtkSpd1"
       score += 40 if user.turnCount == 0   # Dragon Dance tends to be popular
       if user.statStageAtMax?(:ATTACK) &&
@@ -749,6 +770,36 @@ class Battle::AI
             break
           end
           if hasPhysicalAttack
+            score += 20
+          elsif skill >= PBTrainerAI.highSkill
+            score -= 90
+          end
+        end
+        if skill >= PBTrainerAI.highSkill
+          aspeed = pbRoughStat(user, :SPEED, skill)
+          ospeed = pbRoughStat(target, :SPEED, skill)
+          score += 20 if aspeed < ospeed && aspeed * 2 > ospeed
+        end
+      end
+    #---------------------------------------------------------------------------
+    when "RaiseUserAtkSpAtkSpd1"
+      score += 40 if user.turnCount == 0   # This type of move tends to be popular
+      if user.statStageAtMax?(:ATTACK) &&
+         user.statStageAtMax?(:SPECIAL_ATTACK) &&
+         user.statStageAtMax?(:SPEED)
+        score -= 90
+      else
+        score -= user.stages[:ATTACK] * 10
+        score -= user.stages[:SPECIAL_ATTACK] * 10
+        score -= user.stages[:SPEED] * 10
+        if skill >= PBTrainerAI.mediumSkill
+          hasAnyAttack = false
+          user.eachMove do |m|
+            next if m.statusMove?
+            hasAnyAttack = true
+            break
+          end
+          if hasAnyAttack
             score += 20
           elsif skill >= PBTrainerAI.highSkill
             score -= 90
@@ -1137,7 +1188,7 @@ class Battle::AI
         end
       end
     #---------------------------------------------------------------------------
-    when "LowerTargetDefense1"
+    when "LowerTargetDefense1", "HitTwoTimesLowerTargetDefense1"
       if move.statusMove?
         if target.pbCanLowerStatStage?(:DEFENSE, user)
           score += target.stages[:DEFENSE] * 20

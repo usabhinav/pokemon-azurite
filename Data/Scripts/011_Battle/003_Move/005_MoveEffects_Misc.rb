@@ -229,6 +229,30 @@ class Battle::Move::CrashDamageIfFailsUnusableInGravity < Battle::Move
 end
 
 #===============================================================================
+# If attack misses, user's Accuracy is increased by 1 stage. (Rock Star)
+#===============================================================================
+class Battle::Move::RaiseUserAccuracy1IfFails < Battle::Move
+  def pbCrashDamage(user)
+    @battle.pbDisplay(_INTL("{1} kept going!", user.pbThis))
+    if user.pbCanRaiseStatStage?(:ACCURACY, user, self)
+      user.pbRaiseStatStage(:ACCURACY, 1, user)
+    end
+  end
+end
+
+#===============================================================================
+# If attack misses, confuses the user. (Audio Cannon)
+#===============================================================================
+class Battle::Move::ConfuseUserIfFails < Battle::Move
+  def pbCrashDamage(user)
+    @battle.pbDisplay(_INTL("{1} kept going!", user.pbThis))
+    if user.pbCanConfuseSelf?(true)
+      user.pbConfuseSelf
+    end
+  end
+end
+
+#===============================================================================
 # Starts sunny weather. (Sunny Day)
 #===============================================================================
 class Battle::Move::StartSunWeather < Battle::Move::WeatherMove

@@ -1374,6 +1374,18 @@ class Battle::Move::HoopaRemoveProtectionsBypassSubstituteLowerUserDef1 < Battle
 end
 
 #===============================================================================
+# Bypasses Reflect. (Bassquake)
+#===============================================================================
+class Battle::Move::BypassReflect < Battle::Move
+  def pbAddTarget(targets, user)
+    # Should not target itself.
+    targets.reject! {|t| t.index == user.index}
+  end
+
+  def ignoresReflect?; return true; end
+end
+
+#===============================================================================
 # User takes recoil damage equal to 1/4 of the damage this move dealt.
 #===============================================================================
 class Battle::Move::RecoilQuarterOfDamageDealt < Battle::Move::RecoilMove

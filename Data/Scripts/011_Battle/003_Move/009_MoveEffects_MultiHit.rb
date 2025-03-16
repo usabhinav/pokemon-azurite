@@ -23,6 +23,14 @@ class Battle::Move::HitTwoTimesFlinchTarget < Battle::Move::FlinchTarget
 end
 
 #===============================================================================
+# Hits twice. May decrease the target's Defense by 1 stage. (Rock Claw)
+#===============================================================================
+class Battle::Move::HitTwoTimesLowerTargetDefense1 < Battle::Move::LowerTargetDefense1
+  def multiHitMove?;            return true; end
+  def pbNumHits(user, targets); return 2;    end
+end
+
+#===============================================================================
 # Hits in 2 volleys. The second volley targets the original target's ally if it
 # has one (that can be targeted), or the original target if not. A battler
 # cannot be targeted if it is is immune to or protected from this move somehow,

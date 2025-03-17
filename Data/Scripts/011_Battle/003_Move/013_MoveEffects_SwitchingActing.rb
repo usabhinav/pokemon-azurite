@@ -742,6 +742,7 @@ class Battle::Move::TargetUsesItsLastUsedMoveAgain < Battle::Move
       "UseRandomMove",                                   # Metronome
       "UseRandomCosmicTypeMove",                         # Astronomy
       "UseRandomMysticTypeMove",                         # Wild Magic
+      "UseRandomSoundTypeMove",                          # Freestyle
       "UseRandomLegendaryMove",                          # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                # Delayed Attack
       # Moves that require a recharge turn
@@ -1017,6 +1018,7 @@ class Battle::Move::DisableTargetUsingDifferentMove < Battle::Move
         "UseRandomMove",   # Metronome
         "UseRandomCosmicTypeMove",   # Astronomy
         "UseRandomMysticTypeMove",   # Wild Magic
+        "UseRandomSoundTypeMove",    # Freestyle
         "UseRandomLegendaryMove",    # Mirage Call
         "SelectMoveAndAttackTwoTurnsLater", # Delayed Attack
       ]

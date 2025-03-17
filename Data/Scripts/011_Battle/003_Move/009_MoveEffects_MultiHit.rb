@@ -595,6 +595,28 @@ class Battle::Move::MultiTurnAttackConfuseUserAtEnd < Battle::Move
 end
 
 #===============================================================================
+# User must use this move for 1 or 2 more rounds. At end, user becomes confused.
+# Also has a chance to confuse the target at the end. (Cadenza)
+#===============================================================================
+class Battle::Move::MultiTurnAttackConfuseUserAtEndAndConfuseTarget < Battle::Move
+  def pbEffectAfterAllHits(user, target)
+    if !target.damageState.unaffected && user.effects[PBEffects::Outrage] == 0
+      user.effects[PBEffects::Outrage] = 2 + @battle.pbRandom(2)
+      user.currentMove = @id
+    end
+    if user.effects[PBEffects::Outrage] > 0
+      user.effects[PBEffects::Outrage] -= 1
+      if user.effects[PBEffects::Outrage] == 0 && user.pbCanConfuseSelf?(false)
+        user.pbConfuse(_INTL("{1} became confused due to fatigue!", user.pbThis))
+      end
+      if user.effects[PBEffects::Outrage] == 0 && target.pbCanConfuse?(user, false, self) && @battle.pbRandom(100) < @addlEffect
+        target.pbConfuse(_INTL("{1} became confused!", target.pbThis))
+      end
+    end
+  end
+end
+
+#===============================================================================
 # User must use this move for 1 or 2 more rounds. Each round, the user's Defense
 # and Sp. Def. is lowered by 1 stat stage. If the user used Rage before, then
 # power is increased, but stats are lowered by 2 stages instead. At end, user

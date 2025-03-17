@@ -314,6 +314,9 @@ class Battle::Move
     if @battle.field.effects[PBEffects::Darkened] && ![:DARK, :LIGHT, :FIRE, :COSMIC, :ELECTRIC].include?(@calcType)
       modifiers[:accuracy_multiplier] *= 0.8
     end
+    if @battle.field.effects[PBEffects::Perform] > 0 && @calcType == :SOUND
+      modifiers[:accuracy_multiplier] *= 1.5
+    end
     modifiers[:evasion_stage] = 0 if target.effects[PBEffects::Foresight] && modifiers[:evasion_stage] > 0
     modifiers[:evasion_stage] = 0 if target.effects[PBEffects::MiracleEye] && modifiers[:evasion_stage] > 0
   end
@@ -707,6 +710,14 @@ class Battle::Move
       elsif [:LIGHT, :FAIRY, :PSYCHIC].include?(type)
         multipliers[:final_damage_multiplier] /= 2
       end
+    end
+    # Pain Amplifier
+    if @battle.field.effects[PBEffects::PainAmplifier] > 0
+      multipliers[:final_damage_multiplier] *= 1.5
+    end
+    # Perform
+    if @battle.field.effects[PBEffects::Perform] > 0 && type == :SOUND
+      multipliers[:final_damage_multiplier] *= 1.5
     end
     # Move-specific base damage modifiers
     multipliers[:base_damage_multiplier] = pbBaseDamageMultiplier(multipliers[:base_damage_multiplier], user, target)

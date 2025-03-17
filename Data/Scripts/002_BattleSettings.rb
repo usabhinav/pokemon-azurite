@@ -140,6 +140,7 @@ module Settings
     "UseRandomMove",                                     # Metronome
     "UseRandomCosmicTypeMove",                           # Astronomy
     "UseRandomMysticTypeMove",                           # Wild Magic
+    "UseRandomSoundTypeMove",                            # Freestyle
     "UseRandomLegendaryMove",                            # Mirage Call
     "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
     # Move-redirecting and stealing moves

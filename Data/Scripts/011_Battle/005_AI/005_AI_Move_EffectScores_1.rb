@@ -1669,7 +1669,7 @@ class Battle::AI
       end
       score += numStages * 20
     #---------------------------------------------------------------------------
-    when "InvertTargetStatStages"
+    when "InvertTargetStatStages", "InvertTargetRandomStat"
       if target.effects[PBEffects::Substitute] > 0
         score -= 90
       else
@@ -1682,7 +1682,7 @@ class Battle::AI
         if numpos != 0 || numneg != 0
           score += (numpos - numneg) * 10
         else
-          score -= 95
+          score -= 95 if move.statusMove?
         end
       end
     #---------------------------------------------------------------------------

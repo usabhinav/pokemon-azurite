@@ -485,6 +485,18 @@ class Battle::AI
         )
       end
       baseDmg = (baseDmg.to_f * mult / Effectiveness::NORMAL_EFFECTIVE).round
+    when "EffectivenessIncludesWaterType"   # Noise Ripple
+      if skill >= PBTrainerAI.highSkill
+        targetTypes = target.pbTypes(true)
+        mult = Effectiveness.calculate(
+          :WATER, targetTypes[0], targetTypes[1], targetTypes[2]
+        )
+      else
+        mult = Effectiveness.calculate(
+          :WATER, target.types[0], target.types[1], target.effects[PBEffects::Type3]
+        )
+      end
+      baseDmg = (baseDmg.to_f * mult / Effectiveness::NORMAL_EFFECTIVE).round
     when "EffectivenessIncludesLightTypeOnlyIfSuperEffective" # Luminous Gust
       defTypes = []
       if skill >= PBTrainerAI.highSkill
@@ -782,6 +794,14 @@ class Battle::AI
       elsif [:LIGHT, :FAIRY, :PSYCHIC].include?(type)
         multipliers[:final_damage_multiplier] /= 2
       end
+    end
+    # Pain Amplifier
+    if skill >= PBTrainerAI.highSkill && @battle.field.effects[PBEffects::PainAmplifier] > 0
+      multipliers[:final_damage_multiplier] *= 1.5
+    end
+    # Perform
+    if skill >= PBTrainerAI.highSkill && @battle.field.effects[PBEffects::Perform] > 0 && type == :SOUND
+      multipliers[:final_damage_multiplier] *= 1.5
     end
     # Move-specific base damage modifiers
     # TODO

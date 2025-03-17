@@ -378,7 +378,8 @@ class Battle::AI
       score -= user.hp <= (user.totalhp / 2) ? 90 : 50
     #---------------------------------------------------------------------------
     when "EffectivenessIncludesFlyingType", "EffectivenessIncludesFireType",
-         "EffectivenessIncludesSoundType", "EffectivenessIncludesGrassType"
+         "EffectivenessIncludesSoundType", "EffectivenessIncludesGrassType",
+         "EffectivenessIncludesWaterType"
     #---------------------------------------------------------------------------
     when "SuperEffectiveAgainstFireNeutralEffectiveAgainstIce",
          "SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses",
@@ -457,6 +458,12 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "StartBoostMysticGhostDarkWeakenFairyLightPsychic"
       score -= 90 if @battle.field.effects[PBEffects::Ritual] > 0
+    #---------------------------------------------------------------------------
+    when "StartBoostPowerOfAllMoves"
+      score -= 90 if @battle.field.effects[PBEffects::PainAmplifier] > 0
+    #---------------------------------------------------------------------------
+    when "StartBoostPowerAndAccuracyOfSoundTypeMoves"
+      score -= 90 if @battle.field.effects[PBEffects::Perform] > 0
     #---------------------------------------------------------------------------
     when "HitTwoTimes"
     #---------------------------------------------------------------------------
@@ -618,7 +625,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "MultiTurnAttackPreventSleeping"
     #---------------------------------------------------------------------------
-    when "MultiTurnAttackConfuseUserAtEnd", "MultiTurnAttackLowersDefSpDef1EveryTurnConfuseUserAtEnd"
+    when "MultiTurnAttackConfuseUserAtEnd", "MultiTurnAttackLowersDefSpDef1EveryTurnConfuseUserAtEnd", "MultiTurnAttackConfuseUserAtEndAndConfuseTarget"
     #---------------------------------------------------------------------------
     when "MultiTurnAttackPowersUpEachTurn"
     #---------------------------------------------------------------------------
@@ -1308,7 +1315,7 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
-    when "UseRandomCosmicTypeMove", "UseRandomMysticTypeMove", "UseRandomLegendaryMove"
+    when "UseRandomCosmicTypeMove", "UseRandomMysticTypeMove", "UseRandomSoundTypeMove", "UseRandomLegendaryMove"
       # No clear indicator to know when to use this move.
     #---------------------------------------------------------------------------
     when "BounceBackProblemCausingStatusMoves", "BounceBackAllMoves", "BounceBackAllMovesIncludingForAllyIfLegendary"

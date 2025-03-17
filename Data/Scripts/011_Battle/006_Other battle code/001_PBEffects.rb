@@ -250,4 +250,6 @@ module PBEffects
   Ritual          = 18
   AirLense        = 19
   Sputter         = 20
+  PainAmplifier   = 21
+  Perform         = 22
 end

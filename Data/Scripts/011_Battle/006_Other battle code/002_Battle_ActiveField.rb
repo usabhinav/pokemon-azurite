@@ -33,6 +33,8 @@ class Battle::ActiveField
     @effects[PBEffects::Ritual]          = 0
     @effects[PBEffects::AirLense]        = 0
     @effects[PBEffects::Sputter]         = false
+    @effects[PBEffects::PainAmplifier]   = 0
+    @effects[PBEffects::Perform]         = 0
     @defaultWeather  = :None
     @weather         = :None
     @weatherDuration = 0

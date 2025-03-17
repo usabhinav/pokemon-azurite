@@ -392,7 +392,7 @@ class Battle::Move::PowerHigherWithTargetWeight < Battle::Move
 end
 
 #===============================================================================
-# Power increases the heavier the user is than the target. (Heat Crash, Heavy Slam)
+# Power increases the heavier the user is than the target. (Heat Crash, Heavy Slam, Drop Wave)
 #===============================================================================
 class Battle::Move::PowerHigherWithUserHeavierThanTarget < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
@@ -1642,6 +1642,19 @@ class Battle::Move::EffectivenessIncludesGrassType < Battle::Move
 end
 
 #===============================================================================
+# Type effectiveness is multiplied by the Water-type's effectiveness against
+# the target. (Noise Ripple)
+#===============================================================================
+class Battle::Move::EffectivenessIncludesWaterType < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    ret = super
+    eff = Effectiveness.calculate_one(:WATER, defType)
+    ret *= eff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    return ret
+  end
+end
+
+#===============================================================================
 # Type effectiveness is overridden in cases where Light-type would be super
 # effective against the defending type. (Luminous Gust)
 #===============================================================================
@@ -2320,24 +2333,49 @@ class Battle::Move::StartBoostMysticGhostDarkWeakenFairyLightPsychic < Battle::M
 end
 
 #===============================================================================
+# For 5 rounds, boost all moves by 50%. (Pain Amplifier)
+#===============================================================================
+class Battle::Move::StartBoostPowerOfAllMoves < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.effects[PBEffects::PainAmplifier] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.field.effects[PBEffects::PainAmplifier] = 5
+    @battle.pbDisplay(_INTL("{1} let out a screeching wave that amplifies damage!", user.pbThis))
+  end
+end
+
+#===============================================================================
+# For 5 rounds, boost the power and accuracy of Sound-type moves by 50%.
+# (Perform)
+#===============================================================================
+class Battle::Move::StartBoostPowerAndAccuracyOfSoundTypeMoves < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.effects[PBEffects::Perform] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.field.effects[PBEffects::Perform] = 5
+    @battle.pbDisplay(_INTL("{1} started a lively concert that boosts the power and accuracy of Sound-type moves!", user.pbThis))
+  end
+end
+
+#===============================================================================
 # Sound Pulse
 #===============================================================================
 class Battle::Move::DoublePowerIfTargetEvasionAtLeastOne < Battle::Move
   def pbBaseDamage(baseDmg,user,target)
     baseDmg *= 2 if target.modifiedStages[:EVASION] >= 1
     return baseDmg
-  end
-end
-
-#===============================================================================
-# Noise Ripple
-#===============================================================================
-class Battle::Move::EffectivenessIncludesWaterType < Battle::Move
-  def pbCalcTypeModSingle(moveType,defType,user,target)
-    ret = super(moveType,defType,user,target)
-    waterEff = Effectiveness.calculate_one(:WATER, defType)
-    ret *= waterEff.to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
-    return ret
   end
 end
 

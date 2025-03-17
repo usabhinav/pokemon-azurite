@@ -2158,6 +2158,49 @@ class Battle::Move::InvertTargetStatStages < Battle::Move
 end
 
 #===============================================================================
+# Reverses a random stat change of the target. (Binaural Beat)
+#===============================================================================
+class Battle::Move::InvertTargetRandomStat < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if damagingMove?
+    if !target.hasAlteredStatStages?
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def invertStat(user, target)
+    stats_to_choose = []
+    GameData::Stat.each_battle do |s|
+      stats_to_choose.push(s) if target.stages[s.id] != 0
+    end
+    stat_to_invert = stats_to_choose.sample
+    if target.stages[stat_to_invert.id] > 0
+      target.statsLoweredThisRound = true
+      target.statsDropped = true
+    elsif target.stages[stat_to_invert.id] < 0
+      target.statsRaisedThisRound = true
+    end
+    target.stages[stat_to_invert.id] *= -1
+    @battle.pbDisplay(_INTL("{1}'s {2} was reversed!", target.pbThis, stat_to_invert.name))
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    return if damagingMove?
+    invertStat(user, target)
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    return if !target.hasAlteredStatStages?
+    invertStat(user, target)
+  end
+end
+
+#===============================================================================
 # Resets all target's stat stages to 0. (Clear Smog)
 #===============================================================================
 class Battle::Move::ResetTargetStatStages < Battle::Move

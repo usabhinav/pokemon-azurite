@@ -183,7 +183,9 @@ module Battle::DebugVariables
     PBEffects::MysteryShroud   => { name: "Mystery Shroud duration",          default: 0 },
     PBEffects::Ritual          => { name: "Ritual duration",                  default: 0 },
     PBEffects::AirLense        => { name: "Air Lense duration",               default: 0 },
-    PBEffects::Sputter         => { name: "Sputter was used",                 default: false }
+    PBEffects::Sputter         => { name: "Sputter was used",                 default: false },
+    PBEffects::PainAmplifier   => { name: "Pain Amplifier duration",          default: 0 },
+    PBEffects::Perform         => { name: "Perform duration",                 default: 0 }
   }
 
   POSITION_EFFECTS = {

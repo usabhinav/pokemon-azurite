@@ -741,6 +741,7 @@ class Battle::Move::UseLastMoveUsed < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticTypeMove",                           # Wild Magic
+      "UseRandomSoundTypeMove",                            # Freestyle
       "UseRandomLegendaryMove",                            # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
@@ -1013,6 +1014,7 @@ class Battle::Move::UseRandomMove < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticTypeMove",                           # Wild Magic
+      "UseRandomSoundTypeMove",                            # Freestyle
       "UseRandomLegendaryMove",                            # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
@@ -1116,6 +1118,7 @@ class Battle::Move::UseRandomMoveFromUserParty < Battle::Move
       "UseRandomMove",                                     # Metronome
       "UseRandomCosmicTypeMove",                           # Astronomy
       "UseRandomMysticTypeMove",                           # Wild Magic
+      "UseRandomSoundTypeMove",                            # Freestyle
       "UseRandomLegendaryMove",                            # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                  # Delayed Attack
       # Move-redirecting and stealing moves
@@ -1227,6 +1230,7 @@ class Battle::Move::UseRandomUserMoveIfAsleep < Battle::Move
       "UseRandomMove",                                   # Metronome
       "UseRandomCosmicTypeMove",                         # Astronomy
       "UseRandomMysticTypeMove",                         # Wild Magic
+      "UseRandomSoundTypeMove",                          # Freestyle
       "UseRandomLegendaryMove",                          # Mirage Call
       "SelectMoveAndAttackTwoTurnsLater",                # Delayed Attack
       # Two-turn attacks
@@ -1314,6 +1318,32 @@ class Battle::Move::UseRandomMysticTypeMove < Battle::Move::UseRandomMove
       next if @moveBlacklist.include?(move_data.function_code)
       next if move_data.has_flag?("CannotMetronome")
       next if move_data.type != :MYSTIC
+      @metronomeMove = move_data.id
+      break
+    end
+    if !@metronomeMove
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+end
+
+#===============================================================================
+# Uses a random Sound-type move that exists. (Freestyle)
+#===============================================================================
+class Battle::Move::UseRandomSoundTypeMove < Battle::Move::UseRandomMove
+  def pbMoveFailed?(user, targets)
+    @metronomeMove = nil
+    move_keys = GameData::Move.keys
+    # NOTE: You could be really unlucky and roll blacklisted moves 1000 times in
+    #       a row. This is too unlikely to care about, though.
+    1000.times do
+      move_id = move_keys[@battle.pbRandom(move_keys.length)]
+      move_data = GameData::Move.get(move_id)
+      next if @moveBlacklist.include?(move_data.function_code)
+      next if move_data.has_flag?("CannotMetronome")
+      next if move_data.type != :SOUND
       @metronomeMove = move_data.id
       break
     end

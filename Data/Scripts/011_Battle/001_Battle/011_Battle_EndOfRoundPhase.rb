@@ -706,6 +706,12 @@ class Battle
     # Air Lense
     pbEORCountDownFieldEffect(PBEffects::AirLense,
                               _INTL("Electric-type attacks have regained their power!"))
+    # Pain Amplifier
+    pbEORCountDownFieldEffect(PBEffects::PainAmplifier,
+                              _INTL("The screeching noise ended!"))
+    # Perform
+    pbEORCountDownFieldEffect(PBEffects::Perform,
+                              _INTL("The concert ended!"))
   end
 
   #=============================================================================

@@ -719,6 +719,10 @@ class Battle::Move
     if @battle.field.effects[PBEffects::Perform] > 0 && type == :SOUND
       multipliers[:final_damage_multiplier] *= 1.5
     end
+    # Power Scream
+    if @battle.field.effects[PBEffects::PowerScream] > 0
+      multipliers[:final_damage_multiplier] *= 2
+    end
     # Move-specific base damage modifiers
     multipliers[:base_damage_multiplier] = pbBaseDamageMultiplier(multipliers[:base_damage_multiplier], user, target)
     # Move-specific final damage modifiers

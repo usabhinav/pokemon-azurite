@@ -347,6 +347,7 @@ class Battle::AI
          "DoublePowerIfNoBattlersActed",
          "DoublePowerIfTargetSharesTypeWithUser",
          "DoublePowerIfTargetIsAirborne",
+         "DoublePowerIfTargetEvasionRaised",
          "TypeAndPowerDependOnWeather",
          "PowerHigherWithUserHappiness",
          "PowerLowerWithUserHappiness",
@@ -358,6 +359,7 @@ class Battle::AI
          "TypeDependsOnUserIVs",
          "PowerHigherWithConsecutiveUse",
          "PowerHigherWithConsecutiveUseOnUserSide",
+         "PowerDoublesAndAccuracyDecreasesBy10WithConsecutiveUse",
          "PowerHigherWithMoreBugTypesInParty",
          "PowerHigherWithMoreCosmicTypesInParty",
          "PowerHigherIfUserHitBySpecialAttack",
@@ -802,6 +804,10 @@ class Battle::AI
     # Perform
     if skill >= PBTrainerAI.highSkill && @battle.field.effects[PBEffects::Perform] > 0 && type == :SOUND
       multipliers[:final_damage_multiplier] *= 1.5
+    end
+    # Power Scream
+    if skill >= PBTrainerAI.highSkill && @battle.field.effects[PBEffects::PowerScream] > 0
+      multipliers[:final_damage_multiplier] *= 2
     end
     # Move-specific base damage modifiers
     # TODO

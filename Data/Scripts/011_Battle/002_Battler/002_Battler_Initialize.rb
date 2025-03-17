@@ -350,6 +350,8 @@ class Battle::Battler
     @effects[PBEffects::HugCounter]          = 0
     @effects[PBEffects::TrackPunchUserIndex] = -1
     @effects[PBEffects::DNAFlipCount]        = 0
+    @effects[PBEffects::RhythmBeat]          = 0
+    @effects[PBEffects::RingingRing]         = false
   end
 
   #=============================================================================

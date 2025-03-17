@@ -2050,6 +2050,17 @@ class Battle::Move::StartTargetAirborneAndAlwaysHitByMoves < Battle::Move
 end
 
 #===============================================================================
+# Target will lose 8% of their max HP every turn. (Ringing Ring)
+#===============================================================================
+class Battle::Move::StartTargetRingingRing < Battle::Move
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    target.effects[PBEffects::RingingRing] = true
+    @battle.pbDisplay(_INTL("{1} felt an intense ringing in its head!", target.pbThis))
+  end
+end
+
+#===============================================================================
 # Hits airborne semi-invulnerable targets. (Sky Uppercut)
 #===============================================================================
 class Battle::Move::HitsTargetInSky < Battle::Move

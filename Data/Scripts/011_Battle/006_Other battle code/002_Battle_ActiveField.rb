@@ -35,6 +35,7 @@ class Battle::ActiveField
     @effects[PBEffects::Sputter]         = false
     @effects[PBEffects::PainAmplifier]   = 0
     @effects[PBEffects::Perform]         = 0
+    @effects[PBEffects::PowerScream]     = 0
     @defaultWeather  = :None
     @weather         = :None
     @weatherDuration = 0

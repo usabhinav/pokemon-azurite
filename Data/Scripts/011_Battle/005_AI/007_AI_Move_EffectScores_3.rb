@@ -81,6 +81,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "PowerHigherWithConsecutiveUseOnUserSide"
     #---------------------------------------------------------------------------
+    when "PowerDoublesAndAccuracyDecreasesBy10WithConsecutiveUse"
+      # No clear indicator to know when to use this move.
+    #---------------------------------------------------------------------------
     when "PowerHigherWithMoreBugTypesInParty", "PowerHigherWithMoreCosmicTypesInParty"
     #---------------------------------------------------------------------------
     when "PowerHigherIfUserHitBySpecialAttack"
@@ -167,6 +170,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetIsAirborne"
       score += 30 if target.airborne?
+    #---------------------------------------------------------------------------
+    when "DoublePowerIfTargetEvasionRaised"
+      score += 30 if target.modifiedStages[:EVASION] > 0
     #---------------------------------------------------------------------------
     when "AlwaysCriticalHit"
     #---------------------------------------------------------------------------
@@ -317,6 +323,9 @@ class Battle::AI
     when "BypassReflect"
       # No clear indicator to know when to use this move.
     #---------------------------------------------------------------------------
+    when "BypassProtectionsAndReflect"
+      # No clear indicator to know when to use this move.
+    #---------------------------------------------------------------------------
     when "RecoilQuarterOfDamageDealt"
       score -= 25
     #---------------------------------------------------------------------------
@@ -446,6 +455,9 @@ class Battle::AI
     when "TypeAndPowerDependOnTerrain"
       score += 40 if @battle.field.terrain != :None
     #---------------------------------------------------------------------------
+    when "PowerDependsOnTargetDefSpDef"
+      # No clear indicator to know when to use this move.
+    #---------------------------------------------------------------------------
     when "TargetMovesBecomeElectric"
       aspeed = pbRoughStat(user, :SPEED, skill)
       ospeed = pbRoughStat(target, :SPEED, skill)
@@ -464,6 +476,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "StartBoostPowerAndAccuracyOfSoundTypeMoves"
       score -= 90 if @battle.field.effects[PBEffects::Perform] > 0
+    #---------------------------------------------------------------------------
+    when "StartDoublePowerOfAllMoves"
+      score -= 90 if @battle.field.effects[PBEffects::PowerScream] > 0
     #---------------------------------------------------------------------------
     when "HitTwoTimes"
     #---------------------------------------------------------------------------

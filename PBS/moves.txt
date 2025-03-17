@@ -9518,7 +9518,7 @@ Power = 65
 Accuracy = 0
 TotalPP = 25
 Target = NearOther
-FunctionCode = PowerDoublesIfTargetEvasionRaised
+FunctionCode = DoublePowerIfTargetEvasionRaised
 Flags = CanProtect,CanMirrorMove,Sound,Pulse
 Description = If the target has its evasion raised, this move's damage is doubled.
 #-------------------------------
@@ -9542,7 +9542,7 @@ Power = 40
 Accuracy = 100
 TotalPP = 30
 Target = NearOther
-FunctionCode = BypassProtections
+FunctionCode = BypassProtectionsAndReflect
 Flags = CanMirrorMove,Sound
 Description = Bypasses even protect and detect.
 #-------------------------------
@@ -9565,8 +9565,9 @@ Power = 25
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = StartRingingRingEffectOnTarget
+FunctionCode = StartTargetRingingRing
 Flags = CanProtect,CanMirrorMove,Sound
+EffectChance = 100
 Description = Throws a ring of sounds at the opponent. The ringing will continue to hurt the foe every turn until switched out.
 #-------------------------------
 [SOUNDBLAST]
@@ -9614,7 +9615,7 @@ Power = 40
 Accuracy = 100
 TotalPP = 30
 Target = NearOther
-FunctionCode = PowerDoublesAndAccuracyDecreasesBy10PerConsecutiveUse
+FunctionCode = PowerDoublesAndAccuracyDecreasesBy10WithConsecutiveUse
 Flags = Contact,CanProtect,CanMirrorMove,Sound
 Description = Doubles in power every consecutive use, but accuracy of the move is lowered by 10 every consecutive use too.
 #-------------------------------

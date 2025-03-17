@@ -388,28 +388,35 @@ class Battle
         pbDisplay(_INTL("{1} is afflicted by the curse!", battler.pbThis))
       }
     end
-    # Scorching Coat	
-    priority.each do |b|	
-      next if !b.hasActiveAbility?(:SCORCHINGCOAT)	
-      priority.each do |j|	
-        next if j.pbHasType?(:FIRE) || j.hasActiveAbility?(:SCORCHINGCOAT)	
-        pbShowAbilitySplash(b)	
-        pbDisplay(_INTL("{1} was burned!",j.pbThis))	
+    # Scorching Coat
+    priority.each do |b|
+      next if !b.hasActiveAbility?(:SCORCHINGCOAT)
+      priority.each do |j|
+        next if j.pbHasType?(:FIRE) || j.hasActiveAbility?(:SCORCHINGCOAT)
+        pbShowAbilitySplash(b)
+        pbDisplay(_INTL("{1} was burned!",j.pbThis))
         @scene.pbDamageAnimation(j)
         j.pbTakeEffectDamage(j.totalhp/16)
-        pbHideAbilitySplash(b)	
-      end	
-    end	
-    # Blast	
-    priority.each do |b|	
-      for j in b.effects[PBEffects::BlastUsers]	
-        pbShowAbilitySplash(j)	
-        pbDisplay(_INTL("{1} blasted {2}!", j.pbThis, b.pbThis(true)))	
-        @scene.pbDamageAnimation(b)	
-        b.pbTakeEffectDamage(b.hp/8) # Yes, not total hp, just remaining hp	
-        pbHideAbilitySplash(j)	
-      end	
-      b.effects[PBEffects::BlastUsers].clear	
+        pbHideAbilitySplash(b)
+      end
+    end
+    # Blast
+    priority.each do |b|
+      for j in b.effects[PBEffects::BlastUsers]
+        pbShowAbilitySplash(j)
+        pbDisplay(_INTL("{1} blasted {2}!", j.pbThis, b.pbThis(true)))
+        @scene.pbDamageAnimation(b)
+        b.pbTakeEffectDamage(b.hp/8) # Yes, not total hp, just remaining hp
+        pbHideAbilitySplash(j)
+      end
+      b.effects[PBEffects::BlastUsers].clear
+    end
+    # Ringing Ring
+    priority.each do |battler|
+      next if !battler.effects[PBEffects::RingingRing] || !battler.takesIndirectDamage?
+      battler.pbTakeEffectDamage((battler.totalhp * 0.08).round) { |hp_lost|
+        pbDisplay(_INTL("{1}'s head pounds from the ringing!", battler.pbThis))
+      }
     end
   end
 
@@ -712,6 +719,9 @@ class Battle
     # Perform
     pbEORCountDownFieldEffect(PBEffects::Perform,
                               _INTL("The concert ended!"))
+    # Power Scream
+    pbEORCountDownFieldEffect(PBEffects::PowerScream,
+                              _INTL("The powerful scream subsided!"))
   end
 
   #=============================================================================

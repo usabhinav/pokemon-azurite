@@ -100,6 +100,8 @@ module Battle::DebugVariables
 #    PBEffects::Quash - not suitable for setting via debug
 #    PBEffects::Rage - only applies to use of specific move, not suitable for setting via debug
     PBEffects::Refraction     => { name: "Refraction applies this round",                   default: false },
+    PBEffects::RhythmBeat     => { name: "Rhythm Beat power multiplier 2**x (0-4)",         default: 0, max: 4 },
+    PBEffects::RingingRing    => { name: "Taking Ringing Ring damage",                      default: false },
     PBEffects::Rollout        => { name: "Rollout rounds remaining (lower=stronger)",       default: 0 },
     PBEffects::Roost          => { name: "Roost removing Flying type this round",           default: false },
 #    PBEffects::ShellTrap - only applies to use of specific move, not suitable for setting via debug
@@ -185,7 +187,8 @@ module Battle::DebugVariables
     PBEffects::AirLense        => { name: "Air Lense duration",               default: 0 },
     PBEffects::Sputter         => { name: "Sputter was used",                 default: false },
     PBEffects::PainAmplifier   => { name: "Pain Amplifier duration",          default: 0 },
-    PBEffects::Perform         => { name: "Perform duration",                 default: 0 }
+    PBEffects::Perform         => { name: "Perform duration",                 default: 0 },
+    PBEffects::PowerScream     => { name: "Power Scream duration",            default: 0 }
   }
 
   POSITION_EFFECTS = {

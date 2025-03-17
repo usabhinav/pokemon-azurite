@@ -180,6 +180,8 @@ module PBEffects
   HugCounter          = 175
   TrackPunchUserIndex = 176
   DNAFlipCount        = 177
+  RhythmBeat          = 178
+  RingingRing         = 179
 
   #=============================================================================
   # These effects apply to a battler position
@@ -252,4 +254,5 @@ module PBEffects
   Sputter         = 20
   PainAmplifier   = 21
   Perform         = 22
+  PowerScream     = 23
 end

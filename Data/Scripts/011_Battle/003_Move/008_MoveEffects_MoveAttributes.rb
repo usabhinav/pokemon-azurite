@@ -431,6 +431,32 @@ class Battle::Move::PowerHigherWithConsecutiveUse < Battle::Move
 end
 
 #===============================================================================
+# Power doubles for each consecutive use, but accuracy is also lowered by 10
+# for each consecutive use. (Rhythm Beat)
+#===============================================================================
+class Battle::Move::PowerDoublesAndAccuracyDecreasesBy10WithConsecutiveUse < Battle::Move
+  def pbChangeUsageCounters(user, specialUsage)
+    oldVal = user.effects[PBEffects::RhythmBeat]
+    super
+    maxMult = 1
+    while (@baseDamage << (maxMult - 1)) < 160
+      maxMult += 1   # 1-4 for base damage of 20, 1-3 for base damage of 40
+    end
+    user.effects[PBEffects::RhythmBeat] = (oldVal >= maxMult) ? maxMult : oldVal + 1
+  end
+
+  def pbBaseDamage(baseDmg, user, target)
+    return baseDmg << (user.effects[PBEffects::RhythmBeat] - 1)
+  end
+
+  def pbBaseAccuracy(user, target)
+    ret = super
+    ret = [ret - ((user.effects[PBEffects::RhythmBeat] - 1) * 10), 1].max
+    return ret
+  end
+end
+
+#===============================================================================
 # Power is multiplied by the number of consecutive rounds in which this move was
 # used by any Pokémon on the user's side. (Echoed Voice)
 #===============================================================================
@@ -892,6 +918,16 @@ end
 class Battle::Move::DoublePowerIfTargetIsAirborne < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
     baseDmg *= 2 if target.airborne?
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target's Evasion is raised. (Sound Pulse)
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetEvasionRaised < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg *= 2 if target.modifiedStages[:EVASION] > 0
     return baseDmg
   end
 end
@@ -1382,6 +1418,13 @@ class Battle::Move::BypassReflect < Battle::Move
     targets.reject! {|t| t.index == user.index}
   end
 
+  def ignoresReflect?; return true; end
+end
+
+#===============================================================================
+# Bypasses protections (e.g. Protect, Detect, etc.) and Reflect. (Soundwave)
+#===============================================================================
+class Battle::Move::BypassProtectionsAndReflect < Battle::Move
   def ignoresReflect?; return true; end
 end
 
@@ -2255,6 +2298,17 @@ class Battle::Move::TypeAndPowerDependOnTerrain < Battle::Move
 end
 
 #===============================================================================
+# Power is equal to the target's Defense or Special Defense, whichever is
+# highest (with a max of 104). (Ring Through)
+#===============================================================================
+class Battle::Move::PowerDependsOnTargetDefSpDef < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    baseDmg = [[target.defense, target.spdef].max, 104].min
+    return baseDmg
+  end
+end
+
+#===============================================================================
 # Target's moves become Electric-type for the rest of the round. (Electrify)
 #===============================================================================
 class Battle::Move::TargetMovesBecomeElectric < Battle::Move
@@ -2370,25 +2424,20 @@ class Battle::Move::StartBoostPowerAndAccuracyOfSoundTypeMoves < Battle::Move
 end
 
 #===============================================================================
-# Sound Pulse
+# For 5 rounds, boost all moves by 2x. (Power Scream)
 #===============================================================================
-class Battle::Move::DoublePowerIfTargetEvasionAtLeastOne < Battle::Move
-  def pbBaseDamage(baseDmg,user,target)
-    baseDmg *= 2 if target.modifiedStages[:EVASION] >= 1
-    return baseDmg
-  end
-end
-
-#===============================================================================
-# Ring Through
-#===============================================================================
-class Battle::Move::PowerDependsOnTargetDefenseStats < Battle::Move
-  def pbBaseDamage(baseDmg,user,target)
-    if target.defense > target.spdef
-      return target.defense
-    else
-      return target.spdef
+class Battle::Move::StartDoublePowerOfAllMoves < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if @battle.field.effects[PBEffects::PowerScream] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
     end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.field.effects[PBEffects::PowerScream] = 5
+    @battle.pbDisplay(_INTL("{1} let out a powerful scream that amplifies damage!", user.pbThis))
   end
 end
 

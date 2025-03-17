@@ -728,6 +728,9 @@ class Battle::AI
         score -= 90
       end
     #---------------------------------------------------------------------------
+    when "StartTargetRingingRing"
+      score += 10 if !target.effects[PBEffects::RingingRing]
+    #---------------------------------------------------------------------------
     when "HitsTargetInSky"
     #---------------------------------------------------------------------------
     when "HitsTargetInSkyGroundsTarget", "HitsTargetInSkyGroundsTargetSuperEffectiveAgainstAirborneTarget"

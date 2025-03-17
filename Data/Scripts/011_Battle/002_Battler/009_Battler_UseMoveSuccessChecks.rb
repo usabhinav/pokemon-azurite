@@ -308,6 +308,8 @@ class Battle::Battler
     return false if move.pbFailsAgainstTarget?(user, target, show_message)
     # Signal Boost (move)
     return true if user.effects[PBEffects::SignalBoostMoveActive]
+    # Soundwave (move)
+    return true if move.function == "BypassProtectionsAndReflect"
     # Immunity to priority moves because of Psychic Terrain
     if @battle.field.terrain == :Psychic && target.affectedByTerrain? && target.opposes?(user) &&
        @battle.choices[user.index][4] > 0   # Move priority saved from pbCalculatePriority

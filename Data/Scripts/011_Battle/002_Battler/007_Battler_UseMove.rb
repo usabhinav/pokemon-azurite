@@ -95,6 +95,7 @@ class Battle::Battler
     @currentMove = nil unless @effects[PBEffects::HyperBeam] > 0
     # Reset counters for moves which increase them when used in succession
     @effects[PBEffects::FuryCutter] = 0
+    @effects[PBEffects::RhythmBeat] = 0
   end
 
   def pbEndTurn(_choice)

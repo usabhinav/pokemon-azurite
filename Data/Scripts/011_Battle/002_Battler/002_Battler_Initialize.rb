@@ -352,6 +352,8 @@ class Battle::Battler
     @effects[PBEffects::DNAFlipCount]        = 0
     @effects[PBEffects::RhythmBeat]          = 0
     @effects[PBEffects::RingingRing]         = false
+    @effects[PBEffects::WarCryActive]        = false
+    @effects[PBEffects::ColdSteelTurnCount]  = 0
   end
 
   #=============================================================================

@@ -1571,6 +1571,25 @@ class Battle::Move::AddGrassTypeToTarget < Battle::Move
 end
 
 #===============================================================================
+# Gives user the Steel type. (Advanced Armor)
+#===============================================================================
+class Battle::Move::AddSteelTypeToUser < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.pbHasType?(:STEEL) || !user.canChangeType?
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::Type3] = :STEEL
+    typeName = GameData::Type.get(:STEEL).name
+    @battle.pbDisplay(_INTL("{1} transformed into the {2} type!", user.pbThis, typeName))
+  end
+end
+
+#===============================================================================
 # User loses their Fire type. Fails if user is not Fire-type. (Burn Up)
 #===============================================================================
 class Battle::Move::UserLosesFireType < Battle::Move
@@ -2061,6 +2080,26 @@ class Battle::Move::StartTargetRingingRing < Battle::Move
 end
 
 #===============================================================================
+# For 5 rounds, any contact with the user results in a 30% chance to freeze the
+# target or attacker. (Cold Steel)
+#===============================================================================
+class Battle::Move::StartUserColdSteel < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::ColdSteelTurnCount] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::ColdSteelTurnCount] = 5
+    @battle.pbDisplay(_INTL("{1} coated itself in a thin layer of ice!", user.pbThis))
+  end
+end
+
+
+#===============================================================================
 # Hits airborne semi-invulnerable targets. (Sky Uppercut)
 #===============================================================================
 class Battle::Move::HitsTargetInSky < Battle::Move
@@ -2194,17 +2233,5 @@ class Battle::Move::TransformUserIntoTarget < Battle::Move
   def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
     super
     @battle.scene.pbChangePokemon(user, targets[0].pokemon, true)
-  end
-end
-
-#===============================================================================
-# Vapor Wave
-#===============================================================================
-class Battle::Move::SuperEffectiveAgainstFireRockGround < Battle::Move
-  def pbCalcTypeModSingle(moveType,defType,user,target)
-    if [:FIRE, :ROCK, :GROUND].include?(defType)
-      return Effectiveness::SUPER_EFFECTIVE_ONE
-    end
-    return super
   end
 end

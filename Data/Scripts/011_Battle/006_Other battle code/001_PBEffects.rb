@@ -182,6 +182,8 @@ module PBEffects
   DNAFlipCount        = 177
   RhythmBeat          = 178
   RingingRing         = 179
+  WarCryActive        = 180
+  ColdSteelTurnCount  = 181
 
   #=============================================================================
   # These effects apply to a battler position
@@ -227,6 +229,7 @@ module PBEffects
   SafeguardMoveName  = 23
   AsteroidBelt       = 24
   GrandRebound       = 25
+  VolumeMixer        = 26
 
   #=============================================================================
   # These effects apply to the battle (i.e. both sides)

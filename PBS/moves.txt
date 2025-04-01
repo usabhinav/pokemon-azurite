@@ -9245,7 +9245,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = User
-FunctionCode = StartColdSteelEffectOnUser
+FunctionCode = StartUserColdSteel
 Description = Coats the user's steel body in frost for 5 turns. Coming into contact with the user has a 30% chance to freeze.
 #-------------------------------
 [REINFORCE]
@@ -11679,7 +11679,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 15
 Target = UserSide
-FunctionCode = StartNegateStatReductionsForUserSideSoundTypes
+FunctionCode = StartUserSideImmunityToStatStageLoweringForSoundTypes
 Flags = CanMirrorMove,Sound
 Description = For the next five turns, ally Sound-type Pokémon are immune to stat loss from any source.
 #-------------------------------
@@ -11703,7 +11703,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = User
-FunctionCode = ChangeUserTypeToSteel
+FunctionCode = AddSteelTypeToUser
 Flags = CanMirrorMove
 Description = The Pokémon surrounds itself in heavy metal armor, granting itself the Steel type.
 #-------------------------------
@@ -12042,7 +12042,7 @@ Power = 110
 Accuracy = 80
 TotalPP = 10
 Target = NearOther
-FunctionCode = StartIronMaidenEffectOnTargetAndBurnTarget
+FunctionCode = BindBurnTarget
 Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 20
 Description = The user traps the target in a spiky cavity, chomping and crushing them. May cause burn.
@@ -12377,8 +12377,8 @@ Type = SOUND
 Category = Status
 Accuracy = 0
 TotalPP = 15
-Target = UserSide
-FunctionCode = RaiseUserSideAttack2AndCriticalHitRate
+Target = UserAndAllies
+FunctionCode = RaiseUserAndAlliesAttack2CriticalHitRate1
 Flags = CanMirrorMove,Sound
 Description = With a triumphant roar, the Pokémon boosts the team's Attack and critical chance. The effect cannot stack.
 #-------------------------------

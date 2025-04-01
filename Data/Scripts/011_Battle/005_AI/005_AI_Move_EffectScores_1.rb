@@ -185,7 +185,7 @@ class Battle::AI
     when "SwapSideEffects"
       if skill >= PBTrainerAI.mediumSkill
         good_effects = [:Reflect, :LightScreen, :AuroraVeil, :SeaOfFire,
-                        :Swamp, :Rainbow, :Mist, :Safeguard,
+                        :Swamp, :Rainbow, :Mist, :VolumeMixer, :Safeguard,
                         :Tailwind].map! { |e| PBEffects.const_get(e) }
         bad_effects = [:Spikes, :StickyWeb, :ToxicSpikes, :VoltSpikes, :StealthRock, :AsteroidBelt].map! { |e| PBEffects.const_get(e) }
         bad_effects.each do |e|
@@ -1428,6 +1428,7 @@ class Battle::AI
                      target.pbOwnSide.effects[PBEffects::Reflect] > 0 ||
                      target.pbOwnSide.effects[PBEffects::LightScreen] > 0 ||
                      target.pbOwnSide.effects[PBEffects::Mist] > 0 ||
+                     target.pbOwnSide.effects[PBEffects::VolumeMixer] > 0 ||
                      target.pbOwnSide.effects[PBEffects::Safeguard] > 0
       score -= 30 if target.pbOwnSide.effects[PBEffects::Spikes] > 0 ||
                      target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 ||
@@ -1570,6 +1571,22 @@ class Battle::AI
         score -= user.stages[:ATTACK] * 10
         score -= user.stages[:SPEED] * 10
       else
+        score -= 90
+      end
+    #---------------------------------------------------------------------------
+    when "RaiseUserAndAlliesAttack2CriticalHitRate1"
+      hasEffect = !user.effects[PBEffects::WarCryActive]
+      user.allAllies.each do |b|
+        next if b.effects[PBEffects::WarCryActive]
+        hasEffect = true
+        score -= b.stages[:ATTACK] * 20
+        score += 15
+      end
+      if !user.effects[PBEffects::WarCryActive]
+        score -= user.stages[:ATTACK] * 20
+        score += 15
+      end
+      if !hasEffect
         score -= 90
       end
     #---------------------------------------------------------------------------
@@ -1721,6 +1738,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "StartUserSideImmunityToStatStageLowering"
       score -= 80 if user.pbOwnSide.effects[PBEffects::Mist] > 0
+    #---------------------------------------------------------------------------
+    when "StartUserSideImmunityToStatStageLoweringForSoundTypes"
+      score -= 80 if user.pbOwnSide.effects[PBEffects::VolumeMixer] > 0
     #---------------------------------------------------------------------------
     when "UserSwapBaseAtkDef"
       if skill >= PBTrainerAI.mediumSkill

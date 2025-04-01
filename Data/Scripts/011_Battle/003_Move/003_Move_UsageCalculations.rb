@@ -365,6 +365,7 @@ class Battle::Move
     return true if target.effects[PBEffects::DropGuardActive]
     c += 1 if highCriticalRate?
     c += user.effects[PBEffects::FocusEnergy]
+    c += 1 if user.effects[PBEffects::WarCryActive]
 	  c += 1 if user.hasActiveItem?(:CHOICESCOPE) && (self.accuracy == 0 || self.accuracy == 100)
     c += 1 if user.inHyperMode? && @type == :SHADOW
     # Set up the critical hit ratios

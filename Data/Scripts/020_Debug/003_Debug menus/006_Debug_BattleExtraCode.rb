@@ -17,6 +17,7 @@ module Battle::DebugVariables
     PBEffects::BurnUp         => { name: "Burn Up has removed self's Fire type",            default: false },
     PBEffects::Charge         => { name: "Charge number of rounds remaining",               default: 0 },
     PBEffects::ChoiceBand     => { name: "Move locked into by Choice items",                default: nil, type: :move },
+    PBEffects::ColdSteelTurnCount => { name: "Cold Steel number of rounds remaining",       default: 0 },
     PBEffects::Confusion      => { name: "Confusion number of rounds remaining",            default: 0 },
 #    PBEffects::Counter - not suitable for setting via debug
 #    PBEffects::CounterTarget - not suitable for setting via debug
@@ -131,6 +132,7 @@ module Battle::DebugVariables
 #    PBEffects::Type3 - set elsewhere
     PBEffects::Unburden       => { name: "Self lost its item (for Unburden)",               default: false },
     PBEffects::Uproar         => { name: "Uproar number of rounds remaining",               default: 0 },
+    PBEffects::WarCryActive   => { name: "War Cry applies",                                 default: false },
     PBEffects::WaterSport     => { name: "Used Water Sport (Gen 5 and older)",              default: false },
     PBEffects::WeightChange   => { name: "Weight change +0.1*x kg",                         default: 0, min: -99_999, max: 99_999 },
     PBEffects::Yawn           => { name: "Yawn rounds remaining until falling asleep",      default: 0 }
@@ -161,7 +163,8 @@ module Battle::DebugVariables
     PBEffects::VoltSpikes         => { name: "Volt Spikes layers (0-2)",               default: 0, max: 2 },
     PBEffects::WideGuard          => { name: "Wide Guard applies this round",          default: false },
     PBEffects::AsteroidBelt       => { name: "Asteroid Belt duration (0-8)",           default: 0, max: 8 },
-    PBEffects::GrandRebound       => { name: "Grand Rebound applies this round",       default: false }
+    PBEffects::GrandRebound       => { name: "Grand Rebound applies this round",       default: false },
+    PBEffects::VolumeMixer        => { name: "Volume Mixer duration",                  default: 0 }
   }
 
   FIELD_EFFECTS = {

@@ -619,6 +619,7 @@ class Battle::Move::SwapSideEffects < Battle::Move
       PBEffects::AuroraVeil,
       PBEffects::LightScreen,
       PBEffects::Mist,
+      PBEffects::VolumeMixer,
       PBEffects::Rainbow,
       PBEffects::Reflect,
       PBEffects::Safeguard,

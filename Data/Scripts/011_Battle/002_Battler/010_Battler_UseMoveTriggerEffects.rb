@@ -110,6 +110,13 @@ class Battle::Battler
         @battle.pbDisplay(_INTL("{1}'s Defense and Sp. Def returned to normal!", target.pbThis))
         target.effects[PBEffects::LightNutActive] = false
       end
+      # Cold Steel
+      if user.effects[PBEffects::ColdSteelTurnCount] > 0 && move.pbContactMove?(user) && target.pbCanFreeze?(user, false) && @battle.pbRandom(100) < 30
+        target.pbFreeze
+      end
+      if target.effects[PBEffects::ColdSteelTurnCount] > 0 && move.pbContactMove?(user) && user.pbCanFreeze?(target, false) && @battle.pbRandom(100) < 30
+        user.pbFreeze
+      end
     end
     # Drop Guard
     if target.effects[PBEffects::DropGuardActive]

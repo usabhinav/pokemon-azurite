@@ -1437,6 +1437,7 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
                     targetSide.effects[PBEffects::LightScreen] > 0 ||
                     targetSide.effects[PBEffects::Reflect] > 0 ||
                     targetSide.effects[PBEffects::Mist] > 0 ||
+                    targetSide.effects[PBEffects::VolumeMixer] > 0 ||
                     targetSide.effects[PBEffects::Safeguard] > 0
     return false if targetSide.effects[PBEffects::StealthRock] ||
                     targetSide.effects[PBEffects::Spikes] > 0 ||
@@ -1474,6 +1475,10 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
     if target.pbOwnSide.effects[PBEffects::Mist] > 0
       target.pbOwnSide.effects[PBEffects::Mist] = 0
       @battle.pbDisplay(_INTL("{1}'s Mist faded!", target.pbTeam))
+    end
+    if target.pbOwnSide.effects[PBEffects::VolumeMixer] > 0
+      target.pbOwnSide.effects[PBEffects::VolumeMixer] = 0
+      @battle.pbDisplay(_INTL("{1}'s Volume Mixer ended!", target.pbTeam))
     end
     if target.pbOwnSide.effects[PBEffects::Safeguard] > 0
       target.pbOwnSide.effects[PBEffects::Safeguard] = 0
@@ -1939,6 +1944,41 @@ class Battle::Move::RaiseUserAndAlliesAttack1Speed1 < Battle::Move
 end
 
 #===============================================================================
+# Increases the user's and its ally's Attack by 2 stages and critical hit rate,
+# unless it was already raised before. (War Cry)
+#===============================================================================
+class Battle::Move::RaiseUserAndAlliesAttack2CriticalHitRate1 < Battle::Move
+  def ignoresSubstitute?(user); return true; end
+  def canSnatch?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    @validTargets = []
+    @battle.allSameSideBattlers(user).each do |b|
+      next if b.effects[PBEffects::WarCryActive]
+      @validTargets.push(b)
+    end
+    if @validTargets.length == 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false if @validTargets.any? { |b| b.index == target.index }
+    @battle.pbDisplay(_INTL("{1} has already heard the call to action!", target.pbThis)) if show_message
+    return true
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    if target.pbCanRaiseStatStage?(:ATTACK, user, self)
+      target.pbRaiseStatStage(:ATTACK, 2, user)
+    end
+    target.effects[PBEffects::WarCryActive] = true
+  end
+end
+
+#===============================================================================
 # Increases the Attack and Special Attack of all Grass-type Pokémon in battle by
 # 1 stage each. Doesn't affect airborne Pokémon. (Rototiller)
 #===============================================================================
@@ -2248,6 +2288,27 @@ class Battle::Move::StartUserSideImmunityToStatStageLowering < Battle::Move
   def pbEffectGeneral(user)
     user.pbOwnSide.effects[PBEffects::Mist] = 5
     @battle.pbDisplay(_INTL("{1} became shrouded in mist!", user.pbTeam))
+  end
+end
+
+#===============================================================================
+# For 5 rounds, Sound-type Pokémon on the user's side cannot have their stat
+# stages lowered at all. (Volume Mixer)
+#===============================================================================
+class Battle::Move::StartUserSideImmunityToStatStageLoweringForSoundTypes < Battle::Move
+  def canSnatch?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.pbOwnSide.effects[PBEffects::VolumeMixer] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOwnSide.effects[PBEffects::VolumeMixer] = 5
+    @battle.pbDisplay(_INTL("{1}'s Sound-type Pokémon became immune to stat loss!", user.pbTeam))
   end
 end
 

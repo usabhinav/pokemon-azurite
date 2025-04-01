@@ -505,6 +505,10 @@ class Battle
     pbEORCountDownBattlerEffect(priority, PBEffects::Telekinesis) { |battler|
       pbDisplay(_INTL("{1} was freed from the telekinesis!", battler.pbThis))
     }
+    # Cold Steel
+    pbEORCountDownBattlerEffect(priority, PBEffects::ColdSteelTurnCount) { |battler|
+      pbDisplay(_INTL("{1}'s ice melted!", battler.pbThis))
+    }
     # Heal Block
     pbEORCountDownBattlerEffect(priority, PBEffects::HealBlock) { |battler|
       pbDisplay(_INTL("{1}'s Heal Block wore off!", battler.pbThis))
@@ -639,6 +643,9 @@ class Battle
     # Mist
     pbEORCountDownSideEffect(side, PBEffects::Mist,
                              _INTL("{1} is no longer protected by mist!", @battlers[side].pbTeam))
+    # Volume Mixer
+    pbEORCountDownSideEffect(side, PBEffects::VolumeMixer,
+                             _INTL("{1} is no longer protected by the volume mixer!", @battlers[side].pbTeam))
     # Tailwind
     pbEORCountDownSideEffect(side, PBEffects::Tailwind,
                              _INTL("{1}'s Tailwind petered out!", @battlers[side].pbTeam))

@@ -392,7 +392,8 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "SuperEffectiveAgainstFireNeutralEffectiveAgainstIce",
          "SuperEffectiveAgainstFlyingAndLowerUserDefense1IfMisses",
-         "SuperEffectiveAgainstUserWeaknesses"
+         "SuperEffectiveAgainstUserWeaknesses",
+         "SuperEffectiveAgainstWaterTypeWeaknesses"
       # Type mod calculations will automatically adjust the score appropriately.
     #---------------------------------------------------------------------------
     when "CategoryDependsOnHigherDamagePoisonTarget"
@@ -926,7 +927,7 @@ class Battle::AI
         score -= user.hp * 100 / user.totalhp
       end
     #---------------------------------------------------------------------------
-    when "UserFaints"
+    when "UserFaints", "UserFaintsAndSuperEffectiveAgainstSteelElectric"
       score -= user.hp * 100 / user.totalhp
     #---------------------------------------------------------------------------
     when "UserFaintsRemoveEntryHazardsAndScreensAndTerrains"
@@ -1534,7 +1535,7 @@ class Battle::AI
         end
       end
     #---------------------------------------------------------------------------
-    when "BindTarget"
+    when "BindTarget", "BindBurnTarget"
       score += 40 if target.effects[PBEffects::Trapping] == 0
     #---------------------------------------------------------------------------
     when "BindTargetDoublePowerIfTargetUnderwater"

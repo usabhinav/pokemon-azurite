@@ -846,6 +846,7 @@ class Battle::AI
       if c >= 0
         c += 1 if move.highCriticalRate?
         c += user.effects[PBEffects::FocusEnergy]
+        c += 1 if user.effects[PBEffects::WarCryActive]
         c += 1 if user.inHyperMode? && move.type == :SHADOW
       end
       if c >= 0

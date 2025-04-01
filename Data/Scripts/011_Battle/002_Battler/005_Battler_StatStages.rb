@@ -178,6 +178,11 @@ class Battle::Battler
         end
       end
     end
+    if pbOwnSide.effects[PBEffects::VolumeMixer] > 0 && pbHasType?(:SOUND) &&
+       !(user && user.hasActiveAbility?(:INFILTRATOR))
+      @battle.pbDisplay(_INTL("{1} is protected by Volume Mixer!", pbThis)) if showFailMsg
+      return false
+    end
     # Check the stat stage
     if statStageAtMin?(stat)
       if showFailMsg
@@ -363,6 +368,11 @@ class Battle::Battler
                                 pbThis, user.pbThis(true), user.abilityName))
         return false
       end
+      if pbOwnSide.effects[PBEffects::VolumeMixer] > 0 && pbHasType?(:SOUND)
+        @battle.pbDisplay(_INTL("{1} is protected from {2}'s {3} by Volume Mixer!",
+                                pbThis, user.pbThis(true), user.abilityName))
+        return false
+      end
       if abilityActive? &&
          (Battle::AbilityEffects.triggerStatLossImmunity(self.ability, self, :ATTACK, @battle, false) ||
           Battle::AbilityEffects.triggerStatLossImmunityNonIgnorable(self.ability, self, :ATTACK, @battle, false))
@@ -416,6 +426,11 @@ class Battle::Battler
     if !hasActiveAbility?(:CONTRARY) && !hasActiveItem?(:REVERSALHERB)
       if pbOwnSide.effects[PBEffects::Mist] > 0
         @battle.pbDisplay(_INTL("{1} is protected from {2}'s {3} by Mist!",
+                                pbThis, user.pbThis(true), user.abilityName))
+        return false
+      end
+      if pbOwnSide.effects[PBEffects::VolumeMixer] > 0 && pbHasType?(:SOUND)
+        @battle.pbDisplay(_INTL("{1} is protected from {2}'s {3} by Volume Mixer!",
                                 pbThis, user.pbThis(true), user.abilityName))
         return false
       end

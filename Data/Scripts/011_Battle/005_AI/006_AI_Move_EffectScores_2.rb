@@ -596,6 +596,9 @@ class Battle::AI
     when "AddGrassTypeToTarget"
       score -= 90 if target.pbHasType?(:GRASS)
     #---------------------------------------------------------------------------
+    when "AddSteelTypeToUser"
+      score -= 90 if user.pbHasType?(:STEEL) || !user.canChangeType?
+    #---------------------------------------------------------------------------
     when "UserLosesFireType"
       score -= 90 if !user.pbHasType?(:FIRE)
     #---------------------------------------------------------------------------
@@ -730,6 +733,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "StartTargetRingingRing"
       score += 10 if !target.effects[PBEffects::RingingRing]
+    #---------------------------------------------------------------------------
+    when "StartUserColdSteel"
+      score -= 90 if user.effects[PBEffects::ColdSteelTurnCount] > 0
     #---------------------------------------------------------------------------
     when "HitsTargetInSky"
     #---------------------------------------------------------------------------

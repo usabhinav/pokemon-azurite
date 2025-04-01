@@ -1759,6 +1759,18 @@ class Battle::Move::SuperEffectiveAgainstUserWeaknesses < Battle::Move
 end
 
 #===============================================================================
+# Super effective against types that are weak to Water. (Vapor Wave)
+#===============================================================================
+class Battle::Move::SuperEffectiveAgainstWaterTypeWeaknesses < Battle::Move
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    if Effectiveness.super_effective_type?(:WATER, defType)
+      return Effectiveness::SUPER_EFFECTIVE_ONE
+    end
+    return super
+  end
+end
+
+#===============================================================================
 # Poisons the target. This move becomes physical or special, whichever will deal
 # more damage (only considers stats, stat stages and Wonder Room). Makes contact
 # if it is a physical move. Has a different animation depending on the move's

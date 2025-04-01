@@ -966,6 +966,17 @@ class Battle::Move::UserFaintsHealAndCureReplacementRestorePP < Battle::Move
 end
 
 #===============================================================================
+# User faints. Is super effective against Steel and Electric types.
+# (Fatal Error)
+#===============================================================================
+class Battle::Move::UserFaintsAndSuperEffectiveAgainstSteelElectric < Battle::Move::UserFaints
+  def pbCalcTypeModSingle(moveType, defType, user, target)
+    return Effectiveness::SUPER_EFFECTIVE_ONE if [:STEEL, :ELECTRIC].include?(defType)
+    return super
+  end
+end
+
+#===============================================================================
 # All current battlers will perish after 3 more rounds. (Perish Song)
 #===============================================================================
 class Battle::Move::StartPerishCountsForAllBattlers < Battle::Move

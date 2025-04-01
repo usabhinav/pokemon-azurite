@@ -405,6 +405,8 @@ class Battle::Move::BindTarget < Battle::Move
       msg = _INTL("{1} became surrounded in flames!", target.pbThis)
     when :SHADOWBIND
       msg = _INTL("{1}'s shadow was bound by {2}!", target.pbThis, user.pbThis(true))
+    when :IRONMAIDEN
+      msg = _INTL("{1} became trapped in a cavity filled with iron spikes!", target.pbThis, user.pbThis(true))
     end
     @battle.pbDisplay(msg)
   end
@@ -421,6 +423,17 @@ class Battle::Move::BindTargetDoublePowerIfTargetUnderwater < Battle::Move::Bind
   def pbModifyDamage(damageMult, user, target)
     damageMult *= 2 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableUnderwater")
     return damageMult
+  end
+end
+
+#===============================================================================
+# Trapping move. Traps for 5 or 6 rounds. Trapped Pokémon lose 1/16 of max HP
+# at end of each round. May burn the target. (Iron Maiden)
+#===============================================================================
+class Battle::Move::BindBurnTarget < Battle::Move::BindTarget
+  def pbAdditionalEffect(user, target)
+    return if target.damageState.substitute
+    target.pbBurn(user) if target.pbCanBurn?(user, false, self)
   end
 end
 

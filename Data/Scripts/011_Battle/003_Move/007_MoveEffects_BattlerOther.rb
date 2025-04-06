@@ -2098,6 +2098,28 @@ class Battle::Move::StartTargetRingingRing < Battle::Move
 end
 
 #===============================================================================
+# For 5 rounds, the target will have 50% increased defense against Fire-type
+# moves, but 75% decreased defense against Electric-type moves. Becomes 8 rounds
+# if the user has Damp Rock. (Shower)
+#===============================================================================
+class Battle::Move::StartTargetShowerEffect < Battle::Move
+  def canMagicCoat?;      return true; end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if target.effects[PBEffects::ShowerTurnCount] > 0
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return false
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    target.effects[PBEffects::ShowerTurnCount] = user.hasActiveItem?(:DAMPROCK) ? 8 : 5
+    @battle.pbDisplay(_INTL("{1} was drenched!", target.pbThis))
+  end
+end
+
+#===============================================================================
 # For 5 rounds, any contact with the user results in a 30% chance to freeze the
 # target or attacker. (Cold Steel)
 #===============================================================================

@@ -75,9 +75,9 @@ class Battle::AI
     when "StartRainWeather"
       if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
          @battle.pbCheckGlobalAbility(:CLOUDNINE)
-        score -= 90
+        score -= 90 unless move.damagingMove?
       elsif @battle.field.weather == :Rain
-        score -= 90
+        score -= 90 unless move.damagingMove?
       else
         user.eachMove do |m|
           next if !m.damagingMove? || m.type != :WATER
@@ -88,33 +88,33 @@ class Battle::AI
     when "StartSandstormWeather"
       if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
          @battle.pbCheckGlobalAbility(:CLOUDNINE)
-        score -= 90
+        score -= 90 unless move.damagingMove?
       elsif @battle.field.weather == :Sandstorm
-        score -= 90
+        score -= 90 unless move.damagingMove?
       end
     #---------------------------------------------------------------------------
     when "StartHailWeather"
       if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
          @battle.pbCheckGlobalAbility(:CLOUDNINE)
-        score -= 90
+        score -= 90 unless move.damagingMove?
       elsif @battle.field.weather == :Hail
-        score -= 90
+        score -= 90 unless move.damagingMove?
       end
     #---------------------------------------------------------------------------
     when "StartThunderstormWeather"
       if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
          @battle.pbCheckGlobalAbility(:CLOUDNINE)
-        score -= 90
+        score -= 90 unless move.damagingMove?
       elsif @battle.field.weather == :Thunderstorm
-        score -= 90
+        score -= 90 unless move.damagingMove?
       end
     #---------------------------------------------------------------------------
     when "StartFirestormWeather"
       if @battle.pbCheckGlobalAbility(:AIRLOCK) ||
         @battle.pbCheckGlobalAbility(:CLOUDNINE)
-        score -= 90
+        score -= 90 unless move.damagingMove?
       elsif @battle.field.weather == :Firestorm
-        score -= 90
+        score -= 90 unless move.damagingMove?
       end
     #---------------------------------------------------------------------------
     when "StartElectricTerrain"

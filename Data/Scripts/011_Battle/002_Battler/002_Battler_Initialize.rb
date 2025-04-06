@@ -354,6 +354,7 @@ class Battle::Battler
     @effects[PBEffects::RingingRing]         = false
     @effects[PBEffects::WarCryActive]        = false
     @effects[PBEffects::ColdSteelTurnCount]  = 0
+    @effects[PBEffects::ShowerTurnCount]     = 0
   end
 
   #=============================================================================

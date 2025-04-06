@@ -8910,7 +8910,7 @@ Power = 80
 Accuracy = 90
 TotalPP = 15
 Target = NearOther
-FunctionCode = StartRainWeatherDamagingMove
+FunctionCode = StartRainWeather
 Flags = Contact,CanProtect,CanMirrorMove
 Description = The user splashes the target, not only damaging them, but also causing it to rain.
 #-------------------------------
@@ -8921,7 +8921,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 10
 Target = NearOther
-FunctionCode = StartTargetWetEffect
+FunctionCode = StartTargetShowerEffect
 Flags = CanProtect,CanMirrorMove
 Description = The target becomes wet for 5 turns. It's resistant to Fire-type moves and weak to Electric-type moves.
 #-------------------------------

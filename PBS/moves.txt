@@ -8896,10 +8896,10 @@ Category = Special
 Power = 20
 Accuracy = 100
 TotalPP = 15
-Target = AllNearOthers
-FunctionCode = CureTargetSleepAndFreezeTarget
+Target = AllBattlers
+FunctionCode = CureTargetSleepFreezeTarget
 Flags = CanProtect,CanMirrorMove
-EffectChance = 10
+EffectChance = 100
 Description = Hits and wakes up all Pokémon on the field. Has a chance to freeze.
 #-------------------------------
 [TIDALSPLASH]
@@ -9235,7 +9235,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 20
 Target = User
-FunctionCode = LowerUserDefSpDef1AndHealUserBy30PercentOfTotalHPAndRaiseUserAttack1
+FunctionCode = LowerUserDefSpDef1HealUserBy30PercentOfTotalHPRaiseUserAttack1
 Description = Lowers defense and special defense to heal the user and raise its attack.
 #-------------------------------
 [COLDSTEEL]
@@ -12018,7 +12018,7 @@ Power = 80
 Accuracy = 100
 TotalPP = 15
 Target = NearOther
-FunctionCode = PowerDoublesIfTargetBurned
+FunctionCode = DoublePowerIfTargetIsBurnedNoSubstitute
 Flags = CanProtect,CanMirrorMove,ThawsUser
 Description = The user vaporizes water around the target, dealing double damage if the target is burned.
 #-------------------------------

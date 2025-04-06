@@ -319,7 +319,7 @@ class Battle::AI
       baseDmg = move.pbFixedDamage(user, target)
     when "FixedDamageUserLevelRandom"   # Psywave
       baseDmg = user.level
-    when "OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"
+    when "OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOUnstoppable"
       baseDmg = 200
     when "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"
       baseDmg = 200 if move.shouldTriggerOHKO(user, target)
@@ -961,6 +961,9 @@ class Battle::AI
         if skill >= PBTrainerAI.bestSkill && target.hasActiveAbility?(:STURDY)
           modifiers[:accuracy_multiplier] = 0
         end
+      end
+      if move.function == "OHKOUnstoppable"
+        modifiers[:base_accuracy] = move.accuracy
       end
     end
   end

@@ -188,6 +188,19 @@ class Battle::Move::OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThi
 end
 
 #===============================================================================
+# OHKO, but without any of the fail checks of a regular OHKO. (Steel Smite)
+#===============================================================================
+class Battle::Move::OHKOUnstoppable < Battle::Move::OHKO
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return false
+  end
+
+  def pbAccuracyCheck(user, target)
+    return @battle.pbRandom(100) < @accuracy
+  end
+end
+
+#===============================================================================
 # The target's ally loses 1/16 of its max HP. (Flame Burst)
 #===============================================================================
 class Battle::Move::DamageTargetAlly < Battle::Move
@@ -928,6 +941,19 @@ end
 class Battle::Move::DoublePowerIfTargetEvasionRaised < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
     baseDmg *= 2 if target.modifiedStages[:EVASION] > 0
+    return baseDmg
+  end
+end
+
+#===============================================================================
+# Power is doubled if the target is burned and does not have a Substitute.
+# (Boil)
+#===============================================================================
+class Battle::Move::DoublePowerIfTargetIsBurnedNoSubstitute < Battle::Move
+  def pbBaseDamage(baseDmg, user, target)
+    if target.burned? && (target.effects[PBEffects::Substitute] == 0 || ignoresSubstitute?(user))
+      baseDmg *= 2
+    end
     return baseDmg
   end
 end
@@ -2450,17 +2476,5 @@ class Battle::Move::StartDoublePowerOfAllMoves < Battle::Move
   def pbEffectGeneral(user)
     @battle.field.effects[PBEffects::PowerScream] = 5
     @battle.pbDisplay(_INTL("{1} let out a powerful scream that amplifies damage!", user.pbThis))
-  end
-end
-
-#===============================================================================
-# Boil
-#===============================================================================
-class Battle::Move::DoublePowerIfTargetIsBurnedNoSubstitute < Battle::Move
-  def pbBaseDamage(baseDmg,user,target)
-    if target.burned? && (target.effects[PBEffects::Substitute]==0 || ignoresSubstitute?(user))
-      baseDmg *= 2
-    end
-    return baseDmg
   end
 end

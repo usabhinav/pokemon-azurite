@@ -863,6 +863,24 @@ class Battle::Move::CureTargetBurn < Battle::Move
 end
 
 #===============================================================================
+# Cures the target's sleep. Has a chance to freeze the target. (Cold Shower)
+#===============================================================================
+class Battle::Move::CureTargetSleepFreezeTarget < Battle::Move
+  def pbAddTarget(targets, user)
+    # Should not target itself.
+    targets.reject! {|t| t.index == user.index}
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if target.fainted? || target.damageState.substitute
+    target.pbCureStatus if target.status == :SLEEP
+    if target.pbCanFreeze?(user, false, self) && @battle.pbRandom(100) < 10
+      target.pbFreeze
+    end
+  end
+end
+
+#===============================================================================
 # Safeguards the user's side from being inflicted with status problems.
 # (Safeguard, Pollen Shield)
 #===============================================================================

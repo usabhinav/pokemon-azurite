@@ -316,6 +316,13 @@ class Battle::AI
         score += 40
       end
     #---------------------------------------------------------------------------
+    when "CureTargetSleepFreezeTarget"
+      if target.opposes?(user)
+        score -= 40 if target.status == :SLEEP
+      elsif target.status == :SLEEP
+        score += 40
+      end
+    #---------------------------------------------------------------------------
     when "StartUserSideImmunityToInflictedStatus"
       if user.pbOwnSide.effects[PBEffects::Safeguard] > 0
         score -= 80

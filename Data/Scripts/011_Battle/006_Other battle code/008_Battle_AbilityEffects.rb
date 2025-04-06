@@ -4282,8 +4282,8 @@ Battle::AbilityEffects::OnSwitchIn.add(:ANTICIPATION,
           eff = Effectiveness.calculate(moveType, types[0], types[1], types[2])
           next if Effectiveness.ineffective?(eff)
           next if !Effectiveness.super_effective?(eff) &&
-                  !["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
-        elsif !["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
+                  !["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOUnstoppable", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
+        elsif !["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOUnstoppable", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
           next
         end
         found = true
@@ -4424,7 +4424,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:FOREWARN,
       b.eachMove do |m|
         power = m.baseDamage
         power = 200 if ["PowerLowerWithUserHPByPercent"].include?(m.function)
-        power = 160 if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
+        power = 160 if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOUnstoppable", "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"].include?(m.function)
         power = 150 if ["PowerHigherWithUserHP"].include?(m.function)    # Eruption
         # Counter, Mirror Coat, Metal Burst
         power = 120 if ["CounterPhysicalDamage",
@@ -5040,6 +5040,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
     userSide.effects[PBEffects::Spikes] = 0
     userSide.effects[PBEffects::ToxicSpikes] = 0
     userSide.effects[PBEffects::VoltSpikes] = 0
+    userSide.effects[PBEffects::BubbleTrap] = 0
     userSide.effects[PBEffects::StickyWeb] = false
     userSide.effects[PBEffects::AsteroidBelt] = 0
     # Clear opposing side hazards
@@ -5047,6 +5048,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
     targetSide.effects[PBEffects::Spikes] = 0
     targetSide.effects[PBEffects::ToxicSpikes] = 0
     targetSide.effects[PBEffects::VoltSpikes] = 0
+    targetSide.effects[PBEffects::BubbleTrap] = 0
     targetSide.effects[PBEffects::StickyWeb] = false
     targetSide.effects[PBEffects::AsteroidBelt] = 0
     # Clear all battlers' stat changes

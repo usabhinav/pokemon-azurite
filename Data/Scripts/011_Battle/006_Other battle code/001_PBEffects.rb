@@ -230,6 +230,7 @@ module PBEffects
   AsteroidBelt       = 24
   GrandRebound       = 25
   VolumeMixer        = 26
+  BubbleTrap         = 27
 
   #=============================================================================
   # These effects apply to the battle (i.e. both sides)

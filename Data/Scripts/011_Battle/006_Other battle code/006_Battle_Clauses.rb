@@ -203,8 +203,8 @@ end
 
 
 class Battle::Move::OHKO
-  unless method_defined?(:__clauses__pbFailsAgainstTarget?)
-    alias __clauses__pbFailsAgainstTarget? pbFailsAgainstTarget?
+  unless method_defined?(:__clauses__ohko__pbFailsAgainstTarget?)
+    alias __clauses__ohko__pbFailsAgainstTarget? pbFailsAgainstTarget?
   end
 
   def pbFailsAgainstTarget?(user, target, show_message)
@@ -212,15 +212,15 @@ class Battle::Move::OHKO
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
-    return __clauses__pbFailsAgainstTarget?(user, target, show_message)
+    return __clauses__ohko__pbFailsAgainstTarget?(user, target, show_message)
   end
 end
 
 
 
 class Battle::Move::OHKOIce
-  unless method_defined?(:__clauses__pbFailsAgainstTarget?)
-    alias __clauses__pbFailsAgainstTarget? pbFailsAgainstTarget?
+  unless method_defined?(:__clauses__ohkoIce__pbFailsAgainstTarget?)
+    alias __clauses__ohkoIce__pbFailsAgainstTarget? pbFailsAgainstTarget?
   end
 
   def pbFailsAgainstTarget?(user, target, show_message)
@@ -228,15 +228,15 @@ class Battle::Move::OHKOIce
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
-    return __clauses__pbFailsAgainstTarget?(user, target, show_message)
+    return __clauses__ohkoIce__pbFailsAgainstTarget?(user, target, show_message)
   end
 end
 
 
 
 class Battle::Move::OHKOHitsUndergroundTarget
-  unless method_defined?(:__clauses__pbFailsAgainstTarget?)
-    alias __clauses__pbFailsAgainstTarget? pbFailsAgainstTarget?
+  unless method_defined?(:__clauses__ohkoHitsUndergroundTarget__pbFailsAgainstTarget?)
+    alias __clauses__ohkoHitsUndergroundTarget__pbFailsAgainstTarget? pbFailsAgainstTarget?
   end
 
   def pbFailsAgainstTarget?(user, target, show_message)
@@ -244,15 +244,15 @@ class Battle::Move::OHKOHitsUndergroundTarget
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
-    return __clauses__pbFailsAgainstTarget?(user, target, show_message)
+    return __clauses__ohkoHitsUndergroundTarget__pbFailsAgainstTarget?(user, target, show_message)
   end
 end
 
 
 
 class Battle::Move::OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn
-  unless method_defined?(:__clauses__pbFailsAgainstTarget?)
-    alias __clauses__pbFailsAgainstTarget? pbFailsAgainstTarget?
+  unless method_defined?(:__clauses__ohkoIfTargetLessThan30__pbFailsAgainstTarget?)
+    alias __clauses__ohkoIfTargetLessThan30__pbFailsAgainstTarget? pbFailsAgainstTarget?
   end
 
   def pbFailsAgainstTarget?(user, target, show_message)
@@ -260,7 +260,23 @@ class Battle::Move::OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThi
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
-    return __clauses__pbFailsAgainstTarget?(user, target, show_message)
+    return __clauses__ohkoIfTargetLessThan30__pbFailsAgainstTarget?(user, target, show_message)
+  end
+end
+
+
+
+class Battle::Move::OHKOUnstoppable
+  unless method_defined?(:__clauses__ohkoUnstoppable__pbFailsAgainstTarget?)
+    alias __clauses__ohkoUnstoppable__pbFailsAgainstTarget? pbFailsAgainstTarget?
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    if @battle.rules["ohkoclause"] && shouldTriggerOHKO(user, target)
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return true
+    end
+    return __clauses__ohkoUnstoppable__pbFailsAgainstTarget?(user, target, show_message)
   end
 end
 

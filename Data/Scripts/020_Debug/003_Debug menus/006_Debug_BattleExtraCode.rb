@@ -164,7 +164,8 @@ module Battle::DebugVariables
     PBEffects::WideGuard          => { name: "Wide Guard applies this round",          default: false },
     PBEffects::AsteroidBelt       => { name: "Asteroid Belt duration (0-8)",           default: 0, max: 8 },
     PBEffects::GrandRebound       => { name: "Grand Rebound applies this round",       default: false },
-    PBEffects::VolumeMixer        => { name: "Volume Mixer duration",                  default: 0 }
+    PBEffects::VolumeMixer        => { name: "Volume Mixer duration",                  default: 0 },
+    PBEffects::BubbleTrap         => { name: "Bubble Trap switch-ins (0-3)",           default: 0, max: 3 },
   }
 
   FIELD_EFFECTS = {

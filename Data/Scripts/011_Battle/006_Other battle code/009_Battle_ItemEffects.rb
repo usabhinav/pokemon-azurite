@@ -803,7 +803,7 @@ Battle::ItemEffects::PriorityBracketUse.add(:QUICKCLAW,
 Battle::ItemEffects::OnMissingTarget.add(:BLUNDERPOLICY,
   proc { |item, user, target, move, hit_num, battle|
     next if hit_num > 0 || target.damageState.invulnerable
-    next if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget"].include?(move.function)
+    next if ["OHKO", "OHKOIce", "OHKOHitsUndergroundTarget", "OHKOUnstoppable"].include?(move.function)
     next if "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn" && move.shouldTriggerOHKO(user, target)
     next if !user.pbCanRaiseStatStage?(:SPEED, user)
     battle.pbCommonAnimation("UseItem", user)

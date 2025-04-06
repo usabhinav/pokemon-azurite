@@ -182,12 +182,22 @@ class Battle::AI
         score += [26, 13][user.pbOpposingSide.effects[PBEffects::VoltSpikes]]
       end
     #---------------------------------------------------------------------------
+    when "AddBubbleTrapToFoeSide"
+      if user.pbOpposingSide.effects[PBEffects::BubbleTrap] >= 3
+        score -= 90
+      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+        score -= 90  # Opponent can't switch in any Pokemon
+      else
+        score += 8 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
+        score += [40, 26, 13][user.pbOpposingSide.effects[PBEffects::BubbleTrap]]
+      end
+    #---------------------------------------------------------------------------
     when "SwapSideEffects"
       if skill >= PBTrainerAI.mediumSkill
         good_effects = [:Reflect, :LightScreen, :AuroraVeil, :SeaOfFire,
                         :Swamp, :Rainbow, :Mist, :VolumeMixer, :Safeguard,
                         :Tailwind].map! { |e| PBEffects.const_get(e) }
-        bad_effects = [:Spikes, :StickyWeb, :ToxicSpikes, :VoltSpikes, :StealthRock, :AsteroidBelt].map! { |e| PBEffects.const_get(e) }
+        bad_effects = [:Spikes, :StickyWeb, :ToxicSpikes, :VoltSpikes, :BubbleTrap, :StealthRock, :AsteroidBelt].map! { |e| PBEffects.const_get(e) }
         bad_effects.each do |e|
           score += 10 if ![0, false, nil].include?(user.pbOwnSide.effects[e])
           score -= 10 if ![0, 1, false, nil].include?(user.pbOpposingSide.effects[e])
@@ -214,6 +224,7 @@ class Battle::AI
         score += 80 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
         score += 80 if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
@@ -223,6 +234,7 @@ class Battle::AI
         score += 80 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
         score += 80 if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
@@ -230,6 +242,7 @@ class Battle::AI
         score -= 80 if user.pbOpposingSide.effects[PBEffects::Spikes] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::BubbleTrap] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::StealthRock]
         score -= 80 if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
       end
@@ -723,6 +736,23 @@ class Battle::AI
           break
         end
         score += 20 if hasDamagingAttack
+      end
+    #---------------------------------------------------------------------------
+    when "LowerUserDefSpDef1HealUserBy30PercentOfTotalHPRaiseUserAttack1"
+      score -= user.stages[:ATTACK] * 10
+      score += user.stages[:DEFENSE] * 10
+      score += user.stages[:SPECIAL_DEFENSE] * 10
+      if skill >= PBTrainerAI.mediumSkill
+        hasDamagingAttack = false
+        user.eachMove do |m|
+          next if !m.damagingMove?
+          hasDamagingAttack = true
+          break
+        end
+        score += 20 if hasDamagingAttack
+      end
+      if user.hp <= user.totalhp / 2
+        score += 20
       end
     #---------------------------------------------------------------------------
     when "RaiseUserDefSpDef2AndLowerUserAtkSpAtk2"
@@ -1433,6 +1463,7 @@ class Battle::AI
       score -= 30 if target.pbOwnSide.effects[PBEffects::Spikes] > 0 ||
                      target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0 ||
                      target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0 ||
+                     target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0 ||
                      target.pbOwnSide.effects[PBEffects::StealthRock] ||
                      target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
     #---------------------------------------------------------------------------

@@ -152,10 +152,10 @@ class Battle::Move::OHKO
   end
 end
 #===============================================================================
-#  OHKO immunity
+#  OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn immunity
 #===============================================================================
 class Battle::Move::OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn
-  alias ohkomove_ebdx pbFailsAgainstTarget? unless self.method_defined?(:ohkomove_ebdx)
+  alias ohkoIfTargetLessThan30Move_ebdx pbFailsAgainstTarget? unless self.method_defined?(:ohkoIfTargetLessThan30Move_ebdx)
   def pbFailsAgainstTarget?(*args)
     rule = EliteBattle.get_data(:BOSSBATTLES, :Metrics, :IMMUNITIES)
     rule = rule.nil? ? false : rule.include?(:OHKO)
@@ -163,7 +163,22 @@ class Battle::Move::OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThi
       @battle.pbDisplay(_INTL("{1} is unaffected!", args[1].pbThis))
       return true
     end
-    return ohkomove_ebdx(*args)
+    return ohkoIfTargetLessThan30Move_ebdx(*args)
+  end
+end
+#===============================================================================
+#  OHKOUnstoppable immunity
+#===============================================================================
+class Battle::Move::OHKOUnstoppable
+  alias ohkoUnstoppable_ebdx pbFailsAgainstTarget? unless self.method_defined?(:ohkoUnstoppable_ebdx)
+  def pbFailsAgainstTarget?(*args)
+    rule = EliteBattle.get_data(:BOSSBATTLES, :Metrics, :IMMUNITIES)
+    rule = rule.nil? ? false : rule.include?(:OHKO)
+    if args[1] && args[1].immunity && rule
+      @battle.pbDisplay(_INTL("{1} is unaffected!", args[1].pbThis))
+      return true
+    end
+    return ohkoUnstoppable_ebdx(*args)
   end
 end
 #===============================================================================

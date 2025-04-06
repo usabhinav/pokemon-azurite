@@ -236,7 +236,7 @@ class Battle::Move
       elsif target.effects[PBEffects::Endure]
         target.damageState.endured = true
         damage -= 1
-      elsif damage == target.totalhp
+      elsif damage == target.totalhp && @function != "OHKOUnstoppable"
         if target.hasActiveAbility?(:STURDY) && !@battle.moldBreaker
           target.damageState.sturdy = true
           damage -= 1

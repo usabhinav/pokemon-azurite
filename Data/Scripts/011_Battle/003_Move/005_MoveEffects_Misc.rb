@@ -609,6 +609,28 @@ class Battle::Move::AddVoltSpikesToFoeSide < Battle::Move
 end
 
 #===============================================================================
+# Entry hazard. Lays a bubble trap on the opposing side, which lasts for 3
+# switch-ins. (Bubble Trap)
+#===============================================================================
+class Battle::Move::AddBubbleTrapToFoeSide < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.pbOpposingSide.effects[PBEffects::BubbleTrap] >= 3
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::BubbleTrap] = 3
+    @battle.pbDisplay(_INTL("Bubbles were scattered all around {1}'s feet!",
+                            user.pbOpposingTeam(true)))
+  end
+end
+
+#===============================================================================
 # All effects that apply to one side of the field are swapped to the opposite
 # side. (Court Change)
 #===============================================================================
@@ -629,7 +651,8 @@ class Battle::Move::SwapSideEffects < Battle::Move
       PBEffects::Tailwind,
       PBEffects::ToxicSpikes,
       PBEffects::VoltSpikes,
-      PBEffects::AsteroidBelt
+      PBEffects::AsteroidBelt,
+      PBEffects::BubbleTrap
     ]
     @boolean_effects = [
       PBEffects::StealthRock,
@@ -755,6 +778,10 @@ class Battle::Move::RemoveUserBindingAndEntryHazards < Battle::Move::StatUpMove
         end
       end
     end
+    if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
+      user.pbOwnSide.effects[PBEffects::BubbleTrap] = 0
+      @battle.pbDisplay(_INTL("{1} blew away the bubble trap!", user.pbThis))
+    end
     if user.pbOwnSide.effects[PBEffects::StickyWeb]
       user.pbOwnSide.effects[PBEffects::StickyWeb] = false
       @battle.pbDisplay(_INTL("{1} blew away sticky webs!", user.pbThis))
@@ -781,12 +808,14 @@ class Battle::Move::RemoveWeatherAndEntryHazards < Battle::Move
                     userSide.effects[PBEffects::Spikes] > 0 ||
                     userSide.effects[PBEffects::ToxicSpikes] > 0 ||
                     userSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    userSide.effects[PBEffects::BubbleTrap] > 0 ||
                     userSide.effects[PBEffects::StickyWeb] ||
                     userSide.effects[PBEffects::AsteroidBelt] > 0 ||
                     userOpposingSide.effects[PBEffects::StealthRock] ||
                     userOpposingSide.effects[PBEffects::Spikes] > 0 ||
                     userOpposingSide.effects[PBEffects::ToxicSpikes] > 0 ||
                     userOpposingSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    userOpposingSide.effects[PBEffects::BubbleTrap] > 0 ||
                     userOpposingSide.effects[PBEffects::StickyWeb] ||
                     userOpposingSide.effects[PBEffects::AsteroidBelt] > 0
     return false if @battle.field.weather != :None
@@ -814,6 +843,11 @@ class Battle::Move::RemoveWeatherAndEntryHazards < Battle::Move
       user.pbOwnSide.effects[PBEffects::VoltSpikes]      = 0
       user.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0
       @battle.pbDisplay(_INTL("{1} cleared volt spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0 || user.pbOpposingSide.effects[PBEffects::BubbleTrap] > 0
+      user.pbOwnSide.effects[PBEffects::BubbleTrap]      = 0
+      user.pbOpposingSide.effects[PBEffects::BubbleTrap] = 0
+      @battle.pbDisplay(_INTL("{1} cleared the bubble trap!", user.pbThis))
     end
     if user.pbOwnSide.effects[PBEffects::StickyWeb] || user.pbOpposingSide.effects[PBEffects::StickyWeb]
       user.pbOwnSide.effects[PBEffects::StickyWeb]      = false

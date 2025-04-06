@@ -43,6 +43,9 @@ class Battle::AI
     when "OHKOIfTargetLessThan30PercentOfTotalHPAndHalveUserDefenseThisTurn"
       score -= 30 if move.shouldTriggerOHKO(user, target)
     #---------------------------------------------------------------------------
+    when "OHKOUnstoppable"
+      score += 20
+    #---------------------------------------------------------------------------
     when "DamageTargetAlly", "DamageTargetAllyWithPower40"
       target.allAllies.each do |b|
         next if !b.near?(target)
@@ -173,6 +176,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetEvasionRaised"
       score += 30 if target.modifiedStages[:EVASION] > 0
+    #---------------------------------------------------------------------------
+    when "DoublePowerIfTargetIsBurnedNoSubstitute"
+      score += 30 if target.burned? && (target.effects[PBEffects::Substitute] == 0 || move.ignoresSubstitute?(user))
     #---------------------------------------------------------------------------
     when "AlwaysCriticalHit"
     #---------------------------------------------------------------------------
@@ -938,6 +944,7 @@ class Battle::AI
         score += 80 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
         score += 80 if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
@@ -945,6 +952,7 @@ class Battle::AI
         score -= 80 if user.pbOpposingSide.effects[PBEffects::Spikes] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::BubbleTrap] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::StealthRock]
         score -= 80 if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
       end
@@ -1459,6 +1467,7 @@ class Battle::AI
         score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
@@ -1479,6 +1488,7 @@ class Battle::AI
         score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
@@ -1489,6 +1499,7 @@ class Battle::AI
         score += 40 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 40 if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 40 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end
@@ -1509,6 +1520,7 @@ class Battle::AI
         score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
       end

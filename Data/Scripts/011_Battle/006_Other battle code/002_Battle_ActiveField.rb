@@ -80,6 +80,7 @@ class Battle::ActiveSide
     @effects[PBEffects::AsteroidBelt]       = 0
     @effects[PBEffects::GrandRebound]       = false
     @effects[PBEffects::VolumeMixer]        = 0
+    @effects[PBEffects::BubbleTrap]         = 0
   end
 end
 

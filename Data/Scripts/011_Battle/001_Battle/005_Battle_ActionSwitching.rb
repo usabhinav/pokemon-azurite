@@ -504,6 +504,22 @@ class Battle
         battler.pbItemHPHealCheck
       end
     end
+    # Bubble Trap
+    if battler.pbOwnSide.effects[PBEffects::BubbleTrap] > 0 && battler.takesIndirectDamage? &&
+      !battler.airborne? && !battler.hasActiveItem?([:IRONSHELL, :HEAVYDUTYBOOTS])
+      bTypes = battler.pbTypes(true)
+      eff = Effectiveness.calculate(:WATER, bTypes[0], bTypes[1], bTypes[2])
+      if !Effectiveness.ineffective?(eff)
+        eff = eff.to_f / Effectiveness::NORMAL_EFFECTIVE
+        battler.pbReduceHP(battler.totalhp * eff * battler.pbOwnSide.effects[PBEffects::BubbleTrap] / 16, false)
+        pbDisplay(_INTL("{1} stepped on some explosive bubbles!", battler.pbThis))
+        battler.pbItemHPHealCheck
+        battler.pbOwnSide.effects[PBEffects::BubbleTrap] -= 1
+        if battler.pbOwnSide.effects[PBEffects::BubbleTrap] == 0
+          pbDisplay(_INTL("The bubbles vanished from {1}'s side!", battler.pbThis(true)))
+        end
+      end
+    end
     # Sticky Web
     if battler_side.effects[PBEffects::StickyWeb] && !battler.fainted? && !battler.airborne? &&
        !battler.hasActiveItem?([:HEAVYDUTYBOOTS, :IRONSHELL])

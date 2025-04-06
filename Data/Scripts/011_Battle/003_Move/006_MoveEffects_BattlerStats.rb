@@ -496,6 +496,66 @@ class Battle::Move::LowerUserDefSpDef1RaiseUserAtkSpAtkSpd2 < Battle::Move
 end
 
 #===============================================================================
+# Decreases the user's Defense and Special Defense by 1 stage each.
+# Increases the user's Attack and heals them by 30% of their total HP.
+# (Smelt)
+#===============================================================================
+class Battle::Move::LowerUserDefSpDef1HealUserBy30PercentOfTotalHPRaiseUserAttack1 < Battle::Move
+  def healingMove?; return true; end
+  def canSnatch?; return true; end
+
+  def initialize(battle, move)
+    super
+    @statUp   = [:ATTACK, 1]
+    @statDown = [:DEFENSE, 1, :SPECIAL_DEFENSE, 1]
+  end
+
+  def pbMoveFailed?(user, targets)
+    failed = true
+    (@statUp.length / 2).times do |i|
+      if user.pbCanRaiseStatStage?(@statUp[i * 2], user, self)
+        failed = false
+        break
+      end
+    end
+    (@statDown.length / 2).times do |i|
+      if user.pbCanLowerStatStage?(@statDown[i * 2], user, self)
+        failed = false
+        break
+      end
+    end
+    if user.canHeal?
+      failed = false
+    end
+    if failed
+      @battle.pbDisplay(_INTL("{1}'s stats can't be changed further and can't be healed!", user.pbThis))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    showAnim = true
+    (@statDown.length / 2).times do |i|
+      next if !user.pbCanLowerStatStage?(@statDown[i * 2], user, self)
+      if user.pbLowerStatStage(@statDown[i * 2], @statDown[(i * 2) + 1], user, showAnim)
+        showAnim = false
+      end
+    end
+    showAnim = true
+    (@statUp.length / 2).times do |i|
+      next if !user.pbCanRaiseStatStage?(@statUp[i * 2], user, self)
+      if user.pbRaiseStatStage(@statUp[i * 2], @statUp[(i * 2) + 1], user, showAnim)
+        showAnim = false
+      end
+    end
+    if user.pbRecoverHP(((3 * user.totalhp) / 10.0).ceil) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", user.pbThis))
+    end
+  end
+end
+
+#===============================================================================
 # Increases the user's Defense and Special Defense by 2 stages each.
 # Decreases the user's Attack and Special Attack by 2 stages each. (Stronghold)
 #===============================================================================
@@ -1443,6 +1503,7 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
                     targetSide.effects[PBEffects::Spikes] > 0 ||
                     targetSide.effects[PBEffects::ToxicSpikes] > 0 ||
                     targetSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    targetSide.effects[PBEffects::BubbleTrap] > 0 ||
                     targetSide.effects[PBEffects::StickyWeb] ||
                     targetSide.effects[PBEffects::AsteroidBelt] > 0
     return false if Settings::MECHANICS_GENERATION >= 6 &&
@@ -1450,6 +1511,7 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
                     targetOpposingSide.effects[PBEffects::Spikes] > 0 ||
                     targetOpposingSide.effects[PBEffects::ToxicSpikes] > 0 ||
                     targetOpposingSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    targetOpposingSide.effects[PBEffects::BubbleTrap] > 0 ||
                     targetOpposingSide.effects[PBEffects::StickyWeb] ||
                     targetOpposingSide.effects[PBEffects::AsteroidBelt] > 0)
     return false if Settings::MECHANICS_GENERATION >= 8 && @battle.field.terrain != :None
@@ -1506,12 +1568,17 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
       @battle.pbDisplay(_INTL("{1} blew away poison spikes!", user.pbThis))
     end
     if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0 ||
-      (Settings::MECHANICS_GENERATION >= 6 &&
-      target.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0)
-     target.pbOwnSide.effects[PBEffects::VoltSpikes]      = 0
-     target.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0 if Settings::MECHANICS_GENERATION >= 6
-     @battle.pbDisplay(_INTL("{1} blew away volt spikes!", user.pbThis))
-   end
+      (Settings::MECHANICS_GENERATION >= 6 && target.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0)
+      target.pbOwnSide.effects[PBEffects::VoltSpikes]      = 0
+      target.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0 if Settings::MECHANICS_GENERATION >= 6
+      @battle.pbDisplay(_INTL("{1} blew away volt spikes!", user.pbThis))
+    end
+    if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0 ||
+      (Settings::MECHANICS_GENERATION >= 6 && target.pbOpposingSide.effects[PBEffects::BubbleTrap] > 0)
+      target.pbOwnSide.effects[PBEffects::BubbleTrap]      = 0
+      target.pbOpposingSide.effects[PBEffects::BubbleTrap] = 0 if Settings::MECHANICS_GENERATION >= 6
+      @battle.pbDisplay(_INTL("{1} blew away the bubble trap!", user.pbThis))
+    end
     if target.pbOwnSide.effects[PBEffects::StickyWeb] ||
        (Settings::MECHANICS_GENERATION >= 6 &&
        target.pbOpposingSide.effects[PBEffects::StickyWeb])

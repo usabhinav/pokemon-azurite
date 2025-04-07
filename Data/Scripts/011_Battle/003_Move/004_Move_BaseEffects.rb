@@ -511,6 +511,7 @@ class Battle::Move::WeatherMove < Battle::Move
   end
 
   def pbMoveFailed?(user, targets)
+    return false if damagingMove?
     case @battle.field.weather
     when :HarshSun
       @battle.pbDisplay(_INTL("The extremely harsh sunlight was not lessened at all!"))
@@ -529,7 +530,9 @@ class Battle::Move::WeatherMove < Battle::Move
   end
 
   def pbEffectGeneral(user)
-    @battle.pbStartWeather(user, @weatherType, true, false)
+    if !damagingMove? || ![:HarshSun, :HeavyRain, :StrongWinds, @weatherType].include?(@battle.field.weather)
+      @battle.pbStartWeather(user, @weatherType, true, false)
+    end
   end
 end
 

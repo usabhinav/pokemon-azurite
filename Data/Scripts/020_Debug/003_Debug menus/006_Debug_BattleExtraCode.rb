@@ -135,6 +135,7 @@ module Battle::DebugVariables
     PBEffects::WarCryActive   => { name: "War Cry applies",                                 default: false },
     PBEffects::WaterSport     => { name: "Used Water Sport (Gen 5 and older)",              default: false },
     PBEffects::WeightChange   => { name: "Weight change +0.1*x kg",                         default: 0, min: -99_999, max: 99_999 },
+    PBEffects::ShowerTurnCount => { name: "Shower number of rounds remaining",              default: 0 },
     PBEffects::Yawn           => { name: "Yawn rounds remaining until falling asleep",      default: 0 }
   }
 

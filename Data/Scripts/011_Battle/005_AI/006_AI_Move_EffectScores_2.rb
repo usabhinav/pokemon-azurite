@@ -741,6 +741,9 @@ class Battle::AI
     when "StartTargetRingingRing"
       score += 10 if !target.effects[PBEffects::RingingRing]
     #---------------------------------------------------------------------------
+    when "StartTargetShowerEffect"
+      score -= 90 if target.effects[PBEffects::ShowerTurnCount] > 0
+    #---------------------------------------------------------------------------
     when "StartUserColdSteel"
       score -= 90 if user.effects[PBEffects::ColdSteelTurnCount] > 0
     #---------------------------------------------------------------------------

@@ -184,6 +184,7 @@ module PBEffects
   RingingRing         = 179
   WarCryActive        = 180
   ColdSteelTurnCount  = 181
+  ShowerTurnCount     = 182
 
   #=============================================================================
   # These effects apply to a battler position

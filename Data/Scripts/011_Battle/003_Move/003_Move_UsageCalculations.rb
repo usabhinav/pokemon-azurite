@@ -636,8 +636,8 @@ class Battle::Move
       multipliers[:final_damage_multiplier] *= 1.5
     end
     # Crystal Moves
-    if type == :CRYSTAL && user.pbHasType?(type) == false
-        multipliers[:final_damage_multiplier] *= 0.5
+    if type == :CRYSTAL && !user.pbHasType?(type)
+      multipliers[:final_damage_multiplier] *= 0.5
     end
     # Monarch
     if !@battle.moldBreaker
@@ -703,6 +703,14 @@ class Battle::Move
     # Mystic Edge
     if target.effects[PBEffects::MysticEdgeActive]
       multipliers[:defense_multiplier] *= 1.2
+    end
+    # Shower
+    if target.effects[PBEffects::ShowerTurnCount] > 0
+      if type == :FIRE
+        multipliers[:defense_multiplier] *= 1.5
+      elsif type == :ELECTRIC
+        multipliers[:defense_multiplier] /= 4
+      end
     end
     # Ritual
     if @battle.field.effects[PBEffects::Ritual] > 0

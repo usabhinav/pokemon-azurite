@@ -505,6 +505,10 @@ class Battle
     pbEORCountDownBattlerEffect(priority, PBEffects::Telekinesis) { |battler|
       pbDisplay(_INTL("{1} was freed from the telekinesis!", battler.pbThis))
     }
+    # Shower
+    pbEORCountDownBattlerEffect(priority, PBEffects::ShowerTurnCount) { |battler|
+      pbDisplay(_INTL("{1} became dry again!", battler.pbThis))
+    }
     # Cold Steel
     pbEORCountDownBattlerEffect(priority, PBEffects::ColdSteelTurnCount) { |battler|
       pbDisplay(_INTL("{1}'s ice melted!", battler.pbThis))

@@ -736,6 +736,10 @@ class Battle::AI
         multipliers[:final_damage_multiplier] *= 1.5
       end
     end
+    # Crystal Moves
+    if skill >= PBTrainerAI.mediumSkill && type == :CRYSTAL && !user.pbHasType?(type)
+      multipliers[:final_damage_multiplier] *= 0.5
+    end
     # Type effectiveness
     if skill >= PBTrainerAI.mediumSkill
       typemod = pbCalcTypeMod(type, user, target)
@@ -788,6 +792,14 @@ class Battle::AI
     # Mystic Edge
     if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::MysticEdgeActive]
       multipliers[:defense_multiplier] *= 1.2
+    end
+    # Shower
+    if skill >= PBTrainerAI.highSkill && target.effects[PBEffects::ShowerTurnCount] > 0
+      if type == :FIRE
+        multipliers[:defense_multiplier] *= 1.5
+      elsif type == :ELECTRIC
+        multipliers[:defense_multiplier] /= 4
+      end
     end
     # Ritual
     if skill >= PBTrainerAI.highSkill && @battle.field.effects[PBEffects::Ritual] > 0

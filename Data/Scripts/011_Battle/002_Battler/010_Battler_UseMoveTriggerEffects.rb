@@ -103,6 +103,11 @@ class Battle::Battler
           end
         end        
       end
+      # Charged Spikes Armor paralysis
+      if target.effects[PBEffects::ChargedSpikesArmor] && !user.fainted? &&
+         user.pbCanParalyze?(target, false) && move.pbContactMove?(user)
+        user.pbParalyze(target, _INTL("{1} was paralyzed by {2}'s Charged Spikes Armor!", user.pbThis, target.pbThis(true)))
+     end
       # Light Nut
       if target.effects[PBEffects::LightNutActive]
         target.stages[:DEFENSE] = 0 if target.stages[:DEFENSE] > 0
@@ -271,6 +276,19 @@ class Battle::Battler
        user.effects[PBEffects::LockOnMove] == :BEACONRECON
       # Set it to 1 so that it gets decremented to 0 at the end of the round
       user.effects[PBEffects::LockOn] = 1
+    end
+    # Dragon's Pride
+    if move.damagingMove? && user.effects[PBEffects::DragonsPrideTurnCount] > 0
+      targets.each do |b|
+        next if b.damageState.unaffected || !b.damageState.fainted
+        showAnim = true
+        [:ATTACK, :SPECIAL_ATTACK].each do |stat|
+          next if !user.pbCanRaiseStatStage?(stat, user)
+          if user.pbRaiseStatStage(stat, 2, user, showAnim)
+            showAnim = false
+          end
+        end
+      end
     end
   end
 

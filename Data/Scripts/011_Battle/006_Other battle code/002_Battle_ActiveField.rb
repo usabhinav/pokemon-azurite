@@ -81,6 +81,7 @@ class Battle::ActiveSide
     @effects[PBEffects::GrandRebound]       = false
     @effects[PBEffects::VolumeMixer]        = 0
     @effects[PBEffects::BubbleTrap]         = 0
+    @effects[PBEffects::ChargedSpikes]      = false
   end
 end
 

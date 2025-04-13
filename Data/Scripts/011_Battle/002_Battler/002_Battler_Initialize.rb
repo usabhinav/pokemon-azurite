@@ -297,6 +297,7 @@ class Battle::Battler
     @effects[PBEffects::ToxicSpikesArmor]    = 0
     @effects[PBEffects::StealthRockArmor]    = false
     @effects[PBEffects::VoltSpikesArmor]     = 0
+    @effects[PBEffects::ChargedSpikesArmor]  = false
     @effects[PBEffects::CounterParry]        = false
     @effects[PBEffects::Overcharged]         = 0
     @effects[PBEffects::SubtractionTypes]    = []
@@ -355,6 +356,7 @@ class Battle::Battler
     @effects[PBEffects::WarCryActive]        = false
     @effects[PBEffects::ColdSteelTurnCount]  = 0
     @effects[PBEffects::ShowerTurnCount]     = 0
+    @effects[PBEffects::DragonsPrideTurnCount] = 0
   end
 
   #=============================================================================

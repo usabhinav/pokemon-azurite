@@ -609,6 +609,27 @@ class Battle::Move::AddVoltSpikesToFoeSide < Battle::Move
 end
 
 #===============================================================================
+# Entry hazard. Lays charged spikes on the opposing side. (Charged Spikes)
+#===============================================================================
+class Battle::Move::AddChargedSpikesToFoeSide < Battle::Move
+  def canMagicCoat?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    if user.pbOpposingSide.effects[PBEffects::ChargedSpikes]
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.pbOpposingSide.effects[PBEffects::ChargedSpikes] = true
+    @battle.pbDisplay(_INTL("Charged spikes were scattered all around {1}'s feet!",
+                            user.pbOpposingTeam(true)))
+  end
+end
+
+#===============================================================================
 # Entry hazard. Lays a bubble trap on the opposing side, which lasts for 3
 # switch-ins. (Bubble Trap)
 #===============================================================================
@@ -656,7 +677,8 @@ class Battle::Move::SwapSideEffects < Battle::Move
     ]
     @boolean_effects = [
       PBEffects::StealthRock,
-      PBEffects::StickyWeb
+      PBEffects::StickyWeb,
+      PBEffects::ChargedSpikes,
     ]
   end
 
@@ -778,6 +800,10 @@ class Battle::Move::RemoveUserBindingAndEntryHazards < Battle::Move::StatUpMove
         end
       end
     end
+    if user.pbOwnSide.effects[PBEffects::ChargedSpikes]
+      user.pbOwnSide.effects[PBEffects::ChargedSpikes] = false
+      @battle.pbDisplay(_INTL("{1} blew away charged spikes!", user.pbThis))
+    end
     if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
       user.pbOwnSide.effects[PBEffects::BubbleTrap] = 0
       @battle.pbDisplay(_INTL("{1} blew away the bubble trap!", user.pbThis))
@@ -808,6 +834,7 @@ class Battle::Move::RemoveWeatherAndEntryHazards < Battle::Move
                     userSide.effects[PBEffects::Spikes] > 0 ||
                     userSide.effects[PBEffects::ToxicSpikes] > 0 ||
                     userSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    userSide.effects[PBEffects::ChargedSpikes] ||
                     userSide.effects[PBEffects::BubbleTrap] > 0 ||
                     userSide.effects[PBEffects::StickyWeb] ||
                     userSide.effects[PBEffects::AsteroidBelt] > 0 ||
@@ -815,6 +842,7 @@ class Battle::Move::RemoveWeatherAndEntryHazards < Battle::Move
                     userOpposingSide.effects[PBEffects::Spikes] > 0 ||
                     userOpposingSide.effects[PBEffects::ToxicSpikes] > 0 ||
                     userOpposingSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    userOpposingSide.effects[PBEffects::ChargedSpikes] ||
                     userOpposingSide.effects[PBEffects::BubbleTrap] > 0 ||
                     userOpposingSide.effects[PBEffects::StickyWeb] ||
                     userOpposingSide.effects[PBEffects::AsteroidBelt] > 0
@@ -843,6 +871,11 @@ class Battle::Move::RemoveWeatherAndEntryHazards < Battle::Move
       user.pbOwnSide.effects[PBEffects::VoltSpikes]      = 0
       user.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0
       @battle.pbDisplay(_INTL("{1} cleared volt spikes!", user.pbThis))
+    end
+    if user.pbOwnSide.effects[PBEffects::ChargedSpikes] || user.pbOpposingSide.effects[PBEffects::ChargedSpikes]
+      user.pbOwnSide.effects[PBEffects::ChargedSpikes]      = false
+      user.pbOpposingSide.effects[PBEffects::ChargedSpikes] = false
+      @battle.pbDisplay(_INTL("{1} cleared charged spikes!", user.pbThis))
     end
     if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0 || user.pbOpposingSide.effects[PBEffects::BubbleTrap] > 0
       user.pbOwnSide.effects[PBEffects::BubbleTrap]      = 0

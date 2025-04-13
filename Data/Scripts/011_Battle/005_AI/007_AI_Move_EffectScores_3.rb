@@ -944,6 +944,7 @@ class Battle::AI
         score += 80 if user.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 80 if user.pbOwnSide.effects[PBEffects::ChargedSpikes]
         score += 80 if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 80 if user.pbOwnSide.effects[PBEffects::StealthRock]
         score += 80 if user.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
@@ -952,6 +953,7 @@ class Battle::AI
         score -= 80 if user.pbOpposingSide.effects[PBEffects::Spikes] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::VoltSpikes] > 0
+        score -= 80 if user.pbOpposingSide.effects[PBEffects::ChargedSpikes]
         score -= 80 if user.pbOpposingSide.effects[PBEffects::BubbleTrap] > 0
         score -= 80 if user.pbOpposingSide.effects[PBEffects::StealthRock]
         score -= 80 if user.pbOpposingSide.effects[PBEffects::AsteroidBelt] > 0
@@ -1467,6 +1469,7 @@ class Battle::AI
         score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::ChargedSpikes]
         score += 50 if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
@@ -1488,6 +1491,7 @@ class Battle::AI
         score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::ChargedSpikes]
         score += 50 if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
@@ -1499,6 +1503,7 @@ class Battle::AI
         score += 40 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 40 if target.pbOwnSide.effects[PBEffects::ChargedSpikes]
         score += 40 if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 40 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0
@@ -1520,6 +1525,7 @@ class Battle::AI
         score += 50 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
+        score += 50 if target.pbOwnSide.effects[PBEffects::ChargedSpikes]
         score += 50 if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0
         score += 50 if target.pbOwnSide.effects[PBEffects::StealthRock]
         score += 50 if target.pbOwnSide.effects[PBEffects::AsteroidBelt] > 0

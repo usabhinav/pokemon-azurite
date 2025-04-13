@@ -4998,7 +4998,8 @@ Battle::AbilityEffects::OnSwitchIn.add(:DEBRISARMOR,
     next if battler.pbOwnSide.effects[PBEffects::Spikes] == 0 &&
             battler.pbOwnSide.effects[PBEffects::ToxicSpikes] == 0 &&
             !battler.pbOwnSide.effects[PBEffects::StealthRock] &&
-            battler.pbOwnSide.effects[PBEffects::VoltSpikes] == 0
+            battler.pbOwnSide.effects[PBEffects::VoltSpikes] == 0 &&
+            !battler.pbOwnSide.effects[PBEffects::ChargedSpikes]
     battle.pbShowAbilitySplash(battler)
     # Spikes
     if battler.pbOwnSide.effects[PBEffects::Spikes] > 0
@@ -5027,6 +5028,12 @@ Battle::AbilityEffects::OnSwitchIn.add(:DEBRISARMOR,
       battler.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
       battle.pbDisplay(_INTL("{1} put on Volt Spikes Armor!", battler.pbThis))
     end
+    # Charged Spikes
+    if battler.pbOwnSide.effects[PBEffects::ChargedSpikes]
+      battler.effects[PBEffects::ChargedSpikesArmor] = true
+      battler.pbOwnSide.effects[PBEffects::ChargedSpikes] = false
+      battle.pbDisplay(_INTL("{1} put on Charged Spikes Armor!", battler.pbThis))
+    end
     battle.pbHideAbilitySplash(battler)
   }
 )
@@ -5040,6 +5047,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
     userSide.effects[PBEffects::Spikes] = 0
     userSide.effects[PBEffects::ToxicSpikes] = 0
     userSide.effects[PBEffects::VoltSpikes] = 0
+    userSide.effects[PBEffects::ChargedSpikes] = false
     userSide.effects[PBEffects::BubbleTrap] = 0
     userSide.effects[PBEffects::StickyWeb] = false
     userSide.effects[PBEffects::AsteroidBelt] = 0
@@ -5048,6 +5056,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
     targetSide.effects[PBEffects::Spikes] = 0
     targetSide.effects[PBEffects::ToxicSpikes] = 0
     targetSide.effects[PBEffects::VoltSpikes] = 0
+    targetSide.effects[PBEffects::ChargedSpikes] = false
     targetSide.effects[PBEffects::BubbleTrap] = 0
     targetSide.effects[PBEffects::StickyWeb] = false
     targetSide.effects[PBEffects::AsteroidBelt] = 0
@@ -5434,6 +5443,12 @@ Battle::AbilityEffects::OnSwitchOut.add(:DEBRISARMOR,
       battler.pbOwnSide.effects[PBEffects::VoltSpikes] += [battler.effects[PBEffects::VoltSpikesArmor], 2].min
       battler.effects[PBEffects::VoltSpikesArmor] = 0
       battler.battle.pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", battler.pbThis))
+    end
+    # Shed Charged Spikes Armor
+    if battler.effects[PBEffects::ChargedSpikesArmor]
+      battler.pbOwnSide.effects[PBEffects::ChargedSpikes] = true
+      battler.effects[PBEffects::ChargedSpikesArmor] = false
+      battler.battle.pbDisplay(_INTL("{1} shed its Charged Spikes Armor!", battler.pbThis))
     end
   }
 )

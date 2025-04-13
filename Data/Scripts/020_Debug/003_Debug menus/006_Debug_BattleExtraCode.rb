@@ -31,6 +31,7 @@ module Battle::DebugVariables
     PBEffects::DisableMove    => { name: "Disabled move",                                   default: nil, type: :move },
     PBEffects::DoomedSerenadeCount => { name: "Doomed Serenade number of rounds remaining", default: 0 },
     PBEffects::DoomedSerenadeUser => { name: "Battler that used Doomed Serenade on self",   default: -1 },   # Battler index
+    PBEffects::DragonsPrideTurnCount => { name: "Dragon's Pride number of rounds remaining", default: 0 },
     PBEffects::Electrify      => { name: "Electrify making moves Electric",                 default: false },
     PBEffects::Embargo        => { name: "Embargo number of rounds remaining",              default: 0 },
     PBEffects::Encore         => { name: "Encore number of rounds remaining",               default: 0 },
@@ -167,6 +168,7 @@ module Battle::DebugVariables
     PBEffects::GrandRebound       => { name: "Grand Rebound applies this round",       default: false },
     PBEffects::VolumeMixer        => { name: "Volume Mixer duration",                  default: 0 },
     PBEffects::BubbleTrap         => { name: "Bubble Trap switch-ins (0-3)",           default: 0, max: 3 },
+    PBEffects::ChargedSpikes      => { name: "Charged Spikes exists",                  default: false },
   }
 
   FIELD_EFFECTS = {

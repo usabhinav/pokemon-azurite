@@ -185,6 +185,8 @@ module PBEffects
   WarCryActive        = 180
   ColdSteelTurnCount  = 181
   ShowerTurnCount     = 182
+  DragonsPrideTurnCount = 183
+  ChargedSpikesArmor  = 184
 
   #=============================================================================
   # These effects apply to a battler position
@@ -232,6 +234,7 @@ module PBEffects
   GrandRebound       = 25
   VolumeMixer        = 26
   BubbleTrap         = 27
+  ChargedSpikes      = 28
 
   #=============================================================================
   # These effects apply to the battle (i.e. both sides)

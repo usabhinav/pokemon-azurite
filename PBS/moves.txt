@@ -11098,7 +11098,7 @@ Category = Status
 Accuracy = 0
 TotalPP = 5
 Target = User
-FunctionCode = RaiseAtkSpAtk2IfKOForFiveTurns
+FunctionCode = StartUserRaiseAtkSpAtk2WhenScoresKO
 Flags = CanMirrorMove
 Description = For five turns, the user's attack and special attack sharply rises whenever they score a KO.
 #-------------------------------
@@ -12251,7 +12251,7 @@ Type = ELECTRIC
 Category = Status
 Accuracy = 0
 TotalPP = 10
-Target = UserSide
+Target = UserAndAllies
 FunctionCode = LoseHalfOfTotalHPAndHealPartyMembers
 Flags = CanMirrorMove
 Description = The user gifts energy to their friends, damaging themselves but spreading HP across their team.

@@ -222,6 +222,10 @@ class Battle::Battler
     # Labels the move being used as "move"
     move = choice[2]
     return if !move   # if move was not chosen somehow
+    # Ravage
+    if move.function == "ConfuseUserAtStart"
+      pbConfuseSelf if pbCanConfuseSelf?(false)
+    end
     # Try to use the move (inc. disobedience)
     @lastMoveFailed = false
     if !@effects[PBEffects::DelayedAttackInUseNow] && !pbTryUseMove(choice, move, specialUsage, skipAccuracyCheck)

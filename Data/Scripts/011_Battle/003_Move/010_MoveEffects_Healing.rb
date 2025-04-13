@@ -810,6 +810,11 @@ class Battle::Move::UserFaintsRemoveEntryHazardsAndScreensAndTerrains < Battle::
       user.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0
       @battle.pbDisplay(_INTL("{1} cleared volt spikes!", user.pbThis))
     end
+    if user.pbOwnSide.effects[PBEffects::ChargedSpikes] || user.pbOpposingSide.effects[PBEffects::ChargedSpikes]
+      user.pbOwnSide.effects[PBEffects::ChargedSpikes]      = false
+      user.pbOpposingSide.effects[PBEffects::ChargedSpikes] = false
+      @battle.pbDisplay(_INTL("{1} cleared charged spikes!", user.pbThis))
+    end
     if user.pbOwnSide.effects[PBEffects::BubbleTrap] > 0 || user.pbOpposingSide.effects[PBEffects::BubbleTrap] > 0
       user.pbOwnSide.effects[PBEffects::BubbleTrap]      = 0
       user.pbOpposingSide.effects[PBEffects::BubbleTrap] = 0

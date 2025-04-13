@@ -105,6 +105,51 @@ class Battle::Move::MaxUserAttackLoseHalfOfTotalHP < Battle::Move
 end
 
 #===============================================================================
+# Reduces the user's HP by half of max, and sets a random stat to maximum.
+# (Energy Conversion)
+#===============================================================================
+class Battle::Move::MaxUserRandomStatLoseHalfOfTotalHP < Battle::Move
+  def canSnatch?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    hpLoss = [user.totalhp / 2, 1].max
+    if user.hp <= hpLoss
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    valid_stats_to_change = []
+    GameData::Stat.each_battle do |stat|
+      valid_stats_to_change.push(stat.id) if user.pbCanRaiseStatStage?(stat.id, user, self)
+    end
+    if valid_stats_to_change.length == 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    @stat_to_change = valid_stats_to_change.sample
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    hpLoss = [user.totalhp / 2, 1].max
+    user.pbReduceHP(hpLoss, false, false)
+    stat_name = GameData::Stat.get(@stat_to_change).name
+    if user.hasActiveAbility?(:CONTRARY)
+      user.stages[@stat_to_change] = -6
+      user.statsLoweredThisRound = true
+      user.statsDropped = true
+      @battle.pbCommonAnimation("StatDown", user)
+      @battle.pbDisplay(_INTL("{1} cut its own HP and minimized its {2}!", user.pbThis, stat_name))
+    else
+      user.stages[@stat_to_change] = 6
+      user.statsRaisedThisRound = true
+      @battle.pbCommonAnimation("StatUp", user)
+      @battle.pbDisplay(_INTL("{1} cut its own HP and maximized its {2}!", user.pbThis, stat_name))
+    end
+    user.pbItemHPHealCheck
+  end
+end
+
+#===============================================================================
 # Increases the user's Defense by 1 stage. (Harden, Steel Wing, Withdraw)
 #===============================================================================
 class Battle::Move::RaiseUserDefense1 < Battle::Move::StatUpMove
@@ -1503,6 +1548,7 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
                     targetSide.effects[PBEffects::Spikes] > 0 ||
                     targetSide.effects[PBEffects::ToxicSpikes] > 0 ||
                     targetSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    targetSide.effects[PBEffects::ChargedSpikes] ||
                     targetSide.effects[PBEffects::BubbleTrap] > 0 ||
                     targetSide.effects[PBEffects::StickyWeb] ||
                     targetSide.effects[PBEffects::AsteroidBelt] > 0
@@ -1511,6 +1557,7 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
                     targetOpposingSide.effects[PBEffects::Spikes] > 0 ||
                     targetOpposingSide.effects[PBEffects::ToxicSpikes] > 0 ||
                     targetOpposingSide.effects[PBEffects::VoltSpikes] > 0 ||
+                    targetOpposingSide.effects[PBEffects::ChargedSpikes] ||
                     targetOpposingSide.effects[PBEffects::BubbleTrap] > 0 ||
                     targetOpposingSide.effects[PBEffects::StickyWeb] ||
                     targetOpposingSide.effects[PBEffects::AsteroidBelt] > 0)
@@ -1572,6 +1619,12 @@ class Battle::Move::LowerTargetEvasion1RemoveSideEffects < Battle::Move::TargetS
       target.pbOwnSide.effects[PBEffects::VoltSpikes]      = 0
       target.pbOpposingSide.effects[PBEffects::VoltSpikes] = 0 if Settings::MECHANICS_GENERATION >= 6
       @battle.pbDisplay(_INTL("{1} blew away volt spikes!", user.pbThis))
+    end
+    if target.pbOwnSide.effects[PBEffects::ChargedSpikes] ||
+      (Settings::MECHANICS_GENERATION >= 6 && target.pbOpposingSide.effects[PBEffects::ChargedSpikes])
+      target.pbOwnSide.effects[PBEffects::ChargedSpikes]      = false
+      target.pbOpposingSide.effects[PBEffects::ChargedSpikes] = false if Settings::MECHANICS_GENERATION >= 6
+      @battle.pbDisplay(_INTL("{1} blew away charged spikes!", user.pbThis))
     end
     if target.pbOwnSide.effects[PBEffects::BubbleTrap] > 0 ||
       (Settings::MECHANICS_GENERATION >= 6 && target.pbOpposingSide.effects[PBEffects::BubbleTrap] > 0)

@@ -309,6 +309,23 @@ class Battle::AI
       score += 20 * eligible_poison_types
       score -= 30 * eligible_non_poison_types # Poisoning your own party members may be worse than healing them
     #---------------------------------------------------------------------------
+    when "LoseHalfOfTotalHPAndHealPartyMembers"
+      if user.hp <= user.totalhp / 2
+        score -= 90
+      else
+        eligible_count = 0
+        @battle.pbParty(user.index).each_with_index do |pkmn, i|
+          next if !pkmn
+          battler = @battle.pbFindBattler(i, user)
+          eligible_count += 1 if pkmn.hp < pkmn.totalhp && user.index != battler.index
+        end
+        if eligible_count == 0
+          score -= 80
+        else
+          score += 20 * eligible_count
+        end
+      end
+    #---------------------------------------------------------------------------
     when "CureTargetBurn"
       if target.opposes?(user)
         score -= 40 if target.status == :BURN
@@ -432,6 +449,9 @@ class Battle::AI
     when "ConfuseUser"
       # Who in their right mind would use this move?
       score -= 90 if move.statusMove?
+    #---------------------------------------------------------------------------
+    when "ConfuseUserAtStart"
+      score -= 20 if user.effects[PBEffects::Confusion] == 0
     #---------------------------------------------------------------------------
     when "AttractTarget"
       canattract = true
@@ -746,6 +766,9 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "StartUserColdSteel"
       score -= 90 if user.effects[PBEffects::ColdSteelTurnCount] > 0
+    #---------------------------------------------------------------------------
+    when "StartUserRaiseAtkSpAtk2WhenScoresKO"
+      score -= 90 if user.effects[PBEffects::DragonsPrideTurnCount] > 0
     #---------------------------------------------------------------------------
     when "HitsTargetInSky"
     #---------------------------------------------------------------------------

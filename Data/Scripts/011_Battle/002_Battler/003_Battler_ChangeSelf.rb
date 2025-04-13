@@ -126,6 +126,12 @@ class Battle::Battler
       @effects[PBEffects::VoltSpikesArmor] = 0
       @battle.pbDisplay(_INTL("{1} shed its Volt Spikes Armor!", pbThis)) if showMessage
     end
+    # Shed Charged Spikes Armor
+    if @effects[PBEffects::ChargedSpikesArmor]
+      pbOwnSide.effects[PBEffects::ChargedSpikes] = true
+      @effects[PBEffects::ChargedSpikesArmor] = false
+      @battle.pbDisplay(_INTL("{1} shed its Charged Spikes Armor!", pbThis)) if showMessage
+    end
     # Air Carry
     if @effects[PBEffects::AirCarryTurnCount] > 0
       @battle.allSameSideBattlers(@index).each do |b|

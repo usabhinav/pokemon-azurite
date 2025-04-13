@@ -852,6 +852,82 @@ class Battle::Move::ForEachMemberInUserPartyPoisonMemberIfNotPoisonTypeElseCureM
 end
 
 #===============================================================================
+# The user sacrifices half their max HP and donates it to their party members
+# equally. (Energy Share)
+#===============================================================================
+class Battle::Move::LoseHalfOfTotalHPAndHealPartyMembers < Battle::Move
+  def canSnatch?;          return true; end
+  def worksWithNoTargets?; return true; end
+
+  def pbMoveFailed?(user, targets)
+    hpLoss = [user.totalhp / 2, 1].max
+    if user.hp <= hpLoss
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    has_effect = @battle.allSameSideBattlers(user).any? { |b| b.index != user.index && b.canHeal? }
+    if !has_effect
+      @battle.pbParty(user.index).each_with_index do |pkmn, i|
+        next if !pkmn
+        next if @battle.pbFindBattler(i, user)   # Skip Pokémon in battle
+        if pkmn.hp < pkmn.totalhp
+          has_effect = true
+          break
+        end
+      end
+    end
+    if !has_effect
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    # Get count of Pokémon that would get a share of the user's HP.
+    count = @battle.allSameSideBattlers(user).count { |b| b.index != user.index && b.canHeal? }
+    @battle.pbParty(user.index).each_with_index do |pkmn, i|
+      next if !pkmn
+      next if @battle.pbFindBattler(i, user)   # Skip Pokémon in battle
+      count += 1 if pkmn.hp < pkmn.totalhp
+    end
+    # Calculate heal amount per Pokémon.
+    @heal_amount_per_pokemon = ([user.totalhp / 2, 1].max / count.to_f).round
+    return false
+  end
+
+  def pbFailsAgainstTarget?(user, target, show_message)
+    return user.index == target.index || !target.canHeal?
+  end
+
+  def commonEffectOnTarget(user, pkmn, battler = nil)
+    if battler
+      if battler.canHeal? && battler.pbRecoverHP(@heal_amount_per_pokemon, true, true, true) > 0
+        @battle.pbDisplay(_INTL("{1}'s HP was restored.", battler.pbThis))
+      end
+    elsif (pkmn.hp < pkmn.totalhp) && pbItemRestoreHP(pkmn, @heal_amount_per_pokemon) > 0
+      @battle.pbDisplay(_INTL("{1}'s HP was restored.", pkmn.name))
+    end
+  end
+
+  def pbEffectAgainstTarget(user, target)
+    # Affect all Pokémon in battle on the user's side.
+    commonEffectOnTarget(user, target.pokemon, target)
+  end
+
+  def pbEffectGeneral(user)
+    hpLoss = [user.totalhp / 2, 1].max
+    user.pbReduceHP(hpLoss, false, false)
+    @battle.pbDisplay(_INTL("{1} cut its own HP and shared it with the rest of its team!", user.pbThis))
+    user.pbItemHPHealCheck
+    # Affect all Pokémon in the user's and partner trainer's party.
+    # NOTE: This intentionally affects the partner trainer's inactive Pokémon
+    #       too.
+    @battle.pbParty(user.index).each_with_index do |pkmn, i|
+      next if !pkmn || !pkmn.able?
+      next if @battle.pbFindBattler(i, user)   # Skip Pokémon in battle
+      commonEffectOnTarget(user, pkmn)
+    end
+  end
+end
+
+#===============================================================================
 # Cures the target's burn. (Sparkling Aria)
 #===============================================================================
 class Battle::Move::CureTargetBurn < Battle::Move
@@ -1168,6 +1244,13 @@ class Battle::Move::ConfuseUser < Battle::Move
       end
     end
   end
+end
+
+#===============================================================================
+# Confuses the user even before the move is used. (Ravage)
+#===============================================================================
+class Battle::Move::ConfuseUserAtStart < Battle::Move
+  # Effect is handled in pbUseMove
 end
 
 #===============================================================================
@@ -2138,6 +2221,24 @@ class Battle::Move::StartUserColdSteel < Battle::Move
   end
 end
 
+#===============================================================================
+# For 5 rounds, the user's Attack and Special Attack are raised by 2 stages each
+# whenever it scores a KO. (Dragon's Pride)
+#===============================================================================
+class Battle::Move::StartUserRaiseAtkSpAtk2WhenScoresKO < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::DragonsPrideTurnCount] > 0
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::DragonsPrideTurnCount] = 5
+    @battle.pbDisplay(_INTL("{1} roared a declaration of victory!", user.pbThis))
+  end
+end
 
 #===============================================================================
 # Hits airborne semi-invulnerable targets. (Sky Uppercut)

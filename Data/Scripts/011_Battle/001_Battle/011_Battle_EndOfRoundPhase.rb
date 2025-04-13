@@ -513,6 +513,10 @@ class Battle
     pbEORCountDownBattlerEffect(priority, PBEffects::ColdSteelTurnCount) { |battler|
       pbDisplay(_INTL("{1}'s ice melted!", battler.pbThis))
     }
+    # Dragon's Pride
+    pbEORCountDownBattlerEffect(priority, PBEffects::DragonsPrideTurnCount) { |battler|
+      pbDisplay(_INTL("{1}'s conviction lessened!", battler.pbThis))
+    }
     # Heal Block
     pbEORCountDownBattlerEffect(priority, PBEffects::HealBlock) { |battler|
       pbDisplay(_INTL("{1}'s Heal Block wore off!", battler.pbThis))

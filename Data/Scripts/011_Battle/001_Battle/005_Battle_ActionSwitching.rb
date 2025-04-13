@@ -504,6 +504,13 @@ class Battle
         battler.pbItemHPHealCheck
       end
     end
+    # Charged Spikes
+    if battler.pbOwnSide.effects[PBEffects::ChargedSpikes] && !battler.pbHasType?(:ELECTRIC) &&
+       !battler.airborne? && !battler.hasActiveAbility?(:DEBRISARMOR) && !battler.hasActiveItem?([:IRONSHELL, :HEAVYDUTYBOOTS])
+       if battler.pbCanParalyze?(nil, false)
+        battler.pbParalyze(nil, _INTL("{1} was paralyzed by the charged spikes!", battler.pbThis))
+      end
+    end
     # Bubble Trap
     if battler.pbOwnSide.effects[PBEffects::BubbleTrap] > 0 && battler.takesIndirectDamage? &&
       !battler.airborne? && !battler.hasActiveItem?([:IRONSHELL, :HEAVYDUTYBOOTS])

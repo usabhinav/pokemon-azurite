@@ -147,7 +147,7 @@ class PokemonPokedexInfo_Scene
       next if sp.form != 0 && (!sp.real_form_name || sp.real_form_name.empty?)
       next if sp.pokedex_form != sp.form
       multiple_forms = true if sp.form > 0
-      [2, 1, 0].each do |shiny_flag|
+      [Pokemon::GLOSSY, Pokemon::ALBINO, Pokemon::SHINY, Pokemon::REGULAR].each do |shiny_flag|
         if sp.single_gendered?
           real_gender = (sp.gender_ratio == :AlwaysFemale) ? 1 : 0
           next if !$player.pokedex.seen_form?(@species, real_gender, sp.form, shiny_flag) && !Settings::DEX_SHOWS_ALL_FORMS
@@ -177,6 +177,7 @@ class PokemonPokedexInfo_Scene
       entry[1] = 0 if entry[1] == 2   # Genderless entries are treated as male
       entry[0] += " " + _INTL("Shiny") if entry[3] == Pokemon::SHINY
       entry[0] += " " + _INTL("Albino") if entry[3] == Pokemon::ALBINO
+      entry[0] += " " + _INTL("Glossy") if entry[3] == Pokemon::GLOSSY
     end
     return ret
   end

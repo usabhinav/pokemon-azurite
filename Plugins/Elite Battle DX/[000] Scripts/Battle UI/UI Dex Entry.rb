@@ -109,7 +109,7 @@ class EliteBattle_Pokedex
       textpos.push([_ISPRINTF("{1:.1f} kg", weight/10.0), 482, 190, 1, base, shadow])
     end
     # Pokédex entry text
-    drawTextEx(overlay, 32, 250, Graphics.width - 60, 4, species_data.pokedex_entry, base, shadow)
+    drawTextEx(overlay, 32, 242, Graphics.width - 60, 4, species_data.pokedex_entry, base, shadow)
     # footprint
     footprintfile = GameData::Species.footprint_filename(@species, @pokemon.form)
     if footprintfile
@@ -118,13 +118,12 @@ class EliteBattle_Pokedex
       footprint.dispose
     end
     # Draw the type icon(s)
-    type1 = GameData::Type.get(species_data.type1).icon_position
-    type2 = GameData::Type.get(species_data.type2).icon_position
-    height = @typebitmap.height/GameData::Type.values.length
-    type1rect = Rect.new(0, type1*height, @typebitmap.width, height)
-    type2rect = Rect.new(0, type2*height, @typebitmap.width, height)
-    overlay.blt(292, 122, @typebitmap, type1rect)
-    overlay.blt(376, 122, @typebitmap, type2rect) if type1 != type2
+    species_data.types.each_with_index do |type, i|
+      type_number = GameData::Type.get(type).icon_position
+      height = @typebitmap.height / GameData::Type.values.length
+      type_rect = Rect.new(0, type_number * height, @typebitmap.width, height)
+      overlay.blt(292 + (84 * i), 122, @typebitmap, type_rect)
+    end
     # draw all text
     pbDrawTextPositions(overlay, textpos)
   end

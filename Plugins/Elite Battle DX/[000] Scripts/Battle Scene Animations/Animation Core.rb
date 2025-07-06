@@ -305,7 +305,7 @@ class Battle::Scene
       end
     end
     # animations for triggering Substitute
-    self.substitueAll(indexes)
+    self.substituteAll(indexes)
     # try set low HP BGM music
     setBGMLowHP(false)
     setBGMLowHP(true)
@@ -345,7 +345,7 @@ class Battle::Scene
       once = true
     end
     # animations for triggering Substitute
-    self.substitueAll([battler.index])
+    self.substituteAll([battler.index])
   end
   #-----------------------------------------------------------------------------
   #  Legacy HP bar damage animation
@@ -399,7 +399,7 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   #  function to replace battler sprite with substitute sprite
   #-----------------------------------------------------------------------------
-  def substitueAll(targets)
+  def substituteAll(targets)
     # check if should perform substitution animation
     new = []
     for t in targets

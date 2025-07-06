@@ -2370,9 +2370,4 @@ class Battle::Move::TransformUserIntoTarget < Battle::Move
   def pbEffectAgainstTarget(user, target)
     user.pbTransform(target)
   end
-
-  def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)
-    super
-    @battle.scene.pbChangePokemon(user, targets[0].pokemon, true)
-  end
 end

@@ -16,9 +16,9 @@ NAME
 HP
   XYZ              = 22,44,9
 STATUS
-  XYZ              = -26,16,1
+  XYZ              = 0,42,1
 MEGA
-  XYZ              = 16,16,1
+  XYZ              = 16,8,1
 #-------------------------------
 [ENEMYDATABOX]
 ShowHP             = false
@@ -36,9 +36,9 @@ NAME
 HP
   XYZ              = 20,9,9
 STATUS
-  XYZ              = 202,16,1
+  XYZ              = 242,36,1
 MEGA
-  XYZ              = 242,16,1
+  XYZ              = 242,2,1
 #-------------------------------
 [COMMANDMENU]
 ButtonGraphic      = btnCmd

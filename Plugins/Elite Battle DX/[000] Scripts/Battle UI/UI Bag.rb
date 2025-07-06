@@ -671,114 +671,114 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   alias pbItemMenu_ebdx pbItemMenu unless self.method_defined?(:pbItemMenu_ebdx)
   def pbItemMenu(idxBattler, firstAction, &block)
-    if !EliteBattle::USE_NEW_UI
-      pbItemMenu_ebdx(idxBattler, firstAction, &block)
-      return
-    end
     # reset system variables
     @idleTimer = -1
     @vector.reset; @vector.inc = 0.2
     ret = 0; retindex = -1; pkmnid = -1
     # update input to prevent misclicks
     Input.update
-    # show bag UI
-    @bagWindow.show
-    # start main loop
-    loop do
-      # input and scene updates
-      Input.update
-      @bagWindow.update
-      break if @bagWindow.finished
-      # jump into next level to confirm item use
-      if !@bagWindow.ret.nil? && @bagWindow.useItem?
-        # get item data
-        item = GameData::Item.get(@bagWindow.ret)
-        itemName = item.name
-        useType = item.battle_use
-        # process item usetype
-        case useType
-        when 1, 2, 3, 6, 7, 8   # Use on Pokémon/Pokémon's move/battler
-          # Auto-choose the Pokémon/battler whose action is being decided if they
-          # are the only available Pokémon/battler to use the item on
+    if !EliteBattle::USE_NEW_UI
+      pbItemMenu_ebdx(idxBattler, firstAction, &block)
+    else
+      # show bag UI
+      @bagWindow.show
+      # start main loop
+      loop do
+        # input and scene updates
+        Input.update
+        @bagWindow.update
+        break if @bagWindow.finished
+        # jump into next level to confirm item use
+        if !@bagWindow.ret.nil? && @bagWindow.useItem?
+          # get item data
+          item = GameData::Item.get(@bagWindow.ret)
+          itemName = item.name
+          useType = item.battle_use
+          # process item usetype
           case useType
-          when 1, 6   # Use on Pokémon
-            if @battle.pbTeamLengthFromBattlerIndex(idxBattler) == 1
+          when 1, 2, 3, 6, 7, 8   # Use on Pokémon/Pokémon's move/battler
+            # Auto-choose the Pokémon/battler whose action is being decided if they
+            # are the only available Pokémon/battler to use the item on
+            case useType
+            when 1, 6   # Use on Pokémon
+              if @battle.pbTeamLengthFromBattlerIndex(idxBattler) == 1
+                ret = item
+                break if yield item.id, useType, @battle.battlers[idxBattler].pokemonIndex, -1, @bagWindow
+              end
+            when 3, 8   # Use on battler
+              if @battle.pbPlayerBattlerCount == 1
+                ret = item
+                break if yield item.id, useType, @battle.battlers[idxBattler].pokemonIndex, -1, @bagWindow
+              end
+            end
+            # Get player's party
+            party    = @battle.pbParty(idxBattler)
+            partyPos = @battle.pbPartyOrder(idxBattler)
+            partyStart, _partyEnd = @battle.pbTeamIndexRangeFromBattlerIndex(idxBattler)
+            modParty = @battle.pbPlayerDisplayParty(idxBattler)
+            # Start party screen
+            @bagWindow.clearSel
+            pkmnScene = PokemonParty_Scene.new
+            pkmnScreen = PokemonPartyScreen.new(pkmnScene,modParty)
+            pkmnScreen.pbStartScene(_INTL("Use on which Pokémon?"), @battle.pbNumPositions(0, 0))
+            idxParty = -1
+            # Loop while in party screen
+            loop do
+              # Select a Pokémon
+              pkmnScene.pbSetHelpText(_INTL("Use on which Pokémon?"))
+              idxParty = pkmnScreen.pbChoosePokemon
+              break if idxParty < 0
+              idxPartyRet = -1
+              partyPos.each_with_index do |pos, i|
+                next if pos != idxParty + partyStart
+                idxPartyRet = i
+                break
+              end
+              next if idxPartyRet < 0
+              pkmn = party[idxPartyRet]
+              next if !pkmn || pkmn.egg?
+              idxMove = -1
+              if useType == 2 || useType == 7   # Use on Pokémon's move
+                idxMove = pkmnScreen.pbChooseMove(pkmn, _INTL("Restore which move?"))
+                next if idxMove < 0
+              end
+              break if yield item.id, useType, idxPartyRet, idxMove, pkmnScene
+            end
+            pkmnScene.pbEndScene
+            break if idxParty >= 0
+          when 4, 9   # Use on opposing battler (Poké Balls)
+            idxTarget = -1
+            if @battle.pbOpposingBattlerCount(idxBattler) == 1
+              @battle.eachOtherSideBattler(idxBattler) { |b| idxTarget = b.index }
               ret = item
-              break if yield item.id, useType, @battle.battlers[idxBattler].pokemonIndex, -1, @bagWindow
+              break if yield item.id, useType, idxTarget, -1, @bagWindow
+            else
+              wasTargeting = true
+              @bagWindow.sprites["back"].opacity = 0
+              idxTarget = pbChooseTarget(idxBattler, GameData::Target.get(:Foe), {})
+              if idxTarget >= 0
+                ret = item
+                break if yield item.id, useType, idxTarget, -1, self
+              end
+              # Target invalid/cancelled choosing a target; show the Bag screen again
+              wasTargeting = false
             end
-          when 3, 8   # Use on battler
-            if @battle.pbPlayerBattlerCount == 1
-              ret = item
-              break if yield item.id, useType, @battle.battlers[idxBattler].pokemonIndex, -1, @bagWindow
-            end
-          end
-          # Get player's party
-          party    = @battle.pbParty(idxBattler)
-          partyPos = @battle.pbPartyOrder(idxBattler)
-          partyStart, _partyEnd = @battle.pbTeamIndexRangeFromBattlerIndex(idxBattler)
-          modParty = @battle.pbPlayerDisplayParty(idxBattler)
-          # Start party screen
-          @bagWindow.clearSel
-          pkmnScene = PokemonParty_Scene.new
-          pkmnScreen = PokemonPartyScreen.new(pkmnScene,modParty)
-          pkmnScreen.pbStartScene(_INTL("Use on which Pokémon?"), @battle.pbNumPositions(0, 0))
-          idxParty = -1
-          # Loop while in party screen
-          loop do
-            # Select a Pokémon
-            pkmnScene.pbSetHelpText(_INTL("Use on which Pokémon?"))
-            idxParty = pkmnScreen.pbChoosePokemon
-            break if idxParty < 0
-            idxPartyRet = -1
-            partyPos.each_with_index do |pos, i|
-              next if pos != idxParty + partyStart
-              idxPartyRet = i
-              break
-            end
-            next if idxPartyRet < 0
-            pkmn = party[idxPartyRet]
-            next if !pkmn || pkmn.egg?
-            idxMove = -1
-            if useType == 2 || useType == 7   # Use on Pokémon's move
-              idxMove = pkmnScreen.pbChooseMove(pkmn, _INTL("Restore which move?"))
-              next if idxMove < 0
-            end
-            break if yield item.id, useType, idxPartyRet, idxMove, pkmnScene
-          end
-          pkmnScene.pbEndScene
-          break if idxParty >= 0
-        when 4, 9   # Use on opposing battler (Poké Balls)
-          idxTarget = -1
-          if @battle.pbOpposingBattlerCount(idxBattler) == 1
-            @battle.eachOtherSideBattler(idxBattler) { |b| idxTarget = b.index }
+            # close out bag scene
+            @bagWindow.closeCurrent
+          when 5, 10   # Use with no target
             ret = item
-            break if yield item.id, useType, idxTarget, -1, @bagWindow
-          else
-            wasTargeting = true
-            @bagWindow.sprites["back"].opacity = 0
-            idxTarget = pbChooseTarget(idxBattler, GameData::Target.get(:Foe), {})
-            if idxTarget >= 0
-              ret = item
-              break if yield item.id, useType, idxTarget, -1, self
-            end
-            # Target invalid/cancelled choosing a target; show the Bag screen again
-            wasTargeting = false
+            break if yield item.id, useType, idxBattler, -1, @bagWindow
           end
-          # close out bag scene
-          @bagWindow.closeCurrent
-        when 5, 10   # Use with no target
-          ret = item
-          break if yield item.id, useType, idxBattler, -1, @bagWindow
         end
+        # end of function
+        self.animateScene
+        pbGraphicsUpdate
       end
-      # end of function
-      self.animateScene
-      pbGraphicsUpdate
+      # close out bag
+      @bagWindow.clearSel
+      @bagWindow.hide
+      $lastUsed = nil if ret.is_a?(Symbol) || (!(ret.id.nil?) && $bag.pbQuantity(ret.id) <= 1)
     end
-    # close out bag
-    @bagWindow.clearSel
-    @bagWindow.hide
-    $lastUsed = nil if ret.is_a?(Symbol) || (!(ret.id.nil?) && $bag.pbQuantity(ret.id) <= 1)
     # try to remove low HP BGM
     setBGMLowHP(false)
   end

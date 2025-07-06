@@ -145,7 +145,7 @@ class Battle::Scene
     target = user if !target
     # clears the current UI
     pbHideAllDataboxes
-    # Substitute animation
+    # hides Substitute
     if @sprites["pokemon_#{user.index}"] && @battle.battlescene
       subbed = @sprites["pokemon_#{user.index}"].isSub
       self.setSubstitute(user.index, false) if subbed
@@ -187,8 +187,13 @@ class Battle::Scene
       @sprites["battlebg"].focus
     end
     # Change form to transformed version
-    if move.function == 0x69 && user && target # Transform
-      pbChangePokemon(user, target.pokemon)
+    if move.function == "TransformUserIntoTarget" && user && target # Transform
+      pbChangePokemon(user, target.pokemon, true)
+    end
+    # restores Substitute
+    if move.function != "UserMakeSubstitute" && @sprites["pokemon_#{user.index}"] && @battle.battlescene
+      substituteEffectActive = user.effects[PBEffects::Substitute] > 0
+      self.setSubstitute(user.index) if substituteEffectActive
     end
     # restores cleared UI
     pbShowAllDataboxes

@@ -166,7 +166,6 @@ class DynamicPokemonSprite
   def actualBitmap; return @bitmap; end
   def disposed?; return @sprite.disposed?; end
   def color; return @sprite.color; end
-  def src_rect; return @sprite.src_rect; end
   def blend_type; return @sprite.blend_type; end
   def angle; return @sprite.angle; end
   def mirror; return @sprite.mirror; end
@@ -384,6 +383,12 @@ class DynamicPokemonSprite
     @species = species.nil? ? pokemon.species : species
     @form = (@pokemon.form rescue 0)
     @isShadow = true if @pokemon.shadowPokemon?
+    # hides Substitute
+    need_to_substitute_again = false
+    if @isSub
+      need_to_substitute_again = true
+      removeSubstitute
+    end
     # loads Pokemon bitmap
     obscureMundimeaForm = obscureMundimeaForm?(@battle, @species, @battle.opposes?(@index), @form != 1)
     if !custom_bitmap.nil?
@@ -417,6 +422,10 @@ class DynamicPokemonSprite
     @k = 1
     # formats battler shadow
     self.formatShadow
+    # restores Substitute
+    if need_to_substitute_again
+      setSubstitute
+    end
   end
   #-----------------------------------------------------------------------------
   # loads bitmap without touching anything else (extracted from setPokemonBitmap)
@@ -470,6 +479,10 @@ class DynamicPokemonSprite
   def pbSetOrigin
     @sprite.ox = @ox
     @sprite.oy = @oy
+    if @isSub
+      @sprite.ox = @substitute.width/2
+      @sprite.oy = @substitute.height
+    end
   end
   #-----------------------------------------------------------------------------
   # toggles from battler sprite to Substitute sprite
@@ -480,6 +493,7 @@ class DynamicPokemonSprite
     @shadow.bitmap = @substitute.bitmap.clone
     @sprite.ox = @substitute.width/2
     @sprite.oy = @substitute.height
+    @sprite.src_rect = Rect.new(0, 0, @sprite.bitmap.width, @sprite.bitmap.height)
     self.formatShadow
   end
   #-----------------------------------------------------------------------------
@@ -494,6 +508,7 @@ class DynamicPokemonSprite
     @sprite.oy += @altitude
     @sprite.oy -= @yposition
     @sprite.oy -= @pokemon.formOffsetY if @pokemon && @pokemon.respond_to?(:formOffsetY)
+    @sprite.src_rect = Rect.new(0, 0, @sprite.bitmap.width, @sprite.bitmap.height)
     self.formatShadow
   end
   #-----------------------------------------------------------------------------

@@ -304,7 +304,7 @@ class DataBoxEBDX  <  SpriteWrapper
     @sprites["caught"] = Sprite.new(@viewport)
     @sprites["caught"].bitmap = pbBitmap(@path + "battleBoxOwned") if !@playerpoke && @battler.owned? && !@scene.battle.opponent
     @sprites["caught"].z = @sprites["container"].z
-    @sprites["caught"].ex = @sprites["container"].ex - 18
+    @sprites["caught"].ex = @sprites["container"].ex
     @sprites["caught"].ey = @sprites["container"].ey - 2
 
     @sprites["textHP"] = Sprite.new(@viewport)
@@ -471,8 +471,8 @@ class DataBoxEBDX  <  SpriteWrapper
         @currenthp = @currenthp.floor
         @currenthp = @endhp if @currenthp < @endhp
       end
-      self.updateHpBar
       @animatingHP = false if @currenthp == @endhp
+      self.updateHpBar
     end
     # updates the EXP increase/decrease animation
     if @animatingEXP
@@ -511,15 +511,8 @@ class DataBoxEBDX  <  SpriteWrapper
       end
     end
     # shows status condition
-    status = -1
-    if @battler.fainted?
-      status = GameData::Status.count - 1
-    elsif @battler.status == :POISON && @battler.statusCount > 0
-      status = GameData::Status.count
-    elsif @battler.status != :NONE
-      status = GameData::Status.get(@battler.status).icon_position
-    end
-    @sprites["status"].src_rect.y = @sprites["status"].src_rect.height * status
+    status = @battler.status == :NONE ? 0 : GameData::Status.get(@battler.status).icon_position + 1
+    @sprites["status"].src_rect.y = @sprites["status"].src_rect.height * (status - 1)
     @sprites["status"].src_rect.width = status > 0 ? @sprites["status"].bitmap.width : 0
     # gets rid of the level up tone
     @sprites["base"].color.alpha -= 16 if @sprites["base"].color.alpha > 0

@@ -16,52 +16,55 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   alias pbCommandMenuEx_ebdx pbCommandMenuEx unless self.method_defined?(:pbCommandMenuEx_ebdx)
   def pbCommandMenuEx(idxBattler, texts, mode = 0)
-    if !EliteBattle::USE_NEW_UI
-      return pbCommandMenuEx_ebdx(idxBattler, texts, mode)
-    end
     self.clearMessageWindow
     # set starting variables
     @ret = 0; @vector.reset; @inCMx = true
-    @commandWindow.refreshCommands(idxBattler)
-    # show command window
-    #name = (@safaribattle) ? $player.name : @battle.battlers[idxBattler].name
-    pbSEPlay("EBDX/SE_Zoom4", 50)
-    @commandWindow.showPlay
+    if EliteBattle::USE_NEW_UI
+      @commandWindow.refreshCommands(idxBattler)
+      # show command window
+      #name = (@safaribattle) ? $player.name : @battle.battlers[idxBattler].name
+      pbSEPlay("EBDX/SE_Zoom4", 50)
+      @commandWindow.showPlay
+    end
     @sprites["dataBox_#{idxBattler}"].selected = true
-    loop do
-      oldIndex = @commandWindow.index
-      # main update
-      self.updateWindow(@commandWindow)
-      # Update selected command
-      if Input.trigger?(Input::LEFT)
-        @commandWindow.index = (@commandWindow.index > 0) ? (@commandWindow.index - 1) : (@commandWindow.indexes.length - 1)
-      elsif Input.trigger?(Input::RIGHT)
-        @commandWindow.index = (@commandWindow.index < @commandWindow.indexes.length - 1) ? (@commandWindow.index + 1) : 0
-      end
-      # play SE
-      pbSEPlay("EBDX/SE_Select1") if @commandWindow.index != oldIndex
-      if Input.trigger?(Input::C)                                               # Confirm choice
-        if @commandWindow.index == 4 && $DEBUG
-          ebsDebugMenu
-        else
+    if !EliteBattle::USE_NEW_UI
+      @ret = pbCommandMenuEx_ebdx(idxBattler, texts, mode)
+    else
+      loop do
+        oldIndex = @commandWindow.index
+        # main update
+        self.updateWindow(@commandWindow)
+        # Update selected command
+        if Input.trigger?(Input::LEFT)
+          @commandWindow.index = (@commandWindow.index > 0) ? (@commandWindow.index - 1) : (@commandWindow.indexes.length - 1)
+        elsif Input.trigger?(Input::RIGHT)
+          @commandWindow.index = (@commandWindow.index < @commandWindow.indexes.length - 1) ? (@commandWindow.index + 1) : 0
+        end
+        # play SE
+        pbSEPlay("EBDX/SE_Select1") if @commandWindow.index != oldIndex
+        if Input.trigger?(Input::C)                                               # Confirm choice
+          if @commandWindow.index == 4 && $DEBUG
+            ebsDebugMenu
+          else
+            pbSEPlay("EBDX/SE_Select2")
+            @ret = @commandWindow.indexes[@commandWindow.index]
+            @inCMx = false if @battle.doublebattle? && @ret > 0
+            @lastcmd[idxBattler] = @ret
+            break
+          end
+        elsif Input.trigger?(Input::B) && idxBattler > 0 && @lastcmd[0] != 2      # Cancel
           pbSEPlay("EBDX/SE_Select2")
-          @ret = @commandWindow.indexes[@commandWindow.index]
-          @inCMx = false if @battle.doublebattle? && @ret > 0
-          @lastcmd[idxBattler] = @ret
+          @ret = -1
+          break
+        elsif Input.trigger?(Input::F9) && $DEBUG                                 # Debug menu
+          pbPlayDecisionSE
+          ret = -2
           break
         end
-      elsif Input.trigger?(Input::B) && idxBattler > 0 && @lastcmd[0] != 2      # Cancel
-        pbSEPlay("EBDX/SE_Select2")
-        @ret = -1
-        break
-      elsif Input.trigger?(Input::F9) && $DEBUG                                 # Debug menu
-        pbPlayDecisionSE
-        ret = -2
-        break
       end
+      # hide command window
+      @commandWindow.hidePlay
     end
-    # hide command window
-    @commandWindow.hidePlay
     # reset vector
     if @ret > 0
       @vector.set(EliteBattle.get_vector(:MAIN, @battle))

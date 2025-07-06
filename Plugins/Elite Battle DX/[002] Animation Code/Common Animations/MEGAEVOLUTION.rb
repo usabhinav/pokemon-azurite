@@ -13,6 +13,11 @@ EliteBattle.defineCommonAnimation(:MEGAEVOLUTION2) do
     @sprites["dataBox_#{i}"].visible = false
   end
   @scene.clearMessageWindow
+  # hides Substitute
+  if @sprites["pokemon_#{@targetIndex}"] && @battle.battlescene
+    subbed = @sprites["pokemon_#{@targetIndex}"].isSub
+    @scene.setSubstitute(@targetIndex, false) if subbed
+  end
   #-----------------------------------------------------------------------------
   fp = {}
   pokemon = @battlers[@targetIndex]
@@ -176,6 +181,11 @@ EliteBattle.defineCommonAnimation(:MEGAEVOLUTION2) do
     @scene.wait
   end
   #-----------------------------------------------------------------------------
+  # restores Substitute
+  if @sprites["pokemon_#{@targetIndex}"] && @battle.battlescene
+    substituteEffectActive = pokemon.effects[PBEffects::Substitute] > 0
+    @scene.setSubstitute(@targetIndex) if substituteEffectActive
+  end
   #  return to original and dispose particles
   @battlers.each_with_index do |b, i|
     next if !b

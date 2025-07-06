@@ -3,6 +3,7 @@
 #===============================================================================
 EliteBattle.defineCommonAnimation(:SUBSTITUTE) do | targets, set |
   #-----------------------------------------------------------------------------
+  @scene.wait(16, true) if @scene.afterAnim
   #  transition sprites
   8.times do
     for t in targets
@@ -32,4 +33,6 @@ EliteBattle.defineCommonAnimation(:SUBSTITUTE) do | targets, set |
     @scene.wait(1, false)
   end
   #-----------------------------------------------------------------------------
+  @vector.reset
+  @scene.wait(16, true)
 end

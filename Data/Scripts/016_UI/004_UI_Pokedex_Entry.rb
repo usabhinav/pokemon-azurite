@@ -126,8 +126,7 @@ class PokemonPokedexInfo_Scene
 
   def pbUpdateDummyPokemon
     @species = @dexlist[@index][0]
-    @gender, @form, _shiny = $player.pokedex.last_form_seen(@species)
-    @shiny_variant = Pokemon::REGULAR
+    @gender, @form, @shiny_variant = $player.pokedex.last_form_seen(@species)
     metrics_data = GameData::SpeciesMetrics.get_species_form(@species, @form)
     @sprites["infosprite"].setSpeciesBitmap(@species, @gender, @form, @shiny_variant)
     @sprites["formfront"]&.setSpeciesBitmap(@species, @gender, @form, @shiny_variant)
@@ -148,16 +147,18 @@ class PokemonPokedexInfo_Scene
       next if sp.form != 0 && (!sp.real_form_name || sp.real_form_name.empty?)
       next if sp.pokedex_form != sp.form
       multiple_forms = true if sp.form > 0
-      if sp.single_gendered?
-        real_gender = (sp.gender_ratio == :AlwaysFemale) ? 1 : 0
-        next if !$player.pokedex.seen_form?(@species, real_gender, sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
-        real_gender = 2 if sp.gender_ratio == :Genderless
-        ret.push([sp.form_name, real_gender, sp.form])
-      else   # Both male and female
-        2.times do |real_gender|
-          next if !$player.pokedex.seen_form?(@species, real_gender, sp.form) && !Settings::DEX_SHOWS_ALL_FORMS
-          ret.push([sp.form_name, real_gender, sp.form])
-          break if sp.form_name && !sp.form_name.empty?   # Only show 1 entry for each non-0 form
+      [Pokemon::GLOSSY, Pokemon::ALBINO, Pokemon::SHINY, Pokemon::REGULAR].each do |shiny_flag|
+        if sp.single_gendered?
+          real_gender = (sp.gender_ratio == :AlwaysFemale) ? 1 : 0
+          next if !$player.pokedex.seen_form?(@species, real_gender, sp.form, shiny_flag) && !Settings::DEX_SHOWS_ALL_FORMS
+          real_gender = 2 if sp.gender_ratio == :Genderless
+          ret.push([sp.form_name, real_gender, sp.form, shiny_flag])
+        else   # Both male and female
+          2.times do |real_gender|
+            next if !$player.pokedex.seen_form?(@species, real_gender, sp.form, shiny_flag) && !Settings::DEX_SHOWS_ALL_FORMS
+            ret.push([sp.form_name, real_gender, sp.form, shiny_flag])
+            break if sp.form_name && !sp.form_name.empty?   # Only show 1 entry for each non-0 form
+          end
         end
       end
     end
@@ -174,6 +175,9 @@ class PokemonPokedexInfo_Scene
         end
       end
       entry[1] = 0 if entry[1] == 2   # Genderless entries are treated as male
+      entry[0] += " " + _INTL("Shiny") if entry[3] == Pokemon::SHINY
+      entry[0] += " " + _INTL("Albino") if entry[3] == Pokemon::ALBINO
+      entry[0] += " " + _INTL("Glossy") if entry[3] == Pokemon::GLOSSY
     end
     return ret
   end
@@ -389,7 +393,7 @@ class PokemonPokedexInfo_Scene
     # Write species and form name
     formname = ""
     @available.each do |i|
-      if i[1] == @gender && i[2] == @form
+      if i[1] == @gender && i[2] == @form && i[3] == @shiny_variant
         formname = i[0]
         break
       end
@@ -427,7 +431,7 @@ class PokemonPokedexInfo_Scene
   def pbChooseForm
     index = 0
     @available.length.times do |i|
-      if @available[i][1] == @gender && @available[i][2] == @form
+      if @available[i][1] == @gender && @available[i][2] == @form && @available[i][3] == @shiny_variant
         index = i
         break
       end
@@ -435,7 +439,7 @@ class PokemonPokedexInfo_Scene
     oldindex = -1
     loop do
       if oldindex != index
-        $player.pokedex.set_last_form_seen(@species, @available[index][1], @available[index][2])
+        $player.pokedex.set_last_form_seen(@species, @available[index][1], @available[index][2], @available[index][3])
         pbUpdateDummyPokemon
         drawPage(@page)
         @sprites["uparrow"].visible   = (index > 0)

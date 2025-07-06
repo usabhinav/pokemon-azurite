@@ -7,80 +7,86 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   alias pbFightMenu_ebdx pbFightMenu unless self.method_defined?(:pbFightMenu_ebdx)
   def pbFightMenu(idxBattler, megaEvoPossible = false, crystalEvoPossible = false, &block)
-    if !EliteBattle::USE_NEW_UI
-      pbFightMenu_ebdx(idxBattler, megaEvoPossible, crystalEvoPossible, &block)
-      return
-    end
     # refresh current UI
     battler = @battle.battlers[idxBattler]
     self.clearMessageWindow
-    @fightWindow.battler = battler
-    @fightWindow.megaButton if (megaEvoPossible && @battle.pbCanMegaEvolve?(idxBattler) ||
-                                crystalEvoPossible && @battle.pbCanCrystallize?(idxBattler))
-    # last chosen move
-    moveIndex = 0
-    if battler.moves[@lastMove[idxBattler]] && battler.moves[@lastMove[idxBattler]].id
-      moveIndex = @lastMove[idxBattler]
+    if EliteBattle::USE_NEW_UI
+      @fightWindow.battler = battler
+      @fightWindow.megaButton if (megaEvoPossible && @battle.pbCanMegaEvolve?(idxBattler) ||
+                                  crystalEvoPossible && @battle.pbCanCrystallize?(idxBattler))
+      # last chosen move
+      moveIndex = 0
+      if battler.moves[@lastMove[idxBattler]] && battler.moves[@lastMove[idxBattler]].id
+        moveIndex = @lastMove[idxBattler]
+      end
+      @fightWindow.index = (battler.moves[moveIndex].id != 0) ? moveIndex : 0
+      # setup button bitmaps
+      @fightWindow.generateButtons
     end
-    @fightWindow.index = (battler.moves[moveIndex].id != 0) ? moveIndex : 0
-    # setup button bitmaps
-    @fightWindow.generateButtons
     # play UI animation
     @sprites["dataBox_#{idxBattler}"].selected = true
-    pbSEPlay("EBDX/SE_Zoom4", 50)
-    @fightWindow.showPlay
-    loop do
-      oldIndex = @fightWindow.index
-      # General update
-      self.updateWindow(@fightWindow)
-      # Update selected command
-      if (Input.trigger?(Input::LEFT) || Input.trigger?(Input::RIGHT))
-        @fightWindow.index = [0, 1, 2, 3][[1, 0, 3, 2].index(@fightWindow.index)]
-        @fightWindow.index = (@fightWindow.nummoves - 1) if @fightWindow.index < 0
-        @fightWindow.index = 0 if @fightWindow.index > (@fightWindow.nummoves - 1)
-      elsif (Input.trigger?(Input::UP) || Input.trigger?(Input::DOWN))
-        @fightWindow.index = [0, 1, 2, 3][[2, 3, 0, 1].index(@fightWindow.index)]
-        @fightWindow.index = 0 if @fightWindow.index < 0
-        @fightWindow.index = (@fightWindow.nummoves - 1) if @fightWindow.index > (@fightWindow.nummoves - 1)
-      elsif Input.trigger?(Input::LEFT) && @fightWindow.index < 4
-        if @fightWindow.index > 0
-          @fightWindow.index -= 1
-        else
-          @fightWindow.index = @fightWindow.nummoves - 1
-          @fightWindow.refreshpos = true
+    if !EliteBattle::USE_NEW_UI
+      ret = pbFightMenu_ebdx(idxBattler, megaEvoPossible, crystalEvoPossible, &block)
+      # reset parameters
+      self.pbResetParams if ret
+    else
+      pbSEPlay("EBDX/SE_Zoom4", 50)
+      @fightWindow.showPlay
+      loop do
+        oldIndex = @fightWindow.index
+        # General update
+        self.updateWindow(@fightWindow)
+        # Update selected command
+        if (Input.trigger?(Input::LEFT) || Input.trigger?(Input::RIGHT))
+          @fightWindow.index = [0, 1, 2, 3][[1, 0, 3, 2].index(@fightWindow.index)]
+          @fightWindow.index = (@fightWindow.nummoves - 1) if @fightWindow.index < 0
+          @fightWindow.index = 0 if @fightWindow.index > (@fightWindow.nummoves - 1)
+        elsif (Input.trigger?(Input::UP) || Input.trigger?(Input::DOWN))
+          @fightWindow.index = [0, 1, 2, 3][[2, 3, 0, 1].index(@fightWindow.index)]
+          @fightWindow.index = 0 if @fightWindow.index < 0
+          @fightWindow.index = (@fightWindow.nummoves - 1) if @fightWindow.index > (@fightWindow.nummoves - 1)
+        elsif Input.trigger?(Input::LEFT) && @fightWindow.index < 4
+          if @fightWindow.index > 0
+            @fightWindow.index -= 1
+          else
+            @fightWindow.index = @fightWindow.nummoves - 1
+            @fightWindow.refreshpos = true
+          end
+        elsif Input.trigger?(Input::RIGHT) && @fightWindow.index < 4
+          if @fightWindow.index < (@fightWindow.nummoves - 1)
+            @fightWindow.index += 1
+          else
+            @fightWindow.index = 0
+          end
         end
-      elsif Input.trigger?(Input::RIGHT) && @fightWindow.index < 4
-        if @fightWindow.index < (@fightWindow.nummoves - 1)
-          @fightWindow.index += 1
-        else
-          @fightWindow.index = 0
+        # play SE
+        pbSEPlay("EBDX/SE_Select1") if @fightWindow.index != oldIndex
+        # Actions
+        if Input.trigger?(Input::C)                                               # Confirm choice
+          pbSEPlay("EBDX/SE_Select2")
+          break if yield @fightWindow.index
+        elsif Input.trigger?(Input::B)                                            # Cancel fight menu
+          pbPlayCancelSE
+          break if yield -1
+        elsif Input.trigger?(Input::A)                                            # Toggle Mega Evolution
+          if megaEvoPossible || crystalEvoPossible
+            @fightWindow.megaButtonTrigger
+            pbSEPlay("EBDX/SE_Select3")
+            break if yield -2
+          end
         end
       end
-      # play SE
-      pbSEPlay("EBDX/SE_Select1") if @fightWindow.index != oldIndex
-      # Actions
-      if Input.trigger?(Input::C)                                               # Confirm choice
-        pbSEPlay("EBDX/SE_Select2")
-        break if yield @fightWindow.index
-      elsif Input.trigger?(Input::B)                                            # Cancel fight menu
-        pbPlayCancelSE
-        break if yield -1
-      elsif Input.trigger?(Input::A)                                            # Toggle Mega Evolution
-        if megaEvoPossible || crystalEvoPossible
-          @fightWindow.megaButtonTrigger
-          pbSEPlay("EBDX/SE_Select3")
-          break if yield -2
-        end
-      end
+      # reset parameters
+      self.pbResetParams if @ret > -1
+      # hide window
+      @fightWindow.hidePlay
     end
-    # reset parameters
-    self.pbResetParams if @ret > -1
-    # hide window
-    @fightWindow.hidePlay
     # unselect databoxes
     self.pbDeselectAll
-    # set last used move
-    @lastMove[idxBattler] = @fightWindow.index
+    if EliteBattle::USE_NEW_UI
+      # set last used move
+      @lastMove[idxBattler] = @fightWindow.index
+    end
   end
   #-----------------------------------------------------------------------------
 end

@@ -317,7 +317,7 @@ class PokemonPokedexInfo_Scene
     # Write species and form name
     formname = ""
     for i in @available
-      if i[1]==@gender && i[2]==@form
+      if i[1]==@gender && i[2]==@form && i[3]==@shiny_variant
         formname = i[0]; break
       end
     end

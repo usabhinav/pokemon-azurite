@@ -628,7 +628,7 @@ def pbSpriteSetAnimFrame(sprite, frame, user = nil, target = nil, inEditor = fal
   else
     sprite.src_rect.set(0, 0,
                         (sprite.bitmap) ? sprite.bitmap.width : 128,
-                        (sprite.bitmap) ? sprite.bitmap.height : 128)
+                        (sprite.bitmap) ? sprite.bitmap.height : 128) unless sprite.is_a?(DynamicPokemonSprite)
   end
   sprite.zoom_x = frame[AnimFrame::ZOOMX] / 100.0
   sprite.zoom_y = frame[AnimFrame::ZOOMY] / 100.0

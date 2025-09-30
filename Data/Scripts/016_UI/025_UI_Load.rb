@@ -434,12 +434,16 @@ class PokemonLoadScreen
     cmd_continue     = -1
     cmd_new_game     = -1
     cmd_new_nuzlocke = -1
+    cmd_custom_battle_mode = -1
     cmd_options      = -1
     cmd_language     = -1
     cmd_mystery_gift = -1
     cmd_debug        = -1
     cmd_quit         = -1
-    show_continue = !@save_data.empty?
+    # show_continue = !@save_data.empty?
+
+    # TODO: Revert this change?
+    show_continue = false # !@save_data.empty?
     
     if show_continue
       commands[cmd_continue = commands.length] = _INTL('Continue')
@@ -451,31 +455,28 @@ class PokemonLoadScreen
       else
         buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
       end
-      #commands[cmd_language = commands.length]  = _INTL('Language') if Settings::LANGUAGES.length >= 2
       commands[cmd_options = commands.length]   = _INTL('Options')
       commands[cmd_quit = commands.length]      = _INTL('Quit Game')
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
       
       buttonFormat[cmd_continue] = LoadMenu_Model::BTN_CONTINUE
-      buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
-      buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
-      buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
     else
       commands[cmd_new_game = commands.length]  = _INTL('Start The Journey')
       commands[cmd_new_nuzlocke = commands.length]  = _INTL('Start The Dangerous Journey')
+      commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
       commands[cmd_options = commands.length]  = _INTL('Settings')
       commands[cmd_quit = commands.length]  = _INTL('Quit Game')
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
 
       buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
       buttonFormat[cmd_new_nuzlocke] = LoadMenu_Model::BTN_NORMAL_BIG
-      buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
-      buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
-      buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
+      buttonFormat[cmd_custom_battle_mode] = LoadMenu_Model::BTN_NORMAL_BIG
     end
+
+    buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
+    buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
+    buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
  
-    # testScene = LoadMenu_Scene.new
-    # testScene.pbStartScene
     windows = Window_Segmented.new
  
     upperCmd = Window_CommandPokemon.new([])
@@ -518,6 +519,10 @@ class PokemonLoadScreen
         @scene.pbEndScene
         Game.load(@save_data)
         return
+      when cmd_custom_battle_mode
+        SaveData.load_new_game_values
+        registerAllSpeciesAndForms # To show all species/forms when selecting species
+        pbStartTeamBuilderTextBasedScreen
       when cmd_new_game
         @scene.pbEndScene
         Game.start_new
@@ -572,21 +577,4 @@ module LoadMenu_Model
     end
   end
   
-end
-
-class LoadMenu_Scene
-
-  def pbStartScene
-    @sprites = {}
-    @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
-    @viewport.z = 99998
-    
-    @commands = ["A", "B", "C", "D", "E", "F"]
-    
-    @sprites["cmdwindow"] = Window_CommandPokemon.new([])
-    @sprites["cmdwindow"].viewport = @viewport
-    @sprites["cmdwindow"].visible  = true
-    @sprites["cmdwindow"].commands = @commands
-    @sprites["cmdwindow"].columns = 2
-  end
 end

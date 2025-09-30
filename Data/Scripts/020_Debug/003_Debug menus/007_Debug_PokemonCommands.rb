@@ -741,6 +741,10 @@ MenuHandlers.add(:pokemon_debug_menu, :species_and_form, {
   "name"   => _INTL("Species/form..."),
   "parent" => :main,
   "effect" => proc { |pkmn, pkmnid, heldpoke, settingUpBattle, screen|
+    if screen.team_builder_mode
+      screen.pbAdd(pkmnid, true)
+      next false
+    end
     cmd = 0
     loop do
       msg = [_INTL("Species {1}, form {2}.", pkmn.speciesName, pkmn.form),
@@ -1009,6 +1013,7 @@ MenuHandlers.add(:pokemon_debug_menu, :set_egg, {
   "name"        => _INTL("Set egg"),
   "parent"      => :main,
   "always_show" => false,
+  "condition"   => proc { |screen| next !screen.team_builder_mode },
   "effect"      => proc { |pkmn, pkmnid, heldpoke, settingUpBattle, screen|
     cmd = 0
     loop do
@@ -1051,6 +1056,7 @@ MenuHandlers.add(:pokemon_debug_menu, :set_egg, {
 MenuHandlers.add(:pokemon_debug_menu, :shadow_pkmn, {
   "name"   => _INTL("Shadow Pkmn..."),
   "parent" => :main,
+  "condition" => proc { |screen| next !screen.team_builder_mode },
   "effect" => proc { |pkmn, pkmnid, heldpoke, settingUpBattle, screen|
     cmd = 0
     loop do
@@ -1093,6 +1099,7 @@ MenuHandlers.add(:pokemon_debug_menu, :mystery_gift, {
   "name"        => _INTL("Mystery Gift"),
   "parent"      => :main,
   "always_show" => false,
+  "condition"   => proc { |screen| next !screen.team_builder_mode },
   "effect"      => proc { |pkmn, pkmnid, heldpoke, settingUpBattle, screen|
     pbCreateMysteryGift(0, pkmn)
     next false
@@ -1103,6 +1110,7 @@ MenuHandlers.add(:pokemon_debug_menu, :duplicate, {
   "name"        => _INTL("Duplicate"),
   "parent"      => :main,
   "always_show" => false,
+  "condition"   => proc { |screen| next !screen.team_builder_mode },
   "effect"      => proc { |pkmn, pkmnid, heldpoke, settingUpBattle, screen|
     next false if !screen.pbConfirm(_INTL("Are you sure you want to copy this Pokémon?"))
     clonedpkmn = pkmn.clone
@@ -1136,6 +1144,7 @@ MenuHandlers.add(:pokemon_debug_menu, :delete, {
   "name"        => _INTL("Delete"),
   "parent"      => :main,
   "always_show" => false,
+  "condition"   => proc { |screen| next !screen.team_builder_mode },
   "effect"      => proc { |pkmn, pkmnid, heldpoke, settingUpBattle, screen|
     next false if !screen.pbConfirm(_INTL("Are you sure you want to delete this Pokémon?"))
     case screen
@@ -1148,5 +1157,35 @@ MenuHandlers.add(:pokemon_debug_menu, :delete, {
       screen.scene.pbRefresh
     end
     next true
+  }
+})
+
+MenuHandlers.add(:pokemon_debug_menu, :typology, {
+  "name"        => _INTL("Set typology"),
+  "parent"      => :main,
+  "always_show" => false,
+  "condition"   => proc { |screen| next screen.team_builder_mode },
+  "effect"      => proc { |pkmn, pkmnid, heldpoke, settingUpBattle, screen|
+    commands = []
+    ids = []
+    GameData::Typology.each do |typology|
+      commands.push(_INTL("{1} ({2})", typology.name, GameData::Type.get(typology.damage_boost_type).name))
+      ids.push(typology.id)
+    end
+    commands.push(_INTL("[Reset]"))
+    # Retrieving entire typology object to force initialization if it's not currently set
+    cmd = ids.index(pkmn.typology.id || ids[0])
+    loop do
+      msg = _INTL("Typology is {1}.", pkmn.typology.name)
+      cmd = screen.pbShowCommands(msg, commands, cmd)
+      break if cmd < 0
+      if cmd >= 0 && cmd < commands.length - 1   # Set typology
+        pkmn.typology = ids[cmd]
+      elsif cmd == commands.length - 1   # Reset
+        pkmn.typology = nil
+      end
+      screen.pbRefreshSingle(pkmnid)
+    end
+    next false
   }
 })

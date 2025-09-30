@@ -2,6 +2,8 @@
 #
 #===============================================================================
 class Window_Pokedex < Window_DrawableCommand
+  attr_writer :team_builder_mode
+
   def initialize(x, y, width, height, viewport)
     @commands = []
     super(x, y, width, height, viewport)
@@ -11,6 +13,7 @@ class Window_Pokedex < Window_DrawableCommand
     self.baseColor   = Color.new(88, 88, 80)
     self.shadowColor = Color.new(168, 184, 184)
     self.windowskin  = nil
+    @team_builder_mode = false
   end
 
   def commands=(value)
@@ -26,6 +29,10 @@ class Window_Pokedex < Window_DrawableCommand
 
   def species
     return (@commands.length == 0) ? 0 : @commands[self.index][0]
+  end
+
+  def form
+    return (@commands.length == 0) ? 0 : @commands[self.index][10]
   end
 
   def itemCount
@@ -51,7 +58,7 @@ class Window_Pokedex < Window_DrawableCommand
       name_text = "----------"
     end
     pbDrawShadowText(self.contents, rect.x + 36, rect.y + 6, rect.width, rect.height,
-                     num_text, self.baseColor, self.shadowColor)
+                     num_text, self.baseColor, self.shadowColor) if !@team_builder_mode
     pbDrawShadowText(self.contents, rect.x + 84, rect.y + 6, rect.width, rect.height,
                      name_text, self.baseColor, self.shadowColor)
   end
@@ -257,8 +264,59 @@ class PokemonPokedex_Scene
   MODEHEAVIEST  = 4
   MODELIGHTEST  = 5
 
+  attr_writer :team_builder_mode
+  attr_writer :team_builder_mode_starting_pokemon
+  attr_reader :team_builder_mode_selected_entry
+
+  def initialize
+    @team_builder_mode = false
+    @team_builder_mode_starting_pokemon = nil
+    @team_builder_mode_selected_entry = nil
+    @team_builder_mode_current_gender = 0
+    @team_builder_mode_current_cosmetic = Pokemon::REGULAR
+  end
+
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
+  end
+
+  def pbUpdateAllExceptPokedexWindow
+    sprites_to_update = @sprites.select { |k, v| k != "pokedex" }
+    pbUpdateSpriteHash(sprites_to_update)
+  end
+
+  def pbShowCommands(helptext, commands, index = 0)
+    ret = -1
+    helpwindow = Window_UnformattedTextPokemon.new(helptext)
+    helpwindow.viewport = @viewport
+    helpwindow.visible = true
+    using(cmdwindow = Window_CommandPokemonColor.new(commands)) {
+      cmdwindow.z     = @viewport.z + 1
+      cmdwindow.index = index
+      pbBottomRight(cmdwindow)
+      helpwindow.resizeHeightToFit(helptext, Graphics.width - cmdwindow.width)
+      helpwindow.text = helptext
+      pbBottomLeft(helpwindow)
+      loop do
+        Graphics.update
+        Input.update
+        cmdwindow.update
+        helpwindow.update
+        pbUpdateAllExceptPokedexWindow
+        if Input.trigger?(Input::BACK)
+          pbPlayCancelSE
+          ret = -1
+          break
+        elsif Input.trigger?(Input::USE)
+          pbPlayDecisionSE
+          ret = cmdwindow.index
+          break
+        end
+      end
+    }
+    helpwindow.visible = false
+    pbDisposeMessageWindow(helpwindow)
+    return ret
   end
 
   def pbStartScene
@@ -284,6 +342,11 @@ class PokemonPokedex_Scene
     addBackgroundPlane(@sprites, "searchbg", "Pokedex/bg_search", @viewport)
     @sprites["searchbg"].visible = false
     @sprites["pokedex"] = Window_Pokedex.new(206, 30, 276, 364, @viewport)
+    pokedex_index = $PokemonGlobal.pokedexIndex[pbGetSavePositionIndex]
+    if @team_builder_mode
+      @sprites["pokedex"].team_builder_mode = true
+      pokedex_index = 0
+    end
     @sprites["icon"] = PokemonSprite.new(@viewport)
     @sprites["icon"].setOffset(PictureOrigin::CENTER)
     @sprites["icon"].x = 112
@@ -294,7 +357,19 @@ class PokemonPokedex_Scene
     @sprites["searchcursor"].visible = false
     @searchResults = false
     @searchParams  = [$PokemonGlobal.pokedexMode, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-    pbRefreshDexList($PokemonGlobal.pokedexIndex[pbGetSavePositionIndex])
+    pbRefreshDexList(pokedex_index)
+    if @team_builder_mode && @team_builder_mode_starting_pokemon
+      @dexlist.each_with_index do |entry, i|
+        if entry[0] == @team_builder_mode_starting_pokemon.species && entry[10] == @team_builder_mode_starting_pokemon.form
+          pokedex_index = i
+          @team_builder_mode_current_gender = @team_builder_mode_starting_pokemon.gender
+          @team_builder_mode_current_cosmetic = @team_builder_mode_starting_pokemon.shiny_variant
+        end
+      end
+      @sprites["pokedex"].index = pokedex_index
+      @sprites["pokedex"].refresh
+      pbRefresh
+    end
     pbDeactivateWindows(@sprites)
     pbFadeInAndShow(@sprites)
   end
@@ -353,14 +428,44 @@ class PokemonPokedex_Scene
     if !regionalSpecies || regionalSpecies.length == 0
       # If no Regional Dex defined for the given region, use the National Pokédex
       regionalSpecies = []
-      GameData::Species.each_species { |s| regionalSpecies.push(s.id) }
+      if @team_builder_mode
+        # Gather the different forms in a separate map since forms all appear at the end of the entire list of regular species
+        # by default
+        regional_forms = {}
+        GameData::Species.each do |s|
+          if s.form == 0
+            regionalSpecies.push([s.id, s.form])
+          elsif s.has_flag?("SelectableInTeamBuilderMode")
+            if regional_forms[s.species].nil?
+              regional_forms[s.species] = []
+            end
+            regional_forms[s.species].push(s)
+          end
+        end
+        # Sort list of forms for each species by form number
+        regional_forms.each do |species_id, form_list|
+          regional_forms[species_id] = form_list.sort_by { |entry| entry.form }
+        end
+        # For each form, insert it just before the next species
+        regional_forms.each do |species_id, form_list|
+          species_index = regionalSpecies.index { |sf| sf[0] == species_id && sf[1] == 0 }
+          regionalSpecies.insert(species_index + 1, *form_list.map { |s| [s.id, s.form] })
+        end
+      else
+        GameData::Species.each_species { |s| regionalSpecies.push(s.id) }
+      end
     end
     shift = Settings::DEXES_WITH_OFFSETS.include?(region)
     ret = []
-    regionalSpecies.each_with_index do |species, i|
-      next if !species
+    regionalSpecies.each_with_index do |species_entry, i|
+      next if !species_entry
+      species = species_entry.is_a?(Array) ? species_entry[0] : species_entry
       next if !pbCanAddForModeList?($PokemonGlobal.pokedexMode, species)
-      _gender, form, _shiny = $player.pokedex.last_form_seen(species)
+      if @team_builder_mode
+        form = species_entry[1]
+      else
+        _gender, form, _shiny = $player.pokedex.last_form_seen(species)
+      end
       species_data = GameData::Species.get_species_form(species, form)
       color  = species_data.color
       type1  = species_data.types[0]
@@ -368,7 +473,7 @@ class PokemonPokedex_Scene
       shape  = species_data.shape
       height = species_data.height
       weight = species_data.weight
-      ret.push([species, species_data.name, height, weight, i + 1, shift, type1, type2, color, shape])
+      ret.push([species, @team_builder_mode && form > 0 ? species_data.name : species_data.name, height, weight, i + 1, shift, type1, type2, color, shape, form])
     end
     return ret
   end
@@ -419,6 +524,7 @@ class PokemonPokedex_Scene
     shadow = Color.new(168, 184, 184)
     iconspecies = @sprites["pokedex"].species
     iconspecies = nil if !$player.seen?(iconspecies)
+    form_number = @sprites["pokedex"].form
     # Write various bits of text
     dexname = _INTL("Pokédex")
     if $player.pokedex.dexes_count > 1
@@ -430,7 +536,11 @@ class PokemonPokedex_Scene
     textpos = [
       [dexname, Graphics.width / 2, 10, 2, Color.new(248, 248, 248), Color.new(0, 0, 0)]
     ]
-    textpos.push([GameData::Species.get(iconspecies).name, 112, 58, 2, base, shadow]) if iconspecies
+    if @team_builder_mode
+      textpos.push([GameData::Species.get_species_form(iconspecies, form_number).name, 112, 58, 2, base, shadow]) if iconspecies
+    else
+      textpos.push([GameData::Species.get(iconspecies).name, 112, 58, 2, base, shadow]) if iconspecies
+    end
     if @searchResults
       textpos.push([_INTL("Search results"), 112, 314, 2, base, shadow])
       textpos.push([@dexlist.length.to_s, 112, 346, 2, base, shadow])
@@ -443,7 +553,7 @@ class PokemonPokedex_Scene
     # Draw all text
     pbDrawTextPositions(overlay, textpos)
     # Set Pokémon sprite
-    setIconBitmap(iconspecies)
+    setIconBitmap(iconspecies, form_number)
     # Draw slider arrows
     itemlist = @sprites["pokedex"]
     showslider = false
@@ -761,9 +871,14 @@ class PokemonPokedex_Scene
     pbDrawTextPositions(overlay, textpos)
   end
 
-  def setIconBitmap(species)
+  def setIconBitmap(species, form_number)
     gender, form, shiny_variant = $player.pokedex.last_form_seen(species)
     shiny_variant = Pokemon::REGULAR
+    if @team_builder_mode
+      gender = @team_builder_mode_current_gender
+      form = form_number
+      shiny_variant = @team_builder_mode_current_cosmetic
+    end
     @sprites["icon"].setSpeciesBitmap(species, gender, form, shiny_variant)
   end
 
@@ -1281,7 +1396,73 @@ class PokemonPokedex_Scene
             break
           end
         elsif Input.trigger?(Input::USE)
-          if $player.seen?(@sprites["pokedex"].species)
+          if @team_builder_mode
+            selected_entry_index = nil
+            cmdSelect = -1
+            cmdView = -1
+            cmdChangeGender = -1
+            cmdChangeCosmetic = -1
+            commands = []
+            commands[cmdSelect = commands.length] = _INTL("Select")
+            commands[cmdView = commands.length] = _INTL("View")
+            commands[cmdChangeGender = commands.length] = _INTL("Change gender")
+            commands[cmdChangeCosmetic = commands.length] = _INTL("Change cosmetic")
+            commands[commands.length] = _INTL("Cancel")
+            while true
+              real_species_name = GameData::Species.get(@sprites["pokedex"].species).real_name
+              command = pbShowCommands(_INTL("Do what with {1}?", real_species_name), commands)
+              case command
+              when cmdSelect
+                pbPlayDecisionSE
+                if pbConfirmMessage(_INTL("Select {1}?", real_species_name))
+                  selected_entry_index = @sprites["pokedex"].index
+                  break
+                end
+              when cmdView
+                pbPlayDecisionSE
+                pbDexEntry(@sprites["pokedex"].index)
+              when cmdChangeGender
+                gender_commands = [
+                  _INTL("Male"),
+                  _INTL("Female"),
+                  _INTL("Genderless"),
+                  _INTL("Cancel"),
+                ]
+                gender_command = pbShowCommands(_INTL("Display which gender?"), gender_commands)
+                if gender_command < gender_commands.length - 1
+                  # Index in command array happens to match values for gender
+                  @team_builder_mode_current_gender = gender_command
+                  pbRefresh
+                end
+                break
+              when cmdChangeCosmetic
+                cosmetic_commands = [
+                  _INTL("Regular"),
+                  _INTL("Shiny"),
+                  _INTL("Albino"),
+                  _INTL("Cancel"),
+                ]
+                cosmetic_command = pbShowCommands(_INTL("Display which cosmetic?"), cosmetic_commands)
+                if cosmetic_command < cosmetic_commands.length - 1
+                  # Index in command array happens to match values for cosmetic
+                  @team_builder_mode_current_cosmetic = cosmetic_command
+                  pbRefresh
+                end
+                break
+              else
+                break
+              end
+            end
+            if selected_entry_index
+              @team_builder_mode_selected_entry = {
+                :species => @dexlist[selected_entry_index][0],
+                :form => @dexlist[selected_entry_index][10],
+                :gender => @team_builder_mode_current_gender,
+                :cosmetic => @team_builder_mode_current_cosmetic,
+              }
+              break
+            end
+          elsif $player.seen?(@sprites["pokedex"].species)
             pbPlayDecisionSE
             pbDexEntry(@sprites["pokedex"].index)
           end

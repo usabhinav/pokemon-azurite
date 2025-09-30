@@ -1,4 +1,4 @@
- #===============================================================================
+#===============================================================================
 class PokemonPokedexInfo_Scene
   def pbStartScene(dexlist, index, region)
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
@@ -20,7 +20,7 @@ class PokemonPokedexInfo_Scene
     @sprites["infosprite"].x = 98
     @sprites["infosprite"].y = 112
     @mapdata = pbLoadTownMapData
-    mappos = $game_map.metadata&.town_map_position
+    mappos = $game_map&.metadata&.town_map_position
     if @region < 0                                 # Use player's current region
       @region = (mappos) ? mappos[0] : 0                      # Region 0 default
     end

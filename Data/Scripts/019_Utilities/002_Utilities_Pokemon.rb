@@ -313,3 +313,32 @@ end
 def obscureMundimeaForm?(battle, species, is_opposing, item_check = true)
   return battle.wildBattle? && battle.pbSideSize(1) == 1 && species == :MUNDIMEA && is_opposing && (!item_check || !$bag.has?(:TRUEENIGMACHAIN))
 end
+
+#===============================================================================
+# Marks all species and forms as having been seen and owned. Used in the team
+# builder mode when using the Pokedex UI as the species selection menu.
+#===============================================================================
+def registerAllSpeciesAndForms
+  GameData::Species.each do |species_data|
+    sp = species_data.species
+    f = species_data.form
+    # Record each form of each species as seen and owned
+    if f == 0
+      if species_data.single_gendered?
+        g = (species_data.gender_ratio == :AlwaysFemale) ? 1 : 0
+        $player.pokedex.register(sp, g, f, 0, false)
+        $player.pokedex.register(sp, g, f, 1, false)
+      else   # Both male and female
+        $player.pokedex.register(sp, 0, f, 0, false)
+        $player.pokedex.register(sp, 0, f, 1, false)
+        $player.pokedex.register(sp, 1, f, 0, false)
+        $player.pokedex.register(sp, 1, f, 1, false)
+      end
+      $player.pokedex.set_owned(sp, false)
+    elsif species_data.real_form_name && !species_data.real_form_name.empty?
+      g = (species_data.gender_ratio == :AlwaysFemale) ? 1 : 0
+      $player.pokedex.register(sp, g, f, 0, false)
+      $player.pokedex.register(sp, g, f, 1, false)
+    end
+  end
+end

@@ -40,7 +40,7 @@ class PokemonPokedex_Scene
   alias setIconBitmap_ebdx setIconBitmap unless self.method_defined?(:setIconBitmap_ebdx)
   def setIconBitmap(*args)
     setIconBitmap_ebdx(*args)
-    @sprites["icon"].constrict(224)
+    @sprites["icon"].constrict(224, false)
   end
   #-----------------------------------------------------------------------------
 end

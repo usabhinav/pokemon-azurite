@@ -774,7 +774,7 @@ def pbShowCommands(msgwindow, commands = nil, cmdIfCancel = 0, defaultCmd = 0)
   return ret
 end
 
-def pbShowCommandsWithHelp(msgwindow, commands, help, cmdIfCancel = 0, defaultCmd = 0)
+def pbShowCommandsWithHelp(msgwindow, commands, help, cmdIfCancel = 0, defaultCmd = 0, topRight = false)
   msgwin = msgwindow
   msgwin = pbCreateMessageWindow(nil) if !msgwindow
   oldlbl = msgwin.letterbyletter
@@ -786,6 +786,7 @@ def pbShowCommandsWithHelp(msgwindow, commands, help, cmdIfCancel = 0, defaultCm
     cmdwindow.resizeToFit(cmdwindow.commands)
     cmdwindow.height = msgwin.y if cmdwindow.height > msgwin.y
     cmdwindow.index = defaultCmd
+    pbTopRight(cmdwindow) if topRight
     command = 0
     msgwin.text = help[cmdwindow.index]
     msgwin.width = msgwin.width   # Necessary evil to make it use the proper margins

@@ -1144,6 +1144,8 @@ end
 #  4 - Base color
 #  5 - Shadow color
 #  6 - If true or 1, the text has an outline. Otherwise, the text has a shadow.
+#  7 - If true or 1, the text is bottom aligned. If 2, the text is vertically centered.
+#      Otherwise, the text is top aligned.
 def pbDrawTextPositions(bitmap, textpos)
   textpos.each do |i|
     textsize = bitmap.text_size(i[0])
@@ -1154,6 +1156,12 @@ def pbDrawTextPositions(bitmap, textpos)
       x -= textsize.width
     when 2 # centered
       x -= (textsize.width / 2)
+    end
+    case i[7]
+    when true, 1   # bottom align
+      y -= textsize.height
+    when 2 # centered
+      y -= (textsize.height / 2)
     end
     if i[6] == true || i[6] == 1   # outline text
       pbDrawOutlineText(bitmap, x, y, textsize.width, textsize.height, i[0], i[4], i[5])

@@ -220,8 +220,14 @@ class PokemonSummary_Scene
   MARK_WIDTH  = 16
   MARK_HEIGHT = 16
 
+  attr_accessor :team_builder_mode
+
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
+  end
+
+  def initialize
+    @team_builder_mode = false
   end
 
   def pbStartScene(party, partyindex, inbattle = false, showpartyrotation = false)
@@ -1533,7 +1539,7 @@ class PokemonSummary_Scene
     cmdWithin   = -1
     cmdMark     = -1
     if !@pokemon.egg?
-      commands[cmdGiveItem = commands.length] = _INTL("Give item")
+      commands[cmdGiveItem = commands.length] = _INTL("Give item") if !@team_builder_mode
       commands[cmdTakeItem = commands.length] = _INTL("Take item") if @pokemon.hasItem?
       commands[cmdPokedex = commands.length]  = _INTL("View Pokédex") if $player.has_pokedex
       if @page == 4

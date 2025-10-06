@@ -342,3 +342,32 @@ def registerAllSpeciesAndForms
     end
   end
 end
+
+#===============================================================================
+# Returns list of all species that are viable for the specified level.
+#===============================================================================
+def getPossibleSpeciesDataListForTeamBuilder(level)
+  species_data_list = []
+  GameData::Species.each do |s|
+    if s.form == 0 level >= s.minimum_level && level <= s.maximum_level
+      species_data_list.push(s)
+    end
+  end
+  return species_data_list
+end
+
+#===============================================================================
+# Returns list of 6 random Pokemon based on provided species data list.
+#===============================================================================
+def getRandomPartyFromSpeciesList(species_data_list_input, level)
+  species_data_list = species_data_list_input.clone
+  new_party = []
+  for i in 0...6
+    selected_species_data = species_data_list.delete_at(rand(species_data_list.length))
+    # TODO: Randomize form (s.has_flag?("SelectableInTeamBuilderMode"))
+    new_poke = Pokemon.new(selected_species_data.id, level)
+    new_poke.form = selected_species_data.form
+    new_party.push(new_poke)
+  end
+  return new_party
+end

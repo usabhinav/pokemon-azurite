@@ -605,7 +605,11 @@ class PokemonPokedex_Scene
     ]
     # Write order, name and color parameters
     textpos.push([@orderCommands[params[0]], 344, 66, 2, base, shadow, 1])
-    textpos.push([(params[1] < 0) ? "----" : @nameCommands[params[1]], 176, 124, 2, base, shadow, 1])
+    if @team_builder_mode
+      textpos.push([(params[1] == "") ? "----" : params[1], 176, 124, 2, base, shadow, 1])
+    else
+      textpos.push([(params[1] < 0) ? "----" : @nameCommands[params[1]], 176, 124, 2, base, shadow, 1])
+    end
     textpos.push([(params[8] < 0) ? "----" : @colorCommands[params[8]].name, 444, 124, 2, base, shadow, 1])
     # Draw type icons
     if params[2] >= 0
@@ -886,12 +890,20 @@ class PokemonPokedex_Scene
     $PokemonGlobal.pokedexMode = params[0]
     dexlist = pbGetDexList
     # Filter by name
-    if params[1] >= 0
+    if !@team_builder_mode && params[1] >= 0
       scanNameCommand = @nameCommands[params[1]].scan(/./)
       dexlist = dexlist.find_all { |item|
         next false if !$player.seen?(item[0])
         firstChar = item[1][0, 1]
         next scanNameCommand.any? { |v| v == firstChar }
+      }
+    end
+    # Filter by name (in team builder mode)
+    if @team_builder_mode && params[1] != ""
+      search_text = params[1].downcase
+      dexlist = dexlist.find_all { |item|
+        next false if !$player.seen?(item[0])
+        next item[1].downcase.include?(search_text)
       }
     end
     # Filter by type
@@ -970,7 +982,7 @@ class PokemonPokedex_Scene
     oldspecies = @sprites["pokedex"].species
     @searchResults = false
     $PokemonGlobal.pokedexMode = MODENUMERICAL
-    @searchParams = [$PokemonGlobal.pokedexMode, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+    @searchParams = [$PokemonGlobal.pokedexMode, @team_builder_mode ? "" : -1, -1, -1, -1, -1, -1, -1, -1, -1]
     pbRefreshDexList($PokemonGlobal.pokedexIndex[pbGetSavePositionIndex])
     @dexlist.length.times do |i|
       next if @dexlist[i][0] != oldspecies
@@ -1011,6 +1023,10 @@ class PokemonPokedex_Scene
   end
 
   def pbDexSearchCommands(mode, selitems, mainindex)
+    if @team_builder_mode && mode == 1
+      search_text = pbFreeText(nil, selitems[0], false, 5, 100) { pbUpdate }
+      return [search_text]
+    end
     cmds = [@orderCommands, @nameCommands, @typeCommands, @heightCommands,
             @weightCommands, @colorCommands, @shapeCommands][mode]
     cols = [2, 7, 4, 1, 1, 3, 5][mode]

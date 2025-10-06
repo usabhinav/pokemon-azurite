@@ -82,7 +82,7 @@ class PokemonPokedex_Scene
     @sprites["searchcursor"] = PokedexSearchSelectionSprite.new(@viewport)
     @sprites["searchcursor"].visible = false
     @searchResults = false
-    @searchParams  = [$PokemonGlobal.pokedexMode, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+    @searchParams  = [$PokemonGlobal.pokedexMode, @team_builder_mode ? "" : -1, -1, -1, -1, -1, -1, -1, -1, -1]
     pbRefreshDexList(pokedex_index)
     if @team_builder_mode && @team_builder_mode_starting_pokemon
       @dexlist.each_with_index do |entry, i|
@@ -217,7 +217,11 @@ class PokemonPokedex_Scene
     ]
     # Write order, name and color parameters
     textpos.push([@orderCommands[params[0]], 344, 66 + bw_y_offset, 2, base, shadow, 1])
-    textpos.push([(params[1] < 0) ? "----" : @nameCommands[params[1]], 176, 124 + bw_y_offset, 2, base, shadow, 1])
+    if @team_builder_mode
+      textpos.push([(params[1] == "") ? "----" : params[1], 176, 124 + bw_y_offset, 2, base, shadow, 1])
+    else
+      textpos.push([(params[1] < 0) ? "----" : @nameCommands[params[1]], 176, 124 + bw_y_offset, 2, base, shadow, 1])
+    end
     textpos.push([(params[8] < 0) ? "----" : @colorCommands[params[8]].name, 444, 124 + bw_y_offset, 2, base, shadow, 1])
     # Draw type icons
     if params[2] >= 0

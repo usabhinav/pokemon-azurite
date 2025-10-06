@@ -344,13 +344,28 @@ module GameData
     def minimum_level
       return 1 if @evolutions.length == 0
       @evolutions.each do |evo|
-        next if !evo[3]   # Not the prevolution
+        next if !evo[3]   # Check only the prevolution
+        prevo_data = GameData::Species.get_species_form(evo[0], base_form)
+        return 1 if !prevo_data.incense.nil?
+        prevo_min_level = prevo_data.minimum_level
         evo_method_data = GameData::Evolution.get(evo[1])
-        next if evo_method_data.level_up_proc.nil?
-        min_level = evo_method_data.minimum_level
-        return (min_level == 0) ? evo[2] : min_level + 1
+        return prevo_min_level if evo_method_data.level_up_proc.nil? && evo_method_data.id != :Shedinja
+        any_level_up = evo_method_data.any_level_up
+        return (any_level_up) ? prevo_min_level + 1 : evo[2]
       end
       return 1
+    end
+
+    def maximum_level
+      max_level = GameData::GrowthRate.max_level
+      return max_level if @evolutions.length == 0
+      @evolutions.each do |evo|
+        next if evo[3]   # Not an evolution
+        evo_method_data = GameData::Evolution.get(evo[1])
+        next if evo_method_data.level_up_proc.nil? || evo_method_data.any_level_up
+        max_level = [max_level, evo[2] - 1].min
+      end
+      return max_level
     end
   end
 end

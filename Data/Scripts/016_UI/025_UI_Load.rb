@@ -75,8 +75,6 @@ class PokemonLoadPanel < SpriteWrapper
     if !self.bitmap || self.bitmap.disposed?
       self.bitmap = BitmapWrapper.new(@bgbitmap.width, @bgbitmap.height)
       pbSetSmallFont(self.bitmap)
-      self.bitmap.font.size = 25
-      
     end
     if @refreshBitmap
       @refreshBitmap = false
@@ -143,7 +141,7 @@ class PokemonLoadPanel < SpriteWrapper
         # Overwrite specified text alignment if given.
         alignment = @text_align if @text_align > -1
         
-        textpos.push([@title,text_x,24,alignment,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@title,text_x,16,alignment,TEXTCOLOR,TEXTSHADOWCOLOR,1])
       end
       pbDrawTextPositions(self.bitmap,textpos)
     end

@@ -87,23 +87,49 @@ class TeamBuilderTextBasedScreen
       header_window.letterbyletter = false
       header_window.visible = true
       header_window.update
-      command = pbShowCommandsWithHelp(nil,
-       [_INTL("Edit Team"),
-        _INTL("Load Team"),
-        _INTL("Save Team"),
-        _INTL("Next"),
-        _INTL("Exit")],
-       [_INTL("Add, remove, and edit Pokémon in your team."),
-        _INTL("Load one of your saved teams."),
-        _INTL("Save the currently selected team."),
-        _INTL("Continue to the next menu."),
-        _INTL("Go back to the previous menu.")], -1, command, true)
+      commands = []
+      commands_help = []
+      # Edit
+      commands[cmdEdit = commands.length] = _INTL("Edit team")
+      commands_help[cmdEdit] = _INTL("Add, remove, and edit Pokémon in your team.")
+      # Random party
+      commands[cmdRandomParty = commands.length] = _INTL("Random party")
+      commands_help[cmdRandomParty] = _INTL("Generate a random party of 6 Pokémon.")
+      # Load
+      commands[cmdLoad = commands.length] = _INTL("Load team")
+      commands_help[cmdLoad] = _INTL("Load one of your saved teams.")
+      # Save
+      commands[cmdSave = commands.length] = _INTL("Save team")
+      commands_help[cmdSave] = _INTL("Save the currently selected team.")
+      # Next
+      commands[cmdNext = commands.length] = _INTL("Next")
+      commands_help[cmdNext] = _INTL("Continue to the next menu.")
+      # Exit
+      commands[cmdExit = commands.length] = _INTL("Exit")
+      commands_help[cmdExit] = _INTL("Go back to the previous menu.")
+      command = pbShowCommandsWithHelp(nil, commands, commands_help, -1, command, true)
       pbDisposeMessageWindow(header_window)
       case command
-      when 0 # Edit
+      when cmdEdit
         pbPokemonScreenForTeamBuilder(@parties[0])
         refreshPokemonIconSprites
-      when 1 # Load
+      when cmdRandomParty
+        if pbConfirmMessage(_INTL("This action will overwrite the current party. Continue?"))
+          params = ChooseNumberParams.new
+          params.setRange(1, GameData::GrowthRate.max_level)
+          params.setDefaultValue(0)
+          level = pbMessageChooseNumber(
+            _INTL("Set the party level (max. {1}).", params.maxNumber), params
+          )
+          # TODO: Figure out how to cancel out
+          if level > 0
+            species_data_list = getPossibleSpeciesDataListForTeamBuilder(level)
+            @parties[0] = getRandomPartyFromSpeciesList(species_data_list, level)
+            refreshPokemonIconSprites
+            pbMessage(_INTL("Successfully generated a new party."))
+          end
+        end
+      when cmdLoad
         load_team_commands = []
         Dir.foreach(RTP.getSaveFolder) do |entry|
           next if !TeamBuilderTextBasedScreenConstants.is_team_save_file?(entry)
@@ -126,7 +152,7 @@ class TeamBuilderTextBasedScreen
             end
           end
         end
-      when 2 # Save
+      when cmdSave
         while true
           team_name = pbMessageFreeText("Enter a name for this team.", "", false, 25)
           if team_name.empty?
@@ -142,7 +168,7 @@ class TeamBuilderTextBasedScreen
             end
           end
         end
-      when 3 # Next
+      when cmdNext
         pbMessage("Next")
       else
         @end_scene = true

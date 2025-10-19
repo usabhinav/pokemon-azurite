@@ -95,6 +95,9 @@ class TeamBuilderTextBasedScreen
       # Random party
       commands[cmdRandomParty = commands.length] = _INTL("Random party")
       commands_help[cmdRandomParty] = _INTL("Generate a random party of 6 Pokémon.")
+      # Random Azurite party
+      commands[cmdRandomAzuriteParty = commands.length] = _INTL("Random Azurite party")
+      commands_help[cmdRandomAzuriteParty] = _INTL("Generate a random party of 6 Azurite Pokémon.")
       # Load
       commands[cmdLoad = commands.length] = _INTL("Load team")
       commands_help[cmdLoad] = _INTL("Load one of your saved teams.")
@@ -107,24 +110,24 @@ class TeamBuilderTextBasedScreen
       # Exit
       commands[cmdExit = commands.length] = _INTL("Exit")
       commands_help[cmdExit] = _INTL("Go back to the previous menu.")
-      command = pbShowCommandsWithHelp(nil, commands, commands_help, -1, command, true)
+      command = pbShowCommandsWithHelp(nil, commands, commands_help, cmdExit + 1, command, true)
       pbDisposeMessageWindow(header_window)
       case command
       when cmdEdit
         pbPokemonScreenForTeamBuilder(@parties[0])
         refreshPokemonIconSprites
-      when cmdRandomParty
+      when cmdRandomParty, cmdRandomAzuriteParty
         if pbConfirmMessage(_INTL("This action will overwrite the current party. Continue?"))
           params = ChooseNumberParams.new
           params.setRange(1, GameData::GrowthRate.max_level)
           params.setDefaultValue(0)
+          params.setCancelValue(0)
           level = pbMessageChooseNumber(
             _INTL("Set the party level (max. {1}).", params.maxNumber), params
           )
-          # TODO: Figure out how to cancel out
           if level > 0
-            species_data_list = getPossibleSpeciesDataListForTeamBuilder(level)
-            @parties[0] = getRandomPartyFromSpeciesList(species_data_list, level)
+            species_data_form_map = getPossibleSpeciesDataFormMapForTeamBuilder(level, command == cmdRandomAzuriteParty ? [99] : nil)
+            @parties[0] = getRandomPartyFromSpeciesDataFormMap(species_data_form_map, level)
             refreshPokemonIconSprites
             pbMessage(_INTL("Successfully generated a new party."))
           end
@@ -171,8 +174,10 @@ class TeamBuilderTextBasedScreen
       when cmdNext
         pbMessage("Next")
       else
-        @end_scene = true
-        break
+        if pbConfirmMessage(_INTL("Exit this menu? Any unsaved changes will be lost."))
+          @end_scene = true
+          break
+        end
       end
     end
   end
@@ -195,8 +200,8 @@ class TeamBuilderTextBasedScreen
       if @sprites["pokemonIcon#{i}"].nil?
         icon_sprite = PokemonIconSprite.new(poke, @viewport)
         icon_sprite.setOffset(PictureOrigin::CENTER)
-        icon_sprite.x = 124 + 32 + (i % 2 == 0 ? 0 : 64)
-        icon_sprite.y = 90 + 32 + (i / 2) * 64
+        icon_sprite.x = 44 + 32 + (i % 2 == 0 ? 0 : 64)
+        icon_sprite.y = 84 + 32 + (i / 2) * 64
         icon_sprite.z = 2
         icon_sprite.active = true
         icon_sprite.update

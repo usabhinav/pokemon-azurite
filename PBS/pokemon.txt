@@ -23233,6 +23233,7 @@ Habitat = Forest
 Category = Berry Bush
 Pokedex = Twigit are rare Pokémon found in deep forests. While typically smug, if they see a Pokémon in need they will do what they can. The bush around their neck will actually grow berries, which they horde for the winter season.
 Evolutions = HARESTIC,Level,16
+Generation = 99
 #-------------------------------
 [HARESTIC]
 Name = Harestic
@@ -23257,6 +23258,7 @@ Habitat = Forest
 Category = Berry Bush
 Pokedex = Harestic mystify audiences by quickly disappearing from one place and reappearing in another. They are known for playing innocent tricks.
 Evolutions = KATORIT,Level,35
+Generation = 99
 #-------------------------------
 [KATORIT]
 Name = Katorit
@@ -23280,6 +23282,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Scary Bush
 Pokedex = Katorit use their large manes to scare off potential threats. By sticking their heads inside the bush, it appears as if they are big and scary. They're actually quite nice.
+Generation = 99
 #-------------------------------
 [KUUBY]
 Name = Kuuby
@@ -23305,6 +23308,7 @@ Habitat = Mountain
 Category = Fireball
 Pokedex = Kuuby float around carefree most of their days but are very easily startled. This usually leads to their inner heat coming out and setting the surroundings on fire.
 Evolutions = KITSU,Level,16
+Generation = 99
 #-------------------------------
 [KITSU]
 Name = Kitsu
@@ -23329,6 +23333,7 @@ Habitat = Mountain
 Category = Exhaust
 Pokedex = Kitsu start out active but as they get stronger begin to sleep more than they are awake. This is due to the amount of heat they exhaust daily. Waking one up from their slumber will result in an unfavorable heatwave!
 Evolutions = KITSURAH,Level,35
+Generation = 99
 #-------------------------------
 [KITSURAH]
 Name = Kitsurah
@@ -23352,6 +23357,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Supernova
 Pokedex = Kitsurah have free control over local gravity and can use this to float. They draw and compress rocks to their arms so when they really pack a punch!
+Generation = 99
 #-------------------------------
 [KIKRO]
 Name = Kikro
@@ -23377,6 +23383,7 @@ Habitat = WatersEdge
 Category = Croak
 Pokedex = Kikro are small noisy Pokémon who inhabit swamps. They use the vocal sac on their throat to let out huge bursts of sound when threatened.
 Evolutions = GEKROAK,Level,16
+Generation = 99
 #-------------------------------
 [GEKROAK]
 Name = Gekroak
@@ -23401,6 +23408,7 @@ Habitat = WatersEdge
 Category = Croak
 Pokedex = While sometimes found to be mischievous, Gekroak are typically seen as guards of their territory. Each section of the swamp sounds slightly different, this is how you tell which Gekroak own what territory.
 Evolutions = SENNITOAD,Level,35
+Generation = 99
 #-------------------------------
 [SENNITOAD]
 Name = Sennitoad
@@ -23424,6 +23432,7 @@ Shape = Bipedal
 Habitat = WatersEdge
 Category = Loud Croak
 Pokedex = These Pokémon are rarely seen, and will only come out from the depths of their swamp when their young is in trouble. A single croak can turn a five-story building to rubble.
+Generation = 99
 #-------------------------------
 [CENTILLITE]
 Name = Centillite
@@ -23449,6 +23458,7 @@ Habitat = Forest
 Category = Advanced
 Pokedex = Centillite is baffling to scientists. Their strange structure allows them to give off odd signals that appears to be how they communicate with others of their kind. Some believe they are even trying to communicate with other planets.
 Evolutions = COCOOLITE,Level,8
+Generation = 99
 #-------------------------------
 [COCOOLITE]
 Name = Cocoolite
@@ -23473,6 +23483,7 @@ Habitat = Forest
 Category = Surveillance
 Pokedex = Cocoolite are tiny data centers that intercept signals from all around them. They then forward these signals into the atmosphere, but no one knows where they're sending them.
 Evolutions = MOSQUILLITE,Level,15
+Generation = 99
 #-------------------------------
 [MOSQUILLITE]
 Name = Mosquillite
@@ -23496,6 +23507,7 @@ Shape = Head
 Habitat = Cosmos
 Category = Traveler
 Pokedex = Upon emerging, Mosquillite fly into the atmosphere and orbit the planet continuously. They send and receive signals, and sometimes shoot them deep into the unknown of space.
+Generation = 99
 #-------------------------------
 [AZULING]
 Name = Azuling
@@ -23521,6 +23533,7 @@ Habitat = Forest
 Category = Baby Bird
 Pokedex = Azuling are some of the most cheerful Pokémon in the world. They live a relaxed life and have no worries at all. This is due to their high intelligence making it easy to outsmart any threat.
 Evolutions = PSYZUL,Level,18
+Generation = 99
 #-------------------------------
 [PSYZUL]
 Name = Psyzul
@@ -23545,6 +23558,7 @@ Habitat = Forest
 Category = Smart Bird
 Pokedex = Psyzul are seen as the young geniuses of the sky. They outsmart predators so easily that some starve in the process of trying to catch it.
 Evolutions = PSYCLONE,Level,36
+Generation = 99
 #-------------------------------
 [PSYCLONE]
 Name = Psyclone
@@ -23568,6 +23582,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Sky Eye
 Pokedex = Psyclone are seen throughout the sky, watching over the world and learning from everything they see. Their loss of feet through evolution forces them to refine their wings and mind.
+Generation = 99
 #-------------------------------
 [BIROO]
 Name = Biroo
@@ -23593,6 +23608,7 @@ Habitat = Grassland
 Category = Diurnal
 Pokedex = It runs away from its own shadow most of the day, fearing something that we don't know. Some believe that the shadow is alive.
 Evolutions = NOCTOA,LevelNight,20
+Generation = 99
 #-------------------------------
 [NOCTOA]
 Name = Noctoa
@@ -23616,6 +23632,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Overshadowed
 Pokedex = Noctoa differ in day and night. During the day, Noctoa is as kind as it was as a Biroo. But at night, it becomes a truly violent monstrosity.
+Generation = 99
 #-------------------------------
 [EDGLET]
 Name = Edglet
@@ -23641,6 +23658,7 @@ Habitat = Mountain
 Category = Edgy
 Pokedex = Edglet are fierce and territorial. When born, they begin to grow a sharp horn like appendage on their head that is sharp enough to slice an Onix in half.
 Evolutions = HAWKEDGE,Level,24
+Generation = 99
 #-------------------------------
 [HAWKEDGE]
 Name = Hawkedge
@@ -23664,6 +23682,7 @@ Shape = Bipedal
 Habitat = Mountain
 Category = Sky Terror
 Pokedex = Hawkedge patrol the skies looking for anything that has entered its territory. If it sees anything at all, it will dive bomb them with slices sharp enough to cut a Steelix in half.
+Generation = 99
 #-------------------------------
 [EUTHISCUS]
 Name = Euthiscus
@@ -23689,6 +23708,7 @@ Habitat = Forest
 Category = Leaf Doll
 Pokedex = Euthiscus are very sensitive Pokémon, so they tend to avoid interacting with others. If they find a berry they really like, they'll cling to it like it is the only thing they care about.
 Evolutions = HIBIDALI,DayHoldItem,SITRUSBERRY,HIBIDALI,DayHoldItem,ORANBERRY
+Generation = 99
 #-------------------------------
 [HIBIDALI]
 Name = Hibidali
@@ -23712,6 +23732,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Sharing
 Pokedex = Hibidali go from forest to forest to find Pokémon in need and give them one of their berries, as they remember how berries made them grow into what they are now.
+Generation = 99
 #-------------------------------
 [STALAGTIC]
 Name = Stalagtic
@@ -23737,6 +23758,7 @@ Habitat = Cave
 Category = Sneaky Pebble
 Pokedex = Stalagtic are often too small to see unless they're on the move. Because of this, many step on their spiked top and get seriously injured.
 Evolutions = CONAMITE,Level,25
+Generation = 99
 #-------------------------------
 [CONAMITE]
 Name = Conamite
@@ -23760,6 +23782,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Rock Spike
 Pokedex = Many texts from ancient civilizations write about one of their people being impaled by structures similar to Conamite. Rather odd, as they've only been seen moving since 2000 years ago.
+Generation = 99
 #-------------------------------
 [ARCHEMITE]
 Name = Archemite
@@ -23783,6 +23806,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Stalagmite
 Pokedex = Archemite are considered the toughest stones in the entire world, even being able to take a meteor impact and come out unscathed. Though sometimes they drop their defenses to make their claws sharper.
+Generation = 99
 #-------------------------------
 [SYMPHY]
 Name = Symphy
@@ -23807,6 +23831,7 @@ Habitat = Grassland
 Category = Symphonic
 Pokedex = Symphy can feel thunder storms coming from many miles away. When it feels a storm coming, it climbs up a tree and sings a soothing song for the entire forest to hear. This lets other forest Pokemon know about the coming storm and also makes sure they are not afraid of it.
 WildItemCommon = ORANBERRY
+Generation = 99
 #-------------------------------
 [DURANAE]
 Name = Duranae
@@ -23832,6 +23857,7 @@ Habitat = Cave
 Category = Beetle
 Pokedex = Their shells are nearly indestructible, this is to protect their soft vulnerable insides from being hurt. Duranae ram walls in caves to find rare minerals to eat.
 Evolutions = ATROCEROS,Level,32
+Generation = 99
 #-------------------------------
 [ATROCEROS]
 Name = Atroceros
@@ -23856,6 +23882,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Heavy Armor
 Pokedex = Eating lots of minerals has caused Atroceros's skin to harden almost as hard as its shell. It can withstand powerful physical attacks and retaliate twice as hard.
+Generation = 99
 #-------------------------------
 [NYMPHICK]
 Name = Nymphick
@@ -23881,6 +23908,7 @@ Habitat = Forest
 Category = Trying
 Pokedex = Nymphick will stay awake day and night fighting their targets, even if it is outmatched. While they aren't exactly the strongest, nobody can say that they aren't trying.
 Evolutions = HOPPERCUT,HasMove,BRICKBREAK
+Generation = 99
 #-------------------------------
 [HOPPERCUT]
 Name = Hoppercut
@@ -23904,6 +23932,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Justified
 Pokedex = Hoppercut never sleep and are always on the lookout for foes that can challenge it. Quite often, these targets end up being evil, making many consider it a hero.
+Generation = 99
 #-------------------------------
 [BRATANAT]
 Name = Bratanat
@@ -23928,6 +23957,7 @@ Habitat = Forest
 Category = Mallicious
 Pokedex = It's full of so much disease that it has eventually become immune to all sickness. Because of this incredible power, Bratanat is always cheerful and happy. It spends its days playfully pranking others, but has to keep a distance so they don't give anyone a disease.
 Evolutions = WITHERWIND,LevelNight,28
+Generation = 99
 #-------------------------------
 [WITHERWIND]
 Name = Witherwind
@@ -23950,6 +23980,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Gathered
 Pokedex = Witherwind are seen as bad omens to people and Pokemon. They are incredibly immune to disease, they use their psychic ability to neutralise viruses and then telepathically pass them on to fester in other organisms as a survival mechanic. Witherwind have the power to consume anything in its white belly, which is deeper than an Ultra Wormhole.
+Generation = 99
 #-------------------------------
 [SASAGGOT]
 Name = Sasaggot
@@ -23973,6 +24004,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Bladed
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [FROSTYKE]
 Name = Frostyke
@@ -23998,6 +24030,7 @@ Habitat = Tundra
 Category = Frost Pup
 Pokedex = It buries itself in the snow and attacks through ambushed strikes. It makes a distinct chilling howl that makes one shudder.
 Evolutions = BLIZOUND,LevelFemale,36,BLIZOUND,LevelMale,40
+Generation = 99
 #-------------------------------
 [BLIZOUND]
 Name = Blizound
@@ -24021,6 +24054,7 @@ Shape = Bipedal
 Habitat = Tundra
 Category = Tundra Hunter
 Pokedex = With heightened hearing from its ears and powerful sound projection from its jaws, Blizound uses a variety of resonating projectiles and freezing frontal assaults to hunt prey and locate allies.
+Generation = 99
 #-------------------------------
 [STEETIC]
 Name = Steetic
@@ -24046,6 +24080,7 @@ Habitat = Jungle
 Category = Scavenger
 Pokedex = Steetic is a very weak pokemon that steals and deceives to survive. It uses the immense amounts of static electricity in its mane to stun enemies and escape battles.
 Evolutions = CHEETATIC,LevelMale,36,CHEETATIC,LevelFemale,40
+Generation = 99
 #-------------------------------
 [CHEETATIC]
 Name = Cheetatic
@@ -24069,6 +24104,7 @@ Shape = Bipedal
 Habitat = Jungle
 Category = Noble
 Pokedex = Cheetatic has a calm and collected demeanor, but is very competitive. It controls the static electricity in its mane to send off powerful electric shocks in a battle.
+Generation = 99
 #-------------------------------
 [HARPIRIT]
 Name = Harpirit
@@ -24093,6 +24129,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Harp
 Pokedex = It plays a serene tone with its harp-like tail. Those who listen to the sound are captivated by its loveliness and follow it endlessly, never to be seen again.
+Generation = 99
 #-------------------------------
 [TRICKGRIN]
 Name = Trickgrin
@@ -24117,6 +24154,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Thief
 Pokedex = Trickgrin act innocent during day and aren't found very often in daylight, but at night they appear everywhere, ready to take whatever catches their eyes. Trickgrin are natural rivals to Delibird.
+Generation = 99
 #-------------------------------
 [BLUBLE]
 Name = Bluble
@@ -24142,6 +24180,7 @@ Habitat = Cosmos
 Category = Star Bubble
 Pokedex = Bluble are seen as the most adorable cosmic Pokémon that exist. Their odd ears release a liquid that protects it from harm, necessary to survive in the rough cosmos.
 Evolutions = HUMIDEOR,LevelRain,33
+Generation = 99
 #-------------------------------
 [HUMIDEOR]
 Name = Humideor
@@ -24165,6 +24204,7 @@ Shape = Bipedal
 Habitat = Cosmos
 Category = Crashing Water
 Pokedex = Humideor keeps everything in a kilometer distance humid merely by being there. Due to the water released from its ears, it requires constant absorption of liters of water to survive.
+Generation = 99
 #-------------------------------
 [JOLTTER]
 Name = Joltter
@@ -24190,6 +24230,7 @@ Habitat = Grassland
 Category = Jolt
 Pokedex = Joltter stay close to their family throughout most of their young life. If one gets seperated from its pack, it will bury itself in the dirt until someone comes to save it.
 Evolutions = BOLTTER,Level,32
+Generation = 99
 #-------------------------------
 [BOLTTER]
 Name = Boltter
@@ -24213,6 +24254,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Bolt
 Pokedex = Playful in nature and easily to get along with, it lives with its family for protection until leaving for a mate during young adulthood. It is said that the longer the whiskers, the more electricity it can generate, thus being an ideal method to show off among each other. Experienced Boltter can propel themselves through the ground at amazing speeds, electrocuting threats along the way.
+Generation = 99
 #-------------------------------
 [ANGLURE]
 Name = Anglure
@@ -24238,6 +24280,7 @@ Habitat = Sea
 Category = Alluring
 Pokedex = Often living in sunken ships, it is thought that Anglure are the reason the ships sunk in the first place. The lights they emit are seen from deep within the ocean and make those who see it extremely curious, enough so to lead them on a wrong path.
 Evolutions = ANGLOW,Level,22
+Generation = 99
 #-------------------------------
 [ANGLOW]
 Name = Anglow
@@ -24262,6 +24305,7 @@ Habitat = Sea
 Category = Alluring
 Pokedex = While Anglow's teeth look like they are for biting, they're actually a defense machanism. Not only does the intimidation often scare opponents, it's also extremely useful as the teeth are as hard as diamond, making it so that Anglow can block incoming attacks with it.
 Evolutions = ALLUARD,LevelNight,44
+Generation = 99
 #-------------------------------
 [ALLUARD]
 Name = Alluard
@@ -24285,6 +24329,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Alluring
 Pokedex = Alluard's teeth are so abnormally large that it can't actually move them. They weigh as much as a car's tire, every single one. Due to this Alluard can only use his teeth as a shield of sorts and attacks with its angler.
+Generation = 99
 #-------------------------------
 [CUBEAT]
 Name = Cubeat
@@ -24310,6 +24355,7 @@ Habitat = Forest
 Category = Speaker
 Pokedex = They sing softly for others to hear in the forest. If they get a big audience, Cubeat use the speakers on their body to amplify their sound.
 Evolutions = RACCOUSTIC,Level,20
+Generation = 99
 #-------------------------------
 [RACCOUSTIC]
 Name = Raccoustic
@@ -24333,6 +24379,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Speaker
 Pokedex = Raccoustic's sound has evolved to be more grunge than when it was younger. The sounds it creates are unappealing and can cause devastating damage if played too loudly.
+Generation = 99
 #-------------------------------
 [GRIZZWAVE]
 Name = Grizzwave
@@ -24356,6 +24403,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Disc Jockey
 Pokedex = Grizzwave wants nothing more than to play its sounds for huge crowds. Its speakers are so powerful it can be heard thousands of miles away.
+Generation = 99
 #-------------------------------
 [OSBEARNE]
 Name = Osbearne
@@ -24379,6 +24427,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Heavy Metal
 Pokedex = Osbearne amplifies its physical power by blasting loud sounds out of its speakers. By combining these two strengths, it can reduce an entire building to dust in one punch.
+Generation = 99
 #-------------------------------
 [COWCTUS]
 Name = Cowctus
@@ -24403,6 +24452,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Sharp Dairy
 Pokedex = Cowctus stores large amounts of liquid inside its body so it can last a very long time in the hot desert. Drinking this liquid will cause anyone else to hallucinate.
+Generation = 99
 #-------------------------------
 [MALLOCOLT]
 Name = Mallocolt
@@ -24428,6 +24478,7 @@ Habitat = Grassland
 Category = Soft Sweet
 Pokedex = It's unsure if Mallocolt exists outside of peoples dreams. Its mane tastes of marshmallows and the rocks that fall off of its body taste of sugar.
 Evolutions = CANDICORN,Beauty,170
+Generation = 99
 #-------------------------------
 [CANDICORN]
 Name = Candicorn
@@ -24451,6 +24502,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Rock Sugar
 Pokedex = Only heard of in legend, anyone who sees a Candicorn is blessed with sweet dreams and treats the rest of their life.
+Generation = 99
 #-------------------------------
 [SHOUL]
 Name = Shoul
@@ -24476,6 +24528,7 @@ Habitat = Tundra
 Category = Scarf
 Pokedex = Shoul will appear in snowstorms and mimic the cries of a child. When it fools someone into getting close, Shoul will absorb their soul into the mirror on its chest.
 Evolutions = GHOSKARF,Level,25
+Generation = 99
 #-------------------------------
 [GHOSKARF]
 Name = Ghoskarf
@@ -24500,6 +24553,7 @@ Habitat = Tundra
 Category = Stalker
 Pokedex = Stalking strangers who get lost in snowstorms, Ghoskarf will follow someone for hours until they freeze solid. It will then keep the stature as a trophy.
 Evolutions = SHROUDICE,Level,55
+Generation = 99
 #-------------------------------
 [SHROUDICE]
 Name = Shroudice
@@ -24523,6 +24577,7 @@ Shape = Bipedal
 Habitat = Tundra
 Category = Mirror
 Pokedex = During a blizzard in a tundra, Shroudice will appear, just staring at lost travelers, waiting for their actions. Because it looks fairly human from a distance, people will sometimes approach, only to get their souls sealed in its mirror.
+Generation = 99
 #-------------------------------
 [VARYMITE]
 Name = Varymite
@@ -24548,6 +24603,7 @@ Habitat = Forest
 Category = Gravity
 Pokedex = Varymite are small but very potent. Some people claim a bite from Varymite temporarily sent them to another point in time and space.
 Evolutions = VARANTOX,Level,40
+Generation = 99
 #-------------------------------
 [VARANTOX]
 Name = Varantox
@@ -24571,6 +24627,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Gravity
 Pokedex = Varantox hunts prey by putting webs coated in a powerful poison which can distort the reality around it. They use this to disorient those they trap.
+Generation = 99
 #-------------------------------
 [MOSGLET]
 Name = Mosglet
@@ -24595,6 +24652,7 @@ Habitat = Sea
 Category = Tardigrade
 Pokedex = They travel much faster in water than on land. Using the holes in their body, Mosglet quickly fire balls of mucus at anything that threatens them.
 Evolutions = TARNAVIS,Level,55
+Generation = 99
 #-------------------------------
 [TARNAVIS]
 Name = Tarnavis
@@ -24618,6 +24676,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Tardigrade
 Pokedex = Tarnavis were used as ocean transportation for all of recorded history. Their large bodies allow for multiple people to be ferried from one place to another easily.
+Generation = 99
 #-------------------------------
 [TORPEBAN]
 Name = Torpeban
@@ -24641,6 +24700,7 @@ Shape = Bipedal
 Habitat = Volcano
 Category = Fireball
 Pokedex = They roam around hot areas lighting anything it sees on fire. No one is sure if the markings on Torpeban are its face, or if it even has a face at all.
+Generation = 99
 #-------------------------------
 [AMONI]
 Name = Amoni
@@ -24665,6 +24725,7 @@ Habitat = Cave
 Category = Chemic
 Pokedex = NOTHING
 Evolutions = ADIZINE,LevelNight,33
+Generation = 99
 #-------------------------------
 [ADIZINE]
 Name = Adizine
@@ -24687,6 +24748,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Chemic
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [TSANDCHI]
 Name = Tsandchi
@@ -24711,6 +24773,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Training
 Pokedex = They spend day and night wandering caves and fields looking for opponents to fight. Their body is resillient, but they can quickly patch themselves up using mud and sand if it gets torn.
+Generation = 99
 #-------------------------------
 [BAGARROUGH]
 Name = Bagarrough
@@ -24735,6 +24798,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Pugilistic
 Pokedex = After evolving, they spend most of their time teaching weak Pokémon new moves. Their headbands grow back, so when their body is torn after a fight, they use it to patch themselves up.
+Generation = 99
 #-------------------------------
 [GEMERAL]
 Name = Gemeral
@@ -24759,6 +24823,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Gem
 Pokedex = The crystal Gemeral grow on their back allows them to take in energy. They store massive amounts of energy within and only release it when they feel threatened.
+Generation = 99
 #-------------------------------
 [LUSHAN]
 Name = Lushan
@@ -24783,6 +24848,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Mountain-Eater
 Pokedex = Lushan spends all its life eating minerals in hopes of finding rare gems. The more gems it eats, the more power it can hold within. They can use this energy to fire devastating beams of light.
+Generation = 99
 #-------------------------------
 [CANOLING]
 Name = Canoling
@@ -24808,6 +24874,7 @@ Habitat = Cave
 Category = Soldier
 Pokedex = Canoling will roll around, finding anything it can to launch out of the cannon on its head. They are often used for fireworks.
 Evolutions = CANOBLAST,HasMove,AURASPHERE,CANOBLAST,HasMove,DARKPULSE,CANOBLAST,HasMove,DRAGONPULSE,CANOBLAST,HasMove,HEALPULSE,CANOBLAST,HasMove,ORIGINPULSE,CANOBLAST,HasMove,WATERPULSE
+Generation = 99
 #-------------------------------
 [CANOBLAST]
 Name = Canoblast
@@ -24832,6 +24899,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Cannon
 Pokedex = Canoblast's wheels have flattened, allowing it large defensive shields in place of its speed. The cannon has been optimized so it may launch long range blasts.
+Generation = 99
 #-------------------------------
 [NYASHI]
 Name = Nyashi
@@ -24856,6 +24924,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Undead
 Pokedex = There were rumors that Nyashi are actually deceased Pokémon, due to their pale, cold skin, and slow breathing pattern. However, numerous researches debunked that theory.
+Generation = 99
 #-------------------------------
 [FELINSHII]
 Name = Felinshii
@@ -24880,6 +24949,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Vampiric
 Pokedex = If they do not move for a long period of time, their body will start getting stiff, so they stretch and train all the time to prevent this. They can drain the life force of their prey by sinking their claws into them.
+Generation = 99
 #-------------------------------
 [ELEPOD]
 Name = Elepod
@@ -24905,6 +24975,7 @@ Habitat = Sea
 Category = Sparking
 Pokedex = Elepod conducts electricty inside its protective bubble, but gets distracted by all the pretty sparks. This often leads to it bumping into a comet. They fight often with Mojicle.
 Evolutions = JELLECTRIC,Item,THUNDERSTONE
+Generation = 99
 #-------------------------------
 [JELLECTRIC]
 Name = Jellectric
@@ -24928,6 +24999,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Spacial Shock
 Pokedex = Sometimes people mistake Jellectric for stars when stargazing. The electricty that it conducts within its body is strong enough to be felt throughout an entire star system.
+Generation = 99
 #-------------------------------
 [MOJICLE]
 Name = Mojicle
@@ -24953,6 +25025,7 @@ Habitat = Sea
 Category = Tentacle
 Pokedex = Mojicle like to show off their strange abilities in front of the whole ocean. The stripe on their head changes to suite their mood.
 Evolutions = EVERCLE,Item,WATERSTONE
+Generation = 99
 #-------------------------------
 [EVERCLE]
 Name = Evercle
@@ -24976,6 +25049,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Underbeak
 Pokedex = Evercle come across as friendly, but beware of the large beak they have beneath their tentacles. They often quarrel with Jellectric.
+Generation = 99
 #-------------------------------
 [SNOWZE]
 Name = Snowze
@@ -24999,6 +25073,7 @@ Shape = Bipedal
 Habitat = Mountain
 Category = Snooze
 Pokedex = Snowze have very thick fur, so they never truly get cold. They go to desolate snow covered mountains so they can sleep without being disturbed.
+Generation = 99
 #-------------------------------
 [PEBBUIN]
 Name = Pebbuin
@@ -25023,6 +25098,7 @@ Shape = Bipedal
 Habitat = Volcano
 Category = Pebble
 Pokedex = Although they aren't capable of long term flight, Pebbuin can lift off the ground just long enough to launch itself at an opponent. They don't hurt much, though.
+Generation = 99
 #-------------------------------
 [PENGERUPT]
 Name = Pengerupt
@@ -25047,6 +25123,7 @@ Shape = Bipedal
 Habitat = Volcano
 Category = Volcanic
 Pokedex = Pengerupt wander deep into volcanos so they may fill their bodies with hot lava. They will then travel to the top of the volcano and shoot it into the air. No one knows why they do this.
+Generation = 99
 #-------------------------------
 [CHABALLIC]
 Name = Chaballic
@@ -25071,6 +25148,7 @@ Shape = Bipedal
 Habitat = Jungle
 Category = Changing
 Pokedex = Chaballic can create large illusions of themselves by striking odd poses, and they use this to stun their foes in fear. They're very stubborn when it comes to changing colors.
+Generation = 99
 #-------------------------------
 [POPERI]
 Name = Poperi
@@ -25096,6 +25174,7 @@ Habitat = Grassland
 Category = Spicy
 Pokedex = Poperi have a trained sense of smell which is used to hunt for food. They are used in law enforcement to track down criminals, and attack with their heavy set arms.
 Evolutions = LIZGROKO,Level,24
+Generation = 99
 #-------------------------------
 [LIZGROKO]
 Name = Lizgroko
@@ -25120,6 +25199,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Hustling
 Pokedex = Lizgroko has bright colors to warn predators of their potent poison. When a battle gets heated, their tail and bulb on their back will begin to glow.
+Generation = 99
 #-------------------------------
 [SPRANAMOS]
 Name = Spranamos
@@ -25144,6 +25224,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Bodyguard
 Pokedex = Spranamos has a growth on its back that is used to mix spices into a concoction of potent poison. It's very spicy, so it's easy to get burned. Some people like the taste.
+Generation = 99
 #-------------------------------
 [EMBAY]
 Name = Embay
@@ -25169,6 +25250,7 @@ Habitat = Forest
 Category = Kindled
 Pokedex = Embay use their fiery wings to intimidate predators. If that fails, they'll blow a smoke screen to escape, as they are often too passive to fight back.
 Evolutions = MARVELAZE,Level,38
+Generation = 99
 #-------------------------------
 [MARVELAZE]
 Name = Marvelaze
@@ -25193,6 +25275,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Passion
 Pokedex = Marvelaze are small but extremely quick Pokémon. They dedicate their lives to taking care of other Embay and will be very dangerous if they consider you a threat to them.
+Generation = 99
 #-------------------------------
 [RIBIKUN]
 Name = Ribikun
@@ -25217,6 +25300,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Hard Hat
 Pokedex = It can sit for days waiting for prey. When demoisturized, its body becomes rigid like a statue. It prefers shade, suggesting the dry environment it dwells in was once upon a time more lush.
+Generation = 99
 #-------------------------------
 [KUNAMA]
 Name = Kunama
@@ -25241,6 +25325,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Hermit Frog
 Pokedex = When it is properly hydrated, its body is slimey and flexible. It has a level headed disposition and takes a pragmatic approach to survival.
+Generation = 99
 #-------------------------------
 [DRAGURN]
 Name = Dragurn
@@ -25266,6 +25351,7 @@ Habitat = Desert
 Category = Pot
 Pokedex = When born, Dragurn find a vessel to hide within to protect themselves from predators. They will stay in their new found homes all of their life.
 Evolutions = DRAJINN,HasMove,HIDDENPOWER
+Generation = 99
 #-------------------------------
 [DRAJINN]
 Name = Drajinn
@@ -25290,6 +25376,7 @@ Shape = Head
 Habitat = Desert
 Category = Crawling
 Pokedex = Drajinn have outgrown their home, but are now stuck and unable to fully emerge. Despite this, they will still live their lives as if there's nothing wrong.
+Generation = 99
 #-------------------------------
 [KOBBLE]
 Name = Kobble
@@ -25314,6 +25401,7 @@ Habitat = Desert
 Category = Spinning
 Pokedex = Kobble spin at a dangerously fast speed. Because of this, they can never tell which direction they are going and often forget what they were even doing in the first place.
 Evolutions = YAMAKI,Level,48
+Generation = 99
 #-------------------------------
 [YAMAKI]
 Name = Yamaki
@@ -25337,6 +25425,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Spinning
 Pokedex = Although fast and powerful, Yamaki is constantly confused. No one can get close enough to help it stop spinning, so it will probably spin the rest of its life.
+Generation = 99
 #-------------------------------
 [GAREED]
 Name = Gareed
@@ -25362,6 +25451,7 @@ Habitat = Mountain
 Category = Garlic
 Pokedex = Gareed smell heavily of garlic. It is said that in ancient times when people were afraid of vampires, they would keep Gareed around.
 Evolutions = GNARLIC,Level,27
+Generation = 99
 #-------------------------------
 [GNARLIC]
 Name = Gnarlic
@@ -25387,6 +25477,7 @@ Habitat = Mountain
 Category = Unholy
 Pokedex = Often found roaming farms to aid farmers, Gnarlic scare away birds with bursts of flames. They like to hoard objects they finds in their nests.
 Evolutions = GNARSOME,Level,44
+Generation = 99
 #-------------------------------
 [GNARSOME]
 Name = Gnarsome
@@ -25411,6 +25502,7 @@ Shape = Head
 Habitat = Mountain
 Category = Unholy
 Pokedex = Gnarsome takes in large amounts of nutrients from the soil, often killing plants all around it. It will then physically eat the plants as well.
+Generation = 99
 #-------------------------------
 [FOLIDA]
 Name = Folida
@@ -25436,6 +25528,7 @@ Habitat = Forest
 Category = Echidna
 Pokedex = Folidna often plays with its food as if it were a game. Even when hunting for food, it always finds a way to make it fun for itself.
 Evolutions = SAVARK,Level,30
+Generation = 99
 #-------------------------------
 [SAVARK]
 Name = Savark
@@ -25460,6 +25553,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Aardvark
 Pokedex = Savark live on a diet of solely Bug-type Pokémon. Once it sees one, it will not stop hunting it down until either the bug or itself goes down. Savark very rarely goes down.
+Generation = 99
 #-------------------------------
 [CLAVARMA]
 Name = Clavarma
@@ -25485,6 +25579,7 @@ Habitat = Desert
 Category = Trap
 Pokedex = They can raise their internal temperature extremely high. They use this to completely incinerate anything it puts inside its body.
 Evolutions = SARCOSPIKE,Level,45
+Generation = 99
 #-------------------------------
 [SARCOSPIKE]
 Name = Sarcospike
@@ -25509,6 +25604,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Iron Maiden
 Pokedex = Sarcospike will trap anything it can inside their chest. Using their arms, they will close all exits and raise their internal temperature higher than a Magcargo. It then feasts on the ashes.
+Generation = 99
 #-------------------------------
 [KOTSUMO]
 Name = Kotsumo
@@ -25533,6 +25629,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Kimono
 Pokedex = Kotsumo resembles a doll and is popular with kids. They are terrified of getting sick, and so tends to keep to itself to prevent that from happening.
+Generation = 99
 #-------------------------------
 [KESHIGAMI]
 Name = Keshigami
@@ -25557,6 +25654,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Afraid
 Pokedex = Keshigami is extremely shy, and will avoid any confrontation if possible. They are very hard to bond with because of this, but can make a very good partner if you can get them to open up.
+Generation = 99
 #-------------------------------
 [KOKESHEITY]
 Name = Kokesheity
@@ -25581,6 +25679,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Confident
 Pokedex = Kokosheity love the spotlight. They make friends very quickly and are often seen on TV or performing on stages all around the world.
+Generation = 99
 #-------------------------------
 [TYPHEON]
 Name = Typheon
@@ -25605,6 +25704,7 @@ Shape = Bipedal
 Habitat = Skies
 Category = Clouded
 Pokedex = An often calm Pokémon that spends most of its days watching clouds. When it finds a specific cloud it likes, it chases it non-stop.
+Generation = 99
 #-------------------------------
 [ASTREON]
 Name = Astreon
@@ -25629,6 +25729,7 @@ Shape = Bipedal
 Habitat = Cosmos
 Category = Outer Space
 Pokedex = Astreon are almost never paying attention. They daydream constantly of space and the stars, and will spend all night staring at the sky.
+Generation = 99
 #-------------------------------
 [ILLUSEON]
 Name = Illuseon
@@ -25653,6 +25754,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Illusive
 Pokedex = Illuseon has a magical aura that allows them to control what those around them see. They can disappear in an instant but they're never really gone.
+Generation = 99
 #-------------------------------
 [ICHEON]
 Name = Icheon
@@ -25677,6 +25779,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Up-Beat
 Pokedex = Different parts of Icheon's body make different noises. This allows them to imitate almost any sound it has ever heard, including entire songs.
+Generation = 99
 #-------------------------------
 [FULGEON]
 Name = Fulgeon
@@ -25701,6 +25804,7 @@ Shape = Bipedal
 Habitat = WatersEdge
 Category = Mallicious
 Pokedex = Although small, Fulgeon can be very nasty to strangers. Often times they are extremely stuck up and see themselves above the world. They absorb light through their body gems.
+Generation = 99
 #-------------------------------
 [SHYNEON]
 Name = Shyneon
@@ -25725,6 +25829,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Power
 Pokedex = Due to Eevee's ability to adapt to any situation, it has the opportunity to become one of the only known truly Crystal-type Pokémon by being exposed to highly concentrated crystal radiation.
+Generation = 99
 #-------------------------------
 [ASAWAJI]
 Name = Asawaji
@@ -25748,6 +25853,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Dream
 Pokedex = Most often seen roaming deserted ruins from an age long past, Asawaji act as some sort of defender. Perhaps no one told them the ruins they patrol are no longer in use.
+Generation = 99
 #-------------------------------
 [CHICHAW]
 Name = Chichaw
@@ -25773,6 +25879,7 @@ Habitat = Desert
 Category = Little Biter
 Pokedex = Chichaw show how they feel by how they bite you. Depending on if it bites gently or bites through flesh, it shows if it likes or dislikes you. Though even the gentle bites hurt.
 Evolutions = TERREVOUR,Level,40
+Generation = 99
 #-------------------------------
 [TERREVOUR]
 Name = Terrevour
@@ -25797,6 +25904,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Devourer
 Pokedex = Terrevour will attempt to devour any Pokémon, being able to even bite through Aggron's steel. Old tyrants would feed Pokémon who failed in battle to their Terrevour.
+Generation = 99
 #-------------------------------
 [KINDESHU]
 Name = Kindeshu
@@ -25820,6 +25928,7 @@ Shape = Bipedal
 Habitat = Graveyard
 Category = Doll
 Pokedex = Kindeshu looks like an old toy, so children are more likely to find comfort in it. However, once it gains a child's trust it will change form and absorb the child's light energy to feed itself.
+Generation = 99
 #-------------------------------
 [PHANTITUTE]
 Name = Phantitute
@@ -25843,6 +25952,7 @@ Shape = Bipedal
 Habitat = Graveyard
 Category = Haunted
 Pokedex = Phantitute searches for the damaged dolls of children in poverty. It'll act like a friend towards the child, but will become extremely protective, to the point where some people say that the kid is being held hostage.
+Generation = 99
 #-------------------------------
 [RABLIN]
 Name = Rablin
@@ -25866,6 +25976,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Asleep
 Pokedex = Rablin spend most of their life asleep as if under some sort of spell. They are still able to function when asleep, but it's almost as if they're being controlled. When Rablin awakes, they're back to their normal self.
+Generation = 99
 #-------------------------------
 [GILKUN]
 Name = Gilkun
@@ -25890,6 +26001,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Student
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [FISHMALE]
 Name = Fish Male
@@ -25914,6 +26026,7 @@ Shape = Head
 Habitat = Sea
 Category = Delinquent
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [FISHFEMALE]
 Name = Fish Female
@@ -25938,6 +26051,7 @@ Shape = Head
 Habitat = Sea
 Category = Lass
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [FISHNEUTRAL]
 Name = Fish Neutral
@@ -25962,6 +26076,7 @@ Shape = Head
 Habitat = Sea
 Category = Drop-Out
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [PEAF]
 Name = Peaf
@@ -25986,6 +26101,7 @@ Habitat = Forest
 Category = Peachick
 Pokedex = NOTHING
 Evolutions = PEARRY,Level,16
+Generation = 99
 #-------------------------------
 [PEARRY]
 Name = Pearry
@@ -26009,6 +26125,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Peacock
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [IGNIFF]
 Name = Igniff
@@ -26033,6 +26150,7 @@ Habitat = Volcano
 Category = Lit Mane
 Pokedex = NOTHING
 Evolutions = RAFFLARE,Level,16
+Generation = 99
 #-------------------------------
 [RAFFLARE]
 Name = Rafflare
@@ -26056,6 +26174,7 @@ Shape = Bipedal
 Habitat = Volcano
 Category = Flame Mane
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [HELIARK]
 Name = Heliark
@@ -26079,6 +26198,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Haunted Toy
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [OCEADON]
 Name = Oceadon
@@ -26102,6 +26222,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Haunted Sub
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [MOHAVI]
 Name = Mohavi
@@ -26125,6 +26246,7 @@ Shape = Bipedal
 Habitat = Jungle
 Category = Seedling
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [TYRAGAAN]
 Name = Tyragaan
@@ -26148,6 +26270,7 @@ Shape = Bipedal
 Habitat = Jungle
 Category = Sprouted
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [MURMURINO]
 Name = Murmurino
@@ -26171,6 +26294,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Boom Horn
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [CERARMOR]
 Name = Cerarmor
@@ -26194,6 +26318,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Blast Horn
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [FLYFIN]
 Name = Flyfin
@@ -26217,6 +26342,7 @@ Shape = Bipedal
 Habitat = WatersEdge
 Category = Steel Fin
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [TERANIUM]
 Name = Teranium
@@ -26240,6 +26366,7 @@ Shape = Bipedal
 Habitat = WatersEdge
 Category = Steel Fin
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [KOMISAUR]
 Name = Komisaur
@@ -26264,6 +26391,7 @@ Shape = Bipedal
 Habitat = Cosmos
 Category = Meteor
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [CLUSTEORUS]
 Name = Clusteorus
@@ -26288,6 +26416,7 @@ Shape = Bipedal
 Habitat = Cosmos
 Category = Orbital
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [AKLYTEOR]
 Name = Aklyteor
@@ -26312,6 +26441,7 @@ Shape = Bipedal
 Habitat = Cosmos
 Category = Impact
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [FEROCIRAPTOR]
 Name = Ferociraptor
@@ -26336,6 +26466,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Vicious
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [PTERYSOAR]
 Name = Pterysoar
@@ -26360,6 +26491,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Feathered
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [HOATZAN]
 Name = Hoatzan
@@ -26384,6 +26516,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Stinky
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [ASTRALF]
 Name = Astralf
@@ -26409,6 +26542,7 @@ Habitat = Grassland
 Category = Odd
 Pokedex = NOTHING
 Evolutions = COSMOOSE,Level,36
+Generation = 99
 #-------------------------------
 [COSMOOSE]
 Name = Cosmoose
@@ -26433,6 +26567,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Odd
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [GUEEL]
 Name = Gueel
@@ -26456,6 +26591,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Robotic
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [YOPPA]
 Name = Yoppa
@@ -26479,6 +26615,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Residue
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [CRYSTAIL]
 Name = Crystail
@@ -26503,6 +26640,7 @@ Habitat = Cave
 Category = Protector
 Pokedex = A strange creature only talked about in ancient legends of the Kuria region. They roam the halls of crystal power, and swarm any invaders they can find in hopes of keeping their secrets safe.
 Evolutions = GLACYO,HasMove,COSMICPOWER
+Generation = 99
 #-------------------------------
 [GLACYO]
 Name = Glacyo
@@ -26526,6 +26664,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Guardian
 Pokedex = These Pokémon were once trusted to guard the secrets of the crystal power. They use Crystail to swarm intruders and then finish them off with a powerful crystal attack. No one knows where they came from.
+Generation = 99
 #-------------------------------
 [WURMIDRAKE]
 Name = Wurmidrake
@@ -26551,6 +26690,7 @@ Habitat = Forest
 Category = Visage
 Pokedex = It silently feeds on leaves seemingly without end. Though small and weak, it somehow projects a rather menacing aura.
 Evolutions = VISACOON,Level,30
+Generation = 99
 #-------------------------------
 [VISACOON]
 Name = Visacoon
@@ -26576,6 +26716,7 @@ Habitat = Forest
 Category = Cocoon
 Pokedex = It uses the same scare trick as Wurmidrake to ward off predators. Its shell has shaped itself to produce a more convincing image. It peers unblinking from within its cocoon, patiently awaiting evolution.
 Evolutions = VISARAB,Level,50
+Generation = 99
 #-------------------------------
 [VISARAB]
 Name = Visarab
@@ -26600,6 +26741,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Visage
 Pokedex = Because it has focused all of its saved energy into achieving evolution, it has a short lifespan. Its wings will turn red and glow faintly, casting its bone-white body in an ominous red light.
+Generation = 99
 #-------------------------------
 [NEBULANIAN]
 Name = Nebulanian
@@ -26623,6 +26765,7 @@ Shape = Head
 Habitat = Grassland
 Category = Echidna
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [GELDIOS]
 Name = Geldios
@@ -26646,6 +26789,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Echidna
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [SPHERIOS]
 Name = Spherios
@@ -26670,6 +26814,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Echidna
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [OKEANIOS]
 Name = Okeanios
@@ -26694,6 +26839,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Echidna
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [MUNDIMEA]
 Name = Mundimea
@@ -26718,6 +26864,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Echidna
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [TYPHON]
 Name = Typhon
@@ -26742,6 +26889,7 @@ Shape = Head
 Habitat = Grassland
 Category = Echidna
 Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [LUMENY]
 Name = Lumeny
@@ -26765,6 +26913,7 @@ Shape = Bipedal
 Habitat = WatersEdge
 Category = Shining
 Pokedex = Lumeny is a very gentle Pokémon and prefers not to fight, but instead to help. The soothing light coming from its antenna and tails gives a warm feeling that can make other Pokémon and even people feel a lot better.
+Generation = 99
 #-------------------------------
 [KOSURITE]
 Name = Kosurite
@@ -26789,6 +26938,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Destructive
 Pokedex = This Pokémon is the firstborn of the original Crystal Pokemon. Created by Kaizure out of a selfish desire to live carefree, Kosurite was created without emotions or desires. The result was a destructive beast that attacks without hesitation and curses those it deems selfish.
+Generation = 99
 #-------------------------------
 [KYAZURA]
 Name = Kyazura
@@ -26812,6 +26962,7 @@ Shape = Bipedal
 Habitat = Urban
 Category = Replicant
 Pokedex = Kyazura was created by Vitreus from a part of Kaizure. Made to control energy of those around it, all Crystal and Mega forms are reverted back to their original state. It hates its own existence and will attack without warning.
+Generation = 99
 #-------------------------------
 [KAIZURE]
 Name = Kaizure
@@ -26835,6 +26986,7 @@ Shape = Bipedal
 Habitat = Grassland
 Category = Crystal Origin
 Pokedex = The original Crystal Pokémon. Capable of controlling all Crystal energy, it spent its days keeping the flow of energy moving throughout the world. When it met a Mew, it yearned to live a carefree life, so it created Kosurite to do its job. This turned out terribly.
+Generation = 99
 #-------------------------------
 [UBFLOW]
 Name = UB-Flow
@@ -26858,54 +27010,7 @@ Shape = Head
 Habitat = Grassland
 Category = Crystal
 Pokedex = NOTHING
-#-------------------------------
-[AATEST]
-Name = AAtest
-Types = CRYSTAL
-BaseStats = 150,10,100,10,1,100
-GenderRatio = FemaleOneEighth
-GrowthRate = Parabolic
-BaseExp = 64
-EVs = SPECIAL_ATTACK,1
-CatchRate = 45
-Happiness = 70
-Abilities = NOTHING
-HiddenAbilities = AMBIENTAMNESIA
-Moves = 1,TACKLE
-EggMoves = AMNESIA
-EggGroups = Monster,Grass
-HatchSteps = 5355
-Height = 1.9
-Weight = 32.6
-Color = Blue
-Shape = Head
-Habitat = Grassland
-Category = Crystal
-Pokedex = NOTHING
-#-------------------------------
-[AAENEMY]
-Name = AAenemy
-Types = CRYSTAL
-BaseStats = 150,1,100,10,1,100
-GenderRatio = FemaleOneEighth
-GrowthRate = Parabolic
-BaseExp = 64
-EVs = SPECIAL_ATTACK,1
-CatchRate = 45
-Happiness = 70
-Abilities = NOTHING
-HiddenAbilities = AMBIENTAMNESIA
-Moves = 1,TACKLE
-EggMoves = AMNESIA
-EggGroups = Monster,Grass
-HatchSteps = 5355
-Height = 1.9
-Weight = 32.6
-Color = Blue
-Shape = Head
-Habitat = Grassland
-Category = Crystal
-Pokedex = NOTHING
+Generation = 99
 #-------------------------------
 [SLOOF]
 Name = Sloof
@@ -26929,3 +27034,4 @@ Shape = Head
 Habitat = Grassland
 Category = April Fools
 Pokedex = NOTHING
+Generation = 99

@@ -539,9 +539,8 @@ class PokemonPartyPanel < Sprite
     # HP numbers
     hp_text = sprintf("%d/%d", @pokemon.hp, @pokemon.totalhp)
     pbSetSmallFont(@overlaysprite.bitmap)
-    @overlaysprite.bitmap.font.size = 24
     pbDrawTextPositions(@overlaysprite.bitmap,
-                        [[hp_text, 184, 58, 1, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, 1]])
+                        [[hp_text, 184, 54, 1, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR, 1]])
     pbSetSystemFont(@overlaysprite.bitmap)
     # HP bar
     if @pokemon.able?

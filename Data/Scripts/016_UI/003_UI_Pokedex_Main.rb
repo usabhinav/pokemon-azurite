@@ -449,7 +449,7 @@ class PokemonPokedex_Scene
         # For each form, insert it just before the next species
         regional_forms.each do |species_id, form_list|
           species_index = regionalSpecies.index { |sf| sf[0] == species_id && sf[1] == 0 }
-          regionalSpecies.insert(species_index + 1, *form_list.map { |s| [s.id, s.form] })
+          regionalSpecies.insert(species_index + 1, *form_list.map { |s| [s.species, s.form] })
         end
       else
         GameData::Species.each_species { |s| regionalSpecies.push(s.id) }
@@ -1004,6 +1004,7 @@ class PokemonPokedex_Scene
       end
     end
     scene = PokemonPokedexInfo_Scene.new
+    scene.team_builder_mode = @team_builder_mode
     screen = PokemonPokedexInfoScreen.new(scene)
     ret = screen.pbStartScreen(@dexlist, index, region)
     if @searchResults

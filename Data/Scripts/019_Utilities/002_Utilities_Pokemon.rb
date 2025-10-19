@@ -344,27 +344,34 @@ def registerAllSpeciesAndForms
 end
 
 #===============================================================================
-# Returns list of all species that are viable for the specified level.
+# Returns list of all species (and valid forms) that are viable for the
+# specified level.
 #===============================================================================
-def getPossibleSpeciesDataListForTeamBuilder(level)
-  species_data_list = []
+def getPossibleSpeciesDataFormMapForTeamBuilder(level, generation_list = nil)
+  species_data_form_map = {}
   GameData::Species.each do |s|
-    if s.form == 0 level >= s.minimum_level && level <= s.maximum_level
-      species_data_list.push(s)
+    if level >= s.minimum_level && level <= s.maximum_level && (s.form == 0 || s.has_flag?("SelectableInTeamBuilderMode"))
+      next if generation_list && !generation_list.include?(s.generation)
+      if species_data_form_map[s.species].nil?
+        species_data_form_map[s.species] = []
+      end
+      species_data_form_map[s.species].push(s)
     end
   end
-  return species_data_list
+  return species_data_form_map
 end
 
 #===============================================================================
-# Returns list of 6 random Pokemon based on provided species data list.
+# Returns list of 6 random Pokemon based on provided species data and form map.
 #===============================================================================
-def getRandomPartyFromSpeciesList(species_data_list_input, level)
-  species_data_list = species_data_list_input.clone
+def getRandomPartyFromSpeciesDataFormMap(species_data_form_map, level)
+  species_id_list = species_data_form_map.keys
   new_party = []
   for i in 0...6
-    selected_species_data = species_data_list.delete_at(rand(species_data_list.length))
-    # TODO: Randomize form (s.has_flag?("SelectableInTeamBuilderMode"))
+    # First get random species
+    selected_species_id = species_id_list.delete_at(rand(species_id_list.length))
+    # Then get random form
+    selected_species_data = species_data_form_map[selected_species_id].sample
     new_poke = Pokemon.new(selected_species_data.id, level)
     new_poke.form = selected_species_data.form
     new_party.push(new_poke)

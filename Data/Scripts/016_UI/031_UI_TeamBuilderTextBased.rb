@@ -19,6 +19,16 @@ module TeamBuilderTextBasedScreenConstants
     :SideSizeSelection,
   ]
 
+  def self.get_next_screen(current_screen)
+    index = SCREEN_LIST.index(current_screen)
+    return index == SCREEN_LIST.length - 1 ? nil : SCREEN_LIST[index + 1]
+  end
+
+  def self.get_previous_screen(current_screen)
+    index = SCREEN_LIST.index(current_screen)
+    return index == 0 ? nil : SCREEN_LIST[index - 1]
+  end
+
   def self.get_save_file_name(data_object_name, input_name)
     return "#{SAVE_FILE_PREFIX_MAP[data_object_name]}#{input_name}#{SAVE_FILE_EXTENSION}"
   end
@@ -68,6 +78,15 @@ class TeamBuilderTextBasedScreen
     return ret
   end
 
+  def getActiveTrainerIndex
+    if @current_screen == :PlayerTrainerPartySelection
+      return 0
+    elsif @current_screen == :OpponentTrainerPartySelection
+      return 1
+    end
+    return 0
+  end
+
   def pbScene
     @end_scene = false
     loop do
@@ -75,16 +94,20 @@ class TeamBuilderTextBasedScreen
       when :PlayerTrainerPartySelection
         partySelectionScene
       when :OpponentTrainerPartySelection
+        partySelectionScene
       when :SideSizeSelection
+        pbMessage("SIDE SIZES")
+        @current_screen = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen)
       end
       break if @end_scene
+      refreshPokemonIconSprites
     end
   end
 
   def partySelectionScene
     command = 0
     loop do
-      header_window = Window_AdvancedTextPokemon.new("Build your team")
+      header_window = Window_AdvancedTextPokemon.new(getActiveTrainerIndex == 0 ? _INTL("Build your team") : _INTL("Build opposing team"))
       header_window.viewport = @viewport
       header_window.x = 0
       header_window.y = 0
@@ -95,7 +118,7 @@ class TeamBuilderTextBasedScreen
       commands_help = []
       # Edit team
       commands[cmdEditTeam = commands.length] = _INTL("Edit team")
-      commands_help[cmdEditTeam] = _INTL("Add, remove, and edit Pokémon in your team.")
+      commands_help[cmdEditTeam] = _INTL("Add, remove, and edit Pokémon in the team.")
       # Random party
       commands[cmdRandomParty = commands.length] = _INTL("Random party")
       commands_help[cmdRandomParty] = _INTL("Generate a random party of 6 Pokémon.")
@@ -120,14 +143,14 @@ class TeamBuilderTextBasedScreen
       # Next
       commands[cmdNext = commands.length] = _INTL("Next")
       commands_help[cmdNext] = _INTL("Continue to the next menu.")
-      # Exit
-      commands[cmdExit = commands.length] = _INTL("Exit")
+      # Exit/back
+      commands[cmdExit = commands.length] = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen).nil? ? _INTL("Exit") : _INTL("Back")
       commands_help[cmdExit] = _INTL("Go back to the previous menu.")
       command = pbShowCommandsWithHelp(nil, commands, commands_help, cmdExit + 1, command, true)
       pbDisposeMessageWindow(header_window)
       case command
       when cmdEditTeam
-        pbPokemonScreenForTeamBuilder(@parties[0]) { refreshPokemonIconSprites }
+        pbPokemonScreenForTeamBuilder(@parties[getActiveTrainerIndex]) { refreshPokemonIconSprites }
       when cmdRandomParty, cmdRandomAzuriteParty
         if pbConfirmMessage(_INTL("This action will overwrite the current party. Continue?"))
           params = ChooseNumberParams.new
@@ -139,25 +162,30 @@ class TeamBuilderTextBasedScreen
           )
           if level > 0
             species_data_form_map = getPossibleSpeciesDataFormMapForTeamBuilder(level, command == cmdRandomAzuriteParty ? [99] : nil)
-            @parties[0] = getRandomPartyFromSpeciesDataFormMap(species_data_form_map, level)
+            @parties[getActiveTrainerIndex] = getRandomPartyFromSpeciesDataFormMap(species_data_form_map, level)
             refreshPokemonIconSprites
             pbMessage(_INTL("Successfully generated a new party."))
           end
         end
       when cmdLoadTeam
-        loadDataObject(TeamBuilderTextBasedScreenConstants::TEAM_DATA_OBJECT_NAME, Proc.new { |file| @parties[0] = Marshal.load(file); refreshPokemonIconSprites })
+        loadDataObject(TeamBuilderTextBasedScreenConstants::TEAM_DATA_OBJECT_NAME, Proc.new { |file| @parties[getActiveTrainerIndex] = Marshal.load(file); refreshPokemonIconSprites })
       when cmdSaveTeam
-        saveDataObject(TeamBuilderTextBasedScreenConstants::TEAM_DATA_OBJECT_NAME, @parties[0])
+        saveDataObject(TeamBuilderTextBasedScreenConstants::TEAM_DATA_OBJECT_NAME, @parties[getActiveTrainerIndex])
       when cmdEditBag
-        pbBagScreenForTeamBuilder(@bags[0])
+        pbBagScreenForTeamBuilder(@bags[getActiveTrainerIndex])
       when cmdLoadBag
-        loadDataObject(TeamBuilderTextBasedScreenConstants::BAG_DATA_OBJECT_NAME, Proc.new { |file| @bags[0] = Marshal.load(file) })
+        loadDataObject(TeamBuilderTextBasedScreenConstants::BAG_DATA_OBJECT_NAME, Proc.new { |file| @bags[getActiveTrainerIndex] = Marshal.load(file) })
       when cmdSaveBag
-        saveDataObject(TeamBuilderTextBasedScreenConstants::BAG_DATA_OBJECT_NAME, @bags[0])
+        saveDataObject(TeamBuilderTextBasedScreenConstants::BAG_DATA_OBJECT_NAME, @bags[getActiveTrainerIndex])
       when cmdNext
-        pbMessage("Next")
+        @current_screen = TeamBuilderTextBasedScreenConstants.get_next_screen(@current_screen)
+        break
       else
-        if pbConfirmMessage(_INTL("Exit this menu? Any unsaved changes will be lost."))
+        new_screen = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen)
+        if new_screen
+          @current_screen = new_screen
+          break
+        elsif pbConfirmMessage(_INTL("Exit this menu? Any unsaved changes will be lost."))
           @end_scene = true
           break
         end
@@ -220,8 +248,8 @@ class TeamBuilderTextBasedScreen
   end
 
   def refreshPokemonAtIndex(i)
-    if @parties[0][i]
-      poke = @parties[0][i]
+    if (@current_screen == :PlayerTrainerPartySelection || @current_screen == :OpponentTrainerPartySelection) && @parties[getActiveTrainerIndex][i]
+      poke = @parties[getActiveTrainerIndex][i]
       if @sprites["pokemonIcon#{i}"].nil?
         icon_sprite = PokemonIconSprite.new(poke, @viewport)
         icon_sprite.setOffset(PictureOrigin::CENTER)
@@ -253,7 +281,7 @@ class TeamBuilderTextBasedScreen
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
     @buttons = {}
-    @current_screen = :PlayerTrainerPartySelection
+    @current_screen = TeamBuilderTextBasedScreenConstants::SCREEN_LIST[0]
     @parties = []
     @bags = []
     for i in 0...2

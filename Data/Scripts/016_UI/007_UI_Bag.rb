@@ -4,6 +4,7 @@
 class Window_PokemonBag < Window_DrawableCommand
   attr_reader :pocket
   attr_accessor :sorting
+  attr_writer :team_builder_mode
 
   def initialize(bag, filterlist, pocket, x, y, width, height)
     @bag        = bag
@@ -15,6 +16,7 @@ class Window_PokemonBag < Window_DrawableCommand
     @selarrow  = AnimatedBitmap.new("Graphics/Pictures/Bag/cursor")
     @swaparrow = AnimatedBitmap.new("Graphics/Pictures/Bag/cursor_swap")
     self.windowskin = nil
+    @team_builder_mode = false
   end
 
   def dispose
@@ -133,6 +135,12 @@ class PokemonBag_Scene
   POCKETNAMESHADOWCOLOR = Color.new(168, 184, 184)
   ITEMSVISIBLE          = 7
 
+  attr_writer :team_builder_mode
+
+  def initialize
+    @team_builder_mode = false
+  end
+
   def pbUpdate
     pbUpdateSpriteHash(@sprites)
   end
@@ -193,6 +201,7 @@ class PokemonBag_Scene
     @sprites["rightarrow"].visible = (!@choosing || numfilledpockets > 1)
     @sprites["rightarrow"].play
     @sprites["itemlist"] = Window_PokemonBag.new(@bag, @filterlist, lastpocket, 168, -8, 314, 40 + 32 + (ITEMSVISIBLE * 32))
+    @sprites["itemlist"].team_builder_mode = @team_builder_mode
     @sprites["itemlist"].viewport    = @viewport
     @sprites["itemlist"].pocket      = lastpocket
     @sprites["itemlist"].index       = @bag.last_viewed_index(lastpocket)
@@ -212,6 +221,12 @@ class PokemonBag_Scene
     @sprites["msgwindow"] = Window_AdvancedTextPokemon.new("")
     @sprites["msgwindow"].visible  = false
     @sprites["msgwindow"].viewport = @viewport
+    if @team_builder_mode
+      @sprites["additemwindow"] = Window_UnformattedTextPokemon.new
+      @sprites["additemwindow"].visible = true
+      @sprites["additemwindow"].viewport = @viewport
+      @sprites["additemwindow"].setTextToFit(_INTL("F - Add item"), 200)
+    end
     pbBottomLeftLines(@sprites["helpwindow"], 1)
     pbDeactivateWindows(@sprites)
     pbRefresh
@@ -250,6 +265,10 @@ class PokemonBag_Scene
 
   def pbChooseNumber(helptext, maximum, initnum = 1)
     return UIHelper.pbChooseNumber(@sprites["helpwindow"], helptext, maximum, initnum) { pbUpdate }
+  end
+
+  def pbChooseNumberWithoutUpdate(helptext, maximum, initnum = 1)
+    return UIHelper.pbChooseNumber(@sprites["helpwindow"], helptext, maximum, initnum)
   end
 
   def pbShowCommands(helptext, commands, index = 0)
@@ -440,6 +459,20 @@ class PokemonBag_Scene
           elsif Input.trigger?(Input::USE)   # Choose selected item
             (itemwindow.item) ? pbPlayDecisionSE : pbPlayCloseMenuSE
             return itemwindow.item
+          elsif @team_builder_mode && Input.triggerex?(:F)
+            while true
+              item = pbChooseItemList
+              if item
+                amount = pbChooseNumberWithoutUpdate(_INTL("Add how many {1}?", GameData::Item.get(item).name_plural), 99)
+                if amount > 0
+                  @bag.add(item, amount)
+                  pbRefresh
+                  break
+                end
+              else
+                break
+              end
+            end
           end
         end
       end
@@ -451,9 +484,12 @@ end
 # Bag mechanics
 #===============================================================================
 class PokemonBagScreen
-  def initialize(scene, bag)
+  attr_writer :team_builder_mode
+
+  def initialize(scene, bag, team_builder_mode = false)
     @bag   = bag
     @scene = scene
+    @team_builder_mode = team_builder_mode
   end
 
   def pbStartScreen
@@ -472,21 +508,23 @@ class PokemonBagScreen
       commands = []
       # Generate command list
       commands[cmdRead = commands.length] = _INTL("Read") if itm.is_mail?
-      if ItemHandlers.hasOutHandler(item) || (itm.is_machine? && $player.party.length > 0)
+      if !@team_builder_mode && (ItemHandlers.hasOutHandler(item) || (itm.is_machine? && $player.party.length > 0))
         if ItemHandlers.hasUseText(item)
           commands[cmdUse = commands.length]    = ItemHandlers.getUseText(item)
         else
           commands[cmdUse = commands.length]    = _INTL("Use")
         end
       end
-      commands[cmdGive = commands.length]       = _INTL("Give") if $player.pokemon_party.length > 0 && itm.can_hold?
-      commands[cmdToss = commands.length]       = _INTL("Toss") if !itm.is_important? || $DEBUG
-      if @bag.registered?(item)
-        commands[cmdRegister = commands.length] = _INTL("Deselect")
-      elsif pbCanRegisterItem?(item)
-        commands[cmdRegister = commands.length] = _INTL("Register")
+      commands[cmdGive = commands.length]       = _INTL("Give") if !@team_builder_mode && $player.pokemon_party.length > 0 && itm.can_hold?
+      commands[cmdToss = commands.length]       = _INTL("Toss") if @team_builder_mode || !itm.is_important? || $DEBUG
+      if !@team_builder_mode
+        if @bag.registered?(item)
+          commands[cmdRegister = commands.length] = _INTL("Deselect")
+        elsif pbCanRegisterItem?(item)
+          commands[cmdRegister = commands.length] = _INTL("Register")
+        end
       end
-      commands[cmdDebug = commands.length]      = _INTL("Debug") if $DEBUG
+      commands[cmdDebug = commands.length]      = _INTL("Debug") if !@team_builder_mode && $DEBUG
       commands[commands.length]                 = _INTL("Cancel")
       # Show commands generated above
       itemname = itm.name
@@ -696,4 +734,13 @@ class PokemonBagScreen
     end
     @scene.pbEndScene
   end
+end
+
+def pbBagScreenForTeamBuilder(bag)
+  pbFadeOutIn {
+    scene = PokemonBag_Scene.new
+    scene.team_builder_mode = true
+    screen = PokemonBagScreen.new(scene, bag, true)
+    screen.pbStartScreen
+  }
 end

@@ -4,27 +4,31 @@ module TeamBuilderTextBasedScreenConstants
   TEXT_SHADOW_COLOR = Color.new(248, 248, 248)
 
   FOLDER_PATH = "Graphics/Pictures/Team Builder"
-  TEAM_SAVE_FILE_PREFIX = "TEAM_"
-  TEAM_SAVE_FILE_EXTENSION = ".rxdata"
+  TEAM_DATA_OBJECT_NAME = "team"
+  BAG_DATA_OBJECT_NAME = "bag"
+  SAVE_FILE_EXTENSION = ".rxdata"
+
+  SAVE_FILE_PREFIX_MAP = {
+    TEAM_DATA_OBJECT_NAME => "TEAM_",
+    BAG_DATA_OBJECT_NAME => "BAG_",
+  }
 
   SCREEN_LIST = [
     :PlayerTrainerPartySelection,
-    :PlayerTrainerItemSelection,
     :OpponentTrainerPartySelection,
-    :OpponentTrainerItemSelection,
     :SideSizeSelection,
   ]
 
-  def self.get_team_save_file_name(team_name)
-    return "#{TEAM_SAVE_FILE_PREFIX}#{team_name}#{TEAM_SAVE_FILE_EXTENSION}"
+  def self.get_save_file_name(data_object_name, input_name)
+    return "#{SAVE_FILE_PREFIX_MAP[data_object_name]}#{input_name}#{SAVE_FILE_EXTENSION}"
   end
 
-  def self.is_team_save_file?(filename)
-    return filename.start_with?(TEAM_SAVE_FILE_PREFIX)
+  def self.is_save_file?(data_object_name, filename)
+    return filename.start_with?(SAVE_FILE_PREFIX_MAP[data_object_name])
   end
 
-  def self.get_team_name_from_filename(filename)
-    return filename.sub(TEAM_SAVE_FILE_PREFIX, "").sub(TEAM_SAVE_FILE_EXTENSION, "")
+  def self.get_save_name_from_filename(data_object_name, filename)
+    return filename.sub(SAVE_FILE_PREFIX_MAP[data_object_name], "").sub(SAVE_FILE_EXTENSION, "")
   end
 end
 
@@ -89,21 +93,30 @@ class TeamBuilderTextBasedScreen
       header_window.update
       commands = []
       commands_help = []
-      # Edit
-      commands[cmdEdit = commands.length] = _INTL("Edit team")
-      commands_help[cmdEdit] = _INTL("Add, remove, and edit Pokémon in your team.")
+      # Edit team
+      commands[cmdEditTeam = commands.length] = _INTL("Edit team")
+      commands_help[cmdEditTeam] = _INTL("Add, remove, and edit Pokémon in your team.")
       # Random party
       commands[cmdRandomParty = commands.length] = _INTL("Random party")
       commands_help[cmdRandomParty] = _INTL("Generate a random party of 6 Pokémon.")
       # Random Azurite party
       commands[cmdRandomAzuriteParty = commands.length] = _INTL("Random Azurite party")
       commands_help[cmdRandomAzuriteParty] = _INTL("Generate a random party of 6 Azurite Pokémon.")
-      # Load
-      commands[cmdLoad = commands.length] = _INTL("Load team")
-      commands_help[cmdLoad] = _INTL("Load one of your saved teams.")
-      # Save
-      commands[cmdSave = commands.length] = _INTL("Save team")
-      commands_help[cmdSave] = _INTL("Save the currently selected team.")
+      # Load team
+      commands[cmdLoadTeam = commands.length] = _INTL("Load team")
+      commands_help[cmdLoadTeam] = _INTL("Load one of your saved teams.")
+      # Save team
+      commands[cmdSaveTeam = commands.length] = _INTL("Save team")
+      commands_help[cmdSaveTeam] = _INTL("Save the currently selected team.")
+      # Edit bag
+      commands[cmdEditBag = commands.length] = _INTL("Edit bag")
+      commands_help[cmdEditBag] = _INTL("Add and remove items from your bag.")
+      # Load bag
+      commands[cmdLoadBag = commands.length] = _INTL("Load bag")
+      commands_help[cmdLoadBag] = _INTL("Load one of your saved bags.")
+      # Save bag
+      commands[cmdSaveBag = commands.length] = _INTL("Save bag")
+      commands_help[cmdSaveBag] = _INTL("Save the current bag.")
       # Next
       commands[cmdNext = commands.length] = _INTL("Next")
       commands_help[cmdNext] = _INTL("Continue to the next menu.")
@@ -113,9 +126,8 @@ class TeamBuilderTextBasedScreen
       command = pbShowCommandsWithHelp(nil, commands, commands_help, cmdExit + 1, command, true)
       pbDisposeMessageWindow(header_window)
       case command
-      when cmdEdit
-        pbPokemonScreenForTeamBuilder(@parties[0])
-        refreshPokemonIconSprites
+      when cmdEditTeam
+        pbPokemonScreenForTeamBuilder(@parties[0]) { refreshPokemonIconSprites }
       when cmdRandomParty, cmdRandomAzuriteParty
         if pbConfirmMessage(_INTL("This action will overwrite the current party. Continue?"))
           params = ChooseNumberParams.new
@@ -132,50 +144,63 @@ class TeamBuilderTextBasedScreen
             pbMessage(_INTL("Successfully generated a new party."))
           end
         end
-      when cmdLoad
-        load_team_commands = []
-        Dir.foreach(RTP.getSaveFolder) do |entry|
-          next if !TeamBuilderTextBasedScreenConstants.is_team_save_file?(entry)
-          load_team_commands.push(TeamBuilderTextBasedScreenConstants.get_team_name_from_filename(entry))
-        end
-        load_team_commands.push("Cancel")
-        while true
-          load_team_command = pbShowCommands(load_team_commands)
-          if load_team_command == -1 || load_team_command == load_team_commands.length - 1
-            break
-          else
-            team_name = load_team_commands[load_team_command]
-            if pbConfirmMessage(_INTL("Load team #{team_name}?"))
-              team_save_filename = RTP.getSaveFileName(TeamBuilderTextBasedScreenConstants.get_team_save_file_name(team_name))
-              File.open(team_save_filename) do |file|
-                @parties[0] = Marshal.load(file)
-              end
-              refreshPokemonIconSprites
-              pbMessage(_INTL("Successfully loaded in team #{team_name}."))
-            end
-          end
-        end
-      when cmdSave
-        while true
-          team_name = pbMessageFreeText("Enter a name for this team.", "", false, 25)
-          if team_name.empty?
-            break
-          elsif !team_name.match?(/^[a-zA-Z0-9]*$/)
-            pbMessage("Name can only contain alphanumeric values.")
-          else
-            team_save_filename = RTP.getSaveFileName(TeamBuilderTextBasedScreenConstants.get_team_save_file_name(team_name))
-            if !File.file?(team_save_filename) || pbConfirmMessageSerious(_INTL("WARNING: There is already a saved team with name #{team_name}. Overwrite this team?"))
-              File.open(team_save_filename, "wb") { |file| Marshal.dump(@parties[0], file) }
-              pbMessage(_INTL("Successfully saved team #{team_name}."))
-              break
-            end
-          end
-        end
+      when cmdLoadTeam
+        loadDataObject(TeamBuilderTextBasedScreenConstants::TEAM_DATA_OBJECT_NAME, Proc.new { |file| @parties[0] = Marshal.load(file); refreshPokemonIconSprites })
+      when cmdSaveTeam
+        saveDataObject(TeamBuilderTextBasedScreenConstants::TEAM_DATA_OBJECT_NAME, @parties[0])
+      when cmdEditBag
+        pbBagScreenForTeamBuilder(@bags[0])
+      when cmdLoadBag
+        loadDataObject(TeamBuilderTextBasedScreenConstants::BAG_DATA_OBJECT_NAME, Proc.new { |file| @bags[0] = Marshal.load(file) })
+      when cmdSaveBag
+        saveDataObject(TeamBuilderTextBasedScreenConstants::BAG_DATA_OBJECT_NAME, @bags[0])
       when cmdNext
         pbMessage("Next")
       else
         if pbConfirmMessage(_INTL("Exit this menu? Any unsaved changes will be lost."))
           @end_scene = true
+          break
+        end
+      end
+    end
+  end
+
+  def loadDataObject(data_object_name, on_load_method)
+    load_commands = []
+    Dir.foreach(RTP.getSaveFolder) do |entry|
+      next if !TeamBuilderTextBasedScreenConstants.is_save_file?(data_object_name, entry)
+      load_commands.push(TeamBuilderTextBasedScreenConstants.get_save_name_from_filename(data_object_name, entry))
+    end
+    load_commands.push("Cancel")
+    while true
+      load_command = pbShowCommands(load_commands)
+      if load_command == -1 || load_command == load_commands.length - 1
+        break
+      else
+        chosen_name = load_commands[load_command]
+        if pbConfirmMessage(_INTL("Load #{data_object_name} #{chosen_name}?"))
+          save_filename = RTP.getSaveFileName(TeamBuilderTextBasedScreenConstants.get_save_file_name(data_object_name, chosen_name))
+          File.open(save_filename) do |file|
+            on_load_method.call(file)
+          end
+          pbMessage(_INTL("Successfully loaded in #{data_object_name} #{chosen_name}."))
+        end
+      end
+    end
+  end
+
+  def saveDataObject(data_object_name, data_object)
+    while true
+      chosen_name = pbMessageFreeText("Enter a name for this #{data_object_name}.", "", false, 25)
+      if chosen_name.empty?
+        break
+      elsif !chosen_name.match?(/^[a-zA-Z0-9]*$/)
+        pbMessage("Name can only contain alphanumeric values.")
+      else
+        chosen_save_filename = RTP.getSaveFileName(TeamBuilderTextBasedScreenConstants.get_save_file_name(data_object_name, chosen_name))
+        if !File.file?(chosen_save_filename) || pbConfirmMessageSerious(_INTL("WARNING: There is already a saved #{data_object_name} with name #{chosen_name}. Overwrite this #{data_object_name}?"))
+          File.open(chosen_save_filename, "wb") { |file| Marshal.dump(data_object, file) }
+          pbMessage(_INTL("Successfully saved #{data_object_name} #{chosen_name}."))
           break
         end
       end
@@ -230,8 +255,10 @@ class TeamBuilderTextBasedScreen
     @buttons = {}
     @current_screen = :PlayerTrainerPartySelection
     @parties = []
+    @bags = []
     for i in 0...2
-      @parties.push([Pokemon.new(:PIKACHU, 20), Pokemon.new(:BULBASAUR, 20), Pokemon.new(:SQUIRTLE, 20), Pokemon.new(:CHARMANDER, 20)])
+      @parties.push([Pokemon.new(:PIKACHU, 20)])
+      @bags.push(PokemonBag.new)
     end
     refreshBackground
     setupInitialSprites

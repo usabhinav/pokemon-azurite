@@ -1793,6 +1793,7 @@ def pbPokemonScreenForTeamBuilder(party)
     sscreen = PokemonPartyScreen.new(sscene, party)
     sscreen.team_builder_mode = true
     sscreen.pbPokemonScreen(true)
+    yield if block_given?
   }
 end
 

@@ -971,12 +971,16 @@ class PokemonParty_Scene
       elsif Input.trigger?(Input::ACTION) && canswitch == 2
         return -1
       elsif Input.trigger?(Input::BACK)
-        pbPlayCloseMenuSE if !switching
-        return -1
+        if shouldProcessCancel(switching)
+          pbPlayCloseMenuSE if !switching
+          return -1
+        end
       elsif Input.trigger?(Input::USE)
         if @activecmd == cancelsprite
-          (switching) ? pbPlayDecisionSE : pbPlayCloseMenuSE
-          return -1
+          if shouldProcessCancel(switching)
+            (switching) ? pbPlayDecisionSE : pbPlayCloseMenuSE
+            return -1
+          end
         elsif @team_builder_mode && @activecmd == Settings::MAX_PARTY_SIZE # Confirm
           if !switching && pbDisplayConfirm(_INTL("Save changes to party?"))
             return -2
@@ -987,6 +991,10 @@ class PokemonParty_Scene
         end
       end
     end
+  end
+
+  def shouldProcessCancel(switching)
+    return switching || !@team_builder_mode || pbDisplayConfirm(_INTL("You may have unsaved changes. Exit anyway?"))
   end
 
   def pbChangeSelection(key, currentsel, switching)

@@ -466,6 +466,15 @@ class PokemonBag_Scene
                 amount = pbChooseNumberWithoutUpdate(_INTL("Add how many {1}?", GameData::Item.get(item).name_plural), 99)
                 if amount > 0
                   @bag.add(item, amount)
+                  # Switch to the newly added item
+                  newpocket = GameData::Item.get(item).pocket
+                  if itemwindow.pocket != newpocket
+                    itemwindow.pocket = newpocket
+                    @bag.last_viewed_pocket = itemwindow.pocket
+                    thispocket = @bag.pockets[itemwindow.pocket]
+                  end
+                  itemwindow.index = thispocket.find_index { |bag_item| bag_item[0] == item }
+                  @bag.set_last_viewed_index(itemwindow.pocket, itemwindow.index)
                   pbRefresh
                   break
                 end

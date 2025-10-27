@@ -96,7 +96,7 @@ class TeamBuilderTextBasedScreen
       when :OpponentTrainerPartySelection
         partySelectionScene
       when :SideSizeSelection
-        pbMessage("SIDE SIZES")
+        pbMessage("SIDE SIZES") # TODO: FIX
         @current_screen = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen)
       end
       break if @end_scene

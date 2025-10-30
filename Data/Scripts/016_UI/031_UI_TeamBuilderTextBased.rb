@@ -96,8 +96,7 @@ class TeamBuilderTextBasedScreen
       when :OpponentTrainerPartySelection
         partySelectionScene
       when :SideSizeSelection
-        pbMessage("SIDE SIZES") # TODO: FIX
-        @current_screen = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen)
+        sideSizeSelectionScene
       end
       break if @end_scene
       refreshPokemonIconSprites
@@ -180,6 +179,71 @@ class TeamBuilderTextBasedScreen
       when cmdNext
         @current_screen = TeamBuilderTextBasedScreenConstants.get_next_screen(@current_screen)
         break
+      else
+        new_screen = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen)
+        if new_screen
+          @current_screen = new_screen
+          break
+        elsif pbConfirmMessage(_INTL("Exit this menu? Any unsaved changes will be lost."))
+          @end_scene = true
+          break
+        end
+      end
+    end
+  end
+
+  def sideSizeSelectionScene
+    size0 = 1
+    size1 = 1
+    command = 0
+    loop do
+      commands = []
+      commands_help = []
+      # Set player side size
+      commands[cmdPlayerSideSize = commands.length] = _INTL("Set player side size")
+      commands_help[cmdPlayerSideSize] = _INTL("Choose how many of your Pokémon can be on the field at once.")
+      # Set opponent side size
+      commands[cmdOpponentSideSize = commands.length] = _INTL("Set opponent side size")
+      commands_help[cmdOpponentSideSize] = _INTL("Choose how many of the opponent's Pokémon can be on the field at once.")
+      # Start battle
+      commands[cmdStartBattle = commands.length] = _INTL("Start {1}v{2} battle", size0, size1)
+      commands_help[cmdStartBattle] = _INTL("Start the battle!")
+      # Exit/back
+      commands[cmdExit = commands.length] = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen).nil? ? _INTL("Exit") : _INTL("Back")
+      commands_help[cmdExit] = _INTL("Go back to the previous menu.")
+      command = pbShowCommandsWithHelp(nil, commands, commands_help, cmdExit + 1, command, true)
+      case command
+      when cmdPlayerSideSize, cmdOpponentSideSize
+        is_player_side = (command == cmdPlayerSideSize)
+        party = @parties[is_player_side ? 0 : 1]
+        if party.length == 1
+          pbMessage(is_player_side ? _INTL("You only have one Pokémon.") : _INTL("The opponent only has one Pokémon."))
+          next
+        end
+        current_size = is_player_side ? size0 : size1
+        maxVal = (party.length >= 3) ? 3 : 2
+        params = ChooseNumberParams.new
+        params.setRange(1, maxVal)
+        params.setInitialValue(current_size)
+        params.setCancelValue(0)
+        party_owner = is_player_side ? "your" : "the opponent's"
+        newSize = pbMessageChooseNumber(
+          _INTL("Choose the number of battlers on {1} side (max. {2}).", party_owner, maxVal), params
+        )
+        if newSize > 0
+          if is_player_side
+            size0 = newSize
+          else
+            size1 = newSize
+          end
+        end
+      when cmdStartBattle
+        pbMessage("START THE BATTLE") # TODO: FINISH
+        # setBattleRule(sprintf("%dv%d", size0, size1))
+        # setBattleRule("canLose")
+        # battleArgs = []
+        # trainers.each { |t| battleArgs.push(t[1]) }
+        # TrainerBattle.start(*battleArgs)
       else
         new_screen = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen)
         if new_screen

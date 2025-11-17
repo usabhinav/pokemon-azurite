@@ -115,3 +115,7 @@ Pokemon = CHARIZARD,63
     Item = SITRUSBERRY
 Pokemon = BLASTOISE,63
     Item = SITRUSBERRY
+#-------------------------------
+[CHAMPION,Azurite]
+LoseText = A very good battle, indeed!
+Pokemon = PIKACHU,16

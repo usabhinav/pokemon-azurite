@@ -72,7 +72,7 @@ class Battle::Scene
     bitmap = pbBitmap("Graphics/EBDX/Pictures/UI/abilityMessage")
     @sprites["abilityMessage"] = Sprite.new(@msgview)
     @sprites["abilityMessage"].bitmap = Bitmap.new(bitmap.width, bitmap.height); bitmap.dispose
-    pbSetSmallFontEBDX(@sprites["abilityMessage"].bitmap)
+    pbSetSmallFont(@sprites["abilityMessage"].bitmap)
     @sprites["abilityMessage"].oy = @sprites["abilityMessage"].bitmap.height/2
     @sprites["abilityMessage"].zoom_y = 0
     @sprites["abilityMessage"].z = 99999

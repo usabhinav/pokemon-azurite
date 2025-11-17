@@ -238,12 +238,25 @@ class TeamBuilderTextBasedScreen
           end
         end
       when cmdStartBattle
-        pbMessage("START THE BATTLE") # TODO: FINISH
-        # setBattleRule(sprintf("%dv%d", size0, size1))
-        # setBattleRule("canLose")
-        # battleArgs = []
-        # trainers.each { |t| battleArgs.push(t[1]) }
-        # TrainerBattle.start(*battleArgs)
+        pbFadeOutIn do
+          # Fade to game map to avoid any random issues related to game map not being initialized or something
+          old_scene = $scene
+          Game.start_new
+          setBattleRule(sprintf("%dv%d", size0, size1))
+          setBattleRule("canLose")
+          # Set player party and bag
+          $player.party = Marshal.load(Marshal.dump(@parties[0]))
+          $bag = Marshal.load(Marshal.dump(@bags[0]))
+          # Set opponent party and bag
+          $custom_battle_mode_args = [@parties[1], @bags[1]]
+          TrainerBattle.start(:CHAMPION, "Azurite", 0)
+          # Un-set global variables so that it doesn't cause any issues if loading an existing save later
+          $custom_battle_mode_args = nil
+          $player.party = []
+          $bag = PokemonBag.new
+          # Fade back to this screen
+          $scene = old_scene
+        end
       else
         new_screen = TeamBuilderTextBasedScreenConstants.get_previous_screen(@current_screen)
         if new_screen

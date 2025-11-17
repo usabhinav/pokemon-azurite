@@ -299,7 +299,7 @@ class DataBoxEBDX  <  SpriteWrapper
     @sprites["textName"].z = self.getMetric("name", :z)
     @sprites["textName"].ex = self.getMetric("name", :x) - 16
     @sprites["textName"].ey = self.getMetric("name", :y)
-    pbSetSmallFontEBDX(@sprites["textName"].bitmap)
+    pbSetSmallFont(@sprites["textName"].bitmap)
 
     @sprites["caught"] = Sprite.new(@viewport)
     @sprites["caught"].bitmap = pbBitmap(@path + "battleBoxOwned") if !@playerpoke && @battler.owned? && !@scene.battle.opponent
@@ -312,7 +312,7 @@ class DataBoxEBDX  <  SpriteWrapper
     @sprites["textHP"].z = self.getMetric("hp", :z)
     @sprites["textHP"].ex = self.getMetric("hp", :x)
     @sprites["textHP"].ey = self.getMetric("hp", :y)
-    pbSetSmallFontEBDX(@sprites["textHP"].bitmap)
+    pbSetSmallFont(@sprites["textHP"].bitmap)
 
     @megaBmp = pbBitmap(@path + "symMega")
     @crystalBmp = pbBitmap(@path + "symCrystal")

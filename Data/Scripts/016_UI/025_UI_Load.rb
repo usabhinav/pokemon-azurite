@@ -431,20 +431,17 @@ class PokemonLoadScreen
     buttonFormat = [] # Dictates which sprite the scene will use for each command button.
     cmd_continue     = -1
     cmd_new_game     = -1
-    cmd_new_nuzlocke = -1
     cmd_custom_battle_mode = -1
     cmd_options      = -1
     cmd_language     = -1
     cmd_mystery_gift = -1
     cmd_debug        = -1
     cmd_quit         = -1
-    # show_continue = !@save_data.empty?
-
-    # TODO: Revert this change?
-    show_continue = false # !@save_data.empty?
+    show_continue = !@save_data.empty?
     
     if show_continue
       commands[cmd_continue = commands.length] = _INTL('Continue')
+      commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
       commands[cmd_new_game = commands.length]  = _INTL('New Journey')
       if @save_data[:player].mystery_gift_unlocked || true
         commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
@@ -458,16 +455,15 @@ class PokemonLoadScreen
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
       
       buttonFormat[cmd_continue] = LoadMenu_Model::BTN_CONTINUE
+      buttonFormat[cmd_custom_battle_mode] = LoadMenu_Model::BTN_NORMAL_BIG
     else
       commands[cmd_new_game = commands.length]  = _INTL('Start The Journey')
-      commands[cmd_new_nuzlocke = commands.length]  = _INTL('Start The Dangerous Journey')
       commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
       commands[cmd_options = commands.length]  = _INTL('Settings')
       commands[cmd_quit = commands.length]  = _INTL('Quit Game')
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
 
       buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
-      buttonFormat[cmd_new_nuzlocke] = LoadMenu_Model::BTN_NORMAL_BIG
       buttonFormat[cmd_custom_battle_mode] = LoadMenu_Model::BTN_NORMAL_BIG
     end
 

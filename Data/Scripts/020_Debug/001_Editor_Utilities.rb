@@ -357,7 +357,7 @@ def pbChooseList(commands, default = 0, cancelValue = -1, sortType = 1)
       realcommands = []
       commands.each do |command|
         if sortType <= 0
-          realcommands.push(sprintf("%03d: %s", command[0], command[1]))
+          realcommands.push(sprintf("%04d: %s", command[0], command[1]))
         else
           realcommands.push(command[1])
         end

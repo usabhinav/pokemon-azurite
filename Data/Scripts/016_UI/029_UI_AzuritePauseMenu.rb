@@ -828,7 +828,7 @@ class AzuriteMenu
           # Exit
           break if MenuHandlers.call(:pause_menu, :quit_game, "effect", @scene)
         end
-      end      
+      end
       if Input.trigger?(Input::B)
         break
       end

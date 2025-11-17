@@ -31,7 +31,7 @@ class Window_Pokedex < Window_DrawableCommand
       name_text = "----------"
     end
     pbDrawShadowText(self.contents, rect.x + 36, rect.y + 6, rect.width, rect.height,
-                     num_text, self.baseColor, self.shadowColor)
+                     num_text, self.baseColor, self.shadowColor) if !@team_builder_mode
     pbDrawShadowText(self.contents, rect.x + 84, rect.y + 6, rect.width, rect.height,
                      name_text, self.baseColor, self.shadowColor)
   end
@@ -68,6 +68,11 @@ class PokemonPokedex_Scene
     @sprites["searchbg"].visible = false
     # CHANGED: Y value and height
     @sprites["pokedex"] = Window_Pokedex.new(206, 94, 276, 260, @viewport)
+    pokedex_index = $PokemonGlobal.pokedexIndex[pbGetSavePositionIndex]
+    if @team_builder_mode
+      @sprites["pokedex"].team_builder_mode = true
+      pokedex_index = 0
+    end
     @sprites["icon"] = PokemonSprite.new(@viewport)
     @sprites["icon"].setOffset(PictureOrigin::CENTER)
     @sprites["icon"].x = 110 # CHANGED: X value
@@ -77,8 +82,20 @@ class PokemonPokedex_Scene
     @sprites["searchcursor"] = PokedexSearchSelectionSprite.new(@viewport)
     @sprites["searchcursor"].visible = false
     @searchResults = false
-    @searchParams  = [$PokemonGlobal.pokedexMode, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-    pbRefreshDexList($PokemonGlobal.pokedexIndex[pbGetSavePositionIndex])
+    @searchParams  = [$PokemonGlobal.pokedexMode, @team_builder_mode ? "" : -1, -1, -1, -1, -1, -1, -1, -1, -1]
+    pbRefreshDexList(pokedex_index)
+    if @team_builder_mode && @team_builder_mode_starting_pokemon
+      @dexlist.each_with_index do |entry, i|
+        if entry[0] == @team_builder_mode_starting_pokemon.species && entry[10] == @team_builder_mode_starting_pokemon.form
+          pokedex_index = i
+          @team_builder_mode_current_gender = @team_builder_mode_starting_pokemon.gender
+          @team_builder_mode_current_cosmetic = @team_builder_mode_starting_pokemon.shiny_variant
+        end
+      end
+      @sprites["pokedex"].index = pokedex_index
+      @sprites["pokedex"].refresh
+      pbRefresh
+    end
     pbDeactivateWindows(@sprites)
     pbFadeInAndShow(@sprites)
   end
@@ -103,9 +120,12 @@ class PokemonPokedex_Scene
     shadow = Color.new(140,140,140)
     iconspecies = @sprites["pokedex"].species
     iconspecies = nil if !$player.seen?(iconspecies)
+    form_number = @sprites["pokedex"].form
     # Write various bits of text
     dexname = _INTL("Pokédex")
-    if $player.pokedex.dexes_count > 1
+    if @team_builder_mode
+      dexname = _INTL("Species Selection")
+    elsif $player.pokedex.dexes_count > 1
       thisdex = Settings.pokedex_names[pbGetSavePositionIndex]
       if thisdex
         dexname = (thisdex.is_a?(Array)) ? thisdex[0] : thisdex
@@ -116,12 +136,19 @@ class PokemonPokedex_Scene
     ]
     # CHANGED: Changes various things in text
     # Changes the position of the Species' Names, as well as the color of the text, to mimic the one used in BW
-    textpos.push([GameData::Species.get(iconspecies).name,108,322,2,base,shadow]) if iconspecies
+    if @team_builder_mode
+      textpos.push([GameData::Species.get_species_form(iconspecies, form_number).name,108,322,2,base,shadow]) if iconspecies
+    else
+      textpos.push([GameData::Species.get(iconspecies).name,108,322,2,base,shadow]) if iconspecies
+    end
     if @searchResults
       # Changes the position of some texts regarding the Search Results of the Search 
       # mode, as well as the color of the text, to mimic the one used in BW
       textpos.push([_INTL("Search results"),126,48,2,base,shadow])
       textpos.push([@dexlist.length.to_s,242,48,2,base,shadow])
+    elsif @team_builder_mode
+      textpos.push([["MALE", "FEMALE", "GENDERLESS"][@team_builder_mode_current_gender],126,50,0,base,shadow])
+      textpos.push([["", "SHINY", "ALBINO"][@team_builder_mode_current_cosmetic],334,50,0,base,shadow])
     else
       # Changes the position of the Seen/Owned parameters, as well as the color of the 
       # text, to mimic the one used in BW
@@ -133,7 +160,7 @@ class PokemonPokedex_Scene
     # Draw all text
     pbDrawTextPositions(overlay, textpos)
     # Set Pokémon sprite
-    setIconBitmap(iconspecies)
+    setIconBitmap(iconspecies, form_number)
     # Draw slider arrows
     itemlist = @sprites["pokedex"]
     showslider = false
@@ -190,7 +217,11 @@ class PokemonPokedex_Scene
     ]
     # Write order, name and color parameters
     textpos.push([@orderCommands[params[0]], 344, 66 + bw_y_offset, 2, base, shadow, 1])
-    textpos.push([(params[1] < 0) ? "----" : @nameCommands[params[1]], 176, 124 + bw_y_offset, 2, base, shadow, 1])
+    if @team_builder_mode
+      textpos.push([(params[1] == "") ? "----" : params[1], 176, 124 + bw_y_offset, 2, base, shadow, 1])
+    else
+      textpos.push([(params[1] < 0) ? "----" : @nameCommands[params[1]], 176, 124 + bw_y_offset, 2, base, shadow, 1])
+    end
     textpos.push([(params[8] < 0) ? "----" : @colorCommands[params[8]].name, 444, 124 + bw_y_offset, 2, base, shadow, 1])
     # Draw type icons
     if params[2] >= 0

@@ -82,7 +82,7 @@ Weight = 3.8
 Color = Black
 Pokedex = With its incisors, it gnaws through doors and infiltrates people's homes. Then, with a twitch of its whiskers, it steals whatever food it finds.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 WildItemUncommon = PECHABERRY
 Evolutions = RATICATE,LevelNight,20
 #-------------------------------
@@ -97,7 +97,7 @@ Weight = 25.5
 Color = Black
 Pokedex = It forms a group of Rattata, which it assumes command of. Each group has its own territory, and disputes over food happen often.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 WildItemUncommon = PECHABERRY
 #-------------------------------
 [RAICHU,1]
@@ -113,6 +113,7 @@ Weight = 21.0
 Color = Brown
 Pokedex = It uses psychokinesis to control electricity. It hops aboard its own tail, using psychic power to lift the tail and move about while riding it.
 Generation = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [SANDSHREW,1]
 FormName = Alolan
@@ -128,7 +129,7 @@ Weight = 40.0
 Color = White
 Pokedex = The skin on its back is as hard as steel. Predators go after its soft belly, so it clings to the ground desperately.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = SANDSLASH,Item,ICESTONE
 #-------------------------------
 [SANDSLASH,1]
@@ -144,7 +145,7 @@ Weight = 55.0
 Color = Blue
 Pokedex = It runs across snow-covered plains at high speeds. It developed thick, sharp claws to plow through the snow.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [VULPIX,1]
 FormName = Alolan
@@ -157,7 +158,7 @@ EggMoves = AGILITY,CHARM,DISABLE,ENCORE,EXTRASENSORY,FLAIL,FREEZEDRY,HOWL,HYPNOS
 Color = White
 Pokedex = In hot weather, this Pokémon makes ice shards with its six tails and sprays them around to cool itself off.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 WildItemUncommon = SNOWBALL
 Evolutions = NINETALES,Item,ICESTONE
 #-------------------------------
@@ -173,7 +174,7 @@ TutorMoves = AQUATAIL,ATTRACT,AURORAVEIL,BLIZZARD,CALMMIND,CONFIDE,COVET,DARKPUL
 Color = Blue
 Pokedex = It lives on mountains perpetually covered in snow and is revered as a deity incarnate. It appears draped in a blizzard.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 WildItemUncommon = SNOWBALL
 #-------------------------------
 [DIGLETT,1]
@@ -187,7 +188,7 @@ EggMoves = ANCIENTPOWER,BEATUP,ENDURE,FEINTATTACK,FINALGAMBIT,HEADBUTT,MEMENTO,M
 Weight = 1.0
 Pokedex = Its head sports an altered form of whiskers made of metal. When in communication with its comrades, its whiskers wobble to and fro.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DUGTRIO,1]
 FormName = Alolan
@@ -200,7 +201,7 @@ TutorMoves = AERIALACE,ATTRACT,BULLDOZE,CONFIDE,DOUBLETEAM,EARTHPOWER,EARTHQUAKE
 Weight = 66.6
 Pokedex = Its shining gold hair provides it with protection. It's reputed that keeping any of its fallen hairs will bring bad luck.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [MEOWTH,1]
 FormName = Alolan
@@ -213,7 +214,7 @@ EggMoves = AMNESIA,ASSIST,CHARM,COVET,FLAIL,FLATTER,FOULPLAY,HYPNOSIS,PARTINGSHO
 Color = Blue
 Pokedex = It's impulsive, selfish, and fickle. It's very popular with some Trainers who like giving it the attention it needs.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = PERSIAN,Happiness,
 #-------------------------------
 [MEOWTH,2]
@@ -229,7 +230,7 @@ Color = Brown
 Shape = BipedalTail
 Pokedex = Living with a savage, seafaring people has toughened this Pokémon's body so much that parts of it have turned to iron.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = PERRSERKER,Level,28
 #-------------------------------
 [PERSIAN,1]
@@ -245,7 +246,7 @@ Weight = 33.0
 Color = Blue
 Pokedex = Its round face is a symbol of wealth. Persian that have bigger, plumper faces are considered more beautiful.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ALAKAZAM,1]
 FormName = Mega Alakazam
@@ -270,7 +271,7 @@ Weight = 20.3
 Color = Gray
 Pokedex = Geodude compete against each other with headbutts. The iron sand on their heads will stick to whichever one has stronger magnetism.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 WildItemUncommon = CELLBATTERY
 #-------------------------------
 [GRAVELER,1]
@@ -284,7 +285,7 @@ Weight = 110.0
 Color = Gray
 Pokedex = They eat rocks and often get into a scrap over them. The shock of Graveler smashing together causes a flash of light and a booming noise.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 WildItemUncommon = CELLBATTERY
 #-------------------------------
 [GOLEM,1]
@@ -299,7 +300,7 @@ Weight = 316.0
 Color = Gray
 Pokedex = It fires rocks charged with electricity. Even if the rock isn't fired that accurately, just grazing an opponent will cause numbness and fainting.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 WildItemCommon = CELLBATTERY
 #-------------------------------
 [PONYTA,1]
@@ -315,7 +316,7 @@ Color = White
 Category = Unique Horn
 Pokedex = Its small horn hides a healing power. With a few rubs from this Pokémon's horn, any slight wound you have will be healed.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [RAPIDASH,1]
 FormName = Galarian
@@ -329,7 +330,7 @@ Color = White
 Category = Unique Horn
 Pokedex = Little can stand up to its psycho cut. Unleashed from this Pokémon's horn, the move will punch a hole right through a thick metal sheet.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SLOWPOKE,1]
 FormName = Galarian
@@ -339,7 +340,7 @@ Moves = 1,TACKLE,1,CURSE,3,GROWL,6,ACID,9,YAWN,12,CONFUSION,15,DISABLE,18,WATERP
 TutorMoves = AMNESIA,ATTRACT,BLIZZARD,BODYSLAM,BRINE,BULLDOZE,CALMMIND,DIG,DIVE,EARTHQUAKE,ENDURE,EXPANDINGFORCE,FACADE,FIREBLAST,FLAMETHROWER,FOULPLAY,FUTURESIGHT,GRASSKNOT,HAIL,HIDDENPOWER,HYDROPUMP,ICEBEAM,ICYWIND,IMPRISON,IRONTAIL,LIGHTSCREEN,LIQUIDATION,MUDSHOT,PAYDAY,PROTECT,PSYCHIC,PSYCHICTERRAIN,PSYSHOCK,RAINDANCE,REST,ROUND,SAFEGUARD,SCALD,SHADOWBALL,SKILLSWAP,SLEEPTALK,SNORE,STOREDPOWER,SUBSTITUTE,SUNNYDAY,SURF,SWIFT,THUNDERWAVE,TRIATTACK,TRICK,TRICKROOM,WEATHERBALL,WHIRLPOOL,WONDERROOM,ZENHEADBUTT
 Pokedex = Although this Pokémon is normally zoned out, its expression abruptly sharpens on occasion. The cause for this seems to lie in Slowpoke's diet.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = SLOWBRO,Item,GALARICACUFF,SLOWKING,Item,GALARICAWREATH
 #-------------------------------
 [SLOWBRO,1]
@@ -352,7 +353,7 @@ TutorMoves = AMNESIA,ATTRACT,AVALANCHE,BLIZZARD,BODYSLAM,BRICKBREAK,BRINE,BRUTAL
 Weight = 70.5
 Pokedex = If this Pokémon squeezes the tongue of the Shellder biting it, the Shellder will launch a toxic liquid from the tip of its shell.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SLOWBRO,2]
 FormName = Mega Slowbro
@@ -379,7 +380,7 @@ EggMoves = COUNTER,COVET,CURSE,DOUBLEEDGE,FEINT,FLAIL,NIGHTSLASH,QUICKATTACK,QUI
 Weight = 42.0
 Pokedex = The stalks of leeks are thicker and longer in the Galar region. Farfetch'd that adapted to these stalks took on a unique form.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 WildItemCommon = LEEK
 Evolutions = SIRFETCHD,BattleDealCriticalHit,3
 #-------------------------------
@@ -396,7 +397,7 @@ Weight = 42.0
 Color = Green
 Pokedex = A Grimer, which had been brought in to solve a problem with garbage, developed over time into this form.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [MUK,1]
 FormName = Alolan
@@ -410,7 +411,7 @@ Weight = 52.0
 Color = Green
 Pokedex = The garbage it eats causes continuous chemical changes in its body, which produce its exceedingly vivid coloration.
 Generation = 7
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [GENGAR,1]
 FormName = Mega Gengar
@@ -434,6 +435,7 @@ Height = 10.9
 Weight = 415.6
 Pokedex = As it grew taller and taller, it outgrew its reliance on psychic powers, while within it awakened the power of the sleeping dragon.
 Generation = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [CUBONE,1]
 Generation = 7
@@ -450,6 +452,7 @@ Weight = 34.0
 Color = Purple
 Pokedex = Its custom is to mourn its lost companions. Mounds of dirt by the side of the road mark the graves of the Marowak.
 Generation = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [WEEZING,1]
 FormName = Galarian
@@ -463,6 +466,7 @@ Color = Gray
 Pokedex = This Pokémon consumes particles that contaminate the air. Instead of leaving droppings, it expels clean air.
 Generation = 8
 WildItemUncommon = MISTYSEED
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [KANGASKHAN,1]
 FormName = Mega Kangaskhan
@@ -490,7 +494,7 @@ Color = White
 Category = Dancing
 Pokedex = Its talent is tap-dancing. It can also manipulate temperatures to create a floor of ice, which this Pokémon can kick up to use as a barrier.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = MRRIME,Level,42
 #-------------------------------
 [PINSIR,1]
@@ -545,6 +549,7 @@ Color = Purple
 Category = Cruel
 Pokedex = Its feather-like blades are composed of psychic energy and can shear through thick iron sheets as if they were paper.
 Generation = 8
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ZAPDOS,1]
 FormName = Galarian
@@ -559,6 +564,7 @@ Weight = 58.2
 Category = Strong Legs
 Pokedex = When its feathers rub together, they produce a crackling sound like the zapping of electricity. That's why this Pokémon is called Zapdos.
 Generation = 8
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [MOLTRES,1]
 FormName = Galarian
@@ -574,6 +580,7 @@ Color = Red
 Category = Malevolent
 Pokedex = This Pokémon's sinister, flame-like aura will consume the spirit of any creature it hits. Victims become burned-out shadows of themselves.
 Generation = 8
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [MEWTWO,1]
 FormName = Mega Mewtwo X
@@ -604,6 +611,7 @@ Generation = 6
 FormName = Spiky-Eared
 Generation = 4
 Evolutions = PIKACHU,None,
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [AMPHAROS,1]
 FormName = Mega Ampharos
@@ -627,90 +635,117 @@ Height = 1.8
 Category = Hexpert
 Pokedex = While chanting strange spells, this Pokémon combines its internal toxins with what it's eaten, creating strange potions.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,1]
 FormName = B
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,2]
 FormName = C
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,3]
 FormName = D
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,4]
 FormName = E
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,5]
 FormName = F
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,6]
 FormName = G
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,7]
 FormName = H
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,8]
 FormName = I
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,9]
 FormName = J
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,10]
 FormName = K
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,11]
 FormName = L
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,12]
 FormName = M
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,13]
 FormName = N
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,14]
 FormName = O
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,15]
 FormName = P
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,16]
 FormName = Q
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,17]
 FormName = R
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,18]
 FormName = S
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,19]
 FormName = T
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,20]
 FormName = U
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,21]
 FormName = V
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,22]
 FormName = W
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,23]
 FormName = X
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,24]
 FormName = Y
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,25]
 FormName = Z
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,26]
 FormName = ?
 Generation = 3
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [UNOWN,27]
 FormName = !
 Generation = 3
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [STEELIX,1]
 FormName = Mega Steelix
@@ -760,7 +795,7 @@ Weight = 0.5
 Color = White
 Pokedex = Sudden climate change wiped out this ancient kind of Corsola. This Pokémon absorbs others' life-force through its branches.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = CURSOLA,Level,38
 #-------------------------------
 [HOUNDOOM,1]
@@ -826,7 +861,7 @@ EggMoves = KNOCKOFF,PARTINGSHOT,QUICKGUARD
 Color = White
 Pokedex = Its restlessness has it constantly running around. If it sees another Pokémon, it will purposely run into them in order to start a fight.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LINOONE,1]
 FormName = Galarian
@@ -835,7 +870,7 @@ Moves = 0,NIGHTSLASH,1,NIGHTSLASH,1,SWITCHEROO,1,PINMISSILE,1,BABYDOLLEYES,1,TAC
 TutorMoves = ASSURANCE,ATTRACT,BLIZZARD,BODYPRESS,BODYSLAM,DIG,ENDURE,FACADE,FAKETEARS,FLING,GIGAIMPACT,GRASSKNOT,GUNKSHOT,HELPINGHAND,HIDDENPOWER,HYPERBEAM,HYPERVOICE,ICEBEAM,ICYWIND,IRONTAIL,LASHOUT,MUDSHOT,PAYBACK,PINMISSILE,PROTECT,RAINDANCE,REST,RETALIATE,ROUND,SCARYFACE,SCREECH,SEEDBOMB,SHADOWBALL,SHADOWCLAW,SLEEPTALK,SNARL,SNORE,STOMPINGTANTRUM,SUBSTITUTE,SUNNYDAY,SURF,SWIFT,TAUNT,THIEF,THROATCHOP,THUNDER,THUNDERBOLT,THUNDERWAVE,TRICK,WHIRLPOOL,WORKUP
 Pokedex = It uses its long tongue to taunt opponents. Once the opposition is enraged, this Pokémon hurls itself at the opponent, tackling them forcefully.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = OBSTAGOON,LevelNight,35
 #-------------------------------
 [GARDEVOIR,1]
@@ -1069,6 +1104,7 @@ BaseStats = 50,180,20,150,180,20
 EVs = ATTACK,2,SPECIAL_ATTACK,1
 Moves = 1,LEER,1,WRAP,7,NIGHTSHADE,13,TELEPORT,19,TAUNT,25,TOXICSPIKES,31,PSYCHIC,37,SUPERPOWER,43,PSYCHOSHIFT,49,ZENHEADBUTT,55,COSMICPOWER,61,ZAPCANNON,67,PSYCHOBOOST,73,HYPERBEAM
 TutorMoves = AERIALACE,ALLYSWITCH,AVALANCHE,BIND,BRICKBREAK,BRUTALSWING,CALMMIND,CHARGEBEAM,CONFIDE,CUT,DARKPULSE,DOUBLETEAM,DRAINPUNCH,DREAMEATER,ENDURE,ENERGYBALL,FACADE,FLASH,FLASHCANNON,FLING,FOCUSBLAST,FOCUSPUNCH,FRUSTRATION,GIGAIMPACT,GRASSKNOT,GRAVITY,HIDDENPOWER,HYPERBEAM,ICEBEAM,LASERFOCUS,LIGHTSCREEN,LOWKICK,LOWSWEEP,MAGICCOAT,NASTYPLOT,POISONJAB,POWERUPPUNCH,PROTECT,PSYCHIC,PSYCHUP,PSYSHOCK,RAINDANCE,RECYCLE,REFLECT,REST,RETURN,ROCKSLIDE,ROCKSMASH,ROCKTOMB,ROLEPLAY,ROUND,SAFEGUARD,SHADOWBALL,SHOCKWAVE,SIGNALBEAM,SKILLSWAP,SLEEPTALK,SNATCH,SNORE,SOLARBEAM,STEALTHROCK,STOMPINGTANTRUM,STRENGTH,SUBSTITUTE,SUNNYDAY,SUPERPOWER,SWAGGER,TAUNT,TELEKINESIS,THROATCHOP,THUNDER,THUNDERBOLT,THUNDERWAVE,TORMENT,TRICK,TRICKROOM,WATERPULSE,WONDERROOM,ZENHEADBUTT
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [DEOXYS,2]
 FormName = Defense Forme
@@ -1076,6 +1112,7 @@ BaseStats = 50,70,160,90,70,160
 EVs = DEFENSE,2,SPECIAL_DEFENSE,1
 Moves = 1,LEER,1,WRAP,7,NIGHTSHADE,13,TELEPORT,19,KNOCKOFF,25,SPIKES,31,PSYCHIC,37,SWITCHEROO,43,PSYCHOSHIFT,49,ZENHEADBUTT,55,IRONDEFENSE,55,AMNESIA,61,RECOVER,67,PSYCHOBOOST,73,COUNTER,73,MIRRORCOAT
 TutorMoves = AERIALACE,ALLYSWITCH,AVALANCHE,BIND,BRICKBREAK,BRUTALSWING,CALMMIND,CHARGEBEAM,CONFIDE,CUT,DARKPULSE,DOUBLETEAM,DRAINPUNCH,DREAMEATER,ENDURE,ENERGYBALL,FACADE,FLASH,FLASHCANNON,FLING,FOCUSBLAST,FOCUSPUNCH,FRUSTRATION,GIGAIMPACT,GRASSKNOT,GRAVITY,HIDDENPOWER,HYPERBEAM,ICEBEAM,IRONDEFENSE,KNOCKOFF,LASERFOCUS,LIGHTSCREEN,LOWKICK,LOWSWEEP,MAGICCOAT,NASTYPLOT,POISONJAB,POWERUPPUNCH,PROTECT,PSYCHIC,PSYCHUP,PSYSHOCK,RAINDANCE,RECYCLE,REFLECT,REST,RETURN,ROCKSLIDE,ROCKSMASH,ROCKTOMB,ROLEPLAY,ROUND,SAFEGUARD,SHADOWBALL,SHOCKWAVE,SIGNALBEAM,SKILLSWAP,SLEEPTALK,SNATCH,SNORE,SOLARBEAM,STEALTHROCK,STOMPINGTANTRUM,STRENGTH,SUBSTITUTE,SUNNYDAY,SWAGGER,TAUNT,TELEKINESIS,THROATCHOP,THUNDER,THUNDERBOLT,THUNDERWAVE,TORMENT,TRICK,TRICKROOM,WATERPULSE,WONDERROOM,ZENHEADBUTT
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [DEOXYS,3]
 FormName = Speed Forme
@@ -1083,14 +1120,17 @@ BaseStats = 50,95,90,180,95,90
 EVs = SPEED,3
 Moves = 1,LEER,1,WRAP,7,NIGHTSHADE,13,DOUBLETEAM,19,KNOCKOFF,25,TOXICSPIKES,31,PSYCHIC,37,SWIFT,43,PSYCHOSHIFT,49,ZENHEADBUTT,55,AGILITY,61,RECOVER,67,PSYCHOBOOST,73,EXTREMESPEED
 TutorMoves = AERIALACE,ALLYSWITCH,AVALANCHE,BIND,BRICKBREAK,BRUTALSWING,CALMMIND,CHARGEBEAM,CONFIDE,CUT,DARKPULSE,DOUBLETEAM,DRAINPUNCH,DREAMEATER,ENDURE,ENERGYBALL,FACADE,FIREPUNCH,FLASH,FLASHCANNON,FLING,FOCUSBLAST,FOCUSPUNCH,FRUSTRATION,GIGAIMPACT,GRASSKNOT,GRAVITY,HIDDENPOWER,HYPERBEAM,ICEBEAM,ICEPUNCH,KNOCKOFF,LASERFOCUS,LIGHTSCREEN,LOWKICK,LOWSWEEP,MAGICCOAT,NASTYPLOT,POISONJAB,POWERUPPUNCH,PROTECT,PSYCHIC,PSYCHUP,PSYSHOCK,RAINDANCE,RECYCLE,REFLECT,REST,RETURN,ROCKSLIDE,ROCKSMASH,ROCKTOMB,ROLEPLAY,ROUND,SAFEGUARD,SHADOWBALL,SHOCKWAVE,SIGNALBEAM,SKILLSWAP,SLEEPTALK,SNATCH,SNORE,SOLARBEAM,STEALTHROCK,STOMPINGTANTRUM,STRENGTH,SUBSTITUTE,SUNNYDAY,SWAGGER,TAUNT,TELEKINESIS,THROATCHOP,THUNDER,THUNDERBOLT,THUNDERPUNCH,THUNDERWAVE,TORMENT,TRICK,TRICKROOM,WATERPULSE,WONDERROOM,ZENHEADBUTT
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [BURMY,1]
 FormName = Sandy Cloak
 Color = Brown
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [BURMY,2]
 FormName = Trash Cloak
 Color = Red
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [WORMADAM,1]
 FormName = Sandy Cloak
@@ -1100,6 +1140,7 @@ EVs = DEFENSE,2
 Moves = 0,QUIVERDANCE,1,QUIVERDANCE,1,SUCKERPUNCH,1,TACKLE,1,PROTECT,1,BUGBITE,10,PROTECT,15,BUGBITE,20,STRINGSHOT,23,CONFUSION,26,ROCKBLAST,29,HARDEN,32,PSYBEAM,35,INFESTATION,38,FLAIL,41,ATTRACT,44,PSYCHIC,47,FISSURE,50,BUGBUZZ
 TutorMoves = ALLYSWITCH,ATTRACT,BUGBITE,BUGBUZZ,BULLDOZE,CONFIDE,DIG,DOUBLETEAM,DREAMEATER,EARTHPOWER,EARTHQUAKE,ELECTROWEB,ENDEAVOR,ENDURE,FACADE,FLASH,FRUSTRATION,GIGADRAIN,GIGAIMPACT,HIDDENPOWER,HYPERBEAM,INFESTATION,PROTECT,PSYCHIC,PSYCHUP,RAINDANCE,REST,RETURN,ROCKTOMB,ROUND,SAFEGUARD,SANDSTORM,SHADOWBALL,SIGNALBEAM,SKILLSWAP,SLEEPTALK,SNORE,SOLARBEAM,STEALTHROCK,STRUGGLEBUG,SUBSTITUTE,SUNNYDAY,SWAGGER,TELEKINESIS,THIEF,UPROAR,VENOSHOCK
 Color = Brown
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [WORMADAM,2]
 FormName = Trash Cloak
@@ -1109,6 +1150,7 @@ EVs = DEFENSE,1,SPECIAL_DEFENSE,1
 Moves = 0,QUIVERDANCE,1,QUIVERDANCE,1,METALBURST,1,SUCKERPUNCH,1,TACKLE,1,PROTECT,1,BUGBITE,10,PROTECT,15,BUGBITE,20,STRINGSHOT,23,CONFUSION,26,METALBURST,29,METALSOUND,32,PSYBEAM,35,INFESTATION,38,FLAIL,41,ATTRACT,44,PSYCHIC,47,IRONHEAD,50,BUGBUZZ
 TutorMoves = ALLYSWITCH,ATTRACT,BUGBITE,BUGBUZZ,CONFIDE,DIG,DOUBLETEAM,DREAMEATER,ELECTROWEB,ENDEAVOR,ENDURE,FACADE,FLASH,FLASHCANNON,FRUSTRATION,GIGADRAIN,GIGAIMPACT,GUNKSHOT,GYROBALL,HIDDENPOWER,HYPERBEAM,INFESTATION,IRONDEFENSE,IRONHEAD,MAGNETRISE,PROTECT,PSYCHIC,PSYCHUP,RAINDANCE,REST,RETURN,ROUND,SAFEGUARD,SEEDBOMB,SHADOWBALL,SIGNALBEAM,SKILLSWAP,SLEEPTALK,SNORE,SOLARBEAM,STEALTHROCK,STRUGGLEBUG,SUBSTITUTE,SUNNYDAY,SWAGGER,TELEKINESIS,THIEF,UPROAR,VENOSHOCK
 Color = Red
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [CHERRIM,1]
 FormName = Sunshine Form
@@ -1119,11 +1161,13 @@ Pokedex = After absorbing plenty of sunlight, Cherrim takes this form. It's full
 FormName = East Sea
 Color = Blue
 Pokedex = Its appearance changes depending on the environment. One theory suggests that living in cold seas causes Shellos to take on this form.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GASTRODON,1]
 FormName = East Sea
 Color = Blue
 Pokedex = Its body is covered in a sticky slime. It's very susceptible to dehydration, so it can't spend too much time on land.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [LOPUNNY,1]
 FormName = Mega Lopunny
@@ -1186,6 +1230,7 @@ Types = ELECTRIC,FIRE
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
 Pokedex = This Rotom has possessed a convection microwave oven that uses a special motor. It also has a flair for manipulating flames.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROTOM,2]
 FormName = Wash Rotom
@@ -1193,6 +1238,7 @@ Types = ELECTRIC,WATER
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
 Pokedex = This form of Rotom enjoys coming up with water-based pranks. Be careful with it if you don't want your room flooded.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROTOM,3]
 FormName = Frost Rotom
@@ -1200,6 +1246,7 @@ Types = ELECTRIC,ICE
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
 Pokedex = Rotom assumes this form when it takes over a refrigerator powered by a special motor. It battles by spewing cold air.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROTOM,4]
 FormName = Fan Rotom
@@ -1207,6 +1254,7 @@ Types = ELECTRIC,FLYING
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
 Pokedex = In this form, Rotom applies its new power over wind to its love of pranks. It will happily blow away any important documents it can find.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROTOM,5]
 FormName = Mow Rotom
@@ -1214,6 +1262,7 @@ Types = ELECTRIC,GRASS
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
 Pokedex = This is Rotom after it's seized control of a lawn mower that has a special motor. As it mows down grass, it scatters the clippings everywhere.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GIRATINA,1]
 FormName = Origin Forme
@@ -1235,6 +1284,7 @@ Moves = 1,GROWTH,10,MAGICALLEAF,19,LEECHSEED,28,QUICKATTACK,37,SWEETSCENT,46,HEA
 TutorMoves = BULLETSEED,CONFIDE,COVET,DAZZLINGGLEAM,DOUBLETEAM,ENDURE,ENERGYBALL,FACADE,FLASH,FRUSTRATION,GIGADRAIN,GIGAIMPACT,GRASSKNOT,HIDDENPOWER,HYPERBEAM,LASERFOCUS,LASTRESORT,NATUREPOWER,PROTECT,PSYCHIC,PSYCHUP,REST,RETURN,ROUND,SAFEGUARD,SEEDBOMB,SLEEPTALK,SNORE,SOLARBEAM,SUBSTITUTE,SUNNYDAY,SWAGGER,SWORDSDANCE,SYNTHESIS,TAILWIND,WORRYSEED,ZENHEADBUTT
 Height = 0.4
 Weight = 5.2
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ARCEUS,1]
 FormName = Fighting Type
@@ -1327,6 +1377,7 @@ FormName = Blue-Striped
 Abilities = ROCKHEAD,ADAPTABILITY
 Pokedex = Even Basculin, which devours everything it can with its huge jaws, is nothing more than food to organisms stronger than itself.
 WildItemUncommon = DEEPSEASCALE
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [DARUMAKA,2]
 FormName = Galarian
@@ -1339,7 +1390,7 @@ Weight = 40.0
 Color = White
 Pokedex = The colder they get, the more energetic they are. They freeze their breath to make snowballs, using them as ammo for playful snowball fights.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = DARMANITAN,Item,ICESTONE
 #-------------------------------
 [DARMANITAN,1]
@@ -1363,7 +1414,7 @@ Color = White
 Category = Zen Charm
 Pokedex = On days when blizzards blow through, it comes down to where people live. It stashes food in the snowball on its head, taking it home for later.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DARMANITAN,3]
 FormName = Galarian Zen Mode
@@ -1390,29 +1441,35 @@ Moves = 1,ASTONISH,1,PROTECT,4,HAZE,8,NIGHTSHADE,12,DISABLE,16,BRUTALSWING,20,CR
 TutorMoves = ALLYSWITCH,ATTRACT,BRUTALSWING,CALMMIND,DARKPULSE,EARTHPOWER,EARTHQUAKE,ENDURE,ENERGYBALL,FACADE,FAKETEARS,HEX,HIDDENPOWER,IMPRISON,IRONDEFENSE,NASTYPLOT,PAYBACK,POLTERGEIST,PROTECT,PSYCHIC,RAINDANCE,REST,ROCKSLIDE,ROCKTOMB,ROUND,SAFEGUARD,SANDSTORM,SHADOWBALL,SLEEPTALK,SNORE,SUBSTITUTE,THIEF,TOXICSPIKES,TRICKROOM,WILLOWISP,WONDERROOM,ZENHEADBUTT
 Pokedex = A clay slab with cursed engravings took possession of a Yamask. The slab is said to be absorbing the Yamask's dark power.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 Evolutions = RUNERIGUS,EventAfterDamageTaken,2
 #-------------------------------
 [DEERLING,1]
 FormName = Summer Form
 Color = Green
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [DEERLING,2]
 FormName = Autumn Form
 Color = Red
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [DEERLING,3]
 FormName = Winter Form
 Color = Brown
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [SAWSBUCK,1]
 FormName = Summer Form
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [SAWSBUCK,2]
 FormName = Autumn Form
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [SAWSBUCK,3]
 FormName = Winter Form
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [STUNFISK,1]
 FormName = Galarian
@@ -1427,7 +1484,7 @@ Weight = 20.5
 Color = Green
 Pokedex = Its conspicuous lips lure prey in as it lies in wait in the mud. When prey gets close, Stunfisk clamps its jagged steel fins down on them.
 Generation = 8
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TORNADUS,1]
 FormName = Therian Forme
@@ -1437,6 +1494,7 @@ Abilities = REGENERATOR
 HiddenAbilities = REGENERATOR
 Height = 1.4
 Shape = Winged
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [THUNDURUS,1]
 FormName = Therian Forme
@@ -1447,6 +1505,7 @@ HiddenAbilities = VOLTABSORB
 TutorMoves = ATTRACT,BRICKBREAK,BRUTALSWING,BULKUP,CHARGEBEAM,CONFIDE,DARKPULSE,DEFOG,DOUBLETEAM,ELECTROWEB,EMBARGO,FACADE,FLASHCANNON,FLING,FLY,FOCUSBLAST,FOULPLAY,FRUSTRATION,GIGAIMPACT,GRASSKNOT,HIDDENPOWER,HYPERBEAM,IRONTAIL,KNOCKOFF,PAYBACK,PROTECT,PSYCHIC,RAINDANCE,REST,RETURN,ROCKSMASH,ROLEPLAY,ROUND,SHOCKWAVE,SKYDROP,SLEEPTALK,SLUDGEBOMB,SLUDGEWAVE,SMACKDOWN,SNORE,STRENGTH,SUBSTITUTE,SUPERPOWER,SWAGGER,TAUNT,THIEF,THUNDER,THUNDERBOLT,THUNDERPUNCH,THUNDERWAVE,TORMENT,TOXIC,UPROAR,UTURN,VOLTSWITCH,WILDCHARGE
 Height = 3.0
 Shape = BipedalTail
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [LANDORUS,1]
 FormName = Therian Forme
@@ -1456,6 +1515,7 @@ Abilities = INTIMIDATE
 HiddenAbilities = INTIMIDATE
 Height = 1.3
 Shape = Quadruped
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [KYUREM,1]
 FormName = White Kyurem
@@ -1466,6 +1526,7 @@ Abilities = TURBOBLAZE
 Moves = 1,ICYWIND,1,DRAGONRAGE,8,IMPRISON,15,ANCIENTPOWER,22,ICEBEAM,29,DRAGONBREATH,36,SLASH,43,FUSIONFLARE,50,ICEBURN,57,DRAGONPULSE,64,NOBLEROAR,71,ENDEAVOR,78,BLIZZARD,85,OUTRAGE,92,HYPERVOICE
 Height = 3.6
 Pokedex = It has foreseen that a world of truth will arrive for people and Pokémon. It strives to protect that future.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [KYUREM,2]
 FormName = Black Kyurem
@@ -1476,6 +1537,7 @@ Abilities = TERAVOLT
 Moves = 1,ICYWIND,1,DRAGONRAGE,8,IMPRISON,15,ANCIENTPOWER,22,ICEBEAM,29,DRAGONBREATH,36,SLASH,43,FUSIONBOLT,50,FREEZESHOCK,57,DRAGONPULSE,64,NOBLEROAR,71,ENDEAVOR,78,BLIZZARD,85,OUTRAGE,92,HYPERVOICE
 Height = 3.3
 Pokedex = It's said that this Pokémon battles in order to protect the ideal world that will exist in the future for people and Pokémon.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [KYUREM,3]
 PokedexForm = 1
@@ -1499,6 +1561,7 @@ Height = 3.3
 FormName = Resolute Form
 TutorMoves = AERIALACE,AQUATAIL,BOUNCE,CALMMIND,CONFIDE,COVET,CUT,DOUBLETEAM,ENDEAVOR,FACADE,FALSESWIPE,FOCUSBLAST,FRUSTRATION,GIGAIMPACT,HAIL,HELPINGHAND,HIDDENPOWER,HYPERBEAM,ICYWIND,LASTRESORT,LIQUIDATION,LOWKICK,POISONJAB,PROTECT,PSYCHUP,RAINDANCE,REFLECT,REST,RETURN,ROAR,ROCKSMASH,ROUND,SAFEGUARD,SCALD,SLEEPTALK,SNORE,STONEEDGE,STRENGTH,SUBSTITUTE,SUPERPOWER,SURF,SWAGGER,SWORDSDANCE,TAUNT,TOXIC,WATERPULSE,WORKUP,XSCISSOR
 Pokedex = The power that lay hidden in its body now covers its horn, turning it into a sword that can slice through anything.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [MELOETTA,1]
 FormName = Pirouette Forme
@@ -1522,6 +1585,7 @@ FormName = Douse Drive
 Abilities = BATTLEBOND
 HiddenAbilities = BATTLEBOND
 EggGroups = Undiscovered
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GRENINJA,2]
 FormName = Ash-Greninja
@@ -1533,84 +1597,111 @@ Generation = 7
 #-------------------------------
 [VIVILLON,1]
 FormName = Continental Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,2]
 FormName = Elegant Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,3]
 FormName = Garden Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,4]
 FormName = High Plains Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,5]
 FormName = Icy Snow Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,6]
 FormName = Jungle Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,7]
 FormName = Marine Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,8]
 FormName = Meadow Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,9]
 FormName = Modern Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,10]
 FormName = Monsoon Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,11]
 FormName = Ocean Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,12]
 FormName = Polar Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,13]
 FormName = River Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,14]
 FormName = Sandstorm Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,15]
 FormName = Savanna Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,16]
 FormName = Sun Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,17]
 FormName = Tundra Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,18]
 FormName = Fancy Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [VIVILLON,19]
 FormName = Poké Ball Pattern
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLABEBE,1]
 FormName = Yellow Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLABEBE,2]
 FormName = Orange Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLABEBE,3]
 FormName = Blue Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLABEBE,4]
 FormName = White Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLOETTE,1]
 FormName = Yellow Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLOETTE,2]
 FormName = Orange Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLOETTE,3]
 FormName = Blue Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLOETTE,4]
 FormName = White Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLOETTE,5]
 FormName = Eternal Flower
@@ -1620,45 +1711,59 @@ Moves = 1,TACKLE,1,VINEWHIP,1,FAIRYWIND,6,FAIRYWIND,10,LUCKYCHANT,15,RAZORLEAF,2
 EggGroups = Undiscovered
 Pokedex = The flower it's holding can no longer be found blooming anywhere. It's also thought to contain terrifying power.
 Evolutions = FLORGES,None,
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLORGES,1]
 FormName = Yellow Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLORGES,2]
 FormName = Orange Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLORGES,3]
 FormName = Blue Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FLORGES,4]
 FormName = White Flower
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,1]
 FormName = Heart Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,2]
 FormName = Star Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,3]
 FormName = Diamond Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,4]
 FormName = Debutante Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,5]
 FormName = Matron Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,6]
 FormName = Dandy Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,7]
 FormName = La Reine Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,8]
 FormName = Kabuki Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [FURFROU,9]
 FormName = Pharaoh Trim
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [MEOWSTIC,1]
 FormName = Female
@@ -1666,12 +1771,14 @@ HiddenAbilities = COMPETITIVE
 Moves = 1,STOREDPOWER,1,MEFIRST,1,MAGICALLEAF,1,SCRATCH,1,LEER,1,COVET,1,CONFUSION,5,COVET,9,CONFUSION,13,LIGHTSCREEN,17,PSYBEAM,19,FAKEOUT,22,DISARMINGVOICE,25,PSYSHOCK,28,CHARGEBEAM,31,SHADOWBALL,35,EXTRASENSORY,40,PSYCHIC,43,ROLEPLAY,45,SIGNALBEAM,48,SUCKERPUNCH,50,FUTURESIGHT,53,STOREDPOWER
 Color = White
 Pokedex = Females are a bit more selfish and aggressive than males. If they don't get what they want, they will torment you with their psychic abilities.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,1]
 FormName = Blade Forme
 BaseStats = 60,140,50,60,140,50
 EVs = ATTACK,2,SPECIAL_ATTACK,1
 Pokedex = Once upon a time, a king with an Aegislash reigned over the land. His Pokémon eventually drained him of life, and his kingdom fell with him.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PUMPKABOO,1]
 FormName = Average Size
@@ -1680,6 +1787,7 @@ HiddenAbilities = INSOMNIA
 Height = 0.4
 Weight = 5.0
 Pokedex = Spirits that wander this world are placed into Pumpkaboo's body. They're then moved on to the afterlife.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PUMPKABOO,2]
 FormName = Large Size
@@ -1687,6 +1795,7 @@ BaseStats = 54,66,70,46,44,55
 Height = 0.5
 Weight = 7.5
 Pokedex = When taking spirits to the afterlife, large Pumpkaboo prefer the spirits of adults to those of children.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PUMPKABOO,3]
 FormName = Super Size
@@ -1698,6 +1807,7 @@ Pokedex = Massive Pumpkaboo are said to be the product of areas where a great nu
 WildItemCommon = MIRACLESEED
 WildItemUncommon = MIRACLESEED
 WildItemRare = MIRACLESEED
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GOURGEIST,1]
 FormName = Average Size
@@ -1706,6 +1816,7 @@ HiddenAbilities = INSOMNIA
 Height = 0.9
 Weight = 12.5
 Pokedex = Eerie cries emanate from its body in the dead of night. The sounds are said to be the wails of spirits who are suffering in the afterlife.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GOURGEIST,2]
 FormName = Large Size
@@ -1713,6 +1824,7 @@ BaseStats = 75,95,122,69,58,75
 Height = 1.1
 Weight = 14.0
 Pokedex = Large Gourgeist put on the guise of adults, taking the hands of children to lead them to the afterlife.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GOURGEIST,3]
 FormName = Super Size
@@ -1724,6 +1836,7 @@ Pokedex = Supersized Gourgeist aren't picky. They will forcefully drag anyone of
 WildItemCommon = MIRACLESEED
 WildItemUncommon = MIRACLESEED
 WildItemRare = MIRACLESEED
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [XERNEAS,1]
 FormName = Active Mode
@@ -1738,6 +1851,7 @@ Color = Black
 Shape = Quadruped
 Pokedex = This is Zygarde when about 10% of its pieces have been assembled. It leaps at its opponent's chest and sinks its sharp fangs into them.
 Generation = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ZYGARDE,2]
 FormName = Complete Forme
@@ -1782,24 +1896,28 @@ Moves = 1,HYPERSPACEFURY,1,TRICK,1,DESTINYBOND,1,ALLYSWITCH,1,CONFUSION,6,ASTONI
 Height = 6.5
 Weight = 490.0
 Shape = BipedalTail
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ORICORIO,1]
 FormName = Pom-Pom Style
 Types = ELECTRIC,FLYING
 Color = Yellow
 Pokedex = It creates an electric charge by rubbing its feathers together. It dances over to its enemies and delivers shocking electrical punches.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ORICORIO,2]
 FormName = Pa'u Style
 Types = PSYCHIC,FLYING
 Color = Pink
 Pokedex = This Oricorio relaxes by swaying gently. This increases its psychic energy, which it then fires at its enemies.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ORICORIO,3]
 FormName = Sensu Style
 Types = GHOST,FLYING
 Color = Purple
 Pokedex = It summons the dead with its dreamy dancing. From their malice, it draws power with which to curse its enemies.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROCKRUFF,2]
 Abilities = OWNTEMPO
@@ -1818,6 +1936,7 @@ Height = 1.1
 Color = Red
 Shape = BipedalTail
 Pokedex = It goads its enemies into attacking, withstands the hits, and in return, delivers a headbutt, crushing their bones with its rocky mane.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [LYCANROC,2]
 FormName = Dusk Form
@@ -1827,7 +1946,7 @@ HiddenAbilities = TOUGHCLAWS
 Moves = 0,THRASH,1,THRASH,1,ACCELEROCK,1,COUNTER,1,TACKLE,1,LEER,1,SANDATTACK,1,BITE,4,SANDATTACK,7,BITE,12,HOWL,15,ROCKTHROW,18,ODORSLEUTH,23,ROCKTOMB,26,ROAR,29,STEALTHROCK,34,ROCKSLIDE,37,SCARYFACE,40,CRUNCH,45,ROCKCLIMB,48,STONEEDGE
 TutorMoves = ATTRACT,BRICKBREAK,BULKUP,CONFIDE,COVET,DOUBLETEAM,DRILLRUN,EARTHPOWER,ECHOEDVOICE,ENDEAVOR,FACADE,FRUSTRATION,HIDDENPOWER,HYPERVOICE,IRONDEFENSE,IRONHEAD,IRONTAIL,LASTRESORT,OUTRAGE,PROTECT,REST,RETURN,ROAR,ROCKPOLISH,ROCKSLIDE,ROCKTOMB,ROUND,SLEEPTALK,SNARL,SNORE,STEALTHROCK,STOMPINGTANTRUM,STONEEDGE,SUBSTITUTE,SWAGGER,SWORDSDANCE,TAUNT,TOXIC,ZENHEADBUTT
 Pokedex = Bathed in the setting sun of evening, Lycanroc has undergone a special kind of evolution. An intense fighting spirit underlies its calmness.
-Flags = InheritFormFromMother
+Flags = InheritFormFromMother,SelectableInTeamBuilderMode
 #-------------------------------
 [WISHIWASHI,1]
 FormName = School Form
@@ -1919,7 +2038,7 @@ EVs = ATTACK,1,SPECIAL_ATTACK,1
 Weight = 0.3
 Color = Red
 Pokedex = If its core stays exposed, it will soon die off. It's possible that it may survive if it's put into a Poké Ball quickly enough.
-Flags = InheritFormFromMother
+Flags = InheritFormFromMother,SelectableInTeamBuilderMode
 #-------------------------------
 [MINIOR,8]
 FormName = Orange Core
@@ -1929,7 +2048,7 @@ EVs = ATTACK,1,SPECIAL_ATTACK,1
 Weight = 0.3
 Color = Red
 Pokedex = If its core stays exposed, it will soon die off. It's possible that it may survive if it's put into a Poké Ball quickly enough.
-Flags = InheritFormFromMother
+Flags = InheritFormFromMother,SelectableInTeamBuilderMode
 #-------------------------------
 [MINIOR,9]
 FormName = Yellow Core
@@ -1939,7 +2058,7 @@ EVs = ATTACK,1,SPECIAL_ATTACK,1
 Weight = 0.3
 Color = Yellow
 Pokedex = If its core stays exposed, it will soon die off. It's possible that it may survive if it's put into a Poké Ball quickly enough.
-Flags = InheritFormFromMother
+Flags = InheritFormFromMother,SelectableInTeamBuilderMode
 #-------------------------------
 [MINIOR,10]
 FormName = Green Core
@@ -1949,7 +2068,7 @@ EVs = ATTACK,1,SPECIAL_ATTACK,1
 Weight = 0.3
 Color = Green
 Pokedex = If its core stays exposed, it will soon die off. It's possible that it may survive if it's put into a Poké Ball quickly enough.
-Flags = InheritFormFromMother
+Flags = InheritFormFromMother,SelectableInTeamBuilderMode
 #-------------------------------
 [MINIOR,11]
 FormName = Blue Core
@@ -1959,7 +2078,7 @@ EVs = ATTACK,1,SPECIAL_ATTACK,1
 Weight = 0.3
 Color = Blue
 Pokedex = If its core stays exposed, it will soon die off. It's possible that it may survive if it's put into a Poké Ball quickly enough.
-Flags = InheritFormFromMother
+Flags = InheritFormFromMother,SelectableInTeamBuilderMode
 #-------------------------------
 [MINIOR,12]
 FormName = Indigo Core
@@ -1969,7 +2088,7 @@ EVs = ATTACK,1,SPECIAL_ATTACK,1
 Weight = 0.3
 Color = Blue
 Pokedex = If its core stays exposed, it will soon die off. It's possible that it may survive if it's put into a Poké Ball quickly enough.
-Flags = InheritFormFromMother
+Flags = InheritFormFromMother,SelectableInTeamBuilderMode
 #-------------------------------
 [MINIOR,13]
 FormName = Violet Core
@@ -1979,7 +2098,7 @@ EVs = ATTACK,1,SPECIAL_ATTACK,1
 Weight = 0.3
 Color = Purple
 Pokedex = If its core stays exposed, it will soon die off. It's possible that it may survive if it's put into a Poké Ball quickly enough.
-Flags = InheritFormFromMother
+Flags = InheritFormFromMother,SelectableInTeamBuilderMode
 #-------------------------------
 [MIMIKYU,1]
 FormName = Busted Form
@@ -1996,6 +2115,7 @@ Weight = 460.0
 Color = Yellow
 Shape = Quadruped
 Pokedex = This is Necrozma's form while it's absorbing the power of Solgaleo, making it extremely ferocious and impossible to control.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [NECROZMA,2]
 FormName = Dawn Wings
@@ -2007,6 +2127,7 @@ Height = 4.2
 Weight = 350.0
 Color = Blue
 Pokedex = Lunala no longer has a will of its own. Now under the control of Necrozma, it continuously expels all of its energy.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [NECROZMA,3]
 FormName = Ultra Necrozma
@@ -2033,6 +2154,7 @@ Color = Yellow
 FormName = Original Color
 Color = Red
 Pokedex = This gorgeous Magearna looks as it did at the time of its invention. Its luxurious decoration pleased the king's daughter.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [CRAMORANT,1]
 FormName = Gulping Form
@@ -2053,192 +2175,250 @@ Pokedex = Capable of generating 15,000 volts of electricity, this Pokémon looks
 FormName = Antique Form
 Pokedex = The swirl pattern in this Pokémon's body is its weakness. If it gets stirred, the swirl loses its shape, and Sinistea gets dizzy.
 Evolutions = POLTEAGEIST,Item,CHIPPEDPOT
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [POLTEAGEIST,1]
 FormName = Antique Form
 Pokedex = Trainers Polteageist trusts will be allowed to experience its distinctive flavor and aroma firsthand by sampling just a tiny bit of its tea.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,7]
 FormName = Ruby Cream
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sweet and tart flavor.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,8]
 PokedexForm = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,9]
 PokedexForm = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,10]
 PokedexForm = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,11]
 PokedexForm = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,12]
 PokedexForm = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,13]
 PokedexForm = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,14]
 FormName = Matcha Cream
 Color = Green
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream an aromatic flavor.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,15]
 PokedexForm = 14
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,16]
 PokedexForm = 14
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,17]
 PokedexForm = 14
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,18]
 PokedexForm = 14
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,19]
 PokedexForm = 14
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,20]
 PokedexForm = 14
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,21]
 FormName = Mint Cream
 Color = Blue
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a refreshing flavor.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,22]
 PokedexForm = 21
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,23]
 PokedexForm = 21
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,24]
 PokedexForm = 21
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,25]
 PokedexForm = 21
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,26]
 PokedexForm = 21
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,27]
 PokedexForm = 21
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,28]
 FormName = Lemon Cream
 Color = Yellow
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sour flavor.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,29]
 PokedexForm = 28
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,30]
 PokedexForm = 28
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,31]
 PokedexForm = 28
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,32]
 PokedexForm = 28
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,33]
 PokedexForm = 28
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,34]
 PokedexForm = 28
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,35]
 FormName = Salted Cream
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a salty flavor.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,36]
 PokedexForm = 35
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,37]
 PokedexForm = 35
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,38]
 PokedexForm = 35
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,39]
 PokedexForm = 35
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,40]
 PokedexForm = 35
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,41]
 PokedexForm = 35
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,42]
 FormName = Ruby Swirl
 Color = Yellow
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a mixed flavor.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,43]
 PokedexForm = 42
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,44]
 PokedexForm = 42
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,45]
 PokedexForm = 42
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,46]
 PokedexForm = 42
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,47]
 PokedexForm = 42
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,48]
 PokedexForm = 42
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,49]
 FormName = Caramel Swirl
 Color = Brown
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a bitter flavor.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,50]
 PokedexForm = 49
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,51]
 PokedexForm = 49
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,52]
 PokedexForm = 49
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,53]
 PokedexForm = 49
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,54]
 PokedexForm = 49
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,55]
 PokedexForm = 49
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,56]
 FormName = Rainbow Swirl
 Color = Yellow
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a complex flavor.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,57]
 PokedexForm = 56
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,58]
 PokedexForm = 56
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,59]
 PokedexForm = 56
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,60]
 PokedexForm = 56
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,61]
 PokedexForm = 56
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,62]
 PokedexForm = 56
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [EISCUE,1]
 FormName = Noice Face
@@ -2254,6 +2434,7 @@ Moves = 1,STOREDPOWER,1,PLAYNICE,5,BATONPASS,10,DISARMINGVOICE,15,PSYBEAM,20,HEL
 TutorMoves = ALLYSWITCH,ATTRACT,BATONPASS,CALMMIND,DAZZLINGGLEAM,DRAININGKISS,DRAINPUNCH,ENDURE,ENERGYBALL,EXPANDINGFORCE,FACADE,FUTURESIGHT,GUARDSWAP,HELPINGHAND,HYPERVOICE,IMPRISON,LIGHTSCREEN,MAGICALLEAF,METRONOME,MYSTICALFIRE,PAYDAY,PLAYROUGH,PROTECT,PSYCHIC,PSYCHICTERRAIN,PSYSHOCK,REFLECT,REST,ROUND,SAFEGUARD,SHADOWBALL,SLEEPTALK,SNORE,STOREDPOWER,SUBSTITUTE,SWIFT,TERRAINPULSE,TRICK,ZENHEADBUTT
 EggMoves = FAKEOUT,HEALPULSE,PSYCHUP,PSYCHOSHIFT
 Pokedex = They diligently serve people and Pokémon so they can gather feelings of gratitude. The females are particularly good at babysitting.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [MORPEKO,1]
 FormName = Hangry Mode
@@ -2282,6 +2463,7 @@ Types = FIGHTING,WATER
 Moves = 0,SURGINGSTRIKES,1,SURGINGSTRIKES,1,AQUAJET,1,ROCKSMASH,1,LEER,1,ENDURE,1,FOCUSENERGY,12,AERIALACE,16,SCARYFACE,20,HEADBUTT,24,BRICKBREAK,28,DETECT,32,BULKUP,36,IRONHEAD,40,DYNAMICPUNCH,44,COUNTER,48,CLOSECOMBAT,52,FOCUSPUNCH
 TutorMoves = ACROBATICS,ATTRACT,AURASPHERE,BODYPRESS,BODYSLAM,BRICKBREAK,BRINE,BULKUP,CLOSECOMBAT,COACHING,DIG,DIVE,DRAINPUNCH,ENDURE,FACADE,FALSESWIPE,FIREPUNCH,FOCUSBLAST,FOCUSENERGY,GIGAIMPACT,HELPINGHAND,ICEPUNCH,IRONDEFENSE,IRONHEAD,LIQUIDATION,LOWKICK,LOWSWEEP,MEGAKICK,MEGAPUNCH,POISONJAB,PROTECT,RAINDANCE,REST,RETALIATE,REVENGE,REVERSAL,ROCKSLIDE,ROCKTOMB,ROUND,SCALD,SCARYFACE,SLEEPTALK,SNORE,STONEEDGE,SUBSTITUTE,SUPERPOWER,SWIFT,TAUNT,THUNDERPUNCH,UTURN,WATERFALL,WHIRLPOOL,WORKUP,ZENHEADBUTT
 Pokedex = It's believed that this Pokémon modeled its fighting style on the flow of a river—sometimes rapid, sometimes calm.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [CALYREX,1]
 FormName = Ice Rider
@@ -2298,6 +2480,7 @@ Color = White
 Shape = Quadruped
 Category = High King
 Pokedex = According to lore, this Pokémon showed no mercy to those who got in its way, yet it would heal its opponents' wounds after battle.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [CALYREX,2]
 FormName = Shadow Rider
@@ -2314,90 +2497,105 @@ Color = Black
 Shape = Quadruped
 Category = High King
 Pokedex = Legend says that by using its power to see all events from past to future, this Pokémon saved the creatures of a forest from a meteorite strike.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,3]
 FormName = Cosplay Pikachu
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,4]
 FormName = Cosplay Pikachu - Belle
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,5]
 FormName = Cosplay Pikachu - Libre
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,6]
 FormName = Cosplay Pikachu - Ph.D.
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,7]
 FormName = Cosplay Pikachu - Pop Star
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,8]
 FormName = Cosplay Pikachu - Rock Star
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,9]
 FormName = Original Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through many different regions.
 Generation = 1
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,10]
 FormName = Hoenn Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Hoenn region.
 Generation = 3
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,11]
 FormName = Sinnoh Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Sinnoh region.
 Generation = 4
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,12]
 FormName = Unova Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Unova region.
 Generation = 5
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,13]
 FormName = Kalos Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Kalos region.
 Generation = 6
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,14]
 FormName = Alola Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Alola region.
 Generation = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,15]
 FormName = Partner Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of when they first met.
 Generation = 7
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,16]
 FormName = World Cap Pikachu
 Compatibility = Undiscovered
 Pokedex = This Pikachu is wearing its Trainer's cap. The cap is a precious symbol that travels across different regions with Pikachu.
 Generation = 8
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ARCEUS,19]
 FormName = Light Type
@@ -2430,34 +2628,34 @@ FormName = Kurian Jigglypuff
 Type1 = GHOST
 Type2 = SOUND
 BaseStats = 115,45,70,20,45,60
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DODRIO,1]
 FormName = Kurian Dodrio
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONLEE,1]
 FormName = Kurian Hitmonlee
 Type1 = GRASS
 Type2 = FIGHTING
 BaseStats = 87,120,110,53,35,50
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONCHAN,1]
 FormName = Kurian Hitmonchan
 Type1 = FIRE
 Type2 = FIGHTING
 BaseStats = 50,110,82,95,35,83
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KOFFING,2]
 FormName = Kurian Koffing
 Type1 = FAIRY
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [WEEZING,2]
 FormName = Kurian Weezing
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [MAGIKARP,1]
 FormName = Kurian Magikarp
@@ -2467,21 +2665,21 @@ Abilities = INTIMIDATE,SWIFTSWIM
 HiddenAbility = MOXIE
 Compatibility = Water2,Dragon
 Evolutions = GYARADOS,Level,36
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEDYBA,1]
 FormName = Kurian Ledyba
 Type1 = STEEL
 Type2 = PSYCHIC
 BaseStats = 40,50,50,50,50,85
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEDIAN,1]
 FormName = Kurian Ledian
 Type1 = STEEL
 Type2 = PSYCHIC
 BaseStats = 70,90,70,125,60,115
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AIPOM,1]
 FormName = Kurian Aipom
@@ -2492,21 +2690,21 @@ EffortPoints = 0,0,0,1,0,0
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TYROGUE,1]
 FormName = Kurian Tyrogue
 Type1 = NORMAL
 Type2 = FIGHTING
 BaseStats = 30,30,30,30,30,30
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONTOP,1]
 FormName = Kurian Hitmontop
 Type1 = WATER
 Type2 = FIGHTING
 BaseStats = 58,110,70,92,35,90
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BRELOOM,1]
 FormName = Kurian Breloom
@@ -2517,28 +2715,28 @@ EffortPoints = 0,2,0,0,0,0
 Abilities = STENCH,CLEARINGFUMES
 HiddenAbility = ADAPTABILITY
 Compatibility = Grass,Fairy
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [NOSEPASS,1]
 FormName = Kurian Nosepass
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 50,50,110,25,40,100
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SKITTY,1]
 FormName = Kurian Skitty
 Type1 = DARK
 Type2 = STEEL
 BaseStats = 55,70,55,35,25,80
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DELCATTY,1]
 FormName = Kurian Delcatty
 Type1 = DARK
 Type2 = STEEL
 BaseStats = 94,104,85,81,45,95
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PLUSLE,1]
 FormName = Kurian Plusle
@@ -2549,7 +2747,7 @@ EffortPoints = 0,0,0,0,0,2
 Abilities = ADDITION,TRIAGE
 HiddenAbility = RIVALRY
 Compatibility = Field,Fairy
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [MINUN,1]
 FormName = Kurian Minun
@@ -2560,13 +2758,13 @@ EffortPoints = 0,0,0,0,2,0
 Abilities = SUBTRACTION,INFILTRATOR
 HiddenAbility = RIVALRY
 Compatibility = Field,Fairy
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ROSELIA,1]
 ForName = Kurian Roselia
 Type1 = DARK
 Type2 = POISON
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BUDEW,1]
 FormName = Kurian Budew
@@ -2578,7 +2776,7 @@ Abilities = PRANKSTER,WONDERSKIN
 HiddenAbility = COMPOUNDEYES
 Compatibility = Fairy,Monster
 Evolutions = ROSELIA,HasMove,TOXICTHREAD
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AMBIPOM,1]
 FormName = Kurian Ambipom
@@ -2589,7 +2787,7 @@ EffortPoints = 0,0,0,2,0,0
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BUNEARY,1]
 FormName = Kurian Buneary
@@ -2600,7 +2798,7 @@ EffortPoints = 0,0,0,0,1,0
 Abilities = UNNERVE,FLUFFY
 HiddenAbility = VOODOO
 Compatibility = Amorphous,Humanlike
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LOPUNNY,2]
 FormName = Kurian Lopunny
@@ -2611,159 +2809,159 @@ EffortPoints = 0,2,0,0,0,0
 Abilities = UNNERVE,FLUFFY
 HiddenAbility = VOODOO
 Compatibility = Amorphous,Humanlike
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SPIRITOMB,1]
 FormName = Kurian Spiritomb
 Type1 = COSMIC
 Type2 = LIGHT
 BaseStats = 80,52,108,35,132,78
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LUMINEON,1]
 FormName = Kurian Lumineon
 Type1 = WATER
 Type2 = LIGHT
 BaseStats = 75,45,80,80,75,101
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PROBOPASS,1]
 FormName = Kurian Probopass
 Type1 = GRASS
 Type2 = SOUND
 BaseStats = 80,100,130,40,65,120
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TIMBURR,1]
 FormName = Kurian Timburr
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 70,75,55,45,30,35
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [GURDURR,1]
 FormName = Kurian Gurdurr
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 80,100,75,65,40,55
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CONKELDURR,1]
 FormName = Kurian Conkeldurr
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 95,130,90,85,55,80
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SCRAFTY,1]
 FormName = Kurian Scrafty
 Type1 = ICE
 Type2 = MYSTIC
 BaseStats = 75,115,71,93,80,75
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SWADLOON,1]
 FormName = Kurian Swadloon
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 77,40,60,60,88,65
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEAVANNY,1]
 FormName = Kurian Leavanny
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 107,65,60,75,118,95
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ALOMOMOLA,1]
 FormName = Kurian Alomomola
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [FERROSEED,1]
 FormName = Kurian Ferroseed
 Type1 = STEEL
 Type2 = POISON
 BaseStats = 44,79,81,10,34,71
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [FERROTHORN,1]
 FormName = Kurian Ferrothorn
 Type1 = STEEL
 Type2 = POISON
 BaseStats = 84,119,121,20,54,111
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KARRABLAST,1]
 FormName = Kurian Karrablast
 Type1 = BUG
 Type2 = DARK
 BaseStats = 50,65,50,70,30,50
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,1]
 FormName = Kurian Escavalier - V
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 70,135,95,90,50,90
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,2]
 FormName = Kurian Escavalier - B
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 80,120,140,30,50,110
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,3]
 FormName = Kurian Escavalier - D
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 100,130,110,50,50,90
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DEINO,1]
 FormName = Kurian Deino
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 100,30,52,32,25,58
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ZWEILOUS,1]
 FormName = Kurian Zweilous
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 120,50,62,23,45,60
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HYDREIGON,1]
 FormName = Kurian Hydreigon
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 140,70,82,30,60,88
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TORNADUS,2]
 FormName = Kurian Tornadus
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PANGORO,1]
 FormName = Kurian Pangoro
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HONEDGE,2]
 FormName = Kurian Honedge
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 45,80,110,35,40,20
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DOUBLADE,2]
 FormName = Kurian Doublade
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 60,120,150,45,59,25
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,2]
 FormName = Kurian Aegislash (Shield Form)
@@ -2771,7 +2969,7 @@ Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,50,140,110,120,40
 Abilities = STANCESHIFT
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,3]
 FormName = Kurian Aegislash (Blade Form)
@@ -2779,63 +2977,63 @@ Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,140,80,80,70,90
 Abilities = STANCESHIFT
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CLAUNCHER,1]
 FormName = Kurian Clauncher
 Type1 = WATER
 Type2 = ELECTRIC
 BaseStats = 50,55,64,49,62,50
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CLAWITZER,1]
 FormName = Kurian Clawitzer
 Type1 = STEEL
 Type2 = ELECTRIC
 BaseStats = 70,75,94,99,122,65
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PHANTUMP,1]
 FormName = Kurian Phantump
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 43,70,63,30,70,63
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TREVENANT,1]
 FormName = Kurian Trevenant
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 95,110,104,42,85,104
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SANDYGAST,1]
 FormName = Kurian Sandygast
 Type1 = ELECTRIC
 Type2 = GROUND
 BaseStats = 60,50,50,10,80,80
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PALOSSAND,1]
 FormName = Kurian Palossand
 Type1 = ELECTRIC
 Type2 = GROUND
 BaseStats = 100,60,60,20,120,120
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HAKAMOO,1]
 FormName = Kurian Hakamo-o
 Type1 = FIGHTING
 Type2 = FLYING
 BaseStats = 65,90,65,75,60,65
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KOMMOO,1]
 FormName = Kurian Kommo-o
 Type1 = FIGHTING
 Type2 = FLYING
 BaseStats = 90,120,90,115,95,90
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BOUNSWEET,1]
 FormName = Kurian Bounsweet
@@ -2846,7 +3044,7 @@ Abilities = PIXILATE,INFILTRATOR
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [STEENEE,1]
 FormName = Kurian Steenee
@@ -2858,7 +3056,7 @@ Abilities = PHASINGBODY,KLUTZ
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TSAREENA,1]
 FormName = Kurian Tsareena
@@ -2870,7 +3068,7 @@ Abilities = PHASINGBODY,QUEENLYMAJESTY
 Moves = 1,SANDATTACK
 EggMoves = ANCIENTPOWER
 Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
-Flags = InheritFormWithEverStone
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 #Mega Forms
 #-------------------------------

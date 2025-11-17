@@ -2,6 +2,12 @@
 #
 #===============================================================================
 class PokemonPokedexInfo_Scene
+  attr_writer :team_builder_mode
+
+  def initialize
+    @team_builder_mode = false
+  end
+
   def pbStartScene(dexlist, index, region)
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     @viewport.z = 99999
@@ -127,6 +133,9 @@ class PokemonPokedexInfo_Scene
   def pbUpdateDummyPokemon
     @species = @dexlist[@index][0]
     @gender, @form, @shiny_variant = $player.pokedex.last_form_seen(@species)
+    if @team_builder_mode
+      @form = @dexlist[@index][10]
+    end
     metrics_data = GameData::SpeciesMetrics.get_species_form(@species, @form)
     @sprites["infosprite"].setSpeciesBitmap(@species, @gender, @form, @shiny_variant)
     @sprites["formfront"]&.setSpeciesBitmap(@species, @gender, @form, @shiny_variant)
@@ -514,7 +523,7 @@ class PokemonPokedexInfo_Scene
           (@page == 1) ? Pokemon.play_cry(@species, @form) : pbPlayCursorSE
           dorefresh = true
         end
-      elsif Input.trigger?(Input::LEFT)
+      elsif Input.trigger?(Input::LEFT) && !@team_builder_mode
         oldpage = @page
         @page -= 1
         @page = 1 if @page < 1
@@ -523,7 +532,7 @@ class PokemonPokedexInfo_Scene
           pbPlayCursorSE
           dorefresh = true
         end
-      elsif Input.trigger?(Input::RIGHT)
+      elsif Input.trigger?(Input::RIGHT) && !@team_builder_mode
         oldpage = @page
         @page += 1
         @page = 1 if @page < 1

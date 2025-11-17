@@ -152,7 +152,7 @@ module PokemonDebugMixin
   def pbPokemonDebug(pkmn, pkmnid, heldpoke = nil, settingUpBattle = false)
     # Get all commands
     commands = CommandMenuList.new
-    MenuHandlers.each_available(:pokemon_debug_menu) do |option, hash, name|
+    MenuHandlers.each_available(:pokemon_debug_menu, self) do |option, hash, name|
       next if settingUpBattle && !hash["always_show"].nil? && !hash["always_show"]
       commands.add(option, hash, name)
     end

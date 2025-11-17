@@ -178,6 +178,11 @@ def pbBottomLeft(window)
   window.y = Graphics.height - window.height
 end
 
+def pbTopRight(window)
+  window.x = Graphics.width - window.width
+  window.y = 0
+end
+
 def pbBottomLeftLines(window, lines, width = nil)
   window.x = 0
   window.width = width || Graphics.width

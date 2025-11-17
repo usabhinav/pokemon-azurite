@@ -313,3 +313,68 @@ end
 def obscureMundimeaForm?(battle, species, is_opposing, item_check = true)
   return battle.wildBattle? && battle.pbSideSize(1) == 1 && species == :MUNDIMEA && is_opposing && (!item_check || !$bag.has?(:TRUEENIGMACHAIN))
 end
+
+#===============================================================================
+# Marks all species and forms as having been seen and owned. Used in the team
+# builder mode when using the Pokedex UI as the species selection menu.
+#===============================================================================
+def registerAllSpeciesAndForms
+  GameData::Species.each do |species_data|
+    sp = species_data.species
+    f = species_data.form
+    # Record each form of each species as seen and owned
+    if f == 0
+      if species_data.single_gendered?
+        g = (species_data.gender_ratio == :AlwaysFemale) ? 1 : 0
+        $player.pokedex.register(sp, g, f, 0, false)
+        $player.pokedex.register(sp, g, f, 1, false)
+      else   # Both male and female
+        $player.pokedex.register(sp, 0, f, 0, false)
+        $player.pokedex.register(sp, 0, f, 1, false)
+        $player.pokedex.register(sp, 1, f, 0, false)
+        $player.pokedex.register(sp, 1, f, 1, false)
+      end
+      $player.pokedex.set_owned(sp, false)
+    elsif species_data.real_form_name && !species_data.real_form_name.empty?
+      g = (species_data.gender_ratio == :AlwaysFemale) ? 1 : 0
+      $player.pokedex.register(sp, g, f, 0, false)
+      $player.pokedex.register(sp, g, f, 1, false)
+    end
+  end
+end
+
+#===============================================================================
+# Returns list of all species (and valid forms) that are viable for the
+# specified level.
+#===============================================================================
+def getPossibleSpeciesDataFormMapForTeamBuilder(level, generation_list = nil)
+  species_data_form_map = {}
+  GameData::Species.each do |s|
+    if level >= s.minimum_level && level <= s.maximum_level && (s.form == 0 || s.has_flag?("SelectableInTeamBuilderMode"))
+      next if generation_list && !generation_list.include?(s.generation)
+      if species_data_form_map[s.species].nil?
+        species_data_form_map[s.species] = []
+      end
+      species_data_form_map[s.species].push(s)
+    end
+  end
+  return species_data_form_map
+end
+
+#===============================================================================
+# Returns list of 6 random Pokemon based on provided species data and form map.
+#===============================================================================
+def getRandomPartyFromSpeciesDataFormMap(species_data_form_map, level)
+  species_id_list = species_data_form_map.keys
+  new_party = []
+  for i in 0...6
+    # First get random species
+    selected_species_id = species_id_list.delete_at(rand(species_id_list.length))
+    # Then get random form
+    selected_species_data = species_data_form_map[selected_species_id].sample
+    new_poke = Pokemon.new(selected_species_data.id, level)
+    new_poke.form = selected_species_data.form
+    new_party.push(new_poke)
+  end
+  return new_party
+end

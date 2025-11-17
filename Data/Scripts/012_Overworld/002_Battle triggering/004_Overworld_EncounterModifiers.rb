@@ -39,3 +39,23 @@ EventHandlers.add(:on_wild_pokemon_created, :level_depends_on_party,
 #    end
 #  }
 #)
+
+EventHandlers.add(:on_trainer_load, :custom_battle_mode_modifier,
+  proc { |trainer|
+    next if trainer.nil?
+    next if trainer.trainer_type != :CHAMPION
+    next if trainer.name != "Azurite"
+    trainer.party = Marshal.load(Marshal.dump($custom_battle_mode_args[0]))
+    trainer.party.each do |p|
+      p.owner = Pokemon::Owner.new_from_trainer(trainer)
+    end
+    trainer.items = []
+    $custom_battle_mode_args[1].pockets.each do |pocket|
+      pocket.each do |item_id, quantity|
+        quantity.times do
+          trainer.items.push(item_id)
+        end
+      end
+    end
+  }
+)

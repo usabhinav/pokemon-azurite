@@ -6077,18 +6077,6 @@ FrontSprite = 0,25
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
-[AATEST]
-BackSprite = 0,0
-FrontSprite = 0,25
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
-[AAENEMY]
-BackSprite = 0,0
-FrontSprite = 0,25
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
 [SLOOF]
 BackSprite = 0,0
 FrontSprite = 0,25

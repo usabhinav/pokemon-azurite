@@ -116,6 +116,15 @@ Pokemon = CHARIZARD,63
 Pokemon = BLASTOISE,63
     Item = SITRUSBERRY
 #-------------------------------
-[CHAMPION,Azurite]
+[CAMPER,Rock]
+LoseText = A very good battle, indeed!
+Pokemon = PIKACHU,16
+    Item = EQUALIZERM
+    Moves = SPLASH,SLEEPPOWDER
+Pokemon = PIKACHU,16
+    Item = EQUALIZERC
+    Moves = SPLASH,SLEEPPOWDER
+#-------------------------------
+[TEAMVITREUS_CUSTOMBATTLEMODE,Grunt]
 LoseText = A very good battle, indeed!
 Pokemon = PIKACHU,16

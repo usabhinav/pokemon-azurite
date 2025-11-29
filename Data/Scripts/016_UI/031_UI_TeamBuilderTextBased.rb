@@ -4,14 +4,6 @@ module TeamBuilderTextBasedScreenConstants
   TEXT_SHADOW_COLOR = Color.new(248, 248, 248)
 
   FOLDER_PATH = "Graphics/Pictures/Team Builder"
-  TEAM_DATA_OBJECT_NAME = "team"
-  BAG_DATA_OBJECT_NAME = "bag"
-  SAVE_FILE_EXTENSION = ".rxdata"
-
-  SAVE_FILE_PREFIX_MAP = {
-    TEAM_DATA_OBJECT_NAME => "TEAM_",
-    BAG_DATA_OBJECT_NAME => "BAG_",
-  }
 
   SCREEN_LIST = [
     :PlayerTrainerPartySelection,
@@ -28,18 +20,6 @@ module TeamBuilderTextBasedScreenConstants
     index = SCREEN_LIST.index(current_screen)
     return index == 0 ? nil : SCREEN_LIST[index - 1]
   end
-
-  def self.get_save_file_name(data_object_name, input_name)
-    return "#{SAVE_FILE_PREFIX_MAP[data_object_name]}#{input_name}#{SAVE_FILE_EXTENSION}"
-  end
-
-  def self.is_save_file?(data_object_name, filename)
-    return filename.start_with?(SAVE_FILE_PREFIX_MAP[data_object_name])
-  end
-
-  def self.get_save_name_from_filename(data_object_name, filename)
-    return filename.sub(SAVE_FILE_PREFIX_MAP[data_object_name], "").sub(SAVE_FILE_EXTENSION, "")
-  end
 end
 
 class TeamBuilderTextBasedScreen
@@ -49,16 +29,20 @@ class TeamBuilderTextBasedScreen
 
   def endScene
     pbFadeOutAndHide(@sprites)
+    pbDisposeMessageWindow(@sprites["textbox"])
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose
   end
 
-  def pbShowCommands(commands, index = 0)
+  def pbShowCommands(helptext, commands, index = 0)
     ret = -1
+    @sprites["textbox"].text = helptext
+    @sprites["textbox"].visible = true
     using(cmdwindow = Window_CommandPokemon.new(commands)) {
       cmdwindow.z = @viewport.z + 1
       cmdwindow.index = index
       pbBottomRight(cmdwindow)
+      cmdwindow.y -= @sprites["textbox"].height
       loop do
         Graphics.update
         Input.update
@@ -75,6 +59,7 @@ class TeamBuilderTextBasedScreen
         end
       end
     }
+    @sprites["textbox"].visible = false
     return ret
   end
 
@@ -167,15 +152,15 @@ class TeamBuilderTextBasedScreen
           end
         end
       when cmdLoadTeam
-        loadDataObject(TeamBuilderTextBasedScreenConstants::TEAM_DATA_OBJECT_NAME, Proc.new { |file| @parties[getActiveTrainerIndex] = Marshal.load(file); refreshPokemonIconSprites })
+        loadDataObject(SaveDataObjectManagement::TEAM_DATA_OBJECT_NAME, Proc.new { |file| @parties[getActiveTrainerIndex] = Marshal.load(file); refreshPokemonIconSprites })
       when cmdSaveTeam
-        saveDataObject(TeamBuilderTextBasedScreenConstants::TEAM_DATA_OBJECT_NAME, @parties[getActiveTrainerIndex])
+        SaveDataObjectManagement.save_data_object_with_new_name(SaveDataObjectManagement::TEAM_DATA_OBJECT_NAME, @parties[getActiveTrainerIndex])
       when cmdEditBag
         pbBagScreenForTeamBuilder(@bags[getActiveTrainerIndex])
       when cmdLoadBag
-        loadDataObject(TeamBuilderTextBasedScreenConstants::BAG_DATA_OBJECT_NAME, Proc.new { |file| @bags[getActiveTrainerIndex] = Marshal.load(file) })
+        loadDataObject(SaveDataObjectManagement::BAG_DATA_OBJECT_NAME, Proc.new { |file| @bags[getActiveTrainerIndex] = Marshal.load(file) })
       when cmdSaveBag
-        saveDataObject(TeamBuilderTextBasedScreenConstants::BAG_DATA_OBJECT_NAME, @bags[getActiveTrainerIndex])
+        SaveDataObjectManagement.save_data_object_with_new_name(SaveDataObjectManagement::BAG_DATA_OBJECT_NAME, @bags[getActiveTrainerIndex])
       when cmdNext
         @current_screen = TeamBuilderTextBasedScreenConstants.get_next_screen(@current_screen)
         break
@@ -249,7 +234,10 @@ class TeamBuilderTextBasedScreen
           $bag = Marshal.load(Marshal.dump(@bags[0]))
           # Set opponent party and bag
           $custom_battle_mode_args = [@parties[1], @bags[1]]
-          TrainerBattle.start(:CHAMPION, "Azurite", 0)
+          setBattleRule("noexp")
+          setBattleRule("nomoney")
+          setBattleRule("disablepokeballs")
+          TrainerBattle.start(:TEAMVITREUS_CUSTOMBATTLEMODE, "Grunt", 0)
           # Un-set global variables so that it doesn't cause any issues if loading an existing save later
           $custom_battle_mode_args = nil
           $player.party = []
@@ -271,42 +259,20 @@ class TeamBuilderTextBasedScreen
   end
 
   def loadDataObject(data_object_name, on_load_method)
-    load_commands = []
-    Dir.foreach(RTP.getSaveFolder) do |entry|
-      next if !TeamBuilderTextBasedScreenConstants.is_save_file?(data_object_name, entry)
-      load_commands.push(TeamBuilderTextBasedScreenConstants.get_save_name_from_filename(data_object_name, entry))
-    end
+    load_commands = SaveDataObjectManagement.get_data_object_commands(data_object_name)
     load_commands.push("Cancel")
     while true
-      load_command = pbShowCommands(load_commands)
+      load_command = pbShowCommands(_INTL("Select a #{data_object_name}."), load_commands)
       if load_command == -1 || load_command == load_commands.length - 1
         break
       else
         chosen_name = load_commands[load_command]
         if pbConfirmMessage(_INTL("Load #{data_object_name} #{chosen_name}?"))
-          save_filename = RTP.getSaveFileName(TeamBuilderTextBasedScreenConstants.get_save_file_name(data_object_name, chosen_name))
+          save_filename = RTP.getSaveFileName(SaveDataObjectManagement.get_save_file_name(data_object_name, chosen_name))
           File.open(save_filename) do |file|
             on_load_method.call(file)
           end
           pbMessage(_INTL("Successfully loaded in #{data_object_name} #{chosen_name}."))
-        end
-      end
-    end
-  end
-
-  def saveDataObject(data_object_name, data_object)
-    while true
-      chosen_name = pbMessageFreeText("Enter a name for this #{data_object_name}.", "", false, 25)
-      if chosen_name.empty?
-        break
-      elsif !chosen_name.match?(/^[a-zA-Z0-9]*$/)
-        pbMessage("Name can only contain alphanumeric values.")
-      else
-        chosen_save_filename = RTP.getSaveFileName(TeamBuilderTextBasedScreenConstants.get_save_file_name(data_object_name, chosen_name))
-        if !File.file?(chosen_save_filename) || pbConfirmMessageSerious(_INTL("WARNING: There is already a saved #{data_object_name} with name #{chosen_name}. Overwrite this #{data_object_name}?"))
-          File.open(chosen_save_filename, "wb") { |file| Marshal.dump(data_object, file) }
-          pbMessage(_INTL("Successfully saved #{data_object_name} #{chosen_name}."))
-          break
         end
       end
     end
@@ -357,6 +323,9 @@ class TeamBuilderTextBasedScreen
     @sprites = {}
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
+    @sprites["textbox"] = pbCreateMessageWindow(@viewport)
+    @sprites["textbox"].visible = false
+    @sprites["textbox"].letterbyletter = false
     @buttons = {}
     @current_screen = TeamBuilderTextBasedScreenConstants::SCREEN_LIST[0]
     @parties = []

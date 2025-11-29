@@ -89,34 +89,34 @@ class PokemonLoadPanel < SpriteWrapper
         if @pokemon_global.savedate != nil
           date = @pokemon_global.savedate
           date_str = date.strftime(date_format + "   %H:%M")
-          textpos.push([date_str,185,68,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([date_str,185,62,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         end
         
         # Draw map name.
         mapname = pbGetMapNameFromId(@mapid)
         mapname.gsub!(/\\PN/,@trainer.name)
-        textpos.push([mapname,197,104,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([mapname,197,98,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         
         # Draw playtime.
-        textpos.push([_INTL("Playtime"),220,140,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([_INTL("Playtime"),220,134,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         hour = @totalsec / 60 / 60
         min  = @totalsec / 60 % 60
         if hour>0
-          textpos.push([_INTL("{1}h {2}m",hour,min),275,140,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([_INTL("{1}h {2}m",hour,min),275,134,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         else
-          textpos.push([_INTL("{1}m",min),275,140,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([_INTL("{1}m",min),275,134,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         end
         
         # Draw amount of seen pokemon.
-        textpos.push([_INTL("Seen"),209,176,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        textpos.push([@trainer.pokedex.seen_count.to_s,275,176,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([_INTL("Seen"),209,170,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@trainer.pokedex.seen_count.to_s,275,170,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         
         # Draw amount of caught pokemon.
-        textpos.push([_INTL("Caught"),193,210,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        textpos.push([@trainer.pokedex.owned_count.to_s,275,210,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([_INTL("Caught"),193,204,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@trainer.pokedex.owned_count.to_s,275,204,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
 
         # Draw trainer name.
-        textpos.push([@trainer.name,92,26,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        textpos.push([@trainer.name,92,20,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         
         # end
       else
@@ -320,6 +320,7 @@ class PokemonLoad_Scene
       @sprites["player"].y        = 95
       @sprites["player"].zoom_x   = 1.8
       @sprites["player"].zoom_y   = 1.8
+      @sprites["player"].visible  = false # Temporarily hiding this sprite until we decide to add it back with the correct sprites
       
       #@sprites["player"].src_rect = Rect.new(0,0,charwidth,charheight)
       trainer.outfitstate.applyToIdBitmap(@sprites["player"].bitmap)
@@ -441,9 +442,10 @@ class PokemonLoadScreen
     
     if show_continue
       commands[cmd_continue = commands.length] = _INTL('Continue')
-      commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
       commands[cmd_new_game = commands.length]  = _INTL('New Journey')
-      if @save_data[:player].mystery_gift_unlocked || true
+      commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
+      commands[cmd_manage_saved_data = commands.length] = _INTL('Manage Saved Data')
+      if @save_data[:player].mystery_gift_unlocked && false # Temporarily disabling this option
         commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
         buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_LEFT_UP
         buttonFormat[cmd_mystery_gift] = LoadMenu_Model::BTN_RIGHT_UP
@@ -455,18 +457,19 @@ class PokemonLoadScreen
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
       
       buttonFormat[cmd_continue] = LoadMenu_Model::BTN_CONTINUE
-      buttonFormat[cmd_custom_battle_mode] = LoadMenu_Model::BTN_NORMAL_BIG
     else
       commands[cmd_new_game = commands.length]  = _INTL('Start The Journey')
       commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
+      commands[cmd_manage_saved_data = commands.length] = _INTL('Manage Saved Data')
       commands[cmd_options = commands.length]  = _INTL('Settings')
       commands[cmd_quit = commands.length]  = _INTL('Quit Game')
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
 
       buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
-      buttonFormat[cmd_custom_battle_mode] = LoadMenu_Model::BTN_NORMAL_BIG
     end
 
+    buttonFormat[cmd_custom_battle_mode] = LoadMenu_Model::BTN_NORMAL_BIG
+    buttonFormat[cmd_manage_saved_data] = LoadMenu_Model::BTN_NORMAL_BIG
     buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
     buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
     buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
@@ -517,6 +520,10 @@ class PokemonLoadScreen
         SaveData.load_new_game_values
         registerAllSpeciesAndForms # To show all species/forms when selecting species
         pbStartTeamBuilderTextBasedScreen
+      when cmd_manage_saved_data
+        SaveData.load_new_game_values
+        registerAllSpeciesAndForms # To show all species/forms when selecting species
+        pbStartSaveDataObjectManagerScreen
       when cmd_new_game
         @scene.pbEndScene
         Game.start_new

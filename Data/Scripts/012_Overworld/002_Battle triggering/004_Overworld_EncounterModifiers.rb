@@ -43,8 +43,8 @@ EventHandlers.add(:on_wild_pokemon_created, :level_depends_on_party,
 EventHandlers.add(:on_trainer_load, :custom_battle_mode_modifier,
   proc { |trainer|
     next if trainer.nil?
-    next if trainer.trainer_type != :CHAMPION
-    next if trainer.name != "Azurite"
+    next if trainer.trainer_type != :TEAMVITREUS_CUSTOMBATTLEMODE
+    next if trainer.name != "Grunt"
     trainer.party = Marshal.load(Marshal.dump($custom_battle_mode_args[0]))
     trainer.party.each do |p|
       p.owner = Pokemon::Owner.new_from_trainer(trainer)

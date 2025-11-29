@@ -101,9 +101,10 @@ class Battle::Scene
   def tempMissingBackSprite
     bmp = pbBitmap("Graphics/EBDX/Battlers/000")
     rbmp = Bitmap.new(bmp.width*5*2, bmp.height*2)
-    for i in 0...5
-      rbmp.stretch_blt(Rect.new(i*2*bmp.width, 0, bmp.width*2, bmp.height*2), bmp, bmp.rect)
-    end
+    # Temporarily commenting this part to make it intentionally blank
+    # for i in 0...5
+    #   rbmp.stretch_blt(Rect.new(i*2*bmp.width, 0, bmp.width*2, bmp.height*2), bmp, bmp.rect)
+    # end
     bmp.dispose
     return rbmp
   end

@@ -198,6 +198,20 @@ module GameData
       return pbGetMessageFromHash(MessageTypes::FormNames, @real_form_name)
     end
 
+    # @return [String] the translated name of this species, plus translated name of this form if applicable
+    def form_name_for_team_builder(team_builder_mode)
+      species_name = self.name
+      if team_builder_mode && self.form > 0
+        form_suffix = self.form
+        species_form_name = self.form_name
+        if species_form_name
+          form_suffix = species_form_name
+        end
+        species_name += " (#{form_suffix})"
+      end
+      return species_name
+    end
+
     # @return [String] the translated Pokédex category of this species
     def category
       return pbGetMessageFromHash(MessageTypes::Kinds, @real_category)

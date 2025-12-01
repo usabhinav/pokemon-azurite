@@ -227,8 +227,12 @@ class PokemonPokedexInfo_Scene
       indexNumber -= 1 if @dexlist[@index][5]
       indexText = sprintf("%03d", indexNumber)
     end
+    name_text = _INTL("{1}{2} {3}", indexText, " ", species_data.name)
+    if @team_builder_mode
+      name_text = species_data.form_name_for_team_builder(true)
+    end
     textpos = [
-      [_INTL("{1}{2} {3}", indexText, " ", species_data.name),
+      [name_text,
        246, 48, 0, Color.new(248, 248, 248), Color.new(0, 0, 0)]
     ]
     if @show_battled_count

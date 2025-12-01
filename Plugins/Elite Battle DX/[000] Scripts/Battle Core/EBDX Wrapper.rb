@@ -10,7 +10,7 @@ class BitmapEBDX
   #-----------------------------------------------------------------------------
   #  class constructor
   #-----------------------------------------------------------------------------
-  def initialize(file, scale = 2, skip = 1, skip_refresh = false)
+  def initialize(file, scale = 2, skip = 2, skip_refresh = false)
     # failsafe checks
     EliteBattle.log.error("BitmapEBDX filename is nil.") if file == nil
     EliteBattle.log.error("BitmapEBDX does not support GIF files.") if File.extname(file) == ".gif"

@@ -32,7 +32,8 @@ class Window_Pokedex < Window_DrawableCommand
     end
     pbDrawShadowText(self.contents, rect.x + 36, rect.y + 6, rect.width, rect.height,
                      num_text, self.baseColor, self.shadowColor) if !@team_builder_mode
-    pbDrawShadowText(self.contents, rect.x + 84, rect.y + 6, rect.width, rect.height,
+    positive_x_offset = @team_builder_mode ? 36 : 84
+    pbDrawShadowText(self.contents, rect.x + positive_x_offset, rect.y + 6, rect.width - positive_x_offset, rect.height,
                      name_text, self.baseColor, self.shadowColor)
   end
 end

@@ -2624,41 +2624,41 @@ Type1 = CRYSTAL
 #Note: not done with this, yet
 #-------------------------------
 [JIGGLYPUFF,1]
-FormName = Kurian Jigglypuff
+FormName = Kurian
 Type1 = GHOST
 Type2 = SOUND
 BaseStats = 115,45,70,20,45,60
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DODRIO,1]
-FormName = Kurian Dodrio
+FormName = Kurian
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONLEE,1]
-FormName = Kurian Hitmonlee
+FormName = Kurian
 Type1 = GRASS
 Type2 = FIGHTING
 BaseStats = 87,120,110,53,35,50
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONCHAN,1]
-FormName = Kurian Hitmonchan
+FormName = Kurian
 Type1 = FIRE
 Type2 = FIGHTING
 BaseStats = 50,110,82,95,35,83
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KOFFING,2]
-FormName = Kurian Koffing
+FormName = Kurian
 Type1 = FAIRY
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [WEEZING,2]
-FormName = Kurian Weezing
+FormName = Kurian
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [MAGIKARP,1]
-FormName = Kurian Magikarp
+FormName = Kurian
 BaseStats = 50,80,55,80,25,40
 EffortPoints = 0,1,0,0,0,0
 Abilities = INTIMIDATE,SWIFTSWIM
@@ -2668,21 +2668,21 @@ Evolutions = GYARADOS,Level,36
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEDYBA,1]
-FormName = Kurian Ledyba
+FormName = Kurian
 Type1 = STEEL
 Type2 = PSYCHIC
 BaseStats = 40,50,50,50,50,85
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEDIAN,1]
-FormName = Kurian Ledian
+FormName = Kurian
 Type1 = STEEL
 Type2 = PSYCHIC
 BaseStats = 70,90,70,125,60,115
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AIPOM,1]
-FormName = Kurian Aipom
+FormName = Kurian
 Type1 = NORMAL
 Type2 = SOUND
 BaseStats = 55,70,55,85,40,55
@@ -2693,21 +2693,21 @@ Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TYROGUE,1]
-FormName = Kurian Tyrogue
+FormName = Kurian
 Type1 = NORMAL
 Type2 = FIGHTING
 BaseStats = 30,30,30,30,30,30
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONTOP,1]
-FormName = Kurian Hitmontop
+FormName = Kurian
 Type1 = WATER
 Type2 = FIGHTING
 BaseStats = 58,110,70,92,35,90
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BRELOOM,1]
-FormName = Kurian Breloom
+FormName = Kurian
 Type1 = POISON
 Type2 = MYSTIC
 BaseStats = 90,110,80,70,50,90
@@ -2718,28 +2718,28 @@ Compatibility = Grass,Fairy
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [NOSEPASS,1]
-FormName = Kurian Nosepass
+FormName = Kurian
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 50,50,110,25,40,100
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SKITTY,1]
-FormName = Kurian Skitty
+FormName = Kurian
 Type1 = DARK
 Type2 = STEEL
 BaseStats = 55,70,55,35,25,80
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DELCATTY,1]
-FormName = Kurian Delcatty
+FormName = Kurian
 Type1 = DARK
 Type2 = STEEL
 BaseStats = 94,104,85,81,45,95
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PLUSLE,1]
-FormName = Kurian Plusle
+FormName = Kurian
 Type1 = FAIRY
 Type2 = LIGHT
 BaseStats = 70,40,70,65,75,85
@@ -2750,7 +2750,7 @@ Compatibility = Field,Fairy
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [MINUN,1]
-FormName = Kurian Minun
+FormName = Kurian
 Type1 = FAIRY
 Type2 = MYSTIC
 BaseStats = 60,50,45,100,95,55
@@ -2761,13 +2761,13 @@ Compatibility = Field,Fairy
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ROSELIA,1]
-ForName = Kurian Roselia
+ForName = Kurian
 Type1 = DARK
 Type2 = POISON
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BUDEW,1]
-FormName = Kurian Budew
+FormName = Kurian
 Type1 = DARK
 Type2 = POISON
 BaseStats = 50,42,40,41,67,45
@@ -2779,7 +2779,7 @@ Evolutions = ROSELIA,HasMove,TOXICTHREAD
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AMBIPOM,1]
-FormName = Kurian Ambipom
+FormName = Kurian
 Type1 = NORMAL
 Type2 = SOUND
 BaseStats = 75,105,65,120,55,65
@@ -2790,7 +2790,7 @@ Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BUNEARY,1]
-FormName = Kurian Buneary
+FormName = Kurian
 Type1 = GHOST
 Type2 = NORMAL
 BaseStats = 50,66,60,80,44,50
@@ -2801,7 +2801,7 @@ Compatibility = Amorphous,Humanlike
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LOPUNNY,2]
-FormName = Kurian Lopunny
+FormName = Kurian
 Type1 = GHOST
 Type2 = NORMAL
 BaseStats = 80,115,64,95,59,67
@@ -2812,159 +2812,159 @@ Compatibility = Amorphous,Humanlike
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SPIRITOMB,1]
-FormName = Kurian Spiritomb
+FormName = Kurian
 Type1 = COSMIC
 Type2 = LIGHT
 BaseStats = 80,52,108,35,132,78
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LUMINEON,1]
-FormName = Kurian Lumineon
+FormName = Kurian
 Type1 = WATER
 Type2 = LIGHT
 BaseStats = 75,45,80,80,75,101
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PROBOPASS,1]
-FormName = Kurian Probopass
+FormName = Kurian
 Type1 = GRASS
 Type2 = SOUND
 BaseStats = 80,100,130,40,65,120
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TIMBURR,1]
-FormName = Kurian Timburr
+FormName = Kurian
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 70,75,55,45,30,35
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [GURDURR,1]
-FormName = Kurian Gurdurr
+FormName = Kurian
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 80,100,75,65,40,55
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CONKELDURR,1]
-FormName = Kurian Conkeldurr
+FormName = Kurian
 Type1 = MYSTIC
 Type2 = FIGHTING
 BaseStats = 95,130,90,85,55,80
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SCRAFTY,1]
-FormName = Kurian Scrafty
+FormName = Kurian
 Type1 = ICE
 Type2 = MYSTIC
 BaseStats = 75,115,71,93,80,75
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SWADLOON,1]
-FormName = Kurian Swadloon
+FormName = Kurian
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 77,40,60,60,88,65
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEAVANNY,1]
-FormName = Kurian Leavanny
+FormName = Kurian
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 107,65,60,75,118,95
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ALOMOMOLA,1]
-FormName = Kurian Alomomola
+FormName = Kurian
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [FERROSEED,1]
-FormName = Kurian Ferroseed
+FormName = Kurian
 Type1 = STEEL
 Type2 = POISON
 BaseStats = 44,79,81,10,34,71
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [FERROTHORN,1]
-FormName = Kurian Ferrothorn
+FormName = Kurian
 Type1 = STEEL
 Type2 = POISON
 BaseStats = 84,119,121,20,54,111
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KARRABLAST,1]
-FormName = Kurian Karrablast
+FormName = Kurian
 Type1 = BUG
 Type2 = DARK
 BaseStats = 50,65,50,70,30,50
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,1]
-FormName = Kurian Escavalier - V
+FormName = Kurian - V
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 70,135,95,90,50,90
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,2]
-FormName = Kurian Escavalier - B
+FormName = Kurian - B
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 80,120,140,30,50,110
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,3]
-FormName = Kurian Escavalier - D
+FormName = Kurian - D
 Type1 = BUG
 Type2 = ROCK
 BaseStats = 100,130,110,50,50,90
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DEINO,1]
-FormName = Kurian Deino
+FormName = Kurian
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 100,30,52,32,25,58
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ZWEILOUS,1]
-FormName = Kurian Zweilous
+FormName = Kurian
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 120,50,62,23,45,60
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HYDREIGON,1]
-FormName = Kurian Hydreigon
+FormName = Kurian
 Type1 = GRASS
 Type2 = DRAGON
 BaseStats = 140,70,82,30,60,88
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TORNADUS,2]
-FormName = Kurian Tornadus
+FormName = Kurian
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PANGORO,1]
-FormName = Kurian Pangoro
+FormName = Kurian
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HONEDGE,2]
-FormName = Kurian Honedge
+FormName = Kurian
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 45,80,110,35,40,20
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DOUBLADE,2]
-FormName = Kurian Doublade
+FormName = Kurian
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 60,120,150,45,59,25
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,2]
-FormName = Kurian Aegislash (Shield Form)
+FormName = Kurian - Shield Form
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,50,140,110,120,40
@@ -2972,7 +2972,7 @@ Abilities = STANCESHIFT
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,3]
-FormName = Kurian Aegislash (Blade Form)
+FormName = Kurian - Blade Form
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,140,80,80,70,90
@@ -2980,63 +2980,63 @@ Abilities = STANCESHIFT
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CLAUNCHER,1]
-FormName = Kurian Clauncher
+FormName = Kurian
 Type1 = WATER
 Type2 = ELECTRIC
 BaseStats = 50,55,64,49,62,50
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CLAWITZER,1]
-FormName = Kurian Clawitzer
+FormName = Kurian
 Type1 = STEEL
 Type2 = ELECTRIC
 BaseStats = 70,75,94,99,122,65
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PHANTUMP,1]
-FormName = Kurian Phantump
+FormName = Kurian
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 43,70,63,30,70,63
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TREVENANT,1]
-FormName = Kurian Trevenant
+FormName = Kurian
 Type1 = GHOST
 Type2 = MYSTIC
 BaseStats = 95,110,104,42,85,104
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SANDYGAST,1]
-FormName = Kurian Sandygast
+FormName = Kurian
 Type1 = ELECTRIC
 Type2 = GROUND
 BaseStats = 60,50,50,10,80,80
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PALOSSAND,1]
-FormName = Kurian Palossand
+FormName = Kurian
 Type1 = ELECTRIC
 Type2 = GROUND
 BaseStats = 100,60,60,20,120,120
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HAKAMOO,1]
-FormName = Kurian Hakamo-o
+FormName = Kurian
 Type1 = FIGHTING
 Type2 = FLYING
 BaseStats = 65,90,65,75,60,65
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KOMMOO,1]
-FormName = Kurian Kommo-o
+FormName = Kurian
 Type1 = FIGHTING
 Type2 = FLYING
 BaseStats = 90,120,90,115,95,90
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BOUNSWEET,1]
-FormName = Kurian Bounsweet
+FormName = Kurian
 Type1 = FAIRY
 BaseStats = 44,30,35,40,31,20
 EffortPoints = 1,0,0,0,0,0
@@ -3047,7 +3047,7 @@ Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [STEENEE,1]
-FormName = Kurian Steenee
+FormName = Kurian
 Type1 = COSMIC
 Type2 = DARK
 BaseStats = 50,48,45,66,61,55
@@ -3059,7 +3059,7 @@ Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TSAREENA,1]
-FormName = Kurian Tsareena
+FormName = Kurian
 Type1 = COSMIC
 Type2 = DARK
 BaseStats = 101,90,60,71,123,90
@@ -3073,13 +3073,13 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #Mega Forms
 #-------------------------------
 [RATICATE,2]
-FormName = Mega Kantonian Raticate
+FormName = Mega Raticate
 Type1 = NORMAL
 Type2 = FIRE
 BaseStats = 60,119,91,128,45,91
 #-------------------------------
 [RATICATE,3]
-FormName = Mega Alolanian Raticate
+FormName = Mega Alolan Raticate
 Type1 = DARK
 Type2 = ICE
 BaseStats = 60,119,91,128,45,91
@@ -3145,10 +3145,10 @@ Type2 = DRAGON
 BaseStats = 60,100,115,100,60,90
 #-------------------------------
 [HITMONCHAN,2]
-FormName = Mega Kantonian Hitmonchan
+FormName = Mega Hitmonchan
 #-------------------------------
 [MRMIME,2]
-FormName = Mega Kantonian Mr. Mime
+FormName = Mega Mr. Mime
 #-------------------------------
 [MEW,1]
 FormName = Mega Mew
@@ -3355,7 +3355,7 @@ BaseStats = 70,105,80,140,130,80
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [RAICHU,3]
-FormName = Crystal Raichu
+FormName = Crystal Alolan Raichu
 Type1 = ELECTRIC
 Type2 = CRYSTAL
 BaseStats = 70,105,80,140,130,80
@@ -3543,12 +3543,15 @@ Abilities = CRYSTALSURGE
 HiddenAbility = CRYSTALSURGE
 Pokedex = Spritzee who have seen the legendary Crystal Pokémon, Kaizure. While Spritzee are too weak to crystallize, their Aroma changed when coming in contact with a huge amount of Crystal Energy for an long time. For a Spritzee's aroma to change this much, it must've been around Kaizure for a very long time.
 Evolutions = AROMATISSE,None,
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GIGALITH,1]
 FormName = Azure Gigalith
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [CRYOGONAL,1]
 FormName = Azure Cryogonal
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [COMBEE,1]
 FormName = Guard Combee
@@ -3574,6 +3577,7 @@ Color = Brown
 Kind = Ruined
 Pokedex = A Delta form believed to have originated in Torren. These Beldum appear to be made of Rock instead of steel.
 Evolutions = METANG,Level,20
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [METANG,1]
 FormName = Delta Metang
@@ -3591,6 +3595,7 @@ Color = Brown
 Kind = Ruined
 Pokedex = A Delta form believed to have originated in Torren. These Metang appear to be made of Rock instead of steel.
 Evolutions = METAGROSS,Level,45
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [METAGROSS,2]
 FormName = Delta Metagross
@@ -3607,6 +3612,7 @@ HiddenAbility = ROCKHEAD
 Color = Brown
 Kind = Ruined
 Pokedex = A Delta form believed to have originated in Torren. These Metagross appear to be made of Rock instead of steel.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [JIRACHI,2]
 FormName = God Form Jirachi
@@ -3622,6 +3628,7 @@ Height = 1.0
 Weight = 0.1
 Kind = Sleepy
 Pokedex = Wow
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [DEINO,2]
 FormName = Vitrian Deino
@@ -3634,6 +3641,7 @@ Compatibility = Undiscovered
 Kind = Augmented
 Pokedex = A victim of experimentation from Team Vitreus taking advantage of the softened Deino on (island name). It lacks eyes, but can sense its surroundings via signals from its antenna.
 Evolutions = ZWEILOUS,Level,35
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ZWEILOUS,2]
 FormName = Vitrian Zweilous
@@ -3646,6 +3654,7 @@ Compatibility = Undiscovered
 Kind = Augmented
 Pokedex = It has legs instead of wheels to stabilize its footing while its blasting powerful attacks from its two cannons. It is unknown if it can emote.
 Evolutions = HYDREIGON,Level,55
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [HYDREIGON,2]
 FormName = Vitrian Hydreigon
@@ -3657,6 +3666,7 @@ HiddenAbility = MEGALAUNCHER
 Compatibility = Undiscovered
 Kind = Augmented
 Pokedex = An attempt of bringing the softened Kurian Hydreigon back to their former glory. It flies at high speeds and shoots down its target with powerful beams from either its armcannons or its mouth.
+Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GIRAFARIG,1]
 Type1 = NORMAL
@@ -3702,3 +3712,4 @@ Type2 = COSMIC
 [KAIZURE,1]
 EffortPoints = 4,4,4,4,4,4
 Height = 0.4
+Flags = SelectableInTeamBuilderMode

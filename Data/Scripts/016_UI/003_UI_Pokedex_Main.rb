@@ -59,7 +59,8 @@ class Window_Pokedex < Window_DrawableCommand
     end
     pbDrawShadowText(self.contents, rect.x + 36, rect.y + 6, rect.width, rect.height,
                      num_text, self.baseColor, self.shadowColor) if !@team_builder_mode
-    pbDrawShadowText(self.contents, rect.x + 84, rect.y + 6, rect.width, rect.height,
+    positive_x_offset = @team_builder_mode ? 36 : 84
+    pbDrawShadowText(self.contents, rect.x + positive_x_offset, rect.y + 6, rect.width - positive_x_offset, rect.height,
                      name_text, self.baseColor, self.shadowColor)
   end
 
@@ -473,7 +474,7 @@ class PokemonPokedex_Scene
       shape  = species_data.shape
       height = species_data.height
       weight = species_data.weight
-      ret.push([species, @team_builder_mode && form > 0 ? species_data.name : species_data.name, height, weight, i + 1, shift, type1, type2, color, shape, form])
+      ret.push([species, species_data.form_name_for_team_builder(@team_builder_mode), height, weight, i + 1, shift, type1, type2, color, shape, form])
     end
     return ret
   end

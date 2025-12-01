@@ -165,17 +165,21 @@ class PokemonPokedexInfo_Scene
     # (height, weight, the Name's Species, etc), depending on if the 
     # Pokédex Entry Scene is playing, when the player is capturing a Wild Pokémon, 
     # or if the player is seeing the "normal" Dex Entry page on the Pokédex.
+    name_text = _INTL("{1}{2} {3}", indexText, " ", species_data.name)
+    if @team_builder_mode
+      name_text = species_data.form_name_for_team_builder(true)
+    end
     if @brief
       textpos = [
         [_INTL("Pokémon Registration Complete"), 82, -2, 0, Color.new(255, 255, 255), Color.new(165, 165, 173)],
-        [_INTL("{1}{2} {3}", indexText, " ", species_data.name),
+        [name_text,
             272, 54, 0, Color.new(82, 82, 90), Color.new(165, 165, 173)],
         [_INTL("Height"), 288, 170, 0, base, shadow],
         [_INTL("Weight"), 288, 200, 0, base, shadow]
       ]
     else
       textpos = [
-        [_INTL("{1}{2} {3}", indexText, " ", species_data.name),
+        [name_text,
             272, 16, 0, Color.new(82, 82, 90), Color.new(165, 165, 173)],
         [_INTL("Height"), 288, 132, 0, base, shadow],
         [_INTL("Weight"), 288, 162, 0, base, shadow]

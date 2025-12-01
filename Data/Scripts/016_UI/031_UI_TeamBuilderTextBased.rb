@@ -229,14 +229,14 @@ class TeamBuilderTextBasedScreen
           Game.start_new
           setBattleRule(sprintf("%dv%d", size0, size1))
           setBattleRule("canLose")
+          setBattleRule("noexp")
+          setBattleRule("nomoney")
+          setBattleRule("disablepokeballs")
           # Set player party and bag
           $player.party = Marshal.load(Marshal.dump(@parties[0]))
           $bag = Marshal.load(Marshal.dump(@bags[0]))
           # Set opponent party and bag
           $custom_battle_mode_args = [@parties[1], @bags[1]]
-          setBattleRule("noexp")
-          setBattleRule("nomoney")
-          setBattleRule("disablepokeballs")
           TrainerBattle.start(:TEAMVITREUS_CUSTOMBATTLEMODE, "Grunt", 0)
           # Un-set global variables so that it doesn't cause any issues if loading an existing save later
           $custom_battle_mode_args = nil

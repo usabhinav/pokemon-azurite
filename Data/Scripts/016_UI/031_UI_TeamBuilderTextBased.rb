@@ -299,7 +299,7 @@ class TeamBuilderTextBasedScreen
         icon_sprite.x = 44 + 32 + (i % 2 == 0 ? 0 : 64)
         icon_sprite.y = 84 + 32 + (i / 2) * 64
         icon_sprite.z = 2
-        icon_sprite.active = true
+        icon_sprite.disable_anim = true
         icon_sprite.update
         @sprites["pokemonIcon#{i}"] = icon_sprite
       else

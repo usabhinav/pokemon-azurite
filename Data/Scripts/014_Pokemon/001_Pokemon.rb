@@ -435,8 +435,10 @@ class Pokemon
       if d < Settings::ALBINO_POKEMON_CHANCE
         @shiny_variant = ALBINO
       elsif d < Settings::ALBINO_POKEMON_CHANCE + Settings::SHINY_POKEMON_CHANCE
+        # TODO: Re-enable this feature once we actually have some glossy Pokemon to show. Right now, we just have a few icon sprites,
+        # nothing more.
         # Equal chance of shiny or glossy, unless this Pokémon doesn't have a glossy
-        if glossyFormExists?
+        if false # glossyFormExists?
           @shiny_variant = (rand(2) == 0) ? SHINY : GLOSSY
         else
           @shiny_variant = SHINY

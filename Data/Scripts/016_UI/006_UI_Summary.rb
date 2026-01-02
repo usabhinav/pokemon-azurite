@@ -525,7 +525,7 @@ class PokemonSummary_Scene
     # Write the Regional/National Dex number
     dexnum = 0
     dexnumshift = false
-    if $player.pokedex.unlocked?(-1)   # National Dex is unlocked
+    if $player.pokedex.unlocked?(-1) || @team_builder_mode   # National Dex is unlocked
       dexnum = @nationalDexList.index(@pokemon.species_data.species) || 0
       dexnumshift = true if Settings::DEXES_WITH_OFFSETS.include?(-1)
     else

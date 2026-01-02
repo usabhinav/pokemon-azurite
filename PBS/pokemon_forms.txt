@@ -1225,7 +1225,7 @@ Weight = 56.4
 Generation = 6
 #-------------------------------
 [ROTOM,1]
-FormName = Heat Rotom
+FormName = Heat
 Types = ELECTRIC,FIRE
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
@@ -1233,7 +1233,7 @@ Pokedex = This Rotom has possessed a convection microwave oven that uses a speci
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROTOM,2]
-FormName = Wash Rotom
+FormName = Wash
 Types = ELECTRIC,WATER
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
@@ -1241,7 +1241,7 @@ Pokedex = This form of Rotom enjoys coming up with water-based pranks. Be carefu
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROTOM,3]
-FormName = Frost Rotom
+FormName = Frost
 Types = ELECTRIC,ICE
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
@@ -1249,7 +1249,7 @@ Pokedex = Rotom assumes this form when it takes over a refrigerator powered by a
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROTOM,4]
-FormName = Fan Rotom
+FormName = Fan
 Types = ELECTRIC,FLYING
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
@@ -1257,7 +1257,7 @@ Pokedex = In this form, Rotom applies its new power over wind to its love of pra
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ROTOM,5]
-FormName = Mow Rotom
+FormName = Mow
 Types = ELECTRIC,GRASS
 BaseStats = 50,65,107,86,105,107
 BaseExp = 182
@@ -1582,6 +1582,7 @@ FormName = Chill Drive
 FormName = Douse Drive
 #-------------------------------
 [GRENINJA,1]
+FormName = Battle Bond
 Abilities = BATTLEBOND
 HiddenAbilities = BATTLEBOND
 EggGroups = Undiscovered
@@ -2182,242 +2183,362 @@ FormName = Antique Form
 Pokedex = Trainers Polteageist trusts will be allowed to experience its distinctive flavor and aroma firsthand by sampling just a tiny bit of its tea.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
+[ALCREMIE,1]
+FormName = Vanilla + Berry
+Flags = SelectableInTeamBuilderMode
+#-------------------------------
+[ALCREMIE,2]
+FormName = Vanilla + Love
+Flags = SelectableInTeamBuilderMode
+#-------------------------------
+[ALCREMIE,3]
+FormName = Vanilla + Star
+Flags = SelectableInTeamBuilderMode
+#-------------------------------
+[ALCREMIE,4]
+FormName = Vanilla + Clover
+Flags = SelectableInTeamBuilderMode
+#-------------------------------
+[ALCREMIE,5]
+FormName = Vanilla + Flower
+Flags = SelectableInTeamBuilderMode
+#-------------------------------
+[ALCREMIE,6]
+FormName = Vanilla + Ribbon
+Flags = SelectableInTeamBuilderMode
+#-------------------------------
 [ALCREMIE,7]
-FormName = Ruby Cream
+FormName = Ruby Cream + Strawberry
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sweet and tart flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,8]
+FormName = Ruby + Berry
 PokedexForm = 7
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sweet and tart flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,9]
+FormName = Ruby + Love
 PokedexForm = 7
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sweet and tart flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,10]
+FormName = Ruby + Star
 PokedexForm = 7
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sweet and tart flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,11]
+FormName = Ruby + Clover
 PokedexForm = 7
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sweet and tart flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,12]
+FormName = Ruby + Flower
 PokedexForm = 7
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sweet and tart flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,13]
+FormName = Ruby + Ribbon
 PokedexForm = 7
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sweet and tart flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,14]
-FormName = Matcha Cream
+FormName = Matcha Cream + Strawberry
 Color = Green
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream an aromatic flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,15]
+FormName = Matcha + Berry
 PokedexForm = 14
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream an aromatic flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,16]
+FormName = Matcha + Love
 PokedexForm = 14
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream an aromatic flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,17]
+FormName = Matcha + Star
 PokedexForm = 14
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream an aromatic flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,18]
+FormName = Matcha + Clover
 PokedexForm = 14
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream an aromatic flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,19]
+FormName = Matcha + Flower
 PokedexForm = 14
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream an aromatic flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,20]
+FormName = Matcha + Ribbon
 PokedexForm = 14
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream an aromatic flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,21]
-FormName = Mint Cream
+FormName = Mint Cream + Strawberry
 Color = Blue
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a refreshing flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,22]
+FormName = Mint + Berry
 PokedexForm = 21
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a refreshing flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,23]
+FormName = Mint + Love
 PokedexForm = 21
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a refreshing flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,24]
+FormName = Mint + Star
 PokedexForm = 21
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a refreshing flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,25]
+FormName = Mint + Clover
 PokedexForm = 21
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a refreshing flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,26]
+FormName = Mint + Flower
 PokedexForm = 21
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a refreshing flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,27]
+FormName = Mint + Ribbon
 PokedexForm = 21
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a refreshing flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,28]
-FormName = Lemon Cream
+FormName = Lemon Cream + Strawberry
 Color = Yellow
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sour flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,29]
+FormName = Lemon + Berry
 PokedexForm = 28
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sour flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,30]
+FormName = Lemon + Love
 PokedexForm = 28
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sour flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,31]
+FormName = Lemon + Star
 PokedexForm = 28
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sour flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,32]
+FormName = Lemon + Clover
 PokedexForm = 28
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sour flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,33]
+FormName = Lemon + Flower
 PokedexForm = 28
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sour flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,34]
+FormName = Lemon + Ribbon
 PokedexForm = 28
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a sour flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,35]
-FormName = Salted Cream
+FormName = Salted Cream + Strawberry
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a salty flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,36]
+FormName = Salted + Berry
 PokedexForm = 35
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a salty flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,37]
+FormName = Salted + Love
 PokedexForm = 35
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a salty flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,38]
+FormName = Salted + Star
 PokedexForm = 35
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a salty flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,39]
+FormName = Salted + Clover
 PokedexForm = 35
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a salty flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,40]
+FormName = Salted + Flower
 PokedexForm = 35
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a salty flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,41]
+FormName = Salted + Ribbon
 PokedexForm = 35
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a salty flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,42]
-FormName = Ruby Swirl
+FormName = Ruby Swirl + Strawberry
 Color = Yellow
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a mixed flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,43]
+FormName = Ruby + Berry
 PokedexForm = 42
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a mixed flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,44]
+FormName = Ruby + Love
 PokedexForm = 42
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a mixed flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,45]
+FormName = Ruby + Star
 PokedexForm = 42
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a mixed flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,46]
+FormName = Ruby + Clover
 PokedexForm = 42
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a mixed flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,47]
+FormName = Ruby + Flower
 PokedexForm = 42
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a mixed flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,48]
+FormName = Ruby + Ribbon
 PokedexForm = 42
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a mixed flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,49]
-FormName = Caramel Swirl
+FormName = Caramel Swirl + Strawberry
 Color = Brown
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a bitter flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,50]
+FormName = Caramel + Berry
 PokedexForm = 49
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a bitter flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,51]
+FormName = Caramel + Love
 PokedexForm = 49
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a bitter flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,52]
+FormName = Caramel + Star
 PokedexForm = 49
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a bitter flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,53]
+FormName = Caramel + Clover
 PokedexForm = 49
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a bitter flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,54]
+FormName = Caramel + Flower
 PokedexForm = 49
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a bitter flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,55]
+FormName = Caramel + Ribbon
 PokedexForm = 49
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a bitter flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,56]
-FormName = Rainbow Swirl
+FormName = Rainbow Swirl + Strawberry
 Color = Yellow
 Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a complex flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,57]
+FormName = Rainbow + Berry
 PokedexForm = 56
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a complex flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,58]
+FormName = Rainbow + Love
 PokedexForm = 56
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a complex flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,59]
+FormName = Rainbow + Star
 PokedexForm = 56
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a complex flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,60]
+FormName = Rainbow + Clover
 PokedexForm = 56
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a complex flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,61]
+FormName = Rainbow + Flower
 PokedexForm = 56
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a complex flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ALCREMIE,62]
+FormName = Rainbow + Ribbon
 PokedexForm = 56
+Pokedex = The cells that compose its cream fluctuated suddenly during evolution, giving the cream a complex flavor.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [EISCUE,1]
@@ -2499,99 +2620,99 @@ Category = High King
 Pokedex = Legend says that by using its power to see all events from past to future, this Pokémon saved the creatures of a forest from a meteorite strike.
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
+[PIKACHU,2]
+FormName = Cosplay
+Compatibility = Undiscovered
+Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
+Generation = 6
+Flags = SelectableInTeamBuilderMode
+#-------------------------------
 [PIKACHU,3]
-FormName = Cosplay Pikachu
+FormName = Cosplay - Rock Star
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,4]
-FormName = Cosplay Pikachu - Belle
+FormName = Cosplay - Belle
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,5]
-FormName = Cosplay Pikachu - Libre
+FormName = Cosplay - Pop Star
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,6]
-FormName = Cosplay Pikachu - Ph.D.
+FormName = Cosplay - Ph.D.
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,7]
-FormName = Cosplay Pikachu - Pop Star
+FormName = Cosplay - Libre
 Compatibility = Undiscovered
 Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
 Generation = 6
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [PIKACHU,8]
-FormName = Cosplay Pikachu - Rock Star
-Compatibility = Undiscovered
-Pokedex = Whenever Pikachu comes across something new, it blasts it with a jolt of electricity. If you come across a blackened berry, it's evidence that this Pokémon mistook the intensity of its charge.
-Generation = 6
-Flags = SelectableInTeamBuilderMode
-#-------------------------------
-[PIKACHU,9]
-FormName = Original Cap Pikachu
+FormName = Original Cap
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through many different regions.
 Generation = 1
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
-[PIKACHU,10]
-FormName = Hoenn Cap Pikachu
+[PIKACHU,9]
+FormName = Hoenn Cap
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Hoenn region.
 Generation = 3
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
-[PIKACHU,11]
-FormName = Sinnoh Cap Pikachu
+[PIKACHU,10]
+FormName = Sinnoh Cap
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Sinnoh region.
 Generation = 4
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
-[PIKACHU,12]
-FormName = Unova Cap Pikachu
+[PIKACHU,11]
+FormName = Unova Cap
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Unova region.
 Generation = 5
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
-[PIKACHU,13]
-FormName = Kalos Cap Pikachu
+[PIKACHU,12]
+FormName = Kalos Cap
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Kalos region.
 Generation = 6
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
-[PIKACHU,14]
-FormName = Alola Cap Pikachu
+[PIKACHU,13]
+FormName = Alola Cap
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of traveling through the Alola region.
 Generation = 7
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
-[PIKACHU,15]
-FormName = Partner Cap Pikachu
+[PIKACHU,14]
+FormName = Partner Cap
 Compatibility = Undiscovered
 Pokedex = This Pikachu wears its partner's cap, which is brimming with memories of when they first met.
 Generation = 7
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
-[PIKACHU,16]
-FormName = World Cap Pikachu
+[PIKACHU,15]
+FormName = World Cap
 Compatibility = Undiscovered
 Pokedex = This Pikachu is wearing its Trainer's cap. The cap is a precious symbol that travels across different regions with Pikachu.
 Generation = 8
@@ -2761,7 +2882,7 @@ Compatibility = Field,Fairy
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ROSELIA,1]
-ForName = Kurian
+FormName = Kurian
 Type1 = DARK
 Type2 = POISON
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
@@ -2964,7 +3085,7 @@ BaseStats = 60,120,150,45,59,25
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,2]
-FormName = Kurian - Shield Form
+FormName = Kurian - Shield
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,50,140,110,120,40
@@ -2972,7 +3093,7 @@ Abilities = STANCESHIFT
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,3]
-FormName = Kurian - Blade Form
+FormName = Kurian - Blade
 Type1 = STEEL
 Type2 = MYSTIC
 BaseStats = 70,140,80,80,70,90
@@ -3402,7 +3523,7 @@ Type2 = CRYSTAL
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [CRAWDAUNT,1]
-FormName = Mega Crawdaunt
+FormName = Crystal Crawdaunt
 Type1 = WATER
 Type2 = CRYSTAL
 BaseStats = 68,145,115,70,95,90
@@ -3536,7 +3657,7 @@ Pokedex = The Perfect Transformation. Also known as Crystal Mega Evolution. Suic
 MegaStone = CRYSTALSUICUNITE
 #-------------------------------
 [SPRITZEE,1]
-FormName = Azure Spritzee
+FormName = Azure
 BaseStats = 78,52,60,72,63,65
 BaseEXP = 69
 Abilities = CRYSTALSURGE
@@ -3546,15 +3667,15 @@ Evolutions = AROMATISSE,None,
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GIGALITH,1]
-FormName = Azure Gigalith
+FormName = Azure
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [CRYOGONAL,1]
-FormName = Azure Cryogonal
+FormName = Azure
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [COMBEE,1]
-FormName = Guard Combee
+FormName = Guard Forme
 BaseStats = 90,20,150,45,20,150
 BaseEXP = 60
 EffortPoints = 0,0,1,0,0,1
@@ -3562,7 +3683,7 @@ Pokedex = It collects and delivers honey to its colony. At night, they cluster t
 Evolutions = VESPIQUEN,None,
 #-------------------------------
 [BELDUM,1]
-FormName = Delta Beldum
+FormName = Delta
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 40,55,80,30,35,60
@@ -3580,7 +3701,7 @@ Evolutions = METANG,Level,20
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [METANG,1]
-FormName = Delta Metang
+FormName = Delta
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 60,75,100,50,55,80
@@ -3598,7 +3719,7 @@ Evolutions = METAGROSS,Level,45
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [METAGROSS,2]
-FormName = Delta Metagross
+FormName = Delta
 Type1 = GRASS
 Type2 = ROCK
 BaseStats = 80,135,130,70,95,90
@@ -3615,7 +3736,7 @@ Pokedex = A Delta form believed to have originated in Torren. These Metagross ap
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [JIRACHI,2]
-FormName = God Form Jirachi
+FormName = God Form
 BaseStats = 999,999,999,999,999,999
 BaseEXP = 999
 EffortPoints = 252,252,252,252,252,252
@@ -3631,7 +3752,7 @@ Pokedex = Wow
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [DEINO,2]
-FormName = Vitrian Deino
+FormName = Vitrian
 Type1 = STEEL
 Type2 = DRAGON
 BaseStats = 50,45,50,55,80,50
@@ -3644,7 +3765,7 @@ Evolutions = ZWEILOUS,Level,35
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ZWEILOUS,2]
-FormName = Vitrian Zweilous
+FormName = Vitrian
 Type1 = STEEL
 Type2 = DRAGON
 BaseStats = 70,65,75,60,100,75
@@ -3657,7 +3778,7 @@ Evolutions = HYDREIGON,Level,55
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [HYDREIGON,2]
-FormName = Vitrian Hydreigon
+FormName = Vitrian
 Type1 = STEEL
 Type2 = DRAGON
 BaseStats = 90,100,105,95,135,105
@@ -3710,6 +3831,7 @@ Type1 = CRYSTAL
 Type2 = COSMIC
 #-------------------------------
 [KAIZURE,1]
+FormName = Carefree
 EffortPoints = 4,4,4,4,4,4
 Height = 0.4
 Flags = SelectableInTeamBuilderMode

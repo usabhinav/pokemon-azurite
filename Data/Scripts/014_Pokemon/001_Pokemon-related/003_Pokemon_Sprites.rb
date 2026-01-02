@@ -86,6 +86,7 @@ class PokemonIconSprite < Sprite
   attr_accessor :selected
   attr_accessor :active
   attr_reader   :pokemon
+  attr_accessor :disable_anim
 
   def initialize(pokemon, viewport = nil)
     super(viewport)
@@ -99,6 +100,7 @@ class PokemonIconSprite < Sprite
     @logical_y    = 0   # Actual y coordinate
     @adjusted_x   = 0   # Offset due to "jumping" animation in party screen
     @adjusted_y   = 0   # Offset due to "jumping" animation in party screen
+    @disable_anim = false
   end
 
   def dispose
@@ -185,6 +187,7 @@ class PokemonIconSprite < Sprite
   def update
     return if !@animBitmap
     super
+    return if @disable_anim
     @animBitmap.update
     self.bitmap = @animBitmap.bitmap
     # Update animation

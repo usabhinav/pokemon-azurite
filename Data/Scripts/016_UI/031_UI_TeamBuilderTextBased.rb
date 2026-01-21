@@ -232,6 +232,7 @@ class TeamBuilderTextBasedScreen
           setBattleRule("noexp")
           setBattleRule("nomoney")
           setBattleRule("disablepokeballs")
+          play_next_battle_BGM_from_saved_preference
           # Set player party and bag
           $player.party = Marshal.load(Marshal.dump(@parties[0]))
           $bag = Marshal.load(Marshal.dump(@bags[0]))

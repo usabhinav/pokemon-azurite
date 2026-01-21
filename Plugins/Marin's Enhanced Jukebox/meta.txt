@@ -1,0 +1,5 @@
+Name         = Enhanced Jukebox
+Version      = 2.0
+Essentials   = 20
+Credits      = Marin, Derxwna Kapsyla
+Requires     = Marin's Scripting Utilities, 2.0

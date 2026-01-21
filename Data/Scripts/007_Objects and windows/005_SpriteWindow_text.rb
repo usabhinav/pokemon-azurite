@@ -104,6 +104,14 @@ class Window_UnformattedTextPokemon < SpriteWindow_Base
     drawTextEx(self.contents, 0, -2, self.contents.width, 0,   # TEXT OFFSET
                @text.gsub(/\r/, ""), @baseColor, @shadowColor)
   end
+
+  def refreshWithoutLineBreaks
+    self.contents = pbDoEnsureBitmap(self.contents, self.width - self.borderX,
+                                     self.height - self.borderY)
+    self.contents.clear
+    pbDrawShadowText(self.contents, 0, -2, self.contents.width, 0,   # TEXT OFFSET
+                     @text.gsub(/\r/, ""), @baseColor, @shadowColor)
+  end
 end
 
 

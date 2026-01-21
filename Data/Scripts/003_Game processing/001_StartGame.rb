@@ -15,6 +15,7 @@ module Game
     if $data_system.start_map_id == 0 || !pbRgssExists?(map_file)
       raise _INTL("No starting position was set in the map editor.")
     end
+    self.load_audio_metadata
   end
 
   # Loads bootup data from save file (if it exists) or creates bootup data (if
@@ -122,5 +123,24 @@ module Game
       return false
     end
     return true
+  end
+
+  def self.load_audio_metadata
+    $audio_metadata_map = {}
+    files = []
+    Dir.chdir("Audio/BGM/") {
+      Dir.glob("*.ogg") { |f| files.push(f) }
+      Dir.glob("*.wav") { |f| files.push(f) }
+      Dir.glob("*.mid") { |f| files.push(f) }
+      Dir.glob("*.midi") { |f| files.push(f) }
+    }
+    files.each do |f|
+      file_path = "Audio/BGM/" + f
+      file_path_without_extension = "Audio/BGM/" + f.chomp(File.extname(f))
+      if $audio_metadata_map.key?(file_path_without_extension)
+        raise _INTL("Found duplicate entries for file {1} when saving audio metadata.")
+      end
+      $audio_metadata_map[file_path_without_extension] = get_audio_metadata_for_file_path(file_path)
+    end
   end
 end

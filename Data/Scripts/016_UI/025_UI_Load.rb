@@ -433,6 +433,7 @@ class PokemonLoadScreen
     cmd_continue     = -1
     cmd_new_game     = -1
     cmd_custom_battle_mode = -1
+    cmd_jukebox      = -1
     cmd_options      = -1
     cmd_language     = -1
     cmd_mystery_gift = -1
@@ -445,6 +446,7 @@ class PokemonLoadScreen
       commands[cmd_new_game = commands.length]  = _INTL('New Journey')
       commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
       commands[cmd_manage_saved_data = commands.length] = _INTL('Manage Saved Data')
+      commands[cmd_jukebox = commands.length] = _INTL('Jukebox')
       if @save_data[:player].mystery_gift_unlocked && false # Temporarily disabling this option
         commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
         buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_LEFT_UP
@@ -461,6 +463,7 @@ class PokemonLoadScreen
       commands[cmd_new_game = commands.length]  = _INTL('Start The Journey')
       commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
       commands[cmd_manage_saved_data = commands.length] = _INTL('Manage Saved Data')
+      commands[cmd_jukebox = commands.length] = _INTL('Jukebox')
       commands[cmd_options = commands.length]  = _INTL('Settings')
       commands[cmd_quit = commands.length]  = _INTL('Quit Game')
       commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
@@ -470,6 +473,7 @@ class PokemonLoadScreen
 
     buttonFormat[cmd_custom_battle_mode] = LoadMenu_Model::BTN_NORMAL_BIG
     buttonFormat[cmd_manage_saved_data] = LoadMenu_Model::BTN_NORMAL_BIG
+    buttonFormat[cmd_jukebox] = LoadMenu_Model::BTN_NORMAL_BIG
     buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
     buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
     buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
@@ -524,6 +528,12 @@ class PokemonLoadScreen
         SaveData.load_new_game_values
         registerAllSpeciesAndForms # To show all species/forms when selecting species
         pbStartSaveDataObjectManagerScreen
+      when cmd_jukebox
+        pbFadeOutIn do
+          scene = PokemonJukebox_Scene.new
+          screen = PokemonJukeboxScreen.new(scene)
+          screen.pbStartAzuriteJukeboxScreen
+        end
       when cmd_new_game
         @scene.pbEndScene
         Game.start_new

@@ -144,6 +144,8 @@ class Battle::Scene
     end
     # assign bitmaps for wild battlers
     loadWildBitmaps
+    # assign bitmaps for player battlers if applicable
+    loadPlayerPokemonBitmapsForRunnerMode
   end
   #-----------------------------------------------------------------------------
   #  apply bitmaps for wild battlers
@@ -171,6 +173,25 @@ class Battle::Scene
       @sprites["pokemon_#{EliteBattle.follower(@battle)}"].tone = Tone.new(-255, -255, -255, -255)
       @sprites["pokemon_#{EliteBattle.follower(@battle)}"].visible = true
       @sprites["dataBox_#{EliteBattle.follower(@battle)}"].render
+    end
+  end
+  #-----------------------------------------------------------------------------
+  #  apply bitmaps for player side battlers
+  #-----------------------------------------------------------------------------
+  def loadPlayerPokemonBitmapsForRunnerMode
+    if @battle.rules["skipplayersendout"]
+      # player side battle bitmaps
+      @battle.eachSameSideBattler(0) do |b|
+        next if !@sprites["pokemon_#{b.index}"]
+        @sprites["pokemon_#{b.index}"].setPokemonBitmap(b.pokemon, true)
+        @sprites["pokemon_#{b.index}"].visible = true
+        @sprites["pokemon_#{b.index}"].initializeAura if !@battle.auraTypeOfBattler(b.index).nil?
+      end
+      # renders databoxes
+      @battle.eachSameSideBattler(0) do |b|
+        next if !@sprites["dataBox_#{b.index}"]
+        @sprites["dataBox_#{b.index}"].render
+      end
     end
   end
   #-----------------------------------------------------------------------------
@@ -279,6 +300,17 @@ class Battle::Scene
         self.wait(1, true)
       end
     end
+    if @battle.rules["skipplayersendout"]
+      @battle.eachSameSideBattler(0) do |b|
+        break if EliteBattle.get(:smAnim)
+        playBattlerCry(b)
+      end
+      # makes databoxes for player side battlers appear
+      @battle.eachSameSideBattler(0) do |b|
+        next if !@sprites["dataBox_#{b.index}"]
+        @sprites["dataBox_#{b.index}"].appear if !EliteBattle.get(:smAnim)
+      end
+    end
     # for trainer sprites
     if @battle.trainerBattle?
       # calculates the number of frames of the sprite
@@ -305,6 +337,16 @@ class Battle::Scene
         battler = @battlers[i*2 + 1]
         if shinyBattler?(battler) && @battle.battlescene && !EliteBattle.get(:smAnim)
           pbCommonAnimation("Shiny", battler, nil)
+        end
+      end
+    end
+    # show shiny animation for player side Pokémon
+    if @battle.rules["skipplayersendout"]
+      @battle.eachSameSideBattler(0) do |b|
+        next if !@sprites["pokemon_#{b.index}"]
+        @sprites["dataBox_#{b.index}"].inposition = true
+        if shinyBattler?(b) && @battle.battlescene && !EliteBattle.get(:smAnim)
+          pbCommonAnimation("Shiny", b, nil)
         end
       end
     end

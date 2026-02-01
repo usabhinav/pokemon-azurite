@@ -477,9 +477,9 @@ class PokemonLoadScreen
     buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
     buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
     buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
- 
+
     windows = Window_Segmented.new
- 
+
     upperCmd = Window_CommandPokemon.new([])
     lowerCmd = Window_CommandPokemon.new([])
     upperCmd.visible = false
@@ -490,7 +490,7 @@ class PokemonLoadScreen
     
     windows.addSegment(upperCmd)
     windows.addSegment(lowerCmd)
- 
+
     # loop do
       # Graphics.update
       # Input.update

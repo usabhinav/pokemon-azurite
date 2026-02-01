@@ -56,7 +56,7 @@ def pbSceneStandby
   $scene.createSpritesets if $scene.is_a?(Scene_Map)
 end
 
-def pbBattleAnimation(bgm = nil, battletype = 0, foe = nil)
+def pbBattleAnimation(bgm = nil, battletype = 0, foe = nil, skip_battle_anim = false)
   $game_temp.in_battle = true
   viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
   viewport.z = 99999
@@ -76,56 +76,60 @@ def pbBattleAnimation(bgm = nil, battletype = 0, foe = nil)
   # Play battle music
   bgm = pbGetWildBattleBGM([]) if !bgm
   pbBGMPlay(bgm)
-  # Determine location of battle
-  location = 0   # 0=outside, 1=inside, 2=cave, 3=water
-  if $PokemonGlobal.surfing || $PokemonGlobal.diving
-    location = 3
-  elsif $game_temp.encounter_type &&
-        GameData::EncounterType.get($game_temp.encounter_type).type == :fishing
-    location = 3
-  elsif $PokemonEncounters.has_cave_encounters?
-    location = 2
-  elsif !$game_map.metadata&.outdoor_map
-    location = 1
-  end
-  # Check for custom battle intro animations
-  handled = false
-  SpecialBattleIntroAnimations.each do |name, priority, condition, animation|
-    next if !condition.call(battletype, foe, location)
-    animation.call(viewport, battletype, foe, location)
-    handled = true
-    break
-  end
-  # Default battle intro animation
-  if !handled
-    # Determine which animation is played
-    anim = ""
-    if PBDayNight.isDay?
-      case battletype
-      when 0, 2   # Wild, double wild
-        anim = ["SnakeSquares", "DiagonalBubbleTL", "DiagonalBubbleBR", "RisingSplash"][location]
-      when 1      # Trainer
-        anim = ["TwoBallPass", "ThreeBallDown", "BallDown", "WavyThreeBallUp"][location]
-      when 3      # Double trainer
-        anim = "FourBallBurst"
-      end
-    else
-      case battletype
-      when 0, 2   # Wild, double wild
-        anim = ["SnakeSquares", "DiagonalBubbleBR", "DiagonalBubbleBR", "RisingSplash"][location]
-      when 1      # Trainer
-        anim = ["SpinBallSplit", "BallDown", "BallDown", "WavySpinBall"][location]
-      when 3      # Double trainer
-        anim = "FourBallBurst"
-      end
+  if !skip_battle_anim
+    # Determine location of battle
+    location = 0   # 0=outside, 1=inside, 2=cave, 3=water
+    if $PokemonGlobal.surfing || $PokemonGlobal.diving
+      location = 3
+    elsif $game_temp.encounter_type &&
+          GameData::EncounterType.get($game_temp.encounter_type).type == :fishing
+      location = 3
+    elsif $PokemonEncounters.has_cave_encounters?
+      location = 2
+    elsif !$game_map.metadata&.outdoor_map
+      location = 1
     end
-    pbBattleAnimationCore(anim, viewport, location)
+    # Check for custom battle intro animations
+    handled = false
+    SpecialBattleIntroAnimations.each do |name, priority, condition, animation|
+      next if !condition.call(battletype, foe, location)
+      animation.call(viewport, battletype, foe, location)
+      handled = true
+      break
+    end
+    # Default battle intro animation
+    if !handled
+      # Determine which animation is played
+      anim = ""
+      if PBDayNight.isDay?
+        case battletype
+        when 0, 2   # Wild, double wild
+          anim = ["SnakeSquares", "DiagonalBubbleTL", "DiagonalBubbleBR", "RisingSplash"][location]
+        when 1      # Trainer
+          anim = ["TwoBallPass", "ThreeBallDown", "BallDown", "WavyThreeBallUp"][location]
+        when 3      # Double trainer
+          anim = "FourBallBurst"
+        end
+      else
+        case battletype
+        when 0, 2   # Wild, double wild
+          anim = ["SnakeSquares", "DiagonalBubbleBR", "DiagonalBubbleBR", "RisingSplash"][location]
+        when 1      # Trainer
+          anim = ["SpinBallSplit", "BallDown", "BallDown", "WavySpinBall"][location]
+        when 3      # Double trainer
+          anim = "FourBallBurst"
+        end
+      end
+      pbBattleAnimationCore(anim, viewport, location)
+    end
+    pbPushFade
   end
-  pbPushFade
   # Yield to the battle scene
   yield if block_given?
   # After the battle
-  pbPopFade
+  if !skip_battle_anim
+    pbPopFade
+  end
   if $game_system.is_a?(Game_System)
     $game_system.bgm_resume(playingBGM)
     $game_system.bgs_resume(playingBGS)
@@ -139,14 +143,16 @@ def pbBattleAnimation(bgm = nil, battletype = 0, foe = nil)
   $PokemonEncounters.reset_step_count
   # Fade back to the overworld in 0.4 seconds
   viewport.color = Color.new(0, 0, 0, 255)
-  timer = 0.0
-  loop do
-    Graphics.update
-    Input.update
-    pbUpdateSceneMap
-    timer += Graphics.delta_s
-    viewport.color.alpha = 255 * (1 - (timer / 0.4))
-    break if viewport.color.alpha <= 0
+  if !skip_battle_anim
+    timer = 0.0
+    loop do
+      Graphics.update
+      Input.update
+      pbUpdateSceneMap
+      timer += Graphics.delta_s
+      viewport.color.alpha = 255 * (1 - (timer / 0.4))
+      break if viewport.color.alpha <= 0
+    end
   end
   viewport.dispose
   $game_temp.in_battle = false

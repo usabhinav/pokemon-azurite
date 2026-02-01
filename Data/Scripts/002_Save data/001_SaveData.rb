@@ -10,6 +10,12 @@ module SaveData
               else
                 "./Game.rxdata"
               end
+  # Contains the file path of the save file for the runner mode.
+  FILE_PATH_RUNNER_MODE = if File.directory?(System.data_directory)
+                            System.data_directory + "/Game_RunnerMode.rxdata"
+                          else
+                            "./Game_RunnerMode.rxdata"
+                          end
 
   # @return [Boolean] whether the save file exists
   def self.exists?

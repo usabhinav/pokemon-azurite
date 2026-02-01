@@ -55,6 +55,7 @@ class Game_Temp
     when "base"                   then rules["base"]                = var
     when "outcome", "outcomevar"  then rules["outcomeVar"]          = var
     when "nopartner"              then rules["noPartner"]           = true
+    when "skipplayersendout"      then rules["skipplayersendout"]   = true
     else
       raise _INTL("Battle rule \"{1}\" does not exist.", rule)
     end
@@ -226,6 +227,7 @@ module BattleCreationHelperMethods
     # Whether battle animations are shown
     battle.showAnims = ($PokemonSystem.battlescene == 0)
     battle.showAnims = battleRules["battleAnims"] if !battleRules["battleAnims"].nil?
+    battle.rules["skipplayersendout"] = battleRules["skipplayersendout"] if !battleRules["skipplayersendout"].nil?
     # Terrain
     if battleRules["defaultTerrain"].nil? && Settings::OVERWORLD_WEATHER_SETS_BATTLE_TERRAIN
       case $game_screen.weather_type
@@ -349,7 +351,7 @@ end
 #===============================================================================
 class WildBattle
   # Used when walking in tall grass, hence the additional code.
-  def self.start(*args, can_override: false)
+  def self.start(*args, can_override: false, skip_battle_anim: false)
     foe_party = WildBattle.generate_foes(*args)
     # Potentially call a different WildBattle.start-type method instead (for
     # roaming Pokémon, Safari battles, Bug Contest battles)
@@ -359,7 +361,7 @@ class WildBattle
       return handled[0] if !handled[0].nil?
     end
     # Perform the battle
-    outcome = WildBattle.start_core(*foe_party)
+    outcome = WildBattle.start_core(*foe_party, skip_battle_anim:)
     # Used by the Poké Radar to update/break the chain
     if foe_party.length == 1 && can_override
       EventHandlers.trigger(:on_wild_battle_end, foe_party[0].species, foe_party[0].level, outcome)
@@ -368,7 +370,7 @@ class WildBattle
     return outcome != 2 && outcome != 5
   end
 
-  def self.start_core(*args)
+  def self.start_core(*args, skip_battle_anim: false)
     outcome_variable = $game_temp.battle_rules["outcomeVar"] || 1
     can_lose         = $game_temp.battle_rules["canLose"] || false
     # Skip battle if the player has no able Pokémon, or if holding Ctrl in Debug mode
@@ -394,7 +396,7 @@ class WildBattle
     $game_temp.clear_battle_rules
     # Perform the battle itself
     outcome = 0
-    pbBattleAnimation(pbGetWildBattleBGM(foe_party), (foe_party.length == 1) ? 0 : 2, foe_party) {
+    pbBattleAnimation(pbGetWildBattleBGM(foe_party), (foe_party.length == 1) ? 0 : 2, foe_party, skip_battle_anim) {
       pbSceneStandby {
         outcome = battle.pbStartBattle
       }
@@ -446,7 +448,7 @@ class TrainerBattle
   # Used by most trainer events, which can be positioned in such a way that
   # multiple trainer events spot the player at once. The extra code in this
   # method deals with that case and can cause a double trainer battle instead.
-  def self.start(*args)
+  def self.start(*args, skip_battle_anim: false)
     # If there is another NPC trainer who spotted the player at the same time,
     # and it is possible to have a double battle (the player has 2+ able Pokémon
     # or has a partner trainer), then record this first NPC trainer into
@@ -478,17 +480,17 @@ class TrainerBattle
     # Perform the battle
     if $game_temp.waiting_trainer
       new_args = args + [$game_temp.waiting_trainer[0]]
-      outcome = TrainerBattle.start_core(*new_args)
+      outcome = TrainerBattle.start_core(*new_args, skip_battle_anim:)
       pbMapInterpreter.pbSetSelfSwitch($game_temp.waiting_trainer[1], "A", true) if outcome == 1
       $game_temp.waiting_trainer = nil
     else
-      outcome = TrainerBattle.start_core(*args)
+      outcome = TrainerBattle.start_core(*args, skip_battle_anim:)
     end
     # Return true if the player won the battle, and false if any other result
     return outcome == 1
   end
 
-  def self.start_core(*args)
+  def self.start_core(*args, skip_battle_anim: false)
     outcome_variable = $game_temp.battle_rules["outcomeVar"] || 1
     can_lose         = $game_temp.battle_rules["canLose"] || false
     # Skip battle if the player has no able Pokémon, or if holding Ctrl in Debug mode
@@ -516,7 +518,7 @@ class TrainerBattle
     $game_temp.clear_battle_rules
     # Perform the battle itself
     outcome = 0
-    pbBattleAnimation(pbGetTrainerBattleBGM(foe_trainers), (battle.singleBattle?) ? 1 : 3, foe_trainers) {
+    pbBattleAnimation(pbGetTrainerBattleBGM(foe_trainers), (battle.singleBattle?) ? 1 : 3, foe_trainers, skip_battle_anim) {
       pbSceneStandby {
         outcome = battle.pbStartBattle
       }

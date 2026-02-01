@@ -66,6 +66,7 @@ class Battle
     # Pokemon sendout (opposing trainers first)
     for side in [1, 0]
       next if side == 1 && wildBattle?
+      next if side == 0 && @rules["skipplayersendout"]
       msg = ""
       toSendOut = []
       trainers = (side == 0) ? @player : @opponent

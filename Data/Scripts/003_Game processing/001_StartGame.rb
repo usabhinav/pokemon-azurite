@@ -57,6 +57,30 @@ module Game
     $game_map.update
   end
 
+  def self.start_runner_mode
+    if $game_temp.begun_new_game
+      pbAddPokemonSilent(:KUUBY, 5)
+      pbAddPokemonSilent(:TWIGIT, 5)
+      pbAddPokemonSilent(:KIKRO, 5)
+      $bag.add(:TRUEENIGMACHAIN)
+    else
+      # save_data = SaveData.read_from_file(SaveData::FILE_PATH)
+    end
+    skip_battle_anim = false
+    while true
+      play_next_battle_BGM_from_saved_preference
+      setBattleRule("skipplayersendout") if skip_battle_anim
+      WildBattle.start(getRandomPokemonForRunnerMode(3), skip_battle_anim:)
+      $PokemonGlobal.runnerModeBattleCounter += 1
+      skip_battle_anim = true
+      # TODO: Ideally we should have one save filename for the runner mode and one for the main story. For now,
+      # I'm just having it save to both locations, and when we implement the main story in the future, we can
+      # work on making the game recognize each save file individually.
+      self.save
+      self.save(SaveData::FILE_PATH_RUNNER_MODE)
+    end
+  end
+
   # Loads the game from the given save data and starts the map scene.
   # @param save_data [Hash] hash containing the save data
   # @raise [SaveData::InvalidValueError] if an invalid value is being loaded

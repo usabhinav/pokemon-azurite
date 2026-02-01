@@ -378,3 +378,18 @@ def getRandomPartyFromSpeciesDataFormMap(species_data_form_map, level)
   end
   return new_party
 end
+
+#===============================================================================
+# Returns a random Pokemon based on the provided level.
+#===============================================================================
+def getRandomPokemonForRunnerMode(level)
+  species_data_form_map = getPossibleSpeciesDataFormMapForTeamBuilder(level)
+  species_id_list = species_data_form_map.keys
+  # First get random species
+  selected_species_id = species_id_list.delete_at(rand(species_id_list.length))
+  # Then get random form
+  selected_species_data = species_data_form_map[selected_species_id].sample
+  new_poke = Pokemon.new(species_id_list.sample, level)
+  new_poke.form = selected_species_data.form
+  return new_poke
+end

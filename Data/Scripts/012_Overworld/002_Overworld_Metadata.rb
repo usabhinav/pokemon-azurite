@@ -57,6 +57,8 @@ class PokemonGlobalMetadata
   attr_accessor :savedate # Remembers when the last save took place. (Datatype is Time)
   # Guild
   attr_accessor :guild
+  # Runner mode counter
+  attr_accessor :runnerModeBattleCounter
 
   def initialize
     # Movement
@@ -116,6 +118,7 @@ class PokemonGlobalMetadata
     @safesave             = false
     # Guild
     @guild                = Guild.new
+    @runnerModeBattleCounter = 0
   end
 
   def encounter_version=(value)

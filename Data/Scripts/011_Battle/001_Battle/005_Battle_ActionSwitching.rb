@@ -188,7 +188,7 @@ class Battle
           switched.push(idxBattler)
         else   # Player's Pokémon has fainted in a wild battle
           switch = false
-          if pbDisplayConfirm(_INTL("Use next Pokémon?"))
+          if @rules["endlessmode"] || pbDisplayConfirm(_INTL("Use next Pokémon?"))
             switch = true
           else
             switch = (pbRun(idxBattler, true) <= 0)

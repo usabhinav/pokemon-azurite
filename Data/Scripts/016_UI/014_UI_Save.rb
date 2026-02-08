@@ -4,8 +4,8 @@ def pbEmergencySave
   pbMessage(_INTL("The script is taking too long. The game will restart."))
   return if !$player
   if SaveData.exists?
-    File.open(SaveData::FILE_PATH, "rb") do |r|
-      File.open(SaveData::FILE_PATH + ".bak", "wb") do |w|
+    File.open(SaveData.get_save_file_path, "rb") do |r|
+      File.open(SaveData.get_save_file_path + ".bak", "wb") do |w|
         loop do
           s = r.read(4096)
           break if !s

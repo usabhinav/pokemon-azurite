@@ -310,6 +310,7 @@ class Battle::Scene
         next if !@sprites["dataBox_#{b.index}"]
         @sprites["dataBox_#{b.index}"].appear if !EliteBattle.get(:smAnim)
       end
+      self.wait(16, true)
     end
     # for trainer sprites
     if @battle.trainerBattle?

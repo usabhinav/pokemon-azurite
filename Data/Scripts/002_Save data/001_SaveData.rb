@@ -16,10 +16,29 @@ module SaveData
                           else
                             "./Game_RunnerMode.rxdata"
                           end
+  # Contains the file path of the save file for custom battle mode.
+  # This is not a really a save file that the player would use.
+  # The purpose of this is to handle when the system emergency saves if it crashes during the custom battle mode.
+  # In this case, it should not mistakenly overwrite one of the other save files (main game or endless mode).
+  FILE_PATH_CUSTOM_BATTLE_MODE = if File.directory?(System.data_directory)
+                                   System.data_directory + "/Game_CustomBattleMode.rxdata"
+                                 else
+                                   "./Game_CustomBattleMode.rxdata"
+                                 end
+  
+  def self.get_save_file_path
+    return FILE_PATH if $game_temp.nil?
+    return {
+      :MAIN_GAME           => FILE_PATH,
+      :ENDLESS_MODE        => FILE_PATH_RUNNER_MODE,
+      :CUSTOM_BATTLE_MODE  => FILE_PATH_CUSTOM_BATTLE_MODE,
+    }[$game_temp.game_mode_type]
+  end
 
   # @return [Boolean] whether the save file exists
-  def self.exists?
-    return File.file?(FILE_PATH)
+  def self.exists?(file_path = nil)
+    file_path = self.get_save_file_path if file_path.nil?
+    return File.file?(file_path)
   end
 
   # Fetches the save data from the given file.
@@ -50,7 +69,7 @@ module SaveData
     validate file_path => String
     save_data = get_data_from_file(file_path)
     save_data = to_hash_format(save_data) if save_data.is_a?(Array)
-    if !save_data.empty? && run_conversions(save_data)
+    if !save_data.empty? && run_conversions(save_data, file_path)
       File.open(file_path, "wb") { |file| Marshal.dump(save_data, file) }
     end
     return save_data
@@ -68,9 +87,9 @@ module SaveData
 
   # Deletes the save file (and a possible .bak backup file if one exists)
   # @raise [Error::ENOENT]
-  def self.delete_file
-    File.delete(FILE_PATH)
-    File.delete(FILE_PATH + ".bak") if File.file?(FILE_PATH + ".bak")
+  def self.delete_file(file_path)
+    File.delete(file_path)
+    File.delete(file_path + ".bak") if File.file?(file_path + ".bak")
   end
 
   # Converts the pre-v19 format data to the new format.

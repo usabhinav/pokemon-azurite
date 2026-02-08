@@ -56,6 +56,7 @@ class Game_Temp
     when "outcome", "outcomevar"  then rules["outcomeVar"]          = var
     when "nopartner"              then rules["noPartner"]           = true
     when "skipplayersendout"      then rules["skipplayersendout"]   = true
+    when "endlessmode"            then rules["endlessmode"]   = true
     else
       raise _INTL("Battle rule \"{1}\" does not exist.", rule)
     end
@@ -228,6 +229,7 @@ module BattleCreationHelperMethods
     battle.showAnims = ($PokemonSystem.battlescene == 0)
     battle.showAnims = battleRules["battleAnims"] if !battleRules["battleAnims"].nil?
     battle.rules["skipplayersendout"] = battleRules["skipplayersendout"] if !battleRules["skipplayersendout"].nil?
+    battle.rules["endlessmode"] = battleRules["endlessmode"] if !battleRules["endlessmode"].nil?
     # Terrain
     if battleRules["defaultTerrain"].nil? && Settings::OVERWORLD_WEATHER_SETS_BATTLE_TERRAIN
       case $game_screen.weather_type

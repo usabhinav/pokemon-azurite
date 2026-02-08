@@ -46,6 +46,7 @@ class Game_Temp
   attr_accessor :memorized_bgm_position   # set when trainer intro BGM is played
   attr_accessor :darkness_sprite          # DarknessSprite or nil
   attr_accessor :mart_prices
+  attr_accessor :game_mode_type           # game mode type (i.e. main game, endless mode, etc.)
 
   #-----------------------------------------------------------------------------
   # * Object Initialization
@@ -86,6 +87,7 @@ class Game_Temp
     @memorized_bgm_position = 0
     @menu_last_choice       = 0
     @mart_prices            = {}
+    @game_mode_type         = :MAIN_GAME
   end
 
   def clear_mart_prices

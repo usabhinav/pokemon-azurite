@@ -118,7 +118,7 @@ class PokemonGlobalMetadata
     @safesave             = false
     # Guild
     @guild                = Guild.new
-    @runnerModeBattleCounter = 0
+    @runnerModeBattleCounter = 1
   end
 
   def encounter_version=(value)

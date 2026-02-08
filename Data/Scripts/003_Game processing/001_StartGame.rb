@@ -22,7 +22,7 @@ module Game
   # it doesn't).
   def self.set_up_system
     SaveData.move_old_windows_save if System.platform[/Windows/]
-    save_data = (SaveData.exists?) ? SaveData.read_from_file(SaveData::FILE_PATH) : {}
+    save_data = (SaveData.exists?) ? SaveData.read_from_file(SaveData.get_save_file_path) : {}
     if save_data.empty?
       SaveData.initialize_bootup_values
     else
@@ -58,6 +58,7 @@ module Game
   end
 
   def self.start_runner_mode
+    $game_switches[Settings::NO_MONEY_LOSS] = true
     if $game_temp.begun_new_game
       pbAddPokemonSilent(:KUUBY, 5)
       pbAddPokemonSilent(:TWIGIT, 5)
@@ -69,15 +70,22 @@ module Game
     skip_battle_anim = false
     while true
       play_next_battle_BGM_from_saved_preference
+      setBattleRule("endlessmode")
+      setBattleRule("canLose")
       setBattleRule("skipplayersendout") if skip_battle_anim
-      WildBattle.start(getRandomPokemonForRunnerMode(3), skip_battle_anim:)
+      did_player_win = WildBattle.start(getRandomPokemonForRunnerMode(3), skip_battle_anim:)
+      if !did_player_win
+        # Disable the auto-run event on Endless Mode map. Without this, even after calling the title screen,
+        # the event still gets triggered and starts a new battle.
+        pbMapInterpreter.pbSetSelfSwitch(1, "A", true, 181)
+        $game_temp.title_screen_calling = true
+        $game_temp.begun_new_game = false
+        return
+      end
       $PokemonGlobal.runnerModeBattleCounter += 1
       skip_battle_anim = true
-      # TODO: Ideally we should have one save filename for the runner mode and one for the main story. For now,
-      # I'm just having it save to both locations, and when we implement the main story in the future, we can
-      # work on making the game recognize each save file individually.
+      pbUpdateSaveDate(Time.now)
       self.save
-      self.save(SaveData::FILE_PATH_RUNNER_MODE)
     end
   end
 
@@ -133,7 +141,8 @@ module Game
   # @param safe [Boolean] whether $PokemonGlobal.safesave should be set to true
   # @return [Boolean] whether the operation was successful
   # @raise [SaveData::InvalidValueError] if an invalid value is being saved
-  def self.save(save_file = SaveData::FILE_PATH, safe: false)
+  def self.save(save_file = nil, safe: false)
+    save_file = SaveData.get_save_file_path if save_file.nil?
     validate save_file => String, safe => [TrueClass, FalseClass]
     $PokemonGlobal.safesave = safe
     $game_system.save_count += 1

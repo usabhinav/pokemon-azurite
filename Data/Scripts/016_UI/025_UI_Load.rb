@@ -14,11 +14,12 @@ class PokemonLoadPanel < SpriteWrapper
   FEMALETEXTCOLOR       = Color.new(240,72,88)
   FEMALETEXTSHADOWCOLOR = Color.new(160,64,64)
 
-  def initialize(index,title,isContinue,trainer,pokemon_global,framecount,mapid,btn_type,viewport=nil,text_align=-1)
+  def initialize(index,title,isContinue,game_type,trainer,pokemon_global,framecount,mapid,btn_type,viewport=nil,text_align=-1)
     super(viewport)
     @index = index
     @title = title
     @isContinue = isContinue
+    @game_type = game_type
     @trainer = trainer
     @pokemon_global = pokemon_global
     @totalsec = (framecount || 0) / Graphics.frame_rate
@@ -107,13 +108,19 @@ class PokemonLoadPanel < SpriteWrapper
           textpos.push([_INTL("{1}m",min),275,134,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
         end
         
-        # Draw amount of seen pokemon.
-        textpos.push([_INTL("Seen"),209,170,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        textpos.push([@trainer.pokedex.seen_count.to_s,275,170,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        
-        # Draw amount of caught pokemon.
-        textpos.push([_INTL("Caught"),193,204,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
-        textpos.push([@trainer.pokedex.owned_count.to_s,275,204,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        if @game_type == :MAIN_GAME
+          # Draw amount of seen pokemon.
+          textpos.push([_INTL("Seen"),209,170,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([@trainer.pokedex.seen_count.to_s,275,170,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          
+          # Draw amount of caught pokemon.
+          textpos.push([_INTL("Caught"),193,204,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([@trainer.pokedex.owned_count.to_s,275,204,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        elsif @game_type == :ENDLESS_MODE
+          # Draw the current stage.
+          textpos.push([_INTL("Stage"),209,170,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+          textpos.push([@pokemon_global.runnerModeBattleCounter.to_s,275,170,0,TEXTCOLOR,TEXTSHADOWCOLOR,1])
+        end
 
         # Draw trainer name.
         textpos.push([@trainer.name,92,20,2,TEXTCOLOR,TEXTSHADOWCOLOR,1])
@@ -153,7 +160,7 @@ end
 #
 #===============================================================================
 class PokemonLoad_Scene
-  def pbStartScene(commands, show_continue, trainer, pokemon_global, frame_count, map_id, btn_types)
+  def pbStartScene(commands, btn_types, game_types, save_data_map)
     @commands = commands
     @btn_types = btn_types
     @sprites = {}
@@ -162,10 +169,17 @@ class PokemonLoad_Scene
     addBackgroundOrColoredPlane(@sprites,"background","Load Menu/opMenuBack.png",Color.new(248,248,248),@viewport)
     
     for i in 0...commands.length
-     btn_type = btn_types[i]
-          
-     @sprites["panel#{i}"] = PokemonLoadPanel.new(i,commands[i],
-         (show_continue) ? (i==0) : false,trainer,pokemon_global,frame_count,map_id,btn_type,@viewport)
+      btn_type = btn_types[i]
+      save_data = {}
+      map_id = 0
+      game_type = nil
+      if btn_type == LoadMenu_Model::BTN_CONTINUE
+        game_type = game_types[i]
+        save_data = save_data_map[game_type]
+        map_id = save_data[:map_factory].map.map_id
+      end
+      @sprites["panel#{i}"] = PokemonLoadPanel.new(i, commands[i], btn_type == LoadMenu_Model::BTN_CONTINUE, game_type,
+        save_data[:player], save_data[:global_metadata], save_data[:frame_count] || 0, map_id, btn_type, @viewport)
       
       # The x positions of the non-continue buttons.
       left_btn_x = 75
@@ -179,16 +193,17 @@ class PokemonLoad_Scene
         if previous_btn.btn_type != LoadMenu_Model::BTN_CONTINUE &&
            previous_btn.btn_type != LoadMenu_Model::BTN_NORMAL_BIG &&
            previous_btn.x == left_btn_x
-        
-        panel_x = right_btn_x
-        
+          panel_x = right_btn_x
         else 
           panel_x = left_btn_x
           if previous_btn.btn_type == LoadMenu_Model::BTN_CONTINUE
-            panel_y += 248 
+            panel_y += 248
           else
             panel_y += 56
           end
+        end
+        if btn_type == LoadMenu_Model::BTN_CONTINUE
+          panel_x = 48
         end
       else # Starting point, there was no previous button yet.
         if @sprites["panel#{i}"].btn_type == LoadMenu_Model::BTN_CONTINUE
@@ -365,10 +380,15 @@ end
 class PokemonLoadScreen
   def initialize(scene)
     @scene = scene
-    if SaveData.exists?
+    if SaveData.exists?(SaveData::FILE_PATH)
       @save_data = load_save_file(SaveData::FILE_PATH)
     else
       @save_data = {}
+    end
+    if SaveData.exists?(SaveData::FILE_PATH_RUNNER_MODE)
+      @save_data_runner_mode = load_save_file(SaveData::FILE_PATH_RUNNER_MODE)
+    else
+      @save_data_runner_mode = {}
     end
   end
 
@@ -381,7 +401,7 @@ class PokemonLoadScreen
         pbMessage(_INTL('The save file is corrupt. A backup will be loaded.'))
         save_data = load_save_file(file_path + '.bak')
       else
-        self.prompt_save_deletion
+        self.prompt_save_deletion(file_path)
         return {}
       end
     end
@@ -390,12 +410,12 @@ class PokemonLoadScreen
 
   # Called if all save data is invalid.
   # Prompts the player to delete the save files.
-  def prompt_save_deletion
+  def prompt_save_deletion(file_path)
     pbMessage(_INTL('The save file is corrupt, or is incompatible with this game.'))
     exit unless pbConfirmMessageSerious(
       _INTL('Do you want to delete the save file and start anew?')
     )
-    self.delete_save_data
+    self.delete_save_data(file_path)
     $game_system   = Game_System.new
     $PokemonSystem = PokemonSystem.new
   end
@@ -418,9 +438,9 @@ class PokemonLoadScreen
     $scene = pbCallTitle
   end
 
-  def delete_save_data
+  def delete_save_data(file_path)
     begin
-      SaveData.delete_file
+      SaveData.delete_file(file_path)
       pbMessage(_INTL('The saved data was deleted.'))
     rescue SystemCallError
       pbMessage(_INTL('All saved data could not be deleted.'))
@@ -430,8 +450,11 @@ class PokemonLoadScreen
   def pbStartLoadScreen
     commands     = []
     buttonFormat = [] # Dictates which sprite the scene will use for each command button.
+    gameType     = [] # Dictates which save data to display for continue buttons.
     cmd_continue     = -1
+    cmd_continue_runner_mode = -1
     cmd_new_game     = -1
+    cmd_new_game_runner_mode = -1
     cmd_custom_battle_mode = -1
     cmd_jukebox      = -1
     cmd_options      = -1
@@ -439,44 +462,61 @@ class PokemonLoadScreen
     cmd_mystery_gift = -1
     cmd_debug        = -1
     cmd_quit         = -1
-    show_continue = !@save_data.empty?
-    
+    # Temporarily disabling main game mode
+    show_continue    = false # !@save_data.empty?
+    show_continue_runner_mode = !@save_data_runner_mode.empty?
+
+    # Continue (main game)
     if show_continue
       commands[cmd_continue = commands.length] = _INTL('Continue')
-      commands[cmd_new_game = commands.length]  = _INTL('New Journey')
-      commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
-      commands[cmd_manage_saved_data = commands.length] = _INTL('Manage Saved Data')
-      commands[cmd_jukebox = commands.length] = _INTL('Jukebox')
-      if @save_data[:player].mystery_gift_unlocked && false # Temporarily disabling this option
-        commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
-        buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_LEFT_UP
-        buttonFormat[cmd_mystery_gift] = LoadMenu_Model::BTN_RIGHT_UP
-      else
-        buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
-      end
-      commands[cmd_options = commands.length]   = _INTL('Options')
-      commands[cmd_quit = commands.length]      = _INTL('Quit Game')
-      commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
-      
       buttonFormat[cmd_continue] = LoadMenu_Model::BTN_CONTINUE
-    else
-      commands[cmd_new_game = commands.length]  = _INTL('Start The Journey')
-      commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
-      commands[cmd_manage_saved_data = commands.length] = _INTL('Manage Saved Data')
-      commands[cmd_jukebox = commands.length] = _INTL('Jukebox')
-      commands[cmd_options = commands.length]  = _INTL('Settings')
-      commands[cmd_quit = commands.length]  = _INTL('Quit Game')
-      commands[cmd_debug = commands.length]     = _INTL('Debug') if $DEBUG
-
-      buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
+      gameType[cmd_continue] = :MAIN_GAME
+    end
+    # Continue (runner mode)
+    if show_continue_runner_mode
+      commands[cmd_continue_runner_mode = commands.length] = _INTL('Continue Endless Mode')
+      buttonFormat[cmd_continue_runner_mode] = LoadMenu_Model::BTN_CONTINUE
+      gameType[cmd_continue_runner_mode] = :ENDLESS_MODE
     end
 
+    # New Game buttons / Mystery Gift
+    # Temporarily disabling main game mode
+    # commands[cmd_new_game = commands.length]  = show_continue ? _INTL('New Journey') : _INTL('Start The Journey')
+    # if show_continue && @save_data[:player].mystery_gift_unlocked && false # Temporarily disabling this option
+    #   commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
+    #   buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_LEFT_UP
+    #   buttonFormat[cmd_mystery_gift] = LoadMenu_Model::BTN_RIGHT_UP
+    # else
+    #   buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
+    # end
+    commands[cmd_new_game_runner_mode = commands.length] = _INTL('New Endless Run')
+    buttonFormat[cmd_new_game_runner_mode] = LoadMenu_Model::BTN_NORMAL_BIG
+
+    # Custom battle mode
+    commands[cmd_custom_battle_mode = commands.length] = _INTL('Custom Battle Mode')
     buttonFormat[cmd_custom_battle_mode] = LoadMenu_Model::BTN_NORMAL_BIG
+
+    # Manage Saved Data
+    commands[cmd_manage_saved_data = commands.length] = _INTL('Manage Saved Data')
     buttonFormat[cmd_manage_saved_data] = LoadMenu_Model::BTN_NORMAL_BIG
+
+    # Jukebox
+    commands[cmd_jukebox = commands.length] = _INTL('Jukebox')
     buttonFormat[cmd_jukebox] = LoadMenu_Model::BTN_NORMAL_BIG
+
+    # Options
+    commands[cmd_options = commands.length] = _INTL('Settings')
     buttonFormat[cmd_options] = LoadMenu_Model::BTN_LEFT_DOWN
+
+    # Quit
+    commands[cmd_quit = commands.length] = _INTL('Quit Game')
     buttonFormat[cmd_quit] = LoadMenu_Model::BTN_RIGHT_DOWN
-    buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG if $DEBUG
+
+    # Debug
+    if $DEBUG
+      commands[cmd_debug = commands.length] = _INTL('Debug')
+      buttonFormat[cmd_debug] = LoadMenu_Model::BTN_NORMAL_BIG
+    end
 
     windows = Window_Segmented.new
 
@@ -505,11 +545,11 @@ class PokemonLoadScreen
       # echoln "SEGMENTED: " + windows.index.to_s
     # end
 
-    map_id = show_continue ? @save_data[:map_factory].map.map_id : 0
-    @scene.pbStartScene(commands, show_continue, @save_data[:player],
-                        @save_data[:global_metadata],
-                        @save_data[:frame_count] || 0, 
-                        map_id, buttonFormat)
+    save_data_map = {
+      :MAIN_GAME => @save_data,
+      :ENDLESS_MODE => @save_data_runner_mode,
+    }
+    @scene.pbStartScene(commands, buttonFormat, gameType, save_data_map)
     @scene.pbSetParty(@save_data[:player]) if show_continue
     @scene.pbStartScene2
     loop do
@@ -518,7 +558,13 @@ class PokemonLoadScreen
       case command
       when cmd_continue
         @scene.pbEndScene
+        $game_temp.game_mode_type = :MAIN_GAME
         Game.load(@save_data)
+        return
+      when cmd_continue_runner_mode
+        @scene.pbEndScene
+        $game_temp.game_mode_type = :ENDLESS_MODE
+        Game.load(@save_data_runner_mode)
         return
       when cmd_custom_battle_mode
         SaveData.load_new_game_values
@@ -536,6 +582,12 @@ class PokemonLoadScreen
         end
       when cmd_new_game
         @scene.pbEndScene
+        $game_temp.game_mode_type = :MAIN_GAME
+        Game.start_new
+        return
+      when cmd_new_game_runner_mode
+        @scene.pbEndScene
+        $game_temp.game_mode_type = :ENDLESS_MODE
         Game.start_new
         return
       when cmd_mystery_gift
@@ -553,6 +605,10 @@ class PokemonLoadScreen
         if show_continue
           @save_data[:pokemon_system] = $PokemonSystem
           File.open(SaveData::FILE_PATH, 'wb') { |file| Marshal.dump(@save_data, file) }
+        end
+        if show_continue_runner_mode
+          @save_data_runner_mode[:pokemon_system] = $PokemonSystem
+          File.open(SaveData::FILE_PATH_RUNNER_MODE, 'wb') { |file| Marshal.dump(@save_data_runner_mode, file) }
         end
         $scene = pbCallTitle
         return

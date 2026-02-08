@@ -189,12 +189,13 @@ module SaveData
   # Runs all possible conversions on the given save data.
   # Saves a backup before running conversions.
   # @param save_data [Hash] save data to run conversions on
+  # @param file_path [String] save file path
   # @return [Boolean] whether conversions were run
-  def self.run_conversions(save_data)
+  def self.run_conversions(save_data, file_path)
     validate save_data => Hash
     conversions_to_run = self.get_conversions(save_data)
     return false if conversions_to_run.none?
-    File.open(SaveData::FILE_PATH + ".bak", "wb") { |f| Marshal.dump(save_data, f) }
+    File.open(file_path + ".bak", "wb") { |f| Marshal.dump(save_data, f) }
     Console.echo_h1 "Running #{conversions_to_run.length} save file conversions"
     conversions_to_run.each do |conversion|
       Console.echo_li "#{conversion.title}..."

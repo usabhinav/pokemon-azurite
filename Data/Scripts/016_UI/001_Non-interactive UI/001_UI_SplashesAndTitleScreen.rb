@@ -2,7 +2,7 @@ class IntroEventScene < EventScene
   # Splash screen images that appear for a few seconds and then disappear.
   SPLASH_IMAGES         = ["splash1", "splash2"]
   # The main title screen background image.
-  TITLE_BG_IMAGE        = "title"
+  TITLE_BG_IMAGE        = "title_azurite"
   TITLE_START_IMAGE     = "start"
   TITLE_START_IMAGE_X   = 0
   TITLE_START_IMAGE_Y   = 322

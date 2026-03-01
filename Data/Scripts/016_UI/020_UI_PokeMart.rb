@@ -853,3 +853,13 @@ def pbPokemonMart(stock, speech = nil, cantsell = false)
   end
   $game_temp.clear_mart_prices
 end
+
+#===============================================================================
+#
+#===============================================================================
+def pbPokemonMartForRunnerMode(stock)
+  scene = PokemonMart_Scene.new
+  screen = PokemonMartScreen.new(scene, stock)
+  screen.pbBuyScreen
+  $game_temp.clear_mart_prices
+end

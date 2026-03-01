@@ -63,17 +63,30 @@ module Game
       pbAddPokemonSilent(:KUUBY, 5)
       pbAddPokemonSilent(:TWIGIT, 5)
       pbAddPokemonSilent(:KIKRO, 5)
+      $player.money = 1000
+      $bag.add(:POKEBALL, 5)
       $bag.add(:TRUEENIGMACHAIN)
-    else
-      # save_data = SaveData.read_from_file(SaveData::FILE_PATH)
     end
     skip_battle_anim = false
     while true
+      if $PokemonGlobal.runnerModeBattleCounter > 1
+        self.runner_mode_show_options_in_between_battles
+        pbUpdateSaveDate(Time.now)
+        self.save
+      end
       play_next_battle_BGM_from_saved_preference
       setBattleRule("endlessmode")
       setBattleRule("canLose")
       setBattleRule("skipplayersendout") if skip_battle_anim
-      did_player_win = WildBattle.start(getRandomPokemonForRunnerMode(3), skip_battle_anim:)
+      # The general pattern is that it increments by 1 except for every 9th and 10th battle, where it stays constant.
+      # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 8, 8, 8
+      # Waves 11-20: 9, 10, 11, 12, 13, 14, 15, 16, 16, 16
+      # ...
+      # Waves 91-100: 73, 74, 75, 76, 77, 78, 79, 80, 80, 80
+      opponent_level_cap = ((($PokemonGlobal.runnerModeBattleCounter - 1) / 10).floor + 1) * 8
+      unconstrained_level = (($PokemonGlobal.runnerModeBattleCounter / 10).floor) * 8 + ($PokemonGlobal.runnerModeBattleCounter % 10)
+      opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
+      did_player_win = WildBattle.start(getRandomPokemonForRunnerMode(opponent_level), skip_battle_anim:)
       if !did_player_win
         # Disable the auto-run event on Endless Mode map. Without this, even after calling the title screen,
         # the event still gets triggered and starts a new battle.
@@ -87,6 +100,48 @@ module Game
       pbUpdateSaveDate(Time.now)
       self.save
     end
+  end
+
+  def self.runner_mode_show_options_in_between_battles
+    msgwindow = pbCreateMessageWindow
+    msgwindow.text = _INTL("Manage your party and items before proceeding to the next round.")
+    msgwindow.letterbyletter = false
+    loop do
+      commands = []
+      # Party
+      commands[cmdParty = commands.length] = _INTL("Party")
+      # Bag
+      commands[cmdBag = commands.length] = _INTL("Bag")
+      # Shop
+      commands[cmdShop = commands.length] = _INTL("Shop")
+      # Continue
+      commands[cmdContinue = commands.length] = _INTL("Continue")
+      command = pbShowCommands(msgwindow, commands)
+      case command
+      when cmdParty
+        pbPokemonScreen
+      when cmdBag
+        pbFadeOutIn {
+          scene = PokemonBag_Scene.new
+          screen = PokemonBagScreen.new(scene, $bag)
+          screen.pbStartScreen
+        }
+      when cmdShop
+        pbMapInterpreter.setPrice(:POTION, 36)
+        pbMapInterpreter.setPrice(:ETHER, 72)
+        pbMapInterpreter.setPrice(:FULLHEAL, 72)
+        pbMapInterpreter.setPrice(:REVIVE, 360)
+        pbPokemonMartForRunnerMode([
+          :POTION,
+          :ETHER,
+          :FULLHEAL,
+          :REVIVE,
+        ])
+      else
+        break
+      end
+    end
+    pbDisposeMessageWindow(msgwindow)
   end
 
   # Loads the game from the given save data and starts the map scene.

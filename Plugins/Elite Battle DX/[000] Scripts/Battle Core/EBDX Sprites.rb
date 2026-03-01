@@ -390,7 +390,7 @@ class DynamicPokemonSprite
       removeSubstitute
     end
     # loads Pokemon bitmap
-    obscureMundimeaForm = obscureMundimeaForm?(@battle, @species, @battle.opposes?(@index), @form != 1)
+    obscureMundimeaForm = !@battle.nil? && obscureMundimeaForm?(@battle, @species, @battle.opposes?(@index), @form != 1)
     if !custom_bitmap.nil?
       @bitmap = custom_bitmap
     elsif obscureMundimeaForm

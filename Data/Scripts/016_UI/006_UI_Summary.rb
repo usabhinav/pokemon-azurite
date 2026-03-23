@@ -1171,6 +1171,7 @@ class PokemonSummary_Scene
     shadow = Color.new(66, 66, 81)
     @sprites["uparrow"].visible   = false
     @sprites["downarrow"].visible = false
+    @sprites["pokemon"].visible  = true
     @sprites["itemicon"].visible = true if @sprites["itemicon"]
     # Write various bits of text
     textpos = [
@@ -1196,6 +1197,7 @@ class PokemonSummary_Scene
   end
 
   def drawSelectedRibbon(ribbonid)
+    @sprites["pokemon"].visible  = false
     @sprites["itemicon"].visible = false if @sprites["itemicon"]
     # Set various values
     overlay = @sprites["overlay"].bitmap

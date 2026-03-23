@@ -140,7 +140,8 @@ class Battle::Scene
   # Opens the party screen to choose a Pokémon to switch in (or just view its
   # summary screens)
   # mode: 0=Pokémon command, 1=choose a Pokémon to send to the Boxes, 2=view
-  #       summaries only
+  #       summaries only,
+  #       3=choose a Pokémon to release
   #=============================================================================
   def pbPartyScreen(idxBattler, canCancel = false, mode = 0)
     # Fade out and hide all sprites
@@ -154,6 +155,7 @@ class Battle::Scene
     switchScreen = PokemonPartyScreen.new(scene, modParty)
     msg = _INTL("Choose a Pokémon.")
     msg = _INTL("Send which Pokémon to Boxes?") if mode == 1
+    msg = _INTL("Release which Pokémon?") if mode == 3
     switchScreen.pbStartScene(msg, @battle.pbNumPositions(0, 0))
     # Loop while in party screen
     loop do
@@ -171,6 +173,7 @@ class Battle::Scene
       commands = []
       commands[cmdSwitch  = commands.length] = _INTL("Switch In") if mode == 0 && modParty[idxParty].able?
       commands[cmdBoxes   = commands.length] = _INTL("Send to Boxes") if mode == 1
+      commands[cmdBoxes   = commands.length] = _INTL("Release") if mode == 3
       commands[cmdSummary = commands.length] = _INTL("Summary")
       commands[commands.length]              = _INTL("Cancel")
       command = scene.pbShowCommands(_INTL("Do what with {1}?", modParty[idxParty].name), commands)

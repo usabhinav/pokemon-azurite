@@ -118,7 +118,7 @@ module GameData
 
     def self.item_quantity(item_id)
       item_data = GameData::Item.get(item_id)
-      return 5 if item_data.pocket == 3 # Poké Balls
+      return 5 if item_data.pocket == 3 && item_id != :MASTERBALL # Poké Balls
       return 1
     end
 

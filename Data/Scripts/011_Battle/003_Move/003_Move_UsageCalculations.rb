@@ -631,8 +631,8 @@ class Battle::Move
     if user.pbHasType?(:ICE) && type == :WATER && user.hasActiveItem?(:WETICECHARM)
       multipliers[:final_damage_multiplier] *= 1.5
     end
-    # Dragonheart Charm
-    if user.pbHasType?(:DRAGON) && type == :FIRE && user.hasActiveItem?(:DRAGONHEARTCHARM)
+    # Dragonheart Gem
+    if user.pbHasType?(:DRAGON) && type == :FIRE && user.hasActiveItem?(:DRAGONHEARTGEM)
       multipliers[:final_damage_multiplier] *= 1.5
     end
     # Crystal Moves

@@ -12,18 +12,27 @@ GameData::RewardPool.register({
     :SUPERPOTION, :GREATBALL, :REVIVE, :SITRUSBERRY, :LUMBERRY, :FOCUSBAND,
     :LANSATBERRY, :STARFBERRY,
     # Added
-    :BIGNUGGET
+    :BIGNUGGET, :RISCIBERRY, :ZATTACK, :ZDEFENSE, :ZSPATK, :ZSPDEF, :ZSPEED, :ZACCURACY
   ],
   :epic      => [
     :HYPERPOTION, :ULTRABALL, :FULLHEAL, :PPUP, :EJECTBUTTON, :POWERHERB,
     :PROTECTIVEPADS, :SAFETYGOGGLES, :HEAVYDUTYBOOTS, :WEAKNESSPOLICY,
     :EJECTPACK, :REDCARD, :COVERTCLOAK, :LOADEDDICE, :KEEBERRY, :MARANGABERRY,
-    :CUSTAPBERRY
+    :CUSTAPBERRY,
+    # Added
+    :SYNCHROPENDANT, :SPEEDINGTICKET, :AWFULCOLLAR, :CRUSHINGHAMMER, :CRYSTALHAMMER,
+    :DIZZYSPECS, :FRIENDLYCOLLAR, :GREATSHIELD, :IRONSHELL, :PECULIARMIRROR,
+    :QUICKSWITCH, :REVENGEBELT, :SHODDYSLINGSHOT, :HEALTHYSPONGE, :REVERSALHERB,
+    :CRACKEDMULTIPLATE, :WEIRDTRINKET, :COUNTERFORMAMULET, :ADRENALINERING,
+    :RIDDLESBOOK, :BERSERKERBRACELET, :RETREATORDER, :UMBRELLA, :HAILGLOBE,
+    :BERSERKGENE, :REVERSALCARD, :EXPERTBALL
   ],
   :legendary => [
     :FULLRESTORE, :RARECANDY, :ABILITYPATCH, :PPMAX, :LIFEORB, :ABILITYSHIELD,
     :CHOICEBAND, :CHOICESPECS, :CHOICESCARF, :ASSAULTVEST, :FOCUSSASH,
-    :CLEARAMULET, :MIRRORHERB, :BOOSTERENERGY, :MASTERBALL
+    :CLEARAMULET, :MIRRORHERB, :BOOSTERENERGY, :MASTERBALL,
+    # Added
+    :CHOICESCOPE, :PLATEBODY, :FOCUSBELT
   ]
 })
 
@@ -52,7 +61,7 @@ GameData::RewardPool.register({
   :id        => :normal_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:NORMAL) },
   :common    => [:SILKSCARF],
-  :rare      => [:CHOPLEBERRY],
+  :rare      => [:CHOPLEBERRY, :JOYFULGLOBE],
   :epic      => [:TM15, :NORMALTERASHARD],
   :legendary => [:TM68]
 })
@@ -64,7 +73,7 @@ GameData::RewardPool.register({
   :id        => :fire_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:FIRE) },
   :common    => [:CHARCOAL],
-  :rare      => [:PASSHOBERRY, :RINDOBERRY, :CHARTIBERRY, :FLAMEORB],
+  :rare      => [:PASSHOBERRY, :RINDOBERRY, :CHARTIBERRY, :FLAMEORB, :FIREREDMEDAL],
   :epic      => [:TM35, :FIRETERASHARD],
   :legendary => [:TM38]
 })
@@ -76,7 +85,7 @@ GameData::RewardPool.register({
   :id        => :water_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:WATER) },
   :common    => [:MYSTICWATER],
-  :rare      => [:WACANBERRY, :RINDOBERRY, :DIVEBALL],
+  :rare      => [:WACANBERRY, :RINDOBERRY, :AQUABLUEMEDAL],
   :epic      => [:TM49, :WATERTERASHARD],
   :legendary => [:TM95]
 })
@@ -88,7 +97,7 @@ GameData::RewardPool.register({
   :id        => :grass_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:GRASS) },
   :common    => [:MIRACLESEED],
-  :rare      => [:OCCABERRY, :YACHEBERRY, :KEBIABERRY, :COBABERRY, :TANGABERRY, :ABSORBBULB],
+  :rare      => [:OCCABERRY, :YACHEBERRY, :KEBIABERRY, :COBABERRY, :TANGABERRY, :ABSORBBULB, :LEAFGREENMEDAL],
   :epic      => [:BIGROOT, :TM53, :GRASSTERASHARD],
   :legendary => [:TM22]
 })
@@ -100,7 +109,7 @@ GameData::RewardPool.register({
   :id        => :electric_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:ELECTRIC) },
   :common    => [:MAGNET],
-  :rare      => [:SHUCABERRY, :CELLBATTERY],
+  :rare      => [:SHUCABERRY, :CELLBATTERY, :INTERCEPTOR, :VOLTYELLOWMEDAL],
   :epic      => [:TM24, :ELECTRICTERASHARD],
   :legendary => [:TM25]
 })
@@ -112,7 +121,7 @@ GameData::RewardPool.register({
   :id        => :ice_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:ICE) },
   :common    => [:NEVERMELTICE],
-  :rare      => [:OCCABERRY, :CHOPLEBERRY, :CHARTIBERRY, :BABIRIBERRY, :SNOWBALL],
+  :rare      => [:OCCABERRY, :CHOPLEBERRY, :CHARTIBERRY, :BABIRIBERRY, :SNOWBALL, :WETICECHARM],
   :epic      => [:TM13, :ICETERASHARD],
   :legendary => [:TM14]
 })
@@ -124,7 +133,7 @@ GameData::RewardPool.register({
   :id        => :fighting_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:FIGHTING) },
   :common    => [:BLACKBELT],
-  :rare      => [:COBABERRY, :PAYAPABERRY, :ROSELIBERRY, :EXPERTBELT],
+  :rare      => [:COBABERRY, :PAYAPABERRY, :ROSELIBERRY, :EXPERTBELT, :MASTERSBELT],
   :epic      => [:MUSCLEBAND, :PUNCHINGGLOVE, :FIGHTINGTERASHARD],
   :legendary => [:TM52]
 })
@@ -136,7 +145,7 @@ GameData::RewardPool.register({
   :id        => :poison_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:POISON) },
   :common    => [:POISONBARB],
-  :rare      => [:SHUCABERRY, :PAYAPABERRY, :TOXICORB],
+  :rare      => [:SHUCABERRY, :PAYAPABERRY, :TOXICORB, :STENCHDOLL],
   :epic      => [:BLACKSLUDGE, :TM06, :POISONTERASHARD],
   :legendary => [:TM36]
 })
@@ -148,7 +157,7 @@ GameData::RewardPool.register({
   :id        => :ground_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:GROUND) },
   :common    => [:SOFTSAND],
-  :rare      => [:PASSHOBERRY, :RINDOBERRY, :YACHEBERRY],
+  :rare      => [:PASSHOBERRY, :RINDOBERRY, :YACHEBERRY, :GROUNDEDBOOTS],
   :epic      => [:TM83, :GROUNDTERASHARD],
   :legendary => [:TM26]
 })
@@ -160,7 +169,7 @@ GameData::RewardPool.register({
   :id        => :flying_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:FLYING) },
   :common    => [:SHARPBEAK],
-  :rare      => [:WACANBERRY, :YACHEBERRY, :CHARTIBERRY, :AIRBALLOON],
+  :rare      => [:WACANBERRY, :YACHEBERRY, :CHARTIBERRY, :AIRBALLOON, :FLYINGVEST],
   :epic      => [:UTILITYUMBRELLA, :TM51, :FLYINGTERASHARD],
   :legendary => [:TM94]
 })
@@ -172,7 +181,7 @@ GameData::RewardPool.register({
   :id        => :psychic_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:PSYCHIC) },
   :common    => [:TWISTEDSPOON],
-  :rare      => [:TANGABERRY, :KASIBBERRY, :COLBURBERRY, :WISEGLASSES],
+  :rare      => [:TANGABERRY, :KASIBBERRY, :COLBURBERRY, :WISEGLASSES, :CLEARMINDTIARA],
   :epic      => [:TM04, :PSYCHICTERASHARD],
   :legendary => [:TM29]
 })
@@ -184,7 +193,7 @@ GameData::RewardPool.register({
   :id        => :bug_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:BUG) },
   :common    => [:SILVERPOWDER],
-  :rare      => [:OCCABERRY, :COBABERRY, :CHARTIBERRY, :NETBALL],
+  :rare      => [:OCCABERRY, :COBABERRY, :CHARTIBERRY, :LEECHTOOTH],
   :epic      => [:SHEDSHELL, :TM81, :BUGTERASHARD],
   :legendary => [:TM89]
 })
@@ -196,7 +205,7 @@ GameData::RewardPool.register({
   :id        => :rock_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:ROCK) },
   :common    => [:HARDSTONE],
-  :rare      => [:PASSHOBERRY, :RINDOBERRY, :CHOPLEBERRY, :SHUCABERRY, :BABIRIBERRY, :TM76],
+  :rare      => [:PASSHOBERRY, :RINDOBERRY, :CHOPLEBERRY, :SHUCABERRY, :BABIRIBERRY, :TM76, :ROUGHROCK],
   :epic      => [:ROCKYHELMET, :ROCKTERASHARD],
   :legendary => [:TM71]
 })
@@ -208,7 +217,7 @@ GameData::RewardPool.register({
   :id        => :ghost_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:GHOST) },
   :common    => [:SPELLTAG],
-  :rare      => [:KASIBBERRY, :COLBURBERRY, :RINGTARGET],
+  :rare      => [:KASIBBERRY, :COLBURBERRY, :RINGTARGET, :PHANTOMMASK],
   :epic      => [:REAPERCLOTH, :GHOSTTERASHARD],
   :legendary => [:TM30]
 })
@@ -220,7 +229,7 @@ GameData::RewardPool.register({
   :id        => :dragon_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:DRAGON) },
   :common    => [:DRAGONFANG],
-  :rare      => [:YACHEBERRY, :HABANBERRY, :ROSELIBERRY],
+  :rare      => [:YACHEBERRY, :HABANBERRY, :ROSELIBERRY, :DRAGONHEARTGEM],
   :epic      => [:DRAGONSCALE, :DRAGONTERASHARD],
   :legendary => [:TM59]
 })
@@ -232,7 +241,7 @@ GameData::RewardPool.register({
   :id        => :dark_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:DARK) },
   :common    => [:BLACKGLASSES],
-  :rare      => [:CHOPLEBERRY, :TANGABERRY, :ROSELIBERRY],
+  :rare      => [:CHOPLEBERRY, :TANGABERRY, :ROSELIBERRY, :VANTABLACKCLOAK],
   :epic      => [:RAZORCLAW, :BLUNDERPOLICY, :DARKTERASHARD],
   :legendary => [:TM79]
 })
@@ -244,7 +253,7 @@ GameData::RewardPool.register({
   :id        => :steel_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:STEEL) },
   :common    => [:METALCOAT],
-  :rare      => [:OCCABERRY, :CHOPLEBERRY, :SHUCABERRY],
+  :rare      => [:OCCABERRY, :CHOPLEBERRY, :SHUCABERRY, :REFLECTIVEMETAL],
   :epic      => [:IRONBALL, :TM91, :STEELTERASHARD],
   :legendary => [:LEFTOVERS]
 })
@@ -256,9 +265,45 @@ GameData::RewardPool.register({
   :id        => :fairy_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:FAIRY) },
   :common    => [:PIXIEPLATE],
-  :rare      => [:KEBIABERRY, :BABIRIBERRY],
+  :rare      => [:KEBIABERRY, :BABIRIBERRY, :PIXIEDUST],
   :epic      => [:TM92, :FAIRYTERASHARD],
   :legendary => [:TM21]
+})
+
+#-----------------------------------------------------------------------------
+# Pools if you have Mystic type Pokemon
+#-----------------------------------------------------------------------------
+GameData::RewardPool.register({
+  :id        => :mystic_type_pools,
+  :condition => proc { $player.has_pokemon_of_type?(:MYSTIC) },
+  :rare      => [:BIZARREBAND],
+})
+
+#-----------------------------------------------------------------------------
+# Pools if you have Sound type Pokemon
+#-----------------------------------------------------------------------------
+GameData::RewardPool.register({
+  :id        => :sound_type_pools,
+  :condition => proc { $player.has_pokemon_of_type?(:SOUND) },
+  :rare      => [:AMPLIFIER],
+})
+
+#-----------------------------------------------------------------------------
+# Pools if you have Light type Pokemon
+#-----------------------------------------------------------------------------
+GameData::RewardPool.register({
+  :id        => :light_type_pools,
+  :condition => proc { $player.has_pokemon_of_type?(:LIGHT) },
+  :rare      => [:HEALINGCROWN],
+})
+
+#-----------------------------------------------------------------------------
+# Pools if you have Cosmic type Pokemon
+#-----------------------------------------------------------------------------
+GameData::RewardPool.register({
+  :id        => :cosmic_type_pools,
+  :condition => proc { $player.has_pokemon_of_type?(:COSMIC) },
+  :rare      => [:COSMOCUBE],
 })
 
 #-----------------------------------------------------------------------------
@@ -388,4 +433,67 @@ GameData::RewardPool.register({
     dynamic_items[:rare].uniq!
     next dynamic_items
   }
+})
+
+#-----------------------------------------------------------------------------
+# Pools for specific species
+#-----------------------------------------------------------------------------
+GameData::RewardPool.register({
+  :id        => :combee_pool,
+  :condition => proc { $player.has_species?(:COMBEE) },
+  :rare      => [:ROYALHONEY],
+})
+
+GameData::RewardPool.register({
+  :id        => :plusle_pool,
+  :condition => proc { $player.has_species?(:PLUSLE) },
+  :rare      => [:LIGHTBATTERY],
+})
+
+GameData::RewardPool.register({
+  :id        => :minun_pool,
+  :condition => proc { $player.has_species?(:MINUN) },
+  :rare      => [:LIGHTBATTERY],
+})
+
+GameData::RewardPool.register({
+  :id        => :symphy_pool,
+  :condition => proc { $player.has_species?(:SYMPHY) },
+  :rare      => [:LIGHTBELL],
+})
+
+GameData::RewardPool.register({
+  :id        => :emolga_pool,
+  :condition => proc { $player.has_species?(:EMOLGA) },
+  :rare      => [:LIGHTGOGGLES],
+})
+
+GameData::RewardPool.register({
+  :id        => :pachirisu_pool,
+  :condition => proc { $player.has_species?(:PACHIRISU) },
+  :rare      => [:LIGHTNUT],
+})
+
+GameData::RewardPool.register({
+  :id        => :dedenne_pool,
+  :condition => proc { $player.has_species?(:DEDENNE) },
+  :rare      => [:LIGHTSEED],
+})
+
+GameData::RewardPool.register({
+  :id        => :togedemaru_pool,
+  :condition => proc { $player.has_species?(:TOGEDEMARU) },
+  :rare      => [:LIGHTROD],
+})
+
+GameData::RewardPool.register({
+  :id        => :eevee_pool,
+  :condition => proc { $player.has_species?(:EEVEE) },
+  :rare      => [:EONGENE],
+})
+
+GameData::RewardPool.register({
+  :id        => :pikachu_pool,
+  :condition => proc { $player.has_species?(:PIKACHU) },
+  :rare      => [:ALOLANPANCAKES],
 })

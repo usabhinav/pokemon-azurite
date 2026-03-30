@@ -66,6 +66,8 @@ module Game
       $player.money = 1000
       $bag.add(:POKEBALL, 5)
       $bag.add(:TRUEENIGMACHAIN)
+      $bag.add(:GREYSCALE)
+      $bag.add(:MEGARING)
     end
     skip_battle_anim = false
     while true
@@ -97,6 +99,11 @@ module Game
       end
       $PokemonGlobal.runnerModeBattleCounter += 1
       skip_battle_anim = true
+      if $PokemonGlobal.runnerModeBattleCounter == 11
+        pbReceiveItem(:EXPALL)
+        pbReceiveItem(:EXPSHARE)
+        pbReceiveItem(:EXPCHARM)
+      end
       pbUpdateSaveDate(Time.now)
       self.save
     end

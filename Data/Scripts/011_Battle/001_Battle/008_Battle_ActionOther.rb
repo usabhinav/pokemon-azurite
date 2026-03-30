@@ -220,6 +220,7 @@ class Battle
   # Choosing to Crystallize a battler
   #=============================================================================
   def pbHasCrystalData?(idxBattler)
+    return true if $game_temp.game_mode_type == :ENDLESS_MODE
     return true if !pbOwnedByPlayer?(idxBattler)   # Assume AI trainer has the crystal data
     return $player.pokedex.crystal_frequency_recorded?(@battlers[idxBattler].species)
   end

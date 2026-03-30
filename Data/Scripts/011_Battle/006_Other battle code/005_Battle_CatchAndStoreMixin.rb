@@ -12,21 +12,29 @@ module Battle::CatchAndStoreMixin
       end
     end
     # Store the Pokémon
-    if pbPlayer.party_full? && (@sendToBoxes == 0 || @sendToBoxes == 2)   # Ask/must add to party
+    isEndlessMode = $game_temp.game_mode_type == :ENDLESS_MODE
+    effectiveSendToBoxes = @sendToBoxes
+    effectiveSendToBoxes = 0 if isEndlessMode
+    if pbPlayer.party_full? && (effectiveSendToBoxes == 0 || effectiveSendToBoxes == 2)   # Ask/must add to party
       cmds = [_INTL("Add to your party"),
-              _INTL("Send to a Box"),
+              isEndlessMode ? _INTL("Release") : _INTL("Send to a Box"),
               _INTL("See {1}'s summary", pkmn.name),
               _INTL("Check party")]
-      cmds.delete_at(1) if @sendToBoxes == 2
+      cmds.delete_at(1) if effectiveSendToBoxes == 2
       loop do
-        cmd = pbShowCommands(_INTL("Where do you want to send {1} to?", pkmn.name), cmds, 99)
+        cmdMessage = isEndlessMode ? _INTL("Do what with {1}?", pkmn.name) : _INTL("Where do you want to send {1} to?", pkmn.name)
+        # Uses old command menu because text doesn't fit in new command menu buttons
+        @scene.pbHideAllDataboxes
+        cmd = @scene.pbShowCommands_ebdx(cmdMessage, cmds, 99)
+        @scene.pbShowAllDataboxes
+        cmd = 0 if cmd == 99 && isEndlessMode
         break if cmd == 99   # Cancelling = send to a Box
-        cmd += 1 if cmd >= 1 && @sendToBoxes == 2
+        cmd += 1 if cmd >= 1 && effectiveSendToBoxes == 2
         case cmd
         when 0   # Add to your party
-          pbDisplay(_INTL("Choose a Pokémon in your party to send to your Boxes."))
+          pbDisplay(isEndlessMode ? _INTL("Choose a Pokémon in your party to release.") : _INTL("Choose a Pokémon in your party to send to your Boxes."))
           party_index = -1
-          @scene.pbPartyScreen(0, (@sendToBoxes != 2), 1) { |idxParty, _partyScene|
+          @scene.pbPartyScreen(0, (effectiveSendToBoxes != 2), isEndlessMode ? 3 : 1) { |idxParty, _partyScene|
             party_index = idxParty
             next true
           }
@@ -43,10 +51,17 @@ module Battle::CatchAndStoreMixin
           #       this would take a surprising amount of code, and it's very
           #       unlikely to be needed anyway, so I'm ignoring it for now.
           send_pkmn = pbPlayer.party[party_index]
-          stored_box = @peer.pbStorePokemon(pbPlayer, send_pkmn)
-          pbPlayer.party.delete_at(party_index)
-          box_name = @peer.pbBoxName(stored_box)
-          pbDisplayPaused(_INTL("{1} has been sent to Box \"{2}\".", send_pkmn.name, box_name))
+          if isEndlessMode
+            # Release the Pokémon instead.
+            $bag.add(send_pkmn.item)
+            pbPlayer.party.delete_at(party_index)
+            pbDisplayPaused(_INTL("Goodbye, {1}!", send_pkmn.name))
+          else
+            stored_box = @peer.pbStorePokemon(pbPlayer, send_pkmn)
+            pbPlayer.party.delete_at(party_index)
+            box_name = @peer.pbBoxName(stored_box)
+            pbDisplayPaused(_INTL("{1} has been sent to Box \"{2}\".", send_pkmn.name, box_name))
+          end
           # Rearrange all remembered properties of party Pokémon
           (party_index...party_size).each do |idx|
             if idx < party_size - 1
@@ -76,7 +91,18 @@ module Battle::CatchAndStoreMixin
       end
     end
     # Store as normal (add to party if there's space, or send to a Box if not)
-    stored_box = @peer.pbStorePokemon(pbPlayer, pkmn)
+    if isEndlessMode
+      player = pbPlayer
+      if !player.party_full?
+        player.party[player.party.length] = pkmn
+        stored_box = -1
+      else
+        pbDisplayPaused(_INTL("{1} has been released.", pkmn.name))
+        return
+      end
+    else
+      stored_box = @peer.pbStorePokemon(pbPlayer, pkmn)
+    end
     if stored_box < 0
       pbDisplayPaused(_INTL("{1} has been added to your party.", pkmn.name))
       @initialItems[0][pbPlayer.party.length - 1] = pkmn.item_id if @initialItems

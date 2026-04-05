@@ -63,6 +63,15 @@ module Game
       pbAddPokemonSilent(:KUUBY, 5)
       pbAddPokemonSilent(:TWIGIT, 5)
       pbAddPokemonSilent(:KIKRO, 5)
+      # Make sure each Pokemon has at least one non-Normal damaging move
+      $player.party.each do |p|
+        next if p.moves.any? { |m| m.base_damage > 0 && m.type != :NORMAL }
+        move_to_learn = p.getMoveList.find do |m|
+          move_data = GameData::Move.get(m[1])
+          next move_data.base_damage > 0 && move_data.type != :NORMAL
+        end
+        p.learn_move(move_to_learn[1])
+      end
       $player.money = 1000
       $bag.add(:POKEBALL, 5)
       $bag.add(:TRUEENIGMACHAIN)
@@ -80,6 +89,7 @@ module Game
       setBattleRule("endlessmode")
       setBattleRule("canLose")
       setBattleRule("skipplayersendout") if skip_battle_anim
+      EliteBattle.set(:nextBattleBack, { "backdrop" => "AzuriteArena" })
       # The general pattern is that it increments by 1 except for every 9th and 10th battle, where it stays constant.
       # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 8, 8, 8
       # Waves 11-20: 9, 10, 11, 12, 13, 14, 15, 16, 16, 16
@@ -88,7 +98,7 @@ module Game
       opponent_level_cap = ((($PokemonGlobal.runnerModeBattleCounter - 1) / 10).floor + 1) * 8
       unconstrained_level = (($PokemonGlobal.runnerModeBattleCounter / 10).floor) * 8 + ($PokemonGlobal.runnerModeBattleCounter % 10)
       opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
-      did_player_win = WildBattle.start(getRandomPokemonForRunnerMode(opponent_level), skip_battle_anim:)
+      did_player_win = WildBattle.start(getRandomPokemonForRunnerMode(opponent_level, $PokemonGlobal.runnerModeBattleCounter), skip_battle_anim:)
       if !did_player_win
         # Disable the auto-run event on Endless Mode map. Without this, even after calling the title screen,
         # the event still gets triggered and starts a new battle.
@@ -103,6 +113,10 @@ module Game
         pbReceiveItem(:EXPALL)
         pbReceiveItem(:EXPSHARE)
         pbReceiveItem(:EXPCHARM)
+      end
+      if $PokemonGlobal.runnerModeBattleCounter == 41
+        pbReceiveItem(:EQUALIZERM)
+        pbReceiveItem(:EQUALIZERC)
       end
       pbUpdateSaveDate(Time.now)
       self.save
@@ -134,16 +148,65 @@ module Game
           screen.pbStartScreen
         }
       when cmdShop
-        pbMapInterpreter.setPrice(:POTION, 36)
-        pbMapInterpreter.setPrice(:ETHER, 72)
-        pbMapInterpreter.setPrice(:FULLHEAL, 72)
-        pbMapInterpreter.setPrice(:REVIVE, 360)
-        pbPokemonMartForRunnerMode([
-          :POTION,
-          :ETHER,
-          :FULLHEAL,
-          :REVIVE,
-        ])
+        shop_item_map = {
+          :POTION => {
+            :level => 1,
+            :mult => 0.2,
+          },
+          :SUPERPOTION => {
+            :level => 21,
+            :mult => 0.45,
+          },
+          :HYPERPOTION => {
+            :level => 61,
+            :mult => 0.8,
+          },
+          :MAXPOTION => {
+            :level => 81,
+            :mult => 1.5,
+          },
+          :REVIVE => {
+            :level => 1,
+            :mult => 2,
+          },
+          :MAXREVIVE => {
+            :level => 61,
+            :mult => 2.75,
+          },
+          :ETHER => {
+            :level => 1,
+            :mult => 0.4,
+          },
+          :MAXETHER => {
+            :level => 51,
+            :mult => 1,
+          },
+          :ELIXIR => {
+            :level => 51,
+            :mult => 1,
+          },
+          :MAXELIXIR => {
+            :level => 81,
+            :mult => 2.5,
+          },
+          :FULLHEAL => {
+            :level => 21,
+            :mult => 1,
+          },
+          :FULLRESTORE => {
+            :level => 81,
+            :mult => 2.25,
+          },
+        }
+        shop_items_to_display = []
+        shop_item_map.each do |item_id, item_definition|
+          next if $PokemonGlobal.runnerModeBattleCounter < item_definition[:level]
+          shop_items_to_display.push(item_id)
+          # Using Pokerogue's formula, but without the exponential modifier to reduce complexity
+          price = ((10 * ($PokemonGlobal.runnerModeBattleCounter - 1) + 175).floor(-1) * item_definition[:mult].to_f).floor
+          pbMapInterpreter.setPrice(item_id, price)
+        end
+        pbPokemonMartForRunnerMode(shop_items_to_display)
       else
         break
       end

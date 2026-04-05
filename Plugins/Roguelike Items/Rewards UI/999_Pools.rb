@@ -12,7 +12,7 @@ GameData::RewardPool.register({
     :SUPERPOTION, :GREATBALL, :REVIVE, :SITRUSBERRY, :LUMBERRY, :FOCUSBAND,
     :LANSATBERRY, :STARFBERRY,
     # Added
-    :BIGNUGGET, :RISCIBERRY, :ZATTACK, :ZDEFENSE, :ZSPATK, :ZSPDEF, :ZSPEED, :ZACCURACY
+    :BIGNUGGET, :RISCIBERRY
   ],
   :epic      => [
     :HYPERPOTION, :ULTRABALL, :FULLHEAL, :PPUP, :EJECTBUTTON, :POWERHERB,
@@ -496,4 +496,32 @@ GameData::RewardPool.register({
   :id        => :pikachu_pool,
   :condition => proc { $player.has_species?(:PIKACHU) },
   :rare      => [:ALOLANPANCAKES],
+})
+
+#-----------------------------------------------------------------------------
+# Pools to add Z-items
+#-----------------------------------------------------------------------------
+GameData::RewardPool.register({
+  :id        => :trade_item_pools,
+  :condition => proc {
+    z_items = [:ZATTACK, :ZDEFENSE, :ZSPATK, :ZSPDEF, :ZSPEED, :ZACCURACY]
+    dynamic_items = {:rare => []}
+    dynamic_items[:rare].push(z_items.sample)
+    next dynamic_items
+  }
+})
+
+#-----------------------------------------------------------------------------
+# Pools to add Pokeballs
+#-----------------------------------------------------------------------------
+GameData::RewardPool.register({
+  :id        => :trade_item_pools,
+  :condition => proc {
+    items = [:DIVEBALL, :NETBALL, :REPEATBALL, :TIMERBALL, :LUXURYBALL, :PREMIERBALL, :HEALBALL, :QUICKBALL,
+      :CHERISHBALL, :FASTBALL, :LEVELBALL, :HEAVYBALL, :LOVEBALL, :FRIENDBALL, :MOONBALL, :DREAMBALL, :RICHBALL,
+      :PSYCHOBALL, :JINGLEBALL, :CRYSTALBALL, :DEITYBALL, :NESTBALL]
+    dynamic_items = {:rare => []}
+    dynamic_items[:rare].push(items.sample)
+    next dynamic_items
+  }
 })

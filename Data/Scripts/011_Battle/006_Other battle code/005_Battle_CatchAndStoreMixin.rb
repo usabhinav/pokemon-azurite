@@ -252,6 +252,11 @@ module Battle::CatchAndStoreMixin
     else
       catch_rate /= 10
     end
+    if $game_temp.game_mode_type == :ENDLESS_MODE
+      if $PokemonGlobal.runnerModeBattleCounter < 41
+        catch_rate *= 2
+      end
+    end
     # First half of the shakes calculation
     a = battler.totalhp
     b = battler.hp

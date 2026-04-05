@@ -36,9 +36,9 @@ NAME
 HP
   XYZ              = 20,9,9
 STATUS
-  XYZ              = 202,16,1
-MEGA
   XYZ              = 242,16,1
+MEGA
+  XYZ              = 248,24,1
 #-------------------------------
 [COMMANDMENU]
 ButtonGraphic      = btnCmd

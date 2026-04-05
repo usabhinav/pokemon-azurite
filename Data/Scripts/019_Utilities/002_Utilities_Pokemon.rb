@@ -382,9 +382,22 @@ end
 #===============================================================================
 # Returns a random Pokemon based on the provided level.
 #===============================================================================
-def getRandomPokemonForRunnerMode(level)
+def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
   species_data_form_map = getPossibleSpeciesDataFormMapForTeamBuilder(level)
   species_id_list = species_data_form_map.keys
+  # Filter out certain species
+  if runnerModeBattleCounter <= 15
+    species_id_list.delete_if do |species_id|
+      species_data = GameData::Species.get(species_id)
+      next species_data.get_previous_species != species_id
+    end
+  end
+  if runnerModeBattleCounter <= 40
+    species_id_list.delete_if do |species_id|
+      species_data = GameData::Species.get(species_id)
+      next species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical")
+    end
+  end
   # First get random species
   selected_species_id = species_id_list.sample
   # Then get random form

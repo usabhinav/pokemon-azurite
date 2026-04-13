@@ -74,37 +74,23 @@ module Game
       end
       $player.money = 1000
       $bag.add(:POKEBALL, 5)
-      $bag.add(:TRUEENIGMACHAIN)
       $bag.add(:GREYSCALE)
       $bag.add(:MEGARING)
     end
     skip_battle_anim = false
     while true
-      if $PokemonGlobal.runnerModeBattleCounter > 1
-        self.runner_mode_show_options_in_between_battles
-        pbUpdateSaveDate(Time.now)
-        self.save
+      if $PokemonGlobal.runnerModeBattleCounter > 100
+        pbHallOfFameEntry
+        self.go_back_to_title_from_runner_mode
+        return
       end
-      play_next_battle_BGM_from_saved_preference
-      setBattleRule("endlessmode")
-      setBattleRule("canLose")
-      setBattleRule("skipplayersendout") if skip_battle_anim
-      EliteBattle.set(:nextBattleBack, { "backdrop" => "AzuriteArena" })
-      # The general pattern is that it increments by 1 except for every 9th and 10th battle, where it stays constant.
-      # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 8, 8, 8
-      # Waves 11-20: 9, 10, 11, 12, 13, 14, 15, 16, 16, 16
-      # ...
-      # Waves 91-100: 73, 74, 75, 76, 77, 78, 79, 80, 80, 80
-      opponent_level_cap = ((($PokemonGlobal.runnerModeBattleCounter - 1) / 10).floor + 1) * 8
-      unconstrained_level = (($PokemonGlobal.runnerModeBattleCounter / 10).floor) * 8 + ($PokemonGlobal.runnerModeBattleCounter % 10)
-      opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
-      did_player_win = WildBattle.start(getRandomPokemonForRunnerMode(opponent_level, $PokemonGlobal.runnerModeBattleCounter), skip_battle_anim:)
+      self.runner_mode_show_options_in_between_battles
+      if $PokemonGlobal.runnerModeBattleCounter > 1
+        self.autosave_runner_mode
+      end
+      did_player_win = self.start_runner_mode_battle(skip_battle_anim)
       if !did_player_win
-        # Disable the auto-run event on Endless Mode map. Without this, even after calling the title screen,
-        # the event still gets triggered and starts a new battle.
-        pbMapInterpreter.pbSetSelfSwitch(1, "A", true, 181)
-        $game_temp.title_screen_calling = true
-        $game_temp.begun_new_game = false
+        self.go_back_to_title_from_runner_mode
         return
       end
       $PokemonGlobal.runnerModeBattleCounter += 1
@@ -118,9 +104,108 @@ module Game
         pbReceiveItem(:EQUALIZERM)
         pbReceiveItem(:EQUALIZERC)
       end
-      pbUpdateSaveDate(Time.now)
-      self.save
+      # Heal every 10 rounds
+      if $PokemonGlobal.runnerModeBattleCounter % 10 == 1
+        pbMEPlay("Pokemon Healing")
+        $player.heal_party
+        pbWait(100)
+      end
+      self.autosave_runner_mode
     end
+  end
+
+  def self.autosave_runner_mode
+    pbUpdateSaveDate(Time.now)
+    self.save
+    $scene.spriteset.addUserSprite(Autosave.new)
+    pbWait(80)
+  end
+
+  def self.go_back_to_title_from_runner_mode
+    # Disable the auto-run event on Endless Mode map. Without this, even after calling the title screen,
+    # the event still gets triggered and starts a new battle.
+    pbMapInterpreter.pbSetSelfSwitch(1, "A", true, 181)
+    $game_temp.title_screen_calling = true
+    $game_temp.begun_new_game = false
+  end
+
+  def self.start_runner_mode_battle(skip_battle_anim)
+    static_encounter_map = {
+      5 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new([:BULBASAUR, :CHARMANDER, :SQUIRTLE].sample, level)
+          poke.makeAlbino
+          next poke
+        }
+      },
+      10 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:DITTO, level)
+          poke.learn_move(:TRANSFORM)
+          next poke
+        }
+      },
+      15 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:GIRAFARIG, level)
+          poke.ability = :STANDWATCH
+          next poke
+        }
+      },
+      20 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:VARYMITE, level)
+          poke.learn_move(:DIMENSIONALGAP)
+          next poke
+        }
+      },
+    }
+    self.set_runner_mode_battle_music
+    setBattleRule("endlessmode")
+    setBattleRule("canLose")
+    setBattleRule("skipplayersendout") if skip_battle_anim
+    EliteBattle.set(:nextBattleBack, { "backdrop" => "AzuriteArena" })
+    # The general pattern is that it increments by 1 except for every 9th and 10th battle, where it stays constant.
+    # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 8, 8, 8
+    # Waves 11-20: 9, 10, 11, 12, 13, 14, 15, 16, 16, 16
+    # ...
+    # Waves 91-100: 73, 74, 75, 76, 77, 78, 79, 80, 80, 80
+    opponent_level_cap = ((($PokemonGlobal.runnerModeBattleCounter - 1) / 10).floor + 1) * 8
+    unconstrained_level = (($PokemonGlobal.runnerModeBattleCounter / 10).floor) * 8 + ($PokemonGlobal.runnerModeBattleCounter % 10)
+    opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
+    if static_encounter_map.key?($PokemonGlobal.runnerModeBattleCounter)
+      encounter_definition = static_encounter_map[$PokemonGlobal.runnerModeBattleCounter]
+      if encounter_definition[:type] == :wild
+        return WildBattle.start(encounter_definition[:get_pokemon].call(opponent_level), skip_battle_anim:)
+      end
+    end
+    return WildBattle.start(getRandomPokemonForRunnerMode(opponent_level, $PokemonGlobal.runnerModeBattleCounter), skip_battle_anim:)
+  end
+
+  def self.set_runner_mode_battle_music
+    if is_battle_BGM_set_to_specific_track
+      $PokemonGlobal.nextBattleBGM = get_next_battle_BGM_from_saved_preference
+      return
+    end
+    # The track changes every 10 rounds
+    track_list = [
+      "Battle - 001 Wild Pokemon Battle",
+      "Battle - 002 Trainer Battle",
+      "Battle - 033 Lumeny Battle",
+      "Battle - 039 Low Aura Boss",
+      "Battle - 040 High Aura Boss",
+      "battle1",
+      # Repeat
+      "Battle - 001 Wild Pokemon Battle",
+      "Battle - 033 Lumeny Battle",
+      "Battle - 039 Low Aura Boss",
+      "Battle - 040 High Aura Boss",
+    ]
+    $PokemonGlobal.nextBattleBGM = track_list[($PokemonGlobal.runnerModeBattleCounter - 1) / 10]
   end
 
   def self.runner_mode_show_options_in_between_battles
@@ -196,6 +281,18 @@ module Game
           :FULLRESTORE => {
             :level => 81,
             :mult => 2.25,
+          },
+          :POKEBALL => {
+            :level => 1,
+            :mult => 0.2,
+          },
+          :GREATBALL => {
+            :level => 21,
+            :mult => 0.6,
+          },
+          :ULTRABALL => {
+            :level => 61,
+            :mult => 1,
           },
         }
         shop_items_to_display = []

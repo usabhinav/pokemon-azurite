@@ -243,6 +243,9 @@ class HallOfFame_Scene
 
   def createTrainerBattler
     @sprites["trainer"] = IconSprite.new(@viewport)
+    if $game_temp.game_mode_type == :ENDLESS_MODE
+      @sprites["trainer"].visible = false
+    end
     @sprites["trainer"].setBitmap(GameData::TrainerType.front_sprite_filename($player.trainer_type))
     if SINGLEROW
       @sprites["trainer"].x = Graphics.width / 2
@@ -288,8 +291,13 @@ class HallOfFame_Scene
     @sprites["messagebox"].viewport = @viewport
     @sprites["messagebox"].width = 192 if @sprites["messagebox"].width < 192
     @sprites["msgwindow"] = pbCreateMessageWindow(@viewport)
-    pbMessageDisplay(@sprites["msgwindow"],
-                     _INTL("League champion!\nCongratulations!\\^"))
+    if $game_temp.game_mode_type == :ENDLESS_MODE
+      pbMessageDisplay(@sprites["msgwindow"],
+                      _INTL("Endless mode champion!\nCongratulations!\\^"))
+    else
+      pbMessageDisplay(@sprites["msgwindow"],
+                      _INTL("League champion!\nCongratulations!\\^"))
+    end
   end
 
   def writePokemonData(pokemon, hallNumber = -1)

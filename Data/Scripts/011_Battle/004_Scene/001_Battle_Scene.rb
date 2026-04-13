@@ -370,7 +370,7 @@ class Battle::Scene
     @abortable = false
     pbShowWindow(BLANK)
     # Fade out all sprites
-    pbBGMFade(1.0)
+    pbBGMFade(1.0) if $game_temp.game_mode_type != :ENDLESS_MODE
     pbFadeOutAndHide(@sprites)
     pbDisposeSprites
   end

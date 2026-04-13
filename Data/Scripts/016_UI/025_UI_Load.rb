@@ -586,6 +586,14 @@ class PokemonLoadScreen
         Game.start_new
         return
       when cmd_new_game_runner_mode
+        if SaveData.exists?(SaveData::FILE_PATH_RUNNER_MODE)
+          pbMessage(_INTL("WARNING!"))
+          pbMessage(_INTL("There is a different game file that is already saved."))
+          pbMessage(_INTL("If you start a new run, the other file's adventure, including items and Pokémon, will be entirely lost after the end of the first battle."))
+          if !pbConfirmMessageSerious(_INTL("Are you sure you want to start a new run?"))
+            next
+          end
+        end
         @scene.pbEndScene
         $game_temp.game_mode_type = :ENDLESS_MODE
         Game.start_new

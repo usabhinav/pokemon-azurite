@@ -9,7 +9,7 @@ def pbBattleAnimation(bgm = nil, battletype = 0, foe = nil, skip_battle_anim = f
   playingBGS = nil
   playingBGM = nil
   # memorizes currently playing BGM and BGS
-  if $game_system && $game_system.is_a?(Game_System)
+  if $game_system && $game_system.is_a?(Game_System) && $game_temp.game_mode_type != :ENDLESS_MODE
     playingBGS = $game_system.getPlayingBGS
     playingBGM = $game_system.getPlayingBGM
     $game_system.bgm_pause
@@ -63,7 +63,7 @@ def pbBattleAnimation(bgm = nil, battletype = 0, foe = nil, skip_battle_anim = f
   # battle processing
   yield if block_given?
   # resumes memorized BGM and BGS
-  if $game_system && $game_system.is_a?(Game_System)
+  if $game_system && $game_system.is_a?(Game_System) && $game_temp.game_mode_type != :ENDLESS_MODE
     $game_system.bgm_resume(playingBGM)
     $game_system.bgs_resume(playingBGS)
   end

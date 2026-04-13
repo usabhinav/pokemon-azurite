@@ -449,7 +449,7 @@ class Battle::Scene
       bgm = try if !try.nil?
     end
     # play BGM
-    pbBGMPlay(bgm)
+    pbBGMPlay(bgm) if $game_temp.game_mode_type != :ENDLESS_MODE
   end
   def pbTrainerBattleSuccess
     bgm = "EBDX/Victory Against Trainer"
@@ -458,7 +458,7 @@ class Battle::Scene
       s = EliteBattle.get_trainer_data(@battle.opponent[0].trainer_type, :VICTORYTHEME, @battle.opponent[0])
       bgm = s if !s.nil?
     end
-    pbBGMPlay(bgm)
+    pbBGMPlay(bgm) if $game_temp.game_mode_type != :ENDLESS_MODE
   end
   #-----------------------------------------------------------------------------
   #  handle the sending out animations

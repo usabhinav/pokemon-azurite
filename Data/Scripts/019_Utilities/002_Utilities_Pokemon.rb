@@ -386,6 +386,11 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
   species_data_form_map = getPossibleSpeciesDataFormMapForTeamBuilder(level)
   species_id_list = species_data_form_map.keys
   # Filter out certain species
+  species_id_list.delete_if do |species_id|
+    # Mundimea is more of a special encounter Pokemon that requires a True Enigma Chain to see it, so doesn't
+    # make much sense to include it randomly.
+    next species_id == :MUNDIMEA
+  end
   if runnerModeBattleCounter <= 15
     species_id_list.delete_if do |species_id|
       species_data = GameData::Species.get(species_id)

@@ -43,6 +43,10 @@ def randomize_battle_BGM
   save_battle_BGM(RANDOMIZE_BGM_CONSTANT)
 end
 
+def is_battle_BGM_set_to_specific_track
+  return load_battle_BGM != RANDOMIZE_BGM_CONSTANT
+end
+
 def get_display_name_for_battle_BGM(battle_bgm_save_name)
   if battle_bgm_save_name == RANDOMIZE_BGM_CONSTANT
     return "Random track"

@@ -621,25 +621,27 @@ class DynamicPokemonSprite
       @shadow.bitmap = @bitmap.bitmap.clone
     end
     # applies color overlay based on status condition
-    if !@anim && !@pulse.nil?
-      @pulse += @k/self.delta
-      @k *= -1 if @pulse >= 128 || @pulse <= 8
-      case @status
-      when 0
-        @sprite.color = Color.new(0, 0, 0, 0)
-      when 1 #PSN
-        @sprite.color = Color.new(109, 55, 130, @pulse)
-      when 2 #PAR
-        @sprite.color = Color.new(204, 152, 44, @pulse)
-      when 3 #FRZ
-        @sprite.color = Color.new(56, 160, 193, @pulse)
-      when 4 #BRN
-        @sprite.color = Color.new(206, 73, 43, @pulse)
-      end
-      @sprite.color = Color.new(204, 38, 92, @pulse*0.5) if @status < 1 && @dynamax
-      @sprite.color = Color.new(221, 68, 92, @pulse) if @status < 1 && @charged
-    end
-    @anim = false
+    # TODO: Re-enable this code after fixing the bug where once status color is applied,
+    # it starts flickering weirdly whenever the battler is attacking or gets attacked
+    # if !@anim && !@pulse.nil?
+    #   @pulse += @k/self.delta
+    #   @k *= -1 if @pulse >= 128 || @pulse <= 8
+    #   case @status
+    #   when 0
+    #     @sprite.color = Color.new(0, 0, 0, 0)
+    #   when 1 #PSN
+    #     @sprite.color = Color.new(109, 55, 130, @pulse)
+    #   when 2 #PAR
+    #     @sprite.color = Color.new(204, 152, 44, @pulse)
+    #   when 3 #FRZ
+    #     @sprite.color = Color.new(56, 160, 193, @pulse)
+    #   when 4 #BRN
+    #     @sprite.color = Color.new(206, 73, 43, @pulse)
+    #   end
+    #   @sprite.color = Color.new(204, 38, 92, @pulse*0.5) if @status < 1 && @dynamax
+    #   @sprite.color = Color.new(221, 68, 92, @pulse) if @status < 1 && @charged
+    # end
+    # @anim = false
     # Pokemon sprite blinking when targeted or damaged
     @frame += 1
     @frame = 0 if @frame > 256

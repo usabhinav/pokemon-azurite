@@ -228,6 +228,7 @@ class TeamBuilderTextBasedScreen
           old_scene = $scene
           $game_temp.game_mode_type = :CUSTOM_BATTLE_MODE
           Game.start_new
+          pbTrainerName("Jade")
           setBattleRule(sprintf("%dv%d", size0, size1))
           setBattleRule("canLose")
           setBattleRule("noexp")
@@ -242,8 +243,8 @@ class TeamBuilderTextBasedScreen
           TrainerBattle.start(:TEAMVITREUS_CUSTOMBATTLEMODE, "Grunt", 0)
           # Un-set global variables so that it doesn't cause any issues if loading an existing save later
           $custom_battle_mode_args = nil
-          $player.party = []
-          $bag = PokemonBag.new
+          SaveData.mark_values_as_unloaded
+          registerAllSpeciesAndForms # To show all species/forms when selecting species
           # Fade back to this screen
           $scene = old_scene
         end

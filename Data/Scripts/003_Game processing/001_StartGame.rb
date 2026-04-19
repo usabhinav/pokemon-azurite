@@ -118,7 +118,6 @@ module Game
     pbUpdateSaveDate(Time.now)
     self.save
     $scene.spriteset.addUserSprite(Autosave.new)
-    pbWait(80)
   end
 
   def self.go_back_to_title_from_runner_mode

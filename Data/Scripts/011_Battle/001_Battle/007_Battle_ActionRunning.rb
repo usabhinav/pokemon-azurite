@@ -46,7 +46,7 @@ class Battle
           @decision = 2
           return 1
         end
-      elsif @internalBattle
+      elsif @internalBattle && $game_temp.game_mode_type != :CUSTOM_BATTLE_MODE
         pbDisplayPaused(_INTL("No! There's no running from a Trainer battle!"))
       elsif pbDisplayConfirm(_INTL("Would you like to forfeit the match and quit now?"))
         pbSEPlay("Battle flee")

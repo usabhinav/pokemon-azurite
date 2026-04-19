@@ -618,6 +618,7 @@ class PokemonLoadScreen
           @save_data_runner_mode[:pokemon_system] = $PokemonSystem
           File.open(SaveData::FILE_PATH_RUNNER_MODE, 'wb') { |file| Marshal.dump(@save_data_runner_mode, file) }
         end
+        SaveData.mark_values_as_unloaded
         $scene = pbCallTitle
         return
       when cmd_debug

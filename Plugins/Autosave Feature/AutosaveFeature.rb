@@ -70,8 +70,8 @@ class Autosave
   # Use flashing animation for the sprites
   FLASHING_ANIMATION = true
 
-  # Animation duration (min. 0.6 seconds for flashing 2 times)
-  ANIMATION_DURATION = 2000000
+  # Animation duration (min. 0.6 seconds for flashing 3 times)
+  ANIMATION_DURATION = 3000000
 
   def initialize
     # Bitmap sprite setup
@@ -129,10 +129,10 @@ class Autosave
       s.update
     end
     # Sprites animations
-    duration = [ANIMATION_DURATION / 4.0, 0.1].max
+    duration = [ANIMATION_DURATION / 6.0, 0.1].max
     end_opacity = @looptime % 2 == 0 ? 255 : 0
     cur_opacity = lerp(@looptime % 2 == 0 ? 0 : 255, end_opacity, duration, @timer, System.uptime)
-    if FLASHING_ANIMATION || [0,3].include?(@looptime)
+    if FLASHING_ANIMATION || [0,5].include?(@looptime)
       @bitmapsprite.opacity = cur_opacity 
       @sprites.each_value do |s|
         s.opacity = cur_opacity
@@ -141,7 +141,7 @@ class Autosave
     if cur_opacity == end_opacity
       @looptime += 1
       @timer = System.uptime
-      self.dispose if @looptime >= 4
+      self.dispose if @looptime >= 6
     end
   end
 

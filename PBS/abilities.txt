@@ -1488,8 +1488,8 @@ Description = Powers up Dark-type moves.
 Name = Wind-up
 Description = Two-turn moves deal 1.5x more damage.
 #-------------------------------
-[FLURESCENCE]
-Name = Flurescence
+[FLUORESCENCE]
+Name = Fluorescence
 Description = Two-turn moves will hit in only one turn, but with 20% less power.
 #-------------------------------
 [DELIRIUM]

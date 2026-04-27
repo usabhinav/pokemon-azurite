@@ -5231,7 +5231,7 @@ FrontSprite = 0,25
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
-[MOSQUILLITE]
+[MOSQUILITE]
 BackSprite = 0,0
 FrontSprite = 0,25
 ShadowX = 0
@@ -5843,13 +5843,13 @@ FrontSprite = 0,25
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
-[FISHFEMALE]
+[SENFETTA]
 BackSprite = 0,0
 FrontSprite = 0,25
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
-[FISHNEUTRAL]
+[PLAKIDD]
 BackSprite = 0,0
 FrontSprite = 0,25
 ShadowX = 0
@@ -6041,12 +6041,6 @@ FrontSprite = 0,25
 ShadowX = 0
 ShadowSize = 2
 #-------------------------------
-[TYPHON]
-BackSprite = 0,0
-FrontSprite = 0,25
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
 [LUMENY]
 BackSprite = 0,0
 FrontSprite = 0,25
@@ -6066,12 +6060,6 @@ ShadowX = 0
 ShadowSize = 2
 #-------------------------------
 [KAIZURE]
-BackSprite = 0,0
-FrontSprite = 0,25
-ShadowX = 0
-ShadowSize = 2
-#-------------------------------
-[UBFLOW]
 BackSprite = 0,0
 FrontSprite = 0,25
 ShadowX = 0

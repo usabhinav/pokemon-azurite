@@ -2720,23 +2720,23 @@ Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ARCEUS,19]
 FormName = Light Type
-Type1 = LIGHT
+Types = LIGHT
 #-------------------------------
 [ARCEUS,20]
 FormName = Sound Type
-Type1 = SOUND
+Types = SOUND
 #-------------------------------
 [ARCEUS,21]
 FormName = Cosmic Type
-Type1 = COSMIC
+Types = COSMIC
 #-------------------------------
 [ARCEUS,22]
 FormName = Mystic Type
-Type1 = MYSTIC
+Types = MYSTIC
 #-------------------------------
 [ARCEUS,23]
 FormName = Crystal Type
-Type1 = CRYSTAL
+Types = CRYSTAL
 #-------------------------------
 #AZURITE ADDED FORMS - NO OFFICIAL FORMS PAST THIS POINT! 
 #Add official forms prior to this section
@@ -2746,8 +2746,7 @@ Type1 = CRYSTAL
 #-------------------------------
 [JIGGLYPUFF,1]
 FormName = Kurian
-Type1 = GHOST
-Type2 = SOUND
+Types = GHOST,SOUND
 BaseStats = 115,45,70,20,45,60
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
@@ -2757,242 +2756,274 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONLEE,1]
 FormName = Kurian
-Type1 = GRASS
-Type2 = FIGHTING
+Types = GRASS,FIGHTING
 BaseStats = 87,120,110,53,35,50
+Abilities = VINECOILSTYLE,LONGREACH
+Moves = 0,VINETAKEDOWN,1,DOUBLEKICK,1,REVERSAL,1,PURSUIT,1,FORESIGHT,10,VINEWHIP,13,BIND,16,ROLLINGKICK,18,MEDITATE,20,GIGADRAIN,23,RAZORLEAF,25,FEINT,27,TAPOUT,29,CAGEMATCH,31,VACUUMWAVE,33,MEGAKICK,34,WIDEGUARD,36,SPLINTER,38,STRETCHKICK,40,DETECT,43,ENDURE,46,POWERWHIP,50,HIGHJUMPKICK,53,COUNTER
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONCHAN,1]
 FormName = Kurian
-Type1 = FIRE
-Type2 = FIGHTING
+Types = FIRE,FIGHTING
 BaseStats = 50,110,82,95,35,83
+Abilities = WILDFIRESTYLE,IRONFIST
+HiddenAbilities = FLAMEBODY
+Moves = 0,FLAREFIST,1,AGILITY,1,DYNAMICPUNCH,1,THUNDERPUNCH,1,MACHPUNCH,10,EMBER,13,COUNTER,16,COMETPUNCH,18,BULLETPUNCH,20,FLAMEBURST,23,FLAMECHARGE,25,FEINT,27,TAPOUT,29,CAGEMATCH,31,VACUUMWAVE,33,MEGAPUNCH,34,QUICKGUARD,36,FIREPUNCH,38,SKYUPPERCUT,40,DETECT,43,ENDURE,46,FLAREBLITZ,50,CLOSECOMBAT,53,COUNTER
+Color = Red
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KOFFING,2]
 FormName = Kurian
-Type1 = FAIRY
+Types = FAIRY
+Color = Pink
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [WEEZING,2]
 FormName = Kurian
+Types = FAIRY,POISON
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [MAGIKARP,1]
 FormName = Kurian
 BaseStats = 50,80,55,80,25,40
-EffortPoints = 0,1,0,0,0,0
 Abilities = INTIMIDATE,SWIFTSWIM
-HiddenAbility = MOXIE
-Compatibility = Water2,Dragon
-Evolutions = GYARADOS,Level,36
+HiddenAbilities = MOXIE
+Moves = 1,SPLASH,1,TACKLE,8,TWISTER,13,BITE,15,FLAIL,18,DRAGONRAGE,20,WATERPULSE,23,TIDALSPLASH,28,DOUBLEEDGE,33,CRUNCH,37,BOUNCE,46,WATERFALL
+Color = Blue
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEDYBA,1]
 FormName = Kurian
-Type1 = STEEL
-Type2 = PSYCHIC
+Types = STEEL,PSYCHIC
 BaseStats = 40,50,50,50,50,85
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEDIAN,1]
 FormName = Kurian
-Type1 = STEEL
-Type2 = PSYCHIC
+Types = STEEL,PSYCHIC
 BaseStats = 70,90,70,125,60,115
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AIPOM,1]
 FormName = Kurian
-Type1 = NORMAL
-Type2 = SOUND
-BaseStats = 55,70,55,85,40,55
-EffortPoints = 0,0,0,1,0,0
-Moves = 1,SANDATTACK
-EggMoves = ANCIENTPOWER
-Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
+Types = NORMAL,SOUND
+Abilities = PICKUP,TECHNICIAN
+HiddenAbilities = LIMBER
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TYROGUE,1]
 FormName = Kurian
-Type1 = NORMAL
-Type2 = FIGHTING
+Types = NORMAL,FIGHTING
 BaseStats = 30,30,30,30,30,30
+Abilities = PRODIGY,INNERFOCUS
+HiddenAbilities = RIVALRY
+Moves = 1,TACKLE,1,HELPINGHAND,1,FAKEOUT,1,FORESIGHT,9,FEINT,14,ARMTHRUST,18,FORCEPALM,22,FOCUSENERGY,25,TAKEDOWN,30,ROLLINGKICK,34,DOUBLEEDGE,40,SKYUPPERCUT
+Color = White
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONTOP,1]
 FormName = Kurian
-Type1 = WATER
-Type2 = FIGHTING
+Types = WATER,FIGHTING
 BaseStats = 58,110,70,92,35,90
+Abilities = WHIRLPOOLSTYLE,SWIFTSWIM
+HiddenAbilities = WATERVEIL
+Moves = 0,VORTEX,1,AGILITY,1,SUCKERPUNCH,1,GYROBALL,1,QUICKATTACK,10,WHIRLPOOL,13,RAPIDSPIN,16,ENDEAVOR,18,RAINDANCE,20,AQUAJET,23,SPLASHSLAP,25,FEINT,27,TAPOUT,29,CAGEMATCH,31,VACUUMWAVE,33,MEGAKICK,34,WIDEGUARD,36,FLIPTURN,38,TRIPLEKICK,40,DETECT,43,ENDURE,46,LIQUIDATION,50,CLOSECOMBAT,53,COUNTER
+Color = Blue
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BRELOOM,1]
 FormName = Kurian
-Type1 = POISON
-Type2 = MYSTIC
-BaseStats = 90,110,80,70,50,90
-EffortPoints = 0,2,0,0,0,0
+Types = POISON,MYSTIC
+BaseStats = 85,110,80,70,50,90
 Abilities = STENCH,CLEARINGFUMES
-HiddenAbility = ADAPTABILITY
-Compatibility = Grass,Fairy
+HiddenAbilities = ADAPTABILITY
+Moves = 0,CLEARSMOG,1,MAGICSHOT,1,TACKLE,1,HAZE,5,LEECHSEED,10,HAZE,12,SMOG,15,MEGADRAIN,17,HEADBUTT,20,FEINTATTACK,22,FORCEPALM,25,POISONTAIL,29,STICKYTERRAIN,31,MIRAGESLAM,33,MYSTERYSHROUD,35,SLUDGEBOMB,38,SAFEGUARD,38,CALMMIND,42,POISONJAB,45,MIRRORCOAT,48,WONDERSTRIKE,52,SKYUPPERCUT,57,GUNKSHOT,62,STAGESHIFT
+Color = Purple
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [NOSEPASS,1]
 FormName = Kurian
-Type1 = GRASS
-Type2 = ROCK
+Types = GRASS,ROCK
 BaseStats = 50,50,110,25,40,100
+Abilities = OVERCOAT,SOLARPOWER
+Moves = 1,TACKLE,1,HARDEN,4,INGRAIN,8,LEAFAGE,11,ROLLOUT,13,ROCKTHROW,16,WIDEGUARD,18,GRASSWHISTLE,21,BLOCK,23,ANCIENTPOWER,26,ROCKBLAST,28,STEALTHROCK,31,SUPERSONIC,34,DROPWAVE,37,SPLINTER,41,EARTHPOWER,44,SYNTHESIS,47,SOUNDBLAST,51,WOODHAMMER
+Color = Green
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SKITTY,1]
 FormName = Kurian
-Type1 = DARK
-Type2 = STEEL
+Types = DARK,STEEL
 BaseStats = 55,70,55,35,25,80
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DELCATTY,1]
 FormName = Kurian
-Type1 = DARK
-Type2 = STEEL
+Types = DARK,STEEL
 BaseStats = 94,104,85,81,45,95
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PLUSLE,1]
 FormName = Kurian
-Type1 = FAIRY
-Type2 = LIGHT
+Types = FAIRY,LIGHT
 BaseStats = 70,40,70,65,75,85
-EffortPoints = 0,0,0,0,0,2
 Abilities = ADDITION,TRIAGE
-HiddenAbility = RIVALRY
-Compatibility = Field,Fairy
+HiddenAbilities = RIVALRY
+Moves = 1,PLAYNICE,1,QUICKATTACK,1,FLASH,6,FAIRYWIND,8,HELPINGHAND,11,ENCORE,14,BLINKPUNCH,16,ENCOURAGE,22,WHIMSYTACKLE,24,CHARM,27,BATONPASS,31,DAZZLINGGLEAM,33,WISH,35,AGILITY,38,BLESS,41,LIGHTBEAM,43,BEACON,46,MOONBLAST,50,BEACONRECON,53,HEALINGWISH
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [MINUN,1]
 FormName = Kurian
-Type1 = FAIRY
-Type2 = MYSTIC
+Types = FAIRY,MYSTIC
 BaseStats = 60,50,45,100,95,55
-EffortPoints = 0,0,0,0,2,0
 Abilities = SUBTRACTION,INFILTRATOR
-HiddenAbility = RIVALRY
-Compatibility = Field,Fairy
+HiddenAbilities = RIVALRY
+Moves = 1,PLAYNICE,1,QUICKATTACK,1,LUCKYCHANT,6,FAIRYWIND,8,HELPINGHAND,11,ENCORE,14,MAGICSHOT,16,STAGESHIFT,19,MAGICRING,22,WHIMSYTACKLE,24,CHARM,27,BATONPASS,31,DAZZLINGGLEAM,33,WISH,35,AGILITY,38,MYSTERYSHROUD,41,MIRACLEPULSE,43,INVERSEROOM,46,MOONBLAST,50,RELICWAVE,53,MEMENTO
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ROSELIA,1]
 FormName = Kurian
-Type1 = DARK
-Type2 = POISON
+Types = DARK,POISON
+BaseStats = 70,52,45,70,98,65
+Abilities = PRANKSTER,WEBCOVER
+HiddenAbilities = FLYTRAP
+Moves = 0,POISONJAB,1,MOONLIGHT,1,PURSUIT,1,ABSORB,1,POISONSTING,3,GROWL,6,STRINGSHOT,11,GROWTH,13,MEGADRAIN,16,FEINTATTACK,19,VENOSHOCK,22,STICKYTERRAIN,25,FAKETEARS,28,FLATTER,30,ENCORE,33,TOXICSPIKES,36,FOULPLAY,40,STICKYWEB,40,WEBTIE,44,DARKPULSE,47,ACIDSPRAY,50,PETALDANCE,54,NASTYPLOT
+Color = Black
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
+#-------------------------------
+[ROSERADE,1]
+FormName = Kurian
+Types = DARK,POISON
+BaseStats = 100,72,50,100,128,80
+Abilities = PRANKSTER,WEBCOVER
+HiddenAbilities = FLYTRAP
+Moves = 0,PUNISHMENT,1,MOONLIGHT,1,TOXICTHREAD,1,PURSUIT,1,POISONJAB,1,ABSORB,1,POISONSTING,4,GROWL,8,STRINGSHOT,12,GROWTH,15,MEGADRAIN,17,FEINTATTACK,20,VENOSHOCK,22,STICKYTERRAIN,25,FAKETEARS,28,FLATTER,31,ENCORE,34,TOXICSPIKES,38,FOULPLAY,42,STICKYWEB,42,WEBTIE,45,DARKPULSE,49,ACIDSPRAY,53,GIGADRAIN,58,NASTYPLOT
+Color = Red
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BUDEW,1]
 FormName = Kurian
-Type1 = DARK
-Type2 = POISON
-BaseStats = 50,42,40,41,67,45
-EffortPoints = 0,0,0,0,1,0
+Types = DARK,POISON
+BaseStats = 50,42,40,40,68,45
 Abilities = PRANKSTER,WONDERSKIN
-HiddenAbility = COMPOUNDEYES
-Compatibility = Fairy,Monster
-Evolutions = ROSELIA,HasMove,TOXICTHREAD
+HiddenAbilities = COMPOUNDEYES
+Moves = 1,ABSORB,1,POISONSTING,3,GROWL,6,STRINGSHOT,10,GROWTH,13,MEGADRAIN,16,TOXICTHREAD,19,STICKYTERRAIN,22,FAKETEARS,25,FLATTER,30,TOXICSPIKES,35,STICKYWEB,38,DARKPULSE,42,ACIDSPRAY,45,NATURALGIFT,48,NASTYPLOT
+Color = Red
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AMBIPOM,1]
 FormName = Kurian
-Type1 = NORMAL
-Type2 = SOUND
-BaseStats = 75,105,65,120,55,65
-EffortPoints = 0,0,0,2,0,0
-Moves = 1,SANDATTACK
-EggMoves = ANCIENTPOWER
-Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, ABILITIES?
+Types = NORMAL,SOUND
+BaseStats = 75,105,65,117,55,65
+Abilities = PICKUP,TECHNICIAN
+HiddenAbilities = LIMBER
+Moves = 0,DIRTYBEAT,1,HELPINGHAND,1,SCRATCH,1,TAILWHIP,5,ASTONISH,9,ARMTHRUST,11,BEATUP,13,PLAYNICE,15,BATONPASS,18,BEATBOX,20,SCREECH,22,AGILITY,25,CYMBALCLAP,27,FAKEOUT,30,ENCORE,32,DOUBLEHIT,35,VIBRATIONPUNCH,39,NASTYPLOT,42,TRICK,45,LASTRESORT,49,TAILSLAP,53,HAMMERARM
+Color = Black
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BUNEARY,1]
 FormName = Kurian
-Type1 = GHOST
-Type2 = NORMAL
+Types = GHOST,NORMAL
 BaseStats = 50,66,60,80,44,50
-EffortPoints = 0,0,0,0,1,0
 Abilities = UNNERVE,FLUFFY
-HiddenAbility = VOODOO
-Compatibility = Amorphous,Humanlike
+HiddenAbilities = VOODOO
+Moves = 1,SPITE,1,POUND,1,DEFENSECURL,4,FORESIGHT,6,ASTONISH,9,ENDURE,11,GRUDGE,15,FRUSTRATION,16,QUICKATTACK,18,CURSETAG,21,MEANLOOK,23,JUMPKICK,26,AGILITY,29,CURSE,31,SHADOWBALL,33,DESTINYBOND,36,NASTYPLOT,38,LASTRESORT,41,BOUNCE,45,THRASH,48,MEMENTO
+Color = Purple
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LOPUNNY,2]
 FormName = Kurian
-Type1 = GHOST
-Type2 = NORMAL
+Types = GHOST,NORMAL
 BaseStats = 80,115,64,95,59,67
-EffortPoints = 0,2,0,0,0,0
 Abilities = UNNERVE,FLUFFY
-HiddenAbility = VOODOO
-Compatibility = Amorphous,Humanlike
+HiddenAbilities = VOODOO
+Moves = 0,SHADOWCLAW,1,MAGICCOAT,1,TOMBRAID,1,SPITE,1,POUND,1,DEFENSECURL,5,FORESIGHT,8,ASTONISH,10,ENDURE,12,GRUDGE,18,RETURN,20,QUICKATTACK,21,CURSETAG,23,MEANLOOK,25,JUMPKICK,27,AGILITY,30,CURSE,32,SHADOWBALL,35,DESTINYBOND,38,NASTYPLOT,40,LASTRESORT,43,BOUNCE,48,THRASH,51,MEMENTO,56,HIGHJUMPKICK
+Color = Purple
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SPIRITOMB,1]
 FormName = Kurian
-Type1 = COSMIC
-Type2 = LIGHT
+Types = COSMIC,LIGHT
 BaseStats = 80,52,108,35,132,78
+Abilities = AVOID
+HiddenAbilities = ZEROGRAVITY
+Moves = 1,CURSE,1,PURSUIT,1,CONFUSERAY,5,FLASH,8,COMETRUSH,13,DREAMDANCE,13,DREAMEATER,17,ASTEROIDBELT,20,VACUUMPULL,23,STARLINE,26,GLEAMBEAM,29,LIGHTSHOW,33,NASTYPLOT,37,RECOVER,40,MEMENTO,43,STARSHOCK,46,PORTALREBOUND,50,CRASHLANDING,54,COREBLAST,60,STARSTORM
+Color = Black
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LUMINEON,1]
 FormName = Kurian
-Type1 = WATER
-Type2 = LIGHT
-BaseStats = 75,45,80,80,75,101
+Types = WATER,LIGHT
+BaseStats = 75,44,77,80,79,101
+Abilities = FILTER,SERENEGRACE
+HiddenAbilities = DAZZLING
+Moves = 0,LIGHTRAY,1,SOAK,1,GUST,1,POUND,5,FLASH,8,WATERGUN,11,ATTRACT,14,RAINDANCE,15,LIGHTSTRIKE,18,BEACON,21,WATERPULSE,23,SAFEGUARD,27,BEACONRECON,30,AQUARING,32,LIGHTSWITCH,34,UTURN,37,TIDESHIFT,39,BLESS,42,LUMINOUSGUST,45,SILVERWIND,47,TAILWIND,51,HYDROPUMP,56,HEALINGWISH
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PROBOPASS,1]
 FormName = Kurian
-Type1 = GRASS
-Type2 = SOUND
+Types = GRASS,SOUND
 BaseStats = 80,100,130,40,65,120
+Abilities = OVERCOAT,SOLARPOWER
+Moves = 0,WOODHAMMER,1,FREESTYLE,1,ALLEGRO,1,TACKLE,1,HARDEN,5,INGRAIN,9,LEAFAGE,12,ROLLOUT,15,ROCKTHROW,17,WIDEGUARD,19,GRASSWHISTLE,22,BLOCK,24,SOUNDPULSE,27,ROCKBLAST,29,STEALTHROCK,32,SUPERSONIC,35,DROPWAVE,38,SPLINTER,42,BINAURALBEAT,44,EARTHPOWER,46,SYNTHESIS,50,SOUNDBLAST,54,WOODHAMMER,63,BASSQUAKE
+Color = Brown
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TIMBURR,1]
 FormName = Kurian
-Type1 = MYSTIC
-Type2 = FIGHTING
+Types = MYSTIC,FIGHTING
 BaseStats = 70,75,55,45,30,35
+Abilities = INNERFOCUS,NOGUARD
+HiddenAbilities = ADAPTABILITY
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [GURDURR,1]
 FormName = Kurian
-Type1 = MYSTIC
-Type2 = FIGHTING
+Types = MYSTIC,FIGHTING
 BaseStats = 80,100,75,65,40,55
+Abilities = INNERFOCUS,NOGUARD
+HiddenAbilities = ADAPTABILITY
+Moves = 0,MIRAGESLAM,1,CONCUSS,1,POUND,1,MEDITATE,5,FOCUSENERGY,9,FORESIGHT,10,EXTRASENSORY,13,LOWKICK,15,RAPIDSPIN,18,ENDURE,20,FORCEPALM,22,DETECT,25,BRUTALSWING,28,MINDREADER,31,CALMMIND,34,ZENHEADBUTT,37,COUNTER,39,AURASPHERE,42,KNOCKOFF,45,ASCENDANCEKICK,48,FOCUSPUNCH,51,RECOVER,54,DYNAMICPUNCH,58,CLOSECOMBAT,61,GOLDENSPIN,65,PROPHECY
+Category = Focus
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CONKELDURR,1]
 FormName = Kurian
-Type1 = MYSTIC
-Type2 = FIGHTING
+Types = MYSTIC,FIGHTING
 BaseStats = 95,130,90,85,55,80
+Abilities = INNERFOCUS,NOGUARD
+HiddenAbilities = ADAPTABILITY
+Moves = 0,INNERFORCE,1,MIRAGESLAM,1,SWORDSDANCE,1,CONCUSS,1,DOUBLEHIT,1,MEDITATE,6,FOCUSENERGY,10,EXTRASENSORY,12,FORESIGHT,14,LOWKICK,16,RAPIDSPIN,18,ENDURE,21,FORCEPALM,23,DETECT,26,BRUTALSWING,29,MINDREADER,32,CALMMIND,35,ZENHEADBUTT,38,COUNTER,40,AURASPHERE,42,KNOCKOFF,45,ASCENDANCEKICK,49,FOCUSPUNCH,52,RECOVER,55,DYNAMICPUNCH,59,CLOSECOMBAT,64,GOLDENSPIN,70,PROPHECY
+Category = Wielding
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SCRAFTY,1]
 FormName = Kurian
-Type1 = ICE
-Type2 = MYSTIC
-BaseStats = 75,115,71,93,80,75
+Types = ICE,MYSTIC
+BaseStats = 75,115,71,92,80,75
+Abilities = SHEDSKIN,SLUSHRUSH
+HiddenAbilities = CHILLING
+Moves = 0,ICEPUNCH,1,HEADBUTT,1,TICKLE,3,SANDATTACK,7,POWDERSNOW,10,ICESHARD,13,SWAGGER,18,MAGICFANG,20,HELPINGHAND,23,ICYWIND,26,AVALANCHE,29,SECRETPULSE,31,HAIL,31,AURORAVEIL,34,ICICLESPEAR,37,ICYTERRAIN,41,HIGHJUMPKICK,44,SLACKOFF,47,ASCENDANCEKICK,50,MAGICCOAT,55,ICICLERAIN,59,FOCUSPUNCH,63,HEADSMASH
+Color = White
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SWADLOON,1]
 FormName = Kurian
-Type1 = GHOST
-Type2 = MYSTIC
+Types = GHOST,MYSTIC
 BaseStats = 77,40,60,60,88,65
+Abilities = MAGICIAN,MAGICBOUNCE
+HiddenAbilities = DECEPTIVE
+Moves = 0,WILDMAGIC,1,HYPNOSIS,1,PROTECT,1,TACKLE,1,STRINGSHOT,6,ASTONISH,10,MAGICSHOT,12,ENCORE,15,SHADOWSNEAK,16,DISABLE,18,LUCKYCHANT,21,BATONPASS,23,OMINOUSWIND,26,CALMMIND,29,SECRETPULSE,32,TRICK,34,FAKETEARS,37,MAGICTRICK,40,HEX,44,WISH,47,NASTYPLOT,50,WONDERWIND
+Color = Black
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEAVANNY,1]
 FormName = Kurian
-Type1 = GHOST
-Type2 = MYSTIC
+Types = GHOST,MYSTIC
 BaseStats = 107,65,60,75,118,95
+Abilities = MAGICIAN,MAGICBOUNCE
+HiddenAbilities = DECEPTIVE
+Moves = 0,DESTINYBOND,1,WILDMAGIC,1,HYPNOSIS,1,PROTECT,1,TACKLE,1,STRINGSHOT,8,ASTONISH,11,MAGICSHOT,14,ENCORE,16,SHADOWSNEAK,17,DISABLE,19,LUCKYCHANT,22,BATONPASS,24,OMINOUSWIND,27,CALMMIND,30,SECRETPULSE,33,TRICK,36,SWORDSDANCE,38,SHADOWCLAW,41,MAGICTRICK,44,SHADOWBALL,48,WISH,51,WONDERSTRIKE,55,MIRACLEPULSE,59,WONDERWIND
+Color = Black
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ALOMOMOLA,1]
@@ -3001,65 +3032,75 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [FERROSEED,1]
 FormName = Kurian
-Type1 = STEEL
-Type2 = POISON
+Types = STEEL,POISON
 BaseStats = 44,79,81,10,34,71
+Abilities = THERMALPOWER,IRONBARBS
+HiddenAbilities = PUSHBOMB
+Moves = 1,RAPIDSPIN,1,TACKLE,1,HARDEN,4,POISONSTING,7,ROLLOUT,10,CLEARSMOG,12,CURSE,15,METALCLAW,18,PINMISSILE,22,GYROBALL,24,TOXICSPIKES,26,SLUDGEBOMB,29,INJECT,31,IRONDEFENSE,33,HAZE,35,SELFDESTRUCT,38,IRONHEAD,41,AUTOTOMIZE,43,POISONJAB,46,BANEFULBUNKER,49,METALBURST,54,EXPLOSION
+Category = Smoke Bomb
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [FERROTHORN,1]
 FormName = Kurian
-Type1 = STEEL
-Type2 = POISON
+Types = STEEL,POISON
 BaseStats = 84,119,121,20,54,111
+Abilities = THERMALPOWER,IRONBARBS
+HiddenAbilities = PUSHBOMB
+Moves = 0,POWERWHIP,1,REINFORCE,1,PAYBACK,1,TACKLE,1,HARDEN,5,POISONSTING,8,ROLLOUT,11,CLEARSMOG,14,CURSE,16,METALCLAW,19,PINMISSILE,23,GYROBALL,24,TOXICSPIKES,27,SLUDGEBOMB,29,INJECT,32,IRONDEFENSE,34,HAZE,36,SELFDESTRUCT,39,CROSSPOISON,40,IRONHEAD,43,AUTOTOMIZE,46,POISONJAB,49,BANEFULBUNKER,52,METALBURST,55,GUNKSHOT,60,EXPLOSION
+Category = Hazardous
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KARRABLAST,1]
 FormName = Kurian
-Type1 = BUG
-Type2 = DARK
+Types = BUG,DARK
 BaseStats = 50,65,50,70,30,50
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,1]
 FormName = Kurian - V
-Type1 = BUG
-Type2 = ROCK
+Types = BUG,ROCK
 BaseStats = 70,135,95,90,50,90
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,2]
 FormName = Kurian - B
-Type1 = BUG
-Type2 = ROCK
+Types = BUG,ROCK
 BaseStats = 80,120,140,30,50,110
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ESCAVALIER,3]
 FormName = Kurian - D
-Type1 = BUG
-Type2 = ROCK
+Types = BUG,ROCK
 BaseStats = 100,130,110,50,50,90
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DEINO,1]
 FormName = Kurian
-Type1 = GRASS
-Type2 = DRAGON
+Types = GRASS,DRAGON
 BaseStats = 100,30,52,32,25,58
+Abilities = SAPSIPPER
+Moves = 1,HEADBUTT,1,GROWL,6,BULLETSEED,9,GROWTH,12,ODORSLEUTH,14,BITE,18,SWEETSCENT,21,SLEEPPOWDER,24,MEGADRAIN,27,LEECHSEED,29,DRAGONBREATH,31,SUNNYDAY,34,RAGEPOWDER,37,DRAGONTAIL,41,SEEDBOMB,44,AROMATHERAPY,49,SYNTHESIS
+Pokedex = Due to the lack of competition or prey to hunt, they've grown soft and friendly. They were undiscovered until a flock of Kurian Hakamo-o was once observed flying onto an uninhabited island.
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [ZWEILOUS,1]
 FormName = Kurian
-Type1 = GRASS
-Type2 = DRAGON
+Types = GRASS,DRAGON
 BaseStats = 120,50,62,23,45,60
+Abilities = SAPSIPPER
+Moves = 0,PETALBLIZZARD,1,REST,1,HEADBUTT,1,GROWL,8,BULLETSEED,10,GROWTH,14,ODORSLEUTH,16,BITE,20,SWEETSCENT,22,SLEEPPOWDER,25,MEGADRAIN,28,LEECHSEED,30,DRAGONBREATH,32,SUNNYDAY,35,RAGEPOWDER,39,DRAGONTAIL,42,SEEDBOMB,45,AROMATHERAPY,47,HEALPULSE,51,DRAGONPULSE,56,LEAFSTORM,60,SYNTHESIS
+Color = Blue
+Pokedex = They failed to grow a second head due to the lack of protein in their new diet but they don't mind. Their legs have started getting smaller due to the lack of use.
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HYDREIGON,1]
 FormName = Kurian
-Type1 = GRASS
-Type2 = DRAGON
+Types = GRASS,DRAGON
 BaseStats = 140,70,82,30,60,88
+Abilities = SAPSIPPER
+Moves = 0,POWERWHIP,1,STOCKPILE,1,REST,1,HEADBUTT,1,GROWL,8,BULLETSEED,10,GROWTH,14,ODORSLEUTH,16,BITE,20,SWEETSCENT,22,SLEEPPOWDER,25,MEGADRAIN,28,LEECHSEED,31,DRAGONBREATH,34,SUNNYDAY,37,RAGEPOWDER,40,DRAGONTAIL,44,SEEDBOMB,46,AROMATHERAPY,49,HEALPULSE,52,DRAGONPULSE,55,WOODHAMMER,60,LEAFSTORM,66,SYNTHESIS
+Color = Green
+Pokedex = They look intimidating at first, but are near harmless and non-combative. Kurian Hakamo-o and Kommo-o would probably never had attacked had they not looked as they do.
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TORNADUS,2]
@@ -3072,164 +3113,207 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HONEDGE,2]
 FormName = Kurian
-Type1 = STEEL
-Type2 = MYSTIC
-BaseStats = 45,80,110,35,40,20
+Types = STEEL,MYSTIC
+BaseStats = 45,80,110,20,35,40
+Abilities = WEAKARMOR
+Moves = 1,CUT,1,SWORDSDANCE,5,POISONSTING,8,METALSOUND,13,METALCLAW,18,AUTOTOMIZE,20,POISONJAB,22,SLASH,26,RETALIATE,29,ARCANESTRIKE,32,IRONDEFENSE,35,NIGHTSLASH,39,RELICWAVE,42,IRONHEAD,47,SACREDSWORD
+Color = Gray
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DOUBLADE,2]
 FormName = Kurian
-Type1 = STEEL
-Type2 = MYSTIC
-BaseStats = 60,120,150,45,59,25
+Types = STEEL,MYSTIC
+BaseStats = 60,120,150,25,45,59
+Abilities = WEAKARMOR
+Moves = 0,CROSSPOISON,1,CUT,1,SWORDSDANCE,5,POISONSTING,8,METALSOUND,13,METALCLAW,18,AUTOTOMIZE,20,POISONJAB,22,SLASH,26,RETALIATE,29,ARCANESTRIKE,32,IRONDEFENSE,36,NIGHTSLASH,41,RELICWAVE,45,IRONHEAD,51,SACREDSWORD
+Color = Gray
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,2]
 FormName = Kurian - Shield
-Type1 = STEEL
-Type2 = MYSTIC
-BaseStats = 70,50,140,110,120,40
+Types = STEEL,MYSTIC
+BaseStats = 70,50,140,40,110,120
 Abilities = STANCESHIFT
+Color = Brown
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AEGISLASH,3]
 FormName = Kurian - Blade
-Type1 = STEEL
-Type2 = MYSTIC
-BaseStats = 70,140,80,80,70,90
+Types = STEEL,MYSTIC
+BaseStats = 70,140,80,90,80,70
 Abilities = STANCESHIFT
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
+#-------------------------------
+[VENIPEDE,1]
+FormName = Kurian
+Types = BUG,DARK
+BaseStats = 30,59,45,57,30,39
+Abilities = VANGUARD,POISONTOUCH
+HiddenAbilities = MERCILESS
+Moves = 1,POISONSTING,1,DEFENSECURL,1,ROLLOUT,5,PURSUIT,8,SCREECH,11,FURYCUTTER,14,CUT,17,FEINTATTACK,20,METALCLAW,22,PROTECT,25,SLASH,28,ARMORPIERCE,31,POISONJAB,34,NIGHTSLASH,37,ENDEAVOR,41,XSCISSOR,45,AGILITY,49,DOUBLEEDGE,52,SUBSTITUTE
+Color = Black
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
+#-------------------------------
+[WHIRLIPEDE,1]
+FormName = Kurian
+Types = BUG,DARK
+BaseStats = 50,65,84,52,40,69
+Abilities = VANGUARD,POISONTOUCH
+HiddenAbilities = MERCILESS
+Moves = 0,IRONDEFENSE,1,POISONSTING,1,DEFENSECURL,1,ROLLOUT,5,PURSUIT,8,SCREECH,11,FURYCUTTER,14,CUT,17,FEINTATTACK,20,METALCLAW,22,PROTECT,25,SLASH,29,ARMORPIERCE,32,POISONJAB,35,NIGHTSLASH,38,ENDEAVOR,41,SUCKERPUNCH,44,XSCISSOR,48,AGILITY,52,DOUBLEEDGE,55,SUBSTITUTE
+Color = Black
+Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
+#-------------------------------
+[SCOLIPEDE,1]
+FormName = Kurian
+Types = BUG,DARK
+BaseStats = 80,120,74,122,55,64
+Abilities = VANGUARD,POISONTOUCH
+HiddenAbilities = MERCILESS
+Moves = 0,CROSSPOISON,1,IRONTAIL,1,IRONDEFENSE,1,POISONSTING,1,DEFENSECURL,1,ROLLOUT,5,PURSUIT,8,SCREECH,11,FURYCUTTER,14,CUT,17,FEINTATTACK,20,METALCLAW,22,PROTECT,25,SLASH,29,ARMORPIERCE,32,POISONJAB,36,NIGHTSLASH,40,ENDEAVOR,43,SUCKERPUNCH,46,XSCISSOR,49,AGILITY,53,THROATCHOP,57,DOUBLEEDGE,61,SUBSTITUTE,66,MEGAHORN
+Color = Black
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CLAUNCHER,1]
 FormName = Kurian
-Type1 = WATER
-Type2 = ELECTRIC
+Types = WATER,ELECTRIC
 BaseStats = 50,55,64,49,62,50
+Abilities = MAGNETPULL,LIGHTNINGROD
+HiddenAbilities = SWIFTSWIM
+Moves = 1,SPLASH,1,WATERGUN,4,VISEGRIP,7,CHARGE,10,THUNDERWAVE,12,WATERSPORT,14,AQUAJET,16,SPARK,18,METALCLAW,21,WATERPULSE,24,CHARGEBEAM,26,FLAIL,28,SWORDSDANCE,31,THUNDERPUNCH,33,IRONDEFENSE,40,CRABHAMMER,44,THUNDERBOLT,47,IRONGRIP,52,HYDROPUMP,56,ZAPCANNON
+Color = Gray
+Category = Taser
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [CLAWITZER,1]
 FormName = Kurian
-Type1 = STEEL
-Type2 = ELECTRIC
+Types = STEEL,ELECTRIC
 BaseStats = 70,75,94,99,122,65
+Abilities = MAGNETPULL,LIGHTNINGROD
+HiddenAbilities = LEVITATE
+Moves = 0,FLASHCANNON,1,AURASPHERE,1,ENERGYSHARE,1,MAGNETPULSE,1,HARDEN,1,THUNDERSHOCK,5,VISEGRIP,8,CHARGE,11,THUNDERWAVE,14,ELECTROBALL,16,BULLETPUNCH,18,SPARK,20,METALCLAW,23,MIRRORSHOT,26,CHARGEBEAM,28,FLAIL,31,SWORDSDANCE,33,THUNDERPUNCH,35,IRONDEFENSE,41,CRABHAMMER,46,THUNDERBOLT,50,IRONGRIP,55,MEGAVOLT,58,GUILLOTINE,62,ZAPCANNON
+Color = Gray
+Category = Magnet Cannon
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PHANTUMP,1]
 FormName = Kurian
-Type1 = GHOST
-Type2 = MYSTIC
+Types = GHOST,MYSTIC
 BaseStats = 43,70,63,30,70,63
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TREVENANT,1]
 FormName = Kurian
-Type1 = GHOST
-Type2 = MYSTIC
+Types = GHOST,MYSTIC
 BaseStats = 95,110,104,42,85,104
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [SANDYGAST,1]
 FormName = Kurian
-Type1 = ELECTRIC
-Type2 = GROUND
+Types = ELECTRIC,GROUND
 BaseStats = 60,50,50,10,80,80
+Abilities = LIGHTNINGROD
+HiddenAbilities = STORMDRAIN
+Moves = 1,CHARGE,1,ABSORB,4,FLASH,7,MUDSLAP,10,SANDTOMB,13,MEGADRAIN,15,THUNDERWAVE,17,SHOCKWAVE,18,FOLLOWME,21,MUDBOMB,24,BULLDOZE,28,HYPNOSIS,31,MIRRORCOAT,33,GIGADRAIN,35,MUDSLIDE,40,DISCHARGE,44,SHOREUP,48,EARTHPOWER,50,ENERGYCONVERSION,54,THUNDERSTORM
+Category = Charge
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [PALOSSAND,1]
 FormName = Kurian
-Type1 = ELECTRIC
-Type2 = GROUND
+Types = ELECTRIC,GROUND
 BaseStats = 100,60,60,20,120,120
+Abilities = LIGHTNINGROD
+HiddenAbilities = STORMDRAIN
+Moves = 0,THUNDER,1,STOCKPILE,1,SWALLOW,1,CHARGE,1,ABSORB,5,FLASH,8,MUDSLAP,11,SANDTOMB,14,MEGADRAIN,16,THUNDERWAVE,19,SHOCKWAVE,20,FOLLOWME,23,MUDBOMB,25,BULLDOZE,30,HYPNOSIS,33,MIRRORCOAT,35,GIGADRAIN,37,MUDSLIDE,41,DISCHARGE,46,SHOREUP,50,EARTHPOWER,53,ENERGYCONVERSION,57,THUNDERSTORM,61,FIELDCOLLAPSE
+Color = Yellow
+Category = Lightningrod
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HAKAMOO,1]
 FormName = Kurian
-Type1 = FIGHTING
-Type2 = FLYING
+Types = FIGHTING,FLYING
 BaseStats = 65,90,65,75,60,65
+Abilities = VITALSPIRIT,SCRAPPY
+HiddenAbilities = MOXIE
+Moves = 0,AERIALACE,0,SKYUPPERCUT,1,HURRICANE,1,TACKLE,1,LEER,6,ROLLINGKICK,8,TAUNT,11,AIRCUTTER,14,HEADBUTT,16,WORKUP,20,AIRSLASH,23,AGILITY,26,FEATHERDANCE,30,JUMPKICK,32,TAILWIND,34,ENDURE,37,WARCRY,40,DRILLPECK,43,FOCUSPUNCH,47,ACROBATICS,51,SWORDSDANCE,55,CLOSECOMBAT,59,SKYATTACK
+Color = Yellow
+Pokedex = Training on Aerios Peak awakens some long lost energy inside Hakamo-o. They travel across the region riding the wind, looking for strong foes to fight.
+Category = Traveling
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [KOMMOO,1]
 FormName = Kurian
-Type1 = FIGHTING
-Type2 = FLYING
+Types = FIGHTING,FLYING
 BaseStats = 90,120,90,115,95,90
+Abilities = VITALSPIRIT,NOMAD
+HiddenAbilities = DEFIANT
+Moves = 0,BRAVEBIRD,1,HYPERVOICE,1,QUICKGUARD,1,DRAGONDANCE,1,SKYUPPERCUT,1,HURRICANE,1,TACKLE,1,LEER,8,ROLLINGKICK,10,TAUNT,13,AIRCUTTER,15,HEADBUTT,17,WORKUP,22,AIRSLASH,25,AGILITY,27,FEATHERDANCE,31,JUMPKICK,34,TAILWIND,37,ENDURE,39,WARCRY,43,DRILLPECK,46,FOCUSPUNCH,49,AURASPHERE,52,ACROBATICS,57,SWORDSDANCE,62,CLOSECOMBAT,68,SKYATTACK
+Color = Yellow
+Pokedex = The first Hakamo-o to evolve in the group becomes the leader, with all others following their every order. If they recognise a foe as powerful, they will challenge them 1 vs 1.
+Category = Chief
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [BOUNSWEET,1]
 FormName = Kurian
-Type1 = FAIRY
+Types = FAIRY
 BaseStats = 44,30,35,40,31,20
-EffortPoints = 1,0,0,0,0,0
 Abilities = PIXILATE,INFILTRATOR
-Moves = 1,SANDATTACK
-EggMoves = ANCIENTPOWER
-Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
+HiddenAbilities = MAGICBOUNCE
+Moves = 1,SPLASH,3,RAPIDSPIN,6,PLAYNICE,10,DISARMINGVOICE,13,RAZORLEAF,15,FLASH,18,TRICK,21,FEINTATTACK,23,FLAIL,26,MAGICALLEAF,30,AROMATHERAPY,33,PLAYROUGH,38,DAZZLINGGLEAM
+Color = Pink
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [STEENEE,1]
 FormName = Kurian
-Type1 = COSMIC
-Type2 = DARK
+Types = COSMIC,DARK
 BaseStats = 50,48,45,66,61,55
-EffortPoints = 0,0,0,0,2,0
 Abilities = PHASINGBODY,KLUTZ
-Moves = 1,SANDATTACK
-EggMoves = ANCIENTPOWER
-Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
+HiddenAbilities = SNIPER
+Moves = 0,FEINTATTACK,0,FAKEOUT,1,PLAYNICE,1,RAPIDSPIN,1,CHARM,5,FLAIL,10,STARSHOT,13,LOCKON,17,PURSUIT,24,FAKETEARS,26,MOONKICK,29,TRIPLEKICK,31,SIGNALBOOST,34,FOULPLAY,37,PLAYROUGH,40,NASTYPLOT,42,STARSHOCK,45,STARLINE,49,DARKPULSE,53,MOONLIGHT
+Color = Blue
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TSAREENA,1]
 FormName = Kurian
-Type1 = COSMIC
-Type2 = DARK
+Types = COSMIC,DARK
 BaseStats = 101,90,60,71,123,90
-EffortPoints = 1,0,0,0,3,0
 Abilities = PHASINGBODY,QUEENLYMAJESTY
-Moves = 1,SANDATTACK
-EggMoves = ANCIENTPOWER
-Pokedex = NONE - NEEDS EDITED MOVES, EGGMOVES, HT WT?
+HiddenAbilities = SKILLSCAN
+Moves = 0,KICKSHOWER,1,MOONKICK,1,PLAYNICE,1,RAPIDSPIN,1,CHARM,8,FAKEOUT,11,STARSHOT,14,LOCKON,18,PURSUIT,21,FEINTATTACK,26,FAKETEARS,28,MOONKICK,31,TRIPLEKICK,34,SIGNALBOOST,37,FOULPLAY,40,PLAYROUGH,43,NASTYPLOT,46,STARSHOCK,49,DENY,53,DARKPULSE,56,MOONLIGHT,60,HIGHJUMPKICK,64,STARSTORM
+Color = Blue
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 #Mega Forms
 #-------------------------------
 [RATICATE,2]
 FormName = Mega Raticate
-Type1 = NORMAL
-Type2 = FIRE
+Types = NORMAL,FIRE
 BaseStats = 60,119,91,128,45,91
 #-------------------------------
 [RATICATE,3]
 FormName = Mega Alolan Raticate
-Type1 = DARK
-Type2 = ICE
+Types = DARK,ICE
 BaseStats = 60,119,91,128,45,91
 #-------------------------------
 [ARBOK,1]
 FormName = Mega Arbok
-Type1 = POISON
-Type2 = GROUND
+Types = POISON,GROUND
 BaseStats = 60,130,84,95,85,94
 MegaStone = ARBOKITE
 #-------------------------------
 [SANDSLASH,2]
 FormName = Mega Sandslash
-Type1 = GROUND
-Type2 = FIGHTING
+Types = GROUND,FIGHTING
 BaseStats = 70,140,115,100,50,70
 Abilities = TOUGHCLAWS
-HiddenAbility = TOUGHCLAWS
 #-------------------------------
 [WIGGLYTUFF,1]
 FormName = Mega Wigglytuff
-Type1 = FAIRY
-Type2 = SOUND
+Types = FAIRY,SOUND
 BaseStats = 140,135,75,25,135,75
 Abilities = FLUFFY
-HiddenAbility = FLUFFY
-Kind = Balloon Animal
-Color = Pink
 Pokedex = Mega Evolution gives Wigglytuff super soft micro fur, though the static electricity created from hugging it will cause Wigglytuff to spontaneously combust.
+Category = Balloon Animal
 #-------------------------------
 [VENOMOTH,1]
 FormName = Mega Venomoth
@@ -3237,32 +3321,27 @@ MegaStone = VENOMITE
 #-------------------------------
 [GOLDUCK,1]
 FormName = Mega Golduck
-Type1 = WATER
-Type2 = PSYCHIC
+Types = WATER,PSYCHIC
 BaseStats = 80,110,92,96,150,92
 Abilities = MAGICGUARD
-HiddenAbility = MAGICGUARD
 #-------------------------------
 [MACHAMP,1]
 FormName = Mega Machamp
 #-------------------------------
 [DEWGONG,1]
 FormName = Mega Dewgong
-Type1 = WATER
-Type2 = FAIRY
+Types = WATER,FAIRY
 BaseStats = 90,100,120,80,90,115
 #-------------------------------
 [ELECTRODE,1]
 FormName = Mega Electrode
-Type1 = ELECTRIC
-Type2 = NORMAL
-BaseStats = 60,80,70,180,110,90
+Types = ELECTRIC,NORMAL
+BaseStats = 60,90,70,170,110,90
 MegaStone = ELECTRODITE
 #-------------------------------
 [MAROWAK,2]
 FormName = Mega Marowak
-Type1 = GROUND
-Type2 = DRAGON
+Types = GROUND,DRAGON
 BaseStats = 60,100,115,100,60,90
 #-------------------------------
 [HITMONCHAN,2]
@@ -3273,53 +3352,38 @@ FormName = Mega Mr. Mime
 #-------------------------------
 [MEW,1]
 FormName = Mega Mew
-Abilities = OMNIGENE
-HiddenAbility = OMNIGENE
 #-------------------------------
 [XATU,1]
 FormName = Mega Xatu
-Type1 = MYSTIC
-Type2 = FLYING
+Types = MYSTIC,FLYING
 BaseStats = 65,70,105,120,105,105
 MegaStone = XATITE
 #-------------------------------
 [ENTEI,1]
 FormName = Mega Entei
-Type1 = FIRE
-Type2 = GHOST
-BaseStats = 115,150,110,100,120,85
+Types = FIRE,GHOST
+BaseStats = 115,145,105,100,140,75
 MegaStone = ENTEINITE
 #-------------------------------
 [CELEBI,1]
 FormName = Mega Celebi
-Type1 = GRASS
-Type2 = PSYCHIC
+Types = GRASS,PSYCHIC
 BaseStats = 100,100,100,150,120,130
-Abilities = NATURALCURE
-HiddenAbility = NATURALCURE
-Kind = Time Travel
-Color = Green
 MegaMove = TIMEBREAK
 MegaMessage = 1
 Pokedex = The energy obtained from Mega Evolution allows Celebi to stop time, although temporarily. The gem seems to cause that time stop, channeling the power of the ancient Pokémon of time.
 #-------------------------------
 [CACTURNE,1]
 FormName = Mega Cacturne
-BaseStats = 70,145,110,30,120,100
+BaseStats = 80,150,120,25,120,95
 Abilities = DESERTBODY
-HiddenAbility = DESERTBODY
-Kind = Scarecrow
-Color = Green
 Pokedex = Cacturne undergo immense pain during the process of Mega Evolution to fuel its cruelty. It then seeks to cause even worse suffering on the opponent.
 MegaStone = CACTURNITE
 #-------------------------------
 [METAGROSS,3]
 FormName = Mega Delta Metagross
-Type1 = GRASS
-Type2 = ROCK
+Types = GRASS,ROCK
 BaseStats = 100,160,210,70,70,90
-Abilities = ROCKHEAD
-HiddenAbility = ROCKHEAD
 UnmegaForm = 1
 MegaStone = DELTAMETAGROSSITE
 #-------------------------------
@@ -3328,23 +3392,19 @@ FormName = Mega Luxray
 #-------------------------------
 [MOTHIM,1]
 FormName = Mega Mothim
-Type1 = BUG
-Type2 = MYSTIC
+Types = BUG,MYSTIC
 BaseStats = 70,95,85,101,119,85
 #-------------------------------
 [CHERRIM,2]
 FormName = Mega Cherrim
-Type1 = GRASS
-Type2 = FIRE
+Types = GRASS,FIRE
 BaseStats = 70,60,70,103,144,103
 Abilities = DROUGHT,FORESTFIRE
-HiddenAbility = DROUGHT,FORESTFIRE
 MegaStone = CHERRITE
 #-------------------------------
 [LOPUNNY,3]
 FormName = Mega Kurian Lopunny
-Type1 = GHOST
-Type2 = FIGHTING
+Types = GHOST,FIGHTING
 BaseStats = 80,162,34,120,72,112
 UnmegaForm = 1
 MegaStone = KURIANLOPUNNITE
@@ -3361,7 +3421,7 @@ FormName = Mega Togekiss
 #-------------------------------
 [PORYGONZ,1]
 FormName = Mega Porygon-Z
-BaseStats = 85,100,80,100,190,80
+BaseStats = 85,120,70,100,190,70
 MegaStone = MEGADISC
 #-------------------------------
 [DUSKNOIR,1]
@@ -3375,8 +3435,6 @@ MegaStone = SHAYMINITE
 #-------------------------------
 [SHAYMIN,3]
 FormName = Mega Shaymin (Sky)
-Type1 = GRASS
-Type2 = FLYING
 UnmegaForm = 1
 MegaStone = SHAYMINITE
 #-------------------------------
@@ -3397,12 +3455,9 @@ FormName = Mega Sigilyph
 #-------------------------------
 [BEHEEYEM,1]
 FormName = Mega Beheeyem
-Type1 = COSMIC
-Type2 = PSYCHIC
+Types = COSMIC,PSYCHIC
 BaseStats = 90,70,115,45,155,145
 Abilities = MINDIPULATION
-HiddenAbility = MINDIPULATION
-Kind = Cerebral
 Pokedex = The process of Mega Evolution manages to train its brain to an IQ that surpasses that of Alakazam. Sometimes, its intelligence can even make the Beheeyem itself confused.
 MegaStone = BEHEEYITE
 #-------------------------------
@@ -3413,9 +3468,6 @@ FormName = Mega Accelgor
 FormName = Mega Aromatisse
 BaseStats = 101,72,82,29,149,129
 Abilities = HYPERAROMA
-HiddenAbility = HYPERAROMA
-Kind = Fragrance
-Color = Pink
 Pokedex = Mega Evolution inflates Aromatisse's ego immensely. Because of this, it can get distracted by its own self-admiration. Even losing in battle won't make it love itself less.
 MegaStone = AROMATISSITE
 #-------------------------------
@@ -3434,210 +3486,182 @@ MegaStone = CHEETITE
 #-------------------------------
 [VISARAB,1]
 FormName = Mega Visarab
-Type1 = BUG
-Type2 = DRAGON
-BaseStats = 72,170,111,150,116,81
+BaseStats = 72,170,121,130,116,91
 #-------------------------------
 #Crystal Forms
 #-------------------------------
 [VENUSAUR,2]
 FormName = Crystal Venusaur
-Type1 = GRASS
-Type2 = CRYSTAL
+Types = GRASS,CRYSTAL
 BaseStats = 90,90,113,60,152,120
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [CHARIZARD,3]
 FormName = Crystal Charizard
-Type1 = FIRE
-Type2 = CRYSTAL
+Types = FIRE,CRYSTAL
 BaseStats = 78,159,110,100,109,78
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [BLASTOISE,2]
 FormName = Crystal Blastoise
-Type1 = WATER
-Type2 = CRYSTAL
+Types = WATER,CRYSTAL
 BaseStats = 79,80,155,30,160,126
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [BEEDRILL,2]
 FormName = Crystal Beedrill
-Type1 = BUG
-Type2 = CRYSTAL
+Types = BUG,CRYSTAL
 BaseStats = 60,110,100,110,15,100
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [RAICHU,2]
 FormName = Crystal Raichu
-Type1 = ELECTRIC
-Type2 = CRYSTAL
+Types = ELECTRIC,CRYSTAL
 BaseStats = 70,105,80,140,130,80
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [RAICHU,3]
 FormName = Crystal Alolan Raichu
-Type1 = ELECTRIC
-Type2 = CRYSTAL
+Types = ELECTRIC,CRYSTAL
 BaseStats = 70,105,80,140,130,80
 UnmegaForm = 1
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [STARMIE,1]
 FormName = Crystal Starmie
-Type1 = WATER
-Type2 = CRYSTAL
+Types = WATER,CRYSTAL
 BaseStats = 60,75,105,135,140,105
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [AMPHAROS,2]
 FormName = Crystal Ampharos
-Type1 = LIGHT
-Type2 = CRYSTAL
+Types = LIGHT,CRYSTAL
 BaseStats = 90,75,85,40,155,155
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [STEELIX,2]
 FormName = Crystal Steelix
-Type1 = STEEL
-Type2 = CRYSTAL
+Types = STEEL,CRYSTAL
 BaseStats = 75,85,205,20,50,155
 #-------------------------------
 [STEELIX,3]
 FormName = Mega Crystal Steelix
-Type1 = STEEL
-Type2 = CRYSTAL
+Types = STEEL,CRYSTAL
 BaseStats = 75,85,205,20,50,155
 #-------------------------------
 [DELIBIRD,1]
 FormName = Crystal Delibird
-Type1 = ICE
-Type2 = CRYSTAL
+Types = ICE,CRYSTAL
 BaseStats = 45,115,65,120,20,60
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [RAIKOU,1]
 FormName = Crystal Raikou
-Type1 = ELECTRIC
-Type2 = CRYSTAL
+Types = ELECTRIC,CRYSTAL
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [CRAWDAUNT,1]
 FormName = Crystal Crawdaunt
-Type1 = WATER
-Type2 = CRYSTAL
+Types = WATER,CRYSTAL
 BaseStats = 68,145,115,70,95,90
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [METAGROSS,4]
 FormName = Crystal Delta Metagross
-Type1 = GRASS
-Type2 = CRYSTAL
+Types = GRASS,CRYSTAL
 BaseStats = 100,165,105,115,110,105
 MegaStone = CRYSTALFRAGMENT
 UnmegaForm = 1
 #-------------------------------
 [JIRACHI,1]
 FormName = Crystal Jirachi
-Type1 = STEEL
-Type2 = CRYSTAL
+Types = STEEL,CRYSTAL
 BaseStats = 100,120,130,120,120,110
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [TORTERRA,1]
 FormName = Crystal Torterra
-Type1 = GRASS
-Type2 = CRYSTAL
+Types = GRASS,CRYSTAL
 BaseStats = 104,144,150,11,85,140
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [INFERNAPE,1]
 FormName = Crystal Infernape
-Type1 = FIRE
-Type2 = CRYSTAL
+Types = FIRE,CRYSTAL
 BaseStats = 76,144,71,128,144,71
 Abilities = POWERWITHIN
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [EMPOLEON,1]
 FormName = Crystal Empoleon
-Type1 = WATER
-Type2 = CRYSTAL
+Types = WATER,CRYSTAL
 BaseStats = 84,130,94,75,150,101
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [LUXRAY,2]
 FormName = Crystal Luxray
-Type1 = ELECTRIC
-Type2 = CRYSTAL
+Types = ELECTRIC,CRYSTAL
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [VESPIQUEN,1]
 FormName = Crystal Vespiquen
-Type1 = BUG
-Type2 = CRYSTAL
+Types = BUG,CRYSTAL
 BaseStats = 70,100,129,40,105,130
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [LUCARIO,2]
 FormName = Crystal Lucario
-Type1 = FIGHTING
-Type2 = CRYSTAL
+Types = FIGHTING,CRYSTAL
 BaseStats = 70,115,100,70,150,120
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [WEAVILE,1]
 FormName = Crystal Weavile
-Type1 = DARK
-Type2 = CRYSTAL
+Types = DARK,CRYSTAL
 BaseStats = 70,155,55,135,115,60
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [FROSLASS,1]
 FormName = Crystal Froslass
-Type1 = ICE
-Type2 = CRYSTAL
+Types = ICE,CRYSTAL
 BaseStats = 70,90,70,120,120,110
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [DARKRAI,1]
-FormName = Crystal Darkrai
-Type1 = COSMIC
-Type2 = CRYSTAL
-MegaStone = CRYSTALFRAGMENT
+FormName = Mega Darkrai
+#-------------------------------
+[AVALUGG,1]
+FormName = Mega Avalugg
 #-------------------------------
 [GIGALITH,2]
 FormName = Crystal Gigalith
-Type1 = ROCK
-Type2 = CRYSTAL
+Types = ROCK,CRYSTAL
 BaseStats = 85,155,160,45,60,110
+Abilities = DEBRISARMOR
+Pokedex = The energies contained within Crystal Gigalith's crystals allow it to seperate and re-attatch parts of it's body at will. This strange energy affects nearby matter as well, causing chunks of debris to become attracted it's body. It can build up so much debris it turns into a living wrecking ball. Crystal Gigalith is attracted to areas with high electromagnetic activity.
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [REUNICLUS,1]
 FormName = Crystal Reuniclus
-Type1 = PSYCHIC
-Type2 = CRYSTAL
+Types = PSYCHIC,CRYSTAL
 BaseStats = 110,65,120,30,155,110
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [BISHARP,1]
 FormName = Crystal Bisharp
-Type1 = DARK
-Type2 = CRYSTAL
+Types = DARK,CRYSTAL
 BaseStats = 70,160,130,85,75,100
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [MELOETTA,2]
 FormName = Crystal Meloetta
-Type1 = SOUND
-Type2 = CRYSTAL
+Types = SOUND,CRYSTAL
 BaseStats = 100,92,50,102,163,163
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [FLORGES,5]
 FormName = Crystal Florges
-Type1 = FAIRY
-Type2 = CRYSTAL
+Types = FAIRY,CRYSTAL
 BaseStats = 78,65,85,85,135,204
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
@@ -3645,23 +3669,18 @@ MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [SUICUNE,1]
 FormName = Perfect Suicune
-Type1 = WATER
-Type2 = CRYSTAL
+Types = WATER,CRYSTAL
 BaseStats = 100,110,150,105,110,155
-BaseEXP = 300
-EffortPoints = 0,0,2,0,0,2
 Abilities = CRYSTALADAPTATION
-HiddenAbility = CRYSTALADAPTATION
-Kind = Aurora
+Color = Rainbow
 Pokedex = The Perfect Transformation. Also known as Crystal Mega Evolution. Suicune underwent this transformation in order to reach "Perfection" and ascend beyond any other Pokémon.
 MegaStone = CRYSTALSUICUNITE
 #-------------------------------
 [SPRITZEE,1]
 FormName = Azure
 BaseStats = 78,52,60,72,63,65
-BaseEXP = 69
 Abilities = CRYSTALSURGE
-HiddenAbility = CRYSTALSURGE
+Color = Blue
 Pokedex = Spritzee who have seen the legendary Crystal Pokémon, Kaizure. While Spritzee are too weak to crystallize, their Aroma changed when coming in contact with a huge amount of Crystal Energy for an long time. For a Spritzee's aroma to change this much, it must've been around Kaizure for a very long time.
 Evolutions = AROMATISSE,None,
 Flags = SelectableInTeamBuilderMode
@@ -3677,62 +3696,46 @@ Flags = SelectableInTeamBuilderMode
 [COMBEE,1]
 FormName = Guard Forme
 BaseStats = 90,20,150,45,20,150
-BaseEXP = 60
-EffortPoints = 0,0,1,0,0,1
+Abilities = REGENERATOR
 Pokedex = It collects and delivers honey to its colony. At night, they cluster to form a beehive and sleep.
 Evolutions = VESPIQUEN,None,
 #-------------------------------
 [BELDUM,1]
 FormName = Delta
-Type1 = GRASS
-Type2 = ROCK
-BaseStats = 40,55,80,30,35,60
-Moves = 1,TAKEDOWN,1,TACKLE,25,DOUBLEEDGE,50,HEADSMASH
-Height = 0.6
-Weight = 95.2
-Compatibility = Mineral
-WildItemUncommon = HARDSTONE
+Types = GRASS,ROCK
+BaseStats = 65,65,80,20,30,40
 Abilities = STURDY
-HiddenAbility = ROCKHEAD
+HiddenAbilities = ROCKHEAD
+Moves = 1,TACKLE,1,TAKEDOWN,25,DOUBLEEDGE,50,HEADSMASH
 Color = Brown
-Kind = Ruined
 Pokedex = A Delta form believed to have originated in Torren. These Beldum appear to be made of Rock instead of steel.
+Category = Ruined
 Evolutions = METANG,Level,20
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [METANG,1]
 FormName = Delta
-Type1 = GRASS
-Type2 = ROCK
-BaseStats = 60,75,100,50,55,80
-Moves = 0,ROCKCLAW,0,BULLETSEED,1,ROCKCLAW,1,BULLETSEED,1,STEALTHROCK,1,LEECHSEED,1,TAKEDOWN,20,ROCKCLAW,20,BULLETSEED,23,PURSUIT,26,ROCKBLAST,29,GROWTH,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,STONEFIST,44,ROCKPOLISH,47,IRONDEFENSE,52,ROCKWRECKER,57,HEADSMASH
-Compatibility = Mineral
-WildItemUncommon = HARDSTONE
-Height = 1.2
-Weight = 202.5
+Types = GRASS,ROCK
+BaseStats = 80,100,110,50,40,50
 Abilities = STURDY
-HiddenAbility = ROCKHEAD
+HiddenAbilities = ROCKHEAD
+Moves = 0,ROCKCLAW,0,BULLETSEED,1,STEALTHROCK,1,LEECHSEED,1,TACKLE,1,TAKEDOWN,20,ROCKCLAW,20,BULLETSEED,23,PURSUIT,26,ROCKBLAST,29,GROWTH,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,STONEFIST,44,ROCKPOLISH,47,IRONDEFENSE,52,ROCKWRECKER,57,HEADSMASH
 Color = Brown
-Kind = Ruined
 Pokedex = A Delta form believed to have originated in Torren. These Metang appear to be made of Rock instead of steel.
+Category = Ruined
 Evolutions = METAGROSS,Level,45
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [METAGROSS,2]
 FormName = Delta
-Type1 = GRASS
-Type2 = ROCK
-BaseStats = 80,135,130,70,95,90
-Moves = 0,HAMMERARM,1,HAMMERARM,1,CRYSTALRUSH,1,WOODHAMMER,1,LEECHSEED,1,STEALTHROCK,1,TAKEDOWN,20,ROCKCLAW,20,BULLETSEED,23,PURSUIT,26,ROCKBLAST,29,GROWTH,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,STONEFIST,44,ROCKPOLISH,45,HAMMERARM,49,IRONDEFENSE,53,ROCKWRECKER,59,EXPLOSION,64,HEADSMASH
-Compatibility = Mineral
-WildItemUncommon = HARDSTONE
-Height = 1.6
-Weight = 550.0
+Types = GRASS,ROCK
+BaseStats = 100,130,160,50,70,90
 Abilities = STURDY
-HiddenAbility = ROCKHEAD
+HiddenAbilities = ROCKHEAD
+Moves = 0,HAMMERARM,1,CRYSTALRUSH,1,WOODHAMMER,1,LEECHSEED,1,STEALTHROCK,1,TACKLE,1,TAKEDOWN,20,ROCKCLAW,20,BULLETSEED,23,PURSUIT,26,ROCKBLAST,29,GROWTH,32,SEEDBOMB,35,SCARYFACE,38,ENERGYBALL,41,STONEFIST,44,ROCKPOLISH,45,HAMMERARM,49,IRONDEFENSE,53,ROCKWRECKER,59,EXPLOSION,64,HEADSMASH
 Color = Brown
-Kind = Ruined
 Pokedex = A Delta form believed to have originated in Torren. These Metagross appear to be made of Rock instead of steel.
+Category = Ruined
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [JIRACHI,2]
@@ -3743,7 +3746,6 @@ EffortPoints = 252,252,252,252,252,252
 Rareness = 0
 Happiness = 252
 Abilities = OMNIPOTENT
-HiddenAbility = OMNIPOTENT
 StepsToHatch = 1
 Height = 1.0
 Weight = 0.1
@@ -3753,45 +3755,43 @@ Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [DEINO,2]
 FormName = Vitrian
-Type1 = STEEL
-Type2 = DRAGON
+Types = STEEL,DRAGON
 BaseStats = 50,45,50,55,80,50
 Abilities = ANALYTIC
-HiddenAbility = SPEEDBOOST
-Compatibility = Undiscovered
-Kind = Augmented
+HiddenAbilities = SPEEDBOOST
+Moves = 1,TACKLE,1,IRONDEFENSE,5,LOCKON,9,BITE,13,DRAGONRAGE,16,MAGNETBOMB,19,CHARGEBEAM,21,COLDSTEEL,24,MIRRORSHOT,27,CRUNCH,29,DRAGONBREATH,33,IRONHEAD,36,SIGNALBEAM,39,METALBURST,42,WILDCHARGE,45,DRAGONRUSH,48,SHIFTGEAR,55,OUTRAGE
+Color = Gray
 Pokedex = A victim of experimentation from Team Vitreus taking advantage of the softened Deino on (island name). It lacks eyes, but can sense its surroundings via signals from its antenna.
+Category = Augmented
 Evolutions = ZWEILOUS,Level,35
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [ZWEILOUS,2]
 FormName = Vitrian
-Type1 = STEEL
-Type2 = DRAGON
+Types = STEEL,DRAGON
 BaseStats = 70,65,75,60,100,75
 Abilities = ANALYTIC
-HiddenAbility = MEGALAUNCHER
-Compatibility = Undiscovered
-Kind = Augmented
+HiddenAbilities = MEGALAUNCHER
+Moves = 0,DRAGONPULSE,1,FATALERROR,1,TACKLE,1,IRONDEFENSE,7,LOCKON,11,BITE,14,DRAGONRAGE,17,MAGNETBOMB,20,CHARGEBEAM,22,COLDSTEEL,25,MIRRORSHOT,28,CRUNCH,31,DRAGONBREATH,34,IRONHEAD,37,SKULLBASH,39,SIGNALBEAM,42,METALBURST,45,WILDCHARGE,48,DRAGONRUSH,51,SHIFTGEAR,54,FLASHCANNON,60,ZAPCANNON,64,OUTRAGE
+Color = Gray
 Pokedex = It has legs instead of wheels to stabilize its footing while its blasting powerful attacks from its two cannons. It is unknown if it can emote.
+Category = Augmented
 Evolutions = HYDREIGON,Level,55
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [HYDREIGON,2]
 FormName = Vitrian
-Type1 = STEEL
-Type2 = DRAGON
+Types = STEEL,DRAGON
 BaseStats = 90,100,105,95,135,105
-Abilities = LEVITATE
-HiddenAbility = MEGALAUNCHER
-Compatibility = Undiscovered
-Kind = Augmented
+HiddenAbilities = MEGALAUNCHER
+Moves = 0,HYPERBEAM,1,DRAGONPULSE,1,DISCHARGE,1,FATALERROR,1,TRIATTACK,1,MAGNETRISE,8,LOCKON,12,BITE,15,DRAGONRAGE,18,STEELWING,20,CHARGEBEAM,23,COLDSTEEL,26,MIRRORSHOT,29,CRUNCH,32,DRAGONBREATH,35,IRONHEAD,38,SKULLBASH,40,SIGNALBEAM,43,METALBURST,47,WILDCHARGE,51,DRAGONRUSH,54,SHIFTGEAR,57,FLASHCANNON,64,ZAPCANNON,68,FOCUSBLAST,72,OUTRAGE
+Color = Black
 Pokedex = An attempt of bringing the softened Kurian Hydreigon back to their former glory. It flies at high speeds and shoots down its target with powerful beams from either its armcannons or its mouth.
+Category = Augmented
 Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GIRAFARIG,1]
-Type1 = NORMAL
-Type2 = DARK
+Types = NORMAL,DARK
 BaseStats = 70,75,65,90,105,65
 #-------------------------------
 [KINDESHU,1]
@@ -3804,8 +3804,7 @@ Pokedex = Kindeshu reveal themselves only when they are threatened or are about 
 #-------------------------------
 [NOCTOA,1]
 FormName = Night Noctoa
-Type1 = GHOST
-Type2 = DARK
+Types = GHOST,DARK
 BaseStats = 63,105,50,104,60,50
 Pokedex = Noctoa at night are very different from the Noctoa during the day. It's almost as if it's an entirely different Pokémon.
 #-------------------------------
@@ -3827,8 +3826,7 @@ Weight = 9.9
 Color = Purple
 #-------------------------------
 [KOSURITE,1]
-Type1 = CRYSTAL
-Type2 = COSMIC
+Types = CRYSTAL,COSMIC
 #-------------------------------
 [KAIZURE,1]
 FormName = Carefree

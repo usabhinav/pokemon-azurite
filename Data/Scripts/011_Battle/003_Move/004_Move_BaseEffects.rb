@@ -316,7 +316,7 @@ class Battle::Move::TwoTurnMove < Battle::Move
     @damagingTurn = true
     # nil at start of charging turn, move's ID at start of damaging turn
     if !user.effects[PBEffects::TwoTurnAttack]
-      @powerHerb = user.hasActiveItem?(:POWERHERB) || user.hasActiveAbility?(:FLURESCENCE)
+      @powerHerb = user.hasActiveItem?(:POWERHERB) || user.hasActiveAbility?(:FLUORESCENCE)
       @chargingTurn = true
       @damagingTurn = @powerHerb
     end
@@ -339,7 +339,7 @@ class Battle::Move::TwoTurnMove < Battle::Move
       pbShowAnimation(@id, user, targets, 1)   # Charging anim
       targets.each { |b| pbChargingTurnEffect(user, b) }
       if @powerHerb
-        if user.hasActiveAbility?(:FLURESCENCE)
+        if user.hasActiveAbility?(:FLUORESCENCE)
           @battle.pbShowAbilitySplash(user)
           @battle.pbDisplay(_INTL("{1} became fully charged!",user.pbThis))
           @battle.pbHideAbilitySplash(user)

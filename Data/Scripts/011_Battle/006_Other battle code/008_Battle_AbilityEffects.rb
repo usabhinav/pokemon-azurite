@@ -1864,7 +1864,7 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:WINDUP,
   }
 )
 
-Battle::AbilityEffects::DamageCalcFromUser.add(:FLURESCENCE,
+Battle::AbilityEffects::DamageCalcFromUser.add(:FLUORESCENCE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if !move.chargingTurnMove?
     mults[:final_damage_multiplier] *= 0.8

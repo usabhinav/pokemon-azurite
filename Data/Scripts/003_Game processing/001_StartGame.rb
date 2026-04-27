@@ -75,7 +75,7 @@ module Game
       $player.money = 1000
       $bag.add(:POKEBALL, 5)
       $bag.add(:GREYSCALE)
-      $bag.add(:MEGARING)
+      $bag.add(:MEGAKEYSTONE)
     end
     skip_battle_anim = false
     while true

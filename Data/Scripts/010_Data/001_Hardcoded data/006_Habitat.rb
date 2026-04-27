@@ -114,3 +114,8 @@ GameData::Habitat.register({
   :id   => :Volcano,
   :name => _INTL("Volcano")
 })
+
+GameData::Habitat.register({
+  :id   => :Beach,
+  :name => _INTL("Beach")
+})

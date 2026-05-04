@@ -69,6 +69,11 @@ class PokemonPokedexInfo_Scene
     @sprites["downarrow"].visible = false
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
     pbSetSystemFontBW(@sprites["overlay"].bitmap)
+    @sprites["overlaydexentry"] = ScrollingTextSprite.new(Graphics.width - (40 * 2), 132, @viewport)
+    @sprites["overlaydexentry"].x = 38
+    @sprites["overlaydexentry"].y = (@brief ? 250 : 212)
+    @sprites["overlaydexentry"].maxlines = 4
+    pbSetSystemFontBW(@sprites["overlaydexentry"].bitmap)
     pbUpdateDummyPokemon
     @available = pbGetAvailableForms
     drawPage(@page)
@@ -118,6 +123,11 @@ class PokemonPokedexInfo_Scene
     @sprites["infosprite"].y = 136
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
     pbSetSystemFontBW(@sprites["overlay"].bitmap)
+    @sprites["overlaydexentry"] = ScrollingTextSprite.new(Graphics.width - (40 * 2), 132, @viewport)
+    @sprites["overlaydexentry"].x = 38
+    @sprites["overlaydexentry"].y = (@brief ? 250 : 212)
+    @sprites["overlaydexentry"].maxlines = 4
+    pbSetSystemFontBW(@sprites["overlaydexentry"].bitmap)
     pbUpdateDummyPokemon
     drawPage(@page)
     pbFadeInAndShow(@sprites) { pbUpdate }
@@ -132,6 +142,13 @@ class PokemonPokedexInfo_Scene
       @sprites["formback"].y = 226
       @sprites["formback"].y += metrics_data.back_sprite[1] * 2
     end
+  end
+
+  alias bw_style_drawPage drawPage unless method_defined?(:bw_style_drawPage)
+  def drawPage(page)
+    @sprites["overlaydexentry"].text = nil
+    @sprites["overlaydexentry"].bitmap.clear
+    bw_style_drawPage(page)
   end
 
   def drawPageInfo
@@ -187,11 +204,7 @@ class PokemonPokedexInfo_Scene
     end
     if $player.owned?(@species)
       # Write the category. Changed
-      if @brief
-        textpos.push([_INTL("{1} Pokémon", species_data.category), 376, 90, 2, base, shadow])
-      else
-        textpos.push([_INTL("{1} Pokémon", species_data.category), 376, 52, 2, base, shadow])
-      end
+      pbDrawShadowText(@sprites["overlay"].bitmap, 256, (@brief ? 90 : 52), 240, 32, _INTL("{1} Pokémon", species_data.category), base, shadow, 1)
       # Write the height and weight. Changed
       height = species_data.height
       weight = species_data.weight
@@ -217,8 +230,10 @@ class PokemonPokedexInfo_Scene
       # Draw the Pokédex entry text. Changed
 	    base   = Color.new(255,255,255)
       shadow = Color.new(165,165,173)
-      drawTextEx(overlay, 38, @brief ? 250 : 212, Graphics.width - (40 * 2), 4,   # overlay, x, y, width, num lines
-                species_data.pokedex_entry, base, shadow)
+      # CHANGED: Use a special scrolling bitmap.
+      @sprites["overlaydexentry"].base = base
+      @sprites["overlaydexentry"].shadow = shadow
+      @sprites["overlaydexentry"].text = species_data.pokedex_entry
       # Draw the footprint. Changed
       footprintfile = GameData::Species.footprint_filename(@species, @form)
       if footprintfile

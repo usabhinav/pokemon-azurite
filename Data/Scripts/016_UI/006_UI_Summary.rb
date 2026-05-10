@@ -142,6 +142,13 @@ class PartyRotationSprite < Sprite
     end
   end
 
+  def color=(value)
+    @color = value
+    for sprite in @sprites
+      sprite.color = value
+    end
+  end
+
   def dispose
     for sprite in @sprites
       sprite.dispose

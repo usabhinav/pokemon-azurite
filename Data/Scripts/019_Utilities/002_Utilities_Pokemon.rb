@@ -389,7 +389,9 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
   species_id_list.delete_if do |species_id|
     # Mundimea is more of a special encounter Pokemon that requires a True Enigma Chain to see it, so doesn't
     # make much sense to include it randomly.
-    next species_id == :MUNDIMEA
+    next species_id == :MUNDIMEA ||
+         # TODO: Remove this condition once these Pokemon actually have base form sprites
+         [:GELDIOS, :SPHERIOS, :NEBULANIAN].include?(species_id)
   end
   if runnerModeBattleCounter <= 15
     species_id_list.delete_if do |species_id|

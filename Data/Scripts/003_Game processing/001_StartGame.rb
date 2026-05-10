@@ -162,6 +162,9 @@ module Game
     setBattleRule("endlessmode")
     setBattleRule("canLose")
     setBattleRule("skipplayersendout") if skip_battle_anim
+    if $game_system.getPlayingBGM.nil? || $PokemonGlobal.nextBattleBGM != $game_system.getPlayingBGM.name
+      setBattleRule("showbgmwindow")
+    end
     EliteBattle.set(:nextBattleBack, { "backdrop" => "AzuriteArena" })
     # The general pattern is that it increments by 1 except for every 9th and 10th battle, where it stays constant.
     # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 8, 8, 8

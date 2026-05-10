@@ -241,6 +241,9 @@ class TeamBuilderTextBasedScreen
           setBattleRule("noexp")
           setBattleRule("nomoney")
           setBattleRule("disablepokeballs")
+          if !is_battle_BGM_set_to_specific_track
+            setBattleRule("showbgmwindow")
+          end
           play_next_battle_BGM_from_saved_preference
           # Set player party and bag
           $player.party = Marshal.load(Marshal.dump(@parties[0]))
@@ -323,6 +326,7 @@ def pbStartTeamBuilderTextBasedScreen
     scene = TeamBuilderTextBasedScreen.new
     scene.pbStartScene
     scene.pbScene
+    SaveData.mark_values_as_unloaded
     scene.endScene
   }
 end

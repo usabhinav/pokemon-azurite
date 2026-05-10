@@ -35,6 +35,7 @@ class Battle::Scene
     @sprites["battlebg"].update
     @sprites["trainer_Anim"].update
     @sprites["trainer_Anim"].opacity -= 8 if @introdone && @sprites["trainer_Anim"].opacity > 0
+    @sprites["bgm_window"].update if @sprites["bgm_window"] && !@sprites["bgm_window"].disposed?
     @idleTimer += 1 if @idleTimer >= 0
     @lastMotion = nil if @idleTimer < 0
     @sprites["player_"].x += (40-@sprites["player_"].x)/4 if @safaribattle && @sprites["player_"] && @playerfix

@@ -79,11 +79,6 @@ module Game
     end
     skip_battle_anim = false
     while true
-      if $PokemonGlobal.runnerModeBattleCounter > 100
-        pbHallOfFameEntry
-        self.go_back_to_title_from_runner_mode
-        return
-      end
       self.runner_mode_show_options_in_between_battles
       if $PokemonGlobal.runnerModeBattleCounter > 1
         self.autosave_runner_mode
@@ -167,13 +162,17 @@ module Game
     setBattleRule("endlessmode")
     setBattleRule("canLose")
     setBattleRule("skipplayersendout") if skip_battle_anim
+    if $game_system.getPlayingBGM.nil? || $PokemonGlobal.nextBattleBGM != $game_system.getPlayingBGM.name
+      setBattleRule("showbgmwindow")
+    end
     EliteBattle.set(:nextBattleBack, { "backdrop" => "AzuriteArena" })
     # The general pattern is that it increments by 1 except for every 9th and 10th battle, where it stays constant.
     # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 8, 8, 8
     # Waves 11-20: 9, 10, 11, 12, 13, 14, 15, 16, 16, 16
     # ...
     # Waves 91-100: 73, 74, 75, 76, 77, 78, 79, 80, 80, 80
-    opponent_level_cap = ((($PokemonGlobal.runnerModeBattleCounter - 1) / 10).floor + 1) * 8
+    # Waves 101+: 80
+    opponent_level_cap = [((($PokemonGlobal.runnerModeBattleCounter - 1) / 10).floor + 1) * 8, 80].min
     unconstrained_level = (($PokemonGlobal.runnerModeBattleCounter / 10).floor) * 8 + ($PokemonGlobal.runnerModeBattleCounter % 10)
     opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
     if static_encounter_map.key?($PokemonGlobal.runnerModeBattleCounter)
@@ -208,9 +207,15 @@ module Game
   end
 
   def self.runner_mode_show_options_in_between_battles
+    header_window = Window_AdvancedTextPokemon.new(_INTL("Round {1}", $PokemonGlobal.runnerModeBattleCounter))
+    header_window.letterbyletter = false
+    header_window.visible = true
+    header_window.update
     msgwindow = pbCreateMessageWindow
     msgwindow.text = _INTL("Manage your party and items before proceeding to the next round.")
     msgwindow.letterbyletter = false
+    pokemon_party_sprites = PokemonPartyIconSprites.new(nil, $player.party, 104, 84)
+    $scene.spriteset.addUserSprite(pokemon_party_sprites)
     loop do
       commands = []
       # Party
@@ -225,6 +230,7 @@ module Game
       case command
       when cmdParty
         pbPokemonScreen
+        pokemon_party_sprites.refreshPokemonIconSprites
       when cmdBag
         pbFadeOutIn {
           scene = PokemonBag_Scene.new
@@ -307,7 +313,9 @@ module Game
         break
       end
     end
+    pokemon_party_sprites.dispose
     pbDisposeMessageWindow(msgwindow)
+    pbDisposeMessageWindow(header_window)
   end
 
   # Loads the game from the given save data and starts the map scene.

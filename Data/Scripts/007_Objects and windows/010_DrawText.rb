@@ -1083,11 +1083,15 @@ def drawTextEx(bitmap, x, y, width, numlines, text, baseColor, shadowColor)
                                    baseColor, shadowColor)
 end
 
-def drawFormattedTextEx(bitmap, x, y, width, text, baseColor = nil, shadowColor = nil, lineheight = 32)
+def getFormattedTextChars(bitmap, x, y, width, text, baseColor = nil, shadowColor = nil, lineheight = 32)
   base = baseColor ? baseColor.clone : Color.new(96, 96, 96)
   shadow = shadowColor ? shadowColor.clone : Color.new(208, 208, 200)
   text = "<c2=" + colorToRgb16(base) + colorToRgb16(shadow) + ">" + text
-  chars = getFormattedText(bitmap, x, y, width, -1, text, lineheight)
+  return getFormattedText(bitmap, x, y, width, -1, text, lineheight)
+end
+
+def drawFormattedTextEx(bitmap, x, y, width, text, baseColor = nil, shadowColor = nil, lineheight = 32)
+  chars = getFormattedTextChars(bitmap, x, y, width, text, baseColor, shadowColor, lineheight)
   drawFormattedChars(bitmap, chars)
 end
 

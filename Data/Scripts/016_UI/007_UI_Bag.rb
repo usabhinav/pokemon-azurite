@@ -208,11 +208,9 @@ class PokemonBag_Scene
     @sprites["itemlist"].baseColor   = ITEMLISTBASECOLOR
     @sprites["itemlist"].shadowColor = ITEMLISTSHADOWCOLOR
     @sprites["itemicon"] = ItemIconSprite.new(48, Graphics.height - 48, nil, @viewport)
-    @sprites["itemtext"] = Window_UnformattedTextPokemon.newWithSize(
-      "", 72, 272, Graphics.width - 72 - 24, 128, @viewport
+    @sprites["itemtext"] = Window_UnformattedScrollingTextPokemon.newWithSize(
+      "a", 72, 272, Graphics.width - 72 - 24, 128, 3, ITEMTEXTBASECOLOR, ITEMTEXTSHADOWCOLOR, @viewport
     )
-    @sprites["itemtext"].baseColor   = ITEMTEXTBASECOLOR
-    @sprites["itemtext"].shadowColor = ITEMTEXTSHADOWCOLOR
     @sprites["itemtext"].visible     = true
     @sprites["itemtext"].windowskin  = nil
     @sprites["helpwindow"] = Window_UnformattedTextPokemon.new("")

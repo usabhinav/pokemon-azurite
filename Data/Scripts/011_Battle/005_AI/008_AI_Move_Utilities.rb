@@ -62,9 +62,10 @@ class Battle::AI
       ret = Effectiveness::NORMAL_EFFECTIVE_ONE
     end
     # Entersphere
-    if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
-      ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
-    end
+    # TODO: Don't have access to move object here, need to pass data about if the move is contact or not
+    # if user.hasActiveAbility?(:ENTERSPHERE) && pbContactMove?(user) && moveType != :FIRE
+    #   ret *= Effectiveness.calculate_one(:FIRE, defType).to_f / Effectiveness::NORMAL_EFFECTIVE_ONE
+    # end
     # Crystal Hammer
     if user.hasActiveItem?(:CRYSTALHAMMER)
       ret = Effectiveness::SUPER_EFFECTIVE_ONE if defType == :CRYSTAL
@@ -687,7 +688,7 @@ class Battle::AI
         multipliers[:base_damage_multiplier] /= 2 if type == :FIGHTING && target.affectedByTerrain?
         multipliers[:base_damage_multiplier] *= terrain_multiplier if type == :ICE && user.affectedByTerrain?
       when :Sticky
-        multipliers[:base_damage_multiplier] /= 2 if pbContactMove?(user) && !user.pbHasType?(:POISON) && user.affectedByTerrain?
+        multipliers[:base_damage_multiplier] /= 2 if move.pbContactMove?(user) && !user.pbHasType?(:POISON) && user.affectedByTerrain?
       end
     end
     # Badge multipliers

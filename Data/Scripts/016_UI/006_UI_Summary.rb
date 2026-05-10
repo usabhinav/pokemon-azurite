@@ -142,6 +142,13 @@ class PartyRotationSprite < Sprite
     end
   end
 
+  def color=(value)
+    @color = value
+    for sprite in @sprites
+      sprite.color = value
+    end
+  end
+
   def dispose
     for sprite in @sprites
       sprite.dispose
@@ -261,6 +268,18 @@ class PokemonSummary_Scene
     @sprites["itemicon"].zoom_y = 0.5
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
+    @sprites["overlayabilitydesc"] = ScrollingTextSprite.new(Graphics.width - 224, Graphics.height - 322, @viewport)
+    @sprites["overlayabilitydesc"].x = 224
+    @sprites["overlayabilitydesc"].y = 322
+    @sprites["overlayabilitydesc"].maxlines = 2
+    @sprites["overlayabilitydesc"].draw_method = "drawFormattedTextEx"
+    pbSetSystemFont(@sprites["overlayabilitydesc"].bitmap)
+    @sprites["overlaymovedesc"] = ScrollingTextSprite.new(230, 154, @viewport)
+    @sprites["overlaymovedesc"].x = 4
+    @sprites["overlaymovedesc"].y = 224
+    @sprites["overlaymovedesc"].maxlines = 5
+    @sprites["overlaymovedesc"].draw_method = "drawFormattedTextEx"
+    pbSetSystemFont(@sprites["overlaymovedesc"].bitmap)
     @sprites["movepresel"] = MoveSelectionSprite.new(@viewport)
     @sprites["movepresel"].visible     = false
     @sprites["movepresel"].preselected = true
@@ -314,6 +333,12 @@ class PokemonSummary_Scene
     @sprites["background"] = IconSprite.new(0, 0, @viewport)
     @sprites["overlay"] = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
     pbSetSystemFont(@sprites["overlay"].bitmap)
+    @sprites["overlaymovedesc"] = ScrollingTextSprite.new(230, 154, @viewport)
+    @sprites["overlaymovedesc"].x = 4
+    @sprites["overlaymovedesc"].y = 224
+    @sprites["overlaymovedesc"].maxlines = 5
+    @sprites["overlaymovedesc"].draw_method = "drawFormattedTextEx"
+    pbSetSystemFont(@sprites["overlaymovedesc"].bitmap)
     @sprites["pokeicon"] = PokemonIconSprite.new(@pokemon, @viewport)
     @sprites["pokeicon"].setOffset(PictureOrigin::CENTER)
     @sprites["pokeicon"].x       = 46
@@ -433,6 +458,10 @@ class PokemonSummary_Scene
     @sprites["itemicon"].item = @pokemon.item_id
     overlay = @sprites["overlay"].bitmap
     overlay.clear
+    @sprites["overlayabilitydesc"].text = nil
+    @sprites["overlayabilitydesc"].bitmap.clear
+    @sprites["overlaymovedesc"].text = nil
+    @sprites["overlaymovedesc"].bitmap.clear
     base   = Color.new(248, 248, 248)
     shadow = Color.new(66, 66, 81)
     # Set background image
@@ -905,8 +934,10 @@ class PokemonSummary_Scene
     # Draw ability name and description
     ability = @pokemon.ability
     if ability
-      textpos.push([ability.name, 362, 290, 0, base, shadow, 1])
-      drawFormattedTextEx(overlay, 224, 322, 282, "<outln2>" + ability.description, base, shadow)
+      pbDrawOutlineText(overlay, 362, 290, 156, 32, ability.name, base, shadow)
+      @sprites["overlayabilitydesc"].base = base
+      @sprites["overlayabilitydesc"].shadow = shadow
+      @sprites["overlayabilitydesc"].text = "<outln2>" + ability.description
     end
     # Draw all text
     pbDrawTextPositions(overlay, textpos)
@@ -1031,7 +1062,7 @@ class PokemonSummary_Scene
       if move
         type_number = GameData::Type.get(move.display_type(@pokemon)).icon_position
         imagepos.push(["Graphics/Pictures/types", 248, yPos - 4, 0, type_number * 27, 63, 27])
-        textpos.push([move.name, 316, yPos, 0, moveBase, moveShadow, 1])
+        pbDrawOutlineText(overlay, 316, yPos, 168, 0, move.name, moveBase, moveShadow)
         if move.total_pp > 0
           textpos.push([_INTL("PP"), 342, yPos + 32, 0, moveBase, moveShadow, 1])
           ppfraction = 0
@@ -1096,7 +1127,7 @@ class PokemonSummary_Scene
       if move
         type_number = GameData::Type.get(move.display_type(@pokemon)).icon_position
         imagepos.push(["Graphics/Pictures/types", 248, yPos - 4, 0, type_number * 27, 63, 27])
-        textpos.push([move.name, 316, yPos, 0, base, shadow, 1])
+        pbDrawOutlineText(overlay, 316, yPos, 168, 0, move.name, base, shadow)
         if move.total_pp > 0
           textpos.push([_INTL("PP"), 342, yPos + 32, 0, base, shadow, 1])
           ppfraction = 0
@@ -1156,12 +1187,9 @@ class PokemonSummary_Scene
     imagepos = [["Graphics/Pictures/category", 166, 124, 0, selected_move.display_category(@pokemon) * 28, 64, 28]]
     pbDrawImagePositions(overlay, imagepos)
     # Draw selected move's description
-    normtext = getLineBrokenChunks(overlay, selected_move.description, 230, nil)
-    textpos = []
-    for text in normtext
-      next if text[2] >= 5 * 32 # Max of 5 lines of text
-      textpos.push([text[0], 4 + text[1], 224 + text[2], 0, base, shadow, 1])
-    end
+    @sprites["overlaymovedesc"].base = base
+    @sprites["overlaymovedesc"].shadow = shadow
+    @sprites["overlaymovedesc"].text = "<outln2>" + selected_move.description
     pbDrawTextPositions(overlay, textpos)
   end
 

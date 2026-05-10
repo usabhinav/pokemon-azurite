@@ -1055,7 +1055,7 @@ class PokemonSummary_Scene
       if move
         type_number = GameData::Type.get(move.display_type(@pokemon)).icon_position
         imagepos.push(["Graphics/Pictures/types", 248, yPos - 4, 0, type_number * 27, 63, 27])
-        pbDrawOutlineText(overlay, 316, yPos, 168, 0, move.name, base, shadow)
+        pbDrawOutlineText(overlay, 316, yPos, 168, 0, move.name, moveBase, moveShadow)
         if move.total_pp > 0
           textpos.push([_INTL("PP"), 342, yPos + 32, 0, moveBase, moveShadow, 1])
           ppfraction = 0

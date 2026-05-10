@@ -67,3 +67,155 @@ class ScrollingTextSprite < BitmapSprite
     @current_y = nil
   end
 end
+
+#===============================================================================
+#
+#===============================================================================
+# Represents a window with no formatting capabilities. Its text color can be set,
+# though, and line breaks are supported, but the text is generally unformatted.
+# The text scrolls if it exceeds the max lines allowed.
+class Window_UnformattedScrollingTextPokemon < Window_UnformattedTextPokemon
+  attr_accessor :scrolling_text_sprite
+
+  def text=(value)
+    @scrolling_text_sprite&.text = value.gsub(/\r/, "")
+    super
+  end
+
+  def baseColor=(value)
+    @scrolling_text_sprite&.base = value
+    super
+  end
+
+  def shadowColor=(value)
+    @scrolling_text_sprite&.shadow = value
+    super
+  end
+
+  def self.newWithSize(text, x, y, width, height, maxlines, baseColor, shadowColor, viewport = nil)
+    ret = super(text, x, y, width, height, viewport)
+    ret.scrolling_text_sprite = ScrollingTextSprite.new(width - ret.borderX - SpriteWindow_Base::TEXTPADDING, height - ret.borderY, viewport)
+    pbSetSystemFont(ret.scrolling_text_sprite.bitmap)
+    ret.scrolling_text_sprite.x = x + ret.borderX + SpriteWindow_Base::TEXTPADDING
+    ret.scrolling_text_sprite.y = y + ret.borderY - 2
+    ret.scrolling_text_sprite.maxlines = maxlines
+    ret.scrolling_text_sprite.base = baseColor
+    ret.scrolling_text_sprite.shadow = shadowColor
+    ret.scrolling_text_sprite.text = text
+    return ret
+  end
+
+  def refresh
+  end
+
+  def refreshWithoutLineBreaks
+  end
+
+  def update
+    @scrolling_text_sprite&.update
+  end
+
+  def visible=(visible)
+    super
+    @scrolling_text_sprite&.visible = visible
+  end
+
+  def color=(color)
+    super
+    @scrolling_text_sprite&.color = color
+  end
+end
+
+class PokemonPartyIconSprites
+  def initialize(viewport = nil, party = nil, x = nil, y = nil)
+    # Bitmap sprite setup
+    if viewport
+      @viewport = viewport
+    else
+      @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+      @viewport.z = 99999
+      @viewport.visible = true
+    end
+    @party = party
+    @x = x
+    @y = y
+    @sprites = {}
+    refreshPokemonIconSprites
+    @bitmapsprite = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
+    bitmap = @bitmapsprite.bitmap
+    pbSetSmallFont(bitmap)
+    @bitmapsprite.visible = true
+    @bitmapsprite.opacity = 0
+  end
+
+  def party=(party)
+    @party = party
+    refreshPokemonIconSprites
+  end
+
+  def refreshPokemonIconSprites
+    for i in 0...6
+      refreshPokemonAtIndex(i)
+    end
+  end
+
+  def refreshPokemonAtIndex(i)
+    if @party && @party[i]
+      poke = @party[i]
+      if @sprites["pokemonIcon#{i}"].nil?
+        icon_sprite = PokemonIconSprite.new(poke, @viewport)
+        icon_sprite.setOffset(PictureOrigin::CENTER)
+        icon_sprite.x = @x + 32 + (i % 2 == 0 ? 0 : 64)
+        icon_sprite.y = @y + 32 + (i / 2) * 64
+        icon_sprite.z = 2
+        icon_sprite.disable_anim = true
+        icon_sprite.update
+        @sprites["pokemonIcon#{i}"] = icon_sprite
+      else
+        @sprites["pokemonIcon#{i}"].pokemon = poke
+      end
+    elsif !@sprites["pokemonIcon#{i}"].nil?
+      @sprites["pokemonIcon#{i}"].visible = false
+      @sprites["pokemonIcon#{i}"].dispose
+      @sprites["pokemonIcon#{i}"] = nil
+    end
+  end
+
+  def disposed?
+    return @bitmapsprite.disposed?
+  end
+  
+  def dispose
+    @bitmapsprite.dispose if @bitmapsprite
+    pbDisposeSpriteHash(@sprites)
+    @viewport.dispose
+  end
+
+  def update
+    pbUpdateSpriteHash(@sprites)
+  end
+
+  def visible
+    return @bitmapsprite.visible
+  end
+
+  def visible=(visible)
+    @bitmapsprite.visible = visible
+    @sprites.each_value do |s|
+      next if s.nil?
+      s.visible = visible
+    end
+  end
+
+  def color
+    return @bitmapsprite.color
+  end
+
+  def color=(color)
+    @bitmapsprite.color = color
+    @sprites.each_value do |s|
+      next if s.nil?
+      s.color = color
+    end
+  end
+end

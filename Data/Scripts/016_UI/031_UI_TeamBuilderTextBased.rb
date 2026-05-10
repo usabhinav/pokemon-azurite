@@ -84,7 +84,14 @@ class TeamBuilderTextBasedScreen
         sideSizeSelectionScene
       end
       break if @end_scene
-      refreshPokemonIconSprites
+      new_party = nil
+      if (@current_screen == :PlayerTrainerPartySelection || @current_screen == :OpponentTrainerPartySelection)
+        @sprites["pokemon_party_sprites"].party = @parties[getActiveTrainerIndex]
+        @sprites["pokemon_party_sprites"].visible = true
+      else
+        @sprites["pokemon_party_sprites"].party = nil
+        @sprites["pokemon_party_sprites"].visible = false
+      end
     end
   end
 
@@ -134,7 +141,7 @@ class TeamBuilderTextBasedScreen
       pbDisposeMessageWindow(header_window)
       case command
       when cmdEditTeam
-        pbPokemonScreenForTeamBuilder(@parties[getActiveTrainerIndex]) { refreshPokemonIconSprites }
+        pbPokemonScreenForTeamBuilder(@parties[getActiveTrainerIndex]) { @sprites["pokemon_party_sprites"].refreshPokemonIconSprites }
       when cmdRandomParty, cmdRandomAzuriteParty
         if pbConfirmMessage(_INTL("This action will overwrite the current party. Continue?"))
           params = ChooseNumberParams.new
@@ -147,12 +154,12 @@ class TeamBuilderTextBasedScreen
           if level > 0
             species_data_form_map = getPossibleSpeciesDataFormMapForTeamBuilder(level, command == cmdRandomAzuriteParty ? [99] : nil)
             @parties[getActiveTrainerIndex] = getRandomPartyFromSpeciesDataFormMap(species_data_form_map, level)
-            refreshPokemonIconSprites
+            @sprites["pokemon_party_sprites"].party = @parties[getActiveTrainerIndex]
             pbMessage(_INTL("Successfully generated a new party."))
           end
         end
       when cmdLoadTeam
-        loadDataObject(SaveDataObjectManagement::TEAM_DATA_OBJECT_NAME, Proc.new { |file| @parties[getActiveTrainerIndex] = Marshal.load(file); refreshPokemonIconSprites })
+        loadDataObject(SaveDataObjectManagement::TEAM_DATA_OBJECT_NAME, Proc.new { |file| @parties[getActiveTrainerIndex] = Marshal.load(file); @sprites["pokemon_party_sprites"].party = @parties[getActiveTrainerIndex] })
       when cmdSaveTeam
         SaveDataObjectManagement.save_data_object_with_new_name(SaveDataObjectManagement::TEAM_DATA_OBJECT_NAME, @parties[getActiveTrainerIndex])
       when cmdEditBag
@@ -287,38 +294,6 @@ class TeamBuilderTextBasedScreen
     @sprites["background"].setBitmap("#{TeamBuilderTextBasedScreenConstants::FOLDER_PATH}/TeamBuilderScreenPlaceholder")
   end
 
-  def refreshPokemonIconSprites
-    for i in 0...6
-      refreshPokemonAtIndex(i)
-    end
-  end
-
-  def refreshPokemonAtIndex(i)
-    if (@current_screen == :PlayerTrainerPartySelection || @current_screen == :OpponentTrainerPartySelection) && @parties[getActiveTrainerIndex][i]
-      poke = @parties[getActiveTrainerIndex][i]
-      if @sprites["pokemonIcon#{i}"].nil?
-        icon_sprite = PokemonIconSprite.new(poke, @viewport)
-        icon_sprite.setOffset(PictureOrigin::CENTER)
-        icon_sprite.x = 44 + 32 + (i % 2 == 0 ? 0 : 64)
-        icon_sprite.y = 84 + 32 + (i / 2) * 64
-        icon_sprite.z = 2
-        icon_sprite.disable_anim = true
-        icon_sprite.update
-        @sprites["pokemonIcon#{i}"] = icon_sprite
-      else
-        @sprites["pokemonIcon#{i}"].pokemon = poke
-      end
-    elsif !@sprites["pokemonIcon#{i}"].nil?
-      @sprites["pokemonIcon#{i}"].visible = false
-      @sprites["pokemonIcon#{i}"].dispose
-      @sprites["pokemonIcon#{i}"] = nil
-    end
-  end
-
-  def setupInitialSprites
-    refreshPokemonIconSprites
-  end
-
   def pbStartScene
     # Set up background and core sprites
     @viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
@@ -338,7 +313,7 @@ class TeamBuilderTextBasedScreen
       @bags.push(PokemonBag.new)
     end
     refreshBackground
-    setupInitialSprites
+    @sprites["pokemon_party_sprites"] = PokemonPartyIconSprites.new(@viewport, @parties[0], 44, 84)
     pbFadeInAndShow(@sprites) { pbUpdate }
   end
 end

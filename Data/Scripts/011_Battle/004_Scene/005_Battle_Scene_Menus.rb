@@ -208,7 +208,7 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
   attr_reader :battler
   attr_reader :shiftMode
 
-  GET_MOVE_TEXT_COLOR_FROM_MOVE_BUTTON = true
+  GET_MOVE_TEXT_COLOR_FROM_MOVE_BUTTON = false
 
   # If true, displays graphics from Graphics/Pictures/Battle/overlay_fight.png
   #     and Graphics/Pictures/Battle/cursor_fight.png.
@@ -267,13 +267,13 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
       @overlay = BitmapSprite.new(Graphics.width, Graphics.height - self.y, viewport)
       @overlay.x = self.x
       @overlay.y = self.y
-      pbSetNarrowFont(@overlay.bitmap)
+      pbSetSmallFont(@overlay.bitmap)
       addSprite("overlay", @overlay)
       # Create overlay for selected move's info (shows move's PP)
       @infoOverlay = BitmapSprite.new(Graphics.width, Graphics.height - self.y, viewport)
       @infoOverlay.x = self.x
       @infoOverlay.y = self.y
-      pbSetNarrowFont(@infoOverlay.bitmap)
+      pbSetSmallFont(@infoOverlay.bitmap)
       addSprite("infoOverlay", @infoOverlay)
       # Create type icon
       @typeIcon = Sprite.new(viewport)
@@ -303,7 +303,7 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
       )
       @msgBox.baseColor   = TEXT_BASE_COLOR
       @msgBox.shadowColor = TEXT_SHADOW_COLOR
-      pbSetNarrowFont(@msgBox.contents)
+      pbSetSmallFont(@msgBox.contents)
       addSprite("msgBox", @msgBox)
       # Create command window (shows moves)
       @cmdWindow = Window_CommandPokemon.newWithSize(
@@ -312,7 +312,7 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
       @cmdWindow.columns       = 2
       @cmdWindow.columnSpacing = 4
       @cmdWindow.ignore_input  = true
-      pbSetNarrowFont(@cmdWindow.contents)
+      pbSetSmallFont(@cmdWindow.contents)
       addSprite("cmdWindow", @cmdWindow)
     end
     self.z = z
@@ -526,7 +526,7 @@ class Battle::Scene::TargetMenu < Battle::Scene::MenuBase
     @overlay = BitmapSprite.new(Graphics.width, Graphics.height - self.y, viewport)
     @overlay.x = self.x
     @overlay.y = self.y
-    pbSetNarrowFont(@overlay.bitmap)
+    pbSetSmallFont(@overlay.bitmap)
     addSprite("overlay", @overlay)
     self.z = z
     refresh

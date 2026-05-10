@@ -7166,7 +7166,7 @@ NamePlural = Quick Switches
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = An item to be held by a Pokémon. If this Pokémon switches out, the Pokémon switching in can use a move in the same turn. Breaks after use.
+Description = An item to be held by a Pokémon. If this Pokémon switches in in the middle of a turn, it can immediately use a move in the same turn. Breaks after use.
 #-------------------------------
 [WEIRDTRINKET]
 Name = Weird Trinket

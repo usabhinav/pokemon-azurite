@@ -208,12 +208,6 @@ class PokemonBag_Scene
     @sprites["itemlist"].baseColor   = ITEMLISTBASECOLOR
     @sprites["itemlist"].shadowColor = ITEMLISTSHADOWCOLOR
     @sprites["itemicon"] = ItemIconSprite.new(48, Graphics.height - 48, nil, @viewport)
-    # TODO: Remove this part once the x/y coordinates figured out
-    # @sprites["itemtext"] = Window_UnformattedTextPokemon.newWithSize(
-    #   "", 72, 272, Graphics.width - 72 - 24, 128, @viewport
-    # )
-    # @sprites["itemtext"].baseColor   = ITEMTEXTBASECOLOR
-    # @sprites["itemtext"].shadowColor = ITEMTEXTSHADOWCOLOR
     @sprites["itemtext"] = Window_UnformattedScrollingTextPokemon.newWithSize(
       "a", 72, 272, Graphics.width - 72 - 24, 128, 3, ITEMTEXTBASECOLOR, ITEMTEXTSHADOWCOLOR, @viewport
     )

@@ -96,8 +96,8 @@ class Window_UnformattedScrollingTextPokemon < Window_UnformattedTextPokemon
     ret = super(text, x, y, width, height, viewport)
     ret.scrolling_text_sprite = ScrollingTextSprite.new(width - ret.borderX - SpriteWindow_Base::TEXTPADDING, height - ret.borderY, viewport)
     pbSetSystemFont(ret.scrolling_text_sprite.bitmap)
-    ret.scrolling_text_sprite.x = x + ret.borderX + SpriteWindow_Base::TEXTPADDING
-    ret.scrolling_text_sprite.y = y + ret.borderY - 2
+    ret.scrolling_text_sprite.x = x + ret.startX
+    ret.scrolling_text_sprite.y = y + ret.startY + 6
     ret.scrolling_text_sprite.maxlines = maxlines
     ret.scrolling_text_sprite.base = baseColor
     ret.scrolling_text_sprite.shadow = shadowColor

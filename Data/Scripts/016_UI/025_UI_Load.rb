@@ -463,7 +463,7 @@ class PokemonLoadScreen
     cmd_debug        = -1
     cmd_quit         = -1
     # Temporarily disabling main game mode
-    show_continue    = false # !@save_data.empty?
+    show_continue    = !@save_data.empty?
     show_continue_runner_mode = !@save_data_runner_mode.empty?
 
     # Continue (main game)
@@ -480,15 +480,16 @@ class PokemonLoadScreen
     end
 
     # New Game buttons / Mystery Gift
-    # Temporarily disabling main game mode
-    # commands[cmd_new_game = commands.length]  = show_continue ? _INTL('New Journey') : _INTL('Start The Journey')
-    # if show_continue && @save_data[:player].mystery_gift_unlocked && false # Temporarily disabling this option
-    #   commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
-    #   buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_LEFT_UP
-    #   buttonFormat[cmd_mystery_gift] = LoadMenu_Model::BTN_RIGHT_UP
-    # else
-    #   buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
-    # end
+    commands[cmd_new_game = commands.length]  = show_continue ? _INTL('New Journey') : _INTL('Start The Journey')
+    if $DEBUG # Temporarily restricting to playtest mode while we develop the actual story mode
+      if show_continue && @save_data[:player].mystery_gift_unlocked && false # Temporarily disabling this option
+        commands[cmd_mystery_gift = commands.length] = _INTL('Mystery Gift')
+        buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_LEFT_UP
+        buttonFormat[cmd_mystery_gift] = LoadMenu_Model::BTN_RIGHT_UP
+      else
+        buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
+      end
+    end
     commands[cmd_new_game_runner_mode = commands.length] = _INTL('New Endless Run')
     buttonFormat[cmd_new_game_runner_mode] = LoadMenu_Model::BTN_NORMAL_BIG
 

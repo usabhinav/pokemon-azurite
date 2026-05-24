@@ -214,7 +214,7 @@ module Game
     msgwindow = pbCreateMessageWindow
     msgwindow.text = _INTL("Manage your party and items before proceeding to the next round.")
     msgwindow.letterbyletter = false
-    pokemon_party_sprites = PokemonPartyIconSprites.new(nil, $player.party, 104, 84)
+    pokemon_party_sprites = PokemonPartyIconSprites.new(nil, $player.party, 104, 84, false)
     $scene.spriteset.addUserSprite(pokemon_party_sprites)
     loop do
       commands = []

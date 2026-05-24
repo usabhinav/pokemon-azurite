@@ -127,7 +127,7 @@ class Window_UnformattedScrollingTextPokemon < Window_UnformattedTextPokemon
 end
 
 class PokemonPartyIconSprites
-  def initialize(viewport = nil, party = nil, x = nil, y = nil)
+  def initialize(viewport = nil, party = nil, x = nil, y = nil, disable_anim = true)
     # Bitmap sprite setup
     if viewport
       @viewport = viewport
@@ -139,6 +139,7 @@ class PokemonPartyIconSprites
     @party = party
     @x = x
     @y = y
+    @disable_anim = disable_anim
     @sprites = {}
     refreshPokemonIconSprites
     @bitmapsprite = BitmapSprite.new(Graphics.width, Graphics.height, @viewport)
@@ -168,7 +169,7 @@ class PokemonPartyIconSprites
         icon_sprite.x = @x + 32 + (i % 2 == 0 ? 0 : 64)
         icon_sprite.y = @y + 32 + (i / 2) * 64
         icon_sprite.z = 2
-        icon_sprite.disable_anim = true
+        icon_sprite.disable_anim = @disable_anim
         icon_sprite.update
         @sprites["pokemonIcon#{i}"] = icon_sprite
       else

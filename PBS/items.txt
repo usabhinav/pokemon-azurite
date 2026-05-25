@@ -6107,7 +6107,7 @@ NamePlural = Mega Bracelets
 Pocket = 8
 Price = 0
 Flags = KeyItem, MegaRing
-Description = (What ever description you want)
+Description = This bracelet contains an untold power that somehow enables Pokémon carrying Mega Stones to Mega Evolve.
 #-------------------------------
 [MEGACUFF]
 Name = Mega Cuff
@@ -6115,7 +6115,7 @@ NamePlural = Mega Cuffs
 Pocket = 8
 Price = 0
 Flags = KeyItem, MegaRing
-Description = (What ever description you want)
+Description = This cuff contains an untold power that somehow enables Pokémon carrying Mega Stones to Mega Evolve.
 #-------------------------------
 [MEGACHARM]
 Name = Mega Charm
@@ -6123,15 +6123,7 @@ NamePlural = Mega Charms
 Pocket = 8
 Price = 0
 Flags = KeyItem, MegaRing
-Description = (What ever description you want)
-#-------------------------------
-[CRYSTALSHARD]
-Name = Crystal Shard
-NamePlural = Crystal Shards
-Pocket = 1
-Price = 0
-Flags = KeyItem, MegaRing
-Description = This crystal will enable the user to Crystal Evolve in battle.
+Description = This charm contains an untold power that somehow enables Pokémon carrying Mega Stones to Mega Evolve.
 #-------------------------------
 [SYNCHROPENDANT]
 Name = Synchro Pendant
@@ -6139,7 +6131,7 @@ NamePlural = Synchro Pendants
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = Gain a 12.5% boost to all stats if all allied Pokemon share a type. 25% if they are the EXACT same type.
+Description = An item to be held by a Pokémon. It boosts all stats of the holder if it shares a type with all other party members, and even more if it shares two types with all other party members.
 #-------------------------------
 [SPRITZEEPERFUME]
 Name = Spritzee Perfume
@@ -6147,14 +6139,14 @@ NamePlural = Spritzee Perfumes
 Pocket = 1
 Price = 350
 FieldUse = Direct
-Description = For 200 steps, Wild Pokemon will be significantly more common.
+Description = An item that lures wild Pokémon and increases their chances of appearing significantly for 200 steps after its use.
 #-------------------------------
 [AWFULCOLLAR]
 Name = Awful Collar
 NamePlural = Awful Collars
 Pocket = 1
 Price = 0
-Description = A horrible collar that reduces friendship to its minimum and boosts the power of Frustration.
+Description = An item to be held by a Pokémon. A horrible collar that reduces friendship to its minimum and boosts the power of Frustration.
 #-------------------------------
 [CHOICESCOPE]
 Name = Choice Scope
@@ -6162,7 +6154,7 @@ NamePlural = Choice Scopes
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Moves with 70 or more accuracy will never miss, and 100 accuracy have higher chance for crits. Pokemon is locked onto one move.
+Description = An item to be held by a Pokémon. Moves with 70+ base accuracy are boosted to 100, and moves with 100+ base accuracy have their critical-hit ratio boosted, but allows the use of only one move.
 #-------------------------------
 [CRUSHINGHAMMER]
 Name = Crushing Hammer
@@ -6170,7 +6162,7 @@ NamePlural = Crushing Hammer
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = All of the user's attacks will reduce the enemy's last used move by 4PP. Only one use.
+Description = An item to be held by a Pokémon. As soon as the user attacks, their opponent's last used move will be reduced by 4 PP. Breaks after use.
 #-------------------------------
 [CRYSTALHAMMER]
 Name = Crystal Hammer
@@ -6178,7 +6170,7 @@ NamePlural = Crystal Hammers
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = All of the user's attacks are super-effective against Crystal-type Pokemon.
+Description = An item to be held by a Pokémon. The holder's attacks become supereffective against Crystal-type Pokémon.
 #-------------------------------
 [DIZZYSPECS]
 Name = Dizzy Specs
@@ -6186,7 +6178,7 @@ NamePlural = Dizzy Specs
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The holder is unable to get confused by the opponent. It can get confused by itself.
+Description = An item to be held by a Pokémon. The holder is immune to Confusion, as long as it isn't self-inflicted.
 #-------------------------------
 [FOCUSBELT]
 Name = Focus Belt
@@ -6194,7 +6186,7 @@ NamePlural = Focus Belts
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = STAB bonus is increased to 100%, but non-STAB moves deal 70% damage.
+Description = An item to be held by a Pokémon. This belt doubles the holder's STAB, but the power of non-STAB moves is reduced.
 #-------------------------------
 [FRIENDLYCOLLAR]
 Name = Friendly Collar
@@ -6202,7 +6194,7 @@ NamePlural = Friendly Collars
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Doubles Friendship increase rate. Return has a chance to infatuate the enemy.
+Description = An item to be held by a Pokémon. This collar doubles the growth of friendship. If the holder uses Return, it has a chance to infatuate the target if it's of the opposite gender.
 #-------------------------------
 [GREATSHIELD]
 Name = Great Shield
@@ -6210,7 +6202,7 @@ NamePlural = Great Shields
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Guarantees the use of a second Protect, but doesn't allow the use of a third one.
+Description = An item to be held by a Pokémon. This shield allows a protection move to be used twice consecutively without risk of failure.
 #-------------------------------
 [IRONSHELL]
 Name = Iron Shell
@@ -6218,7 +6210,7 @@ NamePlural = Iron Shells
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The holder is inmune to entry hazards and weather damage, but its evasiveness is halved.
+Description = An item to be held by a Pokémon. The holder is immune to entry hazards and weather damage, but its evasiveness is halved.
 #-------------------------------
 [PLATEBODY]
 Name = Plate Body
@@ -6234,7 +6226,7 @@ NamePlural = Revenge Belts
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = If the user is hit by a Critical hit, its next attack will be Critical too.
+Description = An item to be held by a Pokémon. If the holder is hit by a critical hit, its next attack will also be a critical hit.
 #-------------------------------
 [SHODDYSLINGSHOT]
 Name = Shoddy Slingshot
@@ -6242,7 +6234,7 @@ NamePlural = Shoddy Slingshots
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Projectile based moves are guaranteed to flinch any Pokemon. But the item breaks and can't be used after.
+Description = An item to be held by a Pokémon. This slingshot causes projectile-based moves from the holder to always flinch its targets. Breaks after use.
 #-------------------------------
 [MEGADISC]
 Name = Mega Disc
@@ -6250,7 +6242,7 @@ NamePlural = Mega Discs
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Porygon-Z to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Porygon-Z hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [ARBOKITE]
 Name = Arbokite
@@ -6258,7 +6250,7 @@ NamePlural = Arbokites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Arbok to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Arbok hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [AROMATISSITE]
 Name = Aromatissite
@@ -6266,7 +6258,7 @@ NamePlural = Aromatissites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Aromatisse to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Aromatisse hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [BEHEEYITE]
 Name = Beheeyite
@@ -6274,7 +6266,7 @@ NamePlural = Beheeyites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Beheeyem to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Beheeyem hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [CACTURNITE]
 Name = Cacturnite
@@ -6282,7 +6274,7 @@ NamePlural = Cacturnites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Cacturne to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Cacturne hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [CHEETITE]
 Name = Cheetite
@@ -6290,7 +6282,7 @@ NamePlural = Cheetites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Cheetatic to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Cheetatic hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [CHERRITE]
 Name = Cherrite
@@ -6298,7 +6290,7 @@ NamePlural = Cherrites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Cherrim to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Cherrim hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [DARMANITE]
 Name = Darmanite
@@ -6306,7 +6298,7 @@ NamePlural = Darmanites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Darmanitan to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Darmanitan hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [DUSKNITE]
 Name = Dusknite
@@ -6314,7 +6306,7 @@ NamePlural = Dusknites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Dusknoir to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Dusknoir hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [ELECTRODITE]
 Name = Electrodite
@@ -6322,7 +6314,7 @@ NamePlural = Electrodites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Electrode to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Electrode hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [ENTEINITE]
 Name = Enteinite
@@ -6330,7 +6322,7 @@ NamePlural = Enteinites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Entei to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Entei hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [DELTAMETAGROSSITE]
 Name = Delta Metagrossite
@@ -6338,7 +6330,7 @@ NamePlural = Delta Metagrossite
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Delta Metagross to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Delta Metagross hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [KURIANLOPUNNITE]
 Name = Kurian Lopunnite
@@ -6346,7 +6338,7 @@ NamePlural = Kurian Lopunnite
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Kurian Lopunny to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Kurian Lopunny hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [MISMAGITE]
 Name = Mismagite
@@ -6354,7 +6346,7 @@ NamePlural = Mismagite
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Mismagius to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Mismagius hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [SHAYMINITE]
 Name = Shayminite
@@ -6362,7 +6354,7 @@ NamePlural = Shayminite
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Shaymin to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Shaymin hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [SLURPITE]
 Name = Slurpite
@@ -6370,7 +6362,7 @@ NamePlural = Slurpite
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Slurpuff to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Slurpuff hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [VENOMITE]
 Name = Venomite
@@ -6378,7 +6370,7 @@ NamePlural = Venomite
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Venomoth to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Venomoth hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [XATITE]
 Name = Xatite
@@ -6386,7 +6378,7 @@ NamePlural = Xatite
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Xatu to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Xatu hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [ROYALHONEY]
 Name = Royal Honey
@@ -6394,7 +6386,7 @@ NamePlural = Royal Honey
 Pocket = 1
 Price = 0
 Flags = TastyTreatItem
-Description = Turns male Combee into its Guard Forme.
+Description = When held by a male Combee, it changes into its Guard Forme.
 #-------------------------------
 [LIGHTGOGGLES]
 Name = Light Goggles
@@ -6402,7 +6394,7 @@ NamePlural = Light Goggles
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Increases Atk. and Sp.Atk. of Emolga and boosts its Electric and Flying type moves.
+Description = An item to be held by Emolga. It doubles the holder's Attack and Sp. Atk, and boosts the power of its Electric- and Flying-type moves.
 #-------------------------------
 [LIGHTBELL]
 Name = Light Bell
@@ -6410,7 +6402,7 @@ NamePlural = Light Bells
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The holder's electric and sound attacks hit twice, the second hit being slightly weaker. Only usable by Symphy.
+Description = An item to be held by Symphy. The holder's Electric- and Sound-type attacks hit twice, with the second hit being weaker.
 #-------------------------------
 [LIGHTBATTERY]
 Name = Light Battery
@@ -6419,7 +6411,7 @@ Pocket = 1
 Price = 0
 FieldUse = OnPokemon
 Flags = WeirdTrinketHeldItem
-Description = The user's Atk. & Sp.Atk. raise in response to being attacked by an Electric Attack. Only usable by Minun and Plusle.
+Description = An item to be held by Minun or Plusle. When the holder is hit with an Electric-type move, its Attack and Sp. Atk stats will be raised, as well as those of its allies.
 #-------------------------------
 [LIGHTNUT]
 Name = Light Nut
@@ -6427,7 +6419,7 @@ NamePlural = Light Nuts
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem,TastyTreatItem
-Description = Pachirisu starts with double Def. and Sp.Def. but goes back to normal after being attacked.
+Description = An item to be held by Pachirisu. On switch in, the holder's Defense and Sp. Def stats are sharply raised, lasting until it is hit.
 #-------------------------------
 [LIGHTROD]
 Name = Light Rod
@@ -6435,7 +6427,7 @@ NamePlural = Light Rods
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Togedemaru's Electric and Steel attacks have a 10% chance to flinch the opponent.
+Description = An item to be held by Togedemaru. The holder's Electric- and Steel-type attacks may make its targets flinch.
 #-------------------------------
 [LIGHTSEED]
 Name = Light Seed
@@ -6443,7 +6435,7 @@ NamePlural = Light Seeds
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem,TastyTreatItem
-Description = Dedenne's electric and fairy attacks are boosted and have priority.
+Description = An item to be held by Dedenne. It boosts the power and priority of the holder's Electric- and Fairy-type attacks.
 #-------------------------------
 [ADRENALINERING]
 Name = Adrenaline Ring
@@ -6451,7 +6443,7 @@ NamePlural = Adrenaline Rings
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The user gains a 10% Speed boost for every fainted Pokemon in his party.
+Description = An item to be held by a Pokémon. The holder's speed is boosted for every fainted Pokémon in the party.
 #-------------------------------
 [AMPLIFIER]
 Name = Amplifier
@@ -6459,7 +6451,7 @@ NamePlural = Amplifiers
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The user's Sound-type moves lower the target's Defense and Sp.Def by 1 stage. Exclusive to Sound-types.
+Description = An item to be held by a Sound-type Pokémon. The holder's Sound-type moves lower the Defense and Sp. Def stats of its targets.
 #-------------------------------
 [AQUABLUEMEDAL]
 Name = Aqua Blue Medal
@@ -6467,7 +6459,7 @@ NamePlural = Aqua Blue Medal
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Nothing resists Water-type moves from the user.
+Description = An item to be held by a Water-type Pokémon. Opponents cannot resist or be immune to Water-type moves from the holder.
 #-------------------------------
 [BERSERKERBRACELET]
 Name = Berserker Bracelet
@@ -6475,7 +6467,7 @@ NamePlural = Berserker Bracelets
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Halves the user's HP, but all its moves become Critical Hits.
+Description = An item to be held by a Pokémon. This bracelet halves the holder's maximum HP, but all of its moves become critical hits.
 #-------------------------------
 [BIZARREBAND]
 Name = Bizarre Band
@@ -6483,7 +6475,7 @@ NamePlural = Bizzare Band
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = All resistances become weaknesses. Exclusive to Mystic-type Pokemon.
+Description = An item to be held by a Mystic-type Pokémon. On switch in, the type resistances of all Pokémon on the field become weaknesses.
 #-------------------------------
 [CLEARMINDTIARA]
 Name = Clear Mind Tiara
@@ -6491,7 +6483,7 @@ NamePlural = Clear Mind Tiara
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = All Psychic-type damaging moves will confuse enemies below 70 SpA.
+Description = An item to be held by a Psychic-type Pokémon. The holder's damaging Psychic-type moves will confuse all targets with Sp. Atk below 70.
 #-------------------------------
 [COUNTERFORMAMULET]
 Name = Counterform Amulet
@@ -6499,7 +6491,7 @@ NamePlural = Counterform Amulet
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Deals 50% more damage against transformed Pokemon.
+Description = An item to be held by a Pokémon. The holder deals 50% more damage against opponents with power transformations, such as Mega Evolutions, Crystallizations, etc.
 #-------------------------------
 [CRACKEDMULTIPLATE]
 Name = Cracked Multiplate
@@ -6507,7 +6499,7 @@ NamePlural = Cracked Multiplate
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Reduces damage taken when the user's HP is full. Breaks after use.
+Description = An item to be held by a Pokémon. This plate reduces damage when the holder's HP is full. Breaks after use.
 #-------------------------------
 [DRAGONHEARTGEM]
 Name = Dragonheart Gem
@@ -6515,7 +6507,7 @@ NamePlural = Dragonheart Gems
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The holder gains STAB on Fire-type moves. Exclusive to Dragon-types.
+Description = An item to be held by a Dragon-type Pokémon. The holder gains STAB on its Fire-type moves.
 #-------------------------------
 [FIREREDMEDAL]
 Name = Fire Red Medal
@@ -6523,7 +6515,7 @@ NamePlural = Fire Red Medals
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Nothing resists Fire-type moves from the user. Exclusive to Fire-types.
+Description = An item to be held by a Fire-type Pokémon. Opponents cannot resist or be immune to Fire-type moves from the holder.
 #-------------------------------
 [FLYINGVEST]
 Name = Flying Vest
@@ -6531,7 +6523,7 @@ NamePlural = Flying Vests
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The user is immune to entry hazards. Exclusive to Flying-types.
+Description = An item to be held by a Flying-type Pokémon. The holder is immune to entry hazards.
 #-------------------------------
 [GROUNDEDBOOTS]
 Name = Grounded Boots
@@ -6539,7 +6531,7 @@ NamePlural = Grounded Boots
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Ignores the bonus damage from Terrains. Exclusive to Ground Types.
+Description = An item to be held by a Ground-type Pokémon. The holder is immune to damage and negative effects from terrains.
 #-------------------------------
 [HAILGLOBE]
 Name = Hailglobe
@@ -6547,7 +6539,7 @@ NamePlural = Hailglobe
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = If the user is hit, it will hail for 5 turns. Then it breaks.
+Description = An item to be held by a Pokémon. If the holder is hit, a hailstorm will be summoned for five turns. Breaks after use.
 #-------------------------------
 [HEALTHYSPONGE]
 Name = Healthy Sponge
@@ -6555,7 +6547,7 @@ NamePlural = Healthy Sponges
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = All incoming attacks that the user would resist heal it instead.
+Description = An item to be held by a Pokémon. This sponge absorbs all moves that the holder would normally be resistant to, and instead heals it.
 #-------------------------------
 [INTERCEPTOR]
 Name = Interceptor
@@ -6563,7 +6555,7 @@ NamePlural = Interceptor
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Single-target Electric attacks are directed towards the user. Breaks after use.
+Description = An item to be held by a Pokémon. Draws in all Electric-type moves towards the holder. Breaks after use.
 #-------------------------------
 [JOYFULGLOBE]
 Name = Joyful Globe
@@ -6571,7 +6563,7 @@ NamePlural = Joyful Globes
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The user's Normal-type moves become super-effective against Fighting-types. Exclusive to Normal-types.
+Description = An item to be held by a Normal-type Pokémon. The holder's Normal-type moves become supereffective against Fighting-type Pokémon.
 #-------------------------------
 [LEAFGREENMEDAL]
 Name = Leaf Green Medal
@@ -6579,7 +6571,7 @@ NamePlural = Leaf Green Medals
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Nothing resists Grass-type moves from the user. Exclusive to Grass-types.
+Description = An item to be held by a Grass-type Pokémon. Opponents cannot resist or be immune to Grass-type moves from the holder.
 #-------------------------------
 [LEECHTOOTH]
 Name = Leech Tooth
@@ -6587,7 +6579,7 @@ NamePlural = Leech Teeth
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = All of the user's attacks drain health. Exclusive to Bug-type Pokemon.
+Description = An item to be held by a Bug-type Pokémon. All of the holder's attacks absorb and partially recover HP from the opponent.
 #-------------------------------
 [MASTERSBELT]
 Name = Masters Belt
@@ -6595,7 +6587,7 @@ NamePlural = Masters Belts
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = All non-Multi Hit Fighting moves have at least 90 base power. Exclusive to Fighting Types.
+Description = An item to be held by a Fighting-type Pokémon. All of the holder's single-hit Fighting-type moves have a minimum base power of 90.
 #-------------------------------
 [PECULIARMIRROR]
 Name = Peculiar Mirror
@@ -6603,7 +6595,7 @@ NamePlural = Peculiar Mirrors
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Copies the opposing Pokemon's ability without losing the user's.
+Description = An item to be held by a Pokémon. This mirror allows the holder to copy a random opponent's Ability.
 #-------------------------------
 [PHANTOMMASK]
 Name = Phantom Mask
@@ -6611,7 +6603,7 @@ NamePlural = Phantom Masks
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Whoever the user damages with a Ghost-type move, will be unable to switch. Exclusive to Ghost-types.
+Description = An item to be held by a Ghost-type Pokémon. When the holder uses a Ghost-type move, the targets will become trapped and unable to switch out.
 #-------------------------------
 [PIXIEDUST]
 Name = Pixie Dust
@@ -6619,7 +6611,7 @@ NamePlural = Pixie Dusts
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Causes its Fairy-type moves to have a 10% chance to cause status condition. Exclusive to Fairy-types.
+Description = An item to be held by a Fairy-type Pokémon. When the holder uses a Fairy-type move, it may also inflict a random status condition.
 #-------------------------------
 [REFLECTIVEMETAL]
 Name = Reflective Metal
@@ -6627,7 +6619,7 @@ NamePlural = Reflective Metal
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Attacking the user causes 25% recoil damage. Exclusive to Steel-types.
+Description = An item to be held by a Steel-type Pokémon. Opponents that hit the holder are inflicted with 25% recoil damage.
 #-------------------------------
 [RETREATORDER]
 Name = Retreat Order
@@ -6635,7 +6627,7 @@ NamePlural = Retreat Orders
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The user switches out if its below 30% health, and it recovers to 50% HP.
+Description = An item to be held by a Pokémon. When the holder's HP is below 30%, it will be switched out of battle and recover half of its maximum HP. Breaks after use.
 #-------------------------------
 [REVERSALHERB]
 Name = Reversal Herb
@@ -6643,7 +6635,7 @@ NamePlural = Reversal Herb
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Inverts stat change, but is consumed after use.
+Description = An item to be held by a Pokémon. This consumable herb makes stat changes have an opposite effect.
 #-------------------------------
 [RIDDLESBOOK]
 Name = Riddles Book
@@ -6651,7 +6643,7 @@ NamePlural = Riddles Books
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The user is confused if it doesn't have a Psychic-type move.
+Description = An item to be held by a Pokémon. It confuses the holder on switch in, unless it has a Psychic-type move.
 #-------------------------------
 [ROUGHROCK]
 Name = Rough Rock
@@ -6659,7 +6651,7 @@ NamePlural = Rough Rock
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = User's defense is doubled until hit. Exclusive to Rock-types.
+Description = An item to be held by a Rock-type Pokémon. The holder's defenses are doubled on switch in, lasting until it is hit.
 #-------------------------------
 [STENCHDOLL]
 Name = Stench Doll
@@ -6667,7 +6659,7 @@ NamePlural = Stench Doll
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = If the user drops below 30% HP without being KO'd, enemies will get poisoned. Exclusive to Poison-types.
+Description = An item to be held by a Poison-type Pokémon. If the holder drops below 30% HP without fainting, all opponents will be inflicted with poison.
 #-------------------------------
 [UMBRELLA]
 Name = Umbrella
@@ -6675,7 +6667,7 @@ NamePlural = Umbrellas
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The holder ignores weather effects.
+Description = An item to be held by a Pokémon. The holder is immune to all weather effects.
 #-------------------------------
 [VANTABLACKCLOAK]
 Name = Vantablack Cloak
@@ -6683,7 +6675,7 @@ NamePlural = Vantablack Cloaks
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The user is immune to Light-type attacks. Exclusive to Dark-types.
+Description = An item to be held by a Dark-type Pokémon. The holder is immune to Light-type attacks.
 #-------------------------------
 [VOLTYELLOWMEDAL]
 Name = Volt Yellow Medal
@@ -6691,7 +6683,7 @@ NamePlural = Volt Yellow Medals
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = Nothing resists Electric-type moves from the user. Exclusive to Electric-types.
+Description = An item to be held by a Electric-type Pokémon. Opponents cannot resist or be immune to Electric-type moves from the holder.
 #-------------------------------
 [WETICECHARM]
 Name = Wet Ice Charm
@@ -6699,7 +6691,7 @@ NamePlural = Wet Ice Charms
 Pocket = 1
 Price = 0
 Flags = WeirdTrinketHeldItem
-Description = The holder gains STAB moves on Water-type moves if its Ice-type.
+Description = An item to be held by a Ice-type Pokémon. The holder gains STAB on its Water-type moves.
 #-------------------------------
 [ZATTACK]
 Name = Z Attack
@@ -6707,7 +6699,7 @@ NamePlural = Z Attacks
 Pocket = 7
 Price = 0
 BattleUse = OnBattler
-Description = An item that raises the Attack of a Pokémon for one turn, allowing to use a move on the same turn.
+Description = An item that raises the Attack stat of a Pokémon for one turn, allowing it to use a move on the same turn.
 #-------------------------------
 [ZACCURACY]
 Name = Z Accuracy
@@ -6715,7 +6707,7 @@ NamePlural = Z Accuracies
 Pocket = 7
 Price = 0
 BattleUse = OnBattler
-Description = An item that raises the Accuracy of a Pokémon for one turn, allowing to use a move on the same turn.
+Description = An item that raises the Accuracy stat of a Pokémon for one turn, allowing it to use a move on the same turn.
 #-------------------------------
 [ZDEFENSE]
 Name = Z Defense
@@ -6723,7 +6715,7 @@ NamePlural = Z Defenses
 Pocket = 7
 Price = 0
 BattleUse = OnBattler
-Description = An item that raises the Defense of a Pokémon for one turn, allowing to use a move on the same turn.
+Description = An item that raises the Defense stat of a Pokémon for one turn, allowing it to use a move on the same turn.
 #-------------------------------
 [ZSPATK]
 Name = Z Sp. Atk
@@ -6731,7 +6723,7 @@ NamePlural = Z Sp. Atks
 Pocket = 7
 Price = 0
 BattleUse = OnBattler
-Description = An item that raises the Sp. Atk of a Pokémon for one turn, allowing to use a move on the same turn.
+Description = An item that raises the Sp. Atk stat of a Pokémon for one turn, allowing it to use a move on the same turn.
 #-------------------------------
 [ZSPDEF]
 Name = Z Sp. Def
@@ -6739,7 +6731,7 @@ NamePlural = Z Sp. Defs
 Pocket = 7
 Price = 0
 BattleUse = OnBattler
-Description = An item that raises the Sp. Def of a Pokémon for one turn, allowing to use a move on the same turn.
+Description = An item that raises the Sp. Def stat of a Pokémon for one turn, allowing it to use a move on the same turn.
 #-------------------------------
 [ZSPEED]
 Name = Z Speed
@@ -6747,7 +6739,7 @@ NamePlural = Z Speeds
 Pocket = 7
 Price = 0
 BattleUse = OnBattler
-Description = An item that raises the Speed of a Pokémon for one turn, allowing to use a move on the same turn.
+Description = An item that raises the Speed stat of a Pokémon for one turn, allowing it to use a move on the same turn.
 #-------------------------------
 [BOTTLECAP]
 Name = Bottle Cap
@@ -7072,7 +7064,7 @@ Name = Equalizer-M
 NamePlural = Equalizer-Ms
 Pocket = 1
 Price = 0
-Description = Allows Pokemon without Mega Forms to gain a power similar to mega-evolution.
+Description = An item to be held by a Pokémon. This device allows the holder to gain a power similar to Mega Evolution.
 #-------------------------------
 [EXPERTBALL]
 Name = Expert Ball
@@ -7081,7 +7073,7 @@ Pocket = 3
 Price = 2000
 BattleUse = OnFoe
 Flags = PokeBall
-Description = One of the rarest, but most effective balls, with a catch rate higher than Ultra Balls.
+Description = An exceptionally high-performance Ball that provides one of the highest Pokémon catch rates, even above that of an Ultra Ball.
 #-------------------------------
 [RICHBALL]
 Name = Rich Ball
@@ -7090,7 +7082,7 @@ Pocket = 3
 Price = 100000
 BattleUse = OnFoe
 Flags = PokeBall
-Description = A fancy ball, that does nothing but make you look rich.
+Description = A fancy Poké Ball that has been specially crafted for the rich and elite.
 #-------------------------------
 [PSYCHOBALL]
 Name = Psycho Ball
@@ -7099,7 +7091,7 @@ Pocket = 3
 Price = 1000
 BattleUse = OnFoe
 Flags = PokeBall
-Description = Its effectiveness is improves by a lot on confused Pokemon.
+Description = A special Poké Ball that works especially well on confused Pokémon.
 #-------------------------------
 [MUNDANEBALL]
 Name = Mundane Ball
@@ -7108,7 +7100,7 @@ Pocket = 3
 Price = 200
 BattleUse = OnFoe
 Flags = PokeBall
-Description = The most useless ball ever made, even if it costs the same as the regular one.
+Description = The best Ball with the ultimate level of performance. This is not fake, please buy!!!
 #-------------------------------
 [GLORIOUSBALL]
 Name = Glorious Ball
@@ -7117,7 +7109,7 @@ Pocket = 3
 Price = 1000
 BattleUse = OnFoe
 Flags = PokeBall
-Description = A ball made by champions, for champions.
+Description = A special Poké Ball that works especially well in the hands of Pokémon league champions.
 #-------------------------------
 [JINGLEBALL]
 Name = Jingle Ball
@@ -7142,7 +7134,7 @@ Name = Equalizer-C
 NamePlural = Equalizer-Cs
 Pocket = 1
 Price = 0
-Description = Allows Pokemon without Crystallizations to gain a power similar to crystallization.
+Description = An item to be held by a Pokémon. This device allows the holder to gain a power similar to Crystallization.
 #-------------------------------
 [VICTINITE]
 Name = Victinite
@@ -7150,7 +7142,7 @@ NamePlural = Victinites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
-Description = Allows Victini to mega evolve.
+Description = One of a variety of mysterious Mega Stones. Have Victini hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [SPEEDINGTICKET]
 Name = Speeding Ticket
@@ -7166,14 +7158,14 @@ NamePlural = Quick Switches
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = An item to be held by a Pokémon. If this Pokémon switches in in the middle of a turn, it can immediately use a move in the same turn. Breaks after use.
+Description = An item to be held by a Pokémon. If this Pokémon is sent out in the middle of a turn, it can immediately use a move in the same turn. Breaks after use.
 #-------------------------------
 [WEIRDTRINKET]
 Name = Weird Trinket
 NamePlural = Weird Trinkets
 Pocket = 1
 Price = 2000
-Description = An item to be held by a Pokémon. Changes into a different item every battle.
+Description = An item to be held by a Pokémon. This strange trinket changes into a random item at the start of every battle, but reverts back after the battle.
 #-------------------------------
 [HEALINGCROWN]
 Name = Healing Crown
@@ -7181,7 +7173,7 @@ NamePlural = Healing Crowns
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = An item to be held by a Pokémon. Boosts all of the user's and its allies' healing moves and effects.
+Description = An item to be held by a Light-type Pokémon. It boosts the HP gain of all of the holder's healing moves and effects, as well as those of its allies.
 #-------------------------------
 [COSMOCUBE]
 Name = Cosmo Cube
@@ -7189,7 +7181,7 @@ NamePlural = Cosmo Cubes
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = An item to be held by a Pokémon. If held by a Cosmic-type, then it negates the effects of all rooms for itself and its allies.
+Description = An item to be held by a Cosmic-type Pokémon. It negates the effects of Room moves (e.g. Trick Room) for itself and its allies.
 #-------------------------------
 [CRYSTALFRAGMENT]
 Name = Crystal Fragment
@@ -7197,7 +7189,7 @@ NamePlural = Crystal Fragments
 Pocket = 1
 Price = 2000
 Flags = MegaStone, Fling_80
-Description = An item to be held by a Pokémon. Allows it to Crystallize.
+Description = A mysterious crystalline shard. When held by certain Pokémon, the holder will be able to Crystallize.
 #-------------------------------
 [CRYSTALSUICUNITE]
 Name = Crystal Suicunite
@@ -7205,7 +7197,7 @@ NamePlural = Crystal Suicunites
 Pocket = 1
 Price = 2000
 Flags = MegaStone, Fling_80
-Description = If held by Crystal Suicune, it will transform into Perfect Suicune in battle.
+Description = One of a variety of mysterious Mega Stones. Have Suicune hold it, and it will be able to Mega Evolve and Crystallize simultaneously to become Perfect Suicune.
 #-------------------------------
 [GREYSCALE]
 Name = Grey Scale
@@ -7213,7 +7205,7 @@ NamePlural = Grey Scales
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = An item to be held by a Pokémon. Turns its appearance grey.
+Description = An item to be held by a Pokémon. This scale gives a grey hue to the holder's appearance. Perhaps it may evoke nostalgia?
 #-------------------------------
 [BERSERKGENE]
 Name = Berserk Gene
@@ -7221,7 +7213,7 @@ NamePlural = Berserk Genes
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = An item to be held by a Pokémon. Confuses the holder and sharply increases its Attack upon entering battle.
+Description = An item to be held by a Pokémon. On switch in, the holder's Attack stat is sharply raised, but it also becomes confused for 256 rounds.
 #-------------------------------
 [EONGENE]
 Name = Eon Gene
@@ -7229,7 +7221,7 @@ NamePlural = Eon Genes
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = If held by Eevee of one of its evolutions, it will double its STAB bonus but halve the damage of non-STAB moves.
+Description = An item to be held by Eevee or one of its evolutions. It doubles the holder's STAB, but the power of non-STAB moves is halved.
 #-------------------------------
 [REVERSALCARD]
 Name = Reversal Card
@@ -7237,14 +7229,14 @@ NamePlural = Reversal Cards
 Pocket = 1
 Price = 2000
 Flags = WeirdTrinketHeldItem
-Description = An item to be held by a Pokémon. Works as a Mirror Coat, but consumed upon use.
+Description = An item to be held by a Pokémon. If the holder is hit by a special attack, it counters with double the damage taken. Breaks after use.
 #-------------------------------
 [CRYSTALIUMZ]
 Name = Crystalium-Z
 NamePlural = Crystalium-Z
 Pocket = 1
 Price = 2000
-Description = Has a different Z-Move depending on the move used with it.
+Description = (NOT IMPLEMENTED) Has a different Z-Move depending on the move used with it.
 #-------------------------------
 [GLOOMPERFUME]
 Name = Gloom Perfume
@@ -7252,7 +7244,7 @@ NamePlural = Gloom Perfumes
 Pocket = 1
 Price = 2000
 FieldUse = Direct
-Description = Other trainers will ignore you for 150 steps.
+Description = An item that prevents trainers from challenging you for 150 steps after its use.
 #-------------------------------
 [ALOLANPANCAKES]
 Name = Alolan Pancakes
@@ -7270,7 +7262,7 @@ Pocket = 1
 Price = 2000
 FieldUse = OnPokemon
 Flags = TastyTreatItem
-Description = A candy consumable.
+Description = (NOT IMPLEMENTED) A candy consumable.
 #-------------------------------
 [RISCIBERRY]
 Name = Risci Berry
@@ -7279,7 +7271,7 @@ Pocket = 5
 Price = 2000
 BattleUse = OnBattler
 Flags = Berry,Fling_10,TastyTreatItem
-Description = Doubles the power of super-effective moves upon use. However, also takes double damage from super-effective attacks.
+Description = Upon use in battle, it doubles the power of supereffective moves from the holder, but it also takes double damage from incoming supereffective attacks.
 #-------------------------------
 [CRYSTALBALL]
 Name = Crystal Ball
@@ -7288,7 +7280,7 @@ Pocket = 3
 Price = 10000
 BattleUse = OnFoe
 Flags = PokeBall
-Description = Higher catch rate on Crystal-type Pokémon.
+Description = A somewhat different Poké Ball that works especially well on Pokémon species that are Crystal-type or have Crystallizations.
 #-------------------------------
 [DEITYBALL]
 Name = Deity Ball
@@ -7297,7 +7289,7 @@ Pocket = 3
 Price = 10000
 BattleUse = OnFoe
 Flags = PokeBall
-Description = Higher catch rate on Legendary Pokémon.
+Description = A somewhat different Poké Ball that works especially well on Legendary Pokémon species.
 #-------------------------------
 [PRISMATICBALL]
 Name = Prismatic Ball
@@ -7306,7 +7298,7 @@ Pocket = 3
 Price = 10000
 BattleUse = OnFoe
 Flags = PokeBall
-Description = The color of the top changes to fit the Pokémon's primary typing.
+Description = (NOT IMPLEMENTED) A somewhat different Poké Ball where the color of the top changes to fit the Pokémon's primary typing.
 #-------------------------------
 [HELPERBALL]
 Name = Helper Ball
@@ -7315,7 +7307,7 @@ Pocket = 8
 Price = 0
 FieldUse = Direct
 Flags = KeyItem
-Description = Accesses the Helper Ditto interface.
+Description = A device to let you interact with your friendly Helper Ditto!
 #-------------------------------
 [KAIZURESFRAGMENTS]
 Name = Kaizure's Fragments
@@ -7324,7 +7316,7 @@ Pocket = 8
 Price = 0
 FieldUse = OnPokemon
 Flags = KeyItem
-Description = Changes Kaizure's Form.
+Description = An item that can be used to change Kaizure's form.
 #-------------------------------
 [THEATRERADIO]
 Name = Theatre Radio
@@ -7333,7 +7325,7 @@ Pocket = 8
 Price = 0
 FieldUse = Direct
 Flags = KeyItem
-Description = Allows you to control the in-game music.
+Description = (NOT IMPLEMENTED) A device that allows you to control the in-game music.
 #-------------------------------
 [GUMMIPOUCH]
 Name = Gummi Pouch
@@ -7342,7 +7334,7 @@ Pocket = 8
 Price = 0
 FieldUse = Direct
 Flags = KeyItem
-Description = Stores Gummis for Pokémon Suite and Pokémon Explorer's Guild.
+Description = (NOT IMPLEMENTED) A pouch that can be used to store Gummis for Pokémon Suite and Pokémon Explorer's Guild.
 #-------------------------------
 [AIDENSFRAGMENT]
 Name = Aiden's Fragment
@@ -7423,7 +7415,7 @@ NamePlural = Comet Fossils
 Pocket = 8
 Price = 0
 Flags = Fossil,Fling_100
-Description = A fossil of an ancient Pokémon that lived inside a comet. It appears to be contain stardust.
+Description = A fossil of an ancient Pokémon that lived inside a comet. It appears to contain stardust.
 #-------------------------------
 [FIREFOSSIL]
 Name = Fire Fossil
@@ -7455,7 +7447,7 @@ NamePlural = Body Scales
 Pocket = 8
 Price = 0
 Flags = KeyItem
-Description = Can be used to re-allocate EVs through the EV Tracker.
+Description = (NOT IMPLEMENTED) A device that allows you to to re-allocate EVs through the EV Tracker.
 #-------------------------------
 [SOULSCALE]
 Name = Soul Scale
@@ -7463,7 +7455,7 @@ NamePlural = Soul Scales
 Pocket = 8
 Price = 0
 Flags = KeyItem
-Description = Can be used to re-allocate IVs through the IV Machine.
+Description = (NOT IMPLEMENTED) A device that allows you to to re-allocate IVs through the IV Machine.
 #-------------------------------
 [INFINITEROPE]
 Name = Escape Rope

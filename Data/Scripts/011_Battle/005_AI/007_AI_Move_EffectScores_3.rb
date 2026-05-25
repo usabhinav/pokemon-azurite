@@ -1189,7 +1189,8 @@ class Battle::AI
            b.effects[PBEffects::FollowMe] > 0 ||
            b.index == user.effects[PBEffects::TrackPunchUserIndex] ||
            (b.hasActiveAbility?(:LIGHTNINGROD) && move.pbCalcType == :ELECTRIC) ||
-           (b.hasActiveAbility?(:STORMDRAIN) && move.pbCalcType == :WATER)
+           (b.hasActiveAbility?(:STORMDRAIN) && move.pbCalcType == :WATER) ||
+           (b.hasActiveItem?(:INTERCEPTOR) && move.pbCalcType == :ELECTRIC) ||
           redirection = true
           break
         end

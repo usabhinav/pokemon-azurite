@@ -834,6 +834,15 @@ Battle::ItemEffects::MoveImmunity.add(:LIGHTBATTERY,
   }
 )
 
+Battle::ItemEffects::MoveImmunity.add(:INTERCEPTOR,
+  proc { |item, user, target, move, type, battle, show_message|
+    next false if type != :ELECTRIC
+    battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!", target.pbThis, target.itemName, move.name))
+    target.pbConsumeItem(false)
+    next true
+  }
+)
+
 #===============================================================================
 # AccuracyCalcFromUser handlers
 #===============================================================================
@@ -877,6 +886,12 @@ Battle::ItemEffects::AccuracyCalcFromTarget.add(:BRIGHTPOWDER,
 )
 
 Battle::ItemEffects::AccuracyCalcFromTarget.copy(:BRIGHTPOWDER, :LAXINCENSE)
+
+Battle::ItemEffects::AccuracyCalcFromTarget.add(:INTERCEPTOR,
+  proc { |item, mods, user, target, move, type|
+    mods[:base_accuracy] = 0 if type == :ELECTRIC
+  }
+)
 
 #===============================================================================
 # DamageCalcFromUser handlers

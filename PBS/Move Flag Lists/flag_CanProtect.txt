@@ -722,7 +722,6 @@ Fireball
 Magnum Punch
 Vine Tangle
 Field Collapse
-Forest Fire Attack
 Mud Slide
 Tunnel
 Deep Freeze
@@ -823,8 +822,6 @@ Brave Bug
 Web Tie
 Scare Off
 Power Blast
-Self-Destruct
-Heat Wave
 Stare
 Armor Pierce
 Powder Storm
@@ -841,5 +838,8 @@ Color Sphere
 Mystic Edge
 Counter Shield
 Bassquake
-Sugar Power Move
 Air Lense
+Forest Fire Attack
+Self-Destruct
+Heat Wave
+Sugar Power Move

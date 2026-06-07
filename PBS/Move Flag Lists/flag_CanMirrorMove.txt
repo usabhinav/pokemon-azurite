@@ -838,8 +838,6 @@ Fireworks
 Brave Bug
 Web Tie
 Power Blast
-Self-Destruct
-Heat Wave
 Stare
 Armor Pierce
 Powder Storm

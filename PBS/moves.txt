@@ -10904,18 +10904,6 @@ FunctionCode = UserFaintsRemoveEntryHazardsAndScreensAndTerrains
 Flags = CanProtect,CanMirrorMove
 Description = The user expends all of their power to utterly wreck the battlefield. The user faints upon using this move.
 #-------------------------------
-[FORESTFIREATTACK]
-Name = Forest Fire Attack
-Type = FIRE
-Category = Physical
-Power = 20
-Accuracy = 100
-TotalPP = 15
-Target = NearOther
-FunctionCode = ExtraEffect
-Flags = Contact,CanProtect
-Description = Modified Fire Punch, used in the Forest Fire ability's effect.
-#-------------------------------
 [MUDSLIDE]
 Name = Mud Slide
 Type = GROUND
@@ -12572,31 +12560,6 @@ FunctionCode = LowerUserDefSpDef1
 Flags = CanProtect,CanMirrorMove
 Description = The user unleashes a massive voltage storm, but this also lowers the user's Defense and Sp. Def stats.
 #-------------------------------
-[KAMIKAZEATTACK]
-Name = Self-Destruct
-Type = NORMAL
-Category = Physical
-Power = 200
-Accuracy = 100
-TotalPP = 5
-Target = AllNearOthers
-FunctionCode = UserFaintsExplosiveTypeIsUserFirstType
-Flags = CanProtect,CanMirrorMove
-Description = The user blows up to inflict damage on all Pokémon in battle. The user faints upon using this move.
-#-------------------------------
-[SUPERNOVAATTACK]
-Name = Heat Wave
-Type = FIRE
-Category = Special
-Power = 20
-Accuracy = 90
-TotalPP = 10
-Target = AllNearFoes
-FunctionCode = BurnTarget
-Flags = CanProtect,CanMirrorMove
-EffectChance = 10
-Description = Modified Heat Wave. Used as the attack for the Supernova ability.
-#-------------------------------
 [STARE]
 Name = Stare
 Type = DARK
@@ -12844,17 +12807,6 @@ FunctionCode = OHKOUnstoppable
 Flags = CanMirrorMove,CanMirageCall
 Description = The user smites the target, causing it to faint instantly if it hits.
 #-------------------------------
-[SUGARPOWERMOVE]
-Name = Sugar Power Move
-Type = WATER
-Category = Status
-Accuracy = 0
-TotalPP = 10
-Target = Other
-FunctionCode = HealTargetByCustomAmount
-Flags = CanProtect
-Description = This move is used by the Sugar Power ability to heal its targets. It is not meant to be an actual move.
-#-------------------------------
 [AIRLENSE]
 Name = Air Lense
 Type = FIRE
@@ -12865,3 +12817,51 @@ Target = User
 FunctionCode = StartElectricImmunity
 Flags = CanProtect
 Description = The user envelops the field in a giant lens for five turns. All Pokémon will be immune to Electric-type attacks.
+#-------------------------------
+[FORESTFIREATTACK]
+Name = Forest Fire Attack
+Type = FIRE
+Category = Physical
+Power = 20
+Accuracy = 100
+TotalPP = 15
+Target = NearOther
+FunctionCode = ExtraEffect
+Flags = Contact,CanProtect,CannotMetronome,FakeMoveForSomeEffect
+Description = Modified Fire Punch, used in the Forest Fire ability's effect.
+#-------------------------------
+[KAMIKAZEATTACK]
+Name = Self-Destruct
+Type = NORMAL
+Category = Physical
+Power = 200
+Accuracy = 100
+TotalPP = 5
+Target = AllNearOthers
+FunctionCode = UserFaintsExplosiveTypeIsUserFirstType
+Flags = CanProtect,CannotMetronome,FakeMoveForSomeEffect
+Description = The user blows up to inflict damage on all Pokémon in battle. The user faints upon using this move.
+#-------------------------------
+[SUPERNOVAATTACK]
+Name = Heat Wave
+Type = FIRE
+Category = Special
+Power = 20
+Accuracy = 90
+TotalPP = 10
+Target = AllNearFoes
+FunctionCode = BurnTarget
+Flags = CanProtect,CannotMetronome,FakeMoveForSomeEffect
+EffectChance = 10
+Description = Modified Heat Wave. Used as the attack for the Supernova ability.
+#-------------------------------
+[SUGARPOWERMOVE]
+Name = Sugar Power Move
+Type = WATER
+Category = Status
+Accuracy = 0
+TotalPP = 10
+Target = Other
+FunctionCode = HealTargetByCustomAmount
+Flags = CanProtect,CannotMetronome,FakeMoveForSomeEffect
+Description = This move is used by the Sugar Power ability to heal its targets. It is not meant to be an actual move.

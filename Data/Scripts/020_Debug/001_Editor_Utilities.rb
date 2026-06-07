@@ -173,7 +173,11 @@ end
 # to initially select. Pressing Input::ACTION will toggle the list sorting
 # between numerical and alphabetical.
 def pbChooseMoveList(default = nil)
-  return pbChooseFromGameDataList(:Move, default)
+  return pbChooseFromGameDataList(:Move, default) { |data|
+    # It doesn't make sense to allow fake moves created for certain abilities or other effects to be permanently
+    # taught to a Pokemon.
+    next data.has_flag?("FakeMoveForSomeEffect") ? nil : data.real_name
+  }
 end
 
 def pbChooseMoveListForSpecies(species, defaultMoveID = nil)

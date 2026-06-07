@@ -584,7 +584,6 @@ Whirlpool
 Surging Strikes
 Water Shuriken
 Soak
-One Punch
 Storm Splash
 Consecutive Punch
 Fever Pollen

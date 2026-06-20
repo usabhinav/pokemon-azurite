@@ -8774,7 +8774,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = UseRandomLegendaryMove
-Description = Mew uses a random move exclusive to other legendary Pokémon.
+Description = The user summons an illusion of a legendary Pokémon, randomly using nearly any move that is exclusive to such mythical and diving beings.
 #-------------------------------
 [TIMEBREAK]
 Name = Time Break
@@ -8784,7 +8784,7 @@ Accuracy = 0
 TotalPP = 1
 Target = User
 FunctionCode = StopTimeAllowUserToChooseAnotherMove
-Description = The user shatters time, glimpsing the future moves of all foes before deciding further action.
+Description = The user freezes time at the start of the turn, glimpsing the future moves of all foes and making infinite additional actions before resuming the turn.
 #-------------------------------
 [STRONGHOLD]
 Name = Stronghold
@@ -8794,7 +8794,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 FunctionCode = RaiseUserDefSpDef2AndLowerUserAtkSpAtk2
-Description = Boosts the user's Defense and Sp.Def by two stages, and lowers its Attack and Sp.Atk by the same amount.
+Description = The user enters into a strong defensive position, sharply raising its Defense and Sp. Def stats, but also harshly lowering its Attack and Sp. Atk stats.
 #-------------------------------
 [DIVINITY]
 Name = Divinity
@@ -8805,7 +8805,7 @@ TotalPP = 20
 Target = User
 Priority = 4
 FunctionCode = MaxUserMainStats
-Description = The infinite power of the creator-god. Only known to be usable by divine beings.
+Description = A move befitting and only usable by the creator-god. With its infinite power, the user instantly maximizes all stats.
 #-------------------------------
 [FLEE]
 Name = Flee
@@ -8816,7 +8816,7 @@ TotalPP = 20
 Target = User
 Priority = -6
 FunctionCode = SwitchOutUserStatusMove
-Description = The user flees from a wild battle.
+Description = The user runs away and calls a party Pokémon to swap with it.
 #-------------------------------
 [CONSECUTIVEPUNCH]
 Name = Consecutive Punch
@@ -9042,7 +9042,7 @@ Target = NearOther
 FunctionCode = LowerTargetDefSpDefByAmountDependingOnStockpile
 Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 100
-Description = This attack corrodes the enemy's defenses. It lowers them even more if they've stockpiled.
+Description = The user spits at the target with its acidic saliva, lowering the target's Defense stat. The power stored using the move Stockpile lowers the target's Defense even more.
 #-------------------------------
 [MUDDYTAKEDOWN]
 Name = Muddy Takedown
@@ -9067,7 +9067,7 @@ Target = NearOther
 FunctionCode = HitTwoTimesLowerTargetDefense1
 Flags = Contact,CanProtect,CanMirrorMove,Slashing
 EffectChance = 20
-Description = The target is slashed twice in succession using rock covered claws. It may also lower their defense.
+Description = The target is slashed twice in succession with rock-covered claws. It may also lower the target's Defense stat.
 #-------------------------------
 [ROCKSTAR]
 Name = Rock Star
@@ -9079,7 +9079,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = RaiseUserAccuracy1IfFails
 Flags = CanProtect,CanMirrorMove
-Description = If this attack misses, it raises the user's Accuracy.
+Description = If the user misses, its accuracy is raised instead.
 #-------------------------------
 [SWARMATTACK]
 Name = Swarm Attack
@@ -9136,7 +9136,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = HealUserByTargetSpAtkLowerTargetSpAtk1
 Flags = CanProtect,CanMirrorMove
-Description = The user restores its HP by the same amount as the target's Sp. Atk stat. It also lowers the target's Sp. Atk stat.
+Description = The user recovers HP equal to the target's Sp. Atk stat and lowers it.
 #-------------------------------
 [RAVAGE]
 Name = Ravage
@@ -9159,7 +9159,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = StartInvertTargetNature
 Flags = CanProtect,CanMirrorMove
-Description = Flips effect of the target's Nature for 5 turns.
+Description = The user fundamentally alters the target's DNA. For five turns, the effect of the target's Nature is reversed.
 #-------------------------------
 [REFRACTION]
 Name = Refraction
@@ -9314,7 +9314,7 @@ Target = NearOther
 FunctionCode = LowerTargetAccuracy1
 Flags = CanProtect,CanMirrorMove
 EffectChance = 10
-Description = The user shoots a blinding ray of light that may lower the target's Accuracy stat.
+Description = The user shoots a blinding ray of light that may also lower the target's accuracy.
 #-------------------------------
 [LIGHTSPEED]
 Name = Lightspeed
@@ -9520,7 +9520,7 @@ TotalPP = 20
 Target = NearOther
 FunctionCode = EffectivenessIncludesWaterType
 Flags = CanProtect,CanMirrorMove,Sound
-Description = This move is both Sound and Water type.
+Description = The user sends out sound waves that ripple like water. This move is Sound and Water type simultaneously.
 #-------------------------------
 [SOUNDWAVE]
 Name = Soundwave
@@ -9580,7 +9580,7 @@ TotalPP = 10
 Target = BothSides
 FunctionCode = StartBoostPowerAndAccuracyOfSoundTypeMoves
 Flags = Sound
-Description = Accuracy and Power of Sound Type Moves are boosted by 50% for the next 5 turns.
+Description = The user gets a jam session going for five turns, increasing the power and accuracy of Sound-type moves.
 #-------------------------------
 [BEATBOX]
 Name = Beatbox
@@ -9593,7 +9593,7 @@ Target = NearOther
 FunctionCode = LowerTargetDefense1
 Flags = Contact,CanProtect,CanMirrorMove,Sound
 EffectChance = 20
-Description = Has a chance to lower defense.
+Description = The user lays down some sick beats on the target. It may also lower the target's Defense stat.
 #-------------------------------
 [RHYTHMBEAT]
 Name = Rhythm Beat
@@ -9641,7 +9641,7 @@ Target = NearOther
 FunctionCode = LowerTargetAccuracy1
 Flags = Contact,CanProtect,CanMirrorMove,Sound
 EffectChance = 30
-Description = Lowers the target's accuracy.
+Description = The user lays down a constantly shifting beat that may lower the target's accuracy.
 #-------------------------------
 [VAPORWAVE]
 Name = Vapor Wave
@@ -9808,7 +9808,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = EffectivenessIncludesGrassType
 Flags = CanProtect,CanMirrorMove
-Description = This move is both Mystic and Grass type.
+Description = The user strikes its foe with roots imbued with a strange energy. This move is Mystic and Grass type simultaneously.
 #-------------------------------
 [INVERSEROOM]
 Name = Inverse Room
@@ -9854,7 +9854,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = SuperEffectiveAgainstUserWeaknesses
 Flags = Contact,CanProtect,CanMirrorMove
-Description = This move is also super effective against types that the user is weak to.
+Description = Wondrously, this move is also super effective against types that the user is weak to.
 #-------------------------------
 [WONDERWIND]
 Name = Wonder Wind
@@ -9866,7 +9866,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = SuperEffectiveAgainstUserWeaknesses
 Flags = CanProtect,CanMirrorMove
-Description = This move is also super effective against types that the user is weak to.
+Description = Wondrously, this move is also super effective against types that the user is weak to.
 #-------------------------------
 [ROLEREVERSAL]
 Name = Role Reversal
@@ -9877,7 +9877,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = UserTargetSwapTypes
 Flags = CanProtect,CanMirrorMove
-Description = Switches types with a target.
+Description = The user swaps types with its target.
 #-------------------------------
 [DUPLICATE]
 Name = Duplicate
@@ -10269,7 +10269,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = None
 Flags = Contact,CanProtect,CanMirrorMove
-Description = Farfetch'd signature move.
+Description = The user smacks the target with its swordlike leek.
 #-------------------------------
 [STIFFEN]
 Name = Stiffen
@@ -10279,7 +10279,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = ProtectUser
-Description = Protects from damage.
+Description = The user hardens itself to evade all attacks. Its chance of failing rises if it is used in succession.
 #-------------------------------
 [FOULGAS]
 Name = Foul Gas
@@ -10290,7 +10290,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = ConfuseTargetOrPoisonTarget
 Flags = CanProtect,CanMirrorMove
-Description = Poisons or confuses the target.
+Description = The user releases a toxic gas that will either poison or confuse the target.
 #-------------------------------
 [STARFREEZE]
 Name = Star Freeze
@@ -10351,7 +10351,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = ConfusePoisonTarget
 Flags = CanProtect,CanMirrorMove,Powder
-Description = Confuses and poisons the target.
+Description = The user sprinkles a highly toxic powder that both confuses and poisons the target.
 #-------------------------------
 [EGGSPLOSION]
 Name = Eggsplosion
@@ -10363,7 +10363,7 @@ TotalPP = 10
 Target = AllNearOthers
 FunctionCode = UserFaintsExplosive
 Flags = CanProtect,CanMirrorMove
-Description = KOs self.
+Description = The user blows up to inflict damage on all Pokémon in battle. The user faints upon using this move.
 #-------------------------------
 [FOULODOR]
 Name = Foul Odor
@@ -10374,7 +10374,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = ConfuseTargetAndUser
 Flags = CanProtect,CanMirrorMove
-Description = Confuses both the target and the user.
+Description = The user releases a gas that is so stinky, it confuses both itself and the target.
 #-------------------------------
 [POUNCE]
 Name = Pounce
@@ -10386,7 +10386,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = None
 Flags = Contact,CanProtect,CanMirrorMove
-Description = No special effect.
+Description = The user pounces on the target to strike.
 #-------------------------------
 [TANTRUM]
 Name = Tantrum
@@ -10410,7 +10410,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = LowerTargetAttack1AndRaiseUserDefense1
 Flags = CanProtect,CanMirrorMove
-Description = Lowers foes attack and raises the user's defense.
+Description = The user lets out a whimper and raises its Defense stat. The target feels sorry for this poor creature, and its Attack stat is lowered.
 #-------------------------------
 [STRETCHKICK]
 Name = Stretch Kick
@@ -10492,7 +10492,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = UseRandomCosmicTypeMove
-Description = The user contemplates the wonders of the universe, summoning unknown power.
+Description = The user contemplates the wonders of the universe, summoning a random Cosmic-type move.
 #-------------------------------
 [COMETRUSH]
 Name = Comet Rush
@@ -10915,7 +10915,7 @@ Target = AllNearFoes
 FunctionCode = LowerTargetAccuracy1
 Flags = CanProtect,CanMirrorMove
 EffectChance = 30
-Description = The user buries their opponents in a wave of mud. It may also lower the Accuracy stat of each target.
+Description = The user buries their opponents in a wave of mud. It may also lower each target's accuracy.
 #-------------------------------
 [TUNNEL]
 Name = Tunnel
@@ -11065,7 +11065,7 @@ Target = NearOther
 FunctionCode = LowerTargetAccuracy1
 Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 10
-Description = The user attacks with a decoy and then their real body.  May lower the target's accuracy.
+Description = The user leaves behind an afterimage and instantly slams into the target. It may also lower the target's accuracy.
 #-------------------------------
 [DRAGONSPRIDE]
 Name = Dragon's Pride
@@ -11076,7 +11076,7 @@ TotalPP = 5
 Target = User
 FunctionCode = StartUserRaiseAtkSpAtk2WhenScoresKO
 Flags = CanMirrorMove
-Description = The user fortifies its will to fight with its proud heritage. For the next five turns, the user's Attack and Sp. Atk stats are sharply raised whenever they knock out an opponent.
+Description = The user remembers its proud heritage and fortifies its will to fight. For the next five turns, the user's Attack and Sp. Atk stats are sharply raised whenever they knock out an opponent.
 #-------------------------------
 [PROPHECY]
 Name = Prophecy
@@ -11087,7 +11087,7 @@ TotalPP = 5
 Target = User
 FunctionCode = RaiseUserMainStats2InThreeTurns
 Flags = CanMirrorMove
-Description = A prophecy declares this Pokémon the chosen one, sharply raising all their stats three turns hence.
+Description = The user foresees a bright future for itself, sharply raising all stats in three turns.
 #-------------------------------
 [VORTEX]
 Name = Vortex
@@ -11223,7 +11223,7 @@ Target = NearOther
 Priority = 1
 FunctionCode = None
 Flags = CanProtect,CanMirrorMove,Sound
-Description = The user plays at a blistering tempo. This attack always strikes first.
+Description = The user plays music at a blistering tempo. It is sure to strike first.
 #-------------------------------
 [STONEBLADE]
 Name = Stone Blade
@@ -11235,7 +11235,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = None
 Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
-Description = The user strikes with a blade of stone. Critical hits land more easily.
+Description = The user strikes with a blade of sharpened stone. Critical hits land more easily.
 #-------------------------------
 [STONEFIST]
 Name = Stone Fist
@@ -11260,7 +11260,7 @@ Target = AllNearFoes
 FunctionCode = LowerTargetAccuracy1
 Flags = CanProtect,CanMirrorMove
 EffectChance = 20
-Description = The user launches a wave of dust at the opposing team. It may lower accuracy.
+Description = The user hurls densely packed dust at the opposing team. It may lower each foe's accuracy.
 #-------------------------------
 [WARPSTRIKE]
 Name = Warp Strike
@@ -11273,7 +11273,7 @@ Target = NearOther
 Priority = 1
 FunctionCode = None
 Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate
-Description = The user teleports behind their foe, striking instantly. It has a high critical-hit rate.
+Description = The user teleports behind its foe, striking instantly. Critical hits land more easily.
 #-------------------------------
 [TELEBLAST]
 Name = Teleblast
@@ -11285,7 +11285,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = SwitchOutUserDamagingMove
 Flags = CanProtect,CanMirrorMove
-Description = The user fires a psychic blast and immediately teleports away, swapping with another Pokémon.
+Description = The user fires a psychic blast and immediately teleports away, switching places with a party Pokémon in waiting.
 #-------------------------------
 [PSYPUNCH]
 Name = Psypunch
@@ -11298,7 +11298,7 @@ Target = NearOther
 FunctionCode = ConfuseTarget
 Flags = Contact,CanProtect,CanMirrorMove,Punching
 EffectChance = 10
-Description = The user gathers psychic energy into their fist and punches. It may cause confusion.
+Description = The user gathers psychic energy into its fist and punches. It may also confuse the target.
 #-------------------------------
 [PSYCHOSPIN]
 Name = Psycho Spin
@@ -11310,7 +11310,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = RemoveUserBindingAndEntryHazards
 Flags = Contact,CanProtect,CanMirrorMove
-Description = The user strikes with a psychic vortex, blowing away hazards and trapping moves.
+Description = The user strikes with a psychic vortex that raises its Speed stat and eliminates the effects of Bind, Spikes, etc.
 #-------------------------------
 [CONCUSS]
 Name = Concuss
@@ -11323,7 +11323,7 @@ Target = NearOther
 FunctionCode = DisableTargetLastMoveUsed
 Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 100
-Description = The user deals a crushing blow to the target's head, making them forget their last used move for four turns.
+Description = The user deals a crushing blow to the target's head, making the target forget its last used move and disabling its use for four turns.
 #-------------------------------
 [SLUDGEPUNCH]
 Name = Sludge Punch
@@ -11349,7 +11349,7 @@ Target = NearOther
 FunctionCode = LowerTargetDefense2
 Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 100
-Description = The user crushes their opponent with their acidic body. It harshly lowers the target's defense.
+Description = The user crushes the target with its acidic body. It harshly lowers the target's Defense stat.
 #-------------------------------
 [ACIDCANNON]
 Name = Acid Cannon
@@ -11362,7 +11362,7 @@ Target = NearOther
 FunctionCode = BurnTarget
 Flags = CanProtect,CanMirrorMove
 EffectChance = 20
-Description = The user fires a jet of extremely powerful acid. It may leave the target with a burn.
+Description = The user fires a jet of potent acid. It may leave the target with a burn.
 #-------------------------------
 [TAILFAN]
 Name = Tail Fan
@@ -11373,7 +11373,7 @@ TotalPP = 20
 Target = User
 FunctionCode = RaiseUserSpeed1
 Flags = CanMirrorMove
-Description = The user blows air with a swish of their tail, raising speed.
+Description = The user swishes its tail around to gain momentum, raising its Speed stat.
 #-------------------------------
 [LUCKYSHOT]
 Name = Lucky Shot
@@ -11385,7 +11385,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = None
 Flags = CanProtect,CanMirrorMove,Bomb,Projectile
-Description = The user fires a wild shot, packing immense power but poor accuracy.
+Description = The user fires a wild shot, packing immense power if it actually hits the target.
 #-------------------------------
 [CHOMP]
 Name = Chomp
@@ -11397,7 +11397,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = None
 Flags = Contact,CanProtect,CanMirrorMove,Biting
-Description = The user bites the target with their powerful jaws.
+Description = The user bites the target with its powerful jaws.
 #-------------------------------
 [ENERGYBOMB]
 Name = Energy Bomb
@@ -11501,7 +11501,7 @@ Target = AllNearFoes
 FunctionCode = LowerTargetSpAtkAndOrSpDef1
 Flags = CanProtect,CanMirrorMove
 EffectChance = 100
-Description = The user sends a blast of magic at the opposing team. May lower Sp. Atk or Sp. Def.
+Description = The user sends a blast of magic at the opposing team that may lower each target's Sp. Atk or Sp. Def stats.
 #-------------------------------
 [MAGICFANG]
 Name = Magic Fang
@@ -11526,7 +11526,7 @@ TotalPP = 5
 Target = NearOther
 FunctionCode = ConfuseUserIfFails
 Flags = CanProtect,CanMirrorMove,Sound
-Description = The Pokémon launches a blast of concentrated sound. Confuses the user if it misses.
+Description = The user launches a blast of concentrated sound waves at the target. If it misses, the user becomes confused instead.
 #-------------------------------
 [FLAMEMISSILE]
 Name = Flame Missile
@@ -11561,7 +11561,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 FunctionCode = UseRandomMysticTypeMove
-Description = The Pokémon calls on unshaped magical power, casting any Mystic-type move at random.
+Description = The user calls on unshaped magical power and randomly uses any Mystic-type move.
 #-------------------------------
 [FREESTYLE]
 Name = Freestyle
@@ -11571,7 +11571,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 FunctionCode = UseRandomSoundTypeMove
-Description = The Pokémon lays down whatever beats feel right, using a random Sound-type move.
+Description = The user lays down whatever beats feel right, randomly using nearly any Sound-type move.
 #-------------------------------
 [SECRETPULSE]
 Name = Secret Pulse
@@ -11584,7 +11584,7 @@ Target = NearOther
 FunctionCode = LowerTargetRandomStat1
 Flags = CanProtect,CanMirrorMove,Pulse
 EffectChance = 50
-Description = The Pokémon fires a pulse of chaotic energy that may randomly lower one of the opponent's stats.
+Description = The user fires a pulse of chaotic energy that may lower one of the target's stats.
 #-------------------------------
 [ACCELERANDO]
 Name = Accelerando
@@ -11595,7 +11595,7 @@ TotalPP = 20
 Target = User
 FunctionCode = RaiseUserAtkSpAtkSpd1
 Flags = CanMirrorMove
-Description = The Pokémon grooves with increasing tempo, raising Attack, Sp. Attack, and Speed.
+Description = The user grooves with increasing tempo, raising its Attack, Sp. Atk, and Speed stats.
 #-------------------------------
 [FROSTBLITZ]
 Name = Frost Blitz
@@ -11646,7 +11646,7 @@ Target = NearOther
 FunctionCode = PoisonTargetBoostToxicityOnConsecutiveUseAndPowerIncreasesIfTargetPoisoned
 Flags = Contact,CanProtect,CanMirrorMove
 EffectChance = 100
-Description = The user compounds poison in the target's body, increasing its strength. Deals more damage to poisoned foes.
+Description = The user injects a strong poison in the target's body that increases its toxicity each time it injects the target. Power is increased against poisoned Pokémon.
 #-------------------------------
 [VOLUMEMIXER]
 Name = Volume Mixer
@@ -11670,7 +11670,7 @@ Target = NearOther
 FunctionCode = RaiseUserSpAtk1
 Flags = CanProtect,CanMirrorMove,Sound
 EffectChance = 50
-Description = The Pokémon amplifies low-frequency waves in the area, possibly raising Sp. Attack.
+Description = The user amplifies low-frequency waves in the area and uses the vibrations to attack. It may also raise the user's Sp. Atk stat.
 #-------------------------------
 [ADVANCEDARMOR]
 Name = Advanced Armor
@@ -11706,7 +11706,7 @@ Target = NearOther
 FunctionCode = TrapFlinchTargetForNextTurn
 EffectChance = 100
 Flags = Contact,CanProtect,CanMirrorMove
-Description = The user gives a big hug, flinching and preventing switching for 1 turn. Deals 1 damage.
+Description = The user gives a big hug, trapping the target for a turn and inflicting flinch.
 #-------------------------------
 [SLUDGEBATH]
 Name = Sludge Bath
@@ -11717,7 +11717,7 @@ TotalPP = 5
 Target = UserAndAllies
 FunctionCode = ForEachMemberInUserPartyPoisonMemberIfNotPoisonTypeElseCureMemberStatusAndHealMemberByThirdOfTotalHP
 Flags = CanMirrorMove
-Description = The user heals and cures the status of all allied Poison-type Pokémon, but poisons their other allies.
+Description = The user drenches its party in a toxic sludge. It recovers HP and cures the status conditions of Poison-type Pokémon, but inflicts poison on the rest of the party members.
 #-------------------------------
 [LIGHTMISSILES]
 Name = Light Missiles
@@ -11741,7 +11741,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = PowerHigherWithUserHeavierThanTarget
 Flags = Contact,CanProtect,CanMirrorMove,TramplesMinimize,Sound
-Description = The user slams their heavy body hard enough to make a sonic boom. Deals more damage if the user is heavier.
+Description = The user slams into the hard enough to make a sonic boom. The heavier the user, the greater the damage.
 #-------------------------------
 [BRIGHTBLADE]
 Name = Bright Blade
@@ -11911,7 +11911,7 @@ Target = NearOther
 FunctionCode = InvertTargetRandomStat
 Flags = Contact,CanProtect,CanMirrorMove,Sound
 EffectChance = 100
-Description = A combo with a devastating rhythm. If the target has stat changes, it reverses one.
+Description = The user unleashes a combo with a devastating rhythm. If the target has any stat changes, it randomly reverses one.
 #-------------------------------
 [CYMBALCLAP]
 Name = Cymbal Clap
@@ -11924,7 +11924,7 @@ Target = NearOther
 FunctionCode = HitTwoTimesFlinchTarget
 Flags = Contact,CanProtect,CanMirrorMove,Sound
 EffectChance = 10
-Description = The user crashes two cymbals about the foe's head, hitting twice. May cause flinch.
+Description = The user bashes the target's head with two cymbals in succession. May cause the target to flinch.
 #-------------------------------
 [FLARINGPRIDE]
 Name = Flaring Pride
@@ -11984,7 +11984,7 @@ Target = NearOther
 Priority = -6
 FunctionCode = SwitchOutUserAndTargetStatusMove
 Flags = Pulse
-Description = The Pokémon forces itself and its target to randomly switch out. Causes wild Pokémon to flee.
+Description = The user forces itself and its target to be removed from the field and replaced by another Pokémon in its party. In the wild, the battle ends.
 #-------------------------------
 [BOIL]
 Name = Boil
@@ -12008,7 +12008,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = UseTargetAttackInsteadOfUserAttack
 Flags = CanProtect,CanMirrorMove
-Description = The user tricks the foe with superior tactics. Uses target's Sp. Attack for damage.
+Description = The user tricks the foe with superior tactics. It does more damage the higher the target's Attack or Sp. Atk stats.
 #-------------------------------
 [IRONMAIDEN]
 Name = Iron Maiden
@@ -12095,7 +12095,7 @@ Target = NearOther
 FunctionCode = LowerTargetDefSpDef2IfTargetNotBurnedElse3
 Flags = CanProtect,CanMirrorMove
 EffectChance = 100
-Description = The user launches an acid that cuts Defense and Sp. Defense, more if the target is burned.
+Description = The user sprays a corrosive acid that harshly lowers the target's Defense and Sp. Def stats. It drastically lowers if the target is burned.
 #-------------------------------
 [ENERGYWAVE]
 Name = Energy Wave
@@ -12107,7 +12107,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = RemoveProtectionsBypassSubstitute
 Flags = CanMirrorMove
-Description = The user fires a wave of intangible energy that bypasses Substitute and removes protections.
+Description = The user fires a wave of intangible energy that skips protections.
 #-------------------------------
 [NAP]
 Name = Nap
@@ -12117,7 +12117,7 @@ Accuracy = 0
 TotalPP = 10
 Target = User
 FunctionCode = HealUserHalfOfTotalHPAndFallAsleep
-Description = The user takes a short nap, curing status and healing health as they fall asleep.
+Description = The user takes a nap for one turn. It significantly recovers the user's HP and heals any status problem.
 #-------------------------------
 [RITUAL]
 Name = Ritual
@@ -12127,7 +12127,7 @@ Accuracy = 0
 TotalPP = 10
 Target = BothSides
 FunctionCode = StartBoostMysticGhostDarkWeakenFairyLightPsychic
-Description = A cursed ritual, empowering Mystic, Ghost, and Dark while weakening Fairy, Light, and Psychic.
+Description = The user begins a cursed ritual for five turns, powering up Mystic, Ghost, and Dark type moves while weakening Fairy, Light, and Psychic type moves.
 #-------------------------------
 [MYSTERYSHROUD]
 Name = Mystery Shroud
@@ -12137,7 +12137,7 @@ Accuracy = 0
 TotalPP = 5
 Target = BothSides
 FunctionCode = StartRandomTypeMoves
-Description = A chaotic mist settles over the field, randomizing the type of every damaging move used for 5 turns.
+Description = The user spreads a chaotic mist over the field for five turns, randomizing the type of every damaging move used.
 #-------------------------------
 [ENERGYCONVERSION]
 Name = Energy Conversion
@@ -12278,7 +12278,7 @@ Target = RandomNearFoe
 FunctionCode = MultiTurnAttackConfuseUserAtEndAndConfuseTarget
 Flags = CanProtect,CanMirrorMove,Sound
 EffectChance = 50
-Description = The Pokémon performs a glorious virtuoso solo for 2-3 turns. May confuse friends, foes, and the user.
+Description = The user performs a glorious virtuoso solo for two to three turns. It then becomes confused, however, and may also confuse the target.
 #-------------------------------
 [FLASHSTRIKE]
 Name = Flash Strike
@@ -12300,7 +12300,7 @@ Accuracy = 0
 TotalPP = 10
 Target = BothSides
 FunctionCode = StartStickyTerrain
-Description = The ground becomes sticky, weakening contact moves and slowing fighters unless Poison-type.
+Description = The user covers the ground with a sticky substance for five turns. Grounded Pokémon without the Poison type become slower, and the power of their contact moves is decreased.
 #-------------------------------
 [STONEGRIND]
 Name = Stone Grind
@@ -12311,7 +12311,7 @@ TotalPP = 20
 Target = User
 FunctionCode = RaiseUserAtk2Spd1AndLowerUserDefense1
 Flags = CanMirrorMove
-Description = The Pokémon grinds their body to a sharp point, raising attack and speed but lowering defense.
+Description = The user grinds its body to a sharp point, raising its Speed stat and sharply raising its Attack stat, but lowering its Defense stat.
 #-------------------------------
 [DELTABEAM]
 Name = Delta Beam
@@ -12367,7 +12367,7 @@ TotalPP = 15
 Target = BothSides
 FunctionCode = SwapSideEffects
 Flags = CanMirrorMove
-Description = The Pokémon twists the battlefield, swapping effects on either side of the field.
+Description = The user twists the battlefield, swapping side effects like Spikes, Light Screen, etc. between both sides of the field.
 #-------------------------------
 [SPUTTER]
 Name = Sputter
@@ -12377,7 +12377,7 @@ Accuracy = 0
 TotalPP = 15
 Target = BothSides
 FunctionCode = NegateAllAbilitiesThisTurn
-Description = The Pokémon disrupts the battlefield, causing abilities to fail this round.
+Description = The user disrupts the battlefield, negating the effects of all Abilities this turn.
 #-------------------------------
 [FIRESTORM]
 Name = Fire Storm
@@ -12435,7 +12435,7 @@ TotalPP = 15
 Target = NearOther
 FunctionCode = CureTargetStatusHealUserHalfOfTotalHPDamagingMove
 Flags = CanProtect,CanMirrorMove,Pulse
-Description = A magical resonance will heal the user if the target has a status condition, but also cure the condition.
+Description = The user heals the target's status condition while also damaging it. If so, it also restores the user's own HP.
 #-------------------------------
 [FIREWORKS]
 Name = Fireworks
@@ -12466,7 +12466,7 @@ Accuracy = 0
 TotalPP = 10
 Target = BothSides
 FunctionCode = StartBoostPowerOfAllMoves
-Description = The user emits waves which amplify the power of all moves, friend and foe.
+Description = The user emits harsh waves for five turns that amplify the power of all moves from all Pokémon.
 #-------------------------------
 [HEADACHE]
 Name = Headache
@@ -12476,7 +12476,7 @@ Accuracy = 0
 TotalPP = 40
 Target = User
 FunctionCode = ConfuseUser
-Description = The user gets a massive headache, inflicting confusion on themselves. Why would you do this?
+Description = The user gets a massive headache, inflicting confusion on itself. Why would you do this?
 #-------------------------------
 [DROPGUARD]
 Name = Drop Guard
@@ -12757,7 +12757,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = PowerHigherIfTargetActedElseStartReduceIncomingDamage
 Flags = Contact,CanProtect,CanMirrorMove,Slashing
-Description = If the target has not moved yet, damage dealt to K-Aegislash is reduced by 20%. If the target has already moved, this move's power is increased by 20%.
+Description = The user readies its blade to strike. Power increases if the target has already moved, otherwise the user's defenses increase this turn.
 #-------------------------------
 [SCRUNCH]
 Name = Scrunch
@@ -12768,7 +12768,7 @@ TotalPP = 15
 Target = User
 FunctionCode = ProtectUser
 Flags = Defense
-Description = The user scrunches itself up in the fetal position to protect itself from damage for that turn.
+Description = The user scrunches itself up in the fetal position to evade all attacks. Its chance of failing rises if it is used in succession.
 #-------------------------------
 [COUNTERSHIELD]
 Name = Counter Shield
@@ -12781,7 +12781,7 @@ Target = NearOther
 FunctionCode = RaiseUserEvasion1AndCopyTargetTypesAfterMoveUse
 Flags = CanProtect,CanMirrorMove
 EffectChance = 100
-Description = The user creates a shield that raises its evasion and copies its target's types after attacking.
+Description = The user creates a shield that raises its evasion and copies the target's types after attacking.
 #-------------------------------
 [BASSQUAKE]
 Name = Bassquake
@@ -12793,7 +12793,7 @@ TotalPP = 10
 Target = AllBattlers
 FunctionCode = BypassReflect
 Flags = CanProtect,CanMirrorMove,Sound
-Description = The user unleashes a deafening roar so loud that it causes an earthquake. It hits all battlers on the field, even bypassing Reflect.
+Description = The user unleashes a deafening roar that sends ripples across the battlefield and strikes every Pokémon, bypassing protections such as Light Screen and Reflect.
 #-------------------------------
 [STEELSMITE]
 Name = Steel Smite

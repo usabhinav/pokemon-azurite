@@ -297,7 +297,6 @@ Burst
 Fire Blade
 Magnum Punch
 Vine Tangle
-Forest Fire Attack
 Tunnel
 Ice Blade
 Blink Punch
@@ -353,3 +352,4 @@ Air Support
 Swoop In
 Tornado Tackle
 Mystic Edge
+Forest Fire Attack

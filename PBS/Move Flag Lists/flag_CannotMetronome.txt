@@ -63,3 +63,7 @@ Origin Pulse
 Steam Eruption
 Surging Strikes
 Life Dew
+Forest Fire Attack
+Self-Destruct
+Heat Wave
+Sugar Power Move

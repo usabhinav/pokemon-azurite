@@ -582,7 +582,6 @@ Whirlpool
 Surging Strikes
 Water Shuriken
 Soak
-One Punch
 Storm Splash
 Consecutive Punch
 Fever Pollen
@@ -676,7 +675,6 @@ Dimensional Gap
 Frubble
 Aura Storm
 Thunder Jolt
-Mega Volt
 Leek Slap
 Foul Gas
 Star Freeze
@@ -839,8 +837,6 @@ Fireworks
 Brave Bug
 Web Tie
 Power Blast
-Self-Destruct
-Heat Wave
 Stare
 Armor Pierce
 Powder Storm

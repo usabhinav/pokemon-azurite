@@ -175,6 +175,8 @@ class Battle::Battler
         @battle.pbHideAbilitySplash(b)
         break
       end
+      # Interceptor
+      targets = pbChangeTargetByItem(:INTERCEPTOR, :ELECTRIC, move, user, targets, priority, nearOnly)
     end
     return targets
   end
@@ -195,6 +197,21 @@ class Battle::Battler
         @battle.pbDisplay(_INTL("{1} took the attack with its {2}!", b.pbThis, b.abilityName))
       end
       @battle.pbHideAbilitySplash(b)
+      break
+    end
+    return targets
+  end
+
+  def pbChangeTargetByItem(drawingItem, drawnType, move, user, targets, priority, nearOnly)
+    return targets if move.calcType != drawnType
+    return targets if targets[0].hasActiveItem?(drawingItem)
+    priority.each do |b|
+      next if b.index == user.index || b.index == targets[0].index
+      next if !b.hasActiveItem?(drawingItem)
+      next if nearOnly && !b.near?(user)
+      targets.clear
+      pbAddTarget(targets, user, b, move, nearOnly)
+      @battle.pbDisplay(_INTL("{1} took the attack with its {2}!", b.pbThis, b.itemName))
       break
     end
     return targets

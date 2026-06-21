@@ -375,8 +375,8 @@ class Battle::Move::BindTarget < Battle::Move
     if user.hasActiveItem?(:GRIPCLAW)
       target.effects[PBEffects::Trapping] = (Settings::MECHANICS_GENERATION >= 5) ? 8 : 6
     elsif @id == :FLAMETACKLE
-      # 2-5 turns
-      target.effects[PBEffects::Trapping] = 2 + @battle.pbRandom(4)
+      # 3-6 rounds
+      target.effects[PBEffects::Trapping] = 3 + @battle.pbRandom(4)
     else
       target.effects[PBEffects::Trapping] = 5 + @battle.pbRandom(2)
     end

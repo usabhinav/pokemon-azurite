@@ -250,7 +250,8 @@ class Battle::AI
       when :GRASS
         return true if target.hasActiveAbility?(:SAPSIPPER)
       when :ELECTRIC
-        return true if target.hasActiveAbility?([:LIGHTNINGROD, :MOTORDRIVE, :VOLTABSORB])
+        return true if target.hasActiveAbility?([:LIGHTNINGROD, :MOTORDRIVE, :VOLTABSORB]) ||
+                       target.hasActiveItem?(:INTERCEPTOR)
       end
       return true if move.damagingMove? && Effectiveness.not_very_effective?(typeMod) &&
                      target.hasActiveAbility?(:WONDERGUARD)

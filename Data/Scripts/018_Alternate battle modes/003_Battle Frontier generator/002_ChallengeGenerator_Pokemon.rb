@@ -43,6 +43,7 @@ def pbRandomMove
     move_id = keys.sample
     move = GameData::Move.get(move_id)
     next if move.id == :SKETCH || move.id == :STRUGGLE
+    next if move.has_flag?("FakeMoveForSomeEffect")
     return move.id
   end
 end

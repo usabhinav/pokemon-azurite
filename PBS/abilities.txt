@@ -1074,35 +1074,35 @@ Description = Combines Unnerve and Grim Neigh Abilities.
 #-------------------------------
 [HYPERAROMA]
 Name = Hyper Aroma
-Description = All opposing Pokémon, except for Genderless Pokémon, will be infatuated with this Pokémon.
+Description = Attracts all Pokémon on the field.
 #-------------------------------
 [MINDIPULATION]
 Name = Mindipulation
-Description = 50% chance to confuse each Pokémon except itself when it enters the battle.
+Description = May confuse all other Pokémon on the field.
 #-------------------------------
 [DESERTBODY]
 Name = Desert Body
-Description = Incoming Fire, Ice, and Water attacks do half damage.
+Description = Ups resistance to Fire-, Ice-, and Water-type moves.
 #-------------------------------
 [OMNIGENE]
 Name = Omnigene
-Description = Changes type depending on the move used or his plate, STAB bonus is increased.
+Description = Changes type to match the held Plate. It then changes type to that of the move it's about to use and powers up moves of the same type.
 #-------------------------------
 [TASTYTREAT]
 Name = Tasty Treat
-Description = The user eats the opponents' berries, and gains the effects and health.
+Description = When hit, it consumes the attacker's item (if it is food) and effectively uses up its effect, additionally recovering HP.
 #-------------------------------
 [CLAIRVOYANT]
 Name = Clairvoyant
-Description = Puts an effect similar to Future Sight once the user is put into play.
+Description = Immediately uses Future Sight on a foe.
 #-------------------------------
 [STANDWATCH]
 Name = Stand Watch
-Description = If this Pokemon is put to sleep, it'll turn around and change form.
+Description = Girafarig's tail stands guard (with its own HP) when the main body falls asleep.
 #-------------------------------
 [DISTORTED]
 Name = Distorted
-Description = The Pokémon changes its type and its normal moves' type every turn.
+Description = Changes to a random type every turn. Normal-type moves change to the same type.
 #-------------------------------
 [NOTHING]
 Name = Nothing
@@ -1110,7 +1110,7 @@ Description = This Pokémon exceeds levels of being useless.
 #-------------------------------
 [VICTORYRUSH]
 Name = Victory Rush
-Description = If this Pokémon gets a KO, stat decreases for that turn are ignored.
+Description = When this Pokémon knocks out another, its stats cannot be lowered for that turn.
 #-------------------------------
 [AMBIENTAMNESIA]
 Name = Ambient Amnesia
@@ -1118,43 +1118,43 @@ Description = Contact with this Pokémon may cause the attacker to lose more PP 
 #-------------------------------
 [TEMPERMENTAL]
 Name = Tempermental
-Description = This Pokémon will confuse itself and sharply raise its attack when sent into battle.
+Description = Confuses itself and sharply raises its Attack stat.
 #-------------------------------
 [CACOPHONY]
 Name = Cacophony
-Description = All contact moves from this Pokémon are sound-based and use the target's Special Defense.
+Description = All contact moves become sound-based and use the target's Sp. Def.
 #-------------------------------
 [CRYSTALLINE]
 Name = Crystalline
-Description = This Pokémon takes half damage from Water and Grass attacks, but double from Electric attacks. Also negates its Electric immunity.
+Description = Weakens the power of incoming Water- and Grass-type attacks, but negates its immunity to Electric-type attacks and takes additional damage from them.
 #-------------------------------
 [DARKLIGHT]
 Name = Dark Light
-Description = Its accuracy is boosted against Dark-types, and negates that Pokémon's Psychic immunity.
+Description = Moves have higher accuracy against Dark-type Pokémon, and they will not be immune to Psychic-type attacks from this Pokémon.
 #-------------------------------
 [DEEPSLEEPER]
 Name = Deep Sleeper
-Description = This Pokémon sleeps for twice as long, but is healed by 1/8th of its max HP per turn while asleep.
+Description = Sleeps for more rounds, but recovers HP every round while asleep.
 #-------------------------------
 [ENTANGLINGMESS]
 Name = Entangling Mess
-Description = Contact with this Pokémon may result in being constricted by the Pokémon.
+Description = Contact with this Pokémon may result in its attacker being constricted.
 #-------------------------------
 [FORESTFIRE]
 Name = Forest Fire
-Description = All Grass-type moves from this Pokémon have added Fire-type damage.
+Description = Grass-type attacks get an extra Fire-type hit with 20 power.
 #-------------------------------
 [IMMATERIAL]
 Name = Immaterial
-Description = This Pokémon can neither use, nor be hit by, contact moves; but it takes additional damage from special attacks.
+Description = Immune to contact moves, but cannot use them either, and takes additional damage from special attacks.
 #-------------------------------
 [KAMIKAZE]
 Name = Kamikaze
-Description = If this Pokémon has less than 50% of its max HP, it has a chance of using Self-Destruct of its STAB type.
+Description = If its HP becomes half or less, it has a chance of using Self-Destruct, with the move type matching any of its types.
 #-------------------------------
 [LASTSTAND]
 Name = Last Stand
-Description = If this Pokémon would be KOed before it moves, it moves first and faints immediately after.
+Description = Before its opponent uses an attack to make it faint, it moves first and faints immediately after.
 #-------------------------------
 [LIFEBLOOD]
 Name = Life Blood
@@ -1162,15 +1162,15 @@ Description = Draining moves heal by all damage caused. Does not stack with Big 
 #-------------------------------
 [MADNESS]
 Name = Madness
-Description = Contact with this Pokémon has a 50% chance of causing confusion to the attacker.
+Description = May confuse any Pokémon that comes into contact with it.
 #-------------------------------
 [MAGMATICHEAT]
 Name = Magmatic Heat
-Description = Fire-type moves do 0.75x damage to a Pokémon with a resistance to Fire.
+Description = Fire-type moves do additional damage to opponents that resist it.
 #-------------------------------
 [MIRRORTYPE]
 Name = Mirror Type
-Description = On switch in, this Pokémon copies the opponent's type.
+Description = The Pokémon copies a foe's type.
 #-------------------------------
 [MORALPACT]
 Name = Moral Pact
@@ -1178,27 +1178,27 @@ Description = Removes added effects to increase move damage.
 #-------------------------------
 [MYSTERYTYPE]
 Name = Mystery Type
-Description = This Pokémon's type is chosen at random on switch in.
+Description = Changes to a random type on switch in.
 #-------------------------------
 [PHILANTHROPIST]
 Name = Philanthropist
-Description = On physical contact with a Pokémon, has a 50% chance to remove its status problems.
+Description = May remove the status conditions of any Pokémon that comes into contact with it.
 #-------------------------------
 [PHOENIXFIRE]
 Name = Phoenix Fire
-Description = This Pokémon is revived from KO to 50% HP in between battles.
+Description = If fainted, this Pokémon gains back half of its HP after battle.
 #-------------------------------
 [SPEEDBALL]
 Name = Speed Ball
-Description = All ball/rolling-based moves usually go first (+1 priority).
+Description = Ball and rolling-based moves have increased priority.
 #-------------------------------
 [RAINBOWGUARD]
 Name = Rainbow Guard
-Description = Boosts Fire, Ice, and Electric moves by 1.3x. Does not stack with STAB.
+Description = Boosts the power of Fire-, Ice-, and Electric-type attacks, unless this Pokémon has the same type as the move.
 #-------------------------------
 [RETEXTURING]
 Name = Retexturing
-Description = On switch in, this Pokémon becomes a type that resists the opponent's STAB type(s).
+Description = This Pokémon changes to a random type that resists any of its foes' types.
 #-------------------------------
 [ROOTED]
 Name = Rooted
@@ -1206,39 +1206,39 @@ Description = Automatically uses Ingrain on switch in.
 #-------------------------------
 [TAINTEDPOWER]
 Name = Tainted Power
-Description = Attack and Special Attack are doubled. Loses 1/8th of its max HP when using a damaging move.
+Description = Boosts Attack and Sp. Atk, but loses HP if it uses a damaging move.
 #-------------------------------
 [THERMALPOWER]
 Name = Thermal Power
-Description = Speed increased by and is immune to Fire-type moves, while Speed decreased by and takes 2x damage from Ice-type moves.
+Description = This Pokémon's Speed stat is raised by and is immune to Fire-type attacks, but its Speed stat is lowered by and takes additional damage from Ice-type attacks.
 #-------------------------------
 [TRICKSTER]
 Name = Trickster
-Description = Swaps items with opponent on contact.
+Description = Swaps items with any Pokémon that comes into contact with it.
 #-------------------------------
 [UNGROUNDED]
 Name = Ungrounded
-Description = All contact moves from this Pokémon ignore immunities.
+Description = Contact moves ignore the target's immunities.
 #-------------------------------
 [UNSTABLE]
 Name = Unstable
-Description = Can be switched out at any time (avoids trapping effects of trapping or multiturn moves).
+Description = Negates all trapping effects, allowing it to switch out at any time.
 #-------------------------------
 [VINDICTIVE]
 Name = Vindictive
-Description = When this Pokémon gets KOed by direct damage, the opponent gets the attack stat used sharply lowered.
+Description = If this Pokémon is knocked out by a direct hit, the attacker's Attack or Sp. Atk stat is sharply lowered, whichever was used in the attack.
 #-------------------------------
 [FREESTYLE]
 Name = Freestyle
-Description = Adds priority to Sound type moves.
+Description = Sound-type moves have increased priority.
 #-------------------------------
 [SENSORYAWARENESS]
 Name = Sensory Awareness
-Description = Accuracy can't be lowered.
+Description = Its Accuracy stat can't be lowered.
 #-------------------------------
 [FIRMLYPLANTED]
 Name = Firmly Planted
-Description = Can't be moved by moves like Roar, Whirlwind, Sky Drop, etc.
+Description = Can't be forced to switch out by any move.
 #-------------------------------
 [IRONKICK]
 Name = Iron Kick
@@ -1246,239 +1246,239 @@ Description = Boosts the power of kicking moves.
 #-------------------------------
 [TEMPEST]
 Name = Tempest
-Description = Summons a thunderstorm in battle.
+Description = The Pokémon summons a thunderstorm in battle.
 #-------------------------------
 [ALLURINGGLOW]
 Name = Alluring Glow
-Description = All moves from the opponents are directed towards the user.
+Description = Always redirects all moves towards itself.
 #-------------------------------
 [ALLSEEING]
 Name = All-seeing
-Description = Lowers the evasiveness of the adjacent foes every turn.
+Description = Lowers the evasion of the adjacent foes every turn.
 #-------------------------------
 [SHEDBODY]
 Name = Shed Body
-Description = First attack is absorbed.
+Description = Its outer skin is shed to protect it from an attack just once.
 #-------------------------------
 [REVERB]
 Name = Reverb
-Description = Sound type attacks deal an additional 30% damage on the next turn after dealing damage.
+Description = Sound-type and sound-based attacks reverberate with an extra, less powerful hit at the start of the next turn.
 #-------------------------------
 [CLOUDFLUFF]
 Name = Cloud Fluff
-Description = Incoming contact moves deal 25% less damage, and incoming Electric type attacks raise Sp. Atk.
+Description = Takes less damage from contact moves. Immune to Electric-type attacks, instead raising its Sp. Atk stat.
 #-------------------------------
 [BATTLESTANCE]
 Name = Battle Stance
-Description = This Pokémon's Attack stat is raised every time it makes contact with another Pokémon.
+Description = Attack stat is raised whenever a Pokémon comes into contact with it.
 #-------------------------------
 [FORMULASHIFT]
 Name = Formula Shift
-Description = Different types of moves cause this Pokémon to change forms.
+Description = Deoxys' form changes depending on what kind of move it uses.
 #-------------------------------
 [VERMILINGUA]
 Name = Vermilingua
-Description = Bug type Pokémon can only use Struggle around this user.
+Description = All Bug-type Pokémon on the field can only use Struggle.
 #-------------------------------
 [SWEETDREAMS]
 Name = Sweet Dreams
-Description = Heals sleeping allies by 1/8th of their maximum HP.
+Description = Recovers a sleeping ally's HP.
 #-------------------------------
 [EDIBLE]
 Name = Edible
-Description = Takes more damage from biting moves, but speed is sharply raised as a result.
+Description = Its Speed stat is sharply raised from biting moves, but also takes additional damage from them.
 #-------------------------------
 [RAPIDSTREAM]
 Name = Rapid Stream
-Description = Water type moves get +1 priority when the user is at full health.
+Description = Water-type moves have increased priority at full HP.
 #-------------------------------
 [QUICKBLADE]
 Name = Quickblade
-Description = Slashing moves get +1 priority.
+Description = Slashing moves have increased priority.
 #-------------------------------
 [SCORCHINGCOAT]
 Name = Scorching Coat
-Description = All non-Fire type Pokémon lose 1/16th max HP at the end of each round.
+Description = All non-Fire-type Pokémon lose HP at the end of each round.
 #-------------------------------
 [ROARINGHORN]
 Name = Roaring Horn
-Description = This Pokémon deals 50% damage of single-target attacks to the target's partner.
+Description = Single-target attacks deal additional damage to adjacent foes.
 #-------------------------------
 [BLAST]
 Name = Blast
-Description = If this Pokémon attacks this turn, its target loses 1/8th of their remaining HP at the end of the turn.
+Description = When this Pokémon attacks, its target feels an aftershock and loses HP at the end of the turn.
 #-------------------------------
 [OPPORTUNIST]
 Name = Opportunist
-Description = For moves that can miss, if the move has below 60% accuracy it gets a 1.3x boost, but lowers Defense by 1 stage if it misses, and if it is at least 60% accuracy it gets a 2x boost, but lowers Defense by 2 stages if it misses.
+Description = Accuracy is boosted for moves with less than 100% accuracy, but this Pokémon's Defense stat is lowered if it misses. Additionally, damage is boosted for moves below 60% accuracy, but its Defense stat is harshly lowered if it misses.
 #-------------------------------
 [SPICETANK]
 Name = Spice Tank
-Description = Poison type moves from this Pokémon have a 30% burn chance, and this Pokémon also gets added Fire and Ice resistance.
+Description = Poison-type moves may also burn the target. Weakens the power of incoming Fire- and Ice-type attacks, and is immune to burn.
 #-------------------------------
 [ENTERSPHERE]
 Name = Entersphere
-Description = Contact moves from this Pokémon become part Fire type and receive 1.3x damage, while already Fire type moves receive 1.6x damage.
+Description = Contact moves have increased power and become part Fire-type. The power increases even further if the move is already Fire-type.
 #-------------------------------
 [UNHOLY]
 Name = Unholy
-Description = Adds resistance to Fairy, Ghost, and Light type moves.
+Description = Resists incoming Fairy-, Ghost-, and Light-type attacks.
 #-------------------------------
 [FERTILEGIFTS]
 Name = Fertile Gifts
-Description = On switch in, this Pokémon and all Grass type Pokémon on the field increase their Attack and Sp. Def and recover 1/10th of their max HP.
+Description = All Grass-type Pokémon on the field have their Attack and Sp. Def stats raised and recover HP.
 #-------------------------------
 [SHARPENER]
 Name = Sharpener
-Description = This Pokémon increases its Attack by 1 stage every time it uses a status move.
+Description = Attack stat is raised whenever it uses a status move.
 #-------------------------------
 [CRYSTALSURGE]
 Name = Crystal Surge
-Description = This Pokémon gains STAB for Crystal moves. In addition, the field is covered in Crystal Energy while this Pokémon is active, which negates all base weaknesses and resistances.
+Description = Boosts the power of Crystal-type moves. The field becomes covered in Crystal Energy, which negates the type resistances and weaknesses all Pokémon.
 #-------------------------------
 [CRYSTALADAPTATION]
 Name = Crystal Adaptation
-Description = This Pokémon starts with no weaknesses or resistances, but builds up resistances to the move types of each move that hits it by 2x each time, up to 4x per type.
+Description = Starts with no weaknesses or resistances on switch in, but builds up resistances to the types of each move that hits it, up to twice per type.
 #-------------------------------
 [FLYTRAP]
 Name = Flytrap
-Description = This Pokémon resists Bug type moves. In addition, deals 1.3x more damage to Bug type Pokémon.
+Description = Resists Bug-type attacks. Deals additional damage against Bug-type Pokémon.
 #-------------------------------
 [ALIGNED]
 Name = Aligned
-Description = Raises a random stat by 1 stage for each unfainted Pokémon of the same type as this Pokémon in the party.
+Description = A random stat is raised by as many stages as there are number of unfainted Pokémon of the same type as this Pokémon in the party.
 #-------------------------------
 [BULLY]
 Name = Bully
-Description = Deals more damage against shorter (or lighter if same height) Pokémon, and lowers their Attack on switch in.
+Description = Deals additional damage against Pokémon that are shorter and lighter than itself, and lowers their Attack stat on switch in.
 #-------------------------------
 [LIGHTGUARD]
 Name = Light Guard
-Description = Raises this Pokémon's Defense and Sp. Def and removes status conditions under harsh sunlight.
+Description = Defense and Sp. Def stats are raised and status conditions are removed under harsh sunlight.
 #-------------------------------
 [SLOPPY]
 Name = Sloppy
-Description = Physical attacks have a chance of causing an additional effect on the target.
+Description = Physical attacks may inflict a random status condition or lower a random stat.
 #-------------------------------
 [VIGILANT]
 Name = Vigilant
-Description = This Pokémon wakes up on being attacked.
+Description = Immediately wakes up on being attacked.
 #-------------------------------
 [SYNTHESIZE]
 Name = Synthesize
-Description = When not attacking or using a healing move, this Pokémon absorbs the sunlight and heals itself (double if in sunny weather). Fails in bad weather or at night.
+Description = Recovers HP at the end of every round where it did not use a damaging or healing move. It recovers even more in sunny weather, but does not recover HP in rainy weather and at night.
 #-------------------------------
 [STRONGSKULL]
 Name = Strong Skull
-Description = Powers up head-based moves by 1.5x damage.
+Description = Boosts the power of head-based moves.
 #-------------------------------
 [WEBCOVER]
 Name = Web Cover
-Description = Contact with this Pokémon lowers the attacker's Speed and prevents them from switching.
+Description = Speed stat is lowered of any Pokémon that attacks it with a contact move, and traps them, preventing them from switching out.
 #-------------------------------
 [PUSHBOMB]
 Name = Push Bomb
-Description = Contact with this Pokémon has a 30% chance of causing it to explode.
+Description = Contact with this Pokémon may result in it exploding.
 #-------------------------------
 [FRENZIED]
 Name = Frenzied
-Description = Increases Attack stat the lower this Pokémon's HP is. Up to 2x at 1 HP.
+Description = Boosts the power of all moves the more this Pokémon has lost HP.
 #-------------------------------
 [NOMAD]
 Name = Nomad
-Description = Boosts the moves of Flying and Dragon type allies by 1.5x damage.
+Description = Boosts the power of all moves from its Flying- and Dragon-type allies.
 #-------------------------------
 [HUNGRY]
 Name = Hungry
-Description = Eats the opponent's item on contact, storing it as a backup in case its current item is consumed or stolen.
+Description = Eats a Pokémon's item when it comes into contact with it, storing it as a temporary backup in case its current item is consumed or stolen.
 #-------------------------------
 [MASTERTHIEF]
 Name = Master Thief
-Description = Contact moves from this Pokémon steal the opponent's item if the user has no item, and knocks off the item if the user already has one.
+Description = Contact moves steal the target's item. If this Pokémon already has an item, it instead knocks off the target's item.
 #-------------------------------
 [CYCLONE]
 Name = Cyclone
-Description = Summons a windstorm in battle.
+Description = The Pokémon summons a windstorm in battle.
 #-------------------------------
 [SOUNDWAVES]
 Name = Sound Waves
-Description = Sound type attacks have a chance to lower the opponent's Defense and Sp. Def.
+Description = Sound-type and sound-based attacks may also lower the target's Defense and Sp. Def stats.
 #-------------------------------
 [DEBRISARMOR]
 Name = Debris Armor
-Description = Upon entering the field, this Pokémon absorbs any entry hazards set on its side.
+Description = Absorbs all entry hazards set on its side on switch in. Each type of debris acts as an armor with a unique effect. The entry hazards are returned to the field when switched out or fainted.
 #-------------------------------
 [SUDDENSEED]
 Name = Sudden Seed
-Description = Puts Leech Seed on the opposing Pokémon upon entering the battle.
+Description = Immediately seeds all of its foes, absorbing HP from them at the end of every round.
 #-------------------------------
 [SUPERNOVA]
 Name = Supernova
-Description = All Cosmic type attacks from this Pokémon also cause this Pokémon to use a 20 BP Heat Wave against the target and its partner.
+Description = Cosmic-type attacks also cause an extra Heat Wave of 20 power against near foes.
 #-------------------------------
 [SIGNALBOOST]
 Name = Signal Boost
-Description = Accuracy increases by 1 stage every turn.
+Description = Its Accuracy stat is gradually boosted.
 #-------------------------------
 [DARKDUALITY]
 Name = Dark Duality
-Description = Changes this Pokémon's form at night or in Darkness.
+Description = Noctoa becomes possessed at night or in darkness. In this form, it is immune to Ghost-type attacks and has increased speed.
 #-------------------------------
 [ROCKYTRAP]
 Name = Rocky Trap
-Description = Sets up stealth rocks upon entering battle.
+Description = Sets up stealth rocks on the opposing side that hurts foes that switch into battle.
 #-------------------------------
 [PERSEVERANCE]
 Name = Perseverance
-Description = Using moves in succession increases its power.
+Description = Moves used in succession gain increased power the more they are used, up to three times or until another move is used.
 #-------------------------------
 [WONDERHARP]
 Name = Wonder Harp
-Description = Using Sound types moves increases the Defense and Sp. Def of this Pokémon and its allies by 1 stage each.
+Description = Sound-type and sound-based moves raise the Defense and Sp. Def stats of itself and its allies.
 #-------------------------------
 [HUMIDIFY]
 Name = Humidify
-Description = If this Pokémon is hit by a Water type move, it and its allies gain +1 Sp. Atk.
+Description = Absorbs Water-type moves to raise the Sp. Atk stat of itself and its allies.
 #-------------------------------
 [LIQUIDCONDUCTION]
 Name = Liquid Conduction
-Description = Water type moves from this Pokémon have a 20% chance to paralyze.
+Description = Water-type moves may also paralyze its targets.
 #-------------------------------
 [RAINBOON]
 Name = Rain Boon
-Description = A random stat will be raised by 1 stage on this Pokémon on at the end of every turn with rain.
+Description = Raises one stat every turn in rain.
 #-------------------------------
 [ROUNDRECORD]
 Name = Round Record
-Description = This Pokémon is always confused.
+Description = Always confused, even more than a Psyduck.
 #-------------------------------
 [WEATHERBENEFIT]
 Name = Weather Benefit
-Description = Immune to all weather effects. Also gains stat boosts depending on the weather in effect.
+Description = Immune to all weather effects, and raises one stat every turn depending on the weather in effect.
 #-------------------------------
 [CHARGEDUP]
 Name = Charged Up
-Description = The first damaging move upon switching in deals 1.5x more damage.
+Description = The first damaging move used deals more damage.
 #-------------------------------
 [DYNAMICPOWER]
 Name = Dynamic Power
-Description = This Pokémon's base stats increase by 1 every turn, then return to normal at the end of battle.
+Description = All base stats increase every turn, but return to normal at the end of battle.
 #-------------------------------
 [HEALTHYDIET]
 Name = Healthy Diet
-Description = Biting moves heal the user for 60% of the damage dealt.
+Description = Biting moves also partially recover HP based on damage dealt.
 #-------------------------------
 [EFFULGE]
 Name = Effulge
-Description = Allows this Pokémon to swap between forms.
+Description = Kindeshu changes to its light form when it or its foes are low on HP.
 #-------------------------------
 [PROXY]
 Name = Proxy
-Description = A substitute used by this Pokémon now looks and acts differently.
+Description = Phantitute reveals its true form when using Substitute. This move has increased priority but uses up more PP.
 #-------------------------------
 [HEAVYEYED]
 Name = Heavy-eyed
-Description = Falls asleep when sent into battle. Changes forms when put to sleep or awakened.
+Description = Rablin immediately falls asleep when sent out. It has a different form whenever it is put to sleep.
 #-------------------------------
 [ILLINTENT]
 Name = Ill Intent
@@ -1486,187 +1486,187 @@ Description = Powers up Dark-type moves.
 #-------------------------------
 [WINDUP]
 Name = Wind-up
-Description = Two-turn moves deal 1.5x more damage.
+Description = Powers up charging-turn and recharge moves.
 #-------------------------------
 [FLUORESCENCE]
 Name = Fluorescence
-Description = Two-turn moves will hit in only one turn, but with 20% less power.
+Description = Charging-turn and recharge moves hit immediately and without cooldown, but with less power.
 #-------------------------------
 [DELIRIUM]
 Name = Delirium
-Description = Changes form when hit by a super-effective move.
+Description = Nebulanian goes into a frenzy when hit by a supereffective attack, changing into a more offensive form.
 #-------------------------------
 [OUTMATCH]
 Name = Outmatch
-Description = Increases this Pokémon's Speed stat depending on the opponent's speed.
+Description = Speed stat is raised on switch in, and sharply raised if any foe is faster.
 #-------------------------------
 [INCOMPREHENSIBLE]
 Name = Incomprehensible
-Description = This Pokémon uses a random ability every turn.
+Description = Ability changes every turn.
 #-------------------------------
 [SOOTHINGSHINE]
 Name = Soothing Shine
-Description = This Pokémon heals itself and its allies every turn by a small amount. Sunlight improves this ability's effect.
+Description = Recovers HP for itself and its allies every turn by a small amount, and even more in sunlight.
 #-------------------------------
 [CRYSTALATE]
 Name = Crystalate
-Description = All Normal-type moves become Crystal-type.
+Description = Normal-type moves become Crystal-type and powered.
 #-------------------------------
 [PUNISHER]
 Name = Punisher
-Description = Damaging moves from this Pokémon have a 10% chance of also inflicting curse.
+Description = Damaging moves may also inflict a curse on its targets.
 #-------------------------------
 [NEGATION]
 Name = Negation
-Description = Reverts all power transformations (mega, crystal, primal, etc.) back to the unpowered forms.
+Description = Forces all Pokémon on the field that have undergone Mega Evolution, Crystallization, or any other power transformation to revert to their original forms.
 #-------------------------------
 [CRYSTALENERGY]
 Name = Crystal Energy
-Description = Forces all Pokémon on the field to crystallize if possible, and removes the crystallization limit.
+Description = Forces all Pokémon on the field that can Crystallize to do so, even if a Pokémon has Negation.
 #-------------------------------
 [CLEARINGFUMES]
 Name = Clearing Fumes
-Description = Clears all hazards and reverts all stat changes on the field.
+Description = Removes all entry hazards and resets the stat changes of all Pokémon on the field on switch in.
 #-------------------------------
 [VOODOO]
 Name = Voodoo
-Description = Damage done to this Pokémon is done to all others on the field that are in the same egg group.
+Description = Damage taken is also dealt to all Pokémon on the field of the same egg group.
 #-------------------------------
 [LUNARBLESSING]
 Name = Lunar Blessing
-Description = Damaging moves receive a 1.25x boost in damage and accuracy.
+Description = Damaging moves have increased power and accuracy.
 #-------------------------------
 [PRODIGY]
 Name = Prodigy
-Description = This Pokémon's Attack and Speed are raised if attacked by a Pokémon with higher total stats.
+Description = Damaging moves have increased power and speed if any of its foes have higher total stats.
 #-------------------------------
 [VINECOILSTYLE]
 Name = Vinecoil Style
-Description = This Pokémon receives 30% less damage from contact moves and traps its attacker in a wrap for 5 turns.
+Description = Weakens the power of incoming contact moves. These moves also cause the attacker to be wrapped for five turns.
 #-------------------------------
 [WILDFIRESTYLE]
 Name = Wildfire Style
-Description = If a move by this Pokémon misses, it will still inflict 35% of the damage it would've done.
+Description = If it misses, it partially inflicts damage anyways.
 #-------------------------------
 [WHIRLPOOLSTYLE]
 Name = Whirlpool Style
-Description = Contact moves by this Pokémon also inflict a whirlpool effect on its target.
+Description = Contact moves also trap the targets in a whirlpool for five to six turns.
 #-------------------------------
 [FRAGRANCE]
 Name = Fragrance
-Description = This Pokémon has a 30% chance of lowering the opponent's Attack or Sp. Atk when hit by or using a contact move.
+Description = It may lower the Attack or Sp. Atk stat of a Pokémon that comes into contact with it, whichever stat was used for the move.
 #-------------------------------
 [DECEPTIVE]
 Name = Deceptive
-Description = This Pokémon loses its regular weaknesses and gains weaknesses to Fire, Water, and Grass type moves.
+Description = Weak only to Fire-, Water-, and Grass-type moves, and no other types.
 #-------------------------------
 [SUBTRACTION]
 Name = Subtraction
-Description = This Pokémon and its allies lose weakness to one type. If an ally has Addition, all Pokémon on its side lose all weaknesses.
+Description = This Pokémon and its allies have one type weakness removed for every ally with Substraction. If an ally has Addition, all type weaknesses are removed.
 #-------------------------------
 [SAKURA]
 Name = Sakura
-Description = Grass-type moves become Fairy-type and gain a 10% boost in damage.
+Description = Grass-type moves become Fairy-type and powered.
 #-------------------------------
 [ADDITION]
 Name = Addition
-Description = This Pokémon and its allies recover 10% of their health on every turn. If an ally has Subtraction, it heals 30%.
+Description = This Pokémon and its allies recover HP every turn. If an ally has Subtraction, they recover even more.
 #-------------------------------
 [CHILLING]
 Name = Chilling
-Description = Reduces opponent's Sp. Atk on switch-in.
+Description = Lowers the foe's Sp. Atk stat.
 #-------------------------------
 [AVOID]
 Name = A-Void
-Description = Special attacks from opponents are 15% more likely to miss the user.
+Description = Lowers the accuracy of incoming special attacks.
 #-------------------------------
 [ZEROGRAVITY]
 Name = Zero Gravity
-Description = All Pokémon on the field become immune to Ground-type moves.
+Description = All Pokémon on the field become airborne.
 #-------------------------------
 [PHASINGBODY]
 Name = Phasing Body
-Description = Physical attacks from this Pokémon become special attacks.
+Description = Physical attacks become special attacks.
 #-------------------------------
 [SKILLSCAN]
 Name = Skill Scan
-Description = Displays an alarm over each opponent on the field that has a move that would be super-effective against the user.
+Description = Detects whenever a foe has a move that would be supereffective against this Pokémon.
 #-------------------------------
 [QUARTZARMOR]
 Name = Quartz Armor
-Description = This Pokémon is immune to all Water-type moves, instead receiving +1 Sp. Def and -1 Speed when hit by one.
+Description = Absorbs Water-type moves to raise its Sp. Def stat and lower its Speed stat.
 #-------------------------------
 [CRYSTALSTINGER]
 Name = Crystal Stinger
-Description = All moves do double damage, but also do 50% recoil damage on the user.
+Description = Powers up all moves, but half the damage is inflicted as recoil damage.
 #-------------------------------
 [COUNTERPARRY]
 Name = Counter Parry
-Description = If this Pokémon is hit by a physical attack before it attacks, the user's move will become a critical hit.
+Description = Moves are guaranteed to be critical hits if this Pokémon is attacked by a physical move on the same turn.
 #-------------------------------
 [CRYSTALTORRENT]
 Name = Crystal Torrent
-Description = This Pokémon's Water-type moves ignore Water-type resistances from their targets.
+Description = Water-type moves always hit with at least neutral effectiveness against their targets.
 #-------------------------------
 [CRYSTALBLAZE]
 Name = Crystal Blaze
-Description = This Pokémon's Fire-type moves ignore Fire-type resistances from their targets.
+Description = Fire-type moves always hit with at least neutral effectiveness against their targets.
 #-------------------------------
 [CRYSTALOVERGROW]
 Name = Crystal Overgrow
-Description = This Pokémon's Grass-type moves ignore Grass-type resistances from their targets.
+Description = Grass-type moves always hit with at least neutral effectiveness against their targets.
 #-------------------------------
 [MERRYCHRISTMAS]
 Name = Merry Christmas
-Description = The move Present becomes Crystal-type, changes base power, and heals the user's allies.
+Description = The move Present becomes Crystal-type, increases in power against foes based on their friendship, and recovers HP for its allies based on their friendship.
 #-------------------------------
 [MONARCH]
 Name = Monarch
-Description = This Pokémon, even if not in battle, gives a 1.25x damage boost to all of its allies' moves.
+Description = All Pokémon in the party that share a type with this Pokémon have increased power as long as this Pokémon is not fainted.
 #-------------------------------
 [WINTERSPIRIT]
 Name = Winter Spirit
-Description = Ghost-type moves receive STAB bonus if it is hailing. Immune to Normal and Flying type moves, instead freezing the opponent.
+Description = Ghost-type moves have increased power in a hailstorm. Also immune to Normal- and Fighting-type contact moves, instead freezing the attacker.
 #-------------------------------
 [POWERWITHIN]
 Name = Power Within
-Description = Upon transformation, all moves are boosted by 30%, but this Pokémon reverts to normal after 4 turns.
+Description = All base stats are boosted, but its Crystallization reverts after four turns.
 #-------------------------------
 [CRYSTALAURA]
 Name = Crystal Aura
-Description = This Pokémon's aura-related moves ignore resistances from their targets.
+Description = Pulse moves always hit with at least neutral effectiveness against their targets.
 #-------------------------------
 [OVERCHARGED]
 Name = Overcharged
-Description = Every turn this Pokémon doesn't use an Electric-type move its next Electric-type move will deal 15% more damage (up to 45%).
+Description = Charges up every round (up to three rounds) that it doesn't use an Electric-type attack, increasing the power of its next Electric-type attack.
 #-------------------------------
 [REFLECTIVE]
 Name = Reflective
-Description = Reduces the damage of incoming special moves by 50% and deals 50% recoil damage back to its user.
+Description = Weakens incoming special moves, instead dealing half of the damage back to the attacker.
 #-------------------------------
 [IMMOVABLE]
 Name = Immovable
-Description = This Pokémon gains heavy increases to Defense and Sp. Def, but a heavy decrease to its Speed. It will always move last in a turn.
+Description = Defense and Sp. Def stats are drastically raised, but Speed stat is drastically lowered. The Pokémon moves after all other Pokémon do.
 #-------------------------------
 [HIVEMIND]
 Name = Hive Mind
-Description = This Pokémon's Attack and Sp. Atk are increased by 1 stage for each Bug-type in the trainer's party.
+Description = Attack and Sp. Atk stats are raised by 1 stage for each Bug-type Pokémon in the same party.
 #-------------------------------
 [BERSERKER]
 Name = Berserker
-Description = The lower this Pokémon's HP is, the higher the damage boost is for each of its moves.
+Description = Boosts the power of all moves the more this Pokémon has lost HP.
 #-------------------------------
 [SUGARPOWER]
 Name = Sugar Power
-Description = This Pokémon's Water-type moves heal the target instead of dealing damage.
+Description = Water-type moves heal the target instead of dealing damage.
 #-------------------------------
 [SOULABSORB]
 Name = Soul Absorb
-Description = This Pokémon absorbs HP from all of its opponents every turn.
+Description = Absorbs HP from all Pokémon on the field every turn.
 #-------------------------------
 [EXPLOSIVEEXHAUST]
 Name = Explosive Exhaust
-Description = All moves that harm the user do 1.5x more damage. Recoil is increased.
+Description = All moves that harm or knock out the user have increased power, but also increased recoil damage.
 #-------------------------------
 [LAVAFLOOR]
 Name = Lava Floor
@@ -1674,48 +1674,48 @@ Description = Turns the ground into Lava Terrain.
 #-------------------------------
 [GLEAMINGGLARE]
 Name = Gleaming Glare
-Description = Has a 10% chance to paralyze one of its opponents every turn.
+Description = May paralyze a foe every turn.
 #-------------------------------
 [CLOAKCONTROL]
 Name = Cloak Control
-Description = Allows user to choose its type upon switch-in.
+Description = Type can be chosen on switch in.
 #-------------------------------
 [ROLLUP]
 Name = Rollup
-Description = Rolling moves deal double damage.
+Description = Powers up rolling and ball moves.
 #-------------------------------
 [SECONDSIGHT]
 Name = Second Sight
-Description = Future Sight will hit twice.
+Description = Future Sight gets an extra hit.
 #-------------------------------
 [OMNIPOTENT]
 Name = Omnipotent
-Description = This Pokémon evades all moves and always lands critical hits, like a true god.
+Description = Evades all moves and always lands critical hits, like a true god.
 #-------------------------------
 [VANGUARD]
 Name = Vanguard
-Description = Damage is boosted by 50% on the first turn.
+Description = Boosts the power of all moves on its first turn.
 #-------------------------------
 [LASTBASTION]
 Name = Last Bastion
-Description = Raises Attack, Defense, SpAtk, and SpDef by 1 stage when it is the last unfainted Pokémon left in the party.
+Description = Its Attack, Defense, Sp. Atk, and Sp. Def stats are raised if it is the only unfainted Pokémon in the party on switch in.
 #-------------------------------
 [MINDTRICK]
 Name = Mind Trick
-Description = Psychic-type moves become Mystic-type and power up.
+Description = Psychic-type moves become Mystic-type and powered.
 #-------------------------------
 [GALAXYBRAIN]
 Name = Galaxy Brain
-Description = Psychic-type moves become Cosmic-type and power up.
+Description = Psychic-type moves become Cosmic-type and powered.
 #-------------------------------
 [STANCESHIFT]
 Name = Stance Shift
-Description = Switches to Blade form when using physical attacks. Switches to Shield form for any other attack.
+Description = Changes between Blade and Shield Forme with attacks.
 #-------------------------------
 [MAGICSHOW]
 Name = Magic Show
-Description = Keeps Magic Room up while the user is on the field.
+Description = Held item effects of all Pokémon on the field are negated.
 #-------------------------------
 [IAISLASH]
 Name = Iai Slash
-Description = Slashing moves get +1 priority.
+Description = Slashing moves have increased priority.

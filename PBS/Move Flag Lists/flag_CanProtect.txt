@@ -673,7 +673,6 @@ Flame Tackle
 Frubble
 Aura Storm
 Thunder Jolt
-Mega Volt
 Lure
 Leek Slap
 Foul Gas

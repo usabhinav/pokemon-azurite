@@ -675,7 +675,6 @@ Dimensional Gap
 Frubble
 Aura Storm
 Thunder Jolt
-Mega Volt
 Leek Slap
 Foul Gas
 Star Freeze

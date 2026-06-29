@@ -47,15 +47,238 @@ class Scene_Credits
   # Start Editing
   CREDIT = <<_END_
 
-Your credits go here.
+Pokémon Azurite was created by these active team members:
 
-Your credits go here.
+SleepyJirachi (Project Lead)
+NettoHikari (Programmer)
+Baustein (Programmer)
+JPA93 (Mapper, Tech Writer)
+GioBasaran (Concept Artist)
+Speed King (Sprite Artist)
+Selena (Animator)
+Apawn (Sprite Artist)
+Dusky (Sprite Artist)
+Arin Wolfe (Sprite Artist)
 
-Your credits go here.
+With major contributions from previous team members:
 
-Your credits go here.
+Suzerain (Programmer)
+Baaabuuu (Programmer)
+Eddie Hartman (Programmer)
+Thundamoo (Programmer)
+Dream (Programmer)
+Ed (Programmer)
+Acrylica (Programmer)
+Zeak6464 (Programmer)
+Shadow_Sear (Programmer, Creator of Sloof's cry sound)
+Jbsundown (Programmer)
+Mjwherry (Online Component Programmer)
+SquirrelOfDeath (Online Component Programmer)
+Doctor Planky (Online Component Programmer)
 
-Your credits go here.
+Aqua'DeStrhom (Sprite Artist)
+Kort (Artist)
+Heltuh / Ulti (Artist)
+Celine (Concept Artist)
+Kuroryushin (Concept Artist)
+Tommi (Sprite Artist, Concept Artist)
+StuffDraws (Artist)
+Phantomicon (Concept Artist, Promo Artist)
+Kyepha (Concept Artist, Final Artist)
+Inkedsplat (Animator)
+Sam the Starman (Sprite Artist, Tileset Artist)
+Aniebodie (Sprite Artist, Animator)
+Seb (Sprite Artist)
+Dream (JustDreamo) (Final Artist)
+Hanna (Concept Artist, Animator)
+Creme (Sprite Artist, Animator)
+Soulja (Concept Artist, Sprite Artist)
+Cowctus (Artist, Project Co-Lead)
+Wereweasel (Concept Artist)
+Apriifox (Concept Artist, Digital Artist)
+Mysterykarp (Sprite Artist)
+Earl Danger (Sprite Artist)
+Majinmind (Lead Artist)
+Andre Rivera (Sprite Artist)
+Grey-winged Blitz (Traditional Artist)
+Unstableye (Concept Artist)
+Breioom (Sprite Artist)
+Nikki (Concept Artist)
+Zchem (Programmer, Artist)
+Pedro J.M. (Logo Designer)
+
+Emdasche (Remixer)
+Kamex (Remixer, Musician)
+TheGuitahHeroe (Musician)
+Futo (Musician)
+RainbowTuba (Musician)
+KelyxTheMage (Musician)
+EternalSushi (Musician)
+Draskon5665 (Musician)
+Darius (Musician)
+
+And additional third-party resources from the following:
+
+Stat Up/Down Animation (graphics only)
+KleinStudio
+
+Transform Mosaic Animation
+KleinStudio
+NettoHikari (ported to EBDX on Essentials v20.1)
+
+Lavender Town Ghosts For PE V17.2
+Richard PT
+
+Custom Egg sprites for all species up to gen 8
+Reborn & Rejuvenation Developer Teams - The graphics themselves
+Appletun's Apples - Updating the egg sprites to work for V19
+LMicolash - The icon sprites
+
+Animated Pokemon System [DBK Add-On] [v21.1] (graphics only)
+Creator: Lucidious89
+Based on the Generation 8 Pack by Golisopod User and EBDX by Luka S.J.
+Battler Sprites:
+Gen 1-5: Luka S.J.
+Gen 6: All Contributors To Smogon X/Y Sprite Project
+Gen 7: All Contributors To Smogon Sun/Moon Sprite Project
+Gen 8: All Contributors To Smogon Sword/Shield Sprite Project
+Gen 9: All Contributors To Smogon Scarlet/Violet Sprite Project
+Contributors to the original "Sprites Animados" spanish plugin:
+Tenshi of War<s>DPertierra
+Skyflyer<s>Hellfire_raptor
+Antiant<s>AshnixsLaw
+AyanoCloud<s>Azrita
+BR0DE0<s>Caruban
+Creobnil<s>DanEx
+Diegotoon20<s>dimbly
+ekurepu<s>Ebaru
+EricLostie<s>Falcon7
+Federico97_ez<s>Fleimer_
+Franark122k<s>Hellfire0raptor
+HM100<s>HyperactiveFlummi
+iametrine<s>Involuntary-Twitch
+ItsYugen<s>jinta
+justnyxnow<s>KingOfThe-X-Roads
+kiriaura<s>Legitimate Username
+localghost<s>lucasomi
+MallowOut<s>mangalos810
+MCH4R1Z4RD<s>N-Kin
+NoelleMBrooks<s>Noobiess
+Nolo33<s>OldSoulja
+OmegalingYT<s>PKMarioG
+PomPomKing<s>Poki Papillon
+PumpkinPastel<s>RetroNC
+RadicalCharizard<s>seleccion
+SelenaArmorclaw<s>SkidMarc25
+Snivy101<s>Sopita_Yorita
+SoulWardenInfinity<s>TheAetherPlayer
+TheCynicalPoet<s>Typhlito
+uppababy
+Other Contributors:
+Lucidious89<s>Regis
+Rod<s>kayzering
+Icon Sprites:
+Gen 1-6:
+Alaguesia
+harveydentmd
+Gen 7:
+Marin
+MapleBranchWing
+Contributors to the DS Styled Gen 7+ Repository
+Gen 8:
+Larry Turbo
+Leparagon
+Gen 1-8 (Shiny):
+StarrWolf
+Pokemon Shattered Light Team
+PLA Icons:
+LuigiTKO
+Gen 9:
+ezerart
+JordanosArt
+Resource Compilation:
+Golisopod User
+UberDunsparce
+Caruban
+Footprint Sprites:
+Gen 6:
+Bhagya Jyoti
+Gen 7-8:
+WolfPP
+Gen 9 & PLA:
+Caruban
+Resource Compilation:
+komeiji514
+
+Marin's Enhanced Jukebox (OggDecoder code only)
+Marin
+
+Stopwatch sound effect (used in the Time Break move's animation)
+JoJo's Bizarre Adventure
+
+Misc. third-party scripts:
+
+Zeak6464<s>Tapu Fini
+SpartaLazor<s>leparagon
+BlackOutG5<s>Rune
+M3rein<s>Rigbycwts
+Rot8er_ConeX<s>James Davy
+Luka S.J.<s>Marin
+
+Misc. third-party sprites:
+
+Magiscarf<s>gavzxhayley
+Marcosik1992<s>thepokemonchronicles
+pixelmister<s>seraimizu
+wesleyfg<s>nosblaidenaidd
+manuxd789<s>rayd12smitty
+kyle dove<s>sabfrompc
+phyromatical<s>xdinky
+mr duke<s>chaoticcherrycake
+moontik<s>hekelgrande
+zetavares852<s>flurmimon
+thunderdove<s>brendan77
+warpras<s>peekychew
+lapampa fr<s>alucus
+scarex3wer<s>ultimospriter
+alphacerz<s>mysticalmew24
+calzipher<s>war8
+devevollina<s>midnitez-remix
+babydialga<s>zeo254
+kaliser<s>space emotion
+malice936<s>erma96
+blackdragonredroses<s>harveythecreator
+jinuxs<s>novus
+the english kiwi<s>caliprojects.com
+princelegendario<s>epicday
+dewitty<s>kagenosensei
+lightbulb15<s>gallanty
+manuxd789<s>shawn frost
+matwert<s>zekrowah
+27alexmad27<s>Amethyst
+Jan<s>Zumi
+Bazaro<s>Koyo
+Smeargletail<s>Alex
+Noscium<s>Lepagon
+N-kin<s>fishbowlsoul90
+princess-phoenix<s>DatLopunnyTho
+Conyjams<s>kaji atsu 
+The cynical poet<s>LuigiPlayer
+Pikafan2000<s>Lord-Myre
+piphybuilder88<s>ThePurplest
+carchagui<s>KingTapir
+PkmnAlexandrite<s>Flurmimon
+Phyromatical<s>Gogoat1
+RedEx<s>SailorVicious
+Falgaia of the Smogon S/M sprite project
+
+Misc. third-party sound effects:
+
+Rhyden
+Random Talking Bush
+
+A-Exeggutor Fix/Multiple Dex Forms scripts
+Marcello
 
 {INSERTS_PLUGIN_CREDITS_DO_NOT_REMOVE}
 
@@ -247,4 +470,21 @@ _END_
     @realOY += SCROLL_SPEED * delta
     @credit_sprites.each_with_index { |s, i| s.oy = @realOY - (@bitmap_height * i) }
   end
+end
+
+def pbStartCreditsFromTitleScreen
+  pbFadeOutIn {
+    # Fade to game map to avoid any random issues related to game map not being initialized or something
+    old_scene = $scene
+    # Just using :CUSTOM_BATTLE_MODE as the catch-all for whenever we need to briefly go into the game map
+    $game_temp.game_mode_type = :CUSTOM_BATTLE_MODE
+    Game.start_new
+    # Start credits
+    $scene = Scene_Credits.new
+    $scene.main
+    # scene.main
+    SaveData.mark_values_as_unloaded
+    # Fade back to this screen
+    $scene = old_scene
+  }
 end

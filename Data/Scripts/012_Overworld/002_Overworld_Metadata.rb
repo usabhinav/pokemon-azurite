@@ -76,7 +76,7 @@ class PokemonGlobalMetadata
     @phoneNumbers         = []
     @phoneTime            = 0
     @partner              = nil
-    @creditsPlayed        = false
+    @creditsPlayed        = true      # Allow players to skip it even on the first time
     # Pokédex
     numRegions            = pbLoadRegionalDexes.length
     @pokedexDex           = (numRegions == 0) ? -1 : 0

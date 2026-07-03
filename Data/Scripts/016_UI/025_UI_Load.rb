@@ -457,6 +457,7 @@ class PokemonLoadScreen
     cmd_new_game_runner_mode = -1
     cmd_custom_battle_mode = -1
     cmd_jukebox      = -1
+    cmd_credits      = -1
     cmd_options      = -1
     cmd_language     = -1
     cmd_mystery_gift = -1
@@ -504,6 +505,10 @@ class PokemonLoadScreen
     # Jukebox
     commands[cmd_jukebox = commands.length] = _INTL('Jukebox')
     buttonFormat[cmd_jukebox] = LoadMenu_Model::BTN_NORMAL_BIG
+
+    # Credits
+    commands[cmd_credits = commands.length] = _INTL('Credits')
+    buttonFormat[cmd_credits] = LoadMenu_Model::BTN_NORMAL_BIG
 
     # Options
     commands[cmd_options = commands.length] = _INTL('Settings')
@@ -581,6 +586,9 @@ class PokemonLoadScreen
           screen = PokemonJukeboxScreen.new(scene)
           screen.pbStartAzuriteJukeboxScreen
         end
+      when cmd_credits
+        SaveData.load_new_game_values
+        pbStartCreditsFromTitleScreen
       when cmd_new_game
         @scene.pbEndScene
         $game_temp.game_mode_type = :MAIN_GAME

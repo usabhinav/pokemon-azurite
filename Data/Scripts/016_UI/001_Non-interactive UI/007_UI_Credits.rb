@@ -361,7 +361,7 @@ _END_
     viewport.z = 99999
     text_viewport = Viewport.new(0, @trim, Graphics.width, Graphics.height - (@trim * 2))
     text_viewport.z = 99999
-    @background_sprite = IconSprite.new(0, 0)
+    @background_sprite = IconSprite.new(0, 0, viewport)
     @background_sprite.setBitmap("Graphics/Titles/" + BACKGROUNDS_LIST[0])
     @credit_sprites = []
     @total_height = credit_lines.size * 32

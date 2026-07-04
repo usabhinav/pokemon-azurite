@@ -115,6 +115,7 @@ Pokemon = CHARIZARD,63
     Item = SITRUSBERRY
 Pokemon = BLASTOISE,63
     Item = SITRUSBERRY
+# AZURITE TRAINERS START HERE
 #-------------------------------
 [CAMPER,Rock]
 LoseText = A very good battle, indeed!
@@ -128,3 +129,112 @@ Pokemon = PIKACHU,16
 [TEAMVITREUS_CUSTOMBATTLEMODE,Grunt]
 LoseText = A very good battle, indeed!
 Pokemon = PIKACHU,16
+#-------------------------------
+[LEADER_Banyan,Banyan]
+Items = POTION
+LoseText = ...
+Pokemon = NOSEPASS,13
+    Form = 1
+    Gender = male
+    Moves = GRASSKNOT,INGRAIN,STEALTHROCK,ROCKTHROW
+    Ability = OVERCOAT
+    Item = ORANBERRY
+    EV = 252,0,0,0,0,0
+Pokemon = Foongus,14
+    Gender = female
+    Moves = GRASSKNOT,GROWTH,BODYSLAM
+    Ability = SHIELDDUST
+    EV = 252,0,0,0,0,0
+Pokemon = Savark,16
+    Gender = male
+    Moves = FURYSWIPES,HONECLAWS,PURSUIT,LEAFAGE
+    Ability = UNNERVE
+    Item = SITRUSBERRY
+#-------------------------------
+[LEADER_Deiva,Deiva]
+Items = SUPERPOTION,POTION
+LoseText = ...
+Pokemon = AIPOM,22
+    Form = 1
+    Gender = female
+    Moves = FAKEOUT,CYMBALCLAP,UTURN,THIEF
+    Ability = TECHNICIAN
+    Item = ORANBERRY
+    EV = 0,0,0,252,0,0
+Pokemon = SYMPHY,22
+    Gender = female
+    Moves = SHOCKWAVE,FREESTYLE,ENCORE,ECHOEDVOICE
+    Ability = STATIC
+Pokemon = LOUDRED,22
+    Gender = male
+    Moves = ECHOEDVOICE,OVERHEAT,CIRCLETHROW,FAKETEARS
+    Ability = SCRAPPY
+    EV = 252,0,0,0,0,0
+Pokemon = Grizzwave,25
+    Gender = male
+    Moves = ROUND,SNARL,VOLUMEMIXER,PURSUIT
+    Ability = TRICKSTER
+    Item = SITRUSBERRY
+    EV = 0,0,0,252,0,0
+#-------------------------------
+[LEADER_Koko,Koko]
+Items = SUPERPOTION,SUPERPOTION
+LoseText = ...
+Pokemon = SWANNA,30
+    Gender = female
+    Moves = RAINDANCE,AIRSLASH,BRINE,FEATHERDANCE
+    Ability = HYDRATION
+    Item = DAMPROCK
+    EV = 0,0,0,252,0,0
+Pokemon = TOGETIC,32
+    Gender = male
+    Moves = DAZZLINGGLEAM,AIRCUTTER,ANCIENTPOWER,MAGICALLEAF
+    Ability = SERENEGRACE
+    Item = PIXIEPLATE
+    EV = 252,0,0,0,0,0
+Pokemon = PSYZUL,31
+    Gender = female
+    Moves = PSYSHOCK,CALMMIND,WEATHERBALL,AIRCUTTER
+    Ability = ALLSEEING
+    Item = SHARPBEAK
+    EV = 0,0,0,0,252,0
+Pokemon = EEVEE,33
+    Gender = female
+    Moves = SHADOWBALL,RETURN,CURSE,WISH
+    Ability = ADAPTABILITY
+    Item = EVIOLITE
+    EV = 252,0,0,252,0,0
+#-------------------------------
+[LEADER_Ruyter,Ruyter]
+Items = LEMONADE,SODAPOP
+LoseText = ...
+Pokemon = HUMIDEOR,33
+    Gender = female
+    Moves = BUBBLEBEAM,COSMICPOWER,ASTEROIDBELT,STARLINE
+    Ability = UNAWARE
+    Item = WACANBERRY
+    EV = 252,0,0,0,0,0
+Pokemon = MARSHTOMP,34
+    Gender = male
+    Moves = MUDSHOT,AQUATAIL,MIRRORCOAT,COUNTER
+    Ability = RAINDISH
+    Item = RINDOBERRY
+    EV = 252,0,0,0,0,0
+Pokemon = GOLISOPOD,34
+    Gender = male
+    Moves = DRILLRUN,RAZORSHELL,AQUAJET,XSCISSOR
+    Ability = BATTLEARMOR
+    Item = WACANBERRY
+    EV = 252,0,0,0,0,0
+Pokemon = EVERCLE,34
+    Gender = male
+    Moves = WATERPULSE,SECRETPULSE,RAINDANCE,ICYWIND
+    Ability = SWIFTSWIM
+    Item = DAMPROCK
+    EV = 0,0,0,0,252,0
+Pokemon = CRAWDAUNT,36
+    Gender = male
+    Moves = RAZORSHELL,CRYSTALCHOMP,XSCISSOR,DENY
+    Ability = ADAPTABILITY
+    Item = CRYSTALFRAGMENT
+    EV = 0,252,0,252,0,0

@@ -79,6 +79,13 @@ module Game
     end
     skip_battle_anim = false
     while true
+      if $PokemonGlobal.runnerModeBattleCounter == 101
+        pbMessage(_INTL("Congratulations! You have successfully made your way through 100 grueling battles!"))
+        pbMessage(_INTL("From here on out, you will continue to face wild Pokémon for as long as you'd like."))
+        pbMessage(_INTL("You can also start a new journey, knowing that you have overcome every obstacle that has come your way!"))
+        pbMessage(_INTL("Thank you for playing all the way until the end! And thanks for your continued support throughout our journey!"))
+        pbStartCredits
+      end
       self.runner_mode_show_options_in_between_battles
       if $PokemonGlobal.runnerModeBattleCounter > 1
         self.autosave_runner_mode
@@ -133,7 +140,7 @@ module Game
           next poke
         }
       },
-      10 => {
+      8 => {
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:DITTO, level)
@@ -141,15 +148,30 @@ module Game
           next poke
         }
       },
-      15 => {
+      10 => {
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:GIRAFARIG, level)
           poke.ability = :STANDWATCH
+          poke.forget_all_moves
+          poke.learn_move(:REST)
+          poke.learn_move(:SLEEPTALK)
+          poke.learn_move(:BODYSLAM)
+          poke.learn_move(:STOMP)
+          poke.status = :SLEEP
+          poke.statusCount = 4
           next poke
         }
       },
-      20 => {
+      13 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:PIKACHU, level)
+          poke.makeAlbino
+          next poke
+        }
+      },
+      15 => {
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:VARYMITE, level)
@@ -157,6 +179,52 @@ module Game
           next poke
         }
       },
+      # TODO: 20 => gym leader 1
+      # TODO: 25 => trainer with 2 Sloof, equalizer C and M
+      28 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new([:NIDORINA, :NIDORINO].sample, level)
+          poke.makeAlbino
+          next poke
+        }
+      },
+      # TODO: 30 => gym leader 2
+      35 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:AEGISLASH, level)
+          poke.form = 3
+          poke.learn_move(:DELAYEDATTACK)
+          next poke
+        }
+      },
+      # TODO: 40 => gym leader 3
+      # TODO: 45 => trainer with Celebi (Time Break)
+      # TODO: 50 => gym leader 4
+      55 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:VICTINI, level)
+          poke.makeAlbino
+          next poke
+        }
+      },
+      # TODO: 60 => gym leader 5
+      # TODO: 65 => ???
+      # TODO: 70 => gym leader 6
+      # TODO: 75 => ???
+      # TODO: 80 => gym leader 7
+      # TODO: 85 => ???
+      # TODO: 90 => gym leader 8
+      95 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:KYAZURA, level)
+          next poke
+        }
+      },
+      # TODO: 100 => Champion (True) Aiden
     }
     self.set_runner_mode_battle_music
     setBattleRule("endlessmode")

@@ -472,6 +472,18 @@ _END_
   end
 end
 
+def pbStartCredits
+  pbFadeOutIn {
+    # Fade to game map to avoid any random issues related to game map not being initialized or something
+    old_scene = $scene
+    # Start credits
+    $scene = Scene_Credits.new
+    $scene.main
+    # Fade back to this screen
+    $scene = old_scene
+  }
+end
+
 def pbStartCreditsFromTitleScreen
   pbFadeOutIn {
     # Fade to game map to avoid any random issues related to game map not being initialized or something
@@ -482,7 +494,6 @@ def pbStartCreditsFromTitleScreen
     # Start credits
     $scene = Scene_Credits.new
     $scene.main
-    # scene.main
     SaveData.mark_values_as_unloaded
     # Fade back to this screen
     $scene = old_scene

@@ -179,7 +179,10 @@ module Game
           next poke
         }
       },
-      # TODO: 20 => gym leader 1
+      20 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Banyan, "Banyan"]
+      },
       # TODO: 25 => trainer with 2 Sloof, equalizer C and M
       28 => {
         :type => :wild,
@@ -189,7 +192,10 @@ module Game
           next poke
         }
       },
-      # TODO: 30 => gym leader 2
+      30 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Deiva, "Deiva"]
+      },
       35 => {
         :type => :wild,
         :get_pokemon => proc { |level|
@@ -199,24 +205,47 @@ module Game
           next poke
         }
       },
-      # TODO: 40 => gym leader 3
+      40 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Koko, "Koko"]
+      },
       # TODO: 45 => trainer with Celebi (Time Break)
-      # TODO: 50 => gym leader 4
+      50 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Ruyter, "Ruyter"]
+      },
       55 => {
         :type => :wild,
         :get_pokemon => proc { |level|
-          poke = Pokemon.new(:VICTINI, level)
-          poke.makeAlbino
+          poke = Pokemon.new(:LUMENY, level)
           next poke
         }
       },
-      # TODO: 60 => gym leader 5
+      60 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Gaia, "Gaia"]
+      },
       # TODO: 65 => ???
-      # TODO: 70 => gym leader 6
+      70 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Marianne, "Marianne"]
+      },
       # TODO: 75 => ???
-      # TODO: 80 => gym leader 7
-      # TODO: 85 => ???
-      # TODO: 90 => gym leader 8
+      80 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Bialas, "Bialas", :LEADER_Atlas, "Atlas"]
+      },
+      85 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:OKEANIOS, level)
+          next poke
+        }
+      },
+      90 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Lucien, "Lucien"]
+      },
       95 => {
         :type => :wild,
         :get_pokemon => proc { |level|
@@ -224,7 +253,10 @@ module Game
           next poke
         }
       },
-      # TODO: 100 => Champion (True) Aiden
+      100 => {
+        :type => :trainer,
+        :trainer_battle_args => [:CHAMPION_Aiden, "Aiden"]
+      },
     }
     self.set_runner_mode_battle_music
     setBattleRule("endlessmode")
@@ -245,7 +277,9 @@ module Game
     opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
     if static_encounter_map.key?($PokemonGlobal.runnerModeBattleCounter)
       encounter_definition = static_encounter_map[$PokemonGlobal.runnerModeBattleCounter]
-      if encounter_definition[:type] == :wild
+      if encounter_definition[:type] == :trainer
+        return TrainerBattle.start(*encounter_definition[:trainer_battle_args])
+      else
         return WildBattle.start(encounter_definition[:get_pokemon].call(opponent_level), skip_battle_anim:)
       end
     end

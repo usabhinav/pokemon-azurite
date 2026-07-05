@@ -225,12 +225,10 @@ module Game
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Gaia, "Gaia"]
       },
-      # TODO: 65 => ???
       70 => {
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Marianne, "Marianne"]
       },
-      # TODO: 75 => ???
       80 => {
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Bialas, "Bialas", :LEADER_Atlas, "Atlas"]
@@ -258,7 +256,7 @@ module Game
         :trainer_battle_args => [:CHAMPION_Aiden, "Aiden"]
       },
     }
-    self.set_runner_mode_battle_music
+    self.set_runner_mode_battle_music(static_encounter_map)
     setBattleRule("endlessmode")
     setBattleRule("canLose")
     setBattleRule("skipplayersendout") if skip_battle_anim
@@ -286,7 +284,12 @@ module Game
     return WildBattle.start(getRandomPokemonForRunnerMode(opponent_level, $PokemonGlobal.runnerModeBattleCounter), skip_battle_anim:)
   end
 
-  def self.set_runner_mode_battle_music
+  def self.set_runner_mode_battle_music(static_encounter_map)
+    # Use trainer BGM for trainer battles
+    if static_encounter_map.has_key?($PokemonGlobal.runnerModeBattleCounter) &&
+       static_encounter_map[$PokemonGlobal.runnerModeBattleCounter][:type] == :trainer
+      return
+    end
     if is_battle_BGM_set_to_specific_track
       $PokemonGlobal.nextBattleBGM = get_next_battle_BGM_from_saved_preference
       return

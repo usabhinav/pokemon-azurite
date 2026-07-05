@@ -30,7 +30,8 @@ module GameData
       "ShinyVariant" => [:shininess,       "s"],
       "SuperShiny"   => [:super_shininess, "b"],
       "Shadow"       => [:shadowness,      "b"],
-      "Ball"         => [:poke_ball,       "e", :Item]
+      "Ball"         => [:poke_ball,       "e", :Item],
+      "Typology"     => [:typology,        "e", :Typology],
     }
 
     extend ClassMethodsSymbols
@@ -171,6 +172,7 @@ module GameData
           pkmn.makeRegular
         end
         pkmn.poke_ball = pkmn_data[:poke_ball] if pkmn_data[:poke_ball]
+        pkmn.typology = pkmn_data[:typology] if pkmn_data[:typology]
         pkmn.calc_stats
       end
       return trainer

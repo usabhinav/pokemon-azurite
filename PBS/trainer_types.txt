@@ -472,5 +472,5 @@ VictoryBGM = Battle victory leader
 Name = Champion
 Gender = Male
 BaseMoney = 100
-BattleBGM = Battle Champion
+BattleBGM = Battle - 016 Champion Battle (Aiden)
 VictoryBGM = Battle victory leader

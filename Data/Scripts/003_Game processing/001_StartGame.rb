@@ -209,7 +209,13 @@ module Game
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Koko, "Koko"]
       },
-      # TODO: 45 => trainer with Celebi (Time Break)
+      45 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:PHANTITUTE, level)
+          next poke
+        }
+      },
       50 => {
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Ruyter, "Ruyter"]
@@ -225,9 +231,17 @@ module Game
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Gaia, "Gaia"]
       },
+      # TODO: 65 => trainer with Celebi (Time Break)
       70 => {
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Marianne, "Marianne"]
+      },
+      75 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:OKEANIOS, level)
+          next poke
+        }
       },
       80 => {
         :type => :trainer,
@@ -236,7 +250,7 @@ module Game
       85 => {
         :type => :wild,
         :get_pokemon => proc { |level|
-          poke = Pokemon.new(:OKEANIOS, level)
+          poke = Pokemon.new(:KYAZURA, level)
           next poke
         }
       },
@@ -244,13 +258,7 @@ module Game
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Lucien, "Lucien"]
       },
-      95 => {
-        :type => :wild,
-        :get_pokemon => proc { |level|
-          poke = Pokemon.new(:KYAZURA, level)
-          next poke
-        }
-      },
+      # TODO: E4
       100 => {
         :type => :trainer,
         :trainer_battle_args => [:CHAMPION_Aiden, "Aiden"]

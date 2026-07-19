@@ -52,14 +52,14 @@ def get_display_name_for_battle_BGM(battle_bgm_save_name)
     return "Random track"
   end
   if is_audio_file_azurite_ost(battle_bgm_save_name)
-    return $audio_metadata_map["Audio/BGM/" + battle_bgm_save_name].get_one("TITLE")
+    return $audio_metadata_map["Audio/BGM/" + battle_bgm_save_name].get_one("TITLE").force_encoding("UTF-8")
   end
   return battle_bgm_save_name
 end
 
 def get_artist_name_for_battle_BGM(battle_bgm_save_name)
   if is_audio_file_azurite_ost(battle_bgm_save_name)
-    return $audio_metadata_map["Audio/BGM/" + battle_bgm_save_name].get_one("ARTIST")
+    return $audio_metadata_map["Audio/BGM/" + battle_bgm_save_name].get_one("ARTIST").force_encoding("UTF-8")
   end
   return "Pokémon Essentials"
 end

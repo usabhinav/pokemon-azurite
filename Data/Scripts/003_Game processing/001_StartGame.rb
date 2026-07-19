@@ -63,7 +63,7 @@ module Game
       pbAddPokemonSilent(:KUUBY, 5)
       pbAddPokemonSilent(:TWIGIT, 5)
       pbAddPokemonSilent(:KIKRO, 5)
-      # Make sure each Pokemon has at least one non-Normal damaging move
+      # Make sure each Pokemon has at least one non-Normal damaging move so that early Ghost-types aren't guaranteed to win
       $player.party.each do |p|
         next if p.moves.any? { |m| m.base_damage > 0 && m.type != :NORMAL }
         move_to_learn = p.getMoveList.find do |m|
@@ -79,6 +79,13 @@ module Game
     end
     skip_battle_anim = false
     while true
+      if $PokemonGlobal.runnerModeBattleCounter == 101
+        pbMessage(_INTL("Congratulations! You have successfully made your way through 100 grueling battles!"))
+        pbMessage(_INTL("From here on out, you will continue to face wild Pokémon for as long as you'd like."))
+        pbMessage(_INTL("You can also start a new journey, knowing that you have overcome every obstacle that has come your way!"))
+        pbMessage(_INTL("Thank you for playing all the way until the end! And thanks for your continued support throughout our journey!"))
+        pbStartCredits
+      end
       self.runner_mode_show_options_in_between_battles
       if $PokemonGlobal.runnerModeBattleCounter > 1
         self.autosave_runner_mode
@@ -133,23 +140,37 @@ module Game
           next poke
         }
       },
-      10 => {
+      8 => {
         :type => :wild,
         :get_pokemon => proc { |level|
-          poke = Pokemon.new(:DITTO, level)
-          poke.learn_move(:TRANSFORM)
+          poke = Pokemon.new(:SLOOF, level)
           next poke
         }
       },
-      15 => {
+      10 => {
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:GIRAFARIG, level)
           poke.ability = :STANDWATCH
+          poke.forget_all_moves
+          poke.learn_move(:REST)
+          poke.learn_move(:SLEEPTALK)
+          poke.learn_move(:BODYSLAM)
+          poke.learn_move(:STOMP)
+          poke.status = :SLEEP
+          poke.statusCount = 4
           next poke
         }
       },
-      20 => {
+      13 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:PIKACHU, level)
+          poke.makeAlbino
+          next poke
+        }
+      },
+      15 => {
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:VARYMITE, level)
@@ -157,8 +178,134 @@ module Game
           next poke
         }
       },
+      18 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:DITTO, level)
+          poke.learn_move(:TRANSFORM)
+          next poke
+        }
+      },
+      20 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Banyan, "Banyan"]
+      },
+      25 => {
+        :type => :trainer,
+        :trainer_battle_args => [:CAMPER, "Loof"],
+        :pre_battle_script => proc {
+          EliteBattle.set(:nextBattleScript, :LOOF)
+          setBattleRule("double")
+        },
+        :battle_script_symbol => :LOOF
+      },
+      28 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new([:NIDORINA, :NIDORINO].sample, level)
+          poke.makeAlbino
+          next poke
+        }
+      },
+      30 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Deiva, "Deiva"]
+      },
+      35 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:AEGISLASH, level)
+          poke.form = 3
+          poke.learn_move(:DELAYEDATTACK)
+          next poke
+        }
+      },
+      40 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Koko, "Koko"]
+      },
+      45 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:PHANTITUTE, level)
+          next poke
+        }
+      },
+      50 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Ruyter, "Ruyter"]
+      },
+      55 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:LUMENY, level)
+          next poke
+        }
+      },
+      60 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Gaia, "Gaia"]
+      },
+      65 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:CELEBI, level)
+          poke.forget_all_moves
+          poke.learn_move(:TIMEBREAK)
+          poke.learn_move(:ANCIENTPOWER)
+          poke.learn_move(:RECOVER)
+          poke.learn_move(:LEECHSEED)
+          next poke
+        }
+      },
+      70 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Marianne, "Marianne"]
+      },
+      75 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:OKEANIOS, level)
+          next poke
+        }
+      },
+      80 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Bialas, "Bialas", :LEADER_Atlas, "Atlas"]
+      },
+      85 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:KYAZURA, level)
+          next poke
+        }
+      },
+      90 => {
+        :type => :trainer,
+        :trainer_battle_args => [:LEADER_Lucien, "Lucien"]
+      },
+      96 => {
+        :type => :trainer,
+        :trainer_battle_args => [:ELITEFOUR_Olympia, "Olympia"]
+      },
+      97 => {
+        :type => :trainer,
+        :trainer_battle_args => [:ELITEFOUR_Nicolas, "Nicolas"]
+      },
+      98 => {
+        :type => :trainer,
+        :trainer_battle_args => [:ELITEFOUR_Bron, "Bron"]
+      },
+      99 => {
+        :type => :trainer,
+        :trainer_battle_args => [:ELITEFOUR_Dahlia, "Dahlia"]
+      },
+      100 => {
+        :type => :trainer,
+        :trainer_battle_args => [:CHAMPION_Aiden, "Aiden"]
+      },
     }
-    self.set_runner_mode_battle_music
+    self.set_runner_mode_battle_music(static_encounter_map)
     setBattleRule("endlessmode")
     setBattleRule("canLose")
     setBattleRule("skipplayersendout") if skip_battle_anim
@@ -177,14 +324,22 @@ module Game
     opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
     if static_encounter_map.key?($PokemonGlobal.runnerModeBattleCounter)
       encounter_definition = static_encounter_map[$PokemonGlobal.runnerModeBattleCounter]
-      if encounter_definition[:type] == :wild
+      encounter_definition[:pre_battle_script].call if encounter_definition[:pre_battle_script]
+      if encounter_definition[:type] == :trainer
+        return TrainerBattle.start(*encounter_definition[:trainer_battle_args])
+      else
         return WildBattle.start(encounter_definition[:get_pokemon].call(opponent_level), skip_battle_anim:)
       end
     end
     return WildBattle.start(getRandomPokemonForRunnerMode(opponent_level, $PokemonGlobal.runnerModeBattleCounter), skip_battle_anim:)
   end
 
-  def self.set_runner_mode_battle_music
+  def self.set_runner_mode_battle_music(static_encounter_map)
+    # Use trainer BGM for trainer battles
+    if static_encounter_map.has_key?($PokemonGlobal.runnerModeBattleCounter) &&
+       static_encounter_map[$PokemonGlobal.runnerModeBattleCounter][:type] == :trainer
+      return
+    end
     if is_battle_BGM_set_to_specific_track
       $PokemonGlobal.nextBattleBGM = get_next_battle_BGM_from_saved_preference
       return

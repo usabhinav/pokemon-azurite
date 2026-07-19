@@ -147,7 +147,8 @@ class Battle::Scene
     # assign bitmaps for player battlers if applicable
     loadPlayerPokemonBitmapsForRunnerMode
     if @battle.rules["showbgmwindow"]
-      @sprites["bgm_window"] = GenericTextWindow.new(_INTL("Now playing: {1}", get_display_name_for_battle_BGM($PokemonGlobal.nextBattleBGM)), @viewport)
+      bgm_name = $PokemonGlobal.nextBattleBGM || $game_system.getPlayingBGM.name
+      @sprites["bgm_window"] = GenericTextWindow.new(_INTL("Now playing: {1}", get_display_name_for_battle_BGM(bgm_name)), @viewport)
     end
   end
   #-----------------------------------------------------------------------------

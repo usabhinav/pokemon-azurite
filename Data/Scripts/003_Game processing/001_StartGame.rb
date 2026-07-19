@@ -63,7 +63,7 @@ module Game
       pbAddPokemonSilent(:KUUBY, 5)
       pbAddPokemonSilent(:TWIGIT, 5)
       pbAddPokemonSilent(:KIKRO, 5)
-      # Make sure each Pokemon has at least one non-Normal damaging move
+      # Make sure each Pokemon has at least one non-Normal damaging move so that early Ghost-types aren't guaranteed to win
       $player.party.each do |p|
         next if p.moves.any? { |m| m.base_damage > 0 && m.type != :NORMAL }
         move_to_learn = p.getMoveList.find do |m|
@@ -143,8 +143,7 @@ module Game
       8 => {
         :type => :wild,
         :get_pokemon => proc { |level|
-          poke = Pokemon.new(:DITTO, level)
-          poke.learn_move(:TRANSFORM)
+          poke = Pokemon.new(:SLOOF, level)
           next poke
         }
       },
@@ -179,11 +178,27 @@ module Game
           next poke
         }
       },
+      18 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:DITTO, level)
+          poke.learn_move(:TRANSFORM)
+          next poke
+        }
+      },
       20 => {
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Banyan, "Banyan"]
       },
-      # TODO: 25 => trainer with 2 Sloof, equalizer C and M
+      25 => {
+        :type => :trainer,
+        :trainer_battle_args => [:CAMPER, "Loof"],
+        :pre_battle_script => proc {
+          EliteBattle.set(:nextBattleScript, :LOOF)
+          setBattleRule("double")
+        },
+        :battle_script_symbol => :LOOF
+      },
       28 => {
         :type => :wild,
         :get_pokemon => proc { |level|
@@ -231,7 +246,18 @@ module Game
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Gaia, "Gaia"]
       },
-      # TODO: 65 => trainer with Celebi (Time Break)
+      65 => {
+        :type => :wild,
+        :get_pokemon => proc { |level|
+          poke = Pokemon.new(:CELEBI, level)
+          poke.forget_all_moves
+          poke.learn_move(:TIMEBREAK)
+          poke.learn_move(:ANCIENTPOWER)
+          poke.learn_move(:RECOVER)
+          poke.learn_move(:LEECHSEED)
+          next poke
+        }
+      },
       70 => {
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Marianne, "Marianne"]
@@ -258,7 +284,22 @@ module Game
         :type => :trainer,
         :trainer_battle_args => [:LEADER_Lucien, "Lucien"]
       },
-      # TODO: E4
+      96 => {
+        :type => :trainer,
+        :trainer_battle_args => [:ELITEFOUR_Olympia, "Olympia"]
+      },
+      97 => {
+        :type => :trainer,
+        :trainer_battle_args => [:ELITEFOUR_Nicolas, "Nicolas"]
+      },
+      98 => {
+        :type => :trainer,
+        :trainer_battle_args => [:ELITEFOUR_Bron, "Bron"]
+      },
+      99 => {
+        :type => :trainer,
+        :trainer_battle_args => [:ELITEFOUR_Dahlia, "Dahlia"]
+      },
       100 => {
         :type => :trainer,
         :trainer_battle_args => [:CHAMPION_Aiden, "Aiden"]
@@ -283,6 +324,7 @@ module Game
     opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
     if static_encounter_map.key?($PokemonGlobal.runnerModeBattleCounter)
       encounter_definition = static_encounter_map[$PokemonGlobal.runnerModeBattleCounter]
+      encounter_definition[:pre_battle_script].call if encounter_definition[:pre_battle_script]
       if encounter_definition[:type] == :trainer
         return TrainerBattle.start(*encounter_definition[:trainer_battle_args])
       else

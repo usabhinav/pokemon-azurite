@@ -130,6 +130,13 @@ Pokemon = PIKACHU,16
 LoseText = A very good battle, indeed!
 Pokemon = PIKACHU,16
 #-------------------------------
+[CAMPER,Loof]
+LoseText = Even my Equalizers weren't enough...
+Pokemon = SLOOF,20
+    Item = EQUALIZERM
+Pokemon = SLOOF,20
+    Item = EQUALIZERC
+#-------------------------------
 [LEADER_Banyan,Banyan]
 Items = POTION
 LoseText = ...
@@ -476,6 +483,87 @@ Pokemon = RAICHU,67
     Ability = LIGHTNINGROD
     Item = CRYSTALFRAGMENT
     EV = 0,0,0,252,252,0
+#-------------------------------
+[ELITEFOUR_Bron,Bron]
+Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE
+LoseText = ...
+Pokemon = SHARPEDO,64
+    Gender = female
+    Moves = LIQUIDATION,CRUNCH,POISONJAB,DESTINYBOND
+    Ability = SPEEDBOOST
+    Item = FOCUSSASH
+    EV = 0,252,0,252,0,0
+Pokemon = DRAPION,65
+    Gender = male
+    Moves = CROSSPOISON,EARTHQUAKE,AQUATAIL,NIGHTSLASH
+    Ability = SNIPER
+    Item = SCOPELENS
+    EV = 0,252,0,252,0,0
+Pokemon = SCOLIPEDE,64
+    Form = 1
+    Gender = female
+    Moves = LUNGE,THROATCHOP,CROSSPOISON,EARTHQUAKE
+    Ability = VANGUARD
+    Item = ASSAULTVEST
+    EV = 0,252,0,252,0,0
+Pokemon = HYDREIGON,65
+    Gender = female
+    Moves = FLAMETHROWER,DARKPULSE,FLASHCANNON,EARTHPOWER
+    Ability = LEVITATE
+    Item = EXPERTBELT
+    EV = 0,0,0,252,252,0
+Pokemon = CACTURNE,66
+    Gender = male
+    Moves = SPLINTER,SUCKERPUNCH,DRAINPUNCH,THORNTRAP
+    Ability = DESERTBODY
+    Item = CACTURNITE
+    EV = 252,252,0,0,0,0
+Pokemon = BISHARP,67
+    Gender = male
+    Moves = KNOCKOFF,SUCKERPUNCH,SWORDSDANCE,CRYSTALWAVE
+    Ability = DEFIANT
+    Item = CRYSTALFRAGMENT
+    EV = 252,252,0,0,0,0
+#-------------------------------
+[ELITEFOUR_Dahlia,Dahlia]
+Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE
+LoseText = ...
+Pokemon = HATTERENE,64
+    Gender = female
+    Moves = MOONBLAST,MYSTICALFIRE,RELICWAVE,MAGICTRICK
+    Ability = MAGICBOUNCE
+    Item = LEFTOVERS
+    EV = 252,0,0,0,252,0
+Pokemon = PRIMARINA,65
+    Gender = female
+    Moves = SCALD,MOONBLAST,PSYCHIC,ENERGYBALL
+    Ability = TORRENT
+    Item = LEFTOVERS
+    EV = 252,0,0,0,252,0
+Pokemon = KESHIGAMI,65
+    Gender = female
+    Moves = WILLOWISP,HEX,DRAININGKISS,CALMMIND
+    Ability = TECHNICIAN
+    Item = LEFTOVERS
+    EV = 252,0,252,0,0,0
+Pokemon = CANDICORN,64
+    Gender = female
+    Moves = PLAYROUGH,RETURN,HIGHHORSEPOWER,SWORDSDANCE
+    Ability = LIMBER
+    Item = FOCUSSASH
+    EV = 0,252,0,252,0,0
+Pokemon = MARVELAZE,66
+    Gender = female
+    Moves = FIERYDANCE,MOONBLAST,CRYSTALBEAM,ROOST
+    Ability = SERENEGRACE
+    Item = CRYSTALFRAGMENT
+    EV = 0,0,0,252,252,0
+Pokemon = AROMATISSE,67
+    Gender = female
+    Moves = MOONBLAST,CALMMIND,PSYCHIC,WISH
+    Ability = AROMAVEIL
+    Item = AROMATISSITE
+    EV = 252,0,252,0,0,0
 #-------------------------------
 [CHAMPION_Aiden,Aiden]
 Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE

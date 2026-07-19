@@ -84,4 +84,7 @@ module BattleScripts
     end
   }
   #-----------------------------------------------------------------------------
+  LOOF = {
+    "turnStart0" => "Prepare to witness the power of my Pokémon!",
+  }
 end

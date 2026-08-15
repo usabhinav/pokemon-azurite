@@ -338,10 +338,6 @@ module Game
       if encounter_definition[:type] == :trainer
         battle_ret = TrainerBattle.start(*encounter_definition[:trainer_battle_args])
       else
-        # TODO: REMOVE
-        if $PokemonGlobal.runnerModeBattleCounter == 10
-          $PokemonGlobal.runnerModeNextPokemon = encounter_definition[:get_pokemon].call(8)
-        end
         battle_ret = WildBattle.start($PokemonGlobal.runnerModeNextPokemon, skip_battle_anim:)
       end
     else

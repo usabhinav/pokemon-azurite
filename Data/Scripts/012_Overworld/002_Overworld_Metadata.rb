@@ -59,6 +59,8 @@ class PokemonGlobalMetadata
   attr_accessor :guild
   # Runner mode counter
   attr_accessor :runnerModeBattleCounter
+  # Runner mode next Pokemon
+  attr_accessor :runnerModeNextPokemon
 
   def initialize
     # Movement
@@ -119,6 +121,7 @@ class PokemonGlobalMetadata
     # Guild
     @guild                = Guild.new
     @runnerModeBattleCounter = 1
+    @runnerModeNextPokemon = nil
   end
 
   def encounter_version=(value)

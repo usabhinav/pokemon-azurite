@@ -1271,6 +1271,8 @@ class PokemonPartyScreen
         if poke.nil?
           poke = Pokemon.new(scene.team_builder_mode_selected_entry[:species], 20)
           @party.push(poke)
+          # Cap index in case player selected a slot with a gap in between
+          index = @party.length - 1 if index >= @party.length
         else
           poke.species = scene.team_builder_mode_selected_entry[:species]
         end

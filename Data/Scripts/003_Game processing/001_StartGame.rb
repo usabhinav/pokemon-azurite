@@ -76,6 +76,7 @@ module Game
       $bag.add(:POKEBALL, 5)
       $bag.add(:GREYSCALE)
       $bag.add(:MEGAKEYSTONE)
+      $PokemonGlobal.runnerModeNextPokemon = getRandomPokemonForRunnerMode(3, $PokemonGlobal.runnerModeBattleCounter)
     end
     skip_battle_anim = false
     while true
@@ -105,6 +106,7 @@ module Game
       if $PokemonGlobal.runnerModeBattleCounter == 41
         pbReceiveItem(:EQUALIZERM)
         pbReceiveItem(:EQUALIZERC)
+        pbReceiveItem(:MASTERBALL)
       end
       # Heal every 10 rounds
       if $PokemonGlobal.runnerModeBattleCounter % 10 == 1
@@ -151,7 +153,8 @@ module Game
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:GIRAFARIG, level)
-          poke.ability = :STANDWATCH
+          poke.form = 1
+          poke.ability_index = 2
           poke.forget_all_moves
           poke.learn_move(:REST)
           poke.learn_move(:SLEEPTALK)
@@ -228,6 +231,7 @@ module Game
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:PHANTITUTE, level)
+          poke.learn_move(:SUBSTITUTE)
           next poke
         }
       },
@@ -313,25 +317,36 @@ module Game
       setBattleRule("showbgmwindow")
     end
     EliteBattle.set(:nextBattleBack, { "backdrop" => "AzuriteArena" })
-    # The general pattern is that it increments by 1 except for every 9th and 10th battle, where it stays constant.
+    # The general pattern is that the level increments by 1 except for every 9th and 10th battle, where it stays constant.
     # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 8, 8, 8
     # Waves 11-20: 9, 10, 11, 12, 13, 14, 15, 16, 16, 16
     # ...
     # Waves 91-100: 73, 74, 75, 76, 77, 78, 79, 80, 80, 80
     # Waves 101+: 80
-    opponent_level_cap = [((($PokemonGlobal.runnerModeBattleCounter - 1) / 10).floor + 1) * 8, 80].min
-    unconstrained_level = (($PokemonGlobal.runnerModeBattleCounter / 10).floor) * 8 + ($PokemonGlobal.runnerModeBattleCounter % 10)
-    opponent_level = unconstrained_level.clamp(3, opponent_level_cap)
+    next_round = $PokemonGlobal.runnerModeBattleCounter + 1
+    next_opponent_level_cap = [(((next_round - 1) / 10).floor + 1) * 8, 80].min
+    unconstrained_level = ((next_round / 10).floor) * 8 + (next_round % 10)
+    next_opponent_level = unconstrained_level.clamp(3, next_opponent_level_cap)
+    # Lock in the next Pokemon
+    next_pokemon_to_lock = getRandomPokemonForRunnerMode(next_opponent_level, next_round)
+    if static_encounter_map.key?(next_round) && static_encounter_map[next_round][:type] == :wild
+      next_pokemon_to_lock = static_encounter_map[next_round][:get_pokemon].call(next_opponent_level)
+    end
+    # Start the battle
+    battle_ret = nil
     if static_encounter_map.key?($PokemonGlobal.runnerModeBattleCounter)
       encounter_definition = static_encounter_map[$PokemonGlobal.runnerModeBattleCounter]
       encounter_definition[:pre_battle_script].call if encounter_definition[:pre_battle_script]
       if encounter_definition[:type] == :trainer
-        return TrainerBattle.start(*encounter_definition[:trainer_battle_args])
+        battle_ret = TrainerBattle.start(*encounter_definition[:trainer_battle_args])
       else
-        return WildBattle.start(encounter_definition[:get_pokemon].call(opponent_level), skip_battle_anim:)
+        battle_ret = WildBattle.start($PokemonGlobal.runnerModeNextPokemon, skip_battle_anim:)
       end
+    else
+      battle_ret = WildBattle.start($PokemonGlobal.runnerModeNextPokemon, skip_battle_anim:)
     end
-    return WildBattle.start(getRandomPokemonForRunnerMode(opponent_level, $PokemonGlobal.runnerModeBattleCounter), skip_battle_anim:)
+    $PokemonGlobal.runnerModeNextPokemon = next_pokemon_to_lock
+    return battle_ret
   end
 
   def self.set_runner_mode_battle_music(static_encounter_map)

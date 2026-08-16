@@ -178,6 +178,7 @@ class Interpreter
       err += "Message: #{message}\r\n\r\n"
       err += "***Full script:\r\n#{script}"   # \r\n"
       err += backtrace_text
+      echoln err
       # Raise error
       raise EventScriptError.new(err)
     end

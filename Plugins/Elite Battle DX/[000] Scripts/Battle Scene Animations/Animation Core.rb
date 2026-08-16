@@ -404,8 +404,9 @@ class Battle::Scene
     new = []
     for t in targets
       pkmn = @battle.battlers[t]
-      new.push(t) if (pkmn.effects[PBEffects::Substitute] > 0 && !@sprites["pokemon_#{pkmn.index}"].isSub) ||
-                    (pkmn.effects[PBEffects::Substitute] == 0 && @sprites["pokemon_#{pkmn.index}"].isSub)
+      new.push(t) if ((pkmn.effects[PBEffects::Substitute] > 0 && !@sprites["pokemon_#{pkmn.index}"].isSub) ||
+                    (pkmn.effects[PBEffects::Substitute] == 0 && @sprites["pokemon_#{pkmn.index}"].isSub)) &&
+                    !(pkmn.isSpecies?(:PHANTITUTE) && pkmn.ability == :PROXY)
     end
     return unless new.length > 0
     EliteBattle.playCommonAnimation(:SUBSTITUTE, self, 0, 0, 0, new, false)

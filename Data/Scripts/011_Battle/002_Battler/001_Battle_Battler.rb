@@ -185,7 +185,7 @@ class Battle::Battler
     if @pokemon && @hp == 0 && isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH && self.pokemon.form_simple == 1
       # Turn around if tail faints
       @battle.pbShowAbilitySplash(self)
-      pbChangeFormStandWatch(0,_INTL("{1} turned around!",pbThis))
+      pbChangeFormStandWatch(0,_INTL("{1}'s tail fainted!",pbThis))
       @battle.pbHideAbilitySplash(self)
       @hp = @pokemon.hp
     end
@@ -549,7 +549,7 @@ class Battle::Battler
     ability_blacklist = [
       # Form-changing abilities
       :BATTLEBOND,
-#      :DARKDUALITY,                                       # This can be stopped
+      :DARKDUALITY,
       :DELIRIUM,
       :DISGUISE,
       :EFFULGE,
@@ -560,8 +560,8 @@ class Battle::Battler
       :ICEFACE,
       :MULTITYPE,
       :POWERCONSTRUCT,
-#      :POWERWITHIN,                                       # This can be stopped
-#      :PROXY,                                             # This can be stopped
+      :POWERWITHIN,
+      :PROXY,
       :SCHOOLING,
       :SHIELDSDOWN,
       :STANCECHANGE,

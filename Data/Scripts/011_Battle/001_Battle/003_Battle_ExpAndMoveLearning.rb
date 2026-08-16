@@ -148,6 +148,12 @@ class Battle
     end
     # Exp. Charm increases Exp gained
     exp = exp * 3 / 2 if $bag.has?(:EXPCHARM)
+    # Boost Exp gain even more in runner mode
+    if $game_temp.game_mode_type == :ENDLESS_MODE && $PokemonGlobal.runnerModeBattleCounter > 40
+      # Can multiply 2x, 3x, 4x, or 5x
+      runner_mode_exp_mult = [(($PokemonGlobal.runnerModeBattleCounter - 40) / 20) + 2, 5].min
+      exp *= runner_mode_exp_mult
+    end
     # Modify Exp gain based on pkmn's held item
     i = Battle::ItemEffects.triggerExpGainModifier(pkmn.item, pkmn, exp)
     if i < 0

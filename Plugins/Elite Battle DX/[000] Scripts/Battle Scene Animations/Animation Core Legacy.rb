@@ -146,7 +146,8 @@ class Battle::Scene
     # clears the current UI
     pbHideAllDataboxes
     # hides Substitute
-    if @sprites["pokemon_#{user.index}"] && @battle.battlescene
+    if @sprites["pokemon_#{user.index}"] && @battle.battlescene &&
+       !(user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY)
       subbed = @sprites["pokemon_#{user.index}"].isSub
       self.setSubstitute(user.index, false) if subbed
     end
@@ -191,7 +192,8 @@ class Battle::Scene
       pbChangePokemon(user, target.pokemon, true)
     end
     # restores Substitute
-    if move.function != "UserMakeSubstitute" && @sprites["pokemon_#{user.index}"] && @battle.battlescene
+    if move.function != "UserMakeSubstitute" && @sprites["pokemon_#{user.index}"] && @battle.battlescene &&
+       !(user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY)
       substituteEffectActive = user.effects[PBEffects::Substitute] > 0
       self.setSubstitute(user.index) if substituteEffectActive
     end

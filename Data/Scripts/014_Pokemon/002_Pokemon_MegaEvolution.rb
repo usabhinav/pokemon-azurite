@@ -37,8 +37,11 @@ class Pokemon
   end
 
   def makeUnmega
+    old_hp = @hp
     unmegaForm = self.getUnmegaForm
     self.form = unmegaForm if unmegaForm >= 0
+    # For now, preventing HP recovery even if the base form has a higher base HP stat
+    @hp = 0 if old_hp == 0
   end
 
   def megaName
@@ -125,8 +128,11 @@ class Pokemon
   end
 
   def makeUncrystal
+    old_hp = @hp
     uncrystalForm = self.getUncrystalForm
     self.form = uncrystalForm if uncrystalForm >= 0
+    # For now, preventing HP recovery even if the base form has a higher base HP stat
+    @hp = 0 if old_hp == 0
   end
 
   def crystalName
@@ -183,11 +189,14 @@ class Pokemon
   end
 
   def makeUnprimal
+    old_hp = @hp
     v = MultipleForms.call("getUnprimalForm", self)
     if !v.nil?
       self.form = v
     elsif primal?
       self.form = 0
     end
+    # For now, preventing HP recovery even if the base form has a higher base HP stat
+    @hp = 0 if old_hp == 0
   end
 end

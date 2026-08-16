@@ -752,6 +752,9 @@ class Battle::Move::UserMakeSubstitute < Battle::Move
     user.effects[PBEffects::TrappingMove] = nil
     user.effects[PBEffects::Substitute]   = @subLife
     @battle.pbDisplay(_INTL("{1} put in a substitute!", user.pbThis))
+    if user.isSpecies?(:PHANTITUTE) && user.ability == :PROXY
+      user.form = 0
+    end
   end
 end
 

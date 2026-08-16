@@ -490,6 +490,8 @@ class PokemonLoadScreen
       else
         buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
       end
+    else
+      buttonFormat[cmd_new_game] = LoadMenu_Model::BTN_NORMAL_BIG
     end
     commands[cmd_new_game_runner_mode = commands.length] = _INTL('New Endless Run')
     buttonFormat[cmd_new_game_runner_mode] = LoadMenu_Model::BTN_NORMAL_BIG

@@ -411,6 +411,18 @@ class DynamicPokemonSprite
     # assigns bitmap to sprite
     @sprite.bitmap = @bitmap.bitmap.clone
     @shadow.bitmap = @bitmap.bitmap.clone
+    # assigns substitute bitmap
+    if !@battle.nil?
+      substitute_file_path = "Graphics/EBDX/Battlers/" + ((@index % 2 == 0) ? "substitute_back" : "substitute")
+      battler = @battle.battlers[@index]
+      if battler.isSpecies?(:PHANTITUTE) && battler.ability == :PROXY
+        phantitute_clone = pokemon.clone
+        phantitute_clone.form = 0
+        substitute_file_path = pbPokemonBitmapFileName(phantitute_clone, species, back)
+      end
+      @substitute.dispose if @substitute
+      @substitute = BitmapEBDX.new(substitute_file_path, EliteBattle::FRONT_SPRITE_SCALE)
+    end
     # applies battler positioning on screen
     self.refreshMetrics(species_metrics_data.nil? ? "skip" : species_metrics_data)
     # refreshes process variables

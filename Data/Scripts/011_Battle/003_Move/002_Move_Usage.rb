@@ -332,7 +332,11 @@ class Battle::Move
   def pbHitEffectivenessMessages(user, target, numTargets = 1)
     return if target.damageState.disguise || target.damageState.iceFace
     if target.damageState.substitute
-      @battle.pbDisplay(_INTL("The substitute took damage for {1}!", target.pbThis(true)))
+      if target.isSpecies?(:PHANTITUTE) && target.ability == :PROXY
+        @battle.pbDisplay(_INTL("{1} absorbed the damage!", target.pbThis))
+      else
+        @battle.pbDisplay(_INTL("The substitute took damage for {1}!", target.pbThis(true)))
+      end
     end
     if target.damageState.critical
       if $game_temp.party_critical_hits_dealt &&
@@ -360,9 +364,21 @@ class Battle::Move
     if target.damageState.substitute && target.effects[PBEffects::Substitute] == 0
       target.effects[PBEffects::Substitute] = 0
       if target.isSpecies?(:PHANTITUTE) && target.ability == :PROXY
-        target.pbChangeForm(0, nil)
+        @battle.pbShowAbilitySplash(target)
+        target.pbChangeForm(1, nil)
+        @battle.pbDisplay(_INTL("{1} revealed its true form!", target.pbThis))
+        showAnim = true
+        statUp = [:DEFENSE, 1, :SPEED, 1]
+        (statUp.length / 2).times do |i|
+          next if !target.pbCanRaiseStatStage?(statUp[i * 2], target)
+          if target.pbRaiseStatStage(statUp[i * 2], statUp[(i * 2) + 1], target, showAnim)
+            showAnim = false
+          end
+        end
+        @battle.pbHideAbilitySplash(target)
+      else
+        @battle.pbDisplay(_INTL("{1}'s substitute faded!", target.pbThis))
       end
-      @battle.pbDisplay(_INTL("{1}'s substitute faded!", target.pbThis))
     end
   end
 

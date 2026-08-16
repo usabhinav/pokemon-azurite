@@ -230,6 +230,7 @@ module Game
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:PHANTITUTE, level)
+          poke.learn_move(:SUBSTITUTE)
           next poke
         }
       },

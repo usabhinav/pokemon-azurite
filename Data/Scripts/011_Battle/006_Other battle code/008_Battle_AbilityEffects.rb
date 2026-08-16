@@ -5354,6 +5354,14 @@ Battle::AbilityEffects::OnSwitchIn.add(:DISTORTED,
   }
 )
 
+Battle::AbilityEffects::OnSwitchIn.add(:PROXY,
+  proc { |ability, battler, battle, switch_in|
+    next if !battler.isSpecies?(:PHANTITUTE)
+    battle.scene.sprites["pokemon_#{battler.index}"].setSubstitute
+    battler.effects[PBEffects::Substitute] = [battler.totalhp / 4, 1].max
+  }
+)
+
 #===============================================================================
 # OnSwitchOut handlers
 #===============================================================================

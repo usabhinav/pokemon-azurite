@@ -106,6 +106,7 @@ module Game
       if $PokemonGlobal.runnerModeBattleCounter == 41
         pbReceiveItem(:EQUALIZERM)
         pbReceiveItem(:EQUALIZERC)
+        pbReceiveItem(:MASTERBALL)
       end
       # Heal every 10 rounds
       if $PokemonGlobal.runnerModeBattleCounter % 10 == 1

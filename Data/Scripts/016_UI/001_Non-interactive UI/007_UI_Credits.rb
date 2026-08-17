@@ -480,6 +480,9 @@ def pbStartCredits
     $scene = Scene_Credits.new
     $scene.main
     # Fade back to this screen
+    $scene.disposeSpritesets
+    RPG::Cache.clear
+    Graphics.frame_reset
     $scene = old_scene
   }
 end
@@ -496,6 +499,9 @@ def pbStartCreditsFromTitleScreen
     $scene.main
     SaveData.mark_values_as_unloaded
     # Fade back to this screen
+    $scene.disposeSpritesets
+    RPG::Cache.clear
+    Graphics.frame_reset
     $scene = old_scene
   }
 end

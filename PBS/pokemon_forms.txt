@@ -3100,7 +3100,7 @@ BaseStats = 140,70,82,30,60,88
 Abilities = SAPSIPPER
 Moves = 0,POWERWHIP,1,STOCKPILE,1,REST,1,HEADBUTT,1,GROWL,8,BULLETSEED,10,GROWTH,14,ODORSLEUTH,16,BITE,20,SWEETSCENT,22,SLEEPPOWDER,25,MEGADRAIN,28,LEECHSEED,31,DRAGONBREATH,34,SUNNYDAY,37,RAGEPOWDER,40,DRAGONTAIL,44,SEEDBOMB,46,AROMATHERAPY,49,HEALPULSE,52,DRAGONPULSE,55,WOODHAMMER,60,LEAFSTORM,66,SYNTHESIS
 Color = Green
-Pokedex = They look intimidating at first, but are near harmless and non-combative. Kurian Hakamo-o and Kommo-o would probably never had attacked had they not looked as they do.
+Pokedex = They look intimidating at first, but are near harmless and non-combative. Kurian Hakamo-o and Kommo-o would probably have never attacked had they not looked as they do.
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TORNADUS,2]

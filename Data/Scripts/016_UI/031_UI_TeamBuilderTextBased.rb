@@ -256,6 +256,9 @@ class TeamBuilderTextBasedScreen
           SaveData.mark_values_as_unloaded
           registerAllSpeciesAndForms # To show all species/forms when selecting species
           # Fade back to this screen
+          $scene.disposeSpritesets
+          RPG::Cache.clear
+          Graphics.frame_reset
           $scene = old_scene
         end
       else

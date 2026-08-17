@@ -106,6 +106,7 @@ module Game
       if $PokemonGlobal.runnerModeBattleCounter == 41
         pbReceiveItem(:EQUALIZERM)
         pbReceiveItem(:EQUALIZERC)
+        pbReceiveItem(:CRYSTALFRAGMENT)
         pbReceiveItem(:MASTERBALL)
       end
       # Heal every 10 rounds
@@ -280,7 +281,8 @@ module Game
       85 => {
         :type => :wild,
         :get_pokemon => proc { |level|
-          poke = Pokemon.new(:KYAZURA, level)
+          poke = Pokemon.new(:HYDREIGON, level)
+          poke.form = 1
           next poke
         }
       },

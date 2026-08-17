@@ -1010,7 +1010,7 @@ class BattleSceneRoom
       @sprites[key].z -= 100
     end
     @invertbgdata.each do |data|
-      data.new_battlebg.z -= 100
+      data.new_sprite.z -= 100
     end
     @focused = false
   end
@@ -1020,7 +1020,7 @@ class BattleSceneRoom
       @sprites[key].z += 100
     end
     @invertbgdata.each do |data|
-      data.new_battlebg.z += 100
+      data.new_sprite.z += 100
     end
     @focused = true
   end

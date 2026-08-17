@@ -248,7 +248,7 @@ Pokemon = CRAWDAUNT,36
     EV = 0,252,0,252,0,0
 #-------------------------------
 [LEADER_Gaia,Gaia]
-Items = LEMONADE,LEMONADE
+Items = LEMONADE,LEMONADE,MEGARING
 LoseText = ...
 Pokemon = GABITE,38
     Gender = male
@@ -279,7 +279,7 @@ Pokemon = KUNAMA,41
     EV = 0,0,0,252,252,0
 #-------------------------------
 [LEADER_Marianne,Marianne]
-Items = HYPERPOTION,HYPERPOTION
+Items = HYPERPOTION,HYPERPOTION,MEGARING
 LoseText = ...
 Pokemon = MEOWSTIC,43
     Gender = male
@@ -322,7 +322,7 @@ Pokemon = MISMAGIUS,46
     EV = 0,0,0,252,252,0
 #-------------------------------
 [LEADER_Atlas,Atlas]
-Items = HYPERPOTION
+Items = HYPERPOTION,MEGARING
 LoseText = ...
 Pokemon = FERROTHORN,43
     Form = 1
@@ -346,7 +346,7 @@ Pokemon = TERANIUM,46
     EV = 0,252,0,252,0,0
 #-------------------------------
 [LEADER_Bialas,Bialas]
-Items = HYPERPOTION
+Items = HYPERPOTION,MEGARING
 LoseText = ...
 Pokemon = EMPOLEON,43
     Gender = female
@@ -368,7 +368,7 @@ Pokemon = HYDREIGON,46
     EV = 0,0,0,252,252,0
 #-------------------------------
 [LEADER_Lucien,Lucien]
-Items = FULLRESTORE,HYPERPOTION,HYPERPOTION
+Items = FULLRESTORE,HYPERPOTION,HYPERPOTION,MEGARING
 LoseText = ...
 Pokemon = LUSHAN,53
     Gender = male
@@ -404,7 +404,7 @@ Pokemon = TYRAGAAN,56
     Item = EQUALIZERM
 #-------------------------------
 [ELITEFOUR_Olympia,Olympia]
-Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE
+Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,MEGARING
 LoseText = ...
 Pokemon = CLEFABLE,64
     Gender = female
@@ -441,7 +441,7 @@ Pokemon = ASTREON,67
     EV = 0,0,0,252,252,0
 #-------------------------------
 [ELITEFOUR_Nicolas,Nicolas]
-Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE
+Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,MEGARING
 LoseText = ...
 Pokemon = VIKAVOLT,64
     Gender = male
@@ -485,7 +485,7 @@ Pokemon = RAICHU,67
     EV = 0,0,0,252,252,0
 #-------------------------------
 [ELITEFOUR_Bron,Bron]
-Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE
+Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,MEGARING
 LoseText = ...
 Pokemon = SHARPEDO,64
     Gender = female
@@ -526,7 +526,7 @@ Pokemon = BISHARP,67
     EV = 252,252,0,0,0,0
 #-------------------------------
 [ELITEFOUR_Dahlia,Dahlia]
-Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE
+Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,MEGARING
 LoseText = ...
 Pokemon = HATTERENE,64
     Gender = female
@@ -566,7 +566,7 @@ Pokemon = AROMATISSE,67
     EV = 252,0,252,0,0,0
 #-------------------------------
 [CHAMPION_Aiden,Aiden]
-Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE
+Items = FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,FULLRESTORE,MEGARING
 LoseText = ...
 Pokemon = NIDOKING,68
     Gender = male

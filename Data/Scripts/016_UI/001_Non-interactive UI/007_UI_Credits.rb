@@ -50,10 +50,14 @@ class Scene_Credits
 Pokémon Azurite was created by these active team members:
 
 SleepyJirachi (Project Lead)
+
 NettoHikari (Programmer)
 Baustein (Programmer)
+
 JPA93 (Mapper, Tech Writer)
+
 GioBasaran (Concept Artist)
+
 Speed King (Sprite Artist)
 Selena (Animator)
 Apawn (Sprite Artist)
@@ -62,8 +66,6 @@ Arin Wolfe (Sprite Artist)
 
 With major contributions from previous team members:
 
-Suzerain (Programmer)
-Baaabuuu (Programmer)
 Eddie Hartman (Programmer)
 Thundamoo (Programmer)
 Dream (Programmer)
@@ -116,6 +118,11 @@ KelyxTheMage (Musician)
 EternalSushi (Musician)
 Draskon5665 (Musician)
 Darius (Musician)
+
+And additional support from:
+
+Suzerain (Programmer)
+Baaabuuu (Programmer)
 
 And additional third-party resources from the following:
 
@@ -216,6 +223,8 @@ Marin
 Stopwatch sound effect (used in the Time Break move's animation)
 JoJo's Bizarre Adventure
 
+EXP Charm sprite from Project PokéSprite (msikma)
+
 Misc. third-party scripts:
 
 Zeak6464<s>Tapu Fini
@@ -279,6 +288,9 @@ Random Talking Bush
 
 A-Exeggutor Fix/Multiple Dex Forms scripts
 Marcello
+
+Additional inspirations:
+Endless Mode heavily inspired by PokéRogue gameplay style
 
 {INSERTS_PLUGIN_CREDITS_DO_NOT_REMOVE}
 

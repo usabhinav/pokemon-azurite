@@ -80,13 +80,6 @@ module Game
     end
     skip_battle_anim = false
     while true
-      if $PokemonGlobal.runnerModeBattleCounter == 101
-        pbMessage(_INTL("Congratulations! You have successfully made your way through 100 grueling battles!"))
-        pbMessage(_INTL("From here on out, you will continue to face wild Pokémon for as long as you'd like."))
-        pbMessage(_INTL("You can also start a new journey, knowing that you have overcome every obstacle that has come your way!"))
-        pbMessage(_INTL("Thank you for playing all the way until the end! And thanks for your continued support throughout our journey!"))
-        pbStartCredits
-      end
       self.runner_mode_show_options_in_between_battles
       if $PokemonGlobal.runnerModeBattleCounter > 1
         self.autosave_runner_mode
@@ -116,6 +109,14 @@ module Game
         pbWait(100)
       end
       self.autosave_runner_mode
+      if $PokemonGlobal.runnerModeBattleCounter == 101
+        pbMessage(_INTL("Congratulations! You have successfully made your way through 100 grueling battles!"))
+        pbMessage(_INTL("From here on out, you will continue to face wild Pokémon for as long as you'd like."))
+        pbMessage(_INTL("You can also start a new journey, knowing that you have overcome every obstacle that has come your way!"))
+        pbMessage(_INTL("Thank you for playing all the way until the end! And thanks for your continued support throughout our journey!"))
+        pbStartCredits
+        self.autosave_runner_mode
+      end
     end
   end
 

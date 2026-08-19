@@ -80,7 +80,8 @@ module Game
     end
     skip_battle_anim = false
     while true
-      self.runner_mode_show_options_in_between_battles
+      should_exit = self.runner_mode_show_options_in_between_battles
+      return if should_exit
       if $PokemonGlobal.runnerModeBattleCounter > 1
         self.autosave_runner_mode
       end
@@ -380,6 +381,7 @@ module Game
   end
 
   def self.runner_mode_show_options_in_between_battles
+    ret = false
     header_window = Window_AdvancedTextPokemon.new(_INTL("Round {1}", $PokemonGlobal.runnerModeBattleCounter))
     header_window.letterbyletter = false
     header_window.visible = true
@@ -399,6 +401,8 @@ module Game
       commands[cmdShop = commands.length] = _INTL("Shop")
       # Continue
       commands[cmdContinue = commands.length] = _INTL("Continue")
+      # Exit
+      commands[cmdExit = commands.length] = _INTL("Exit")
       command = pbShowCommands(msgwindow, commands)
       case command
       when cmdParty
@@ -482,6 +486,13 @@ module Game
           pbMapInterpreter.setPrice(item_id, price)
         end
         pbPokemonMartForRunnerMode(shop_items_to_display)
+      when cmdExit
+        if pbConfirmMessage(_INTL("Return to the title screen? Your current progress will be saved."))
+          self.autosave_runner_mode
+          self.go_back_to_title_from_runner_mode
+          ret = true
+          break
+        end
       else
         break
       end
@@ -489,6 +500,7 @@ module Game
     pokemon_party_sprites.dispose
     pbDisposeMessageWindow(msgwindow)
     pbDisposeMessageWindow(header_window)
+    return ret
   end
 
   # Loads the game from the given save data and starts the map scene.

@@ -38,6 +38,13 @@ class RewardItemUI
       @sprites["pkmn_#{i}"].x = 64 * i
       @sprites["pkmn_#{i}"].y += 4
       total_w += @sprites["pkmn_#{i}"].src_rect.width
+      @sprites["helditem_#{i}"] = ItemIconSprite.new(0, 0, pkmn.item, @viewport)
+      @sprites["helditem_#{i}"].x = @sprites["pkmn_#{i}"].x + 44
+      @sprites["helditem_#{i}"].y = @sprites["pkmn_#{i}"].y + 44
+      @sprites["helditem_#{i}"].zoom_x = 0.5
+      @sprites["helditem_#{i}"].zoom_y = 0.5
+      @sprites["helditem_#{i}"].z = @sprites["pkmn_#{i}"].z + 1
+      @sprites["helditem_#{i}"].visible = !pkmn.item.nil?
     end
     @sprites.each do |key, sprite|
       next if !key.to_s.start_with?("pkmn_")

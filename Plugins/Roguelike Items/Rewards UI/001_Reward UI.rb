@@ -164,10 +164,14 @@ class RewardItemUI
     end
     overlay = @sprites["overlay_top"].bitmap
     overlay.clear
-    pbDrawTextPositions(overlay, [
+    text_list = [
       [_INTL("Reroll: Z (${1})", reroll_cost), Graphics.width - REROLL_TEXT_SPACE, 12, 0, Color.white, Color.new(0, 0, 0), true],
       [_INTL("${1} left", $player.money), Graphics.width - REROLL_TEXT_SPACE, 38, 0, Color.white, Color.new(0, 0, 0), true],
-    ])
+    ]
+    if $game_temp.game_mode_type == :ENDLESS_MODE
+      text_list.push([_INTL("Round {1}", $PokemonGlobal.runnerModeBattleCounter), Graphics.width - REROLL_TEXT_SPACE, 64, 0, Color.white, Color.new(0, 0, 0), true])
+    end
+    pbDrawTextPositions(overlay, text_list)
   end
 
   def refresh_selected

@@ -69,6 +69,7 @@ class RewardItemUI
   end
 
   def end_scene
+    $game_temp.rarity_rules = {}
     fade_screen(false)
     pbDisposeSpriteHash(@sprites)
     @viewport.dispose

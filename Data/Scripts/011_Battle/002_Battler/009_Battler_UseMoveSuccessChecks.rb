@@ -33,7 +33,7 @@ class Battle::Battler
       return false
     end
     # Throat Chop
-    if @effects[PBEffects::ThroatChop] > 0 && move.pbSoundMove?(user)
+    if @effects[PBEffects::ThroatChop] > 0 && move.pbSoundMove?(self)
       if showMessages
         msg = _INTL("{1} can't use {2} because of Throat Chop!", pbThis, move.name)
         (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)

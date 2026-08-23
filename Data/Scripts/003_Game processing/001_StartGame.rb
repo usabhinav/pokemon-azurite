@@ -75,7 +75,6 @@ module Game
       $player.money = 1000
       $bag.add(:POKEBALL, 5)
       $bag.add(:GREYSCALE)
-      $bag.add(:MEGAKEYSTONE)
       $PokemonGlobal.runnerModeNextPokemon = getRandomPokemonForRunnerMode(3, $PokemonGlobal.runnerModeBattleCounter)
     end
     skip_battle_anim = false
@@ -100,6 +99,7 @@ module Game
       if $PokemonGlobal.runnerModeBattleCounter == 41
         pbReceiveItem(:EQUALIZERM)
         pbReceiveItem(:EQUALIZERC)
+        pbReceiveItem(:MEGAKEYSTONE)
         pbReceiveItem(:CRYSTALFRAGMENT)
         pbReceiveItem(:MASTERBALL)
       end
@@ -335,6 +335,29 @@ module Game
     next_pokemon_to_lock = getRandomPokemonForRunnerMode(next_opponent_level, next_round)
     if static_encounter_map.key?(next_round) && static_encounter_map[next_round][:type] == :wild
       next_pokemon_to_lock = static_encounter_map[next_round][:get_pokemon].call(next_opponent_level)
+    end
+    # Increase chances of finding rarer items in later stages
+    if $PokemonGlobal.runnerModeBattleCounter > 80
+      $game_temp.rarity_rules = {
+        "itemRarity_common" => 25,
+        "itemRarity_rare" => 25,
+        "itemRarity_epic" => 25,
+        "itemRarity_legendary" => 25,
+      }
+    elsif $PokemonGlobal.runnerModeBattleCounter > 60
+      $game_temp.rarity_rules = {
+        "itemRarity_common" => 30,
+        "itemRarity_rare" => 30,
+        "itemRarity_epic" => 25,
+        "itemRarity_legendary" => 15,
+      }
+    elsif $PokemonGlobal.runnerModeBattleCounter > 40
+      $game_temp.rarity_rules = {
+        "itemRarity_common" => 35,
+        "itemRarity_rare" => 35,
+        "itemRarity_epic" => 20,
+        "itemRarity_legendary" => 10,
+      }
     end
     # Start the battle
     battle_ret = nil

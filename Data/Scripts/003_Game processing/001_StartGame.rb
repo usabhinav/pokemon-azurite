@@ -246,6 +246,7 @@ module Game
         :type => :wild,
         :get_pokemon => proc { |level|
           poke = Pokemon.new(:LUMENY, level)
+          poke.learn_move(:SOOTHINGGLEAM)
           next poke
         }
       },

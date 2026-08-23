@@ -127,6 +127,10 @@ class Battle::AI
     if has_bizarre_band && has_bizarre_band.pbHasType?(:MYSTIC) && ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
       ret = Effectiveness::SUPER_EFFECTIVE_ONE
     end
+    # Crystal Energy
+    if user.hasActiveAbility?(:CRYSTALENERGY) && target.pbHasType?(:CRYSTAL)
+      ret = Effectiveness::SUPER_EFFECTIVE_ONE
+    end
     # Inverse Room (type resistances are inverted)
     if @battle.field.effects[PBEffects::InverseRoom] > 0 && @battle.pbCheckAllyCosmoCube(target.index).nil?
       if ret == Effectiveness::SUPER_EFFECTIVE_ONE
@@ -191,10 +195,6 @@ class Battle::AI
     # weakness type mods. If it did, then a dual-type Pokemon would receive 4x damage instead of
     # only 2x.
     if target.hasActiveAbility?(:DECEPTIVE) && [:FIRE, :WATER, :GRASS].include?(moveType)
-      ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
-    end
-    # Crystal Energy
-    if @battle.pbCheckGlobalAbility(:CRYSTALENERGY) && target.pbHasType?(:CRYSTAL)
       ret = Effectiveness::NORMAL_EFFECTIVE * Effectiveness::NORMAL_EFFECTIVE_ONE
     end
     # Tar Shot

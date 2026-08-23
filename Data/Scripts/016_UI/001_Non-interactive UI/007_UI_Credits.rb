@@ -38,6 +38,7 @@ class Scene_Credits
   BACKGROUNDS_LIST       = ["credits1", "credits2", "credits3", "credits4", "credits5"]
   BGM                    = "Credits"
   SCROLL_SPEED           = 40   # Pixels per second
+  MAX_SCROLL_SPEED_MULT  = 4
   SECONDS_PER_BACKGROUND = 11
   TEXT_OUTLINE_COLOR     = Color.new(0, 0, 128, 255)
   TEXT_BASE_COLOR        = Color.new(255, 255, 255, 255)
@@ -369,6 +370,7 @@ _END_
     #-------------------------------
     # Make background and text sprites
     #-------------------------------
+    @scroll_speed = 1
     viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
     viewport.z = 99999
     text_viewport = Viewport.new(0, @trim, Graphics.width, Graphics.height - (@trim * 2))
@@ -416,6 +418,11 @@ _END_
       credit_sprite.oy     = @realOY - (@bitmap_height * i)
       @credit_sprites[i] = credit_sprite
     end
+    @speed_up_text_sprite = Sprite.new(viewport)
+    @speed_up_text_sprite.bitmap = Bitmap.new(Graphics.width, Graphics.height)
+    pbSetSystemFont(@speed_up_text_sprite.bitmap)
+    update_scroll_speed_text
+    @speed_up_text_sprite.z = 9998
     #-------------------------------
     # Setup
     #-------------------------------
@@ -441,6 +448,7 @@ _END_
     $game_temp.background_bitmap.dispose
     @background_sprite.dispose
     @credit_sprites.each { |s| s&.dispose }
+    @speed_up_text_sprite.dispose
     text_viewport.dispose
     viewport.dispose
     $PokemonGlobal.creditsPlayed = true
@@ -467,7 +475,18 @@ _END_
     return false
   end
 
+  def update_scroll_speed_text
+    @speed_up_text_sprite.bitmap.clear
+    new_text = "Press F to speed up (current: #{@scroll_speed}x)"
+    pbDrawOutlineText(@speed_up_text_sprite.bitmap, 6, 6, Graphics.width, 32, new_text, TEXT_BASE_COLOR, TEXT_SHADOW_COLOR)
+  end
+
   def update
+    if Input.triggerex?(:F)
+      @scroll_speed *= 2
+      @scroll_speed = 1 if @scroll_speed > MAX_SCROLL_SPEED_MULT
+      update_scroll_speed_text
+    end
     delta = Graphics.delta_s
     @counter += delta
     # Go to next slide
@@ -479,7 +498,7 @@ _END_
     end
     return if cancel?
     return if last?
-    @realOY += SCROLL_SPEED * delta
+    @realOY += (SCROLL_SPEED * @scroll_speed) * delta
     @credit_sprites.each_with_index { |s, i| s.oy = @realOY - (@bitmap_height * i) }
   end
 end

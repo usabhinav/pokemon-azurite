@@ -37,7 +37,6 @@ module GameData
           next if !$game_temp.rarity_rules.key?(rule_key)
           rarity_data[rarity][:chance] = $game_temp.rarity_rules[rule_key]
         end
-        $game_temp.rarity_rules = {}
       end
       if $bag.has?(LUCKY_CHARM_ITEM_ID)
         ordered_rarities = RARITY_FALLBACK_ORDER.reverse

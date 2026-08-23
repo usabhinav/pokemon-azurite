@@ -202,7 +202,7 @@ class Battle::Battler
     @pokemon.status = value if @pokemon
     if @pokemon
       # Girafarig - turns around
-      if isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH
+      if isSpecies?(:GIRAFARIG) && self.ability == :STANDWATCH && !fainted?
         if value == :SLEEP
           if self.pokemon.form_simple == 0 && self.pokemon.standwatchhp > 0
             @battle.pbShowAbilitySplash(self)
@@ -218,7 +218,7 @@ class Battle::Battler
         end
       end
       # Rablin
-      if isSpecies?(:RABLIN) && self.ability == :HEAVYEYED
+      if isSpecies?(:RABLIN) && self.ability == :HEAVYEYED && !fainted?
         if value == :SLEEP
           if self.form == 1
             @battle.pbShowAbilitySplash(self)

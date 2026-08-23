@@ -47,7 +47,7 @@ class RewardItemUI
       @sprites["helditem_#{i}"].visible = !pkmn.item.nil?
     end
     @sprites.each do |key, sprite|
-      next if !key.to_s.start_with?("pkmn_")
+      next if !key.to_s.start_with?("pkmn_") && !key.to_s.start_with?("helditem_")
       sprite.x += (Graphics.width - REROLL_TEXT_SPACE - total_w) / 2
     end
     start_scene

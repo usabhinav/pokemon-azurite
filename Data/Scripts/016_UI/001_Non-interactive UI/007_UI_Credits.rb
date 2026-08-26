@@ -50,80 +50,102 @@ class Scene_Credits
 
 Pokémon Azurite was created by these active team members:
 
-SleepyJirachi (Project Lead)
+SleepyJirachi 
+(Project Lead)
 
-NettoHikari (Programmer)
-Baustein (Programmer)
+NettoHikari 
+(Programmer)
 
-JPA93 (Mapper, Tech Writer)
+Baustein 
+(Programmer)
 
-GioBasaran (Concept Artist)
+JPA93 
+(Mapper, Tech Writer)
 
-Speed King (Sprite Artist)
-Selena (Animator)
-Apawn (Sprite Artist)
-Dusky (Sprite Artist)
-Arin Wolfe (Sprite Artist)
+GioBasaran 
+(Concept Artist)
+
+Speed King 
+(Sprite Artist)
+
+Selena 
+(Animator)
+
+Apawn 
+(Sprite Artist)
+
+Dusky 
+(Sprite Artist)
+
+Arin Wolfe 
+(Sprite Artist)
 
 With major contributions from previous team members:
 
-Eddie Hartman (Programmer)
-Thundamoo (Programmer)
-Dream (Programmer)
-Ed (Programmer)
-Acrylica (Programmer)
-Zeak6464 (Programmer)
-Shadow_Sear (Programmer, Creator of Sloof's cry sound)
-Jbsundown (Programmer)
-Mjwherry (Online Component Programmer)
-SquirrelOfDeath (Online Component Programmer)
-Doctor Planky (Online Component Programmer)
+Cowctus 
+(Artist, Project Co-Lead)
 
-Aqua'DeStrhom (Sprite Artist)
-Kort (Artist)
-Heltuh / Ulti (Artist)
-Celine (Concept Artist)
-Kuroryushin (Concept Artist)
-Tommi (Sprite Artist, Concept Artist)
-StuffDraws (Artist)
-Phantomicon (Concept Artist, Promo Artist)
-Kyepha (Concept Artist, Final Artist)
-Inkedsplat (Animator)
-Sam the Starman (Sprite Artist, Tileset Artist)
-Aniebodie (Sprite Artist, Animator)
-Seb (Sprite Artist)
-Dream (JustDreamo) (Final Artist)
-Hanna (Concept Artist, Animator)
-Creme (Sprite Artist, Animator)
-Soulja (Concept Artist, Sprite Artist)
-Cowctus (Artist, Project Co-Lead)
-Wereweasel (Concept Artist)
-Apriifox (Concept Artist, Digital Artist)
-Mysterykarp (Sprite Artist)
-Earl Danger (Sprite Artist)
-Majinmind (Lead Artist)
-Andre Rivera (Sprite Artist)
-Grey-winged Blitz (Traditional Artist)
-Unstableye (Concept Artist)
-Breioom (Sprite Artist)
-Nikki (Concept Artist)
-Zchem (Programmer, Artist)
-Pedro J.M. (Logo Designer)
+Soulja 
+(Concept Artist, Sprite Artist)
 
-Emdasche (Remixer)
-Kamex (Remixer, Musician)
-TheGuitahHeroe (Musician)
-Futo (Musician)
-RainbowTuba (Musician)
-KelyxTheMage (Musician)
-EternalSushi (Musician)
-Draskon5665 (Musician)
-Darius (Musician)
+Inkedsplat 
+(Animator)
 
-And additional support from:
+Sam the Starman 
+(Sprite Artist, Tileset Artist)
 
-Suzerain (Programmer)
-Baaabuuu (Programmer)
+Creme 
+(Sprite Artist, Animator)
+
+Dream 
+(Programmer)
+
+Kyepha 
+(Concept Artist, Final Artist)
+
+StuffDraws 
+(Artist)
+
+Phantomicon 
+(Concept Artist, Promo Artist)
+
+EternalSushi 
+(Musician)
+
+RainbowTuba 
+(Musician)
+
+KelyxTheMage 
+(Musician)
+
+Special thanks to:
+
+Suzerain 
+
+More previous team members:
+
+Eddie Hartman (Programmer)<s>Thundamoo (Programmer)
+Ed (Programmer)<s>Acrylica (Programmer)
+Zeak6464 (Programmer)<s>Shadow_Sear (Programmer)
+Jbsundown (Programmer)<s>Mjwherry (Online Programmer)
+SquirrelOfDeath (Online Programmer)<s>Doctor Planky (Online Programmer)
+Aqua'DeStrhom (Sprite Artist)<s>Kort (Artist)
+Heltuh / Ulti (Artist)<s>Celine (Concept Artist)
+Kuroryushin (Concept Artist)<s>Tommi (Sprite and Concept Artist)
+Aniebodie (Sprite Artist, Animator)<s>Seb (Sprite Artist)
+Dream (JustDreamo) (Final Artist)<s>Hanna (Concept Artist, Animator)
+Wereweasel (Concept Artist)<s>Apriifox (Concept and Digital Artist)
+Mysterykarp (Sprite Artist)<s>Earl Danger (Sprite Artist)
+Majinmind (Lead Artist)<s>Andre Rivera (Sprite Artist)
+Grey-winged Blitz (Traditional Artist)<s>Unstableye (Concept Artist)
+Breioom (Sprite Artist)<s>Nikki (Concept Artist)
+Zchem (Programmer, Artist)<s>Pedro J.M. (Logo Designer)
+Emdasche (Remixer)<s>Kamex (Remixer, Musician)
+TheGuitahHeroe (Musician)<s>Futo (Musician)
+Draskon5665 (Musician)<s>Darius (Musician)
+
+Sloof's cry sound created by:
+Shadow_Sear
 
 And additional third-party resources from the following:
 
@@ -224,7 +246,9 @@ Marin
 Stopwatch sound effect (used in the Time Break move's animation)
 JoJo's Bizarre Adventure
 
-EXP Charm sprite from Project PokéSprite (msikma)
+Generation 8 Item Sprites
+Generation 8 Pack for Essentials v20.1
+Golisopod User<s>UberDunsparce
 
 Misc. third-party scripts:
 

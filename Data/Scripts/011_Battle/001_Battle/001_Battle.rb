@@ -587,8 +587,8 @@ class Battle
     return allSameSideBattlers.select { |b| b.pbOwnedByPlayer? }.length
   end
 
-  def pbCheckGlobalItem(item)
-    allBattlers.each { |b| return b if b.hasActiveItem?(item) }
+  def pbCheckGlobalBizarreBand
+    allBattlers.each { |b| return b if b.hasActiveItem?(:BIZARREBAND) && b.pbHasType?(:MYSTIC)}
     return nil
   end
 

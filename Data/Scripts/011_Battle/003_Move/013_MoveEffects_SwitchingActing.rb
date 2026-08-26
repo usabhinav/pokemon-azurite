@@ -282,6 +282,7 @@ end
 #===============================================================================
 class Battle::Move::SwitchOutTargetStatusMoveAndSkipNextTurn < Battle::Move::SwitchOutTargetStatusMove
   def pbEffectGeneral(user)
+    super
     user.effects[PBEffects::HyperBeam] = 2
     user.currentMove = @id
   end

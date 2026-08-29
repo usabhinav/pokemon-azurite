@@ -409,7 +409,6 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
   selected_species_id = species_id_list.sample
   # Then get random form
   selected_species_data = species_data_form_map[selected_species_id].sample
-  new_poke = Pokemon.new(selected_species_id, level)
-  new_poke.form = selected_species_data.form
+  new_poke = Pokemon.new(selected_species_data.id, level)
   return new_poke
 end

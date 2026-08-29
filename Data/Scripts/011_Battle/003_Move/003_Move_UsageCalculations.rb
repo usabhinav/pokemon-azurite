@@ -140,7 +140,7 @@ class Battle::Move
     if @battle.field.effects[PBEffects::InverseRoom] > 0 && @battle.pbCheckAllyCosmoCube(target.index).nil?
       if ret == Effectiveness::SUPER_EFFECTIVE_ONE
         ret = Effectiveness::NOT_VERY_EFFECTIVE_ONE
-      elsif ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      elsif ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE || ret == Effectiveness::INEFFECTIVE
         ret = Effectiveness::SUPER_EFFECTIVE_ONE
       end
     end

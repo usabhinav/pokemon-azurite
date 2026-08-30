@@ -1279,6 +1279,9 @@ class PokemonPartyScreen
         @party[index].form = scene.team_builder_mode_selected_entry[:form]
         @party[index].gender = scene.team_builder_mode_selected_entry[:gender]
         @party[index].shiny_variant = scene.team_builder_mode_selected_entry[:cosmetic]
+        @party[index].reset_moves
+        @party[index].ability_index = nil
+        @party[index].ability = nil
         @scene.pbHardRefresh
       end
       next 0
@@ -1484,13 +1487,13 @@ class PokemonPartyScreen
       can_access_storage = true
     end
     old_party = Marshal.load(Marshal.dump(@party))
-    @scene.pbStartScene(@party,
-                        (@party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."),
-                        nil, multiselect, can_access_storage)
+    helptext = @team_builder_mode ? _INTL("Edit this team.") : ((@party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
+    @scene.pbStartScene(@party, helptext, nil, multiselect, can_access_storage)
     # Main loop
     loop do
       # Choose a Pokémon or cancel or press Action to quick switch
-      @scene.pbSetHelpText((@party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
+      helptext = @team_builder_mode ? _INTL("Edit this team.") : ((@party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
+      @scene.pbSetHelpText(helptext)
       party_idx = @scene.pbChoosePokemon(false, -1, 1)
       if @team_builder_mode && party_idx.is_a?(Numeric) && party_idx == -1 # Cancel
         # Reset to original party
@@ -1587,7 +1590,8 @@ MenuHandlers.add(:party_menu, :summary, {
   "condition" => proc { |screen, party, party_idx| next !party[party_idx].nil? },
   "effect"    => proc { |screen, party, party_idx|
     screen.scene.pbSummary(party_idx) {
-      screen.scene.pbSetHelpText((party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
+      helptext = screen.team_builder_mode ? _INTL("Edit this team.") : ((party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
+      screen.scene.pbSetHelpText(helptext)
     }
   }
 })

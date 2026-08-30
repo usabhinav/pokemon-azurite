@@ -187,7 +187,7 @@ class Battle::Move::FailsIfUserDamagedThisTurn < Battle::Move
 end
 
 #===============================================================================
-# Fails if the target didn't chose a damaging move to use this round, or has
+# Fails if the target didn't choose a damaging move to use this round, or has
 # already moved. (Sucker Punch)
 #===============================================================================
 class Battle::Move::FailsIfTargetActed < Battle::Move

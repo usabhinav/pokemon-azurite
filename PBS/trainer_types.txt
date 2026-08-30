@@ -472,7 +472,7 @@ VictoryBGM = Battle victory leader
 Name = Elite Four
 Gender = Female
 BaseMoney = 100
-BattleBGM = Battle Elite
+BattleBGM = Battle - 012 Elite Four Battle 1
 VictoryBGM = Battle victory leader
 #-------------------------------
 [ELITEFOUR_Nicolas]

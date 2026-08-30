@@ -129,8 +129,7 @@ class Battle::Move
       end
     end
     # Bizarre Band (all resistances become weaknesses)
-    has_bizarre_band = @battle.pbCheckGlobalItem(:BIZARREBAND)
-    if has_bizarre_band && has_bizarre_band.pbHasType?(:MYSTIC) && ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
+    if !@battle.pbCheckGlobalBizarreBand.nil? && ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
       ret = Effectiveness::SUPER_EFFECTIVE_ONE
     end
     # Crystal Energy
@@ -141,7 +140,7 @@ class Battle::Move
     if @battle.field.effects[PBEffects::InverseRoom] > 0 && @battle.pbCheckAllyCosmoCube(target.index).nil?
       if ret == Effectiveness::SUPER_EFFECTIVE_ONE
         ret = Effectiveness::NOT_VERY_EFFECTIVE_ONE
-      elsif ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE
+      elsif ret == Effectiveness::NOT_VERY_EFFECTIVE_ONE || ret == Effectiveness::INEFFECTIVE
         ret = Effectiveness::SUPER_EFFECTIVE_ONE
       end
     end

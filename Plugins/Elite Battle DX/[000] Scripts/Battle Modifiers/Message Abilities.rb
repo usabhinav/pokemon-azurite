@@ -42,6 +42,8 @@ class Battle::Scene
   #-----------------------------------------------------------------------------
   def pbHideAbilitySplash(battler = nil)
     return if battler.nil? || !USE_ABILITY_SPLASH
+    # Mirror base Essentials behavior where it does not do anything if ability splash is not currently visible
+    return if @sprites["abilityMessage"].zoom_y == 0
     10.times do
       @sprites["abilityMessage"].x += (playerBattler?(battler) ? -1 : 1)*(@sprites["abilityMessage"].bitmap.width/10)
       @sprites["abilityMessage"].zoom_y -= 0.1

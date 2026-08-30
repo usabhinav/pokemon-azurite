@@ -158,11 +158,7 @@ module Game
           poke = Pokemon.new(:GIRAFARIG, level)
           poke.form = 1
           poke.ability_index = 2
-          poke.forget_all_moves
           poke.learn_move(:REST)
-          poke.learn_move(:SLEEPTALK)
-          poke.learn_move(:BODYSLAM)
-          poke.learn_move(:STOMP)
           poke.status = :SLEEP
           poke.statusCount = 4
           next poke

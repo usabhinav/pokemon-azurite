@@ -3792,7 +3792,6 @@ Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [GIRAFARIG,1]
 Types = NORMAL,DARK
-BaseStats = 70,75,65,90,105,65
 #-------------------------------
 [KINDESHU,1]
 FormName = Light Kindeshu

@@ -1261,6 +1261,7 @@ class Pokemon
     hp_difference = stats[:HP] - @totalhp
     @totalhp = stats[:HP]
     self.hp = [@hp + hp_difference, 1].max if @hp > 0 || hp_difference > 0
+    self.standwatchhp = [@standwatchhp + hp_difference, 1].max if @standwatchhp > 0 || hp_difference > 0
     @attack  = stats[:ATTACK]
     @defense = stats[:DEFENSE]
     @spatk   = stats[:SPECIAL_ATTACK]

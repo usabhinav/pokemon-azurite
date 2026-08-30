@@ -402,14 +402,13 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
   if runnerModeBattleCounter <= 40
     species_id_list.delete_if do |species_id|
       species_data = GameData::Species.get(species_id)
-      next species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical")
+      next species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical") || species_data.has_flag?("UltraBeast")
     end
   end
   # First get random species
   selected_species_id = species_id_list.sample
   # Then get random form
   selected_species_data = species_data_form_map[selected_species_id].sample
-  new_poke = Pokemon.new(selected_species_id, level)
-  new_poke.form = selected_species_data.form
+  new_poke = Pokemon.new(selected_species_data.id, level)
   return new_poke
 end

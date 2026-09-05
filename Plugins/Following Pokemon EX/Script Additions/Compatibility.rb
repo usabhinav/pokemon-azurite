@@ -1,14 +1,15 @@
 #-------------------------------------------------------------------------------
 # Change EBDX Following Pokemon check since EBDX hasn't updated
 #-------------------------------------------------------------------------------
-if PluginManager.findDirectory("Elite Battle: DX")
+# Azurite is using EBDX. Removing this check so that the final transformed output doesn't need the Plugins folder present.
+# if PluginManager.findDirectory("Elite Battle: DX")
   module EliteBattle
     def self.follower(battle)
       return nil if !EliteBattle::USE_FOLLOWER_EXCEPTION
       return (FollowingPkmn.active? && battle.scene.firstsendout) ? 0 : nil
     end
   end
-end
+# end
 
 #-------------------------------------------------------------------------------
 # New GameData::Species method for easily get the appropriate Following Pokemon

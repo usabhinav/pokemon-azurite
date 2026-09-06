@@ -25922,8 +25922,8 @@ Category = Student
 Pokedex = ...
 Generation = 99
 #-------------------------------
-[FISHMALE]
-Name = Fish Male
+[RUFFISH]
+Name = Ruffish
 Types = WATER,FIGHTING
 BaseStats = 77,116,95,92,68,72
 GenderRatio = AlwaysMale

@@ -555,7 +555,6 @@ def pbStartCreditsFromTitleScreen
     # Start credits
     $scene = Scene_Credits.new
     $scene.main
-    SaveData.mark_values_as_unloaded
     # Fade back to this screen
     $scene.disposeSpritesets
     RPG::Cache.clear

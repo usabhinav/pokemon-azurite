@@ -565,21 +565,25 @@ class PokemonLoadScreen
       when cmd_continue
         @scene.pbEndScene
         $game_temp.game_mode_type = :MAIN_GAME
+        $game_temp.begun_new_game = false
         Game.load(@save_data)
         return
       when cmd_continue_runner_mode
         @scene.pbEndScene
         $game_temp.game_mode_type = :ENDLESS_MODE
+        $game_temp.begun_new_game = false
         Game.load(@save_data_runner_mode)
         return
       when cmd_custom_battle_mode
         SaveData.load_new_game_values
         registerAllSpeciesAndForms # To show all species/forms when selecting species
         pbStartTeamBuilderTextBasedScreen
+        SaveData.mark_values_as_unloaded
       when cmd_manage_saved_data
         SaveData.load_new_game_values
         registerAllSpeciesAndForms # To show all species/forms when selecting species
         pbStartSaveDataObjectManagerScreen
+        SaveData.mark_values_as_unloaded
       when cmd_jukebox
         pbFadeOutIn do
           scene = PokemonJukebox_Scene.new
@@ -589,6 +593,7 @@ class PokemonLoadScreen
       when cmd_credits
         SaveData.load_new_game_values
         pbStartCreditsFromTitleScreen
+        SaveData.mark_values_as_unloaded
       when cmd_new_game
         @scene.pbEndScene
         $game_temp.game_mode_type = :MAIN_GAME

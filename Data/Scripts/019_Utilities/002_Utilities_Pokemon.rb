@@ -391,7 +391,7 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
     # make much sense to include it randomly.
     next species_id == :MUNDIMEA ||
          # TODO: Remove this condition once these Pokemon actually have base form sprites
-         [:GELDIOS, :SPHERIOS, :NEBULANIAN].include?(species_id)
+         [:GELDIOS, :SPHERIOS].include?(species_id)
   end
   if runnerModeBattleCounter <= 15
     species_id_list.delete_if do |species_id|

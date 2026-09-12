@@ -1438,8 +1438,8 @@ class Pokemon
     @typology         = nil
     @hp               = 1
     @totalhp          = 1
-    calc_stats
     @standwatchhp     = @hp
+    calc_stats
     @alolan_pancakes_consumed = false
     @equalizer        = nil
     @dna_flip_active  = false

@@ -118,8 +118,10 @@ class Pokemon
       end
     end
     hpDiff = @totalhp - @hp
+    standwatch_hp_difference = stats[:HP] - @totalhp
     @totalhp = stats[:HP]
     @hp      = @totalhp - hpDiff
+    @standwatchhp = [@standwatchhp + standwatch_hp_difference, 1].max if @standwatchhp > 0 || standwatch_hp_difference > 0
     @attack  = stats[:ATTACK]
     @defense = stats[:DEFENSE]
     @spatk   = stats[:SPECIAL_ATTACK]

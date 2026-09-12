@@ -20094,7 +20094,7 @@ Flags = Legendary
 #-------------------------------
 [MINIOR]
 Name = Minior
-Types = ROCK,FLYING
+Types = COSMIC,FLYING
 BaseStats = 60,60,100,60,60,100
 GenderRatio = Genderless
 GrowthRate = Parabolic
@@ -23650,7 +23650,7 @@ Shape = Bipedal
 Habitat = Mountain
 Category = Edgy
 Pokedex = Edglet are fierce and territorial. When born, they begin to grow a sharp horn like appendage on their head that is sharp enough to slice an Onix in half.
-Evolutions = HAWKEDGE,Level,24
+Evolutions = HAWKEDGE,Level,22
 Generation = 99
 #-------------------------------
 [HAWKEDGE]
@@ -23699,7 +23699,6 @@ Shape = Bipedal
 Habitat = Forest
 Category = Leaf Doll
 Pokedex = Euthiscus are very sensitive Pokémon, so they tend to avoid interacting with others. If they find a berry they really like, they'll cling to it like it is the only thing they care about.
-Evolutions = HIBIDALI,DayHoldItem,SITRUSBERRY,HIBIDALI,DayHoldItem,ORANBERRY
 Generation = 99
 #-------------------------------
 [HIBIDALI]
@@ -23894,7 +23893,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Trying
 Pokedex = Nymphick will stay awake day and night fighting their targets, even if it is outmatched. While they aren't exactly the strongest, nobody can say that they aren't trying.
-Evolutions = HOPPERCUT,HasMove,BRICKBREAK
+Evolutions = HOPPERCUT,HasMove,SKYUPPERCUT
 Generation = 99
 #-------------------------------
 [HOPPERCUT]
@@ -23942,7 +23941,6 @@ Shape = Bipedal
 Habitat = Forest
 Category = Mallicious
 Pokedex = It's full of so much disease that it has eventually become immune to all sickness. Because of this incredible power, Bratanat is always cheerful and happy. It spends its days playfully pranking others, but has to keep a distance so they don't give anyone a disease.
-Evolutions = WITHERWIND,LevelNight,28
 Generation = 99
 #-------------------------------
 [WITHERWIND]
@@ -24500,7 +24498,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Scarf
 Pokedex = Shoul will appear in snowstorms and mimic the cries of a child. When it fools someone into getting close, Shoul will absorb their soul into the mirror on its chest.
-Evolutions = GHOSKARF,Level,25
+Evolutions = GHOSKARF,Level,26
 Generation = 99
 #-------------------------------
 [GHOSKARF]
@@ -24525,7 +24523,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Scarf
 Pokedex = Stalking strangers who get lost in snowstorms, Ghoskarf will follow someone for hours until they freeze solid. It will then keep the stature as a trophy.
-Evolutions = SHROUDICE,Level,55
+Evolutions = SHROUDICE,Level,41
 Generation = 99
 #-------------------------------
 [SHROUDICE]
@@ -24622,7 +24620,7 @@ Shape = Bipedal
 Habitat = Sea
 Category = Tardigrade
 Pokedex = They travel much faster in water than on land. Using the holes in their body, Mosglet quickly fire balls of mucus at anything that threatens them.
-Evolutions = TARNAVIS,Level,55
+Evolutions = TARNAVIS,Level,45
 Generation = 99
 #-------------------------------
 [TARNAVIS]
@@ -24693,7 +24691,7 @@ Shape = Bipedal
 Habitat = Cave
 Category = Chemic
 Pokedex = ...
-Evolutions = ADIZINE,LevelNight,33
+Evolutions = ADIZINE,Level,33
 Generation = 99
 #-------------------------------
 [ADIZINE]
@@ -25802,7 +25800,7 @@ Shape = Bipedal
 Habitat = Desert
 Category = Little Biter
 Pokedex = Chichaw show how they feel by how they bite you. Depending on if it bites gently or bites through flesh, it shows if it likes or dislikes you. Though even the gentle bites hurt.
-Evolutions = TERREVOUR,Level,40
+Evolutions = TERREVOUR,Level,43
 Generation = 99
 #-------------------------------
 [TERREVOUR]
@@ -26294,6 +26292,7 @@ Shape = Bipedal
 Habitat = Cosmos
 Category = Meteor
 Pokedex = ...
+Evolutions = CLUSTEORUS,Level,25
 Generation = 99
 #-------------------------------
 [CLUSTEORUS]
@@ -26318,6 +26317,7 @@ Shape = Bipedal
 Habitat = Cosmos
 Category = Orbital
 Pokedex = ...
+Evolutions = AKLYTEOR,Level,45
 Generation = 99
 #-------------------------------
 [AKLYTEOR]
@@ -26605,7 +26605,7 @@ Shape = Bipedal
 Habitat = Forest
 Category = Cocoon
 Pokedex = It uses the same scare trick as Wurmidrake to ward off predators. Its shell has shaped itself to produce a more convincing image. It peers unblinking from within its cocoon, patiently awaiting evolution.
-Evolutions = VISARAB,Level,50
+Evolutions = VISARAB,Level,52
 Generation = 99
 #-------------------------------
 [VISARAB]

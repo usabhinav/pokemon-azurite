@@ -736,7 +736,7 @@ ItemHandlers::UseOnPokemon.add(:MAXELIXIR, proc { |item, qty, pkmn, scene|
 ItemHandlers::UseOnPokemon.add(:PPUP, proc { |item, qty, pkmn, scene|
   move = scene.pbChooseMove(pkmn, _INTL("Boost PP of which move?"))
   if move >= 0
-    if pkmn.moves[move].total_pp <= 1 || pkmn.moves[move].ppup >= 3
+    if pkmn.moves[move].id == :TIMEBREAK || pkmn.moves[move].total_pp <= 1 || pkmn.moves[move].ppup >= 3
       scene.pbDisplay(_INTL("It won't have any effect."))
       next false
     end
@@ -751,7 +751,7 @@ ItemHandlers::UseOnPokemon.add(:PPUP, proc { |item, qty, pkmn, scene|
 ItemHandlers::UseOnPokemon.add(:PPMAX, proc { |item, qty, pkmn, scene|
   move = scene.pbChooseMove(pkmn, _INTL("Boost PP of which move?"))
   if move >= 0
-    if pkmn.moves[move].total_pp <= 1 || pkmn.moves[move].ppup >= 3
+    if pkmn.moves[move].id == :TIMEBREAK || pkmn.moves[move].total_pp <= 1 || pkmn.moves[move].ppup >= 3
       scene.pbDisplay(_INTL("It won't have any effect."))
       next false
     end

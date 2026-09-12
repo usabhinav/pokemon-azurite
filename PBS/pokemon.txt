@@ -20094,7 +20094,7 @@ Flags = Legendary
 #-------------------------------
 [MINIOR]
 Name = Minior
-Types = COSMIC,FLYING
+Types = ROCK,COSMIC
 BaseStats = 60,60,100,60,60,100
 GenderRatio = Genderless
 GrowthRate = Parabolic

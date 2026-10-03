@@ -150,8 +150,11 @@ class Battle
     exp = exp * 3 / 2 if $bag.has?(:EXPCHARM)
     # Boost Exp gain even more in runner mode
     if $game_temp.game_mode_type == :ENDLESS_MODE && $PokemonGlobal.runnerModeBattleCounter > 40
-      # Multiply by 2x between rounds 41 - 70, 3x after round 70
-      runner_mode_exp_mult = [(($PokemonGlobal.runnerModeBattleCounter - 41) / 30) + 2, 3].min
+      # Multiply by 2x between rounds 41 - 80, 3x after round 80
+      runner_mode_exp_mult = 2
+      if $PokemonGlobal.runnerModeBattleCounter > 80
+        runner_mode_exp_mult = 3
+      end
       exp *= runner_mode_exp_mult
     end
     # Modify Exp gain based on pkmn's held item

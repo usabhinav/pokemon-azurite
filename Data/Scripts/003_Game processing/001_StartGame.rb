@@ -116,6 +116,7 @@ module Game
         pbMessage(_INTL("You can also start a new journey, knowing that you have overcome every obstacle that has come your way!"))
         pbMessage(_INTL("Thank you for playing all the way until the end! And thanks for your continued support throughout our journey!"))
         pbStartCredits
+        pbMessage(_INTL("\\w[]\\wm\\l[3]\\ts[3]<ac>SLOOF WILL RETURN</ac>"))
         self.autosave_runner_mode
       end
     end
@@ -318,15 +319,15 @@ module Game
       setBattleRule("showbgmwindow")
     end
     EliteBattle.set(:nextBattleBack, { "backdrop" => "AzuriteArena" })
-    # The general pattern is that the level increments by 1 except for every 9th and 10th battle, where it stays constant.
-    # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 8, 8, 8
-    # Waves 11-20: 9, 10, 11, 12, 13, 14, 15, 16, 16, 16
+    # The general pattern is that the level increments by 1 for 7 rounds, then stays constant for 3, then repeats.
+    # Waves 1-10: 3, 3, 3, 4, 5, 6, 7, 7, 7, 7
+    # Waves 11-20: 8, 9, 10, 11, 12, 13, 14, 14, 14, 14
     # ...
-    # Waves 91-100: 73, 74, 75, 76, 77, 78, 79, 80, 80, 80
-    # Waves 101+: 80
+    # Waves 91-100: 64, 65, 66, 67, 68, 69, 70, 70, 70, 70
+    # Waves 101+: 70
     next_round = $PokemonGlobal.runnerModeBattleCounter + 1
-    next_opponent_level_cap = [(((next_round - 1) / 10).floor + 1) * 8, 80].min
-    unconstrained_level = ((next_round / 10).floor) * 8 + (next_round % 10)
+    next_opponent_level_cap = [(((next_round - 1) / 10).floor + 1) * 7, 70].min
+    unconstrained_level = ((next_round / 10).floor) * 7 + (next_round % 10)
     next_opponent_level = unconstrained_level.clamp(3, next_opponent_level_cap)
     # Lock in the next Pokemon
     next_pokemon_to_lock = getRandomPokemonForRunnerMode(next_opponent_level, next_round)
@@ -502,7 +503,9 @@ module Game
           next if $PokemonGlobal.runnerModeBattleCounter < item_definition[:level]
           shop_items_to_display.push(item_id)
           # Using Pokerogue's formula, but without the exponential modifier to reduce complexity
-          price = ((10 * ($PokemonGlobal.runnerModeBattleCounter - 1) + 175).floor(-1) * item_definition[:mult].to_f).floor
+          level_to_use = $PokemonGlobal.runnerModeBattleCounter
+          level_to_use = 100 if $PokemonGlobal.runnerModeBattleCounter > 100
+          price = ((10 * (level_to_use - 1) + 175).floor(-1) * item_definition[:mult].to_f).floor
           pbMapInterpreter.setPrice(item_id, price)
         end
         pbPokemonMartForRunnerMode(shop_items_to_display)

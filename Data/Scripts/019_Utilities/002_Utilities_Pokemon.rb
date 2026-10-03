@@ -395,6 +395,10 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
          # TODO: Remove this condition once these Pokemon's evolutions are coded correctly
          [:EUTHISCUS, :STALAGTIC, :CONAMITE, :BRATANAT, :CUBEAT, :RACCOUSTIC, :TSANDCHI, :CANOLING, :NYASHI, :PEBBUIN, :LIZGROKO, :RIBIKUN, :KOTSUMO, :CHICHAW, :GILKUN].include?(species_id)
   end
+  # God Form Jirachi is quite OP to be encountered casually.
+  species_data_form_map[:JIRACHI].delete_if do |s|
+    next s.form == 2
+  end
   if runnerModeBattleCounter <= 15
     species_id_list.delete_if do |species_id|
       species_data = GameData::Species.get(species_id)

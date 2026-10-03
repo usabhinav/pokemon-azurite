@@ -221,37 +221,29 @@ class PokemonPartyIconSprites
   end
 end
 
-class GenericTextWindow
-  def initialize(name, viewport = nil)
-    @window = Window_AdvancedTextPokemon.new(name)
-    @window.resizeToFit(name, Graphics.width)
-    @window.x        = Graphics.width - @window.width
-    @window.y        = -@window.height
+class GenericTextWindow < Window_AdvancedTextPokemon
+  def initialize(text, viewport = nil)
+    super(text)
+    resizeToFit(text, Graphics.width)
+    self.x = Graphics.width - self.width
+    self.y = -self.height
     if viewport
-      @window.viewport = viewport
+      self.viewport = viewport
     else
-      @window.viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
-      @window.viewport.z = 99999
+      self.viewport = Viewport.new(0, 0, Graphics.width, Graphics.height)
+      self.viewport.z = 99999
     end
     @frames = 0
   end
 
-  def disposed?
-    @window.disposed?
-  end
-
-  def dispose
-    @window.dispose
-  end
-
   def update
-    return if @window.disposed?
-    @window.update
+    return if disposed?
+    super
     if @frames > Graphics.frame_rate * 2
-      @window.y -= 4
-      @window.dispose if @window.y + @window.height < 0
+      self.y -= 4
+      dispose if self.y + self.height < 0
     else
-      @window.y += 4 if @window.y < 0
+      self.y += 4 if self.y < 0
       @frames += 1
     end
   end

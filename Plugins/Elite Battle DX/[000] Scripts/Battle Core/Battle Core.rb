@@ -109,6 +109,19 @@ class Battle
       end
       pbSendOut(animSendOuts, true)
     end
+    if $game_temp.game_mode_type == :ENDLESS_MODE
+      if @internalBattle && @switchStyle && wildBattle? && pbSideSize(0) == 1 &&
+         !@battlers[0].fainted? && pbCanChooseNonActive?(0) && @battlers[0].effects[PBEffects::Outrage] == 0 &&
+         @battlers[0].effects[PBEffects::GoldenSpin] == 0
+        if pbDisplayConfirm(_INTL("Will you switch your Pokémon?"))
+          idxPlayerPartyNew = pbSwitchInBetween(0, false, true)
+          if idxPlayerPartyNew >= 0
+            pbMessageOnRecall(@battlers[0])
+            pbRecallAndReplace(0, idxPlayerPartyNew)
+          end
+        end
+      end
+    end
   end
   #-----------------------------------------------------------------------------
   #  Battle loop processing

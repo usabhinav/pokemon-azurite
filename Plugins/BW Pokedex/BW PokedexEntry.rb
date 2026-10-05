@@ -247,7 +247,7 @@ class PokemonPokedexInfo_Scene
       species_data.types.each_with_index do |type, i|
         type_number = GameData::Type.get(type).icon_position
         type_rect = Rect.new(0, type_number * 32, 96, 32)
-        overlay.blt(286 + (80 * i), @brief ? 132 : 94, @typebitmap.bitmap, type_rect)
+        overlay.blt(286 + (100 * i), @brief ? 132 : 94, @typebitmap.bitmap, type_rect)
       end
     else
       # This bit of the code below is simply the Entry Page when you have seen the Pokémon, but didn't capture it yet.

@@ -598,6 +598,7 @@ Generation = 6
 [MEWTWO,2]
 FormName = Mega Mewtwo Y
 MegaStone = MEWTWONITEY
+Types = PSYCHIC,MYSTIC
 BaseStats = 106,150,70,140,194,120
 BaseExp = 390
 Abilities = INSOMNIA
@@ -616,7 +617,7 @@ Flags = SelectableInTeamBuilderMode
 [AMPHAROS,1]
 FormName = Mega Ampharos
 MegaStone = AMPHAROSITE
-Types = ELECTRIC,DRAGON
+Types = LIGHT,DRAGON
 BaseStats = 90,95,105,45,165,110
 BaseExp = 305
 Abilities = MOLDBREAKER
@@ -1565,7 +1566,7 @@ Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [MELOETTA,1]
 FormName = Pirouette Forme
-Types = NORMAL,FIGHTING
+Types = SOUND,FIGHTING
 BaseStats = 100,128,90,128,77,77
 EVs = ATTACK,1,DEFENSE,1,SPEED,1
 #-------------------------------
@@ -1890,7 +1891,7 @@ Weight = 27.8
 #-------------------------------
 [HOOPA,1]
 FormName = Hoopa Unbound
-Types = PSYCHIC,DARK
+Types = MYSTIC,DARK
 BaseStats = 80,160,60,80,170,130
 BaseExp = 340
 Moves = 1,HYPERSPACEFURY,1,TRICK,1,DESTINYBOND,1,ALLYSWITCH,1,CONFUSION,6,ASTONISH,10,MAGICCOAT,15,LIGHTSCREEN,19,PSYBEAM,25,SKILLSWAP,29,POWERSPLIT,29,GUARDSPLIT,46,KNOCKOFF,50,WONDERROOM,50,TRICKROOM,55,DARKPULSE,75,PSYCHIC,85,HYPERSPACEFURY
@@ -2107,7 +2108,7 @@ Pokedex = Sad that its true identity may be exposed, Mimikyu will mercilessly se
 #-------------------------------
 [NECROZMA,1]
 FormName = Dusk Mane
-Types = PSYCHIC,STEEL
+Types = LIGHT,STEEL
 BaseStats = 97,157,127,77,113,109
 BaseExp = 340
 EVs = ATTACK,3
@@ -2120,7 +2121,7 @@ Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [NECROZMA,2]
 FormName = Dawn Wings
-Types = PSYCHIC,GHOST
+Types = LIGHT,GHOST
 BaseStats = 97,113,109,77,157,127
 BaseExp = 340
 EVs = SPECIAL_ATTACK,3
@@ -2132,7 +2133,7 @@ Flags = SelectableInTeamBuilderMode
 #-------------------------------
 [NECROZMA,3]
 FormName = Ultra Necrozma
-Types = PSYCHIC,DRAGON
+Types = LIGHT,DRAGON
 BaseStats = 97,167,97,129,167,97
 BaseExp = 377
 EVs = ATTACK,1,SPECIAL_ATTACK,1,SPEED,1
@@ -2143,7 +2144,7 @@ Pokedex = The light pouring out from all over its body affects living things and
 #-------------------------------
 [NECROZMA,4]
 PokedexForm = 3
-Types = PSYCHIC,DRAGON
+Types = LIGHT,DRAGON
 BaseStats = 97,167,97,129,167,97
 BaseExp = 377
 EVs = ATTACK,1,SPECIAL_ATTACK,1,SPEED,1

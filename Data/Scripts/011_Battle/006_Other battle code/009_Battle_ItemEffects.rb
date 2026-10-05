@@ -843,6 +843,17 @@ Battle::ItemEffects::MoveImmunity.add(:INTERCEPTOR,
   }
 )
 
+Battle::ItemEffects::MoveImmunity.add(:HEALTHYSPONGE,
+  proc { |item, user, target, move, type, battle, show_message|
+    targetTypes = target.pbTypes(true)
+    next false if !Effectiveness.not_very_effective_type?(type, targetTypes[0], targetTypes[1], targetTypes[2])
+    if target.pbRecoverHP(target.totalhp / 5) > 0
+      battle.pbDisplay(_INTL("{1} absorbed the attack and restored a little HP using its {2}!", target.pbThis, target.itemName))
+    end
+    next true
+  }
+)
+
 #===============================================================================
 # AccuracyCalcFromUser handlers
 #===============================================================================
@@ -1252,13 +1263,14 @@ Battle::ItemEffects::DamageCalcFromUser.add(:WISEGLASSES,
 )
 
 Battle::ItemEffects::DamageCalcFromUser.add(:EONGENE,
-  proc { |item,user,target,move,mults,baseDmg,type|
+  proc { |item, user, target, move, mults, baseDmg, type|
+    # TODO: Fix evolutions for the last few ones, then make the logic dynamically get the list from GameData::Species data
     species_list = [:EEVEE, :VAPOREON, :JOLTEON, :FLAREON, :ESPEON, :UMBREON, :LEAFEON, :GLACEON, :SYLVEON, :TYPHEON, :SHYNEON, :ILLUSEON, :ASTREON, :ICHEON, :FULGEON]
     isSpecies = false
     for species_sym in species_list
       isSpecies = true if user.isSpecies?(species_sym)
     end
-    if isSpecies && type>=0 && user.pbHasType?(type)
+    if isSpecies && user.pbHasType?(type)
       mults[:final_damage_multiplier] *= 2
     else
       mults[:final_damage_multiplier] *= 0.5

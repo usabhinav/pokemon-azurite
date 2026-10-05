@@ -122,7 +122,7 @@ class PokemonEntryScene
     case subject
     when 1   # Player
       meta = GameData::PlayerMetadata.get($player.character_ID)
-      if meta && $game_temp.game_mode_type != :ENDLESS_MODE
+      if meta && ![:ENDLESS_MODE, :CUSTOM_BATTLE_MODE].include?($game_temp.game_mode_type)
         @sprites["shadow"] = IconSprite.new(0, 0, @viewport)
         @sprites["shadow"].setBitmap("Graphics/Pictures/Naming/icon_shadow")
         @sprites["shadow"].x = 33 * 2
@@ -407,7 +407,7 @@ class PokemonEntryScene2
     case subject
     when 1   # Player
       meta = GameData::PlayerMetadata.get($player.character_ID)
-      if meta && $game_temp.game_mode_type != :ENDLESS_MODE
+      if meta && ![:ENDLESS_MODE, :CUSTOM_BATTLE_MODE].include?($game_temp.game_mode_type)
         @sprites["shadow"] = IconSprite.new(0, 0, @viewport)
         @sprites["shadow"].setBitmap("Graphics/Pictures/Naming/icon_shadow")
         @sprites["shadow"].x = 66

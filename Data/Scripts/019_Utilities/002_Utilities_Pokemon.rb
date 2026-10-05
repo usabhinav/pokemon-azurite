@@ -390,8 +390,6 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
     # Mundimea is more of a special encounter Pokemon that requires a True Enigma Chain to see it, so doesn't
     # make much sense to include it randomly.
     next species_id == :MUNDIMEA ||
-         # TODO: Remove this condition once these Pokemon actually have base form sprites
-         [:GELDIOS, :SPHERIOS].include?(species_id) ||
          # TODO: Remove this condition once these Pokemon's evolutions are coded correctly
          [:EUTHISCUS, :STALAGTIC, :CONAMITE, :BRATANAT, :CUBEAT, :RACCOUSTIC, :TSANDCHI, :CANOLING, :NYASHI, :PEBBUIN, :LIZGROKO, :RIBIKUN, :KOTSUMO, :CHICHAW, :GILKUN].include?(species_id)
   end
@@ -399,16 +397,25 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
   species_data_form_map[:JIRACHI].delete_if do |s|
     next s.form == 2
   end
+  # Up to round 15, only allow Pokemon without any previous evolution (single evo and first in evo line)
   if runnerModeBattleCounter <= 15
     species_id_list.delete_if do |species_id|
       species_data = GameData::Species.get(species_id)
       next species_data.get_previous_species != species_id
     end
   end
+  # Up to round 40, no legendaries at all
   if runnerModeBattleCounter <= 40
     species_id_list.delete_if do |species_id|
       species_data = GameData::Species.get(species_id)
       next species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical") || species_data.has_flag?("UltraBeast")
+    end
+  end
+  # Up to round 60, allow mythicals but not legendaries or ultra beasts
+  if runnerModeBattleCounter <= 60
+    species_id_list.delete_if do |species_id|
+      species_data = GameData::Species.get(species_id)
+      next species_data.has_flag?("Legendary") || species_data.has_flag?("UltraBeast")
     end
   end
   # First get random species

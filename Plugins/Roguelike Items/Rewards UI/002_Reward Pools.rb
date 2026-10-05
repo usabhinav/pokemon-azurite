@@ -131,6 +131,11 @@ module GameData
     def self.item_name(item_id)
       item_data = GameData::Item.get(item_id)
       name = item_data.name
+      # For TMs, display move name
+      if item_data.is_machine?
+        name += " (#{GameData::Move.get(item_data.move).name})"
+      end
+      # Display how much of the item will be received
       amount = self.item_quantity(item_id)
       if amount > 1
         name += " (#{amount}x)"

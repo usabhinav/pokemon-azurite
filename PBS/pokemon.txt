@@ -9742,7 +9742,7 @@ WildItemCommon = PEARL
 #-------------------------------
 [HUNTAIL]
 Name = Huntail
-Types = WATER
+Types = WATER,DARK
 BaseStats = 67,128,105,60,70,75
 GenderRatio = Female50Percent
 GrowthRate = Erratic
@@ -11598,7 +11598,7 @@ Generation = 4
 #-------------------------------
 [MIMEJR]
 Name = Mime Jr.
-Types = PSYCHIC,FAIRY
+Types = MYSTIC,FAIRY
 BaseStats = 20,25,45,60,70,90
 GenderRatio = Female50Percent
 GrowthRate = Medium
@@ -12711,7 +12711,7 @@ Flags = Legendary
 #-------------------------------
 [DIALGA]
 Name = Dialga
-Types = STEEL,DRAGON
+Types = MYSTIC,DRAGON
 BaseStats = 100,120,120,90,150,100
 GenderRatio = Genderless
 GrowthRate = Slow
@@ -18568,7 +18568,7 @@ Generation = 6
 #-------------------------------
 [NOIBAT]
 Name = Noibat
-Types = SOUND,DRAGON
+Types = SOUND,FLYING
 BaseStats = 40,30,35,55,45,40
 GenderRatio = Female50Percent
 GrowthRate = Medium
@@ -20473,7 +20473,7 @@ Flags = Legendary
 #-------------------------------
 [COSMOG]
 Name = Cosmog
-Types = PSYCHIC
+Types = COSMIC
 BaseStats = 43,29,31,37,29,31
 GenderRatio = Genderless
 GrowthRate = Slow
@@ -20497,7 +20497,7 @@ Flags = Legendary
 #-------------------------------
 [COSMOEM]
 Name = Cosmoem
-Types = PSYCHIC
+Types = COSMIC
 BaseStats = 43,29,131,37,29,131
 GenderRatio = Genderless
 GrowthRate = Slow
@@ -20522,7 +20522,7 @@ Flags = Legendary
 #-------------------------------
 [SOLGALEO]
 Name = Solgaleo
-Types = PSYCHIC,STEEL
+Types = COSMIC,STEEL
 BaseStats = 137,137,107,97,113,89
 GenderRatio = Genderless
 GrowthRate = Slow
@@ -20546,7 +20546,7 @@ Flags = Legendary
 #-------------------------------
 [LUNALA]
 Name = Lunala
-Types = PSYCHIC,GHOST
+Types = COSMIC,GHOST
 BaseStats = 137,113,89,97,137,107
 GenderRatio = Genderless
 GrowthRate = Slow
@@ -20642,7 +20642,7 @@ Flags = UltraBeast
 #-------------------------------
 [XURKITREE]
 Name = Xurkitree
-Types = ELECTRIC
+Types = ELECTRIC,LIGHT
 BaseStats = 83,89,71,83,173,71
 GenderRatio = Genderless
 GrowthRate = Slow
@@ -20738,7 +20738,7 @@ Flags = UltraBeast
 #-------------------------------
 [NECROZMA]
 Name = Necrozma
-Types = PSYCHIC
+Types = COSMIC
 BaseStats = 97,107,101,79,127,89
 GenderRatio = Genderless
 GrowthRate = Slow
@@ -21031,7 +21031,7 @@ Evolutions = RILLABOOM,Level,35
 #-------------------------------
 [RILLABOOM]
 Name = Rillaboom
-Types = GRASS
+Types = GRASS,SOUND
 BaseStats = 100,125,90,85,60,70
 GenderRatio = FemaleOneEighth
 GrowthRate = Parabolic
@@ -21357,7 +21357,7 @@ Evolutions = DOTTLER,Level,10
 #-------------------------------
 [DOTTLER]
 Name = Dottler
-Types = BUG,PSYCHIC
+Types = BUG,COSMIC
 BaseStats = 50,35,80,30,50,90
 GenderRatio = Female50Percent
 GrowthRate = Medium
@@ -21383,7 +21383,7 @@ Evolutions = ORBEETLE,Level,30
 #-------------------------------
 [ORBEETLE]
 Name = Orbeetle
-Types = BUG,PSYCHIC
+Types = BUG,COSMIC
 BaseStats = 60,45,110,90,80,120
 GenderRatio = Female50Percent
 GrowthRate = Medium
@@ -22133,7 +22133,7 @@ Generation = 8
 #-------------------------------
 [HATENNA]
 Name = Hatenna
-Types = PSYCHIC
+Types = MYSTIC
 BaseStats = 42,30,45,39,56,53
 GenderRatio = AlwaysFemale
 GrowthRate = Slow
@@ -22159,7 +22159,7 @@ Evolutions = HATTREM,Level,32
 #-------------------------------
 [HATTREM]
 Name = Hattrem
-Types = PSYCHIC
+Types = MYSTIC
 BaseStats = 57,40,65,49,86,73
 GenderRatio = AlwaysFemale
 GrowthRate = Slow
@@ -22184,7 +22184,7 @@ Evolutions = HATTERENE,Level,42
 #-------------------------------
 [HATTERENE]
 Name = Hatterene
-Types = PSYCHIC,FAIRY
+Types = MYSTIC,FAIRY
 BaseStats = 57,90,95,29,136,103
 GenderRatio = AlwaysFemale
 GrowthRate = Slow
@@ -22387,7 +22387,7 @@ WildItemUncommon = LEEK
 #-------------------------------
 [MRRIME]
 Name = Mr. Rime
-Types = ICE,PSYCHIC
+Types = ICE,MYSTIC
 BaseStats = 80,85,75,70,110,100
 GenderRatio = Female50Percent
 GrowthRate = Medium
@@ -26654,6 +26654,7 @@ Habitat = Grassland
 Category = Unknown
 Pokedex = ...
 Generation = 99
+Flags = Mythical
 #-------------------------------
 [GELDIOS]
 Name = Geldios
@@ -26676,6 +26677,7 @@ Habitat = Grassland
 Category = Unknown
 Pokedex = ...
 Generation = 99
+Flags = Legendary
 #-------------------------------
 [SPHERIOS]
 Name = Spherios
@@ -26698,6 +26700,7 @@ Habitat = Grassland
 Category = Unknown
 Pokedex = ...
 Generation = 99
+Flags = Legendary
 #-------------------------------
 [OKEANIOS]
 Name = Okeanios
@@ -26721,6 +26724,7 @@ Habitat = Grassland
 Category = Unknown
 Pokedex = ...
 Generation = 99
+Flags = Legendary
 #-------------------------------
 [MUNDIMEA]
 Name = Mundimea
@@ -26743,6 +26747,7 @@ Habitat = Grassland
 Category = Unknown
 Pokedex = ...
 Generation = 99
+Flags = Mythical
 #-------------------------------
 [LUMENY]
 Name = Lumeny
@@ -26766,6 +26771,7 @@ Habitat = Beach
 Category = Shining
 Pokedex = Lumeny is a very gentle Pokémon and prefers not to fight, but instead to help. The soothing light coming from its antenna and tails gives a warm feeling that can make other Pokémon and even people feel a lot better.
 Generation = 99
+Flags = Mythical
 #-------------------------------
 [KOSURITE]
 Name = Kosurite
@@ -26790,6 +26796,7 @@ Habitat = Cave
 Category = Destructive
 Pokedex = This Pokémon is the firstborn of the original Crystal Pokemon. Created by Kaizure out of a selfish desire to live carefree, Kosurite was created without emotions or desires. The result was a destructive beast that attacks without hesitation and curses those it deems selfish.
 Generation = 99
+Flags = Legendary
 #-------------------------------
 [KYAZURA]
 Name = Kyazura
@@ -26813,6 +26820,7 @@ Habitat = Grassland
 Category = Replicant
 Pokedex = Kyazura was created by Vitreus from a part of Kaizure. Made to control energy of those around it, all Crystal and Mega forms are reverted back to their original state. It hates its own existence and will attack without warning.
 Generation = 99
+Flags = Legendary
 #-------------------------------
 [KAIZURE]
 Name = Kaizure
@@ -26836,6 +26844,7 @@ Habitat = Grassland
 Category = Crystal Origin
 Pokedex = The original Crystal Pokémon. Capable of controlling all crystal energy, it spent its days keeping the flow of energy moving throughout the world. When it met a Mew, it yearned to live a carefree life, so it created Kosurite to do its job. This turned out terribly.
 Generation = 99
+Flags = Legendary
 #-------------------------------
 [SLOOF]
 Name = Sloof

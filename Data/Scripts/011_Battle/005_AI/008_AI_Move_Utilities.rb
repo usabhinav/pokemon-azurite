@@ -235,6 +235,7 @@ class Battle::AI
   def pbCheckMoveImmunity(score, move, user, target, skill)
     type = pbRoughType(move, user, skill)
     typeMod = pbCalcTypeMod(type, user, target)
+    targetTypes = target.pbTypes(true)
     # Type effectiveness
     return true if (move.damagingMove? && Effectiveness.ineffective?(typeMod)) || score <= 0
     # Immunity due to ability/item/other effects
@@ -272,6 +273,8 @@ class Battle::AI
                      target.opposes?(user)
       return true if move.priority > 0 && @battle.field.terrain == :Psychic &&
                      target.affectedByTerrain? && target.opposes?(user)
+      return true if Effectiveness.not_very_effective_type?(type, targetTypes[0], targetTypes[1], targetTypes[2]) &&
+                     target.hasActiveItem?(:HEALTHYSPONGE)
     end
     return false
   end

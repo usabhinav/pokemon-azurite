@@ -1757,13 +1757,11 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:WATERBUBBLE,
 )
 
 Battle::AbilityEffects::DamageCalcFromUser.add(:MAGMATICHEAT,
-  proc { |ability,user,target,move,mults,baseDmg,type|
+  proc { |ability, user, target, move, mults, baseDmg, type|
     targetTypes = target.pbTypes(true) # Takes third type into account
-    for targetType in targetTypes
-      if Effectiveness.not_very_effective_type?(type, targetType) && type == :FIRE
-        # Changes the 0.5x "not very effective" multiplier to 0.75x
-        mults[:base_damage_multiplier] *= 1.5
-      end
+    if Effectiveness.not_very_effective_type?(type, targetTypes[0], targetTypes[1], targetTypes[2]) && type == :FIRE
+      # Changes the 0.5x "not very effective" multiplier to 0.75x
+      mults[:base_damage_multiplier] *= 1.5
     end
   }
 )

@@ -5,7 +5,7 @@ module Input
     if trigger?(Input::F8)
       pbScreenCapture
     end
-    if $CanToggle && $DEBUG && trigger?(Input::AUX1) #remap your Q button on the F1 screen to change your speedup switch
+    if $CanToggle && trigger?(Input::AUX1) #remap your Q button on the F1 screen to change your speedup switch
       $GameSpeed += 1
       $GameSpeed = 0 if $GameSpeed >= SPEEDUP_STAGES.size
     end

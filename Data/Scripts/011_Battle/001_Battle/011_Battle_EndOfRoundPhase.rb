@@ -392,6 +392,8 @@ class Battle
     priority.each do |b|
       next if !b.hasActiveAbility?(:SCORCHINGCOAT)
       priority.each do |j|
+        next if j.fainted?
+        next if !j.takesIndirectDamage?
         next if j.pbHasType?(:FIRE) || j.hasActiveAbility?(:SCORCHINGCOAT)
         pbShowAbilitySplash(b)
         pbDisplay(_INTL("{1} was burned!",j.pbThis))
@@ -403,6 +405,8 @@ class Battle
     # Blast
     priority.each do |b|
       for j in b.effects[PBEffects::BlastUsers]
+        next if j.fainted?
+        next if !j.takesIndirectDamage?
         pbShowAbilitySplash(j)
         pbDisplay(_INTL("{1} blasted {2}!", j.pbThis, b.pbThis(true)))
         @scene.pbDamageAnimation(b)

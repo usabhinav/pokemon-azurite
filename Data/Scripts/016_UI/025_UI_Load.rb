@@ -577,6 +577,7 @@ class PokemonLoadScreen
       when cmd_custom_battle_mode
         SaveData.load_new_game_values
         registerAllSpeciesAndForms # To show all species/forms when selecting species
+        $game_temp.game_mode_type = :CUSTOM_BATTLE_MODE
         pbStartTeamBuilderTextBasedScreen
         SaveData.mark_values_as_unloaded
       when cmd_manage_saved_data

@@ -233,7 +233,6 @@ class TeamBuilderTextBasedScreen
         pbFadeOutIn do
           # Fade to game map to avoid any random issues related to game map not being initialized or something
           old_scene = $scene
-          $game_temp.game_mode_type = :CUSTOM_BATTLE_MODE
           Game.start_new
           pbTrainerName("Jade")
           setBattleRule(sprintf("%dv%d", size0, size1))

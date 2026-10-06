@@ -9291,7 +9291,7 @@ TotalPP = 5
 Target = UserAndAllies
 FunctionCode = HealTargetHalfOfTotalHP75PercentIfSingleBattleAndSkipNextTurn
 Flags = CanMirageCall
-Description = The user envelops its side in a warm gleam of light energy, recovering signifcant HP for itself and its allies. The user must rest on the next turn, however.
+Description = The user envelops its side in a warm gleam of light energy, recovering significant HP for itself and its allies. The user must rest on the next turn, however.
 #-------------------------------
 [BRIGHTSMILE]
 Name = Bright Smile

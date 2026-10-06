@@ -2753,6 +2753,7 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [DODRIO,1]
 FormName = Kurian
+Abilities = AERILATE
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [HITMONLEE,1]
@@ -2776,6 +2777,7 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 [KOFFING,2]
 FormName = Kurian
 Types = FAIRY
+Abilities = FRAGRANCE
 Color = Pink
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
@@ -2797,12 +2799,14 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 FormName = Kurian
 Types = STEEL,PSYCHIC
 BaseStats = 40,50,50,50,50,85
+Abilities = LEVITATE
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [LEDIAN,1]
 FormName = Kurian
 Types = STEEL,PSYCHIC
 BaseStats = 70,90,70,125,60,115
+Abilities = LEVITATE
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [AIPOM,1]
@@ -3201,6 +3205,7 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 FormName = Kurian
 Types = GHOST,MYSTIC
 BaseStats = 43,70,63,30,70,63
+Abilities = SAKURA
 Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 #-------------------------------
 [TREVENANT,1]
@@ -3291,6 +3296,9 @@ Flags = InheritFormWithEverStone,SelectableInTeamBuilderMode
 FormName = Mega Raticate
 Types = NORMAL,FIRE
 BaseStats = 60,119,91,128,45,91
+Abilities = ROLLUP
+HiddenAbilities = ROLLUP
+MegaStone = RATICATITE
 #-------------------------------
 [RATICATE,3]
 FormName = Mega Alolan Raticate
@@ -3308,14 +3316,18 @@ FormName = Mega Sandslash
 Types = GROUND,FIGHTING
 BaseStats = 70,140,115,100,50,70
 Abilities = TOUGHCLAWS
+HiddenAbilities = TOUGHCLAWS
+MegaStone = SANDSLASHITE
 #-------------------------------
 [WIGGLYTUFF,1]
 FormName = Mega Wigglytuff
 Types = FAIRY,SOUND
 BaseStats = 140,135,75,25,135,75
 Abilities = FLUFFY
+HiddenAbilities = FLUFFY
 Pokedex = Mega Evolution gives Wigglytuff super soft micro fur, though the static electricity created from hugging it will cause Wigglytuff to spontaneously combust.
 Category = Balloon Animal
+MegaStone = WIGGLYTUFFITE
 #-------------------------------
 [VENOMOTH,1]
 FormName = Mega Venomoth
@@ -3326,51 +3338,71 @@ FormName = Mega Golduck
 Types = WATER,PSYCHIC
 BaseStats = 80,110,92,96,150,92
 Abilities = MAGICGUARD
+HiddenAbilities = MAGICGUARD
+MegaStone = GOLDUCKITE
 #-------------------------------
 [MACHAMP,1]
 FormName = Mega Machamp
+MegaStone = MACHAMPITE
 #-------------------------------
 [DEWGONG,1]
 FormName = Mega Dewgong
 Types = WATER,FAIRY
 BaseStats = 90,100,120,80,90,115
+Abilities = SUGARPOWER
+HiddenAbilities = SUGARPOWER
+MegaStone = DEWGONGITE
 #-------------------------------
 [ELECTRODE,1]
 FormName = Mega Electrode
 Types = ELECTRIC,NORMAL
 BaseStats = 60,90,70,170,110,90
+Abilities = EXPLOSIVEEXHAUST
+HiddenAbilities = EXPLOSIVEEXHAUST
 MegaStone = ELECTRODITE
 #-------------------------------
 [MAROWAK,2]
 FormName = Mega Marowak
 Types = GROUND,DRAGON
 BaseStats = 60,100,115,100,60,90
+MegaStone = MAROWAKITE
 #-------------------------------
 [HITMONCHAN,2]
 FormName = Mega Hitmonchan
+MegaStone = HITMONCHANITE
 #-------------------------------
 [MRMIME,2]
 FormName = Mega Mr. Mime
+MegaStone = MRMIMITE
 #-------------------------------
 [MEW,1]
 FormName = Mega Mew
+Abilities = OMNIGENE
+HiddenAbilities = OMNIGENE
+MegaStone = MEWITE
 #-------------------------------
 [XATU,1]
 FormName = Mega Xatu
 Types = MYSTIC,FLYING
 BaseStats = 65,70,105,120,105,105
+Abilities = CLAIRVOYANT
+HiddenAbilities = CLAIRVOYANT
 MegaStone = XATITE
 #-------------------------------
 [ENTEI,1]
 FormName = Mega Entei
 Types = FIRE,GHOST
 BaseStats = 115,145,105,100,140,75
+Abilities = LAVAFLOOR
+HiddenAbilities = LAVAFLOOR
 MegaStone = ENTEINITE
 #-------------------------------
 [CELEBI,1]
 FormName = Mega Celebi
 Types = GRASS,PSYCHIC
 BaseStats = 100,100,100,150,120,130
+Abilities = NATURALCURE
+HiddenAbilities = NATURALCURE
 MegaMove = TIMEBREAK
 MegaMessage = 1
 Pokedex = The energy obtained from Mega Evolution allows Celebi to stop time, although temporarily. The gem seems to cause that time stop, channeling the power of the ancient Pokémon of time.
@@ -3379,6 +3411,7 @@ Pokedex = The energy obtained from Mega Evolution allows Celebi to stop time, al
 FormName = Mega Cacturne
 BaseStats = 80,150,120,25,120,95
 Abilities = DESERTBODY
+HiddenAbilities = DESERTBODY
 Pokedex = Cacturne undergo immense pain during the process of Mega Evolution to fuel its cruelty. It then seeks to cause even worse suffering on the opponent.
 MegaStone = CACTURNITE
 #-------------------------------
@@ -3386,28 +3419,39 @@ MegaStone = CACTURNITE
 FormName = Mega Delta Metagross
 Types = GRASS,ROCK
 BaseStats = 100,160,210,70,70,90
+Abilities = ROCKHEAD
+HiddenAbilities = ROCKHEAD
 UnmegaForm = 1
 MegaStone = DELTAMETAGROSSITE
 #-------------------------------
 [LUXRAY,1]
 FormName = Mega Luxray
+Abilities = GLEAMINGGLARE
+HiddenAbilities = GLEAMINGGLARE
+MegaStone = LUXRAYITE
 #-------------------------------
 [MOTHIM,1]
 FormName = Mega Mothim
 Types = BUG,MYSTIC
 BaseStats = 70,95,85,101,119,85
+Abilities = CLOAKCONTROL
+HiddenAbilities = CLOAKCONTROL
+MegaStone = MOTHIMITE
 #-------------------------------
 [CHERRIM,2]
 FormName = Mega Cherrim
 Types = GRASS,FIRE
 BaseStats = 70,60,70,103,144,103
-Abilities = DROUGHT,FORESTFIRE
+Abilities = FORESTFIRE
+HiddenAbilities = FORESTFIRE
 MegaStone = CHERRITE
 #-------------------------------
 [LOPUNNY,3]
 FormName = Mega Kurian Lopunny
 Types = GHOST,FIGHTING
 BaseStats = 80,162,34,120,72,112
+Abilities = NOGUARD
+HiddenAbilities = NOGUARD
 UnmegaForm = 1
 MegaStone = KURIANLOPUNNITE
 #-------------------------------
@@ -3415,38 +3459,50 @@ MegaStone = KURIANLOPUNNITE
 FormName = Mega Mismagius
 BaseStats = 65,55,55,145,145,145
 Abilities = SECONDSIGHT
-HiddenAbility = SECONDSIGHT
+HiddenAbilities = SECONDSIGHT
 MegaStone = MISMAGITE
 #-------------------------------
 [TOGEKISS,1]
 FormName = Mega Togekiss
+MegaStone = TOGEKISSITE
 #-------------------------------
 [PORYGONZ,1]
 FormName = Mega Porygon-Z
 BaseStats = 85,120,70,100,190,70
+Abilities = DISTORTED
+HiddenAbilities = DISTORTED
 MegaStone = MEGADISC
 #-------------------------------
 [DUSKNOIR,1]
 FormName = Mega Dusknoir
 BaseStats = 75,120,175,45,60,175
+Abilities = SOULABSORB
+HiddenAbilities = SOULABSORB
 MegaStone = DUSKNITE
 #-------------------------------
 [SHAYMIN,2]
 FormName = Mega Shaymin (Land)
+Abilities = HYPERAROMA
+HiddenAbilities = HYPERAROMA
 MegaStone = SHAYMINITE
 #-------------------------------
 [SHAYMIN,3]
 FormName = Mega Shaymin (Sky)
+Abilities = SERENEGRACE
+HiddenAbilities = SERENEGRACE
 UnmegaForm = 1
 MegaStone = SHAYMINITE
 #-------------------------------
 [VICTINI,1]
 FormName = Mega Victini
+Abilities = VICTORYRUSH
+HiddenAbilities = VICTORYRUSH
 MegaStone = VICTINITE
 #-------------------------------
 [UNFEZANT,1]
 FormName = Mega Unfezant
 BaseStats = 80,145,100,113,75,75
+MegaStone = UNFEZANITE
 #-------------------------------
 [DARMANITAN,5]
 FormName = Mega Darmanitan
@@ -3454,33 +3510,40 @@ MegaStone = DARMANITE
 #-------------------------------
 [SIGILYPH,1]
 FormName = Mega Sigilyph
+MegaStone = SIGILYPHITE
 #-------------------------------
 [BEHEEYEM,1]
 FormName = Mega Beheeyem
 Types = COSMIC,PSYCHIC
 BaseStats = 90,70,115,45,155,145
 Abilities = MINDIPULATION
+HiddenAbilities = MINDIPULATION
 Pokedex = The process of Mega Evolution manages to train its brain to an IQ that surpasses that of Alakazam. Sometimes, its intelligence can even make the Beheeyem itself confused.
 MegaStone = BEHEEYITE
 #-------------------------------
 [ACCELGOR,1]
 FormName = Mega Accelgor
+MegaStone = ACCELGITE
 #-------------------------------
 [AROMATISSE,1]
 FormName = Mega Aromatisse
 BaseStats = 101,72,82,29,149,129
 Abilities = HYPERAROMA
+HiddenAbilities = HYPERAROMA
 Pokedex = Mega Evolution inflates Aromatisse's ego immensely. Because of this, it can get distracted by its own self-admiration. Even losing in battle won't make it love itself less.
 MegaStone = AROMATISSITE
 #-------------------------------
 [SLURPUFF,1]
 FormName = Mega Slurpuff
 BaseStats = 82,80,118,99,116,90
+Abilities = TASTYTREAT
+HiddenAbilities = TASTYTREAT
 MegaStone = SLURPITE
 #-------------------------------
 [GOODRA,1]
 FormName = Mega Goodra
 BaseStats = 90,140,90,40,150,190
+MegaStone = GOODRITE
 #-------------------------------
 [CHEETATIC,1]
 FormName = Mega Cheetatic
@@ -3489,6 +3552,21 @@ MegaStone = CHEETITE
 [VISARAB,1]
 FormName = Mega Visarab
 BaseStats = 72,170,121,130,116,91
+Abilities = WEAKARMOR
+HiddenAbilities = WEAKARMOR
+MegaStone = VISARITE
+#-------------------------------
+[VENEMOTH,1]
+FormName = Mega Venemoth
+MegaStone = VENEMITE
+#-------------------------------
+[DARKRAI,1]
+FormName = Mega Darkrai
+MegaStone = DARKRITE
+#-------------------------------
+[AVALUGG,1]
+FormName = Mega Avalugg
+MegaStone = AVALUGGITE
 #-------------------------------
 #Crystal Forms
 #-------------------------------
@@ -3496,36 +3574,48 @@ BaseStats = 72,170,121,130,116,91
 FormName = Crystal Venusaur
 Types = GRASS,CRYSTAL
 BaseStats = 90,90,113,60,152,120
+Abilities = CRYSTALOVERGROW
+HiddenAbilities = CRYSTALOVERGROW
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [CHARIZARD,3]
 FormName = Crystal Charizard
 Types = FIRE,CRYSTAL
 BaseStats = 78,159,110,100,109,78
+Abilities = CRYSTALBLAZE
+HiddenAbilities = CRYSTALBLAZE
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [BLASTOISE,2]
 FormName = Crystal Blastoise
 Types = WATER,CRYSTAL
 BaseStats = 79,80,155,30,160,126
+Abilities = CRYSTALTORRENT
+HiddenAbilities = CRYSTALTORRENT
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [BEEDRILL,2]
 FormName = Crystal Beedrill
 Types = BUG,CRYSTAL
 BaseStats = 60,110,100,110,15,100
+Abilities = CRYSTALSTINGER
+HiddenAbilities = CRYSTALSTINGER
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [RAICHU,2]
 FormName = Crystal Raichu
 Types = ELECTRIC,CRYSTAL
 BaseStats = 70,105,80,140,130,80
+Abilities = OVERCHARGED
+HiddenAbilities = OVERCHARGED
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [RAICHU,3]
 FormName = Crystal Alolan Raichu
 Types = ELECTRIC,CRYSTAL
 BaseStats = 70,105,80,140,130,80
+Abilities = OVERCHARGED
+HiddenAbilities = OVERCHARGED
 UnmegaForm = 1
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
@@ -3533,28 +3623,38 @@ MegaStone = CRYSTALFRAGMENT
 FormName = Crystal Starmie
 Types = WATER,CRYSTAL
 BaseStats = 60,75,105,135,140,105
+Abilities = STORMDRAIN
+HiddenAbilities = STORMDRAIN
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [AMPHAROS,2]
 FormName = Crystal Ampharos
 Types = LIGHT,CRYSTAL
 BaseStats = 90,75,85,40,155,155
+Abilities = CLOUDFLUFF
+HiddenAbilities = CLOUDFLUFF
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [STEELIX,2]
 FormName = Crystal Steelix
 Types = STEEL,CRYSTAL
 BaseStats = 75,85,205,20,50,155
+Abilities = STURDY
+HiddenAbilities = STURDY
 #-------------------------------
 [STEELIX,3]
 FormName = Mega Crystal Steelix
 Types = STEEL,CRYSTAL
 BaseStats = 75,85,205,20,50,155
+Abilities = STURDY
+HiddenAbilities = STURDY
 #-------------------------------
 [DELIBIRD,1]
 FormName = Crystal Delibird
 Types = ICE,CRYSTAL
 BaseStats = 45,115,65,120,20,60
+Abilities = MERRYCHRISTMAS
+HiddenAbilities = MERRYCHRISTMAS
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [RAIKOU,1]
@@ -3566,6 +3666,8 @@ MegaStone = CRYSTALFRAGMENT
 FormName = Crystal Crawdaunt
 Types = WATER,CRYSTAL
 BaseStats = 68,145,115,70,95,90
+Abilities = RAPIDSTREAM
+HiddenAbilities = RAPIDSTREAM
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [METAGROSS,4]
@@ -3579,12 +3681,16 @@ UnmegaForm = 1
 FormName = Crystal Jirachi
 Types = STEEL,CRYSTAL
 BaseStats = 100,120,130,120,120,110
+Abilities = SERENEGRACE
+HiddenAbilities = SERENEGRACE
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [TORTERRA,1]
 FormName = Crystal Torterra
 Types = GRASS,CRYSTAL
 BaseStats = 104,144,150,11,85,140
+Abilities = IMMOVABLE
+HiddenAbilities = IMMOVABLE
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [INFERNAPE,1]
@@ -3592,12 +3698,15 @@ FormName = Crystal Infernape
 Types = FIRE,CRYSTAL
 BaseStats = 76,144,71,128,144,71
 Abilities = POWERWITHIN
+HiddenAbilities = POWERWITHIN
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [EMPOLEON,1]
 FormName = Crystal Empoleon
 Types = WATER,CRYSTAL
 BaseStats = 84,130,94,75,150,101
+Abilities = MONARCH
+HiddenAbilities = MONARCH
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [LUXRAY,2]
@@ -3609,37 +3718,40 @@ MegaStone = CRYSTALFRAGMENT
 FormName = Crystal Vespiquen
 Types = BUG,CRYSTAL
 BaseStats = 70,100,129,40,105,130
+Abilities = HIVEMIND
+HiddenAbilities = HIVEMIND
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [LUCARIO,2]
 FormName = Crystal Lucario
 Types = FIGHTING,CRYSTAL
 BaseStats = 70,115,100,70,150,120
+Abilities = CRYSTALAURA
+HiddenAbilities = CRYSTALAURA
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [WEAVILE,1]
 FormName = Crystal Weavile
 Types = DARK,CRYSTAL
 BaseStats = 70,155,55,135,115,60
+Abilities = FRENZIED
+HiddenAbilities = FRENZIED
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [FROSLASS,1]
 FormName = Crystal Froslass
 Types = ICE,CRYSTAL
 BaseStats = 70,90,70,120,120,110
+Abilities = WINTERSPIRIT
+HiddenAbilities = WINTERSPIRIT
 MegaStone = CRYSTALFRAGMENT
-#-------------------------------
-[DARKRAI,1]
-FormName = Mega Darkrai
-#-------------------------------
-[AVALUGG,1]
-FormName = Mega Avalugg
 #-------------------------------
 [GIGALITH,2]
 FormName = Crystal Gigalith
 Types = ROCK,CRYSTAL
 BaseStats = 85,155,160,45,60,110
 Abilities = DEBRISARMOR
+HiddenAbilities = DEBRISARMOR
 Pokedex = The energies contained within Crystal Gigalith's crystals allow it to seperate and re-attatch parts of it's body at will. This strange energy affects nearby matter as well, causing chunks of debris to become attracted it's body. It can build up so much debris it turns into a living wrecking ball. Crystal Gigalith is attracted to areas with high electromagnetic activity.
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
@@ -3647,12 +3759,16 @@ MegaStone = CRYSTALFRAGMENT
 FormName = Crystal Reuniclus
 Types = PSYCHIC,CRYSTAL
 BaseStats = 110,65,120,30,155,110
+Abilities = REFLECTIVE
+HiddenAbilities = REFLECTIVE
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [BISHARP,1]
 FormName = Crystal Bisharp
 Types = DARK,CRYSTAL
 BaseStats = 70,160,130,85,75,100
+Abilities = COUNTERPARRY
+HiddenAbilities = COUNTERPARRY
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [MELOETTA,2]
@@ -3665,6 +3781,8 @@ MegaStone = CRYSTALFRAGMENT
 FormName = Crystal Florges
 Types = FAIRY,CRYSTAL
 BaseStats = 78,65,85,85,135,204
+Abilities = FLOWERVEIL
+HiddenAbilities = FLOWERVEIL
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 # Other Forms

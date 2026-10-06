@@ -276,6 +276,7 @@ Pokemon = RUNERIGUS,41
 Pokemon = KUNAMA,41
     Moves = MUDSLIDE,MUDDYWATER,DRAGONPULSE,ICEBEAM
     AbilityIndex = 0
+    Item = KUNAMITEX
     EV = 0,0,0,252,252,0
 #-------------------------------
 [LEADER_Marianne,Marianne]

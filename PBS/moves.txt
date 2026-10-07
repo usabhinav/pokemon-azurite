@@ -12252,7 +12252,7 @@ Accuracy = 100
 TotalPP = 10
 Target = NearOther
 FunctionCode = DoublePowerIfResistedByTarget
-Flags = CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
+Flags = Contact,CanProtect,CanMirrorMove,HighCriticalHitRate,Slashing
 Description = The user strikes its target with a beautiful sword of glass. Power is increased when the target has a resistance to this move. Critical hits land more easily.
 #-------------------------------
 [CADENZA]

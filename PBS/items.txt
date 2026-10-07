@@ -6326,7 +6326,7 @@ Description = One of a variety of mysterious Mega Stones. Have Entei hold it, an
 #-------------------------------
 [DELTAMETAGROSSITE]
 Name = Delta Metagrossite
-NamePlural = Delta Metagrossite
+NamePlural = Delta Metagrossites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
@@ -6334,7 +6334,7 @@ Description = One of a variety of mysterious Mega Stones. Have Delta Metagross h
 #-------------------------------
 [KURIANLOPUNNITE]
 Name = Kurian Lopunnite
-NamePlural = Kurian Lopunnite
+NamePlural = Kurian Lopunnites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
@@ -6342,7 +6342,7 @@ Description = One of a variety of mysterious Mega Stones. Have Kurian Lopunny ho
 #-------------------------------
 [MISMAGITE]
 Name = Mismagite
-NamePlural = Mismagite
+NamePlural = Mismagites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
@@ -6350,7 +6350,7 @@ Description = One of a variety of mysterious Mega Stones. Have Mismagius hold it
 #-------------------------------
 [SHAYMINITE]
 Name = Shayminite
-NamePlural = Shayminite
+NamePlural = Shayminites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
@@ -6358,7 +6358,7 @@ Description = One of a variety of mysterious Mega Stones. Have Shaymin hold it, 
 #-------------------------------
 [SLURPITE]
 Name = Slurpite
-NamePlural = Slurpite
+NamePlural = Slurpites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
@@ -6366,7 +6366,7 @@ Description = One of a variety of mysterious Mega Stones. Have Slurpuff hold it,
 #-------------------------------
 [VENOMITE]
 Name = Venomite
-NamePlural = Venomite
+NamePlural = Venomites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
@@ -6374,11 +6374,203 @@ Description = One of a variety of mysterious Mega Stones. Have Venomoth hold it,
 #-------------------------------
 [XATITE]
 Name = Xatite
-NamePlural = Xatite
+NamePlural = Xatites
 Pocket = 1
 Price = 0
 Flags = MegaStone, Fling_80
 Description = One of a variety of mysterious Mega Stones. Have Xatu hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[RATICATITE]
+Name = Raticatite
+NamePlural = Raticatites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Raticate hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ALOLANRATICATITE]
+Name = Alolan Raticatite
+NamePlural = Alolan Raticatites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Alolan Raticate hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[WIGGLYTUFFITE]
+Name = Wigglytuffite
+NamePlural = Wigglytuffites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Wigglytuff hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SANDSLASHITE]
+Name = Sandslashite
+NamePlural = Sandslashites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Sandslash hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GOLDUCKITE]
+Name = Golduckite
+NamePlural = Golduckites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Golduck hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MACHAMPITE]
+Name = Machampite
+NamePlural = Machampites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Machamp hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[DEWGONGITE]
+Name = Dewgongite
+NamePlural = Dewgongites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Dewgong hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MAROWAKITE]
+Name = Marowakite
+NamePlural = Marowakites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Marowak hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[HITMONCHANITE]
+Name = Hitmonchanite
+NamePlural = Hitmonchanites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Hitmonchan hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MRMIMITE]
+Name = Mr. Mimite
+NamePlural = Mr. Mimites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Mr. Mime hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MEWITE]
+Name = Mewite
+NamePlural = Mewites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Mew hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[LUXRAYITE]
+Name = Luxrayite
+NamePlural = Luxrayites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Luxray hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[MOTHIMITE]
+Name = Mothimite
+NamePlural = Mothimites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Mothim hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[TOGEKISSITE]
+Name = Togekissite
+NamePlural = Togekissites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Togekiss hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[UNFEZANITE]
+Name = Unfezanite
+NamePlural = Unfezanites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Unfezant hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[SIGILYPHITE]
+Name = Sigilyphite
+NamePlural = Sigilyphites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Sigilyph hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[ACCELGITE]
+Name = Accelgite
+NamePlural = Accelgites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Accelgor hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[GOODRITE]
+Name = Goodrite
+NamePlural = Goodrites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Goodra hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[VISARITE]
+Name = Visarite
+NamePlural = Visarites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Visarab hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[DARKRITE]
+Name = Darkrite
+NamePlural = Darkrites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Darkrai hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[AVALUGGITE]
+Name = Avaluggite
+NamePlural = Avaluggites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Avalugg hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[KUNAMITEX]
+Name = Kunamite X
+NamePlural = Kunamite Xs
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Kunama hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[KUNAMITEY]
+Name = Kunamite Y
+NamePlural = Kunamite Ys
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Kunama hold it, and it will be able to Mega Evolve.
+#-------------------------------
+[DRAJINITE]
+Name = Drajinite
+NamePlural = Drajinites
+Pocket = 1
+Price = 0
+Flags = MegaStone, Fling_80
+Description = One of a variety of mysterious Mega Stones. Have Drajinn hold it, and it will be able to Mega Evolve.
 #-------------------------------
 [ROYALHONEY]
 Name = Royal Honey

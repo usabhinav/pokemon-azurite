@@ -3304,6 +3304,9 @@ MegaStone = RATICATITE
 FormName = Mega Alolan Raticate
 Types = DARK,ICE
 BaseStats = 60,119,91,128,45,91
+Abilities = ROLLUP
+HiddenAbilities = ROLLUP
+MegaStone = ALOLANRATICATITE
 #-------------------------------
 [ARBOK,1]
 FormName = Mega Arbok
@@ -3556,10 +3559,6 @@ Abilities = WEAKARMOR
 HiddenAbilities = WEAKARMOR
 MegaStone = VISARITE
 #-------------------------------
-[VENEMOTH,1]
-FormName = Mega Venemoth
-MegaStone = VENEMITE
-#-------------------------------
 [DARKRAI,1]
 FormName = Mega Darkrai
 MegaStone = DARKRITE
@@ -3567,6 +3566,46 @@ MegaStone = DARKRITE
 [AVALUGG,1]
 FormName = Mega Avalugg
 MegaStone = AVALUGGITE
+#-------------------------------
+[KUNAMA,1]
+FormName = Mega Kunama X
+MegaStone = KUNAMITEX
+BaseStats = 85,85,120,75,100,140
+BaseExp = 199
+EffortPoints = 0,0,0,0,0,3
+Abilities = WATERABSORB
+HiddenAbilities = WATERABSORB
+Height = 1.4
+Weight = 20.3
+Pokedex = It was said that the deity Ribikun was modeled after had two aspects to it. One provided blessings and bountiful harvests in ancient times. It took the form of a wandering hermit wearing a shell on its back. The shell was said to hold good fortune and properity.
+#-------------------------------
+[KUNAMA,2]
+FormName = Mega Kunama Y
+MegaStone = KUNAMITEY
+Types = GROUND,DRAGON
+BaseStats = 85,95,80,105,160,80
+BaseExp = 199
+EffortPoints = 0,0,0,0,3,0
+Abilities = LEVITATE
+HiddenAbilities = LEVITATE
+Height = 4.5
+Weight = 91.3
+Category = Rage
+Pokedex = The other aspect was of a wrathful creature that razed the land during times of excess or as punishment for greediness. It would overturn the fields and flood them in a fit of terrible rage. Following that, it would curse the soil to give poor yields for a few years or until it was appeased.
+#-------------------------------
+[DRAJINN,1]
+FormName = Mega Drajinn
+MegaStone = DRAJINITE
+Types = DRAGON,FLYING
+BaseStats = 70,120,80,120,150,80
+BaseExp = 205
+EffortPoints = 0,1,0,0,2,0
+Abilities = AERILATE
+HiddenAbilities = AERILATE
+Height = 2.1
+Weight = 25.1
+Category = Tornado
+Pokedex = Upon Mega Evolution, Drajinn burst open their shell with their powerful tornado legs. However, after the transformation ends, the pot fixes itself back over their tail end.
 #-------------------------------
 #Crystal Forms
 #-------------------------------
@@ -3792,6 +3831,7 @@ FormName = Perfect Suicune
 Types = WATER,CRYSTAL
 BaseStats = 100,110,150,105,110,155
 Abilities = CRYSTALADAPTATION
+HiddenAbilities = CRYSTALADAPTATION
 Color = Rainbow
 Pokedex = The Perfect Transformation. Also known as Crystal Mega Evolution. Suicune underwent this transformation in order to reach "Perfection" and ascend beyond any other Pokémon.
 MegaStone = CRYSTALSUICUNITE

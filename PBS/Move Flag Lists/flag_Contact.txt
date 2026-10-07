@@ -340,6 +340,7 @@ Phoenix Flame
 Light Flare
 Curse Tag
 Tomb Raid
+Glass Blade
 Flash Strike
 Golden Spin
 Track Punch

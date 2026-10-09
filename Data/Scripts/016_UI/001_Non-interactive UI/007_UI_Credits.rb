@@ -149,6 +149,9 @@ Draskon5665 (Musician)<s>Darius (Musician)
 Sloof's cry sound created by:
 Shadow_Sear
 
+And additional sprite commissions from:
+Rezatri
+
 And additional third-party resources from the following:
 
 Stat Up/Down Animation (graphics only)

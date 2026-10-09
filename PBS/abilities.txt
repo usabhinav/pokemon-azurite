@@ -1422,7 +1422,7 @@ Description = Its Accuracy stat is gradually boosted.
 #-------------------------------
 [DEFENSEBOOST]
 Name = Defense Boost
-Description = Its Defense stat is gradually boosted.
+Description = Its Defense and Sp. Def stats are gradually boosted.
 #-------------------------------
 [DARKDUALITY]
 Name = Dark Duality

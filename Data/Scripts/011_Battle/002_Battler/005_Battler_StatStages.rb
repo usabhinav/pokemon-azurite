@@ -125,6 +125,24 @@ class Battle::Battler
     return ret
   end
 
+  def pbRaiseStatStagesByAbility(statUp, user, splashAnim = true)
+    return false if fainted?
+    ret = false
+    @battle.pbShowAbilitySplash(user) if splashAnim
+    showAnim = true
+    (statUp.length / 2).times do |i|
+      next if !pbCanRaiseStatStage?(statUp[i * 2], user, nil, Battle::Scene::USE_ABILITY_SPLASH)
+      if Battle::Scene::USE_ABILITY_SPLASH
+        ret = pbRaiseStatStage(statUp[i * 2], statUp[(i * 2) + 1], user, showAnim)
+      else
+        ret = pbRaiseStatStageByCause(statUp[i * 2], statUp[(i * 2) + 1], user, user.abilityName, showAnim)
+      end
+      showAnim = false if ret
+    end
+    @battle.pbHideAbilitySplash(user) if splashAnim
+    return ret
+  end
+
   #=============================================================================
   # Decrease stat stages
   #=============================================================================

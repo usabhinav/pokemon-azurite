@@ -4158,9 +4158,8 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:DEFENSEBOOST,
   proc { |ability, battler, battle|
     # A Pokémon's turnCount is 0 if it became active after the beginning of a
     # round
-    if battler.turnCount > 0 && battle.choices[battler.index][0] != :Run &&
-       battler.pbCanRaiseStatStage?(:DEFENSE, battler)
-      battler.pbRaiseStatStageByAbility(:DEFENSE, 1, battler)
+    if battler.turnCount > 0 && battle.choices[battler.index][0] != :Run
+      battler.pbRaiseStatStagesByAbility([:DEFENSE, 1, :SPECIAL_DEFENSE, 1], battler)
     end
   }
 )

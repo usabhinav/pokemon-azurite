@@ -3424,7 +3424,7 @@ Types = GRASS,ROCK
 BaseStats = 100,160,210,70,70,90
 Abilities = ROCKHEAD
 HiddenAbilities = ROCKHEAD
-UnmegaForm = 1
+UnmegaForm = 2
 MegaStone = DELTAMETAGROSSITE
 #-------------------------------
 [LUXRAY,1]
@@ -3455,7 +3455,7 @@ Types = GHOST,FIGHTING
 BaseStats = 80,162,34,120,72,112
 Abilities = NOGUARD
 HiddenAbilities = NOGUARD
-UnmegaForm = 1
+UnmegaForm = 2
 MegaStone = KURIANLOPUNNITE
 #-------------------------------
 [MISMAGIUS,1]
@@ -3558,14 +3558,6 @@ BaseStats = 72,170,121,130,116,91
 Abilities = WEAKARMOR
 HiddenAbilities = WEAKARMOR
 MegaStone = VISARITE
-#-------------------------------
-[DARKRAI,1]
-FormName = Mega Darkrai
-MegaStone = DARKRITE
-#-------------------------------
-[AVALUGG,1]
-FormName = Mega Avalugg
-MegaStone = AVALUGGITE
 #-------------------------------
 [KUNAMA,1]
 FormName = Mega Kunama X
@@ -3714,7 +3706,7 @@ FormName = Crystal Delta Metagross
 Types = GRASS,CRYSTAL
 BaseStats = 100,165,105,115,110,105
 MegaStone = CRYSTALFRAGMENT
-UnmegaForm = 1
+UnmegaForm = 2
 #-------------------------------
 [JIRACHI,1]
 FormName = Crystal Jirachi
@@ -3822,6 +3814,20 @@ Types = FAIRY,CRYSTAL
 BaseStats = 78,65,85,85,135,204
 Abilities = FLOWERVEIL
 HiddenAbilities = FLOWERVEIL
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[DARKRAI,1]
+FormName = Crystal Darkrai
+Types = COSMIC,CRYSTAL
+BaseStats = 70,90,120,135,165,120
+MegaStone = CRYSTALFRAGMENT
+#-------------------------------
+[AVALUGG,1]
+FormName = Crystal Avalugg
+Types = ICE,CRYSTAL
+BaseStats = 95,137,210,16,30,126
+Abilities = QUARTZARMOR
+HiddenAbilities = QUARTZARMOR
 MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 # Other Forms

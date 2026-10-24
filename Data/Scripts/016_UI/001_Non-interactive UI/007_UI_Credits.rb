@@ -255,6 +255,22 @@ Generation 8 Item Sprites
 Generation 8 Pack for Essentials v20.1
 Golisopod User<s>UberDunsparce
 
+The Gen 9 Move Animation Project (sprites only)
+Pokemon Reborn team
+StCooler
+DarrylBD99
+WolfPP
+ardicoozer
+riddlemeree
+Drake Baku
+BellBlitzKing
+KRLW890
+Nut0066
+Toxillian
+QuahogTheCreator
+Lcorp
+Shashu-Greninja
+
 Misc. third-party scripts:
 
 Zeak6464<s>Tapu Fini

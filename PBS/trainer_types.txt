@@ -400,6 +400,11 @@ BaseMoney = 100
 BattleBGM = Battle Champion
 VictoryBGM = Battle victory leader
 #-------------------------------
+[TEAMVITREUS_F]
+Name = Team Vitreus
+Gender = Female
+BaseMoney = 100
+#-------------------------------
 [TEAMVITREUS_CUSTOMBATTLEMODE]
 Name = Team Vitreus
 Gender = Male

@@ -26846,6 +26846,29 @@ Pokedex = The original Crystal Pokémon. Capable of controlling all crystal ener
 Generation = 99
 Flags = Legendary
 #-------------------------------
+[FLOW]
+Name = Flow
+Types = BUG,LIGHT
+BaseStats = 67,67,67,107,131,131
+GenderRatio = Genderless
+GrowthRate = Slow
+BaseExp = 214
+CatchRate = 45
+Happiness = 0
+Abilities = BEASTBOOST
+Moves = 1,TACKLE
+EggGroups = Undiscovered
+HatchSteps = 5140
+Height = 0.5
+Weight = 1.0
+Color = Blue
+Shape = Bipedal
+Habitat = Grassland
+Category = Unknown
+Pokedex = ...
+Generation = 99
+Flags = UltraBeast
+#-------------------------------
 [SLOOF]
 Name = Sloof
 Types = NORMAL

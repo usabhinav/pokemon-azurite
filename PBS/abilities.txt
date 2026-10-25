@@ -1904,7 +1904,7 @@ Description = Even when the sunlight has not turned harsh, the Pokémon can use 
 #-------------------------------
 [DRAGONIZE]
 Name = Dragonize
-Description = The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%. (not implemented)
+Description = The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%.
 #-------------------------------
 [AURAGUARD]
 Name = Aura Guard

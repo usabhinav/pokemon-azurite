@@ -3368,6 +3368,8 @@ MegaStone = ELECTRODITE
 FormName = Mega Marowak
 Types = GROUND,DRAGON
 BaseStats = 60,100,115,100,60,90
+Abilities = DRAGONIZE
+HiddenAbilities = DRAGONIZE
 MegaStone = MAROWAKITE
 #-------------------------------
 [HITMONCHAN,2]
@@ -3380,6 +3382,7 @@ MegaStone = MRMIMITE
 #-------------------------------
 [MEW,1]
 FormName = Mega Mew
+BaseStats = 100,120,120,120,120,120
 Abilities = OMNIGENE
 HiddenAbilities = OMNIGENE
 MegaStone = MEWITE
@@ -3429,6 +3432,7 @@ MegaStone = DELTAMETAGROSSITE
 #-------------------------------
 [LUXRAY,1]
 FormName = Mega Luxray
+BaseStats = 80,140,79,120,125,79
 Abilities = GLEAMINGGLARE
 HiddenAbilities = GLEAMINGGLARE
 MegaStone = LUXRAYITE
@@ -3672,6 +3676,7 @@ Types = STEEL,CRYSTAL
 BaseStats = 75,85,205,20,50,155
 Abilities = STURDY
 HiddenAbilities = STURDY
+MegaStone = CRYSTALFRAGMENT
 #-------------------------------
 [STEELIX,3]
 FormName = Mega Crystal Steelix
@@ -3705,6 +3710,8 @@ MegaStone = CRYSTALFRAGMENT
 FormName = Crystal Delta Metagross
 Types = GRASS,CRYSTAL
 BaseStats = 100,165,105,115,110,105
+Abilities = WEAKARMOR
+HiddenAbilities = WEAKARMOR
 MegaStone = CRYSTALFRAGMENT
 UnmegaForm = 2
 #-------------------------------

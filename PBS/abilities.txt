@@ -1723,3 +1723,9 @@ Description = Held item effects of all Pokémon on the field are negated.
 [IAISLASH]
 Name = Iai Slash
 Description = Slashing moves have increased priority.
+#-------------------------------
+#Below here is gen 9
+#-------------------------------
+[DRAGONIZE]
+Name = Dragonize
+Description = The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%.

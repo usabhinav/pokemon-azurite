@@ -4122,7 +4122,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
     end
     next if battlerCount == 0
     # Calculate hp drain per battler
-    totalHPDrain = battle.singleBattle? ? battler.totalhp / 4 : battler.totalhp / 2
+    totalHPDrain = battler.totalhp / 4
     hpDrain = totalHPDrain / battlerCount
     # Do damage and heal ability user
     battle.pbShowAbilitySplash(battler)

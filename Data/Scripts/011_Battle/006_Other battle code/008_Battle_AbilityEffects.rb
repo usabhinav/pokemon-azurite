@@ -4111,7 +4111,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:COUNTERPARRY,
 )
 
 Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
-  proc { |ability,battler,battle|
+  proc { |ability, battler, battle|
     next if !battler.canHeal?
     # Get number of affected battlers
     battlerCount = 0
@@ -4120,8 +4120,9 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
       next if !b.takesIndirectDamage?
       battlerCount += 1
     end
+    next if battlerCount == 0
     # Calculate hp drain per battler
-    totalHPDrain = battle.singleBattle? ? battler.totalhp/4 : battler.totalhp/2
+    totalHPDrain = battle.singleBattle? ? battler.totalhp / 4 : battler.totalhp / 2
     hpDrain = totalHPDrain / battlerCount
     # Do damage and heal ability user
     battle.pbShowAbilitySplash(battler)
@@ -4129,17 +4130,15 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
       next if b.index == battler.index
       next if !b.takesIndirectDamage?(Battle::Scene::USE_ABILITY_SPLASH)
       oldHP = b.hp
-      b.pbReduceHP(hpDrain)
+      b.pbTakeEffectDamage(hpDrain)
       if battler.canHeal? && battler.pbRecoverHP(hpDrain) > 0
         if Battle::Scene::USE_ABILITY_SPLASH
-          battle.pbDisplay(_INTL("{1} absorbed {2}'s HP!",battler.pbThis,b.pbThis(true)))
+          battle.pbDisplay(_INTL("{1} absorbed {2}'s HP!", battler.pbThis ,b.pbThis(true)))
         else
-          battle.pbDisplay(_INTL("{1} absorbed {2}'s HP with {3}!",battler.pbThis,
-            b.pbThis(true),battler.abilityName))
+          battle.pbDisplay(_INTL("{1} absorbed {2}'s HP with {3}!", battler.pbThis, b.pbThis(true), battler.abilityName))
         end
       end
       b.pbItemHPHealCheck
-      b.pbTakeEffectDamage(oldHP)
     end
     battle.pbHideAbilitySplash(battler)
   }

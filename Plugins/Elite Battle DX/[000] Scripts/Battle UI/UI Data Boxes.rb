@@ -216,6 +216,7 @@ class DataBoxEBDX  <  SpriteWrapper
     @battler = val
     @pokemon = @battler.displayPokemon
     @trainer = @battle.opponent ? @battle.opponent[0] : nil
+    self.opacity = (@battler && !@battler.fainted?) ? 255 : 0
     self.refresh
   end
   #-----------------------------------------------------------------------------

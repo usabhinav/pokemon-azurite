@@ -573,6 +573,8 @@ class PokemonLoadScreen
         $game_temp.game_mode_type = :ENDLESS_MODE
         $game_temp.begun_new_game = false
         Game.load(@save_data_runner_mode)
+        $game_system.setDefaultBGM(nil)
+        $game_system.bgm_fade(1)
         return
       when cmd_custom_battle_mode
         SaveData.load_new_game_values
@@ -612,6 +614,8 @@ class PokemonLoadScreen
         @scene.pbEndScene
         $game_temp.game_mode_type = :ENDLESS_MODE
         Game.start_new
+        $game_system.setDefaultBGM(nil)
+        $game_system.bgm_fade(1)
         return
       when cmd_mystery_gift
         pbFadeOutIn { pbDownloadMysteryGift(@save_data[:player]) }

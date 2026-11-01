@@ -486,8 +486,10 @@ class Battle::Battler
       ret.delete(:FLYING)
       ret.push(:NORMAL) if ret.length == 0
     end
-    # Crystal Equalizer replaces the second type with Crystal-type, or adds it if no second type was there.
-    if crystalEqualizer? && !ret.include?(:CRYSTAL)
+    # Crystal Equalizer and Crystallization replaces the second type with Crystal-type, or adds it if no second type was there.
+    # We already set Crystal as the secondary type in all crystal forms in the PBS, but this code ensures that a type-changing
+    # ability like Protean doesn't override it.
+    if (crystalEqualizer? || crystal?) && !ret.include?(:CRYSTAL)
       if ret.length == 1
         ret.push(:CRYSTAL)
       else

@@ -251,7 +251,7 @@ Marin
 Stopwatch sound effect (used in the Time Break move's animation)
 JoJo's Bizarre Adventure
 
-Generation 8 Item Sprites
+Generation 8 Item Sprites and Cries
 Generation 8 Pack for Essentials v20.1
 Golisopod User
 UberDunsparce

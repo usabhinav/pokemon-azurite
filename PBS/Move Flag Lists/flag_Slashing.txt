@@ -9,6 +9,7 @@ X-Scissor
 Fury Cutter
 Night Slash
 Dragon Claw
+Sacred Sword
 Air Slash
 Air Cutter
 Shadow Claw

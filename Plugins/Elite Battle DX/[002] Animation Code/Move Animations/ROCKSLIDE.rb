@@ -13,8 +13,9 @@ EliteBattle.defineMoveAnimation(:ROCKSLIDE) do
   @scene.wait(16, true)
   # set up animation
   dy = @vector.y2/12
-  fp = {}; da = []; factors = []
+  fp = {}; da = []; factors = []; k = []
   for m in 0...indexes.length
+    k.push(-1)
     @targetSprite = @sprites["pokemon_#{indexes[m]}"]
     if !@targetSprite || @targetSprite.disposed? || @targetSprite.fainted || !@targetSprite.visible
       factors.push(1)
@@ -58,7 +59,6 @@ EliteBattle.defineMoveAnimation(:ROCKSLIDE) do
       fp["d#{m}#{j}"].zoom_y = zoom*factors[m]
     end
   end
-  k = [-1,-1]
   # start animation
   for i in 0...80
     pbSEPlay("EBDX/Anim/rock2",70) if i%8==0

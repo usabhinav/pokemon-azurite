@@ -2,6 +2,12 @@
 #  Heat Wave
 #-------------------------------------------------------------------------------
 EliteBattle.defineMoveAnimation(:HEATWAVE) do
+  indexes = []
+  max = @battle.pbSideSize(@targetIsPlayer ? 0 : 1)
+  for i in 0...max
+    i = (@targetIsPlayer ? i*2 : (i*2 + 1))
+    indexes.push(i) if @sprites["pokemon_#{i}"] && @sprites["pokemon_#{i}"].actualBitmap
+  end
   # set up animation
   fp = {}
   fp["bg"] = Sprite.new(@viewport)
@@ -16,7 +22,10 @@ EliteBattle.defineMoveAnimation(:HEATWAVE) do
   @vector.set(EliteBattle.get_vector(:DUAL))
   @vector.inc = 0.1
   pulse = 10
-  shake = [4,4,4,4]
+  shake = []
+  for m in 0...indexes.length
+    shake.push(4)
+  end
   # start animation
   for j in 0...64
     pbSEPlay("Anim/Wind8") if j == 24
@@ -25,22 +34,22 @@ EliteBattle.defineMoveAnimation(:HEATWAVE) do
     pulse = -5 if fp["wave"].opacity > 160
     pulse = +5 if fp["wave"].opacity < 100
     fp["bg"].opacity += 1 if fp["bg"].opacity < 255*0.35
-    for i in 0...4
-      next if !(@targetIsPlayer ? [0,2] : [1,3]).include?(i)
+    for m in 0...indexes.length
+      i = indexes[m]
       next if !(@sprites["pokemon_#{i}"] && @sprites["pokemon_#{i}"].visible) || @sprites["pokemon_#{i}"].disposed?
       @sprites["pokemon_#{i}"].tone.all += 3 if j.between?(16,48)
       if j >= 32
-        @sprites["pokemon_#{i}"].ox += shake[i]
-        shake[i] = -4 if @sprites["pokemon_#{i}"].ox > @sprites["pokemon_#{i}"].bitmap.width/2 + 2
-        shake[i] = 4 if @sprites["pokemon_#{i}"].ox < @sprites["pokemon_#{i}"].bitmap.width/2 - 2
+        @sprites["pokemon_#{i}"].ox += shake[m]
+        shake[m] = -4 if @sprites["pokemon_#{i}"].ox > @sprites["pokemon_#{i}"].bitmap.width/2 + 2
+        shake[m] = 4 if @sprites["pokemon_#{i}"].ox < @sprites["pokemon_#{i}"].bitmap.width/2 - 2
       end
     end
     @sprites["pokemon_#{@userIndex}"].tone.all += 3 if j < 32
     @sprites["pokemon_#{@userIndex}"].still
     @scene.wait(1,true)
   end
-  for i in 0...4
-    next if !(@targetIsPlayer ? [0,2] : [1,3]).include?(i)
+  for m in 0...indexes.length
+    i = indexes[m]
     next if !(@sprites["pokemon_#{i}"] && @sprites["pokemon_#{i}"].visible) || @sprites["pokemon_#{i}"].disposed?
     @sprites["pokemon_#{i}"].ox = @sprites["pokemon_#{i}"].bitmap.width/2
   end
@@ -53,8 +62,8 @@ EliteBattle.defineMoveAnimation(:HEATWAVE) do
     end
     fp["wave"].opacity -= 4 if j >= 32
     fp["bg"].opacity -= 4 if j >= 32
-    for i in 0...4
-      next if !(@targetIsPlayer ? [0,2] : [1,3]).include?(i)
+    for m in 0...indexes.length
+      i = indexes[m]
       next if !(@sprites["pokemon_#{i}"] && @sprites["pokemon_#{i}"].visible)
       @sprites["pokemon_#{i}"].tone.all -= 3 if j >= 32
     end

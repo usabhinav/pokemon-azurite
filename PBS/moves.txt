@@ -1953,7 +1953,7 @@ Accuracy = 100
 TotalPP = 15
 Target = NearOther
 FunctionCode = IgnoreTargetDefSpDefEvaStatStages
-Flags = Contact,CanProtect,CanMirrorMove,CanMirageCall
+Flags = Contact,CanProtect,CanMirrorMove,Slashing,CanMirageCall
 Description = The user attacks by slicing with its long horns. The target's stat changes don't affect the damage.
 #-------------------------------
 [THUNDEROUSKICK]
@@ -11298,6 +11298,7 @@ TotalPP = 10
 Target = NearOther
 FunctionCode = RemoveUserBindingAndEntryHazards
 Flags = Contact,CanProtect,CanMirrorMove
+EffectChance = 100
 Description = The user strikes with a psychic vortex that raises its Speed stat and eliminates the effects of Bind, Spikes, etc.
 #-------------------------------
 [CONCUSS]
@@ -12604,10 +12605,10 @@ Power = 130
 Accuracy = 90
 TotalPP = 5
 Target = NearOther
-FunctionCode = LowerTargetSpAtk2
+FunctionCode = LowerUserSpAtk2
 Flags = CanProtect,CanMirrorMove
 EffectChance = 100
-Description = The user furiously discharges electricity at its target, harshly lowering the target's Sp. Atk stat.
+Description = The user furiously discharges electricity at its target. The attack's recoil harshly reduces the user's Sp. Atk stat.
 #-------------------------------
 [CUTEFANG]
 Name = Cute Fang

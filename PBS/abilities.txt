@@ -1310,7 +1310,7 @@ Description = When this Pokémon attacks, its target feels an aftershock and los
 #-------------------------------
 [OPPORTUNIST]
 Name = Opportunist
-Description = Accuracy is boosted for moves with less than 100% accuracy, but this Pokémon's Defense stat is lowered if it misses. Additionally, damage is boosted for moves below 60% accuracy, but its Defense stat is harshly lowered if it misses.
+Description = Power is boosted for moves with less than 100% accuracy, but this Pokémon's Defense stat is lowered if it misses. Additionally, power is boosted for moves below 60% accuracy, but its Defense stat is harshly lowered if it misses.
 #-------------------------------
 [SPICETANK]
 Name = Spice Tank

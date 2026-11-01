@@ -965,7 +965,7 @@ class PokemonParty_Scene
           screen.pbStartScreen(0)
           pbHardRefresh
         }
-      elsif Input.trigger?(Input::ACTION) && canswitch == 1 && @activecmd != cancelsprite
+      elsif Input.trigger?(Input::ACTION) && canswitch == 1 && @activecmd != cancelsprite && !@party[@activecmd].nil?
         pbPlayDecisionSE
         return [1, @activecmd]
       elsif Input.trigger?(Input::ACTION) && canswitch == 2

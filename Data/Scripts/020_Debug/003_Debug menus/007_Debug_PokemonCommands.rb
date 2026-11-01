@@ -476,6 +476,10 @@ MenuHandlers.add(:pokemon_debug_menu, :forget_move, {
   "effect" => proc { |pkmn, pkmnid, heldpoke, settingUpBattle, screen|
     moveindex = screen.pbChooseMove(pkmn, _INTL("Choose move to forget."))
     if moveindex >= 0
+      if pkmn.moves.length <= 1
+        screen.pbDisplay(_INTL("{1} can't forget its last move!", pkmn.name))
+        next false
+      end
       movename = pkmn.moves[moveindex].name
       pkmn.forget_move_at_index(moveindex)
       screen.pbDisplay(_INTL("{1} forgot {2}.", pkmn.name, movename))

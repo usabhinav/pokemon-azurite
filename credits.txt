@@ -252,9 +252,16 @@ Stopwatch sound effect (used in the Time Break move's animation)
 JoJo's Bizarre Adventure
 
 Generation 8 Item Sprites and Cries
-Generation 8 Pack for Essentials v20.1
+Generation 8 Pack for Essentials v20.1 Plugin
 Golisopod User
 UberDunsparce
+Gen 1-6 Pokemon Cries:
+Rhyden
+Gen 7 Pokemon Cries:
+Marin
+Rhyden
+Gen 8 Pokemon Cries:
+Zeak6464
 
 The Gen 9 Move Animation Project (sprites only)
 Pokemon Reborn team

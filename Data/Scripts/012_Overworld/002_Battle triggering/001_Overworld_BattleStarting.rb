@@ -614,7 +614,7 @@ end
 EventHandlers.add(:on_end_battle, :evolve_and_black_out,
   proc { |decision, canLose|
     # Check for evolutions
-    pbEvolutionCheck if Settings::CHECK_EVOLUTION_AFTER_ALL_BATTLES ||
+    pbEvolutionCheck if (Settings::CHECK_EVOLUTION_AFTER_ALL_BATTLES && $game_temp.game_mode_type != :ENDLESS_MODE) ||
                         (decision != 2 && decision != 5)   # not a loss or a draw
     $game_temp.party_levels_before_battle = nil
     $game_temp.party_critical_hits_dealt = nil

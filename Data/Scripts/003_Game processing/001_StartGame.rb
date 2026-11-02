@@ -22,7 +22,10 @@ module Game
   # it doesn't).
   def self.set_up_system
     SaveData.move_old_windows_save if System.platform[/Windows/]
-    save_data = (SaveData.exists?) ? SaveData.read_from_file(SaveData.get_save_file_path) : {}
+    # Right now it prioritizes the bootup values in regular mode vs. runner mode.
+    # Ideally, we would instead have a common file that stores bootup values across saves.
+    save_data = (SaveData.exists?) ? SaveData.read_from_file(SaveData.get_save_file_path)
+                : SaveData.exists?(SaveData::FILE_PATH_RUNNER_MODE) ? SaveData.read_from_file(SaveData::FILE_PATH_RUNNER_MODE) : {}
     if save_data.empty?
       SaveData.initialize_bootup_values
     else

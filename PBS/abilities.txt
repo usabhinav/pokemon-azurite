@@ -1466,7 +1466,7 @@ Description = The first damaging move used deals more damage.
 #-------------------------------
 [DYNAMICPOWER]
 Name = Dynamic Power
-Description = All base stats increase every turn, but return to normal at the end of battle.
+Description = All base stats increase every turn as long as this Pokémon remains on the field.
 #-------------------------------
 [HEALTHYDIET]
 Name = Healthy Diet

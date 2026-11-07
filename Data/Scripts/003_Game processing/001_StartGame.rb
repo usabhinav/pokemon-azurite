@@ -126,8 +126,8 @@ module Game
   end
 
   def self.autosave_runner_mode
-    pbUpdateSaveDate(Time.now)
     self.save
+    pbUpdateSaveDate(Time.now)
     $scene.spriteset.addUserSprite(Autosave.new)
   end
 
@@ -584,6 +584,17 @@ module Game
   def self.save(save_file = nil, safe: false)
     save_file = SaveData.get_save_file_path if save_file.nil?
     validate save_file => String, safe => [TrueClass, FalseClass]
+    # Reread current save file and compare last known save time. They should be the same, but if they are different,
+    # it means that something else saved the game in between, most likely another instance of the game, so exit early
+    # to prevent save scumming.
+    current_save_data = SaveData.exists?(save_file) ? SaveData.read_from_file(save_file) : nil
+    current_save_data_time = current_save_data.nil? ? 0 : current_save_data[:global_metadata].savedate
+    if $PokemonGlobal.savedate != current_save_data_time
+      pbMessage(_INTL("Multiple instances of the game detected: last known save was at #{$PokemonGlobal.savedate}, " +
+                "but current save was created at #{current_save_data_time}. Exiting the game."))
+      exit! true
+    end
+    $PokemonGlobal.savedate = Time.now
     $PokemonGlobal.safesave = safe
     $game_system.save_count += 1
     $game_system.magic_number = $data_system.magic_number

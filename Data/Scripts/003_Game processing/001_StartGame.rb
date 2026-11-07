@@ -127,7 +127,6 @@ module Game
 
   def self.autosave_runner_mode
     self.save
-    pbUpdateSaveDate(Time.now)
     $scene.spriteset.addUserSprite(Autosave.new)
   end
 

@@ -3094,15 +3094,6 @@ Battle::AbilityEffects::OnDealingHit.add(:SOUNDWAVES,
   }
 )
 
-Battle::AbilityEffects::OnDealingHit.add(:SUPERNOVA,
-  proc { |ability,user,target,move,battle|
-    next if move.calcType != :COSMIC
-    battle.pbShowAbilitySplash(user)
-    user.pbUseMoveSimple(:SUPERNOVAATTACK)
-    battle.pbHideAbilitySplash(user)
-  }
-)
-
 Battle::AbilityEffects::OnDealingHit.add(:LIQUIDCONDUCTION,
   proc { |ability,user,target,move,battle|
     next if move.calcType != :WATER

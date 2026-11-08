@@ -385,13 +385,13 @@ class DataBoxEBDX  <  SpriteWrapper
     return if self.disposed?
     # updates the current state of the HP bar
     zone = 0
-    zone = 1 if self.hp <= @battler.totalhp*0.50
-    zone = 2 if self.hp <= @battler.totalhp*0.25
+    zone = 1 if self.hp <= @battler.pokemon.totalhp*0.50
+    zone = 2 if self.hp <= @battler.pokemon.totalhp*0.25
     @sprites["hp"].bitmap.blt(0,0,@colors,Rect.new(zone*2,0,2,6))
-    hpbar = @battler.totalhp == 0 ? 0 : (self.hp*@hpBarWidth/@battler.totalhp.to_f)
+    hpbar = @battler.pokemon.totalhp == 0 ? 0 : (self.hp*@hpBarWidth/@battler.pokemon.totalhp.to_f)
     @sprites["hp"].zoom_x = hpbar
     # updates the HP text
-    str = "#{self.hp}/#{@battler.totalhp}"
+    str = "#{self.hp}/#{@battler.pokemon.totalhp}"
     @sprites["textHP"].bitmap.clear
     textpos = [[str,@sprites["textHP"].bitmap.width,0,1,Color.white,Color.new(0,0,0,125)]]
     pbDrawTextPositions(@sprites["textHP"].bitmap,textpos) if @showhp

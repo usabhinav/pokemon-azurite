@@ -3306,6 +3306,7 @@ Types = DARK,ICE
 BaseStats = 60,119,91,128,45,91
 Abilities = ROLLUP
 HiddenAbilities = ROLLUP
+UnmegaForm = 1
 MegaStone = ALOLANRATICATITE
 #-------------------------------
 [ARBOK,1]

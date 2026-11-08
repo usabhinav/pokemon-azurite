@@ -284,12 +284,12 @@ class Battle::Battler
     if hasActiveItem?(:BERSERKERBRACELET)
       # Cut totalhp in half if not already done so.
       if @totalhp == @pokemon.totalhp
-        @battle.pbDisplay(_INTL("{1} had its total HP cut in half by its {2}!", pbThis, itemName))
         # TODO: Add some kind of animation or visual effect for this
         # Example: Max HP indicator in Dark Souls 2
         if @hp > @pokemon.totalhp / 2
           pbReduceHP(@hp - @pokemon.totalhp / 2)
         end
+        @battle.pbDisplay(_INTL("{1} had its total HP cut in half by its {2}!", pbThis, itemName))
         @totalhp = @pokemon.totalhp / 2
       end
     else

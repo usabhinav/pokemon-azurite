@@ -430,7 +430,26 @@ class Battle::Scene::FightMenu < Battle::Scene::MenuBase
 
   def refreshMegaEvolutionButton
     return if !USE_GRAPHICS
-    if @battler && (@battler.hasCrystal? || @battler.crystal? || @battler.item == :EQUALIZERC || @battler.crystalEqualizer?)
+    # This ordering of conditional statements is required because multiple conditions can be true at once.
+    # For example, Celebi can know Time Break (mega condition) and hold Equalizer-C (crystal condition),
+    # but we intend to prioritize the item over the mega move.
+    buttonType = "mega"
+    if @battler
+      if @battler.crystal? || @battler.crystalEqualizer?
+        buttonType = "crystal"
+      elsif @battler.mega? || @battler.megaEqualizer?
+        buttonType = "mega"
+      elsif @battler.item == :EQUALIZERC
+        buttonType = "crystal"
+      elsif @battler.item == :EQUALIZERM
+        buttonType = "mega"
+      elsif @battler.item&.is_mega_stone?
+        buttonType = Settings::CRYSTALLIZATION_ITEMS.include?(@battler.item.id) ? "crystal" : "mega"
+      elsif @battler.hasCrystal?
+        buttonType = "crystal"
+      end
+    end
+    if buttonType == "crystal"
       @megaButton.src_rect.y = ((@mode == 1) ? 2 : 3) * @megaEvoBitmap.height/4
     else
       @megaButton.src_rect.y = ((@mode == 1) ? 0 : 1) * @megaEvoBitmap.height/4

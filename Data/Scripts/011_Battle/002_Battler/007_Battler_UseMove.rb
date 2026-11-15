@@ -837,6 +837,16 @@ class Battle::Battler
         next if b.damageState.unaffected
         pbEffectsOnMakingHit(move, user, b)
       end
+      # Supernova (only triggers once per hit, not per hit and per target)
+      if user.hasActiveAbility?(:SUPERNOVA) && !@battle.futureSight && move.calcType == :COSMIC
+        targets.each do |b|
+          next if b.damageState.unaffected || b.damageState.substitute
+          @battle.pbShowAbilitySplash(user)
+          user.pbUseMoveSimple(:SUPERNOVAATTACK)
+          @battle.pbHideAbilitySplash(user)
+          break
+        end
+      end
       # Disguise/Endure/Sturdy/Focus Sash/Focus Band messages
       targets.each do |b|
         next if b.damageState.unaffected

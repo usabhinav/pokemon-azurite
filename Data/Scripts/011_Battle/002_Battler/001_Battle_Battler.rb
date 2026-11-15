@@ -14,7 +14,7 @@ class Battle::Battler
   attr_accessor :spatk
   attr_accessor :speed
   attr_accessor :stages
-  attr_reader   :totalhp
+  attr_accessor :totalhp
   attr_reader   :fainted    # Boolean to mark whether self has fainted properly
   attr_accessor :captured   # Boolean to mark whether self was captured
   attr_reader   :dummy

@@ -211,6 +211,11 @@ class Battle
         # Gained all the Exp now, end the animation
         pkmn.calc_stats
         battler&.pbUpdate(false)
+        # Update total HP on level up so that Berserker Bracelet doesn't proc again
+        if battler&.hasActiveItem?(:BERSERKERBRACELET)
+          battler.totalhp = battler.pokemon.totalhp / 2
+          battler.hp = battler.totalhp if battler.hp > battler.totalhp
+        end
         @scene.pbRefreshOne(battler.index) if battler
         break
       end
@@ -227,6 +232,11 @@ class Battle
       end
       pkmn.calc_stats
       battler&.pbUpdate(false)
+      # Update total HP on level up so that Berserker Bracelet doesn't proc again
+      if battler&.hasActiveItem?(:BERSERKERBRACELET)
+        battler.totalhp = battler.pokemon.totalhp / 2
+        battler.hp = battler.totalhp if battler.hp > battler.totalhp
+      end
       @scene.pbRefreshOne(battler.index) if battler
       pbDisplayPaused(_INTL("{1} grew to Lv. {2}!", pkmn.name, curLevel))
       @scene.pbLevelUp(pkmn, battler, oldTotalHP, oldAttack, oldDefense,

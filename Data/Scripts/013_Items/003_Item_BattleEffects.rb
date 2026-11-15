@@ -63,7 +63,8 @@ ItemHandlers::CanUseInBattle.addIf(proc { |item| GameData::Item.get(item).is_pok
 )
 
 ItemHandlers::CanUseInBattle.add(:POTION, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
-  if !pokemon.able? || pokemon.hp == pokemon.totalhp
+  # Check the battler separately to account for Berserker Bracelet
+  if !pokemon.able? || pokemon.hp == pokemon.totalhp || (battler && battler.hp == battler.totalhp)
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false
   end
@@ -130,8 +131,9 @@ ItemHandlers::CanUseInBattle.copy(:FULLHEAL,
 ItemHandlers::CanUseInBattle.copy(:FULLHEAL, :RAGECANDYBAR) if Settings::RAGE_CANDY_BAR_CURES_STATUS_PROBLEMS
 
 ItemHandlers::CanUseInBattle.add(:FULLRESTORE, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
+  # Check the battler separately to account for Berserker Bracelet
   if !pokemon.able? ||
-     (pokemon.hp == pokemon.totalhp && pokemon.status == :NONE &&
+     ((pokemon.hp == pokemon.totalhp || (battler && battler.hp == battler.totalhp)) && pokemon.status == :NONE &&
      (!battler || battler.effects[PBEffects::Confusion] == 0 || battler.hasActiveAbility?(:ROUNDRECORD)))
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false

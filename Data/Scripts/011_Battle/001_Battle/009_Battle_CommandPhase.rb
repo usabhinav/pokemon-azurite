@@ -74,7 +74,26 @@ class Battle
         # Both should not be toggled at the same time
         side  = @battlers[idxBattler].idxOwnSide
         owner = pbGetOwnerIndexFromBattlerIndex(idxBattler)
-        if pbCanMegaEvolve?(idxBattler) || @megaEvolution[side][owner] == idxBattler
+        # This ordering of conditional statements is required because multiple conditions can be true at once.
+        # For example, Celebi can know Time Break (mega condition) and hold Equalizer-C (crystal condition),
+        # but we intend to prioritize the item over the mega move.
+        registerType = "mega"
+        if @crystallization[side][owner] == idxBattler
+          registerType = "crystal"
+        elsif @megaEvolution[side][owner] == idxBattler
+          registerType = "mega"
+        elsif pbCanCrystallize?(idxBattler) && @battlers[idxBattler].item == :EQUALIZERC
+          registerType = "crystal"
+        elsif pbCanMegaEvolve?(idxBattler) && @battlers[idxBattler].item == :EQUALIZERM
+          registerType = "mega"
+        elsif pbCanCrystallize?(idxBattler) && @battlers[idxBattler].item&.is_mega_stone? && Settings::CRYSTALLIZATION_ITEMS.include?(@battlers[idxBattler].item.id)
+          registerType = "crystal"
+        elsif pbCanMegaEvolve?(idxBattler) && @battlers[idxBattler].item&.is_mega_stone? && !Settings::CRYSTALLIZATION_ITEMS.include?(@battlers[idxBattler].item.id)
+          registerType = "mega"
+        elsif pbCanCrystallize?(idxBattler)
+          registerType = "crystal"
+        end
+        if registerType == "mega"
           pbToggleRegisteredMegaEvolution(idxBattler)
         else
           pbToggleRegisteredCrystallization(idxBattler)

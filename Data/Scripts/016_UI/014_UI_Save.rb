@@ -16,7 +16,7 @@ def pbEmergencySave
   end
   
   # Update save date.
-  old_value = pbUpdateSaveDate(Time.now)
+  old_value = $PokemonGlobal.savedate
   
   if Game.save
     pbMessage(_INTL("\\se[]The game was saved.\\me[GUI save game] The previous save file has been backed up.\\wtnp[30]"))
@@ -116,7 +116,7 @@ class PokemonSaveScreen
       $game_temp.begun_new_game = false
       pbSEPlay("GUI save choice")
       # Update save date.
-      old_value = pbUpdateSaveDate(Time.now)
+      old_value = $PokemonGlobal.savedate
       if Game.save
         pbMessage(_INTL("\\se[]{1} saved the game.\\me[GUI save game]\\wtnp[30]", $player.name))
         ret = true

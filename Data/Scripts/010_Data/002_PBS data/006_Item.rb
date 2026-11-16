@@ -132,6 +132,7 @@ module GameData
     def is_mulch?;           return has_flag?("Mulch"); end
     def is_mega_stone?;      return has_flag?("MegaStone"); end   # Does NOT include Red Orb/Blue Orb
     def is_scent?;           return has_flag?("Scent"); end
+    # New Azurite flags
     def is_weird_trinket_held_item?; return has_flag?("WeirdTrinketHeldItem"); end
     def is_tasty_treat_item?; return has_flag?("TastyTreatItem"); end
 

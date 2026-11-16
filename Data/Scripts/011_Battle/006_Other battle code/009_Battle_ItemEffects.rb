@@ -937,6 +937,12 @@ Battle::ItemEffects::DamageCalcFromUser.add(:BLACKGLASSES,
 
 Battle::ItemEffects::DamageCalcFromUser.copy(:BLACKGLASSES, :DREADPLATE)
 
+Battle::ItemEffects::DamageCalcFromUser.add(:PUNCHINGGLOVE,
+  proc { |item, user, target, move, mults, baseDmg, type|
+    mults[:base_damage_multiplier] *= 1.1 if move.punchingMove?
+  }
+)
+
 Battle::ItemEffects::DamageCalcFromUser.add(:BUGGEM,
   proc { |item, user, target, move, mults, baseDmg, type|
     user.pbMoveTypePoweringUpGem(:BUG, move, type, mults)

@@ -42,6 +42,7 @@ class Battle::Move
 
   def pbContactMove?(user)
     return false if user.hasActiveAbility?(:LONGREACH)
+    return false if punchingMove? && user.hasActiveItem?(:PUNCHINGGLOVE)
     return contactMove?
   end
 

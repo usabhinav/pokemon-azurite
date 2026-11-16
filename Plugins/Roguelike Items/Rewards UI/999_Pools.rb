@@ -268,7 +268,7 @@ GameData::RewardPool.register({
   :id        => :fairy_type_pools,
   :condition => proc { $player.has_pokemon_of_type?(:FAIRY) },
   :common    => [:PIXIEPLATE],
-  :rare      => [:KEBIABERRY, :BABIRIBERRY, :PIXIEDUST],
+  :rare      => [:KEBIABERRY, :BABIRIBERRY, :PIXIEDUST, :FAIRYFEATHER],
   :epic      => [:TM92, :FAIRYTERASHARD],
   :legendary => [:TM21]
 })

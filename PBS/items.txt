@@ -8709,6 +8709,14 @@ Price = 15000
 Flags = Fling_30,WeirdTrinketHeldItem
 Description = This protective glove boosts the power of the holder's punching moves and prevents direct contact with targets.
 #-------------------------------
+[FAIRYFEATHER]
+Name = Fairy Feather
+NamePlural = Fairy Feathers
+Pocket = 1
+Price = 3000
+Flags = Fling_10,WeirdTrinketHeldItem
+Description = This feather, which gleams faintly when hit by light, boosts the power of the holder's Fairy-type moves.
+#-------------------------------
 #Gen 9 (mega stones)
 #-------------------------------
 [RAICHUNITEX]

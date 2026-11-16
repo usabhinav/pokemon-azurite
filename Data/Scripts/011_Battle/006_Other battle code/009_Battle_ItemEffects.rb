@@ -1164,6 +1164,8 @@ Battle::ItemEffects::DamageCalcFromUser.add(:PIXIEPLATE,
   }
 )
 
+Battle::ItemEffects::DamageCalcFromUser.copy(:PIXIEPLATE, :FAIRYFEATHER)
+
 Battle::ItemEffects::DamageCalcFromUser.add(:POISONBARB,
   proc { |item, user, target, move, mults, baseDmg, type|
     mults[:base_damage_multiplier] *= 1.2 if type == :POISON

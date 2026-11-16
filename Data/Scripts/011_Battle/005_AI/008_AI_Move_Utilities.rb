@@ -403,6 +403,8 @@ class Battle::AI
     when "HitTwoToFiveTimes", "HitTwoToFiveTimesAndGrantMoneyAtEndOfBattle"   # Fury Attack, Gem Shots
       if user.hasActiveAbility?(:SKILLLINK)
         baseDmg *= 5
+      elsif user.hasActiveItem?(:LOADEDDICE)
+        baseDmg = (baseDmg * 4 / 5).floor   # Average damage dealt
       else
         baseDmg = (baseDmg * 31 / 10).floor   # Average damage dealt
       end
@@ -411,12 +413,16 @@ class Battle::AI
         baseDmg *= 4   # 3 hits at 20 power = 4 hits at 15 power
       elsif user.hasActiveAbility?(:SKILLLINK)
         baseDmg *= 5
+      elsif user.hasActiveItem?(:LOADEDDICE)
+        baseDmg = (baseDmg * 4 / 5).floor   # Average damage dealt
       else
         baseDmg = (baseDmg * 31 / 10).floor   # Average damage dealt
       end
     when "HitThreeToFiveTimes"
       if user.hasActiveAbility?(:SKILLLINK)
         baseDmg *= 5
+      elsif user.hasActiveItem?(:LOADEDDICE)
+        baseDmg = (baseDmg * 4 / 5).floor   # Average damage dealt
       else
         baseDmg = (baseDmg * 48 / 13).floor   # Average damage dealt
       end

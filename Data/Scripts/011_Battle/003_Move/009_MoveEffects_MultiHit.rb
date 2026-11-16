@@ -84,7 +84,7 @@ class Battle::Move::HitThreeTimesPowersUpWithEachHit < Battle::Move
 
   def pbOnStartUse(user, targets)
     @calcBaseDmg = 0
-    @accCheckPerHit = !user.hasActiveAbility?(:SKILLLINK)
+    @accCheckPerHit = !user.hasActiveAbility?(:SKILLLINK) && !user.hasActiveItem?(:LOADEDDICE)
   end
 
   def pbBaseDamage(baseDmg, user, target)
@@ -110,6 +110,7 @@ class Battle::Move::HitTwoToFiveTimes < Battle::Move
   def multiHitMove?; return true; end
 
   def pbNumHits(user, targets)
+    return 4 + @battle.pbRandom(2) if user.hasActiveItem?(:LOADEDDICE)
     hitChances = [
       2, 2, 2, 2, 2, 2, 2,
       3, 3, 3, 3, 3, 3, 3,
@@ -146,6 +147,7 @@ class Battle::Move::HitTwoToFiveTimesRaiseUserSpd1LowerUserDef1 < Battle::Move
   def multiHitMove?; return true; end
 
   def pbNumHits(user, targets)
+    return 4 + @battle.pbRandom(2) if user.hasActiveItem?(:LOADEDDICE)
     hitChances = [
       2, 2, 2, 2, 2, 2, 2,
       3, 3, 3, 3, 3, 3, 3,
@@ -189,6 +191,7 @@ class Battle::Move::HitThreeToFiveTimes < Battle::Move
   def multiHitMove?; return true; end
 
   def pbNumHits(user, targets)
+    return 4 + @battle.pbRandom(2) if user.hasActiveItem?(:LOADEDDICE)
     hitChances = [
       3, 3, 3, 3, 3, 3, 3,
       4, 4, 4,

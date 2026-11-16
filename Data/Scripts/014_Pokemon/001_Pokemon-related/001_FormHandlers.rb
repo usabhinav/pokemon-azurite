@@ -259,10 +259,9 @@ MultipleForms.register(:ROTOM, {
 
 MultipleForms.register(:GIRATINA, {
   "getForm" => proc { |pkmn|
-    next 1 if pkmn.hasItem?(:GRISEOUSORB)
-    if $game_map && $game_map.metadata&.has_flag?("DistortionWorld")
-      next 1
-    end
+    next 1 if pkmn.hasItem?(:GRISEOUSCORE)
+    next 1 if pkmn.hasItem?(:GRISEOUSORB) && Settings::MECHANICS_GENERATION <= 8
+    next 1 if $game_map&.metadata&.has_flag?("DistortionWorld")
     next 0
   }
 })
@@ -779,6 +778,27 @@ MultipleForms.register(:COMBEE, {
   "getForm" => proc { |pkmn|
     next 1 if pkmn.hasItem?(:ROYALHONEY) && pkmn.male?
     next 0
+  }
+})
+
+MultipleForms.register(:OGERPON, {
+  "getForm" => proc { |pkmn|
+    next 1 if pkmn.hasItem?(:WELLSPRINGMASK)
+    next 2 if pkmn.hasItem?(:HEARTHFLAMEMASK)
+    next 3 if pkmn.hasItem?(:CORNERSTONEMASK)
+    next 0
+  }
+})
+
+MultipleForms.register(:DIALGA, {
+  "getForm" => proc { |pkmn|
+    next pkmn.hasItem?(:ADAMANTCRYSTAL) ? 1 : 0
+  }
+})
+
+MultipleForms.register(:PALKIA, {
+  "getForm" => proc { |pkmn|
+    next pkmn.hasItem?(:LUSTROUSGLOBE) ? 1 : 0
   }
 })
 

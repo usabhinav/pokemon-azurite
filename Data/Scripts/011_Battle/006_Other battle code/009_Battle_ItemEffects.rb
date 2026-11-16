@@ -921,6 +921,8 @@ Battle::ItemEffects::DamageCalcFromUser.add(:ADAMANTORB,
   }
 )
 
+Battle::ItemEffects::DamageCalcFromUser.copy(:ADAMANTORB, :ADAMANTCRYSTAL)
+
 Battle::ItemEffects::DamageCalcFromUser.add(:BLACKBELT,
   proc { |item, user, target, move, mults, baseDmg, type|
     mults[:base_damage_multiplier] *= 1.2 if type == :FIGHTING
@@ -1055,6 +1057,8 @@ Battle::ItemEffects::DamageCalcFromUser.add(:GRISEOUSORB,
   }
 )
 
+Battle::ItemEffects::DamageCalcFromUser.copy(:GRISEOUSORB, :GRISEOUSCORE)
+
 Battle::ItemEffects::DamageCalcFromUser.add(:GROUNDGEM,
   proc { |item, user, target, move, mults, baseDmg, type|
     user.pbMoveTypePoweringUpGem(:GROUND, move, type, mults)
@@ -1098,6 +1102,8 @@ Battle::ItemEffects::DamageCalcFromUser.add(:LUSTROUSORB,
     end
   }
 )
+
+Battle::ItemEffects::DamageCalcFromUser.copy(:LUSTROUSORB, :LUSTROUSGLOBE)
 
 Battle::ItemEffects::DamageCalcFromUser.add(:MAGNET,
   proc { |item, user, target, move, mults, baseDmg, type|
@@ -1352,6 +1358,14 @@ Battle::ItemEffects::DamageCalcFromUser.add(:COUNTERFORMAMULET,
     end
   }
 )
+
+Battle::ItemEffects::DamageCalcFromUser.add(:CORNERSTONEMASK,
+  proc { |item, user, target, move, mults, power, type|
+    mults[:power_multiplier] *= 1.2 if user.isSpecies?(:OGERPON)
+  }
+)
+
+Battle::ItemEffects::DamageCalcFromUser.copy(:CORNERSTONEMASK, :HEARTHFLAMEEMASK, :WELLSPRINGMASK)
 
 #===============================================================================
 # DamageCalcFromTarget handlers

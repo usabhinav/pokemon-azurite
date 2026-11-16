@@ -77,6 +77,8 @@ class Pokemon
   attr_accessor :fused
   # @return [Integer] this Pokémon's personal ID
   attr_accessor :personalID
+  # A number used by certain species to evolve.
+  attr_writer :evolution_counter
   # Used by Galarian Yamask to remember that it took sufficient damage from a
   # battle and can evolve.
   attr_accessor :ready_to_evolve
@@ -146,6 +148,11 @@ class Pokemon
     return GameData::Species.get_species_form(@species, form_simple)
   end
 
+  def evolution_counter
+    @evolution_counter ||= 0
+    return @evolution_counter
+  end
+
   #=============================================================================
   # Species and form
   #=============================================================================
@@ -166,6 +173,7 @@ class Pokemon
     @gender      = nil if singleGendered?
     @level       = nil   # In case growth rate is different for the new species
     @ability     = nil
+    @evolution_counter = 0   # This counter is species-specific
     calc_stats
   end
 
@@ -279,6 +287,7 @@ class Pokemon
     @hp = value.clamp(0, @totalhp)
     heal_status if @hp == 0
     @ready_to_evolve = false if @hp == 0
+    @evolution_counter = 0 if isSpecies?(:BASCULIN) || isSpecies?(:YAMASK)
   end
 
   # Sets this Pokémon's status. See {GameData::Status} for all possible status effects.

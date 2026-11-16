@@ -682,3 +682,44 @@ GameData::Evolution.register({
     next value == parameter && pkmn.ready_to_evolve
   }
 })
+
+#===============================================================================
+# Evolution methods that are triggered after any battle.
+#===============================================================================
+
+GameData::Evolution.register({
+  :id                => :AfterBattleCounter,
+  :parameter         => Integer,
+  :any_level_up      => true,   # Needs any level up
+  :after_battle_proc => proc { |pkmn, party_index, parameter|
+    ret = pkmn.evolution_counter >= parameter
+    pkmn.evolution_counter = 0   # Always resets after battle
+    next ret
+  }
+})
+
+# Doesn't cause an evolution itself. Just makes the Pokémon ready to evolve by
+# another means (e.g. via an event). Note that pkmn.evolution_counter is not
+# reset after the battle.
+GameData::Evolution.register({
+  :id                => :AfterBattleCounterMakeReady,
+  :parameter         => Integer,
+  :any_level_up      => true,   # Needs any level up
+  :after_battle_proc => proc { |pkmn, party_index, parameter|
+    pkmn.ready_to_evolve = true if pkmn.evolution_counter >= parameter
+    next false
+  }
+})
+
+GameData::Evolution.register({
+  :id            => :Counter,
+  :parameter     => Integer,
+  :any_level_up  => true,   # Needs any level up
+  :level_up_proc => proc { |pkmn, parameter|
+    next pkmn.evolution_counter >= parameter
+  },
+  :after_evolution_proc => proc { |pkmn, new_species, parameter, evo_species|
+    pkmn.evolution_counter = 0
+    next true
+  }
+})

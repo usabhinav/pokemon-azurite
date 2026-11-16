@@ -329,6 +329,13 @@ class Battle::Battler
         @effects[PBEffects::Metronome] = 0
       end
     end
+    # Add to evolution counters
+    if @pokemon.isSpecies?(:PRIMEAPE) && @lastMoveUsed == :RAGEFIST
+      @pokemon.evolution_counter += 1
+    end
+    if @pokemon.isSpecies?(:STANTLER) && @lastMoveUsed == :PSYSHIELDBASH
+      @pokemon.evolution_counter += 1
+    end
     # Record move as having been used
     @lastMoveUsed     = move.id
     @lastMoveUsedType = move.calcType   # For Conversion 2
@@ -857,7 +864,7 @@ class Battle::Battler
       @battle.pbPriority(true).each { |b| b.pbItemHPHealCheck }
       # Animate battlers fainting (checks all battlers rather than just targets
       # because Flame Burst's splash damage affects non-targets)
-      @battle.pbPriority(true).each { |b| b.pbFaint if b&.fainted? }
+      @battle.pbPriority(true).each { |b| pbProcessMoveHit_CheckIfBattlerFaintedFromHit(move, user, b) }
     end
     @battle.pbJudgeCheckpoint(user, move)
     # Main effect (recoil/drain, etc.)
@@ -866,7 +873,7 @@ class Battle::Battler
       move.pbEffectAgainstTarget(user, b)
     end
     move.pbEffectGeneral(user)
-    targets.each { |b| b.pbFaint if b&.fainted? }
+    targets.each { |b| pbProcessMoveHit_CheckIfBattlerFaintedFromHit(move, user, b) }
     user.pbFaint if user.fainted?
     # Additional effect
     if !user.hasActiveAbility?([:SHEERFORCE, :MORALPACT])
@@ -919,6 +926,15 @@ class Battle::Battler
       pbProcessMoveHit(move, user, all_targets, 1, skipAccuracyCheck)
     end
     return true
+  end
+
+  def pbProcessMoveHit_CheckIfBattlerFaintedFromHit(move, user, target)
+    return if !target&.fainted?
+    target.pbFaint
+    if user.pokemon.isSpecies?(:BISHARP) &&
+       target.isSpecies?(:BISHARP) && target.item == :LEADERSCREST
+      user.pokemon.evolution_counter += 1
+    end
   end
 
   def wildfireStyleEffect(user, targets, move)

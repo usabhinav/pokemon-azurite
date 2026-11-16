@@ -8768,6 +8768,14 @@ Price = 0
 Flags = Fling_60
 Description = An item to be held by Ogerpon. This carved wooden mask allows Ogerpon to wield the Rock type during battle.
 #-------------------------------
+[LEADERSCREST]
+Name = Leader's Crest
+NamePlural = Leader's Crests
+Pocket = 1
+Price = 3000
+Flags = Fling_30
+Description = A shard of what appears to be an old blade of some sort. It is held only by certain Bisharp.
+#-------------------------------
 #Gen 9 (mega stones)
 #-------------------------------
 [RAICHUNITEX]

@@ -195,6 +195,11 @@ class Battle::Battler
           )
         end
       end
+      if user && user.index != @index   # Only protects against moves/abilities of non-self
+        return false if itemActive? && Battle::ItemEffects.triggerStatLossImmunity(
+          self.item, self, stat, @battle, showFailMsg
+        )
+      end
     end
     if pbOwnSide.effects[PBEffects::VolumeMixer] > 0 && pbHasType?(:SOUND) &&
        !(user && user.hasActiveAbility?(:INFILTRATOR))

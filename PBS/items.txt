@@ -8685,6 +8685,14 @@ FieldUse = OnPokemon
 Flags = EvolutionStone,Fling_30
 Description = A peculiar set of armor that can make a certain species of Pokémon evolve. Auspicious wishes live within it.
 #-------------------------------
+[CLEARAMULET]
+Name = Clear Amulet
+NamePlural = Clear Amulets
+Pocket = 1
+Price = 30000
+Flags = Fling_30,WeirdTrinketHeldItem
+Description = This clear, sparkling amulet protects the holder from having its stats lowered by other Pokémon.
+#-------------------------------
 #Gen 9 (mega stones)
 #-------------------------------
 [RAICHUNITEX]

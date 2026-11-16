@@ -8,6 +8,7 @@ module Battle::ItemEffects
   DamageTaken                     = ItemHandlerHash.new
   HPHeal                          = ItemHandlerHash.new
   OnStatLoss                      = ItemHandlerHash.new
+  StatLossImmunity                = ItemHandlerHash.new
   # Battler's status problem
   StatusCure                      = ItemHandlerHash.new
   # Priority and turn order
@@ -222,6 +223,10 @@ module Battle::ItemEffects
 
   def self.triggerOnIntimidated(item, battler, battle)
     return trigger(OnIntimidated, item, battler, battle)
+  end
+
+  def self.triggerStatLossImmunity(item, battler, stat, battle, show_messages)
+    return trigger(StatLossImmunity, item, battler, stat, battle, show_messages)
   end
 
   #=============================================================================
@@ -2513,6 +2518,18 @@ Battle::ItemEffects::OnIntimidated.add(:ADRENALINEORB,
 
 Battle::ItemEffects::CertainEscapeFromBattle.add(:SMOKEBALL,
   proc { |item, battler|
+    next true
+  }
+)
+
+#===============================================================================
+# StatLossImmunity handlers
+#===============================================================================
+
+Battle::ItemEffects::StatLossImmunity.add(:CLEARAMULET,
+  proc { |item, battler, stat, battle, showMessages|
+    battle.pbDisplay(_INTL("The effects of {1} {2} prevent its stats from being lowered!",
+                           battler.pbOfThis, GameData::Item.get(item).name)) if showMessages
     next true
   }
 )

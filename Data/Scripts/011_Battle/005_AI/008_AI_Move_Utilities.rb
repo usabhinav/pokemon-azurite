@@ -647,6 +647,15 @@ class Battle::AI
         multipliers[:base_damage_multiplier] *= 4 / 3.0
       end
     end
+    # Beads of Ruin
+    if skill >= PBTrainerAI.mediumSkill &&
+       ((@battle.pbCheckGlobalAbility(:BEADSOFRUIN) && target.ability_id != :BEADSOFRUIN))
+      if @battle.field.effects[PBEffects::WonderRoom] > 0
+        multipliers[:defense_multiplier] *= 3 / 4.0 if move.physicalMove?(type)
+      else
+        multipliers[:defense_multiplier] *= 3 / 4.0 if move.specialMove?(type)
+      end
+    end
     # Parental Bond
     if skill >= PBTrainerAI.mediumSkill && user.hasActiveAbility?(:PARENTALBOND)
       multipliers[:base_damage_multiplier] *= 1.25

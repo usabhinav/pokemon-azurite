@@ -460,6 +460,14 @@ class Battle::Move
         multipliers[:base_damage_multiplier] *= 4 / 3.0
       end
     end
+    # Treasures of Ruin
+    if @battle.pbCheckGlobalAbility(:BEADSOFRUIN) && target.ability_id != :BEADSOFRUIN
+      if @battle.field.effects[PBEffects::WonderRoom] > 0
+        multipliers[:defense_multiplier] *= 3 / 4.0 if pbPhysicalMove?(user)
+      else
+        multipliers[:defense_multiplier] *= 3 / 4.0 if pbSpecialMove?(user)
+      end
+    end
     # Ability effects that alter damage
     if user.abilityActive?
       Battle::AbilityEffects.triggerDamageCalcFromUser(

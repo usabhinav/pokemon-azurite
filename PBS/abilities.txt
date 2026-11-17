@@ -1308,8 +1308,8 @@ Description = Single-target attacks deal additional damage to adjacent foes.
 Name = Blast
 Description = When this Pokémon attacks, its target feels an aftershock and loses HP at the end of the turn.
 #-------------------------------
-[OPPORTUNIST]
-Name = Opportunist
+[DAREDEVIL]
+Name = Daredevil
 Description = Power is boosted for moves with less than 100% accuracy, but this Pokémon's Defense stat is lowered if it misses. Additionally, power is boosted for moves below 60% accuracy, but its Defense stat is harshly lowered if it misses.
 #-------------------------------
 [SPICETANK]
@@ -1729,3 +1729,15 @@ Description = Slashing moves have increased priority.
 [DRAGONIZE]
 Name = Dragonize
 Description = The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%.
+#-------------------------------
+[ANGERSHELL]
+Name = Anger Shell
+Description = Gets a powerful boost if a hit makes its HP half or less.
+#-------------------------------
+[ARMORTAIL]
+Name = Armor Tail
+Description = Prevents opposing Pokémon from using priority moves.
+#-------------------------------
+[BEADSOFRUIN]
+Name = Beads of Ruin
+Description = Lowers the Sp. Def of all Pokémon except the user.

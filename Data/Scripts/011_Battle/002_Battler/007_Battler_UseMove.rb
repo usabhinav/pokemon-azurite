@@ -322,7 +322,7 @@ class Battle::Battler
     # Add to counters for moves which increase them when used in succession
     move.pbChangeUsageCounters(self, specialUsage)
     # Charge up Metronome item
-    if hasActiveItem?([:METRONOME, :PERSEVERANCE]) && !move.callsAnotherMove?
+    if (hasActiveItem?(:METRONOME) || hasActiveAbility?(:PERSEVERANCE)) && !move.callsAnotherMove?
       if @lastMoveUsed && @lastMoveUsed == move.id && !@lastMoveFailed
         @effects[PBEffects::Metronome] += 1
       else

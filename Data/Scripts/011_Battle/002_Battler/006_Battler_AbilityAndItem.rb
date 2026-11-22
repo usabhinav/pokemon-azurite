@@ -451,7 +451,9 @@ class Battle::Battler
     @battle.pbEndPrimordialWeather
     # Revert form if Flower Gift/Forecast was lost
     pbCheckFormOnWeatherChange(true)
+    pbCheckFormOnTerrainChange(true)
     # Abilities that trigger when the terrain changes
+    pbAbilityOnWeatherChange(true)
     pbAbilityOnTerrainChange(true)
   end
 
@@ -587,7 +589,8 @@ class Battle::Battler
     if Battle::ItemEffects.triggerHPHeal(itm, self, @battle, !item_to_use.nil?)
       pbHeldItemTriggered(itm, item_to_use.nil?, fling)
     elsif !item_to_use
-      pbItemTerrainStatBoostCheck
+      pbItemOnWeatherChange
+      pbItemOnTerrainChange
     end
   end
 
@@ -632,10 +635,17 @@ class Battle::Battler
     end
   end
 
-  # Called when the battle terrain changes and when a Pokémon loses HP.
-  def pbItemTerrainStatBoostCheck
+  def pbItemOnWeatherChange
     return if !itemActive?
-    if Battle::ItemEffects.triggerTerrainStatBoost(self.item, self, @battle)
+    if Battle::ItemEffects.triggerOnWeatherChange(self.item, self, @battle, old_weather)
+      pbHeldItemTriggered(self.item)
+    end
+  end
+
+  # Called when the battle terrain changes and when a Pokémon loses HP.
+  def pbItemOnTerrainChange
+    return if !itemActive?
+    if Battle::ItemEffects.triggerOnTerrainChange(self.item, self, @battle)
       pbHeldItemTriggered(self.item)
     end
   end

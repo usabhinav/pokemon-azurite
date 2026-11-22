@@ -391,6 +391,19 @@ class Battle::Battler
     return name
   end
 
+  def pbOfThis(lowerCase = false)
+    if opposes?
+      if @battle.trainerBattle?
+        return lowerCase ? _INTL("the opposing {1}'s", name) : _INTL("The opposing {1}'s", name)
+      else
+        return lowerCase ? _INTL("the wild {1}'s", name) : _INTL("The wild {1}'s", name)
+      end
+    elsif !pbOwnedByPlayer?
+      return lowerCase ? _INTL("the ally {1}'s", name) : _INTL("The ally {1}'s", name)
+    end
+    return _INTL("{1}'s", name)
+  end
+
   def pbTeam(lowerCase = false)
     if opposes?
       return lowerCase ? _INTL("the opposing team") : _INTL("The opposing team")
@@ -398,11 +411,25 @@ class Battle::Battler
     return lowerCase ? _INTL("your team") : _INTL("Your team")
   end
 
+  def pbOfTeam(lowerCase = false)
+    if opposes?
+      return lowerCase ? _INTL("the opposing team's") : _INTL("The opposing team's")
+    end
+    return lowerCase ? _INTL("your team's") : _INTL("Your team's")
+  end
+
   def pbOpposingTeam(lowerCase = false)
     if opposes?
       return lowerCase ? _INTL("your team") : _INTL("Your team")
     end
     return lowerCase ? _INTL("the opposing team") : _INTL("The opposing team")
+  end
+
+  def pbOfOpposingTeam(lowerCase = false)
+    if opposes?
+      return lowerCase ? _INTL("your team's") : _INTL("Your team's")
+    end
+    return lowerCase ? _INTL("the opposing team's") : _INTL("The opposing team's")
   end
 
   #=============================================================================
@@ -556,10 +583,15 @@ class Battle::Battler
       :DARKDUALITY,
       :DELIRIUM,
       :DISGUISE,
+#      :EMBODYASPECTATTACK,                                # This can be negated
+#      :EMBODYASPECTDEFENSE,                               # This can be negated
+#      :EMBODYASPECTSPDEF,                                 # This can be negated
+#      :EMBODYASPECTSPEED,                                 # This can be negated
       :EFFULGE,
-#      :FLOWERGIFT,                                        # This can be stopped
-#      :FORECAST,                                          # This can be stopped
+#      :FLOWERGIFT,                                        # This can be negated
+#      :FORECAST,                                          # This can be negated
       :GULPMISSILE,
+#      :HUNGERSWITCH,                                      # This can be negated
       :HEAVYEYED,
       :ICEFACE,
       :MULTITYPE,
@@ -571,14 +603,22 @@ class Battle::Battler
       :STANCECHANGE,
       :STANCESHIFT,
       :STANDWATCH,
+      :TERASHIFT,
       :ZENMODE,
+      :ZEROTOHERO,
       # Abilities intended to be inherent properties of a certain species
       :ASONECHILLINGNEIGH,
       :ASONEGRIMNEIGH,
       :COMATOSE,
-#      :COMMANDER,                                        # This can be stopped
+#      :COMMANDER,                                         # This can be negated
+#      :POISONPUPPETEER,                                   # This can be negated
+#      :PROTOSYNTHESIS,                                    # This can be negated
+#      :QUARKDRIVE,                                        # This can be negated
       :RKSSYSTEM,
-      :CRYSTALENERGY                                      # Having Crystal Energy be stoppable is annoying to work with
+#      :TERAFORMZERO,                                      # This can be negated
+#      :TERASHELL,                                         # This can be negated
+#      :WONDERGUARD                                        # This can be negated
+      :CRYSTALENERGY,                                      # Having Crystal Energy be stoppable is annoying to work with
     ]
     return ability_blacklist.include?(abil.id)
   end
@@ -594,6 +634,10 @@ class Battle::Battler
       :DARKDUALITY,
       :DELIRIUM,
       :DISGUISE,
+      :EMBODYASPECTATTACK,
+      :EMBODYASPECTDEFENSE,
+      :EMBODYASPECTSPDEF,
+      :EMBODYASPECTSPEED,
       :EFFULGE,
       :FLOWERGIFT,
       :FORECAST,
@@ -609,7 +653,9 @@ class Battle::Battler
       :STANCECHANGE,
       :STANCESHIFT,
       :STANDWATCH,
+      :TERASHIFT,
       :ZENMODE,
+      :ZEROTOHERO,
       # Appearance-changing abilities
       :ILLUSION,
       :IMPOSTER,
@@ -618,6 +664,12 @@ class Battle::Battler
       :ASONEGRIMNEIGH,
       :COMATOSE,
       :COMMANDER,
+      :POISONPUPPETEER,
+      :PROTOSYNTHESIS,
+      :QUARKDRIVE,
+      :RKSSYSTEM,
+      :TERAFORMZERO,
+      :TERASHELL,
       :RKSSYSTEM,
       :CRYSTALENERGY,                                      # Having Crystal Energy be gainable is annoying to work with
       # Abilities that can't be negated
@@ -705,6 +757,10 @@ class Battle::Battler
     return ![:MULTITYPE, :RKSSYSTEM].include?(@ability_id)
   end
 
+  def hasAirborneAbility?
+    return hasActiveAbility?([:LEVITATE, :EELEVATE])
+  end
+
   def airborne?
     return false if hasActiveItem?(:IRONBALL)
     return false if @effects[PBEffects::Ingrain]
@@ -713,13 +769,18 @@ class Battle::Battler
     return false if @battle.field.effects[PBEffects::Gravity] > 0
     return true if pbHasType?(:FLYING)
     return true if pbHasType?(:COSMIC)
-    return true if (hasActiveAbility?([:LEVITATE, :EELEVATE]) || @battle.pbCheckGlobalAbility(:ZEROGRAVITY)) && !@battle.moldBreaker
+    return true if (hasAirborneAbility? || @battle.pbCheckGlobalAbility(:ZEROGRAVITY)) && !@battle.moldBreaker
     return true if hasActiveItem?(:AIRBALLOON)
     return true if @effects[PBEffects::MagnetRise] > 0
     return true if @effects[PBEffects::Telekinesis] > 0
     return true if @effects[PBEffects::AirCarryUserIndex] >= 0
     return true if @effects[PBEffects::AirSupportTurnCount] > 0
     return false
+  end
+
+  def affectedByAdditionalEffects?
+    return false if hasActiveItem?(:COVERTCLOAK)
+    return true
   end
 
   def affectedByTerrain?
@@ -842,6 +903,10 @@ class Battle::Battler
       return false
     end
     return true
+  end
+
+  def canMakeContactThroughProtection?
+    return hasActiveAbility?([:UNSEENFIST, :PIERCINGDRILL])
   end
 
   def trappedInBattle?

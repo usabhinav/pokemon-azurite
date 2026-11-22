@@ -755,7 +755,7 @@ Battle::AbilityEffects::StatusCure.add(:WATERVEIL,
   }
 )
 
-Battle::AbilityEffects::StatusCure.copy(:WATERVEIL, :WATERBUBBLE, :THERMALEXCHANGE)
+Battle::AbilityEffects::StatusCure.copy(:WATERVEIL, :THERMALEXCHANGE, :WATERBUBBLE)
 
 #===============================================================================
 # StatLossImmunity handlers
@@ -1507,6 +1507,8 @@ Battle::AbilityEffects::AccuracyCalcFromUser.add(:KEENEYE,
   }
 )
 
+Battle::AbilityEffects::AccuracyCalcFromUser.copy(:KEENEYE, :MINDSEYE)
+
 Battle::AbilityEffects::AccuracyCalcFromUser.add(:NOGUARD,
   proc { |ability, mods, user, target, move, type|
     mods[:base_accuracy] = 0
@@ -2131,7 +2133,7 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:SHARPNESS,
 
 Battle::AbilityEffects::DamageCalcFromUser.add(:SUPREMEOVERLORD,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    mults[:power_multiplier] *= 1.0 + (0.1 * [user.effects[PBEffects::SupremeOverlord], 5].min)
+    mults[:base_damage_multiplier] *= 1.0 + (0.1 * [user.effects[PBEffects::SupremeOverlord], 5].min)
   }
 )
 
@@ -2329,7 +2331,7 @@ Battle::AbilityEffects::DamageCalcFromTarget.add(:REFLECTIVE,
 
 Battle::AbilityEffects::DamageCalcFromTarget.add(:AURAGUARD,
   proc { |ability,user,target,move,mults,baseDmg,type|
-    mults[:final_damage_multiplier] /= 2 if move.contactMove?
+    mults[:final_damage_multiplier] /= 2 if move.pbContactMove?(user)
   }
 )
 
@@ -3095,7 +3097,7 @@ Battle::AbilityEffects::OnBeingHit.add(:THERMALEXCHANGE,
 
 Battle::AbilityEffects::OnBeingHit.add(:TOXICDEBRIS,
   proc { |ability, user, target, move, battle|
-    next if !move.physicalMove?
+    next if !move.pbPhysicalMove?(user)
     next if target.pbOpposingSide.effects[PBEffects::ToxicSpikes] >= 2
     battle.pbShowAbilitySplash(target)
     target.pbOpposingSide.effects[PBEffects::ToxicSpikes] += 1
@@ -3110,6 +3112,9 @@ Battle::AbilityEffects::OnBeingHit.add(:TOXICDEBRIS,
   }
 )
 
+# NOTE: This only triggers if hit by a damaging wind move, not a status one.
+#       Tailwind triggers it manually in its own move effect. There are no other
+#       wind status moves that should trigger it, at least for now.
 Battle::AbilityEffects::OnBeingHit.add(:WINDPOWER,
   proc { |ability, user, target, move, battle|
     next if !move.windMove?
@@ -3117,22 +3122,6 @@ Battle::AbilityEffects::OnBeingHit.add(:WINDPOWER,
     battle.pbShowAbilitySplash(target)
     target.effects[PBEffects::Charge] = 2
     battle.pbDisplay(_INTL("Being hit by {1} charged {2} with power!", move.name, target.pbThis(true)))
-    battle.pbHideAbilitySplash(target)
-  }
-)
-
-Battle::AbilityEffects::OnBeingHit.add(:SPICYSPRAY,
-  proc { |ability, user, target, move, battle|
-    next if user.burned?
-    battle.pbShowAbilitySplash(target)
-    if user.pbCanBurn?(target, Battle::Scene::USE_ABILITY_SPLASH) &&
-       user.affectedByContactEffect?(Battle::Scene::USE_ABILITY_SPLASH)
-      msg = nil
-      if !Battle::Scene::USE_ABILITY_SPLASH
-        msg = _INTL("{1}'s {2} burned {3}!", target.pbThis, target.abilityName, user.pbThis(true))
-      end
-      user.pbBurn(target, msg)
-    end
     battle.pbHideAbilitySplash(target)
   }
 )
@@ -3449,6 +3438,7 @@ Battle::AbilityEffects::OnDealingHit.add(:CRYSTALSTINGER,
 
 Battle::AbilityEffects::OnDealingHit.add(:TOXICCHAIN,
   proc { |ability, user, target, move, battle|
+    next if !target.affectedByAdditionalEffects?
     next if !target.pbCanPoison?(user, false)
     next if target.hasActiveAbility?(:SHIELDDUST) && !battle.moldBreaker
     next if battle.pbRandom(100) >= 30
@@ -3789,7 +3779,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TASTYTREAT,
       if !effect_triggered && Battle::ItemEffects.triggerEndOfRoundHealing(old_target_item.id, user, battle)
         effect_triggered = true
       end
-      if !effect_triggered && Battle::ItemEffects.triggerTerrainStatBoost(old_target_item.id, user, battle)
+      if !effect_triggered && Battle::ItemEffects.triggerOnTerrainChange(old_target_item.id, user, battle)
         effect_triggered = true
       end
       if !effect_triggered && Battle::ItemEffects.triggerStatusCure(old_target_item.id, user, battle, true)
@@ -5774,26 +5764,15 @@ Battle::AbilityEffects::OnSwitchIn.add(:TERAFORMZERO,
   proc { |ability, battler, battle, switch_in|
     next if battler.abilityUsedOnce?
     battler.markAbilityUsedOnce
-    next if (battle.field.weather == :None ||
-             battle.field.weather == battle.field.defaultWeather) &&
-            (battle.field.terrain == :None ||
-             battle.field.terrain == battle.field.defaultTerrain)
+    next if (battle.field.weather == :None || battle.field.weather == battle.field.defaultWeather) &&
+            (battle.field.terrain == :None || battle.field.terrain == battle.field.defaultTerrain)
     battle.pbShowAbilitySplash(battler)
-    # Clear the current weather and terrain.
-    if ![:None, battle.field.defaultWeather].include?(battle.field.weather)
-      battle.pbStartWeather(nil, :None, false, false)
-    end
-    if ![:None, battle.field.defaultTerrain].include?(battle.field.terrain)
-      battle.pbStartTerrain(nil, :None, false)
-    end
+    battle.pbEndWeather if ![:None, battle.field.defaultWeather].include?(battle.field.weather)
+    battle.pbEndTerrain if ![:None, battle.field.defaultTerrain].include?(battle.field.terrain)
     battle.pbHideAbilitySplash(battler)
-    # Restore the default weather and terrain.
-    if battle.field.defaultWeather != :None
-      battle.pbStartWeather(nil, battle.field.defaultWeather, false)
-    end
-    if battle.field.defaultTerrain != :None
-      battle.pbStartTerrain(nil, battle.field.defaultTerrain, false)
-    end
+    # Start up the default weather/terrain
+    battle.pbStartWeather(nil, battle.field.defaultWeather, false) if battle.field.defaultWeather != :None
+    battle.pbStartTerrain(nil, battle.field.defaultTerrain, false) if battle.field.defaultTerrain != :None
   }
 )
 
@@ -5831,7 +5810,14 @@ Battle::AbilityEffects::OnSwitchIn.add(:ZEROTOHERO,
   }
 )
 
-Battle::AbilityEffects::OnSwitchIn.add(:HOSPITALITY,
+#===============================================================================
+# OnSwitchInDelayed handlers
+# NOTE: I have no idea why these abilities in particular should trigger after
+#       all the OnSwitchIn ones. I'm just following what this says:
+#       https://bulbapedia.bulbagarden.net/wiki/User:FIQ/Turn_sequence
+#===============================================================================
+
+Battle::AbilityEffects::OnSwitchInDelayed.add(:HOSPITALITY,
   proc { |ability, battler, battle, switch_in|
     allies = battler.allAllies
     allies.reject! { |ally| !ally.near?(battler) || !ally.canHeal? }
@@ -5840,20 +5826,6 @@ Battle::AbilityEffects::OnSwitchIn.add(:HOSPITALITY,
     allies.each do |ally|
       next if ally.pbRecoverHP(ally.totalhp / 4) == 0
       battle.pbDisplay(_INTL("{1} drank down all the matcha that {2} made!", ally.pbThis, battler.pbThis(true)))
-    end
-    battle.pbHideAbilitySplash(battler)
-  }
-)
-
-Battle::AbilityEffects::OnSwitchIn.add(:SUPERSWEETSYRUP,
-  proc { |ability, battler, battle, switch_in|
-    next if battler.abilityUsedOnce?
-    battler.markAbilityUsedOnce
-    battle.pbShowAbilitySplash(battler)
-    battle.pbDisplay(_INTL("A supersweet aroma is wafting from the syrup covering {1}!", battler.pbThis))
-    battle.allOtherSideBattlers(battler.index).each do |b|
-      next if !b.near?(battler)
-      b.pbLowerEvasionStatStageSupersweetSyrup(battler)
     end
     battle.pbHideAbilitySplash(battler)
   }
@@ -6188,6 +6160,7 @@ Battle::AbilityEffects::DamageCalcFromTarget.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
 Battle::AbilityEffects::OnDealingStatus.add(:POISONPUPPETEER,
   proc { |ability, user, target, status|
     next if status != :POISON
+    next if !user.isSpecies?(:PECHARUNT)
     next if !target.pbCanConfuse?(user, false)
     user.battle.pbShowAbilitySplash(user)
     msg = nil
@@ -6204,7 +6177,7 @@ Battle::AbilityEffects::OnDealingStatus.add(:POISONPUPPETEER,
 #===============================================================================
 Battle::AbilityEffects::OnTargetedForHit.add(:TERASHELL,
   proc { |ability, user, target, move, hit_num, battle|
-    next if target.hp < target.totalhp
+    next if !target.isSpecies?(:TERAPAGOS) || target.form != 1 || target.hp < target.totalhp
     next if hit_num != 0 || battle.moldBreaker
     next if !move.pbDamagingMove? || move.is_a?(Battle::Move::FixedDamageMove)
     next if Effectiveness.not_very_effective?(target.damageState.typeMod) ||

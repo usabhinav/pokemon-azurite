@@ -879,7 +879,33 @@ class Battle
     # Check for end of primordial weather, and weather-triggered form changes
     allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
     allBattlers.each { |b| b.pbAbilityOnWeatherChange }
+    allBattlers.each { |b| b.pbItemOnWeatherChange }
     pbEndPrimordialWeather
+  end
+
+  # This doesn't reinstate the default weather. It just handles what happens
+  # when a weather ends.
+  def pbEndWeather
+    old_weather = @field.weather
+    case @field.weather
+    when :Sun         then pbDisplay(_INTL("The sunlight faded."))
+    when :Rain        then pbDisplay(_INTL("The rain stopped."))
+    when :Sandstorm   then pbDisplay(_INTL("The sandstorm subsided."))
+    when :Hail        then pbDisplay(_INTL("The hail stopped."))
+    when :Snowstorm   then pbDisplay(_INTL("The snow stopped."))
+    when :HarshSun    then pbDisplay(_INTL("The harsh sunlight faded."))
+    when :HeavyRain   then pbDisplay(_INTL("The heavy rain has lifted."))
+    when :StrongWinds then pbDisplay(_INTL("The mysterious air current has dissipated."))
+    when :ShadowSky   then pbDisplay(_INTL("The shadow sky faded."))
+    when :Thunderstorm then pbDisplay(_INTL("The thunderstorm subsided."))	
+    when :Windstorm   then pbDisplay(_INTL("The windstorm subsided."))
+    when :Firestorm   then pbDisplay(_INTL("The firestorm subsided."))
+    end
+    @field.weather = :None
+    # Check for form changes/abilities/items caused by the weather changing
+    allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
+    allBattlers.each { |b| b.pbAbilityOnWeatherChange }
+    allBattlers.each { |b| b.pbItemOnWeatherChange }
   end
 
   def pbEndPrimordialWeather
@@ -906,6 +932,7 @@ class Battle
       # Check for form changes caused by the weather changing
       allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
       allBattlers.each { |b| b.pbAbilityOnWeatherChange }
+      allBattlers.each { |b| b.pbItemOnWeatherChange }
       # Start up the default weather
       pbStartWeather(nil, @field.defaultWeather) if @field.defaultWeather != :None
     end
@@ -966,8 +993,30 @@ class Battle
       pbDisplay(_INTL("The battlefield got gross and sticky!"))
     end
     # Check for abilities/items that trigger upon the terrain changing
+    allBattlers.each { |b| b.pbCheckFormOnTerrainChange }
     allBattlers.each { |b| b.pbAbilityOnTerrainChange }
-    allBattlers.each { |b| b.pbItemTerrainStatBoostCheck }
+    allBattlers.each { |b| b.pbItemOnTerrainChange }
+  end
+
+  # This doesn't reinstate the default terrain. Itj ust handles what happens
+  # when a terrain ends.
+  def pbEndTerrain
+    old_terrain = @field.terrain
+    case @field.terrain
+    when :Electric then pbDisplay(_INTL("The electricity disappeared from the battlefield."))
+    when :Grassy   then pbDisplay(_INTL("The grass disappeared from the battlefield."))
+    when :Misty    then pbDisplay(_INTL("The mist disappeared from the battlefield."))
+    when :Psychic  then pbDisplay(_INTL("The weirdness disappeared from the battlefield."))
+    when :Lava     then pbDisplay(_INTL("The lava disappeared from the battlefield!"))
+    when :Crystal  then pbDisplay(_INTL("The crystals disappeared from the battlefield!"))
+    when :Icy      then pbDisplay(_INTL("The ice on the ground melted!"))
+    when :Sticky   then pbDisplay(_INTL("The gunk on the battlefield has been wiped away!"))
+    end
+    @field.terrain = :None
+    # Check for form changes/abilities/items caused by the terrain changing
+    allBattlers.each { |b| b.pbCheckFormOnTerrainChange }
+    allBattlers.each { |b| b.pbAbilityOnTerrainChange }
+    allBattlers.each { |b| b.pbItemOnTerrainChange }
   end
 
   #=============================================================================

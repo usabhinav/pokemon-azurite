@@ -746,7 +746,7 @@ class Battle::AI
           end
         end
         if move.function == "RaiseUserAtkSpAtk1Or2InSun"   # Growth
-          score += 20 if [:Sun, :HarshSun].include?(user.effectiveWeather)
+          score += 20 if [:Sun, :HarshSun].include?(user.effectiveWeather) || user.hasActiveAbility?(:MEGASOL)
         end
       end
     #---------------------------------------------------------------------------

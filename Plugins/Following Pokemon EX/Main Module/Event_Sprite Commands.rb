@@ -42,7 +42,7 @@ module FollowingPkmn
     pkmn = FollowingPkmn.get_pokemon
     return false if !pkmn
     return true if pkmn.hasType?(:FLYING)
-    return true if pkmn.hasAbility?(:LEVITATE)
+    return true if pkmn.hasAbility?(:LEVITATE) || pkmn.hasAbility?(:EELEVATE)
     return true if FollowingPkmn::SURFING_FOLLOWERS_EXCEPTIONS.any? { |s| s == pkmn.species || s.to_s == "#{pkmn.species}_#{pkmn.form}" }
     return false
   end

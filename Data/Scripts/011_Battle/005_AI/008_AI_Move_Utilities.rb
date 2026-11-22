@@ -43,8 +43,8 @@ class Battle::AI
         ret = Effectiveness::NORMAL_EFFECTIVE_ONE
       end
       # Foresight
-      if (user.hasActiveAbility?(:SCRAPPY) || target.effects[PBEffects::Foresight]) &&
-         defType == :GHOST
+      if (user.hasActiveAbility?(:SCRAPPY) || user.hasActiveAbility?(:MINDSEYE) ||
+          target.effects[PBEffects::Foresight]) && defType == :GHOST
         ret = Effectiveness::NORMAL_EFFECTIVE_ONE
       end
       # Miracle Eye
@@ -210,6 +210,14 @@ class Battle::AI
     if @battle.field.effects[PBEffects::AirLense] > 0
       ret = Effectiveness::INEFFECTIVE
     end
+    # Tera Shell
+    if target.isSpecies?(:TERAPAGOS) && target.form == 1 &&
+      target.hasActiveAbility?(:TERASHELL) && !target.hasMoldBreaker? &&
+      target.hp == target.totalhp &&
+      !move.is_a?(Battle::Move::FixedDamageMove) &&
+      !Effectiveness.not_very_effective?(ret) && !Effectiveness.ineffective?(ret)
+      ret = Effectiveness::NOT_VERY_EFFECTIVE_MULTIPLIER
+    end
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :ELECTRIC &&
           user.hasActiveAbility?(:CRYSTALLINE) && ret == Effectiveness::INEFFECTIVE
     return Effectiveness::NORMAL_EFFECTIVE if moveType == :PSYCHIC &&
@@ -245,7 +253,7 @@ class Battle::AI
         return true if target.airborne? && !move.hitsFlyingTargets?
         return true if target.hasActiveAbility?(:EARTHEATER)
       when :FIRE
-        return true if target.hasActiveAbility?(:FLASHFIRE)
+        return true if target.hasActiveAbility?([:FLASHFIRE, :WELLBAKEDBODY])
       when :WATER
         return true if target.hasActiveAbility?([:DRYSKIN, :STORMDRAIN, :WATERABSORB])
       when :GRASS
@@ -725,7 +733,9 @@ class Battle::AI
     end
     # Weather
     if skill >= PBTrainerAI.mediumSkill
-      case user.effectiveWeather
+      weather_type = user.effectiveWeather
+      weather_type = :Sun if user.hasActiveAbility?(:MEGASOL)
+      case weather_type
       when :Sun, :HarshSun
         case type
         when :FIRE

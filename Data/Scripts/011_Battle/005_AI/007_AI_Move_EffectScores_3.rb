@@ -98,7 +98,7 @@ class Battle::AI
       score += (2 * @battle.pbParty(user.index).count {|pokemon| !pokemon.egg? && pokemon.isSpecies?(:NIDOKING)})
     #---------------------------------------------------------------------------
     when "PowerHigherAndAccuracyHigherInSunlight", "PowerHigherWithSunnyWeather"
-      score += 30 if [:Sun, :HarshSun].include?(user.effectiveWeather)
+      score += 30 if [:Sun, :HarshSun].include?(user.effectiveWeather) || user.hasActiveAbility?(:MEGASOL)
     #---------------------------------------------------------------------------
     when "PowerHigherIfTargetActedElseStartReduceIncomingDamage"
       # No clear indicator to know when to use this move.
@@ -694,7 +694,11 @@ class Battle::AI
           score += 30
         when :None
         else
-          score -= 30
+          if user.hasActiveAbility?(:MEGASOL)
+            score += 30
+          else
+            score -= 30
+          end
         end
         score += 50
         score -= user.hp * 100 / user.totalhp

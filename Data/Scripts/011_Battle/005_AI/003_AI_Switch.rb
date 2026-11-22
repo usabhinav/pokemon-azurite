@@ -104,7 +104,7 @@ class Battle::AI
           if spikes > 0
             spikesDmg = [8, 6, 4][spikes - 1]
             next if pkmn.hp <= pkmn.totalhp / spikesDmg &&
-                    !pkmn.hasType?(:FLYING) && !pkmn.hasActiveAbility?(:LEVITATE) && !@battle.pbCheckGlobalAbility(:ZEROGRAVITY)
+                    !pkmn.hasType?(:FLYING) && !pkmn.hasAirborneAbility? && !@battle.pbCheckGlobalAbility(:ZEROGRAVITY)
           end
         end
         # moveType is the type of the target's last used move

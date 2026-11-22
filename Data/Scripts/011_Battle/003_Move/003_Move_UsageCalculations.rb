@@ -50,8 +50,8 @@ class Battle::Move
         ret = Effectiveness::NORMAL_EFFECTIVE_ONE
       end
       # Foresight
-      if (user.hasActiveAbility?(:SCRAPPY) || user.hasActiveAbility?(:MINDSEYE) || target.effects[PBEffects::Foresight]) &&
-         defType == :GHOST
+      if (user.hasActiveAbility?(:SCRAPPY) || user.hasActiveAbility?(:MINDSEYE) ||
+          target.effects[PBEffects::Foresight]) && defType == :GHOST
         ret = Effectiveness::NORMAL_EFFECTIVE_ONE
       end
       # Miracle Eye
@@ -307,7 +307,7 @@ class Battle::Move
       user.effects[PBEffects::MicleBerry] = false
       modifiers[:accuracy_multiplier] *= 1.2
     end
-    if user.effectiveWeather == :Thunderstorm && @calcType == :ELECTRIC
+    if user.effectiveWeather == :Thunderstorm && !user.hasActiveAbility?(:MEGASOL) && @calcType == :ELECTRIC
       modifiers[:accuracy_multiplier] *= 1.1
     end
     if @battle.field.effects[PBEffects::Darkened] && ![:DARK, :LIGHT, :FIRE, :COSMIC, :ELECTRIC].include?(@calcType)
@@ -463,16 +463,13 @@ class Battle::Move
       end
     end
     # Treasures of Ruin
-    if @battle.pbCheckGlobalAbility(:TABLETSOFRUIN) &&
-        user.ability_id != :TABLETSOFRUIN
+    if @battle.pbCheckGlobalAbility(:TABLETSOFRUIN) && user.ability_id != :TABLETSOFRUIN
       multipliers[:base_damage_multiplier] *= 3 / 4.0 if pbPhysicalMove?(user)
     end
-    if @battle.pbCheckGlobalAbility(:VESSELOFRUIN) &&
-        user.ability_id != :VESSELOFRUIN
+    if @battle.pbCheckGlobalAbility(:VESSELOFRUIN) && user.ability_id != :VESSELOFRUIN
       multipliers[:base_damage_multiplier] *= 3 / 4.0 if pbSpecialMove?(user)
     end
-    if @battle.pbCheckGlobalAbility(:SWORDOFRUIN) &&
-      target.ability_id != :SWORDOFRUIN
+    if @battle.pbCheckGlobalAbility(:SWORDOFRUIN) && target.ability_id != :SWORDOFRUIN
       if @battle.field.effects[PBEffects::WonderRoom] > 0
         multipliers[:defense_multiplier] *= 3 / 4.0 if pbSpecialMove?(user)
       else
@@ -615,12 +612,13 @@ class Battle::Move
       when :FIRE
         multipliers[:final_damage_multiplier] *= 1.5
       when :WATER
-      if @function == "IncreasePowerInSun" && ([:Sun, :HarshSun].include?(user.effectiveWeather) || user.hasActiveAbility?(:MEGASOL))
-        multipliers[:final_damage_multiplier] *= 1.5
-      else
-        multipliers[:final_damage_multiplier] /= 2
+        if @function == "IncreasePowerInSun" &&
+           ([:Sun, :HarshSun].include?(user.effectiveWeather) || user.hasActiveAbility?(:MEGASOL))
+          multipliers[:final_damage_multiplier] *= 1.5
+        else
+          multipliers[:final_damage_multiplier] /= 2
+        end
       end
-    end
     when :Rain, :HeavyRain, :Thunderstorm
       case type
       when :FIRE

@@ -135,9 +135,6 @@ class Battle::Battler
       @effects[PBEffects::Substitute]        = 0
       @effects[PBEffects::Telekinesis]       = 0
       @effects[PBEffects::AirSupportTurnCount] = 0
-      @effects[PBEffects::CommandedBy] = -1
-      @effects[PBEffects::Commanding]  = -1
-      @effects[PBEffects::SupremeOverlord] = 0
     end
     @fainted               = (@hp == 0)
     @lastAttacker          = []
@@ -385,6 +382,9 @@ class Battle::Battler
     @effects[PBEffects::ParadoxStat]         = nil
     @effects[PBEffects::BoosterEnergy]       = false
     @effects[PBEffects::GigatonHammer]       = false
+    @effects[PBEffects::CommandedBy]         = -1
+    @effects[PBEffects::Commanding]          = -1
+    @effects[PBEffects::SupremeOverlord]     = 0
   end
 
   #=============================================================================

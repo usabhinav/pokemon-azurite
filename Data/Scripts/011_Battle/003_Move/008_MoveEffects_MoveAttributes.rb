@@ -557,12 +557,12 @@ end
 class Battle::Move::PowerHigherAndAccuracyHigherInSunlight < Battle::Move
   def pbBaseAccuracy(user, target)
     ret = super
-    ret = [(ret * 1.5).floor, 100].min if [:Sun, :HarshSun].include?(user.effectiveWeather)
+    ret = [(ret * 1.5).floor, 100].min if [:Sun, :HarshSun].include?(user.effectiveWeather) || user.hasActiveAbility?(:MEGASOL)
     return ret
   end
 
   def pbBaseDamage(baseDmg, user, target)
-    baseDmg = (baseDmg * 1.5).floor if [:Sun, :HarshSun].include?(user.effectiveWeather)
+    baseDmg = (baseDmg * 1.5).floor if [:Sun, :HarshSun].include?(user.effectiveWeather) || user.hasActiveAbility?(:MEGASOL)
     return baseDmg
   end
 end
@@ -589,6 +589,7 @@ end
 #===============================================================================
 class Battle::Move::PowerHigherWithSunnyWeather < Battle::Move
   def pbBaseDamage(baseDmg, user, target)
+    return baseDmg * 2 if user.hasActiveAbility?(:MEGASOL)
     case user.effectiveWeather
     when :HarshSun
       baseDmg = (baseDmg * 2.5).floor
@@ -2458,18 +2459,18 @@ class Battle::Move::TypeAndPowerDependOnWeather < Battle::Move
     if user.hasActiveAbility?(:MEGASOL)
       ret = :FIRE
     else
-    case user.effectiveWeather
-    when :Sun, :HarshSun, :Firestorm
-      ret = :FIRE if GameData::Type.exists?(:FIRE)
-    when :Rain, :HeavyRain, :Thunderstorm
-      ret = :WATER if GameData::Type.exists?(:WATER)
-    when :Sandstorm
-      ret = :ROCK if GameData::Type.exists?(:ROCK)
-    when :Hail
-      ret = :ICE if GameData::Type.exists?(:ICE)
+      case user.effectiveWeather
+      when :Sun, :HarshSun, :Firestorm
+        ret = :FIRE if GameData::Type.exists?(:FIRE)
+      when :Rain, :HeavyRain, :Thunderstorm
+        ret = :WATER if GameData::Type.exists?(:WATER)
+      when :Sandstorm
+        ret = :ROCK if GameData::Type.exists?(:ROCK)
+      when :Hail
+        ret = :ICE if GameData::Type.exists?(:ICE)
+      end
     end
     return ret
-  end
   end
 
   def pbShowAnimation(id, user, targets, hitNum = 0, showAnimation = true)

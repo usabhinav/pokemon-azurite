@@ -1256,7 +1256,7 @@ end
 #===============================================================================
 class Battle::Move::ConfuseTargetAlwaysInRain < Battle::Move::ConfuseTarget
   def pbAdditionalEffectChance(user, target, effectChance = 0)
-    return 100 if [:Rain, :HeavyRain, :Thunderstorm].include?(user.effectiveWeather)
+    return 100 if [:Rain, :HeavyRain, :Thunderstorm].include?(user.effectiveWeather) && !user.hasActiveAbility?(:MEGASOL)
     return super
   end
 end

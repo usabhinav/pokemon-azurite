@@ -310,7 +310,7 @@ def pbDecideWinnerEffectiveness(move, otype1, otype2, ability, scores)
   return 0 if data.base_damage == 0
   atype = data.type
   typemod = Effectiveness::NORMAL_EFFECTIVE_ONE**2
-  if ability != :LEVITATE || data.type != :GROUND
+  if ![:LEVITATE, :EELEVATE].include?(ability) || data.type != :GROUND
     mod1 = Effectiveness.calculate_one(atype, otype1)
     mod2 = (otype1 == otype2) ? Effectiveness::NORMAL_EFFECTIVE_ONE : Effectiveness.calculate_one(atype, otype2)
     if ability == :WONDERGUARD

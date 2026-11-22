@@ -236,6 +236,7 @@ class Battle
     pbBattleDebug(self)
     @scene.pbRefreshEverything
     allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
+    allBattlers.each { |b| b.pbCheckFormOnTerrainChange }
     pbEndPrimordialWeather
     allBattlers.each { |b| b.pbAbilityOnWeatherChange }
     allBattlers.each { |b| b.pbAbilityOnTerrainChange }

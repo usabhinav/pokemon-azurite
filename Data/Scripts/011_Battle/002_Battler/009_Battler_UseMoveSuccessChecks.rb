@@ -328,7 +328,7 @@ class Battle::Battler
       @battle.successStates[user.index].protected = true
       return false
     end
-    if !(user.hasActiveAbility?([:UNSEENFIST, :PIERCINGDRILL]) && move.contactMove?)
+    if !(move.pbContactMove?(user) && user.canMakeContactThroughProtection?)
       # Wide Guard
       if target.pbOwnSide.effects[PBEffects::WideGuard] && user.index != target.index &&
          move.pbTarget(user).num_targets > 1 &&
@@ -565,7 +565,7 @@ class Battle::Battler
     # Airborne-based immunity to Ground moves
     if move.damagingMove? && move.calcType == :GROUND &&
        target.airborne? && !move.hitsFlyingTargets?
-      if target.hasActiveAbility?([:LEVITATE, :EELEVATE]) && !@battle.moldBreaker
+      if target.hasAirborneAbility? && !@battle.moldBreaker
         if show_message
           @battle.pbShowAbilitySplash(target)
           if Battle::Scene::USE_ABILITY_SPLASH

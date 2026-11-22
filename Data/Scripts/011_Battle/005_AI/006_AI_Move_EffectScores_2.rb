@@ -50,6 +50,7 @@ class Battle::AI
           score += 30 if target.hp <= target.totalhp / 4
           score += 50 if target.hp <= target.totalhp / 8
           score -= 40 if target.effects[PBEffects::Yawn] > 0
+          score += 30 if user.hasActiveAbility?(:POISONPUPPETEER)
         end
         if skill >= PBTrainerAI.highSkill
           score += 10 if pbRoughStat(target, :DEFENSE, skill) > 100
@@ -70,6 +71,7 @@ class Battle::AI
             score += 30 if target.hp <= target.totalhp / 4
             score += 50 if target.hp <= target.totalhp / 8
             score -= 40 if target.effects[PBEffects::Yawn] > 0
+            score += 30 if user.hasActiveAbility?(:POISONPUPPETEER)
           end
           if skill >= PBTrainerAI.highSkill
             score += 10 if pbRoughStat(target, :DEFENSE, skill) > 100
@@ -94,6 +96,7 @@ class Battle::AI
           score += 30 if target.hp <= target.totalhp / 4
           score += 50 if target.hp <= target.totalhp / 8
           score -= 40 if target.effects[PBEffects::Yawn] > 0
+          score += 30 if user.hasActiveAbility?(:POISONPUPPETEER)
         end
         if skill >= PBTrainerAI.highSkill
           score += 10 if pbRoughStat(target, :DEFENSE, skill) > 100
@@ -118,6 +121,7 @@ class Battle::AI
           score += 30 if target.hp <= target.totalhp / 4
           score += 50 if target.hp <= target.totalhp / 8
           score -= 40 if target.effects[PBEffects::Yawn] > 0
+          score += 30 if user.hasActiveAbility?(:POISONPUPPETEER)
         end
         if skill >= PBTrainerAI.highSkill
           score += 10 if pbRoughStat(target, :DEFENSE, skill) > 100
@@ -408,6 +412,7 @@ class Battle::AI
             score += 30 if target.hp <= target.totalhp / 4
             score += 50 if target.hp <= target.totalhp / 8
             score -= 40 if target.effects[PBEffects::Yawn] > 0
+            score += 30 if user.hasActiveAbility?(:POISONPUPPETEER)
           end
           if skill >= PBTrainerAI.highSkill
             score += 10 if pbRoughStat(target, :DEFENSE, skill) > 100
@@ -432,7 +437,7 @@ class Battle::AI
     when "ConfuseTargetAlwaysInRain"
       if target.pbCanConfuse?(user, false)
         score += 30
-        if [:Rain, :HeavyRain, :Thunderstorm].include?(user.effectiveWeather)
+        if [:Rain, :HeavyRain, :Thunderstorm].include?(user.effectiveWeather) && !user.hasActiveAbility?(:MEGASOL)
           score += 30
         end
       elsif skill >= PBTrainerAI.mediumSkill
@@ -781,7 +786,7 @@ class Battle::AI
         score += 20 if target.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
                                                "TwoTurnAttackInvulnerableInSkyParalyzeTarget")
         score += 20 if target.pbHasType?(:FLYING)
-        score += 20 if target.hasActiveAbility?(:LEVITATE)
+        score += 20 if target.hasAirborneAbility?
         score += 20 if target.hasActiveItem?(:AIRBALLOON)
       end
     #---------------------------------------------------------------------------
@@ -796,7 +801,7 @@ class Battle::AI
         score -= 20 if user.effects[PBEffects::AirCarryUserIndex] >= 0
         score -= 20 if user.effects[PBEffects::AirSupportTurnCount] > 0
         score -= 20 if user.pbHasType?(:FLYING)
-        score -= 20 if user.hasActiveAbility?(:LEVITATE)
+        score -= 20 if user.hasAirborneAbility?
         score -= 20 if user.hasActiveItem?(:AIRBALLOON)
         score += 20 if target.effects[PBEffects::SkyDrop] >= 0
         score += 20 if target.effects[PBEffects::MagnetRise] > 0
@@ -807,7 +812,7 @@ class Battle::AI
                                                "TwoTurnAttackInvulnerableInSkyParalyzeTarget",
                                                "TwoTurnAttackInvulnerableInSkyTargetCannotAct")
         score += 20 if target.pbHasType?(:FLYING)
-        score += 20 if target.hasActiveAbility?(:LEVITATE)
+        score += 20 if target.hasAirborneAbility?
         score += 20 if target.hasActiveItem?(:AIRBALLOON)
       end
     #---------------------------------------------------------------------------

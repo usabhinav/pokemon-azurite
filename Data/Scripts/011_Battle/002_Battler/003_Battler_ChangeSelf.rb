@@ -333,6 +333,9 @@ class Battle::Battler
     end
   end
 
+  def pbCheckFormOnTerrainChange(ability_changed = false)
+  end
+
   # Checks the Pokémon's form and updates it if necessary. Used for when a
   # Pokémon enters battle (endOfRound=false) and at the end of each round
   # (endOfRound=true).
@@ -395,14 +398,15 @@ class Battle::Battler
       pbChangeForm(newForm, _INTL("{1} transformed into its Complete Forme!", pbThis))
     end
     # Morpeko - Hunger Switch
-    if isSpecies?(:MORPEKO) && hasActiveAbility?(:HUNGERSWITCH) && endOfRound
+    if isSpecies?(:MORPEKO) && !@effects[PBEffects::Transform] &&
+       hasActiveAbility?(:HUNGERSWITCH) && endOfRound
       # Intentionally doesn't show the ability splash or a message
       newForm = (@form + 1) % 2
       pbChangeForm(newForm, nil)
     end
     # Terapagos - Tera Shift
     if isSpecies?(:TERAPAGOS) && !@effects[PBEffects::Transform] &&
-       hasActiveAbility?(:TERASHIFT) && @form == 0
+       self.ability == :TERASHIFT && @form == 0
       @battle.pbShowAbilitySplash(self, true)
       @battle.pbHideAbilitySplash(self)
       pbChangeForm(1, _INTL("{1} transformed!", pbThis))
@@ -413,6 +417,7 @@ class Battle::Battler
     oldAbil = @ability_id
     @effects[PBEffects::Transform]        = true
     @effects[PBEffects::TransformSpecies] = target.species
+    self.form = target.form
     pbChangeTypes(target)
     self.ability = target.ability
     @attack  = target.attack

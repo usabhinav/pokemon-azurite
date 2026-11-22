@@ -40,7 +40,8 @@ module Battle::ItemEffects
   # Weather and terrain
   WeatherExtender                 = ItemHandlerHash.new
   TerrainExtender                 = ItemHandlerHash.new   # Terrain Extender
-  TerrainStatBoost                = ItemHandlerHash.new
+  OnWeatherChange                 = ItemHandlerHash.new
+  OnTerrainChange                 = ItemHandlerHash.new
   # End Of Round
   EndOfRoundHealing               = ItemHandlerHash.new
   EndOfRoundEffect                = ItemHandlerHash.new
@@ -194,8 +195,12 @@ module Battle::ItemEffects
     return trigger(TerrainExtender, item, terrain, duration, battler, battle, ret: duration)
   end
 
-  def self.triggerTerrainStatBoost(item, battler, battle)
-    return trigger(TerrainStatBoost, item, battler, battle)
+  def self.triggerOnWeatherChange(item, battler, battle, old_weather)
+    return trigger(OnWeatherChange, item, battler, battle, old_weather)
+  end
+
+  def self.triggerOnTerrainChange(item, battler, battle, old_terrain)
+    return trigger(OnTerrainChange, item, battler, battle, old_terrain)
   end
 
   #=============================================================================
@@ -2303,10 +2308,10 @@ Battle::ItemEffects::TerrainExtender.add(:TERRAINEXTENDER,
 )
 
 #===============================================================================
-# TerrainStatBoost handlers
+# OnTerrainChange handlers
 #===============================================================================
 
-Battle::ItemEffects::TerrainStatBoost.add(:ELECTRICSEED,
+Battle::ItemEffects::OnTerrainChange.add(:ELECTRICSEED,
   proc { |item, battler, battle|
     next false if battle.field.terrain != :Electric
     next false if !battler.pbCanRaiseStatStage?(:DEFENSE, battler)
@@ -2316,7 +2321,7 @@ Battle::ItemEffects::TerrainStatBoost.add(:ELECTRICSEED,
   }
 )
 
-Battle::ItemEffects::TerrainStatBoost.add(:GRASSYSEED,
+Battle::ItemEffects::OnTerrainChange.add(:GRASSYSEED,
   proc { |item, battler, battle|
     next false if battle.field.terrain != :Grassy
     next false if !battler.pbCanRaiseStatStage?(:DEFENSE, battler)
@@ -2326,7 +2331,7 @@ Battle::ItemEffects::TerrainStatBoost.add(:GRASSYSEED,
   }
 )
 
-Battle::ItemEffects::TerrainStatBoost.add(:MISTYSEED,
+Battle::ItemEffects::OnTerrainChange.add(:MISTYSEED,
   proc { |item, battler, battle|
     next false if battle.field.terrain != :Misty
     next false if !battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
@@ -2336,7 +2341,7 @@ Battle::ItemEffects::TerrainStatBoost.add(:MISTYSEED,
   }
 )
 
-Battle::ItemEffects::TerrainStatBoost.add(:PSYCHICSEED,
+Battle::ItemEffects::OnTerrainChange.add(:PSYCHICSEED,
   proc { |item, battler, battle|
     next false if battle.field.terrain != :Psychic
     next false if !battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)

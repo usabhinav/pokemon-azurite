@@ -390,10 +390,8 @@ class ObservableOutfitState
   
   #attr_accessor :outfitstate
   
-  alias old_initialize initialize
-  
   def initialize(outfitstate)
-    old_initialize
+    super()
     @outfitstate = outfitstate
   end
   

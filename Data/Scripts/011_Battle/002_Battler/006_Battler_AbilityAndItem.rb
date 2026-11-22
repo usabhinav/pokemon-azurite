@@ -173,8 +173,7 @@ class Battle::Battler
     if hasActiveAbility?(:INCOMPREHENSIBLE)	
       abilityList = []	
       GameData::Ability.each { |a|	
-        next if ungainableAbility?(a.id) || a.id == self.ability ||
-                [:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(a.id)	
+        next if ungainableAbility?(a.id) || a.id == self.ability || [:INCOMPREHENSIBLE].include?(a.id)	
         abilityList.push(a.id)	
       }	
       newAbil = abilityList[@battle.pbRandom(abilityList.length)]	
@@ -202,8 +201,7 @@ class Battle::Battler
       #       up later. Essentials ignores this, and allows Trace to trigger
       #       whenever it can even in Gen 5 battle mechanics.
       choices = @battle.allOtherSideBattlers(@index).select { |b|
-        next !b.ungainableAbility? &&
-             ![:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(b.ability_id)
+        next !b.ungainableAbility? && ![:INCOMPREHENSIBLE].include?(b.ability_id)
       }
       if choices.length > 0
         choice = choices[@battle.pbRandom(choices.length)]

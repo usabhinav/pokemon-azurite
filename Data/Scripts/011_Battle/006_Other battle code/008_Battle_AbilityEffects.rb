@@ -2665,7 +2665,7 @@ Battle::AbilityEffects::OnBeingHit.add(:MUMMY,
   proc { |ability, user, target, move, battle|
     next if !move.pbContactMove?(user)
     next if user.fainted?
-    next if user.unstoppableAbility? || [:MUMMY, :LINGERINGAROMA].include?(user.ability_id)
+    next if user.unlosableAbility? || [:LINGERINGAROMA, :MUMMY].include?(user.ability_id)
     oldAbil = nil
     battle.pbShowAbilitySplash(target) if user.opposes?(target)
     if user.affectedByContactEffect?(Battle::Scene::USE_ABILITY_SPLASH)
@@ -2767,8 +2767,8 @@ Battle::AbilityEffects::OnBeingHit.add(:STATIC,
 
 Battle::AbilityEffects::OnBeingHit.add(:WANDERINGSPIRIT,
   proc { |ability, user, target, move, battle|
-    next if !move.pbContactMove?(user)
-    next if user.ungainableAbility? || [:RECEIVER, :WONDERGUARD].include?(user.ability_id)
+    next if !move.pbContactMove?(user) || !user.affectedByContactEffect?
+    next if user.unlosableAbility? || target.ungainableAbility?(user.ability_id)
     oldUserAbil   = nil
     oldTargetAbil = nil
     battle.pbShowAbilitySplash(target) if user.opposes?(target)
@@ -5937,8 +5937,7 @@ Battle::AbilityEffects::OnSwitchOut.add(:DEBRISARMOR,
 Battle::AbilityEffects::ChangeOnBattlerFainting.add(:POWEROFALCHEMY,
   proc { |ability, battler, fainted, battle|
     next if battler.opposes?(fainted)
-    next if fainted.ungainableAbility? ||
-       [:POWEROFALCHEMY, :RECEIVER, :TRACE, :WONDERGUARD, :INCOMPREHENSIBLE].include?(fainted.ability_id)
+    next if fainted.ungainableAbility? || [:INCOMPREHENSIBLE].include?(fainted.ability_id)
     battle.pbShowAbilitySplash(battler, true)
     battler.ability = fainted.ability
     battle.pbReplaceAbilitySplash(battler)

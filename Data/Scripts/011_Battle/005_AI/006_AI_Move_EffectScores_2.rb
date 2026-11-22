@@ -660,7 +660,7 @@ class Battle::AI
       score -= 40   # don't prefer this move
       if skill >= PBTrainerAI.mediumSkill
         if !target.ability || user.ability == target.ability ||
-           [:MULTITYPE, :RKSSYSTEM].include?(user.ability_id) ||
+           user.unlosableAbility? ||
            [:FLOWERGIFT, :FORECAST, :ILLUSION, :IMPOSTER, :MULTITYPE, :RKSSYSTEM,
             :TRACE, :WONDERGUARD, :ZENMODE].include?(target.ability_id)
           score -= 90
@@ -699,8 +699,8 @@ class Battle::AI
       if skill >= PBTrainerAI.mediumSkill
         if (!user.ability && !target.ability) ||
            user.ability == target.ability ||
-           [:ILLUSION, :MULTITYPE, :RKSSYSTEM, :WONDERGUARD].include?(user.ability_id) ||
-           [:ILLUSION, :MULTITYPE, :RKSSYSTEM, :WONDERGUARD].include?(target.ability_id)
+           user.unlosableAbility? ||
+           user.ungainableAbility?
           score -= 90
         end
       end

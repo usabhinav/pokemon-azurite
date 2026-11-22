@@ -1898,7 +1898,7 @@ class Battle::Move::SetTargetAbilityToSimple < Battle::Move
   end
 
   def pbFailsAgainstTarget?(user, target, show_message)
-    if target.unstoppableAbility? || [:TRUANT, :SIMPLE].include?(target.ability)
+    if target.unlosableAbility? || [:SIMPLE, :TRUANT].include?(target.ability)
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
@@ -1932,7 +1932,7 @@ class Battle::Move::SetTargetAbilityToInsomnia < Battle::Move
   end
 
   def pbFailsAgainstTarget?(user, target, show_message)
-    if target.unstoppableAbility? || [:TRUANT, :INSOMNIA].include?(target.ability_id)
+    if target.unlosableAbility? || [:INSOMNIA, :TRUANT].include?(target.ability_id)
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
@@ -1958,7 +1958,7 @@ class Battle::Move::SetUserAbilityToTargetAbility < Battle::Move
   def ignoresSubstitute?(user); return true; end
 
   def pbMoveFailed?(user, targets)
-    if user.unstoppableAbility?
+    if user.unlosableAbility?
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -1971,7 +1971,7 @@ class Battle::Move::SetUserAbilityToTargetAbility < Battle::Move
       return true
     end
     if target.ungainableAbility? ||
-       [:POWEROFALCHEMY, :RECEIVER, :TRACE, :WONDERGUARD, :HADRONENGINE, :ORICHALCUMPULSE].include?(target.ability_id)
+       [:HADRONENGINE, :ORICHALCUMPULSE].include?(target.ability_id)
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
@@ -2002,8 +2002,7 @@ class Battle::Move::SetTargetAbilityToUserAbility < Battle::Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    if user.ungainableAbility? ||
-       [:POWEROFALCHEMY, :RECEIVER, :TRACE].include?(user.ability_id)
+    if user.ungainableAbility?
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -2011,7 +2010,8 @@ class Battle::Move::SetTargetAbilityToUserAbility < Battle::Move
   end
 
   def pbFailsAgainstTarget?(user, target, show_message)
-    if target.unstoppableAbility? || [:HADRONENGINE, :ORICHALCUMPULSE, :TRUANT].include?(target.ability_id)
+    if target.unlosableAbility? ||
+       [:HADRONENGINE, :ORICHALCUMPULSE, :TRUANT].include?(target.ability_id)
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
@@ -2041,11 +2041,12 @@ class Battle::Move::UserTargetSwapAbilities < Battle::Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    if user.unstoppableAbility?
+    if user.unlosableAbility?
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    if user.ungainableAbility? || [:WONDERGUARD, :HADRONENGINE, :ORICHALCUMPULSE].include?(user.ability_id)
+    if user.ungainableAbility? ||
+       [:HADRONENGINE, :ORICHALCUMPULSE].include?(user.ability_id)
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -2058,11 +2059,12 @@ class Battle::Move::UserTargetSwapAbilities < Battle::Move
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
-    if target.unstoppableAbility?
+    if target.unlosableAbility?
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
-    if target.ungainableAbility? || [:WONDERGUARD, :HADRONENGINE, :ORICHALCUMPULSE].include?(target.ability_id)
+    if target.ungainableAbility? ||
+       [:HADRONENGINE, :ORICHALCUMPULSE].include?(target.ability_id)
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
     end
@@ -2572,7 +2574,7 @@ class Battle::Move::SetUserAndAlliesAbilityToTargetAbility < Battle::Move
 
   def pbMoveFailed?(user, targets)
     @valid_targets = [user] + user.allAllies
-    @valid_targets.delete_if { |battler| battler.unstoppableAbility? }
+    @valid_targets.delete_if { |battler| battler.unlosableAbility? }
     if @valid_targets.empty?
       @battle.pbDisplay(_INTL("But it failed!"))
       return true

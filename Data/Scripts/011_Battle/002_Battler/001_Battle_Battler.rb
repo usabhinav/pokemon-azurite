@@ -571,8 +571,7 @@ class Battle::Battler
   end
   alias hasWorkingAbility hasActiveAbility?
 
-  # Applies to both losing self's ability (i.e. being replaced by another) and
-  # having self's ability be negated.
+  # Returns whether the ability can be negated.
   def unstoppableAbility?(abil = nil)
     abil = @ability_id if !abil
     abil = GameData::Ability.try_get(abil)
@@ -580,19 +579,20 @@ class Battle::Battler
     ability_blacklist = [
       # Form-changing abilities
       :BATTLEBOND,
+      :CRYSTALENERGY,                                      # Having Crystal Energy be negated is annoying to work with
       :DARKDUALITY,
       :DELIRIUM,
       :DISGUISE,
+      :EFFULGE,
 #      :EMBODYASPECTATTACK,                                # This can be negated
 #      :EMBODYASPECTDEFENSE,                               # This can be negated
 #      :EMBODYASPECTSPDEF,                                 # This can be negated
 #      :EMBODYASPECTSPEED,                                 # This can be negated
-      :EFFULGE,
 #      :FLOWERGIFT,                                        # This can be negated
 #      :FORECAST,                                          # This can be negated
       :GULPMISSILE,
-#      :HUNGERSWITCH,                                      # This can be negated
       :HEAVYEYED,
+#      :HUNGERSWITCH,                                      # This can be negated
       :ICEFACE,
       :MULTITYPE,
       :POWERCONSTRUCT,
@@ -618,9 +618,78 @@ class Battle::Battler
 #      :TERAFORMZERO,                                      # This can be negated
 #      :TERASHELL,                                         # This can be negated
 #      :WONDERGUARD                                        # This can be negated
-      :CRYSTALENERGY,                                      # Having Crystal Energy be stoppable is annoying to work with
     ]
-    return ability_blacklist.include?(abil.id)
+    if Settings::MECHANICS_GENERATION <= 6
+      ability_blacklist.delete(:ZENMODE)
+    end
+    return true if ability_blacklist.include?(abil.id)
+    return true if hasActiveItem?(:ABILITYSHIELD)
+    return false
+  end
+
+  # Applies to losing self's ability (i.e. being replaced by another).
+  def unlosableAbility?(abil = nil)
+    abil = @ability_id if !abil
+    abil = GameData::Ability.try_get(abil)
+    return false if !abil
+    ability_blacklist = [
+      # Form-changing abilities
+      :BATTLEBOND,
+      :CRYSTALENERGY,                                     # Having Crystal Energy be replaced is annoying to work with
+      :DARKDUALITY,
+      :DELIRIUM,
+      :DISGUISE,
+      :EFFULGE,
+      :EMBODYASPECTATTACK,
+      :EMBODYASPECTDEFENSE,
+      :EMBODYASPECTSPDEF,
+      :EMBODYASPECTSPEED,
+#      :FLOWERGIFT,                                       # This can be replaced
+#      :FORECAST,                                         # This can be replaced
+      :HEAVYEYED,
+      :HUNGERSWITCH,
+      :ICEFACE,
+      :MULTITYPE,
+      :POWERCONSTRUCT,
+      :POWERWITHIN,
+      :PROXY,
+      :SCHOOLING,
+      :SHIELDSDOWN,
+      :STANCECHANGE,
+      :STANCESHIFT,
+      :TERASHIFT,
+      :ZENMODE,
+      :ZEROTOHERO,
+      # Appearance-changing abilities
+      :ILLUSION,
+#      :IMPOSTER,                                         # This can be replaced
+      # Abilities intended to be inherent properties of a certain species
+      :ASONECHILLINGNEIGH,
+      :ASONEGRIMNEIGH,
+      :COMATOSE,
+      :COMMANDER,
+      :POISONPUPPETEER,
+      :PROTOSYNTHESIS,
+      :QUARKDRIVE,
+      :RKSSYSTEM,
+      :TERAFORMZERO,
+      :TERASHELL,
+      :WONDERGUARD,
+      # Abilities that can't be negated
+      :NEUTRALIZINGGAS
+    ]
+    if Settings::MECHANICS_GENERATION <= 6
+      ability_blacklist.delete(:ZENMODE)
+    end
+    if Settings::MECHANICS_GENERATION <= 8
+      ability_blacklist.delete(:HUNGERSWITCH)
+      ability_blacklist.delete(:ILLUSION)
+      ability_blacklist.delete(:NEUTRALIZINGGAS)
+      ability_blacklist.push(:GULPMISSILE)
+    end
+    return true if ability_blacklist.include?(abil.id)
+    return true if hasActiveItem?(:ABILITYSHIELD)
+    return false
   end
 
   # Applies to gaining the ability.
@@ -634,15 +703,15 @@ class Battle::Battler
       :DARKDUALITY,
       :DELIRIUM,
       :DISGUISE,
+      :EFFULGE,
       :EMBODYASPECTATTACK,
       :EMBODYASPECTDEFENSE,
       :EMBODYASPECTSPDEF,
       :EMBODYASPECTSPEED,
-      :EFFULGE,
       :FLOWERGIFT,
       :FORECAST,
-      :GULPMISSILE,
       :HEAVYEYED,
+      :HUNGERSWITCH,
       :ICEFACE,
       :MULTITYPE,
       :POWERCONSTRUCT,
@@ -664,17 +733,27 @@ class Battle::Battler
       :ASONEGRIMNEIGH,
       :COMATOSE,
       :COMMANDER,
+      :CRYSTALENERGY,                                      # Having Crystal Energy be gainable is annoying to work with
       :POISONPUPPETEER,
       :PROTOSYNTHESIS,
       :QUARKDRIVE,
       :RKSSYSTEM,
       :TERAFORMZERO,
       :TERASHELL,
-      :RKSSYSTEM,
-      :CRYSTALENERGY,                                      # Having Crystal Energy be gainable is annoying to work with
+      :WONDERGUARD,
+      # Abilities that replace themselves
+      :POWEROFALCHEMY,
+      :RECEIVER,
+      :TRACE,
       # Abilities that can't be negated
       :NEUTRALIZINGGAS
     ]
+    if Settings::MECHANICS_GENERATION <= 6
+      ability_blacklist.delete(:ZENMODE)
+    end
+    if Settings::MECHANICS_GENERATION <= 8
+      ability_blacklist.push(:GULPMISSILE)
+    end
     return ability_blacklist.include?(abil.id)
   end
 

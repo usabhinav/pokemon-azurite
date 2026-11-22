@@ -1114,8 +1114,7 @@ class Battle
         oldAbil = b.ability
         abilityList = []
         GameData::Ability.each { |a|
-          next if b.ungainableAbility?(a.id) || a.id == oldAbil
-                  [:POWEROFALCHEMY, :RECEIVER, :TRACE, :INCOMPREHENSIBLE].include?(a.id)
+          next if b.ungainableAbility?(a.id) || a.id == oldAbil || [:INCOMPREHENSIBLE].include?(a.id)
           abilityList.push(a.id)
         }
         newAbil = abilityList[pbRandom(abilityList.length)]

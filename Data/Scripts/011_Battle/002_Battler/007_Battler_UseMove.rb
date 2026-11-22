@@ -100,7 +100,7 @@ class Battle::Battler
     @effects[PBEffects::GigatonHammer] = false if move_failed
   end
 
-  def pbEndTurn(_choice)
+  def pbEndTurn(choice)
     @lastRoundMoved = @battle.turnCount   # Done something this round
     if !@effects[PBEffects::ChoiceBand] &&
        (hasActiveItem?([:CHOICEBAND, :CHOICESPECS, :CHOICESCARF, :CHOICESCOPE]) ||
@@ -112,7 +112,12 @@ class Battle::Battler
       end
     end
     @effects[PBEffects::BeakBlast]   = false
-    @effects[PBEffects::Charge]      = 0 if @effects[PBEffects::Charge] == 1
+    if @effects[PBEffects::Charge] > 0
+      if Settings::MECHANICS_GENERATION < 9 || @lastMoveUsedType == :ELECTRIC ||
+         (choice[2] && choice[2].pbCalcType(self) == :ELECTRIC)
+        @effects[PBEffects::Charge] = 0 if @effects[PBEffects::Charge] == 1
+      end
+    end
     @effects[PBEffects::GemConsumed] = nil
     @effects[PBEffects::ShellTrap]   = false
     @battle.allBattlers.each { |b| b.pbContinualAbilityChecks }   # Trace, end primordial weathers

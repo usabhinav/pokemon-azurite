@@ -7,6 +7,14 @@ class Battle::Move::HitTwoTimes < Battle::Move
 end
 
 #===============================================================================
+# Hits three times. (Triple Dive)
+#===============================================================================
+class Battle::Move::HitThreeTimes < Battle::Move
+  def multiHitMove?;            return true; end
+  def pbNumHits(user, targets); return 3;    end
+end
+
+#===============================================================================
 # Hits twice. May poison the target on each hit. (Twineedle)
 #===============================================================================
 class Battle::Move::HitTwoTimesPoisonTarget < Battle::Move::PoisonTarget
@@ -285,7 +293,7 @@ class Battle::Move::TwoTurnAttackOneTurnInSun < Battle::Move::TwoTurnMove
   def pbIsChargingTurn?(user)
     ret = super
     if !user.effects[PBEffects::TwoTurnAttack] &&
-       [:Sun, :HarshSun].include?(user.effectiveWeather)
+       ([:Sun, :HarshSun].include?(user.effectiveWeather) || user.hasActiveAbility?(:MEGASOL))
       @powerHerb = false
       @chargingTurn = true
       @damagingTurn = true
@@ -299,7 +307,7 @@ class Battle::Move::TwoTurnAttackOneTurnInSun < Battle::Move::TwoTurnMove
   end
 
   def pbBaseDamageMultiplier(damageMult, user, target)
-    damageMult /= 2 if ![:None, :Sun, :HarshSun].include?(user.effectiveWeather)
+    damageMult /= 2 if ![:None, :Sun, :HarshSun].include?(user.effectiveWeather) && !user.hasActiveAbility?(:MEGASOL)
     return damageMult
   end
 end
@@ -412,6 +420,30 @@ class Battle::Move::TwoTurnAttackChargeRaiseUserSpAtk1 < Battle::Move::TwoTurnMo
     if user.pbCanRaiseStatStage?(:SPECIAL_ATTACK, user, self)
       user.pbRaiseStatStage(:SPECIAL_ATTACK, 1, user)
     end
+  end
+end
+
+#===============================================================================
+# Two-turn attack. On the first turn, increases the user's Special Attack by 1
+# stage. On the second turn, does damage. In rain, takes 1 turn instead.
+# (Electro Shot)
+#===============================================================================
+class Battle::Move::TwoTurnAttackOneTurnInRainChargeRaiseUserSpAtk1 < Battle::Move::TwoTurnAttackChargeRaiseUserSpAtk1
+  def pbIsChargingTurn?(user)
+    ret = super
+    if !user.effects[PBEffects::TwoTurnAttack] &&
+       [:Rain, :HeavyRain].include?(user.effectiveWeather) &&
+       !user.hasActiveAbility?(:MEGASOL)
+      @powerHerb = false
+      @chargingTurn = true
+      @damagingTurn = true
+      return false
+    end
+    return ret
+  end
+
+  def pbChargingTurnMessage(user, targets)
+    @battle.pbDisplay(_INTL("{1} absorbed electricity!", user.pbThis))
   end
 end
 
@@ -781,5 +813,25 @@ class Battle::Move::MultiTurnAttackAndRemoveScreensAndRecoil20PercentOfDamageDea
       user.effects[PBEffects::GoldenSpin] -= 1
     end
     super # Recoil effect
+  end
+end
+
+#===============================================================================
+# Population Bomb
+#===============================================================================
+class Battle::Move::HitTenTimes < Battle::Move
+  def multiHitMove?; return true; end
+
+  def pbNumHits(user, targets)
+    return 4 + @battle.pbRandom(7) if user.hasActiveItem?(:LOADEDDICE)
+    return 10
+  end
+
+  def successCheckPerHit?
+    return @accCheckPerHit
+  end
+
+  def pbOnStartUse(user, targets)
+    @accCheckPerHit = !user.hasActiveAbility?(:SKILLLINK) && !user.hasActiveItem?(:LOADEDDICE)
   end
 end

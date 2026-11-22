@@ -482,11 +482,13 @@ end
 
 #===============================================================================
 # Entry hazard. Lays spikes on the opposing side (max. 3 layers). (Spikes)
+# updated to work with Ceaseless Edge
 #===============================================================================
 class Battle::Move::AddSpikesToFoeSide < Battle::Move
   def canMagicCoat?; return true; end
 
   def pbMoveFailed?(user, targets)
+    return false if damagingMove?
     if user.pbOpposingSide.effects[PBEffects::Spikes] >= 3
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
@@ -495,6 +497,15 @@ class Battle::Move::AddSpikesToFoeSide < Battle::Move
   end
 
   def pbEffectGeneral(user)
+    return if damagingMove?
+    user.pbOpposingSide.effects[PBEffects::Spikes] += 1
+    @battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",
+                            user.pbOpposingTeam(true)))
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if user.fainted?
+    return if user.pbOpposingSide.effects[PBEffects::Spikes] >= 3
     user.pbOpposingSide.effects[PBEffects::Spikes] += 1
     @battle.pbDisplay(_INTL("Spikes were scattered all around {1}'s feet!",
                             user.pbOpposingTeam(true)))
@@ -530,6 +541,7 @@ class Battle::Move::AddStealthRocksToFoeSide < Battle::Move
   def canMagicCoat?; return true; end
 
   def pbMoveFailed?(user, targets)
+    return false if damagingMove?
     if user.pbOpposingSide.effects[PBEffects::StealthRock]
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
@@ -538,6 +550,15 @@ class Battle::Move::AddStealthRocksToFoeSide < Battle::Move
   end
 
   def pbEffectGeneral(user)
+    return if damagingMove?
+    user.pbOpposingSide.effects[PBEffects::StealthRock] = true
+    @battle.pbDisplay(_INTL("Pointed stones float in the air around {1}!",
+                            user.pbOpposingTeam(true)))
+  end
+
+  def pbAdditionalEffect(user, target)
+    return if user.fainted?
+    return if user.pbOpposingSide.effects[PBEffects::StealthRock]
     user.pbOpposingSide.effects[PBEffects::StealthRock] = true
     @battle.pbDisplay(_INTL("Pointed stones float in the air around {1}!",
                             user.pbOpposingTeam(true)))
@@ -1309,4 +1330,67 @@ end
 #===============================================================================
 class Battle::Move::ExtraEffect < Battle::Move
   def pbDisplayUseMessage(user, mystery_shroud_type = nil); end
+end
+
+#===============================================================================
+# Starts snowstorm weather. (Snowscape)
+#===============================================================================
+class Battle::Move::StartSnowstormWeather < Battle::Move::WeatherMove
+  def initialize(battle, move)
+    super
+    @weatherType = :Snowstorm
+  end
+end
+
+#===============================================================================
+# If attack misses, user takes crash damage of 1/2 of max HP. (Supercell Slam)
+#===============================================================================
+class Battle::Move::CrashDamageIfFails < Battle::Move
+  def recoilMove?; return true; end
+
+  def pbCrashDamage(user)
+    return if !user.takesIndirectDamage?
+    @battle.pbDisplay(_INTL("{1} kept going and crashed!", user.pbThis))
+    @battle.scene.pbDamageAnimation(user)
+    crash_damage = user.totalhp / 2
+    crash_damage = (crash_damage * 1.5).floor if user.hasActiveAbility?(:EXPLOSIVEEXHAUST)
+    user.pbReduceHP(crash_damage, false)
+    user.pbItemHPHealCheck
+    user.pbFaint if user.fainted?
+  end
+end
+
+#===============================================================================
+# The move cannot be chosen if it is also the last move the user used (unless it
+# failed). (Blood Moon, Gigaton Hammer)
+#===============================================================================
+class Battle::Move::CannotUseConsecutively < Battle::Move
+  def pbCanChooseMove?(user, commandPhase, showMessages)
+    if user.effects[PBEffects::GigatonHammer] && commandPhase
+      if showMessages
+        msg = _INTL("You can't use {1} twice in a row!", @name)
+        (commandPhase) ? @battle.pbDisplayPaused(msg) : @battle.pbDisplay(msg)
+      end
+      return false
+    end
+    return true
+  end
+
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::GigatonHammer]
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbChangeUsageCounters(user, specialUsage)
+    oldVal = user.effects[PBEffects::GigatonHammer]
+    super
+    user.effects[PBEffects::GigatonHammer] = oldVal
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::GigatonHammer] = true
+  end
 end

@@ -358,6 +358,21 @@ MultipleForms.register(:ARCEUS, {
   }
 })
 
+MultipleForms.register(:BASCULIN, {
+  "getForm" => proc { |pkmn|
+    if pkmn.form_simple >= 2
+      next (pkmn.female?) ? 3 : 2
+    end
+    next pkmn.form_simple
+  }
+})
+
+MultipleForms.register(:BASCULEGION, {
+  "getForm" => proc { |pkmn|
+    next (pkmn.female?) ? 3 : 2
+  }
+})
+
 MultipleForms.register(:DARMANITAN, {
   "getFormOnLeavingBattle" => proc { |pkmn, battle, usedInBattle, endBattle|
     next 2 * (pkmn.form / 2)
@@ -789,6 +804,60 @@ MultipleForms.register(:OGERPON, {
     next 0
   }
 })
+
+MultipleForms.register(:TERAPAGOS, {
+  "getFormOnLeavingBattle" => proc { |pkmn, battle, usedInBattle, endBattle|
+    next 0 if (pkmn.fainted? && pkmn.form >= 2) || endBattle
+  }
+})
+
+MultipleForms.register(:PALAFIN, {
+  "getFormOnLeavingBattle" => proc { |pkmn, battle, usedInBattle, endBattle|
+    next 0 if endBattle
+    next 1 if pkmn.able? && pkmn.hasAbility?(:ZEROTOHERO) && usedInBattle && !endBattle
+    next pkmn.form
+  }
+})
+
+MultipleForms.register(:DUNSPARCE, {
+  "getFormOnCreation" => proc { |pkmn|
+    next (rand(100) == 0) ? 1 : 0   # 99% form 0, 1% form 1
+  }
+})
+
+MultipleForms.register(:LECHONK, {
+  "getForm" => proc { |pkmn|
+    next pkmn.gender
+  }
+})
+MultipleForms.copy(:LECHONK, :OINKOLOGNE)
+
+MultipleForms.register(:TANDEMAUS, {
+  "getFormOnCreation" => proc { |pkmn|
+    next (rand(100) == 0) ? 1 : 0
+  }
+})
+MultipleForms.copy(:TANDEMAUS, :MAUSHOLD)
+
+MultipleForms.register(:SQUAWKABILLY, {
+  "getFormOnCreation" => proc { |pkmn|
+    next rand(4)
+  }
+})
+
+MultipleForms.register(:TATSUGIRI, {
+  "getFormOnCreation" => proc { |pkmn|
+    next rand(3)
+  }
+})
+
+MultipleForms.register(:POLTCHAGEIST, {
+  "getFormOnCreation" => proc { |pkmn|
+    next 1 if rand(100) < 10
+    next 0
+  }
+})
+MultipleForms.copy(:POLTCHAGEIST, :SINISTCHA)
 
 MultipleForms.register(:DIALGA, {
   "getForm" => proc { |pkmn|

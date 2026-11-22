@@ -187,6 +187,21 @@ module PBEffects
   ShowerTurnCount     = 182
   DragonsPrideTurnCount = 183
   ChargedSpikesArmor  = 184
+  ParadoxStat         = 185
+  BoosterEnergy       = 186
+  GigatonHammer       = 187
+  CommandedBy         = 188
+  Commanding          = 189
+  SupremeOverlord     = 190
+  SyrupBomb           = 191
+  SyrupBombUser       = 192
+  DoubleShock         = 193
+  SaltCure            = 194
+  Vulnerable          = 195
+  SilkTrap            = 196
+  BurningBulwark      = 197
+  CudChewBerry        = 198
+  CudChewCounter      = 199
 
   #=============================================================================
   # These effects apply to a battler position

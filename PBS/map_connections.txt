@@ -1,34 +1,20 @@
 ﻿# See the documentation on the wiki to learn how to edit this file.
 #-------------------------------
-# Candelle UNUSED (2) - Route 5 (66)
-2,West,0,66,East,0
 # Cantabile City Folder (69) - Candelle UNUSED (2)
 69,North,12,2,South,0
-# Fallmont Town (7) - Timbera City (MAIN) (44)
-7,West,5,44,East,0
-# Fallmont Town (7) - Timbera FOLDER (23)
-7,East,0,23,West,78
-# Route 4 (47) - Fallmont Town (7)
-47,West,0,7,East,0
-# Route 2 (21) - Fallmont Town (7)
-21,South,0,7,North,21
+# Candelle Residential (79) - Route 1 (5)
+79,West,10,5,East,0
+# Fallmont Town (7) - Route 1 (5)
+7,East,0,5,West,16
 # Route 2 (21) - Timbera FOLDER (23)
 21,East,0,23,West,1
-# Route 2 (21) - Route 4 (47)
-21,East,77,47,West,0
 # Route 3 (31) - Timbera FOLDER (23)
 31,South,32,23,North,0
-# Route 3 (31) - Vivlio University (35)
-31,West,0,35,East,10
-# Vivlio University (35) - Kutei Path (39)
-35,West,11,39,East,0
+# Vivlio University (35) - Route 4 (47)
+35,30,76,47,0,0
 # Route 7 (41) - Aerios Peak (40)
 41,North,0,40,South,0
 # Route 7 (41) - MAP045 (45)
 41,South,6,45,North,0
-# Route 4 (47) - Kutei Village (52)
-47,East,8,52,West,0
-# Cantabile City Folder (69) - Route 5 (66)
-69,North,0,66,South,10
-# Route 1 (5) - Candelle Residential (79)
-5,East,0,79,West,10
+# Noltimere Town (73) - Route 5 (66)
+73,East,11,66,West,0

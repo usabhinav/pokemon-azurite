@@ -507,3 +507,45 @@ Gender = Male
 BaseMoney = 100
 BattleBGM = Battle - 016 Champion Battle (Aiden)
 VictoryBGM = Battle victory leader
+#-------------------------------
+[TEAMVITREUS_TAEN]
+Name = Vitreus Admin
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle - 024 Vitreus Taen Battle
+#-------------------------------
+[TEAMVITREUS_QUARTZ]
+Name = Vitreus Elite Four
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle - 023 Vitreus Elite 4 Battle
+#-------------------------------
+[TEAMVITREUS_BERYL]
+Name = Vitreus Elite Four
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle - 023 Vitreus Elite 4 Battle
+#-------------------------------
+[TEAMVITREUS_AMBER]
+Name = Vitreus Elite Four
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle - 023 Vitreus Elite 4 Battle
+#-------------------------------
+[TEAMVITREUS_ALMAND]
+Name = Vitreus Elite Four
+Gender = Male
+BaseMoney = 100
+BattleBGM = Battle - 023 Vitreus Elite 4 Battle
+#-------------------------------
+[TEAMVITREUS_THYST]
+Name = Vitreus Child
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle - 029 Amethyst
+#-------------------------------
+[TEAMVITREUS_ZIRCONIA]
+Name = Vitreus Leader
+Gender = Female
+BaseMoney = 100
+BattleBGM = Battle - 025 Zirconia Battle

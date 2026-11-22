@@ -91,6 +91,14 @@ class Battle::Battler
   end
 
   def pbInitEffects(batonPass)
+    @battle.allBattlers.each do |b|
+      if b.effects[PBEffects::Commanding] == @index
+        b.effects[PBEffects::Commanding] = -1
+      end
+      if b.effects[PBEffects::CommandedBy] == @index
+        b.effects[PBEffects::CommandedBy] = -1
+      end
+    end
     if batonPass
       # These effects are passed on if Baton Pass is used, but they need to be
       # reapplied
@@ -127,6 +135,9 @@ class Battle::Battler
       @effects[PBEffects::Substitute]        = 0
       @effects[PBEffects::Telekinesis]       = 0
       @effects[PBEffects::AirSupportTurnCount] = 0
+      @effects[PBEffects::CommandedBy] = -1
+      @effects[PBEffects::Commanding]  = -1
+      @effects[PBEffects::SupremeOverlord] = 0
     end
     @fainted               = (@hp == 0)
     @lastAttacker          = []
@@ -159,10 +170,13 @@ class Battle::Battler
     @effects[PBEffects::BideDamage]          = 0
     @effects[PBEffects::BideTarget]          = -1
     @effects[PBEffects::BurnUp]              = false
+    @effects[PBEffects::DoubleShock]         = false
     @effects[PBEffects::Charge]              = 0
     @effects[PBEffects::ChoiceBand]          = nil
     @effects[PBEffects::Counter]             = -1
     @effects[PBEffects::CounterTarget]       = -1
+    @effects[PBEffects::CudChewBerry]        = nil
+    @effects[PBEffects::CudChewCounter]      = 0
     @effects[PBEffects::Dancer]              = false
     @effects[PBEffects::DefenseCurl]         = false
     @effects[PBEffects::DestinyBond]         = false
@@ -230,6 +244,13 @@ class Battle::Battler
     @battle.allBattlers.each do |b|   # Other battlers no longer locked by self
       b.effects[PBEffects::Octolock] = -1 if b.effects[PBEffects::Octolock] == @index
     end
+    @effects[PBEffects::SyrupBomb]     = 0
+    @effects[PBEffects::SyrupBombUser] = -1
+    @battle.allBattlers.each do |b|   # Other battlers no longer syruped by self
+      next if b.effects[PBEffects::SyrupBombUser] != @index
+      b.effects[PBEffects::SyrupBomb]     = 0
+      b.effects[PBEffects::SyrupBombUser] = -1
+    end
     @effects[PBEffects::Outrage]             = 0
     @effects[PBEffects::ParentalBond]        = 0
     @effects[PBEffects::PickupItem]          = nil
@@ -246,6 +267,8 @@ class Battle::Battler
     @effects[PBEffects::RagePowder]          = false
     @effects[PBEffects::Rollout]             = 0
     @effects[PBEffects::Roost]               = false
+    @effects[PBEffects::SaltCure]            = false
+    @effects[PBEffects::Vulnerable]          = false
     @effects[PBEffects::SkyDrop]             = -1
     @battle.allBattlers.each do |b|   # Other battlers no longer Sky Dropped by self
       b.effects[PBEffects::SkyDrop] = -1 if b.effects[PBEffects::SkyDrop] == @index
@@ -254,6 +277,8 @@ class Battle::Battler
     @effects[PBEffects::SmackDown]           = false
     @effects[PBEffects::Snatch]              = 0
     @effects[PBEffects::SpikyShield]         = false
+    @effects[PBEffects::SilkTrap]            = false
+    @effects[PBEffects::BurningBulwark]      = false
     @effects[PBEffects::Spotlight]           = 0
     @effects[PBEffects::Stockpile]           = 0
     @effects[PBEffects::StockpileDef]        = 0
@@ -357,6 +382,9 @@ class Battle::Battler
     @effects[PBEffects::ColdSteelTurnCount]  = 0
     @effects[PBEffects::ShowerTurnCount]     = 0
     @effects[PBEffects::DragonsPrideTurnCount] = 0
+    @effects[PBEffects::ParadoxStat]         = nil
+    @effects[PBEffects::BoosterEnergy]       = false
+    @effects[PBEffects::GigatonHammer]       = false
   end
 
   #=============================================================================

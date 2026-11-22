@@ -15,6 +15,7 @@ class Battle::Move
     user.effects[PBEffects::ParentalBond] = 0
     user.effects[PBEffects::ProtectRate]  = 1
 	  user.effects[PBEffects::GreatShield]  = false
+    user.effects[PBEffects::GigatonHammer]  = false
     @battle.field.effects[PBEffects::FusionBolt]  = false
     @battle.field.effects[PBEffects::FusionFlare] = false
   end

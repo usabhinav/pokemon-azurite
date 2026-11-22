@@ -66,6 +66,9 @@ end
 #===============================================================================
 class Battle::Move::HealUserDependingOnWeather < Battle::Move::HealingMove
   def pbOnStartUse(user, targets)
+    if user.hasActiveAbility?(:MEGASOL)
+      @healAmount = (user.totalhp * 2 / 3.0).round
+    else
     case user.effectiveWeather
     when :Sun, :HarshSun
       @healAmount = (user.totalhp * 2 / 3.0).round
@@ -75,6 +78,7 @@ class Battle::Move::HealUserDependingOnWeather < Battle::Move::HealingMove
       @healAmount = (user.totalhp / 4.0).round
     end
   end
+ end
 
   def pbHealAmount(user)
     return @healAmount
@@ -254,6 +258,19 @@ end
 # User gains half the HP it inflicts as damage.
 #===============================================================================
 class Battle::Move::HealUserByHalfOfDamageDone < Battle::Move
+  def healingMove?; return Settings::MECHANICS_GENERATION >= 6; end
+
+  def pbEffectAgainstTarget(user, target)
+    return if target.damageState.hpLost <= 0
+    hpGain = (target.damageState.hpLost / 2.0).round
+    user.pbRecoverHPFromDrain(hpGain, target)
+  end
+end
+
+#===============================================================================
+# User gains half the HP it inflicts as damage. Burns the target. (Matcha Gotcha)
+#===============================================================================
+class Battle::Move::HealUserByHalfOfDamageDoneBurnTarget < Battle::Move::BurnTarget
   def healingMove?; return Settings::MECHANICS_GENERATION >= 6; end
 
   def pbEffectAgainstTarget(user, target)
@@ -1090,5 +1107,54 @@ class Battle::Move::HealTargetByCustomAmount < Battle::Move::HealTargetHalfOfTot
     if target.pbRecoverHP(@healAmt) > 0
       @battle.pbDisplay(_INTL("{1}'s HP was restored.", target.pbThis))
     end
+  end
+end
+
+#===============================================================================
+# User revives a fainted Pokémon in their party to 50% HP. (Revival Blessing)
+#===============================================================================
+class Battle::Move::RevivePokemonToHalfHP < Battle::Move
+  def pbMoveFailed?(user, targets)
+    failed = true
+    @battle.eachInTeamFromBattlerIndex(user.index) do |pkmn, party_index|
+      failed = false if pkmn.fainted? && !pkmn.egg?
+      break if !failed
+    end
+    if failed
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    pkmn = nil
+    if !@battle.controlPlayer && @battle.pbOwnedByPlayer?(user.index)
+      # Player chooses the Pokémon to revive.
+      @battle.scene.pbPartyScreen(user.index, false, 4) do |idxParty, party_screen|
+        pkmn = @battle.pbParty(user.idxOwnSide)[idxParty]
+        if pkmn.egg?
+          party_screen.pbDisplay(_INTL("You can't revive an egg!"))
+          next false
+        elsif !pkmn.fainted?
+          party_screen.pbDisplay(_INTL("This Pokémon cannot be revived."))
+          next false
+        end
+        next true
+      end
+    else
+      # AI chooses a fainted Pokémon from its party.
+      @battle.eachInTeamFromBattlerIndex(user.index) do |party_pkmn, party_index|
+        next if !party_pkmn.fainted? || party_pkmn.egg?
+        pkmn = party_pkmn
+        break
+      end
+    end
+
+    return if !pkmn
+    pkmn.hp = (pkmn.totalhp / 2).floor
+    pkmn.hp = 1 if pkmn.hp <= 0
+    pkmn.heal_status
+    @battle.pbDisplay(_INTL("{1} was revived and is ready to fight again!", pkmn.name))
   end
 end

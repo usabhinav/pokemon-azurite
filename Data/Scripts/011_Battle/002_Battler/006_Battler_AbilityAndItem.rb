@@ -2,6 +2,15 @@ class Battle::Battler
   #=============================================================================
   # Ability trigger checks
   #=============================================================================
+  #=============================================================================
+  # Once-per-battle ability tracking
+  #=============================================================================
+  def markAbilityUsedOnce
+    @battle.abilitiesUsedOnce[idxOwnSide][@pokemonIndex].push(@ability_id)
+  end
+  def abilityUsedOnce?
+    return @battle.abilitiesUsedOnce[idxOwnSide][@pokemonIndex].include?(@ability_id)
+  end
   def pbAbilitiesOnSwitchOut
     if abilityActive?
       Battle::AbilityEffects.triggerOnSwitchOut(self.ability, self, false)
@@ -88,6 +97,11 @@ class Battle::Battler
     Battle::AbilityEffects.triggerOnTerrainChange(self.ability, self, @battle, ability_changed)
   end
 
+  def pbAbilityOnWeatherChange(ability_changed = false)
+    return if !abilityActive?
+    Battle::AbilityEffects.triggerOnWeatherChange(self.ability, self, @battle, ability_changed)
+  end
+
   # Used for Rattled's Gen 8 effect. Called when Intimidate is triggered.
   def pbAbilitiesOnIntimidated
     return if !abilityActive?
@@ -108,6 +122,45 @@ class Battle::Battler
   # Called when a Pokémon (self) enters battle, at the end of each move used,
   # and at the end of each round.
   def pbContinualAbilityChecks(onSwitchIn = false)
+    # Commander
+    if isSpecies?(:TATSUGIRI) && self.ability == :COMMANDER &&
+       @effects[PBEffects::Commanding] < 0 && @effects[PBEffects::SkyDrop] < 0
+      ally = nil
+      allAllies.each do |b|
+        next if !b.isSpecies?(:DONDOZO) || b.effects[PBEffects::Transform]
+        next if @battle.pbGetOwnerIndexFromBattlerIndex(@index) != @battle.pbGetOwnerIndexFromBattlerIndex(b.index)
+        next if b.effects[PBEffects::CommandedBy] >= 0
+        next if b.effects[PBEffects::SkyDrop] >= 0
+        ally = b
+        break
+      end
+      if ally
+        @battle.pbShowAbilitySplash(self)
+        @battle.pbCommonAnimation("Commander", self, ally)
+        @battle.pbDisplay(_INTL("{1} was swallowed by {2} and became {2}'s commander!", pbThis, ally.pbThis(true)))
+        @effects[PBEffects::Commanding] = ally.index
+        ally.effects[PBEffects::CommandedBy] = @index
+        # Raise all five of Dondozo's stats by 2 stages.
+        [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].each do |stat|
+        next if !ally.pbCanRaiseStatStage?(stat, self)
+        ally.pbRaiseStatStage(stat, 2, self)
+     end
+       # Hide Tatsugiri's ability splash.
+       @battle.pbHideAbilitySplash(self)
+       # Clear Tatsugiri's current battle choice.
+       @battle.pbClearChoice(@index)
+       # Clear ongoing move effects.
+       @effects[PBEffects::Bide] = 0
+       @effects[PBEffects::HyperBeam] = 0
+       @effects[PBEffects::Outrage] = 0
+       @effects[PBEffects::Rollout] = 0
+       @effects[PBEffects::TwoTurnAttack] = nil
+       @effects[PBEffects::Uproar] = 0
+       @effects[PBEffects::Encore] = 0
+       @effects[PBEffects::EncoreMove] = nil
+       @currentMove = nil
+      end
+    end
     # Crystal Energy switch in message
     if hasActiveAbility?(:CRYSTALENERGY) && onSwitchIn
       @battle.pbShowAbilitySplash(self)
@@ -386,6 +439,10 @@ class Battle::Battler
         @battle.pbSetSeen(self)
       end
     end
+    if self.ability != :CUDCHEW
+      @effects[PBEffects::CudChewBerry]   = nil
+      @effects[PBEffects::CudChewCounter] = 0
+    end
     @effects[PBEffects::Incomprehensible] = false
     @effects[PBEffects::GastroAcid] = false if unstoppableAbility?
     @effects[PBEffects::SlowStart]  = 0 if self.ability != :SLOWSTART
@@ -442,7 +499,13 @@ class Battle::Battler
       @effects[PBEffects::PickupItem] = @item_id
       @effects[PBEffects::PickupUse]  = @battle.nextPickupUse
     end
-    setBelched if belch && self.item.is_berry?
+    if self.item.is_berry?
+      setBelched if belch
+      if hasActiveAbility?(:CUDCHEW)
+        @effects[PBEffects::CudChewBerry]   = @item_id
+        @effects[PBEffects::CudChewCounter] = 2
+      end
+    end
     pbRemoveItem
     pbSymbiosis if symbiosis
   end

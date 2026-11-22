@@ -172,6 +172,7 @@ class Battle
           # Items (Quick Claw, Custap Berry, Lagging Tail, Full Incense)
           if b.itemActive?
             entry[3] = Battle::ItemEffects.triggerPriorityBracketChange(b.item, b, self)
+            entry[3] = 0 if b.hasActiveAbility?(:MYCELIUMMIGHT) && entry[2] < 0
           end
         end
         @priority.push(entry)

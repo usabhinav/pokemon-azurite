@@ -372,6 +372,13 @@ BattlerPlayerX          = 0
 BattlerPlayerY          = 32
 BattlerEnemyX           = 0
 #-------------------------------
+[PERSIAN,1]
+BattlerEnemyY           = 29
+BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 32
+BattlerEnemyX           = 0
+#-------------------------------
 [PSYDUCK]
 BattlerEnemyY           = 14
 BattlerAltitude         = 0
@@ -6902,6 +6909,13 @@ BattlerPlayerX          = 0
 BattlerPlayerY          = 0
 BattlerEnemyX           = 0
 #-------------------------------
+[TSAREENA,1]
+BattlerEnemyY           = 8
+BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 0
+BattlerEnemyX           = 0
+#-------------------------------
 [COMFEY]
 BattlerEnemyY           = 0
 BattlerAltitude         = 0
@@ -7437,6 +7451,55 @@ BattlerEnemyX           = 0
 [MELMETAL]
 BattlerEnemyY           = 0
 BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 0
+BattlerEnemyX           = 0
+#-------------------------------
+[TATSUGIRI]
+BattlerEnemyY           = 2
+BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 0
+BattlerEnemyX           = 0
+#-------------------------------
+[TATSUGIRI,1]
+BattlerEnemyY           = 2
+BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 0
+BattlerEnemyX           = 0
+#-------------------------------
+[TATSUGIRI,2]
+BattlerEnemyY           = 2
+BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 0
+BattlerEnemyX           = 0
+#-------------------------------
+[TATSUGIRI,3]
+BattlerEnemyY           = 5
+BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 0
+BattlerEnemyX           = 0
+#-------------------------------
+[TATSUGIRI,4]
+BattlerEnemyY           = 5
+BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 0
+BattlerEnemyX           = 0
+#-------------------------------
+[TATSUGIRI,5]
+BattlerEnemyY           = 5
+BattlerAltitude         = 0
+BattlerPlayerX          = 0
+BattlerPlayerY          = 0
+BattlerEnemyX           = 0
+#-------------------------------
+[GHOLDENGO]
+BattlerEnemyY           = 10
+BattlerAltitude         = -8
 BattlerPlayerX          = 0
 BattlerPlayerY          = 0
 BattlerEnemyX           = 0

@@ -93,6 +93,9 @@ class Battle
   attr_accessor :moldBreaker      # True if Mold Breaker applies
   attr_reader   :struggle         # The Struggle move
   attr_reader   :timeBreakPhase   # True if any of the battlers have stopped time with Time Break
+  attr_reader   :hitsTakenCounts  # For Rage Fist
+  attr_reader   :sideFaintCounts  # Last Respects/Supreme Overlord
+  attr_reader :abilitiesUsedOnce
 
   def pbRandom(x); return rand(x); end
 
@@ -166,6 +169,9 @@ class Battle
     @battleBond        = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
     @corrosiveGas      = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
     @usedInBattle      = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
+    @hitsTakenCounts   = [Array.new(@party1.length, 0),     Array.new(@party2.length, 0)]
+    @sideFaintCounts   = [0, 0]
+    @abilitiesUsedOnce = [Array.new(@party1.length) { [] }, Array.new(@party2.length) { [] }]
     @powerWithin       = [Array.new(@party1.length, -1), Array.new(@party2.length, -1)]
     @successStates     = []
     @lastMoveUsed      = nil
@@ -763,6 +769,7 @@ class Battle
                      PBEffects::MirrorCoatTarget,
                      PBEffects::Octolock,
                      PBEffects::SkyDrop,
+                     PBEffects::SyrupBombUser,
                      PBEffects::TrappingUser]
     allBattlers.each do |b|
       effectsToSwap.each do |i|
@@ -860,6 +867,7 @@ class Battle
     when :Rain        then pbDisplay(_INTL("It started to rain!"))
     when :Sandstorm   then pbDisplay(_INTL("A sandstorm brewed!"))
     when :Hail        then pbDisplay(_INTL("It started to hail!"))
+    when :Snowstorm   then pbDisplay(_INTL("It started to snow!"))
     when :HarshSun    then pbDisplay(_INTL("The sunlight turned extremely harsh!"))
     when :HeavyRain   then pbDisplay(_INTL("A heavy rain began to fall!"))
     when :StrongWinds then pbDisplay(_INTL("Mysterious strong winds are protecting Flying-type Pokémon!"))
@@ -870,6 +878,7 @@ class Battle
     end
     # Check for end of primordial weather, and weather-triggered form changes
     allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
+    allBattlers.each { |b| b.pbAbilityOnWeatherChange }
     pbEndPrimordialWeather
   end
 
@@ -896,6 +905,7 @@ class Battle
     if @field.weather != oldWeather
       # Check for form changes caused by the weather changing
       allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
+      allBattlers.each { |b| b.pbAbilityOnWeatherChange }
       # Start up the default weather
       pbStartWeather(nil, @field.defaultWeather) if @field.defaultWeather != :None
     end

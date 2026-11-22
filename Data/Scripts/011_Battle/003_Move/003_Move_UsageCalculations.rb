@@ -50,7 +50,7 @@ class Battle::Move
         ret = Effectiveness::NORMAL_EFFECTIVE_ONE
       end
       # Foresight
-      if (user.hasActiveAbility?(:SCRAPPY) || target.effects[PBEffects::Foresight]) &&
+      if (user.hasActiveAbility?(:SCRAPPY) || user.hasActiveAbility?(:MINDSEYE) || target.effects[PBEffects::Foresight]) &&
          defType == :GHOST
         ret = Effectiveness::NORMAL_EFFECTIVE_ONE
       end
@@ -439,6 +439,8 @@ class Battle::Move
     pbCalcDamageMultipliers(user, target, numTargets, type, baseDmg, multipliers)
     # Main damage calculation
     baseDmg = [(baseDmg * multipliers[:base_damage_multiplier]).round, 1].max
+    # Glaive Rush
+    multipliers[:final_damage_multiplier] *= 2 if target.effects[PBEffects::Vulnerable]
     # Master's Belt (base damage of at least 90)
     if user.hasActiveItem?(:MASTERSBELT) && user.pbHasType?(:FIGHTING) && !multiHitMove? && type == :FIGHTING
       baseDmg = [baseDmg, 90].max
@@ -461,6 +463,22 @@ class Battle::Move
       end
     end
     # Treasures of Ruin
+    if @battle.pbCheckGlobalAbility(:TABLETSOFRUIN) &&
+        user.ability_id != :TABLETSOFRUIN
+      multipliers[:base_damage_multiplier] *= 3 / 4.0 if pbPhysicalMove?(user)
+    end
+    if @battle.pbCheckGlobalAbility(:VESSELOFRUIN) &&
+        user.ability_id != :VESSELOFRUIN
+      multipliers[:base_damage_multiplier] *= 3 / 4.0 if pbSpecialMove?(user)
+    end
+    if @battle.pbCheckGlobalAbility(:SWORDOFRUIN) &&
+      target.ability_id != :SWORDOFRUIN
+      if @battle.field.effects[PBEffects::WonderRoom] > 0
+        multipliers[:defense_multiplier] *= 3 / 4.0 if pbSpecialMove?(user)
+      else
+        multipliers[:defense_multiplier] *= 3 / 4.0 if pbPhysicalMove?(user)
+      end
+    end
     if @battle.pbCheckGlobalAbility(:BEADSOFRUIN) && target.ability_id != :BEADSOFRUIN
       if @battle.field.effects[PBEffects::WonderRoom] > 0
         multipliers[:defense_multiplier] *= 3 / 4.0 if pbPhysicalMove?(user)
@@ -589,14 +607,20 @@ class Battle::Move
       multipliers[:final_damage_multiplier] *= 0.75
     end
     # Weather
-    case user.effectiveWeather
+    weather_type = target.effectiveWeather
+    weather_type = :Sun if user.hasActiveAbility?(:MEGASOL)
+    case weather_type
     when :Sun, :HarshSun
       case type
       when :FIRE
         multipliers[:final_damage_multiplier] *= 1.5
       when :WATER
+      if @function == "IncreasePowerInSun" && ([:Sun, :HarshSun].include?(user.effectiveWeather) || user.hasActiveAbility?(:MEGASOL))
+        multipliers[:final_damage_multiplier] *= 1.5
+      else
         multipliers[:final_damage_multiplier] /= 2
       end
+    end
     when :Rain, :HeavyRain, :Thunderstorm
       case type
       when :FIRE
@@ -610,6 +634,10 @@ class Battle::Move
       if target.pbHasType?(:ROCK) && (pbSpecialMove?(user) || @function == "UseTargetSpDefInsteadOfTargetDefense") && @function != "UseTargetDefenseInsteadOfTargetSpDef"
         multipliers[:defense_multiplier] *= 1.5
       end
+      when :Snowstorm
+          if target.pbHasType?(:ICE) && pbPhysicalMove?(user)
+          multipliers[:defense_multiplier] *= 1.5
+       end
     end
     # Critical hits
     if target.damageState.critical

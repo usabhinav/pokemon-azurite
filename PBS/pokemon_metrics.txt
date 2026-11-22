@@ -6070,3 +6070,9 @@ BackSprite = 0,0
 FrontSprite = 0,25
 ShadowX = 0
 ShadowSize = 2
+#-------------------------------
+[TSAREENA,1]
+BackSprite = 0,0
+FrontSprite = 0,12
+ShadowX = 0
+ShadowSize = 2

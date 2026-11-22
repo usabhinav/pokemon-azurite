@@ -58,6 +58,49 @@ class Battle::Move::SwitchOutUserStatusMove < Battle::Move
 end
 
 #===============================================================================
+# Starts snowstorm weather. User switches out. (Chilly Reception)
+#===============================================================================
+class Battle::Move::StartSnowstormWeatherSwitchOutUser < Battle::Move
+  def pbDisplayChargeMessage(user)
+    @battle.pbDisplay(_INTL("{1} is preparing to tell a chillingly bad joke!", user.pbThis))
+  end
+
+  def pbMoveFailed?(user, targets)
+    if user.wild? || !@battle.pbCanChooseNonActive?(user.index)
+      if !@battle.pbCanStartWeather?(:Snowstorm)
+        @battle.pbDisplay(_INTL("But it failed!"))
+        return true
+      end
+    end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbStartWeather(user, :Snowstorm, true, false)
+  end
+
+  def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    return if user.wild? || !@battle.pbCanChooseNonActive?(user.index)
+    return if user.effects[PBEffects::Commanding] >= 0 ||
+              user.effects[PBEffects::CommandedBy] >= 0
+
+    @battle.pbDisplay(_INTL("{1} went back to {2}!", user.pbThis,
+                            @battle.pbGetOwnerName(user.index)))
+    @battle.pbPursuit(user.index)
+    return if user.fainted?
+
+    newPkmn = @battle.pbGetReplacementPokemonIndex(user.index)
+    return if newPkmn < 0
+
+    @battle.pbRecallAndReplace(user.index, newPkmn)
+    @battle.pbClearChoice(user.index)
+    @battle.moldBreaker = false
+    @battle.pbOnBattlerEnteringBattle(user.index)
+    switchedBattlers.push(user.index)
+  end
+end
+
+#===============================================================================
 # User switches out, and the Pokémon switching in is healed by 25% of their max
 # HP. If user is a wild Pokémon, ends the battle instead. (Lifelight)
 #===============================================================================
@@ -215,22 +258,7 @@ class Battle::Move::SwitchOutTargetStatusMove < Battle::Move
   def canMagicCoat?;            return true; end
 
   def pbFailsAgainstTarget?(user, target, show_message)
-    if target.hasActiveAbility?(:SUCTIONCUPS) && !@battle.moldBreaker
-      if show_message
-        @battle.pbShowAbilitySplash(target)
-        if Battle::Scene::USE_ABILITY_SPLASH
-          @battle.pbDisplay(_INTL("{1} anchors itself!", target.pbThis))
-        else
-          @battle.pbDisplay(_INTL("{1} anchors itself with {2}!", target.pbThis, target.abilityName))
-        end
-        @battle.pbHideAbilitySplash(target)
-      end
-      return true
-    end
-    if target.effects[PBEffects::Ingrain]
-      @battle.pbDisplay(_INTL("{1} anchored itself with its roots!", target.pbThis)) if show_message
-      return true
-    end
+    return true if !target.canBeForcedOutOfBattle?(show_message)
     if !@battle.canRun
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true
@@ -263,8 +291,8 @@ class Battle::Move::SwitchOutTargetStatusMove < Battle::Move
     return if user.fainted? || numHits == 0
     targets.each do |b|
       next if b.fainted? || b.damageState.unaffected
-      next if b.effects[PBEffects::Ingrain]
-      next if b.hasActiveAbility?(:SUCTIONCUPS) && !@battle.moldBreaker
+      next if b.wild?
+      next if !b.canBeForcedOutOfBattle?(false)
       newPkmn = @battle.pbGetReplacementPokemonIndex(b.index, true)   # Random
       next if newPkmn < 0
       @battle.pbRecallAndReplace(b.index, newPkmn, true)
@@ -307,8 +335,7 @@ class Battle::Move::SwitchOutTargetDamagingMove < Battle::Move
     return if user.fainted? || numHits == 0
     targets.each do |b|
       next if b.fainted? || b.damageState.unaffected || b.damageState.substitute
-      next if b.effects[PBEffects::Ingrain]
-      next if b.hasActiveAbility?(:SUCTIONCUPS) && !@battle.moldBreaker
+      next if !b.canBeForcedOutOfBattle?(false)
       newPkmn = @battle.pbGetReplacementPokemonIndex(b.index, true)   # Random
       next if newPkmn < 0
       @battle.pbRecallAndReplace(b.index, newPkmn, true)
@@ -1166,5 +1193,68 @@ class Battle::Move::DisableTargetMovesKnownByUser < Battle::Move
   def pbEffectGeneral(user)
     user.effects[PBEffects::Imprison] = true
     @battle.pbDisplay(_INTL("{1} sealed any moves its target shares with it!", user.pbThis))
+  end
+end
+
+#===============================================================================
+# User turns 1/2 of max HP into a substitute (it has 1/4 of max HP). User
+# switches out. (Shed Tail)
+#===============================================================================
+class Battle::Move::UserMakeSubstituteSwitchOutUser < Battle::Move
+  def pbMoveFailed?(user, targets)
+    if user.effects[PBEffects::Substitute] > 0
+      @battle.pbDisplay(_INTL("{1} already has a substitute!", user.pbThis))
+      return true
+    end
+    @lifeCost = [(user.totalhp / 2).ceil, 1].max
+    @subLife = [(@lifeCost / 4).ceil, 1].max
+    if user.hp <= @lifeCost
+      @battle.pbDisplay(_INTL("But it does not have enough HP left to make a substitute!"))
+      return true
+    end
+    return false
+  end
+  
+  def pbOnStartUse(user, targets)
+    user.pbReduceHP(@lifeCost, false, false)
+    user.pbItemHPHealCheck
+  end
+
+  def pbEffectGeneral(user)
+    user.effects[PBEffects::Trapping]     = 0
+    user.effects[PBEffects::TrappingMove] = nil
+    user.effects[PBEffects::Substitute]   = @subLife
+    @battle.pbDisplay(_INTL("{1} shed its tail to create a decoy!", user.pbThis))
+  end
+
+  def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
+    return if user.fainted? || numHits == 0
+    return if !@battle.pbCanChooseNonActive?(user.index)
+    @battle.pbDisplay(_INTL("{1} went back to {2}!", user.pbThis, @battle.pbGetOwnerName(user.index)))
+    @battle.pbPursuit(user.index)
+    oldSub = user.effects[PBEffects::Substitute]
+    return if user.fainted?
+    newPkmn = @battle.pbGetReplacementPokemonIndex(user.index)
+    return if newPkmn < 0
+    @battle.pbRecallAndReplace(user.index, newPkmn)
+    @battle.pbClearChoice(user.index)
+    @battle.moldBreaker = false
+    @battle.pbOnBattlerEnteringBattle(user.index)
+    switchedBattlers.push(user.index)
+    user.effects[PBEffects::Substitute] = oldSub
+  end
+end
+
+#===============================================================================
+# Psychic Noise
+#===============================================================================
+class Battle::Move::StartTargetCannotHeal < Battle::Move
+  def pbAdditionalEffect(user, target)
+    return if target.fainted?
+    return if target.effects[PBEffects::HealBlock] > 0
+    return if pbMoveFailedAromaVeil?(user, target, false)
+    target.effects[PBEffects::HealBlock] = 2
+    @battle.pbDisplay(_INTL("{1} was prevented from healing!", target.pbThis))
+    target.pbItemStatusCureCheck
   end
 end

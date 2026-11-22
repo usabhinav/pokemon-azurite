@@ -66,6 +66,7 @@ class Battle::Battler
     @effects[PBEffects::DestinyBond]         = false
     @effects[PBEffects::Grudge]              = false
     @effects[PBEffects::MoveNext]            = false
+    @effects[PBEffects::Vulnerable]          = false
     @effects[PBEffects::Quash]               = 0
     # Encore's effect ends if the encored move is no longer available
     if @effects[PBEffects::Encore] > 0 && pbEncoredMoveIndex < 0
@@ -79,7 +80,7 @@ class Battle::Battler
   # Pursuit was used specially to intercept a switching foe.
   # Cancels the use of multi-turn moves and counters thereof. Note that Hyper
   # Beam's effect is NOT cancelled.
-  def pbCancelMoves(full_cancel = false)
+  def pbCancelMoves(move_failed = true, full_cancel = false)
     # Outragers get confused anyway if they are disrupted during their final
     # turn of using the move
     if @effects[PBEffects::Outrage] == 1 && pbCanConfuseSelf?(false) && !full_cancel
@@ -96,6 +97,7 @@ class Battle::Battler
     # Reset counters for moves which increase them when used in succession
     @effects[PBEffects::FuryCutter] = 0
     @effects[PBEffects::RhythmBeat] = 0
+    @effects[PBEffects::GigatonHammer] = false if move_failed
   end
 
   def pbEndTurn(_choice)
@@ -311,6 +313,7 @@ class Battle::Battler
     move.calcType = move.pbCalcType(self, mystery_shroud_type)
     # Start effect of Mold Breaker
     @battle.moldBreaker = hasMoldBreaker?
+    @battle.moldBreaker ||= hasActiveAbility?(:MYCELIUMMIGHT) && move.statusMove?
     # Remember that user chose a two-turn move
     if move.pbIsChargingTurn?(self)
       # Beginning the use of a two-turn attack
@@ -781,6 +784,12 @@ class Battle::Battler
         next if b.damageState.unaffected
         # Check whether Substitute/Disguise will absorb the damage
         move.pbCheckDamageAbsorption(user, b)
+        # Tera Shell
+        if b.abilityActive?(true)
+          Battle::AbilityEffects.triggerOnTargetedForHit(
+            b.ability, user, b, move, hitNum, @battle
+          )
+        end
         # Calculate the damage against b
         # pbCalcDamage shows the "eat berry" animation for SE-weakening
         # berries, although the message about it comes after the additional
@@ -788,6 +797,7 @@ class Battle::Battler
         move.pbCalcDamage(user, b, targets.length)   # Stored in damageState.calcDamage
         # Lessen damage dealt because of False Swipe/Endure/etc.
         move.pbReduceDamage(user, b)   # Stored in damageState.hpLost
+        @battle.hitsTakenCounts[b.idxOwnSide][b.pokemonIndex] += 1 if !b.damageState.substitute
       end
     end
     # Show move animation (for this hit)

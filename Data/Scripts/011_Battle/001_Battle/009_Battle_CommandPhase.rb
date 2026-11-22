@@ -37,6 +37,7 @@ class Battle
   def pbCanShowCommands?(idxBattler)
     battler = @battlers[idxBattler]
     return false if !battler || battler.fainted?
+    return false if battler.effects[PBEffects::Commanding] >= 0
     return true if battler.hasActiveAbility?(:UNSTABLE) && !self.moldBreaker
     return false if battler.usingMultiTurnAttack?
     return true
@@ -236,6 +237,7 @@ class Battle
     @scene.pbRefreshEverything
     allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
     pbEndPrimordialWeather
+    allBattlers.each { |b| b.pbAbilityOnWeatherChange }
     allBattlers.each { |b| b.pbAbilityOnTerrainChange }
     allBattlers.each do |b|
       b.pbCheckFormOnMovesetChange

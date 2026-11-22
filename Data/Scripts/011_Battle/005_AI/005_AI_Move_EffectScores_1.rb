@@ -27,6 +27,9 @@ class Battle::AI
     when "FailsIfUserNotConsumedBerry"
       score -= 90 if !user.belched?
     #---------------------------------------------------------------------------
+    when "CannotUseConsecutively"
+      score -= 90 if user.effects[PBEffects::GigatonHammer]
+    #---------------------------------------------------------------------------
     when "FailsIfTargetHasNoItem"
       if skill >= PBTrainerAI.mediumSkill
         if !target.item || !target.itemActive?

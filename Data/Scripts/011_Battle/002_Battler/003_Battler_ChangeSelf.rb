@@ -102,6 +102,7 @@ class Battle::Battler
     return if @fainted   # Has already fainted properly
     # Increase faint counter
     @pokemon.increase_faint_count if @pokemon
+    @battle.sideFaintCounts[idxOwnSide] += 1
     # Shed Spikes Armor
     if @effects[PBEffects::SpikesArmor] > 0
       pbOwnSide.effects[PBEffects::Spikes] += [@effects[PBEffects::SpikesArmor], 3].min
@@ -227,6 +228,7 @@ class Battle::Battler
       @effects[PBEffects::Type3] = nil
     end
     @effects[PBEffects::BurnUp] = false
+    @effects[PBEffects::DoubleShock] = false
     @effects[PBEffects::Roost]  = false
   end
 
@@ -234,6 +236,7 @@ class Battle::Battler
     @types = @pokemon.types
     @effects[PBEffects::Type3]  = nil
     @effects[PBEffects::BurnUp] = false
+    @effects[PBEffects::DoubleShock] = false
     @effects[PBEffects::Roost]  = false
   end
 
@@ -298,7 +301,7 @@ class Battle::Battler
         case effectiveWeather
         when :Sun, :HarshSun                    then newForm = 1
         when :Rain, :HeavyRain, :Thunderstorm   then newForm = 2
-        when :Hail                              then newForm = 3
+        when :Hail, :Snowstorm                  then newForm = 3
         end
         if @form != newForm
           @battle.pbShowAbilitySplash(self, true)
@@ -325,7 +328,7 @@ class Battle::Battler
     end
     # Eiscue - Ice Face
     if !ability_changed && isSpecies?(:EISCUE) && self.ability == :ICEFACE &&
-       @form == 1 && effectiveWeather == :Hail
+       @form == 1 && [:Hail, :Snowstorm].include?(effectiveWeather)
       @canRestoreIceFace = true   # Changed form at end of round
     end
   end
@@ -397,6 +400,13 @@ class Battle::Battler
       newForm = (@form + 1) % 2
       pbChangeForm(newForm, nil)
     end
+    # Terapagos - Tera Shift
+    if isSpecies?(:TERAPAGOS) && !@effects[PBEffects::Transform] &&
+       hasActiveAbility?(:TERASHIFT) && @form == 0
+      @battle.pbShowAbilitySplash(self, true)
+      @battle.pbHideAbilitySplash(self)
+      pbChangeForm(1, _INTL("{1} transformed!", pbThis))
+    end
   end
 
   def pbTransform(target)
@@ -424,6 +434,7 @@ class Battle::Battler
     @effects[PBEffects::Disable]      = 0
     @effects[PBEffects::DisableMove]  = nil
     @effects[PBEffects::WeightChange] = target.effects[PBEffects::WeightChange]
+    @battle.hitsTakenCounts[idxOwnSide][pokemonIndex] = @battle.hitsTakenCounts[target.idxOwnSide][target.pokemonIndex]
     @battle.scene.pbRefreshOne(@index)
     @battle.pbDisplay(_INTL("{1} transformed into {2}!", pbThis, target.pbThis(true)))
     pbOnLosingAbility(oldAbil)

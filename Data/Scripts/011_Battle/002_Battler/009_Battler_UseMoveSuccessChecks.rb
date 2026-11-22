@@ -328,7 +328,7 @@ class Battle::Battler
       @battle.successStates[user.index].protected = true
       return false
     end
-    if !(user.hasActiveAbility?(:UNSEENFIST) && move.contactMove?)
+    if !(user.hasActiveAbility?([:UNSEENFIST, :PIERCINGDRILL]) && move.contactMove?)
       # Wide Guard
       if target.pbOwnSide.effects[PBEffects::WideGuard] && user.index != target.index &&
          move.pbTarget(user).num_targets > 1 &&
@@ -377,6 +377,20 @@ class Battle::Battler
           end
           return false
         end
+        # Silk Trap
+        if target.effects[PBEffects::SilkTrap] && move.damagingMove?
+          if show_message
+            @battle.pbCommonAnimation("SilkTrap", target)
+            @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
+          end
+          target.damageState.protected = true
+          @battle.successStates[user.index].protected = true
+          if move.pbContactMove?(user) && user.affectedByContactEffect? &&
+             user.pbCanLowerStatStage?(:SPEED, target)
+            user.pbLowerStatStage(:SPEED, 1, target)
+          end
+          return false
+        end
         # Spiky Shield
         if target.effects[PBEffects::SpikyShield]
           if show_message
@@ -390,6 +404,20 @@ class Battle::Battler
             user.pbReduceHP(user.totalhp / 8, false)
             @battle.pbDisplay(_INTL("{1} was hurt!", user.pbThis))
             user.pbItemHPHealCheck
+          end
+          return false
+        end
+        # Burning Bulwark
+        if target.effects[PBEffects::BurningBulwark]
+          if show_message
+            @battle.pbCommonAnimation("BurningBulwark", target)
+            @battle.pbDisplay(_INTL("{1} protected itself!", target.pbThis))
+          end
+          target.damageState.protected = true
+          @battle.successStates[user.index].protected = true
+          if move.pbContactMove?(user) && user.affectedByContactEffect? &&
+             user.pbCanBurn?(target, false)
+            user.pbBurn(target)
           end
           return false
         end
@@ -537,7 +565,7 @@ class Battle::Battler
     # Airborne-based immunity to Ground moves
     if move.damagingMove? && move.calcType == :GROUND &&
        target.airborne? && !move.hitsFlyingTargets?
-      if target.hasActiveAbility?(:LEVITATE) && !@battle.moldBreaker
+      if target.hasActiveAbility?([:LEVITATE, :EELEVATE]) && !@battle.moldBreaker
         if show_message
           @battle.pbShowAbilitySplash(target)
           if Battle::Scene::USE_ABILITY_SPLASH
@@ -633,6 +661,8 @@ class Battle::Battler
     # Lock-On
     return true if user.effects[PBEffects::LockOn] > 0 &&
                    user.effects[PBEffects::LockOnPos] == target.index
+    # Glaive Rush
+    return true if target.effects[PBEffects::Vulnerable]
     # Toxic
     return true if move.pbOverrideSuccessCheckPerHit(user, target)
     miss = false

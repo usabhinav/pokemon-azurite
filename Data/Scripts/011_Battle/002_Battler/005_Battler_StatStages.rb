@@ -380,7 +380,14 @@ class Battle::Battler
       return false
     end
     if Battle::Scene::USE_ABILITY_SPLASH
-      return pbLowerStatStageByAbility(:ATTACK, 1, user, false)
+      if hasActiveAbility?(:GUARDDOG)
+        @battle.pbShowAbilitySplash(self)
+        ret = pbRaiseStatStageByAbility(:ATTACK, 1, user, false)
+        @battle.pbHideAbilitySplash(self)
+        return ret
+      else
+        return pbLowerStatStageByAbility(:ATTACK, 1, user, false)
+      end
     end
     # NOTE: These checks exist to ensure appropriate messages are shown if
     #       Intimidate is blocked somehow (i.e. the messages should mention the
@@ -412,8 +419,64 @@ class Battle::Battler
         end
       end
     end
+    if hasActiveAbility?(:GUARDDOG)
+      return false if !pbCanRaiseStatStage?(:ATTACK, user)
+      return pbRaiseStatStageByCause(:ATTACK, 1, user, user.abilityName)
+    end
     return false if !pbCanLowerStatStage?(:ATTACK, user)
     return pbLowerStatStageByCause(:ATTACK, 1, user, user.abilityName)
+  end
+
+  def pbLowerEvasionStatStageSupersweetSyrup(user)
+    return false if fainted?
+
+    # Substitute blocks Supersweet Syrup, even with Contrary.
+    if @effects[PBEffects::Substitute] > 0
+      if Battle::Scene::USE_ABILITY_SPLASH
+        @battle.pbDisplay(_INTL("{1} is protected by its substitute!", pbThis))
+      else
+        @battle.pbDisplay(_INTL("{1} substitute protected it from {2} {3}!",
+                              pbOfThis, user.pbOfThis(true), user.abilityName))
+      end
+      return false
+    end
+
+    if Battle::Scene::USE_ABILITY_SPLASH
+      return pbLowerStatStageByAbility(:EVASION, 1, user, false)
+    end
+
+    # Ensure the correct protection messages are displayed.
+    if !hasActiveAbility?(:CONTRARY)
+      if pbOwnSide.effects[PBEffects::Mist] > 0
+        @battle.pbDisplay(_INTL("{1} is protected from {2} {3} by Mist!",
+                                pbThis, user.pbOfThis(true), user.abilityName))
+        return false
+      end
+      if abilityActive? &&
+         (Battle::AbilityEffects.triggerStatLossImmunity(self.ability, self, :EVASION, @battle, false) ||
+          Battle::AbilityEffects.triggerStatLossImmunityNonIgnorable(self.ability, self, :EVASION, @battle, false))
+        @battle.pbDisplay(_INTL("{1} {2} prevented {3} {4} from working!",
+                              pbOfThis, abilityName, user.pbOfThis(true), user.abilityName))
+        return false
+      end
+      allAllies.each do |b|
+        next if !b.abilityActive?
+        if Battle::AbilityEffects.triggerStatLossImmunityFromAlly(b.ability, b, self, :EVASION, @battle, false)
+          @battle.pbDisplay(_INTL("{1} is protected from {2} {3} by {4} {5}!",
+                                  pbThis, user.pbOfThis(true), user.abilityName, b.pbOfThis(true), b.abilityName))
+          return false
+        end
+      end
+      if itemActive? &&
+         Battle::ItemEffects.triggerStatLossImmunity(self.item, self, :EVASION, @battle, false)
+        @battle.pbDisplay(_INTL("{1} {2} prevented {3} {4} from working!",
+                                pbThis, itemName, user.pbOfThis(true), user.abilityName))
+        return false
+      end
+    end
+
+    return false if !pbCanLowerStatStage?(:EVASION, user)
+    return pbLowerStatStageByCause(:EVASION, 1, user, user.abilityName)
   end
 
   # Copied from pbLowerAttackStatStageIntimidate

@@ -1457,7 +1457,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "SwitchOutTargetStatusMove"
       if target.effects[PBEffects::Ingrain] ||
-         (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS))
+         (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?([:SUCTIONCUPS, :GUARDDOG]))
         score -= 90
       else
         ch = 0
@@ -1478,7 +1478,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "SwitchOutTargetStatusMoveAndSkipNextTurn"
       if target.effects[PBEffects::Ingrain] ||
-         (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS)) ||
+         (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?([:SUCTIONCUPS, :GUARDDOG])) ||
          target.effects[PBEffects::HyperBeam] > 0
         score -= 90
       else
@@ -1500,7 +1500,7 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "SwitchOutTargetDamagingMove"
       if !target.effects[PBEffects::Ingrain] &&
-         !(skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS))
+         !(skill >= PBTrainerAI.highSkill && target.hasActiveAbility?([:SUCTIONCUPS, :GUARDDOG]))
         score += 40 if target.pbOwnSide.effects[PBEffects::Spikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::ToxicSpikes] > 0
         score += 40 if target.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
@@ -1513,7 +1513,7 @@ class Battle::AI
     when "SwitchOutUserAndTargetStatusMove"
       # Target-related scores
       if target.effects[PBEffects::Ingrain] ||
-         (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?(:SUCTIONCUPS))
+         (skill >= PBTrainerAI.highSkill && target.hasActiveAbility?([:SUCTIONCUPS, :GUARDDOG]))
         score -= 90
       else
         ch = 0

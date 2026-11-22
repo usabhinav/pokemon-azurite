@@ -251,6 +251,10 @@ class Battle::Battler
     PBDebug.log("[Status change] #{pbThis}'s sleep count is #{newStatusCount}") if newStatus == :SLEEP
     # Form change check
     pbCheckFormOnStatusChange
+    # Poison Puppeteer
+    if user&.abilityActive?
+      Battle::AbilityEffects.triggerOnDealingStatus(user.ability, user, self, newStatus)
+    end
     # Synchronize
     if abilityActive?
       Battle::AbilityEffects.triggerOnStatusInflicted(self.ability, self, user, newStatus)

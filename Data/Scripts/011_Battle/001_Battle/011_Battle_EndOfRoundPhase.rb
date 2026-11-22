@@ -14,6 +14,7 @@ class Battle
       when :Rain      then pbDisplay(_INTL("The rain stopped."))
       when :Sandstorm then pbDisplay(_INTL("The sandstorm subsided."))
       when :Hail      then pbDisplay(_INTL("The hail stopped."))
+      when :Snowstorm then pbDisplay(_INTL("The snow stopped."))
       when :ShadowSky then pbDisplay(_INTL("The shadow sky faded."))
       when :Thunderstorm then pbDisplay(_INTL("The thunderstorm subsided."))	
       when :Windstorm then pbDisplay(_INTL("The windstorm subsided."))
@@ -34,6 +35,7 @@ class Battle
 #    when :Rain        then pbDisplay(_INTL("Rain continues to fall."))
     when :Sandstorm   then pbDisplay(_INTL("The sandstorm is raging."))
     when :Hail        then pbDisplay(_INTL("The hail is crashing down."))
+    when :Snowstorm   then pbDisplay(_INTL("The snow is blowing about!"))
 #    when :HarshSun    then pbDisplay(_INTL("The sunlight is extremely harsh."))
 #    when :HeavyRain   then pbDisplay(_INTL("It is raining heavily."))
 #    when :StrongWinds then pbDisplay(_INTL("The wind is strong."))
@@ -388,6 +390,15 @@ class Battle
         pbDisplay(_INTL("{1} is afflicted by the curse!", battler.pbThis))
       }
     end
+    # Salt Cure
+    priority.each do |battler|
+      next if !battler.effects[PBEffects::SaltCure] || !battler.takesIndirectDamage?
+      pbCommonAnimation("SaltCure", battler)
+      fraction = (battler.pbHasType?(:STEEL) || battler.pbHasType?(:WATER)) ? 4 : 8
+      battler.pbTakeEffectDamage(battler.totalhp / fraction) { |hp_lost|
+        pbDisplay(_INTL("{1} is hurt by Salt Cure!", battler.pbThis))
+      }
+    end
     # Scorching Coat
     priority.each do |b|
       next if !b.hasActiveAbility?(:SCORCHINGCOAT)
@@ -470,6 +481,19 @@ class Battle
   end
 
   def pbEOREndBattlerEffects(priority)
+    # Cud Chew
+    pbEORCountDownBattlerEffect(priority, PBEffects::CudChewCounter) do |battler|
+      if battler.effects[PBEffects::CudChewBerry] &&
+         GameData::Item.get(battler.effects[PBEffects::CudChewBerry]).is_berry?
+        item = battler.effects[PBEffects::CudChewBerry]
+        item_name = GameData::Item.get(battler.effects[PBEffects::CudChewBerry]).name
+        battler.setBelched
+        pbDisplay(_INTL("{1} stole and ate its target's {2}!", battler.pbThis, item_name))
+        battler.pbHeldItemTriggerCheck(item)
+        battler.pbSymbiosis
+      end
+      battler.effects[PBEffects::CudChewBerry] = nil
+    end
     # Taunt
     pbEORCountDownBattlerEffect(priority, PBEffects::Taunt) { |battler|
       pbDisplay(_INTL("{1}'s taunt wore off!", battler.pbThis))
@@ -1000,6 +1024,14 @@ class Battle
       battler.pbLowerStatStage(:SPECIAL_DEFENSE, 1, nil) if battler.pbCanLowerStatStage?(:SPECIAL_DEFENSE)
       battler.pbItemOnStatDropped
     end
+    # Syrup Bomb
+    priority.each do |battler|
+      next if battler.fainted? || battler.effects[PBEffects::SyrupBomb] <= 0
+      pbCommonAnimation("SyrupBomb", battler)
+      battler.pbLowerStatStage(:SPEED, 1, nil) if battler.pbCanLowerStatStage?(:SPEED)
+      battler.pbItemOnStatDropped
+      battler.effects[PBEffects::SyrupBomb] -= 1
+    end
     # Lower stats raised by Z-items
     priority.each do |battler|
       z_item_used_this_round = battler.effects[PBEffects::ZItemUsedThisRound]
@@ -1194,6 +1226,8 @@ class Battle
       battler.effects[PBEffects::Roost]            = false
       battler.effects[PBEffects::Snatch]           = 0
       battler.effects[PBEffects::SpikyShield]      = false
+      battler.effects[PBEffects::SilkTrap]         = false
+      battler.effects[PBEffects::BurningBulwark]   = false
       battler.effects[PBEffects::Spotlight]        = 0
       battler.effects[PBEffects::ThroatChop]       -= 1 if battler.effects[PBEffects::ThroatChop] > 0
       battler.effects[PBEffects::TrackPunchUserIndex] = -1

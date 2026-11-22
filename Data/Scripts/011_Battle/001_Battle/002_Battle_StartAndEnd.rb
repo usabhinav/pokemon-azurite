@@ -300,6 +300,7 @@ class Battle
     when :Rain        then pbDisplay(_INTL("It is raining."))
     when :Sandstorm   then pbDisplay(_INTL("A sandstorm is raging."))
     when :Hail        then pbDisplay(_INTL("Hail is falling."))
+    when :Snowstorm   then pbDisplay(_INTL("It is snowing."))
     when :HarshSun    then pbDisplay(_INTL("The sunlight is extremely harsh."))
     when :HeavyRain   then pbDisplay(_INTL("It is raining heavily."))
     when :StrongWinds then pbDisplay(_INTL("The wind is strong."))

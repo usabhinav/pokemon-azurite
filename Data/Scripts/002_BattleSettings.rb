@@ -28,6 +28,7 @@ module Settings
   MORE_TYPE_EFFECTS                   = (MECHANICS_GENERATION >= 6)
   # Whether weather caused by an ability lasts 5 rounds (true) or forever (false).
   FIXED_DURATION_WEATHER_FROM_ABILITY = (MECHANICS_GENERATION >= 6)
+  USE_SNOWSTORM_WEATHER_INSTEAD_OF_HAIL = (MECHANICS_GENERATION >= 9)
   # Whether X items (X Attack, etc.) raise their stat by 2 stages (true) or 1
   # (false).
   X_STAT_ITEMS_RAISE_BY_TWO_STAGES    = (MECHANICS_GENERATION >= 7)

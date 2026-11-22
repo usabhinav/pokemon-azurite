@@ -243,6 +243,7 @@ class Battle::AI
       case type
       when :GROUND
         return true if target.airborne? && !move.hitsFlyingTargets?
+        return true if target.hasActiveAbility?(:EARTHEATER)
       when :FIRE
         return true if target.hasActiveAbility?(:FLASHFIRE)
       when :WATER
@@ -275,6 +276,7 @@ class Battle::AI
                      target.affectedByTerrain? && target.opposes?(user)
       return true if Effectiveness.not_very_effective_type?(type, targetTypes[0], targetTypes[1], targetTypes[2]) &&
                      target.hasActiveItem?(:HEALTHYSPONGE)
+      return true if move.statusMove? && target.hasActiveAbility?(:GOODASGOLD)
     end
     return false
   end

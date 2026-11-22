@@ -51,6 +51,7 @@ class Battle
     end
     # Check whether battler can switch out
     battler = @battlers[idxBattler]
+    return false if battler.effects[PBEffects::Commanding] >= 0
     return true if battler.fainted?
     # Unstable	
     return true if battler.hasActiveAbility?(:UNSTABLE) && !self.moldBreaker
@@ -390,6 +391,23 @@ class Battle
       # Berry check, status-curing ability check
       b.pbHeldItemTriggerCheck
       b.pbAbilityStatusCureCheck
+    end
+    # For each battler that entered battle, in speed order
+    pbPriority(true).each do |b|
+      next if !battler_index.include?(b.index) || b.fainted?
+      # Certain abilities that for no apparent reason trigger later than others
+      b.pbContinualAbilityChecks(true)   # Commander
+      if (!b.fainted? && b.unstoppableAbility?) || b.abilityActive?
+        Battle::AbilityEffects.triggerOnSwitchInDelayed(b.ability, b, self, true)
+      end
+      # Form changes
+      # NOTE: Schooling/Shields Down are supposed to trigger at the same time as
+      #       Primal Reversion, but I'm ignoring that.
+      b.pbCheckForm
+      # Booster Energy
+      if b.itemActive?
+        Battle::ItemEffects.triggerOnSwitchInDelayed(b.item, b, self)
+      end
     end
     # Check for triggering of Emergency Exit/Wimp Out/Eject Pack (only one will
     # be triggered)

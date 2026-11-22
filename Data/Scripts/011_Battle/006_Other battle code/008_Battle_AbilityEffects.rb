@@ -56,13 +56,17 @@ module Battle::AbilityEffects
   CertainSwitching                 = AbilityHandlerHash.new   # None!
   TrappingByTarget                 = AbilityHandlerHash.new
   OnSwitchIn                       = AbilityHandlerHash.new
+  OnSwitchInDelayed                = AbilityHandlerHash.new
   OnSwitchOut                      = AbilityHandlerHash.new
   ChangeOnBattlerFainting          = AbilityHandlerHash.new
   OnBattlerFainting                = AbilityHandlerHash.new   # Soul-Heart
   OnTerrainChange                  = AbilityHandlerHash.new   # Mimicry
+  OnWeatherChange                  = AbilityHandlerHash.new
   OnIntimidated                    = AbilityHandlerHash.new   # Rattled (Gen 8)
   # Running from battle
   CertainEscapeFromBattle          = AbilityHandlerHash.new   # Run Away
+  OnDealingStatus                  = AbilityHandlerHash.new   # Poison Puppeteer
+  OnTargetedForHit                 = AbilityHandlerHash.new   # Tera Shell
 
   #=============================================================================
 
@@ -265,6 +269,10 @@ module Battle::AbilityEffects
     OnSwitchIn.trigger(ability, battler, battle, switch_in)
   end
 
+  def self.triggerOnSwitchInDelayed(ability, battler, battle, switch_in = false)
+    OnSwitchInDelayed.trigger(ability, battler, battle, switch_in)
+  end
+
   def self.triggerOnSwitchOut(ability, battler, end_of_battle)
     OnSwitchOut.trigger(ability, battler, end_of_battle)
   end
@@ -281,8 +289,20 @@ module Battle::AbilityEffects
     OnTerrainChange.trigger(ability, battler, battle, ability_changed)
   end
 
+  def self.triggerOnWeatherChange(ability, battler, battle, ability_changed)
+    OnWeatherChange.trigger(ability, battler, battle, ability_changed)
+  end
+
   def self.triggerOnIntimidated(ability, battler, battle)
     OnIntimidated.trigger(ability, battler, battle)
+  end
+
+  def self.triggerOnDealingStatus(ability, user, target, status)
+    OnDealingStatus.trigger(ability, user, target, status)
+  end
+
+  def self.triggerOnTargetedForHit(ability, user, target, move, hit_num, battle)
+    OnTargetedForHit.trigger(ability, user, target, move, hit_num, battle)
   end
 
   #=============================================================================
@@ -322,7 +342,7 @@ Battle::AbilityEffects::SpeedCalc.add(:SLOWSTART,
 
 Battle::AbilityEffects::SpeedCalc.add(:SLUSHRUSH,
   proc { |ability, battler, mult|
-    next mult * 2 if [:Hail].include?(battler.effectiveWeather)
+    next mult * 2 if [:Hail, :Snowstorm].include?(battler.effectiveWeather)
   }
 )
 
@@ -544,7 +564,13 @@ Battle::AbilityEffects::StatusImmunity.add(:WATERVEIL,
   }
 )
 
-Battle::AbilityEffects::StatusImmunity.copy(:WATERVEIL, :WATERBUBBLE, :SPICETANK)
+Battle::AbilityEffects::StatusImmunity.copy(:WATERVEIL, :WATERBUBBLE, :SPICETANK, :THERMALEXCHANGE)
+
+Battle::AbilityEffects::StatusImmunity.add(:PURIFYINGSALT,
+  proc { |ability, battler, status|
+    next true
+  }
+)
 
 #===============================================================================
 # StatusImmunityNonIgnorable handlers
@@ -729,7 +755,7 @@ Battle::AbilityEffects::StatusCure.add(:WATERVEIL,
   }
 )
 
-Battle::AbilityEffects::StatusCure.copy(:WATERVEIL, :WATERBUBBLE)
+Battle::AbilityEffects::StatusCure.copy(:WATERVEIL, :WATERBUBBLE, :THERMALEXCHANGE)
 
 #===============================================================================
 # StatLossImmunity handlers
@@ -819,7 +845,7 @@ Battle::AbilityEffects::StatLossImmunity.add(:KEENEYE,
   }
 )
 
-Battle::AbilityEffects::StatLossImmunity.copy(:KEENEYE, :SENSORYAWARENESS)
+Battle::AbilityEffects::StatLossImmunity.copy(:KEENEYE, :SENSORYAWARENESS, :MINDSEYE, :ILLUMINATE)
 
 Battle::AbilityEffects::StatLossImmunity.add(:VICTORYRUSH,
   proc { |ability,battler,stat,battle,showMessages|
@@ -984,6 +1010,12 @@ Battle::AbilityEffects::PriorityBracketChange.add(:STALL,
 
 # Last within bracket
 Battle::AbilityEffects::PriorityBracketChange.copy(:STALL, :IMMOVABLE)
+
+Battle::AbilityEffects::PriorityBracketChange.add(:MYCELIUMMIGHT,
+  proc { |ability, battler, battle|
+    next -1 if battle.choices[battler.index][2].statusMove?
+  }
+)
 
 #===============================================================================
 # PriorityBracketUse handlers
@@ -1302,6 +1334,59 @@ proc { |ability, user, target, move, type, battle, show_message|
   }
 )
 
+Battle::AbilityEffects::MoveImmunity.add(:GOODASGOLD,
+  proc { |ability, user, target, move, type, battle, show_message|
+    next false if !move.statusMove?
+    if show_message
+      battle.pbShowAbilitySplash(target)
+      if Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+      else
+        battle.pbDisplay(_INTL("{1} {2} made {3} ineffective!",
+                               target.pbOfThis, target.abilityName, move.name))
+      end
+      battle.pbHideAbilitySplash(target)
+    end
+    next true
+  }
+)
+
+Battle::AbilityEffects::MoveImmunity.add(:EARTHEATER,
+  proc { |ability, user, target, move, type, battle, show_message|
+    next target.pbMoveImmunityHealingAbility(user, move, type, :GROUND, show_message)
+  }
+)
+
+Battle::AbilityEffects::MoveImmunity.add(:WELLBAKEDBODY,
+  proc { |ability, user, target, move, type, battle, show_message|
+    next target.pbMoveImmunityStatRaisingAbility(user, move, type,
+       :FIRE, :DEFENSE, 2, show_message)
+  }
+)
+
+Battle::AbilityEffects::MoveImmunity.add(:WINDRIDER,
+  proc { |ability, user, target, move, type, battle, show_message|
+    next false if user.index == target.index
+    next false if !move.windMove?
+    if show_message
+      battle.pbShowAbilitySplash(target)
+      if target.pbCanRaiseStatStage?(:ATTACK, target)
+        if Battle::Scene::USE_ABILITY_SPLASH
+          target.pbRaiseStatStage(:ATTACK, 1, target)
+        else
+          target.pbRaiseStatStageByCause(:ATTACK, 1, target, target.abilityName)
+        end
+      elsif Battle::Scene::USE_ABILITY_SPLASH
+        battle.pbDisplay(_INTL("It doesn't affect {1}...", target.pbThis(true)))
+      else
+        battle.pbDisplay(_INTL("{1} {2} made {3} ineffective!", target.pbOfThis, target.abilityName, move.name))
+      end
+      battle.pbHideAbilitySplash(target)
+    end
+    next true
+  }
+)
+
 #===============================================================================
 # ModifyMoveBaseType handlers
 #===============================================================================
@@ -1493,7 +1578,7 @@ Battle::AbilityEffects::AccuracyCalcFromTarget.add(:SANDVEIL,
 
 Battle::AbilityEffects::AccuracyCalcFromTarget.add(:SNOWCLOAK,
   proc { |ability, mods, user, target, move, type|
-    mods[:evasion_multiplier] *= 1.25 if target.effectiveWeather == :Hail
+    mods[:evasion_multiplier] *= 1.25 if [:Hail, :Snowstorm].include?(target.effectiveWeather)
   }
 )
 
@@ -1580,6 +1665,12 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:DEFEATIST,
 Battle::AbilityEffects::DamageCalcFromUser.add(:DRAGONSMAW,
   proc { |ability, user, target, move, mults, baseDmg, type|
     mults[:attack_multiplier] *= 1.5 if type == :DRAGON
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.add(:FIREMANE,
+  proc { |ability, user, target, move, mults, baseDmg, type|
+    mults[:attack_multiplier] *= 1.5 if type == :FIRE
   }
 )
 
@@ -1841,7 +1932,7 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:TAINTEDPOWER,
   }
 )
 
-Battle::AbilityEffects::DamageCalcFromUser.add(:OPPORTUNIST,
+Battle::AbilityEffects::DamageCalcFromUser.add(:DAREDEVIL,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if move.accuracy == 0 # Moves that never miss
     if move.accuracy < 60
@@ -2005,6 +2096,42 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:STRONGSKULL,
 Battle::AbilityEffects::DamageCalcFromUser.add(:ROLLUP,
   proc { |ability,user,target,move,mults,baseDmg,type|
     mults[:base_damage_multiplier] *= 1.5 if move.ballRollingMove?
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.add(:HADRONENGINE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    if move.specialMove? && user.battle.field.terrain == :Electric
+      mults[:attack_multiplier] *= 4 / 3.0
+    end
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.add(:ORICHALCUMPULSE,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    # NOTE: Utility Umbrella prevents this boost even though the official games
+    #       may show messages to the contrary.
+    if move.pbPhysicalMove?(user) && [:Sun, :HarshSun].include?(user.effectiveWeather)
+      mults[:attack_multiplier] *= 4 / 3.0
+    end
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.add(:ROCKYPAYLOAD,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:attack_multiplier] *= 1.5 if type == :ROCK
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.add(:SHARPNESS,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:base_damage_multiplier] *= 1.5 if move.slashingMove?
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.add(:SUPREMEOVERLORD,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:power_multiplier] *= 1.0 + (0.1 * [user.effects[PBEffects::SupremeOverlord], 5].min)
   }
 )
 
@@ -2197,6 +2324,18 @@ Battle::AbilityEffects::DamageCalcFromTarget.add(:REFLECTIVE,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if !move.pbSpecialMove?(user)
     mults[:base_damage_multiplier] *= 0.5
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromTarget.add(:AURAGUARD,
+  proc { |ability,user,target,move,mults,baseDmg,type|
+    mults[:final_damage_multiplier] /= 2 if move.contactMove?
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromTarget.add(:PURIFYINGSALT,
+  proc { |ability, user, target, move, mults, power, type|
+    mults[:attack_multiplier] /= 2 if move.calcType == :GHOST
   }
 )
 
@@ -2524,7 +2663,7 @@ Battle::AbilityEffects::OnBeingHit.add(:MUMMY,
   proc { |ability, user, target, move, battle|
     next if !move.pbContactMove?(user)
     next if user.fainted?
-    next if user.unstoppableAbility? || user.ability == ability
+    next if user.unstoppableAbility? || [:MUMMY, :LINGERINGAROMA].include?(user.ability_id)
     oldAbil = nil
     battle.pbShowAbilitySplash(target) if user.opposes?(target)
     if user.affectedByContactEffect?(Battle::Scene::USE_ABILITY_SPLASH)
@@ -2545,6 +2684,8 @@ Battle::AbilityEffects::OnBeingHit.add(:MUMMY,
     user.pbTriggerAbilityOnGainingIt
   }
 )
+
+Battle::AbilityEffects::OnBeingHit.copy(:MUMMY, :LINGERINGAROMA)
 
 Battle::AbilityEffects::OnBeingHit.add(:PERISHBODY,
   proc { |ability, user, target, move, battle|
@@ -2916,6 +3057,86 @@ Battle::AbilityEffects::OnBeingHit.add(:DELIRIUM,
   }
 )
 
+Battle::AbilityEffects::OnBeingHit.add(:ELECTROMORPHOSIS,
+  proc { |ability, user, target, move, battle|
+    next if target.effects[PBEffects::Charge] > 0
+    battle.pbShowAbilitySplash(target)
+    target.effects[PBEffects::Charge] = 2
+    battle.pbDisplay(_INTL("Being hit by {1} charged {2} with power!", move.name, target.pbThis(true)))
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
+Battle::AbilityEffects::OnBeingHit.add(:SEEDSOWER,
+  proc { |ability, user, target, move, battle|
+    battle.pbStartTerrainAbility(:Grassy, target)
+  }
+)
+
+Battle::AbilityEffects::OnBeingHit.add(:SPICYSPRAY,
+  proc { |ability, user, target, move, battle|
+    next if user.burned? || !user.pbCanBurn?(target, false)
+    battle.pbShowAbilitySplash(target)
+    msg = nil
+    if !Battle::Scene::USE_ABILITY_SPLASH
+      msg = _INTL("{1} {2} burned {3}!", target.pbOfThis, target.abilityName, user.pbThis(true))
+    end
+    user.pbBurn(target, msg)
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
+Battle::AbilityEffects::OnBeingHit.add(:THERMALEXCHANGE,
+  proc { |ability, user, target, move, battle|
+    next if move.calcType != :FIRE
+    target.pbRaiseStatStageByAbility(:ATTACK, 1, target)
+  }
+)
+
+Battle::AbilityEffects::OnBeingHit.add(:TOXICDEBRIS,
+  proc { |ability, user, target, move, battle|
+    next if !move.physicalMove?
+    next if target.pbOpposingSide.effects[PBEffects::ToxicSpikes] >= 2
+    battle.pbShowAbilitySplash(target)
+    target.pbOpposingSide.effects[PBEffects::ToxicSpikes] += 1
+    if Battle::Scene::USE_ABILITY_SPLASH
+      battle.pbDisplay(_INTL("Poison spikes were scattered all around {1} feet!",
+                             target.pbOfOpposingTeam(true)))
+    else
+      battle.pbDisplay(_INTL("{1} {2} scattered poison spikes all around {3} feet!",
+                             target.pbOfThis, target.abilityName, target.pbOfOpposingTeam(true)))
+    end
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
+Battle::AbilityEffects::OnBeingHit.add(:WINDPOWER,
+  proc { |ability, user, target, move, battle|
+    next if !move.windMove?
+    next if target.effects[PBEffects::Charge] > 0
+    battle.pbShowAbilitySplash(target)
+    target.effects[PBEffects::Charge] = 2
+    battle.pbDisplay(_INTL("Being hit by {1} charged {2} with power!", move.name, target.pbThis(true)))
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
+Battle::AbilityEffects::OnBeingHit.add(:SPICYSPRAY,
+  proc { |ability, user, target, move, battle|
+    next if user.burned?
+    battle.pbShowAbilitySplash(target)
+    if user.pbCanBurn?(target, Battle::Scene::USE_ABILITY_SPLASH) &&
+       user.affectedByContactEffect?(Battle::Scene::USE_ABILITY_SPLASH)
+      msg = nil
+      if !Battle::Scene::USE_ABILITY_SPLASH
+        msg = _INTL("{1}'s {2} burned {3}!", target.pbThis, target.abilityName, user.pbThis(true))
+      end
+      user.pbBurn(target, msg)
+    end
+    battle.pbHideAbilitySplash(target)
+  }
+)
+
 #===============================================================================
 # OnDealingHit handlers
 #===============================================================================
@@ -3226,6 +3447,21 @@ Battle::AbilityEffects::OnDealingHit.add(:CRYSTALSTINGER,
   }
 )
 
+Battle::AbilityEffects::OnDealingHit.add(:TOXICCHAIN,
+  proc { |ability, user, target, move, battle|
+    next if !target.pbCanPoison?(user, false)
+    next if target.hasActiveAbility?(:SHIELDDUST) && !battle.moldBreaker
+    next if battle.pbRandom(100) >= 30
+    battle.pbShowAbilitySplash(user)
+    msg = nil
+    if !Battle::Scene::USE_ABILITY_SPLASH
+      msg = _INTL("{1} {2} badly poisoned {3}!", user.pbOfThis, user.abilityName, target.pbThis(true))
+    end
+    target.pbPoison(user, msg, true)
+    battle.pbHideAbilitySplash(user)
+  }
+)
+
 #===============================================================================
 # OnEndOfUsingMove handlers
 #===============================================================================
@@ -3248,6 +3484,8 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:BEASTBOOST,
     end
   }
 )
+
+Battle::AbilityEffects::OnEndOfUsingMove.copy(:BEASTBOOST, :EELEVATE)
 
 Battle::AbilityEffects::OnEndOfUsingMove.add(:CHILLINGNEIGH,
   proc { |ability, user, targets, move, battle|
@@ -3369,7 +3607,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:TRICKSTER,
   }
 )
 
-Battle::AbilityEffects::OnEndOfUsingMove.add(:OPPORTUNIST,
+Battle::AbilityEffects::OnEndOfUsingMove.add(:DAREDEVIL,
   proc { |ability,user,targets,move,battle|
     next if move.accuracy == 0
     # Validate that all targets were unaffected
@@ -3754,7 +3992,7 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:DRYSKIN,
 
 Battle::AbilityEffects::EndOfRoundWeather.add(:ICEBODY,
   proc { |ability, weather, battler, battle|
-    next unless weather == :Hail
+    next if ![:Hail, :Snowstorm].include?(weather)
     next if !battler.canHeal?
     battle.pbShowAbilitySplash(battler)
     if battler.pbRecoverHP(battler.totalhp / 16) > 0
@@ -3770,7 +4008,7 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:ICEBODY,
 
 Battle::AbilityEffects::EndOfRoundWeather.add(:ICEFACE,
   proc { |ability, weather, battler, battle|
-    next if weather != :Hail
+    next if ![:Hail, :Snowstorm].include?(weather)
     next if !battler.canRestoreIceFace || battler.form != 1
     battle.pbShowAbilitySplash(battler)
     if !Battle::Scene::USE_ABILITY_SPLASH
@@ -4561,7 +4799,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:GRASSYSURGE,
 Battle::AbilityEffects::OnSwitchIn.add(:ICEFACE,
   proc { |ability, battler, battle, switch_in|
     next if !battler.isSpecies?(:EISCUE) || battler.form != 1
-    next if battler.effectiveWeather != :Hail
+    next if ![:Hail, :Snowstorm].include?(battler.effectiveWeather)
     battle.pbShowAbilitySplash(battler)
     if !Battle::Scene::USE_ABILITY_SPLASH
       battle.pbDisplay(_INTL("{1}'s {2} activated!", battler.pbThis, battler.abilityName))
@@ -4770,7 +5008,8 @@ Battle::AbilityEffects::OnSwitchIn.add(:SLOWSTART,
 
 Battle::AbilityEffects::OnSwitchIn.add(:SNOWWARNING,
   proc { |ability, battler, battle, switch_in|
-    battle.pbStartWeatherAbility(:Hail, battler)
+    weather = (Settings::USE_SNOWSTORM_WEATHER_INSTEAD_OF_HAIL ? :Snowstorm : :Hail)
+    battle.pbStartWeatherAbility(weather, battler)
   }
 )
 
@@ -5431,6 +5670,195 @@ Battle::AbilityEffects::OnSwitchIn.add(:BEADSOFRUIN,
   }
 )
 
+Battle::AbilityEffects::OnSwitchIn.add(:EMBODYASPECTATTACK,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.abilityUsedOnce?
+    next if !battler.isSpecies?(:OGERPON) || battler.effects[PBEffects::Transform]
+    battle.pbDisplay(_INTL("The {1} worn by {2} shone brilliantly!", battler.itemName, battler.pbThis(true)))
+    battler.pbRaiseStatStageByAbility(:ATTACK, 1, battler)
+    battler.markAbilityUsedOnce if Settings::MECHANICS_GENERATION >= 9
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:EMBODYASPECTDEFENSE,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.abilityUsedOnce?
+    next if !battler.isSpecies?(:OGERPON) || battler.effects[PBEffects::Transform]
+    battle.pbDisplay(_INTL("The {1} worn by {2} shone brilliantly!", battler.itemName, battler.pbThis(true)))
+    battler.pbRaiseStatStageByAbility(:DEFENSE, 1, battler)
+    battler.markAbilityUsedOnce if Settings::MECHANICS_GENERATION >= 9
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:EMBODYASPECTSPDEF,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.abilityUsedOnce?
+    next if !battler.isSpecies?(:OGERPON) || battler.effects[PBEffects::Transform]
+    battle.pbDisplay(_INTL("The {1} worn by {2} shone brilliantly!", battler.itemName, battler.pbThis(true)))
+    battler.pbRaiseStatStageByAbility(:SPECIAL_DEFENSE, 1, battler)
+    battler.markAbilityUsedOnce if Settings::MECHANICS_GENERATION >= 9
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:EMBODYASPECTSPEED,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.abilityUsedOnce?
+    next if !battler.isSpecies?(:OGERPON) || battler.effects[PBEffects::Transform]
+    battle.pbDisplay(_INTL("The {1} worn by {2} shone brilliantly!", battler.itemName, battler.pbThis(true)))
+    battler.pbRaiseStatStageByAbility(:SPEED, 1, battler)
+    battler.markAbilityUsedOnce if Settings::MECHANICS_GENERATION >= 9
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:HADRONENGINE,
+  proc { |ability, battler, battle, switch_in|
+    if battle.field.terrain == :Electric
+      battle.pbShowAbilitySplash(battler)
+      battle.pbDisplay(_INTL("{1} used the Electric Terrain to energize its futuristic engine!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+    elsif battle.pbCanStartTerrain?(:Electric)
+      battle.pbStartTerrainAbility(:Electric, battler,
+         _INTL("{1} turned the ground into Electric Terrain, energizing its futuristic engine!", battler.pbThis))
+    end
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:ORICHALCUMPULSE,
+  proc { |ability, battler, battle, switch_in|
+    if [:Sun, :HarshSun].include?(battle.field.weather)
+      battle.pbShowAbilitySplash(battler)
+      battle.pbDisplay(_INTL("{1} basked in the sunlight, sending its ancient pulse into a frenzy!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+    elsif battle.pbCanStartWeather?(:Sun)
+      battle.pbStartWeatherAbility(:Sun, battler, false,
+         _INTL("{1} turned the sunlight harsh, sending its ancient pulse into a frenzy!", battler.pbThis))
+    end
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:SUPERSWEETSYRUP,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.abilityUsedOnce?
+    battler.markAbilityUsedOnce
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("A supersweet aroma is wafting from the syrup covering {1}!", battler.pbThis))
+    battle.allOtherSideBattlers(battler.index).each do |b|
+      next if !b.near?(battler)
+      b.pbLowerEvasionStatStageSupersweetSyrup(battler)
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:SUPREMEOVERLORD,
+  proc { |ability, battler, battle, switch_in|
+    battler.effects[PBEffects::SupremeOverlord] = [battle.sideFaintCounts[battler.idxOwnSide], 5].min
+    if battler.effects[PBEffects::SupremeOverlord] > 0
+      battle.pbShowAbilitySplash(battler)
+      battle.pbDisplay(_INTL("{1} gained strength from the fallen!", battler.pbThis))
+      battle.pbHideAbilitySplash(battler)
+    end
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:SWORDOFRUIN,
+  proc { |ability, battler, battle, switch_in|
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} {2} weakened the Defense of all surrounding Pokémon!",
+                           battler.pbOfThis, battler.abilityName))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:TERAFORMZERO,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.abilityUsedOnce?
+    battler.markAbilityUsedOnce
+    next if (battle.field.weather == :None ||
+             battle.field.weather == battle.field.defaultWeather) &&
+            (battle.field.terrain == :None ||
+             battle.field.terrain == battle.field.defaultTerrain)
+    battle.pbShowAbilitySplash(battler)
+    # Clear the current weather and terrain.
+    if ![:None, battle.field.defaultWeather].include?(battle.field.weather)
+      battle.pbStartWeather(nil, :None, false, false)
+    end
+    if ![:None, battle.field.defaultTerrain].include?(battle.field.terrain)
+      battle.pbStartTerrain(nil, :None, false)
+    end
+    battle.pbHideAbilitySplash(battler)
+    # Restore the default weather and terrain.
+    if battle.field.defaultWeather != :None
+      battle.pbStartWeather(nil, battle.field.defaultWeather, false)
+    end
+    if battle.field.defaultTerrain != :None
+      battle.pbStartTerrain(nil, battle.field.defaultTerrain, false)
+    end
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:TABLETSOFRUIN,
+  proc { |ability, battler, battle, switch_in|
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} {2} weakened the Attack of all surrounding Pokémon!",
+                           battler.pbOfThis, battler.abilityName))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:VESSELOFRUIN,
+  proc { |ability, battler, battle, switch_in|
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} {2} weakened the Sp. Atk of all surrounding Pokémon!",
+                           battler.pbOfThis, battler.abilityName))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:WINDRIDER,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.pbOwnSide.effects[PBEffects::Tailwind] == 0
+    battler.pbRaiseStatStageByAbility(:ATTACK, 1, battler)
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:ZEROTOHERO,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.form != 1
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} underwent a heroic transformation!", battler.pbThis))
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:HOSPITALITY,
+  proc { |ability, battler, battle, switch_in|
+    allies = battler.allAllies
+    allies.reject! { |ally| !ally.near?(battler) || !ally.canHeal? }
+    next if allies.empty?
+    battle.pbShowAbilitySplash(battler)
+    allies.each do |ally|
+      next if ally.pbRecoverHP(ally.totalhp / 4) == 0
+      battle.pbDisplay(_INTL("{1} drank down all the matcha that {2} made!", ally.pbThis, battler.pbThis(true)))
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.add(:SUPERSWEETSYRUP,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.abilityUsedOnce?
+    battler.markAbilityUsedOnce
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("A supersweet aroma is wafting from the syrup covering {1}!", battler.pbThis))
+    battle.allOtherSideBattlers(battler.index).each do |b|
+      next if !b.near?(battler)
+      b.pbLowerEvasionStatStageSupersweetSyrup(battler)
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 #===============================================================================
 # OnSwitchOut handlers
 #===============================================================================
@@ -5657,5 +6085,131 @@ Battle::AbilityEffects::OnIntimidated.add(:RATTLED,
 Battle::AbilityEffects::CertainEscapeFromBattle.add(:RUNAWAY,
   proc { |ability, battler|
     next true
+  }
+)
+
+#===============================================================================
+# Protosynthesis, Quark Drive
+#===============================================================================
+Battle::AbilityEffects::OnSwitchIn.add(:PROTOSYNTHESIS,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.effects[PBEffects::Transform]
+    case ability
+    when :PROTOSYNTHESIS then field_check = [:Sun, :HarshSun].include?(battle.pbWeather)
+    when :QUARKDRIVE     then field_check = battle.field.terrain == :Electric
+    end
+    if !field_check && !battler.effects[PBEffects::BoosterEnergy] && battler.effects[PBEffects::ParadoxStat]
+      battle.pbDisplay(_INTL("The effects of {1}'s {2} wore off!", battler.pbThis(true), battler.abilityName))
+      battler.effects[PBEffects::ParadoxStat] = nil
+    end
+    next if battler.effects[PBEffects::ParadoxStat]
+    next if !field_check && battler.item != :BOOSTERENERGY
+    highestStat = nil
+    highestStatVal = 0
+    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8]
+    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2]
+    battler.plainStats.each do |stat, val|
+      stage = battler.stages[stat] + 6
+      realStat = (val.to_f * stageMul[stage] / stageDiv[stage]).floor
+      if realStat > highestStatVal
+        highestStatVal = realStat 
+        highestStat = stat
+      end
+    end
+    if highestStat
+      battle.pbShowAbilitySplash(battler)
+      if field_check
+        case ability
+        when :PROTOSYNTHESIS then cause = "harsh sunlight"
+        when :QUARKDRIVE     then cause = "Electric Terrain"
+        end
+        battle.pbDisplay(_INTL("The #{cause} activated {1}'s {2}!", battler.pbThis(true), battler.abilityName))
+      elsif battler.item_id == :BOOSTERENERGY
+        battler.effects[PBEffects::BoosterEnergy] = true
+        battle.pbDisplay(_INTL("{1} used its {2} to activate its {3}!", battler.pbThis, battler.itemName, battler.abilityName))
+        battler.pbHeldItemTriggered(battler.item)
+      end
+      battler.effects[PBEffects::ParadoxStat] = highestStat
+      battle.pbDisplay(_INTL("{1}'s {2} was heightened!", battler.pbThis, GameData::Stat.get(highestStat).name))
+      battle.pbHideAbilitySplash(battler)
+    end
+  }
+)
+
+Battle::AbilityEffects::OnSwitchIn.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
+
+Battle::AbilityEffects::OnTerrainChange.add(:QUARKDRIVE,
+  proc { |ability, battler, battle, switch_in|
+    Battle::AbilityEffects.triggerOnSwitchIn(ability, battler, battle, switch_in)
+  }
+)
+
+Battle::AbilityEffects::OnWeatherChange.add(:PROTOSYNTHESIS,
+  proc { |ability, battler, battle, switch_in|
+    Battle::AbilityEffects.triggerOnSwitchIn(ability, battler, battle, switch_in)
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.add(:PROTOSYNTHESIS,
+  proc { |ability, user, target, move, mults, baseDmg, type|
+    next if user.effects[PBEffects::Transform]
+    stat = user.effects[PBEffects::ParadoxStat]
+    mults[:attack_multiplier] *= 1.3 if move.physicalMove? && stat == :ATTACK
+    mults[:attack_multiplier] *= 1.3 if move.specialMove?  && stat == :SPECIAL_ATTACK
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
+
+Battle::AbilityEffects::SpeedCalc.add(:PROTOSYNTHESIS,
+  proc { |ability, battler, mult, ret|
+    next mult if battler.effects[PBEffects::Transform]
+    next mult * 1.5 if battler.effects[PBEffects::ParadoxStat] == :SPEED
+  }
+)
+
+Battle::AbilityEffects::SpeedCalc.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
+
+Battle::AbilityEffects::DamageCalcFromTarget.add(:PROTOSYNTHESIS,
+  proc { |ability, user, target, move, mults, baseDmg, type|
+    next if target.effects[PBEffects::Transform]
+    stat = target.effects[PBEffects::ParadoxStat]
+    mults[:defense_multiplier] *= 1.3 if move.physicalMove? && stat == :DEFENSE
+    mults[:defense_multiplier] *= 1.3 if move.specialMove?  && stat == :SPECIAL_DEFENSE
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromTarget.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
+
+#===============================================================================
+# OnDealingStatus handlers
+#===============================================================================
+
+Battle::AbilityEffects::OnDealingStatus.add(:POISONPUPPETEER,
+  proc { |ability, user, target, status|
+    next if status != :POISON
+    next if !target.pbCanConfuse?(user, false)
+    user.battle.pbShowAbilitySplash(user)
+    msg = nil
+    if !Battle::Scene::USE_ABILITY_SPLASH
+      msg = _INTL("{1} became confused due to {2} {3}!", target.pbThis, user.pbOfThis(true), user.abilityName)
+    end
+    target.pbConfuse(msg)
+    user.battle.pbHideAbilitySplash(user)
+  }
+)
+
+#===============================================================================
+# OnTargetedForHit handlers
+#===============================================================================
+Battle::AbilityEffects::OnTargetedForHit.add(:TERASHELL,
+  proc { |ability, user, target, move, hit_num, battle|
+    next if target.hp < target.totalhp
+    next if hit_num != 0 || battle.moldBreaker
+    next if !move.pbDamagingMove? || move.is_a?(Battle::Move::FixedDamageMove)
+    next if Effectiveness.not_very_effective?(target.damageState.typeMod) ||
+            Effectiveness.ineffective?(target.damageState.typeMod)
+    target.damageState.typeMod = Effectiveness::NOT_VERY_EFFECTIVE_ONE
+    battle.pbDisplay(_INTL("{1} made its shell gleam! It's distorting type matchups!", target.pbThis))
   }
 )

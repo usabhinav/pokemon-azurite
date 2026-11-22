@@ -136,13 +136,13 @@ class Battle::Scene
     @lastMove[idxBattler] = cw.index
   end
 
-  #=============================================================================
-  # Opens the party screen to choose a Pokémon to switch in (or just view its
-  # summary screens)
-  # mode: 0=Pokémon command, 1=choose a Pokémon to send to the Boxes, 2=view
-  #       summaries only,
-  #       3=choose a Pokémon to release
-  #=============================================================================
+#=============================================================================
+# Opens the party screen to choose a Pokémon.
+# mode: 0=Pokémon command, 1=choose a Pokémon to send to the Boxes,
+#       2=view summaries only,
+#       3=choose a Pokémon to release,
+#       4=choose a Pokémon to revive
+#=============================================================================
   def pbPartyScreen(idxBattler, canCancel = false, mode = 0)
     # Fade out and hide all sprites
     visibleSprites = pbFadeOutAndHide(@sprites)
@@ -156,6 +156,7 @@ class Battle::Scene
     msg = _INTL("Choose a Pokémon.")
     msg = _INTL("Send which Pokémon to Boxes?") if mode == 1
     msg = _INTL("Release which Pokémon?") if mode == 3
+    msg = _INTL("Choose a Pokémon to revive.") if mode == 4
     switchScreen.pbStartScene(msg, @battle.pbNumPositions(0, 0))
     # Loop while in party screen
     loop do
@@ -169,16 +170,19 @@ class Battle::Scene
       # Choose a command for the selected Pokémon
       cmdSwitch  = -1
       cmdBoxes   = -1
+      cmdRevive  = -1
       cmdSummary = -1
       commands = []
       commands[cmdSwitch  = commands.length] = _INTL("Switch In") if mode == 0 && modParty[idxParty].able?
       commands[cmdBoxes   = commands.length] = _INTL("Send to Boxes") if mode == 1
       commands[cmdBoxes   = commands.length] = _INTL("Release") if mode == 3
+      commands[cmdRevive  = commands.length] = _INTL("Select") if mode == 4
       commands[cmdSummary = commands.length] = _INTL("Summary")
       commands[commands.length]              = _INTL("Cancel")
       command = scene.pbShowCommands(_INTL("Do what with {1}?", modParty[idxParty].name), commands)
       if (cmdSwitch >= 0 && command == cmdSwitch) ||   # Switch In
-         (cmdBoxes >= 0 && command == cmdBoxes)        # Send to Boxes
+         (cmdBoxes >= 0 && command == cmdBoxes) ||     # Send to Boxes/Release
+         (cmdRevive >= 0 && command == cmdRevive)      # Revival Blessing
         idxPartyRet = -1
         partyPos.each_with_index do |pos, i|
           next if pos != idxParty + partyStart

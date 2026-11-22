@@ -222,6 +222,7 @@ class Battle::Battler
   #=============================================================================
   def pbAddTarget(targets, user, target, move, nearOnly = true, allowUser = false)
     return false if !target || (target.fainted? && !move.targetsPosition?)
+    return false if target.effects[PBEffects::Commanding] >= 0
     return false if !allowUser && target == user
     return false if nearOnly && !user.near?(target) && target != user
     targets.each { |b| return true if b.index == target.index }   # Already added

@@ -480,6 +480,8 @@ class Battle::Battler
     ret = @types.uniq
     # Burn Up erases the Fire-type.
     ret.delete(:FIRE) if @effects[PBEffects::BurnUp]
+    # Double Shock erases the Electric-type.
+    ret.delete(:ELECTRIC) if @effects[PBEffects::DoubleShock]
     # Roost erases the Flying-type. If there are no types left, adds the Normal-
     # type.
     if @effects[PBEffects::Roost]
@@ -574,6 +576,7 @@ class Battle::Battler
       :ASONECHILLINGNEIGH,
       :ASONEGRIMNEIGH,
       :COMATOSE,
+#      :COMMANDER,                                        # This can be stopped
       :RKSSYSTEM,
       :CRYSTALENERGY                                      # Having Crystal Energy be stoppable is annoying to work with
     ]
@@ -614,6 +617,7 @@ class Battle::Battler
       :ASONECHILLINGNEIGH,
       :ASONEGRIMNEIGH,
       :COMATOSE,
+      :COMMANDER,
       :RKSSYSTEM,
       :CRYSTALENERGY,                                      # Having Crystal Energy be gainable is annoying to work with
       # Abilities that can't be negated
@@ -709,7 +713,7 @@ class Battle::Battler
     return false if @battle.field.effects[PBEffects::Gravity] > 0
     return true if pbHasType?(:FLYING)
     return true if pbHasType?(:COSMIC)
-    return true if (hasActiveAbility?(:LEVITATE) || @battle.pbCheckGlobalAbility(:ZEROGRAVITY)) && !@battle.moldBreaker
+    return true if (hasActiveAbility?([:LEVITATE, :EELEVATE]) || @battle.pbCheckGlobalAbility(:ZEROGRAVITY)) && !@battle.moldBreaker
     return true if hasActiveItem?(:AIRBALLOON)
     return true if @effects[PBEffects::MagnetRise] > 0
     return true if @effects[PBEffects::Telekinesis] > 0
@@ -854,6 +858,36 @@ class Battle::Battler
     return true if @effects[PBEffects::DoomedSerenadeCount] > 0
     return true if @effects[PBEffects::HugCounter] > 0
     return false
+  end
+
+  # Returns whether this battler can be made to switch out by another battler's move.
+  def canBeForcedOutOfBattle?(show_message = true)
+    if semiInvulnerable?
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return false
+    end
+    if @effects[PBEffects::Commanding] >= 0 || @effects[PBEffects::CommandedBy] >= 0
+      @battle.pbDisplay(_INTL("But it failed!")) if show_message
+      return false
+    end
+    if hasActiveAbility?(:SUCTIONCUPS) && !@battle.moldBreaker
+      if show_message
+        @battle.pbShowAbilitySplash(self)
+        if Battle::Scene::USE_ABILITY_SPLASH
+          @battle.pbDisplay(_INTL("{1} anchors itself!", pbThis))
+        else
+          @battle.pbDisplay(_INTL("{1} anchors itself with {2}!", pbThis, abilityName))
+        end
+        @battle.pbHideAbilitySplash(self)
+      end
+      return false
+    end
+    return false if hasActiveAbility?(:GUARDDOG) && !@battle.moldBreaker
+    if @effects[PBEffects::Ingrain]
+      @battle.pbDisplay(_INTL("{1} anchored itself with its roots!", pbThis)) if show_message
+      return false
+    end
+    return true
   end
 
   def movedThisRound?

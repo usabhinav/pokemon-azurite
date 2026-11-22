@@ -19,19 +19,15 @@ SuperRod
 #-------------------------------
 [005] # Route 1
 Land,21
-    40,PIDGEY,11,14
-    40,RATTATA,11,14
-    9,PIDGEY,11,13
-    9,RATTATA,11,13
-    1,PIDGEY,14
-    1,RATTATA,14
-LandNight,21
-    39,RATTATA,10,14
-    30,HOOTHOOT,10,13
-    20,SPINARAK,8,12
-    9,HOOTHOOT,10,14
-    1,HOOTHOOT,14
-    1,RATTATA,15
+    20,AZULING,2,4
+    20,CENTILLITE,2,4
+    40,BIROO,2,4
+    9,SEWADDLE,3,5
+    7,EDGLET,1,5
+    1,BURMY_2,5
+    1,BURMY_1,5
+    1,BURMY,5
+    1,LEDYBA_1,5
 #-------------------------------
 [005,1] # Route 1
 Land,21
@@ -187,21 +183,21 @@ RockSmash,50
 #-------------------------------
 [049] # Rock Cave
 Cave,5
-    20,MAGNETON,14,16
-    20,MAGNETON,14,17
-    20,NOSEPASS,14,15
-    20,NOSEPASS,13,14
-    10,GEODUDE,13,15
-    10,MAWILE,14,16
+    30,STALAGTIC,14,16
+    20,DURANAE,14,17
+    30,ROGGENROLA,14,15
+    10,ONIX,14,16
+    9,BUDEW_1,13,15
+    1,ROSELIA_1,13,15
 #-------------------------------
 [050] # Rock Cave
 Cave,5
-    20,MAGNETON,14,16
-    20,MAGNETON,14,17
-    20,NOSEPASS,14,15
-    20,NOSEPASS,13,14
-    10,BURMY,14,16
-    10,GEODUDE,13,15
+    30,STALAGTIC,14,16
+    20,DURANAE,14,17
+    30,ROGGENROLA,14,15
+    10,ONIX,14,16
+    9,BUDEW_1,13,15
+    1,ROSELIA_1,13,15
 #-------------------------------
 [051] # Dungeon
 Cave,5
@@ -302,3 +298,13 @@ Land,21
     10,PIKACHU,11,14
     10,SANDSHREW_1,11,14
     10,VULPIX_1,11,14
+#-------------------------------
+[073] # Noltimere Town
+Cave,5
+    30,SNORUNT,14,16
+    20,SHOUL,14,17
+    15,FROSTYKE,14,15
+    15,SNEASEL,14,15
+    10,BUNEARY_1,14,16
+    9,NYASHI,13,15
+    1,SWADLOON_1,13,15

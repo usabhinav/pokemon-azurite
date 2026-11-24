@@ -1,16 +1,28 @@
 class Battle::Battler
-  #=============================================================================
-  # Ability trigger checks
-  #=============================================================================
-  #=============================================================================
-  # Once-per-battle ability tracking
-  #=============================================================================
+ # These abilities can only be used once while the battler remains in battle.
+  # Switching out and back in allows the ability to be used again.
+  def markAbilityUsedThisSwitchIn
+    @battle.abilitiesUsedPerSwitchIn[idxOwnSide][@pokemonIndex].push(@ability_id)
+  end
+
+  def abilityUsedThisSwitchIn?
+    return @battle.abilitiesUsedPerSwitchIn[idxOwnSide][@pokemonIndex].include?(@ability_id)
+  end
+
+  # These abilities can only be used once per battle, regardless of if the
+  # battler switches out/faints.
   def markAbilityUsedOnce
     @battle.abilitiesUsedOnce[idxOwnSide][@pokemonIndex].push(@ability_id)
   end
+
   def abilityUsedOnce?
     return @battle.abilitiesUsedOnce[idxOwnSide][@pokemonIndex].include?(@ability_id)
   end
+
+  #=============================================================================
+  # Ability trigger checks
+  #=============================================================================
+
   def pbAbilitiesOnSwitchOut
     if abilityActive?
       Battle::AbilityEffects.triggerOnSwitchOut(self.ability, self, false)
@@ -437,6 +449,7 @@ class Battle::Battler
         @battle.pbSetSeen(self)
       end
     end
+    @battle.abilitiesUsedPerSwitchIn[idxOwnSide][@pokemonIndex].delete(oldAbil)
     if self.ability != :CUDCHEW
       @effects[PBEffects::CudChewBerry]   = nil
       @effects[PBEffects::CudChewCounter] = 0

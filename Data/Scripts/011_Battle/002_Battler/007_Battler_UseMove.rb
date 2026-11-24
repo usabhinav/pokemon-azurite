@@ -453,13 +453,14 @@ class Battle::Battler
       end
     end
     # Protean
-    if user.hasActiveAbility?([:LIBERO, :PROTEAN, :OMNIGENE]) &&
+    if user.hasActiveAbility?([:LIBERO, :PROTEAN, :OMNIGENE]) && !user.abilityUsedThisSwitchIn? &&
        !move.callsAnotherMove? && !move.snatched &&
        user.pbHasOtherType?(move.calcType) && !GameData::Type.get(move.calcType).pseudo_type
       @battle.pbShowAbilitySplash(user)
       user.pbChangeTypes(move.calcType)
       typeName = GameData::Type.get(move.calcType).name
       @battle.pbDisplay(_INTL("{1}'s type changed to {2}!", user.pbThis, typeName))
+      user.markAbilityUsedThisSwitchIn if Settings::MECHANICS_GENERATION >= 9
       @battle.pbHideAbilitySplash(user)
       # NOTE: The GF games say that if Curse is used by a non-Ghost-type
       #       Pokémon which becomes Ghost-type because of Protean, it should

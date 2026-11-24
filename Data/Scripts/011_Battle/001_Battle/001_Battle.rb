@@ -95,7 +95,8 @@ class Battle
   attr_reader   :timeBreakPhase   # True if any of the battlers have stopped time with Time Break
   attr_reader   :hitsTakenCounts  # For Rage Fist
   attr_reader   :sideFaintCounts  # Last Respects/Supreme Overlord
-  attr_reader :abilitiesUsedOnce
+  attr_reader   :abilitiesUsedPerSwitchIn   # Records use of abilities that can only be used once per switch in
+  attr_reader   :abilitiesUsedOnce          # Records use of abilities that can only be used once per battle
 
   def pbRandom(x); return rand(x); end
 
@@ -171,7 +172,8 @@ class Battle
     @usedInBattle      = [Array.new(@party1.length, false), Array.new(@party2.length, false)]
     @hitsTakenCounts   = [Array.new(@party1.length, 0),     Array.new(@party2.length, 0)]
     @sideFaintCounts   = [0, 0]
-    @abilitiesUsedOnce = [Array.new(@party1.length) { [] }, Array.new(@party2.length) { [] }]
+    @abilitiesUsedPerSwitchIn = [Array.new(@party1.length) { |i| [] }, Array.new(@party2.length) { |i| [] }]
+    @abilitiesUsedOnce        = [Array.new(@party1.length) { |i| [] }, Array.new(@party2.length) { |i| [] }]
     @powerWithin       = [Array.new(@party1.length, -1), Array.new(@party2.length, -1)]
     @successStates     = []
     @lastMoveUsed      = nil

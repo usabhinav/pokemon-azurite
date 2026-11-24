@@ -204,12 +204,13 @@ class Battle::Battler
     if !user.fainted? && !user.effects[PBEffects::Transform] &&
        !@battle.pbAllFainted?(user.idxOpposingSide)
       # Greninja - Battle Bond
-      if user.isSpecies?(:GRENINJA) && user.ability == :BATTLEBOND &&
+      if user.isSpecies?(:GRENINJA) && user.ability == :BATTLEBOND && !user.abilityUsedOnce? &&
          !@battle.battleBond[user.index & 1][user.pokemonIndex] &&
          (!@battle.pbCheckGlobalAbility(:NEGATION) || @battle.pbCheckGlobalAbility(:CRYSTALENERGY))
         numFainted = 0
         targets.each { |b| numFainted += 1 if b.damageState.fainted }
         if numFainted > 0 && user.form == 1
+          user.markAbilityUsedOnce
           @battle.battleBond[user.index & 1][user.pokemonIndex] = true
           @battle.pbDisplay(_INTL("{1} became fully charged due to its bond with its Trainer!", user.pbThis))
           @battle.pbShowAbilitySplash(user, true)

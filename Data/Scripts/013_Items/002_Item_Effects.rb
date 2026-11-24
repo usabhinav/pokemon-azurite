@@ -1155,7 +1155,11 @@ ItemHandlers::UseOnPokemon.add(:ABILITYPATCH, proc { |item, qty, pkmn, scene|
   if scene.pbConfirm(_INTL("Do you want to change {1}'s Ability?", pkmn.name))
     abils = pkmn.getAbilityList
     new_ability_id = nil
-    abils.each { |a| new_ability_id = a[0] if a[1] == 2 }
+    if pkmn.hasHiddenAbility?
+      new_ability_id = 0 if Settings::MECHANICS_GENERATION >= 9   # First regular ability
+    else
+      abils.each { |a| new_ability_id = a[0] if a[1] == 2 }   # Hidden ability
+    end
     if !new_ability_id || pkmn.hasHiddenAbility? || pkmn.isSpecies?(:ZYGARDE)
       scene.pbDisplay(_INTL("It won't have any effect."))
       next false

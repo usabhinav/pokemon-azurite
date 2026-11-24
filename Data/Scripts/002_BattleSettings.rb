@@ -13,6 +13,11 @@ module Settings
   # Whether a move's physical/special category depends on the move itself as in
   # newer Gens (true), or on its type as in older Gens (false).
   MOVE_CATEGORY_PER_MOVE                      = (MECHANICS_GENERATION >= 4)
+  # Whether there are unique "It's extremely effective!"/"It's mostly
+  # ineffective..." messages for 4x and 0.25x type effectiveness (true) or those
+  # effectivenesses use the broader "It's super effective!"/"It's not very
+  # effective..." messages (false).
+  MORE_TYPE_EFFECTIVENESS_MESSAGES = (MECHANICS_GENERATION >= 9)
   # Whether critical hits do 1.5x damage and have 4 stages (true), or they do 2x
   # damage and have 5 stages as in Gen 5 (false). Also determines whether
   # critical hit rate can be copied by Transform/Psych Up.
@@ -75,6 +80,11 @@ module Settings
 
   #=============================================================================
 
+  # Whether a battle's default weather or default terrain can (false) or cannot
+  # (true) be overridden by an ability or move inducing another weather type.
+  # This doesn't apply to the primal weathers (harsh sun, heavy rain, strong
+  # winds), which can replace the default weather.
+  DEFAULT_WEATHER_AND_TERRAIN_CANNOT_BE_REPLACED = (MECHANICS_GENERATION >= 9)
   # Whether the Exp gained from beating a Pokémon should be scaled depending on
   # the gainer's level.
   SCALED_EXP_FORMULA                   = (MECHANICS_GENERATION == 5 || MECHANICS_GENERATION >= 7)

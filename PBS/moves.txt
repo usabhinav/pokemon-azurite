@@ -1456,7 +1456,7 @@ Accuracy = 0
 TotalPP = 20
 Target = User
 FunctionCode = RaiseUserSpDef1PowerUpElectricMove
-Description = The user boosts the power of the Electric move it uses next. It also raises the user's Sp. Def stat.
+Description = The user charges up to boost the power of the next Electric-type move it uses. This also raises the user's Sp. Def stat.
 #-------------------------------
 [EERIEIMPULSE]
 Name = Eerie Impulse
@@ -7350,7 +7350,7 @@ Target = User
 Priority = 2
 FunctionCode = UserSwapsPositionsWithAlly
 Flags = Speed
-Description = The user teleports using a strange power and switches its place with one of its allies.
+Description = The user teleports using a strange power and switches its place with one of its allies. Chance of failing rises if used in succession.
 #-------------------------------
 [AMNESIA]
 Name = Amnesia

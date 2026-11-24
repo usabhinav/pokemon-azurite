@@ -202,6 +202,7 @@ module PBEffects
   BurningBulwark      = 197
   CudChewBerry        = 198
   CudChewCounter      = 199
+  AllySwitchRate      = 200
 
   #=============================================================================
   # These effects apply to a battler position

@@ -522,7 +522,8 @@ class Battle::Move::WeatherMove < Battle::Move
     when :StrongWinds
       @battle.pbDisplay(_INTL("The mysterious air current blows on regardless!"))
       return true
-    when @weatherType
+    end
+    if !@battle.pbCanStartWeather?(@weatherType)
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -530,9 +531,31 @@ class Battle::Move::WeatherMove < Battle::Move
   end
 
   def pbEffectGeneral(user)
-    if !damagingMove? || ![:HarshSun, :HeavyRain, :StrongWinds, @weatherType].include?(@battle.field.weather)
-      @battle.pbStartWeather(user, @weatherType, true, false)
+    @battle.pbStartWeather(user, @weatherType, true, false)
+  end
+end
+
+#===============================================================================
+# Terrain-inducing move.
+#===============================================================================
+class Battle::Move::TerrainMove < Battle::Move
+  attr_reader :terrainType
+
+  def initialize(battle, move)
+    super
+    @terrainType = :None
+  end
+
+  def pbMoveFailed?(user, targets)
+    if !@battle.pbCanStartTerrain?(@terrainType)
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
     end
+    return false
+  end
+
+  def pbEffectGeneral(user)
+    @battle.pbStartTerrain(user, @terrainType)
   end
 end
 

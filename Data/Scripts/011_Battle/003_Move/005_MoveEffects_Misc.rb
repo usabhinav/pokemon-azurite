@@ -317,17 +317,10 @@ end
 # prevents Pokémon from falling asleep. Affects non-airborne Pokémon only.
 # (Electric Terrain)
 #===============================================================================
-class Battle::Move::StartElectricTerrain < Battle::Move
-  def pbMoveFailed?(user, targets)
-    if @battle.field.terrain == :Electric
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    @battle.pbStartTerrain(user, :Electric)
+class Battle::Move::StartElectricTerrain < Battle::Move::TerrainMove
+  def initialize(battle, move)
+    super
+    @terrainType = :Electric
   end
 end
 
@@ -336,17 +329,10 @@ end
 # Pokémon at the end of each round. Affects non-airborne Pokémon only.
 # (Grassy Terrain)
 #===============================================================================
-class Battle::Move::StartGrassyTerrain < Battle::Move
-  def pbMoveFailed?(user, targets)
-    if @battle.field.terrain == :Grassy
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    @battle.pbStartTerrain(user, :Grassy)
+class Battle::Move::StartGrassyTerrain < Battle::Move::TerrainMove
+  def initialize(battle, move)
+    super
+    @terrainType = :Grassy
   end
 end
 
@@ -355,17 +341,10 @@ end
 # protects Pokémon from status problems. Affects non-airborne Pokémon only.
 # (Misty Terrain)
 #===============================================================================
-class Battle::Move::StartMistyTerrain < Battle::Move
-  def pbMoveFailed?(user, targets)
-    if @battle.field.terrain == :Misty
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    @battle.pbStartTerrain(user, :Misty)
+class Battle::Move::StartMistyTerrain < Battle::Move::TerrainMove
+  def initialize(battle, move)
+    super
+    @terrainType = :Misty
   end
 end
 
@@ -374,17 +353,10 @@ end
 # prevents Pokémon from being hit by >0 priority moves. Affects non-airborne
 # Pokémon only. (Psychic Terrain)
 #===============================================================================
-class Battle::Move::StartPsychicTerrain < Battle::Move
-  def pbMoveFailed?(user, targets)
-    if @battle.field.terrain == :Psychic
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    @battle.pbStartTerrain(user, :Psychic)
+class Battle::Move::StartPsychicTerrain < Battle::Move::TerrainMove
+  def initialize(battle, move)
+    super
+    @terrainType = :Psychic
   end
 end
 
@@ -392,17 +364,10 @@ end
 # For 5 rounds, creates a crystal terrain which boosts Crystal-type moves and
 # treats Pokémon as Crystal types. (Crystal Terrain)
 #===============================================================================
-class Battle::Move::StartCrystalTerrain < Battle::Move
-  def pbMoveFailed?(user, targets)
-    if @battle.field.terrain == :Crystal
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    @battle.pbStartTerrain(user, :Crystal)
+class Battle::Move::StartCrystalTerrain < Battle::Move::TerrainMove
+  def initialize(battle, move)
+    super
+    @terrainType = :Crystal
   end
 end
 
@@ -411,17 +376,10 @@ end
 # boosts Ice-type moves. It raises the Speed of all Ice-types. Affects
 # non-airborne Pokémon only. (Icy Terrain)
 #===============================================================================
-class Battle::Move::StartIcyTerrain < Battle::Move
-  def pbMoveFailed?(user, targets)
-    if @battle.field.terrain == :Icy
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    @battle.pbStartTerrain(user, :Icy)
+class Battle::Move::StartIcyTerrain < Battle::Move::TerrainMove
+  def initialize(battle, move)
+    super
+    @terrainType = :Icy
   end
 end
 
@@ -430,17 +388,10 @@ end
 # Pokémon by 1 stage each, and halves the damage of all contact moves. Does not
 # apply to Poison-type Pokémon. (Sticky Terrain)
 #===============================================================================
-class Battle::Move::StartStickyTerrain < Battle::Move
-  def pbMoveFailed?(user, targets)
-    if @battle.field.terrain == :Sticky
-      @battle.pbDisplay(_INTL("But it failed!"))
-      return true
-    end
-    return false
-  end
-
-  def pbEffectGeneral(user)
-    @battle.pbStartTerrain(user, :Sticky)
+class Battle::Move::StartStickyTerrain < Battle::Move::TerrainMove
+  def initialize(battle, move)
+    super
+    @terrainType = :Sticky
   end
 end
 
@@ -1099,10 +1050,18 @@ class Battle::Move::HitsAgainAtStartOfNextTurnAgainstRandomFoe < Battle::Move
 end
 
 #===============================================================================
-# User switches places with its ally. (Ally Switch)
+# User switches places with its ally. In Gen 9+, more likely to fail if used in
+# succession. (Ally Switch)
 #===============================================================================
 class Battle::Move::UserSwapsPositionsWithAlly < Battle::Move
+  def pbChangeUsageCounters(user, specialUsage)
+    oldVal = user.effects[PBEffects::AllySwitchRate]
+    super
+    user.effects[PBEffects::AllySwitchRate] = oldVal
+  end
+
   def pbMoveFailed?(user, targets)
+    # Fails if there isn't exactly 1 near ally to switch with
     numTargets = 0
     @idxAlly = -1
     idxUserOwner = @battle.pbGetOwnerIndexFromBattlerIndex(user.index)
@@ -1113,6 +1072,15 @@ class Battle::Move::UserSwapsPositionsWithAlly < Battle::Move
       @idxAlly = b.index
     end
     if numTargets != 1
+      user.effects[PBEffects::AllySwitchRate] = 1
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    # May fail if used in succession
+    if Settings::MECHANICS_GENERATION >= 9 &&
+       user.effects[PBEffects::AllySwitchRate] > 1 &&
+       @battle.pbRandom(user.effects[PBEffects::AllySwitchRate]) != 0
+      user.effects[PBEffects::AllySwitchRate] = 1
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -1120,11 +1088,16 @@ class Battle::Move::UserSwapsPositionsWithAlly < Battle::Move
   end
 
   def pbEffectGeneral(user)
+    user.effects[PBEffects::AllySwitchRate] *= (Settings::MECHANICS_GENERATION >= 6) ? 3 : 2
     idxA = user.index
     idxB = @idxAlly
     if @battle.pbSwapBattlers(idxA, idxB)
-      @battle.pbDisplay(_INTL("{1} and {2} switched places!",
-                              @battle.battlers[idxB].pbThis, @battle.battlers[idxA].pbThis(true)))
+      if @battle.battlers[idxB].effects[PBEffects::Commanding] >= 0
+        @battle.pbDisplay(_INTL("{1} moved across!", @battle.battlers[idxA].pbThis))
+      else
+        @battle.pbDisplay(_INTL("{1} and {2} switched places!",
+                                @battle.battlers[idxB].pbThis, @battle.battlers[idxA].pbThis(true)))
+      end
       [idxA, idxB].each { |idx| @battle.pbEffectsOnBattlerEnteringPosition(@battle.battlers[idx]) }
     end
   end

@@ -1499,9 +1499,17 @@ class Battle::Move::ReplaceMoveWithTargetLastMoveUsed < Battle::Move
     super
     @moveBlacklist = [
       "ReplaceMoveWithTargetLastMoveUsed",   # Sketch (this move)
-      # Struggle
+      "RevivePokemonToHalfHP",               # Revival Blessing
       "Struggle"                             # Struggle
     ]
+    @signatureMoveBlacklist = []
+    if Settings::MECHANICS_GENERATION >= 9
+      @signatureMoveBlacklist = [
+        :DARKVOID,
+        :HYPERSPACEFURY,
+        :TERASTARSTORM
+      ]
+    end
   end
 
   def pbMoveFailed?(user, targets)
@@ -1517,6 +1525,7 @@ class Battle::Move::ReplaceMoveWithTargetLastMoveUsed < Battle::Move
     if !lastMoveData ||
        user.pbHasMove?(target.lastRegularMoveUsed) ||
        @moveBlacklist.include?(lastMoveData.function_code) ||
+       @signatureMoveBlacklist.include?(lastMoveData.id) ||
        lastMoveData.type == :SHADOW
       @battle.pbDisplay(_INTL("But it failed!")) if show_message
       return true

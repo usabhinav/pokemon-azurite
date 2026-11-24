@@ -845,7 +845,11 @@ Battle::AbilityEffects::StatLossImmunity.add(:KEENEYE,
   }
 )
 
-Battle::AbilityEffects::StatLossImmunity.copy(:KEENEYE, :SENSORYAWARENESS, :MINDSEYE, :ILLUMINATE)
+Battle::AbilityEffects::StatLossImmunity.copy(:KEENEYE, :SENSORYAWARENESS, :MINDSEYE)
+
+if Settings::MECHANICS_GENERATION >= 9
+  Battle::AbilityEffects::StatLossImmunity.copy(:KEENEYE, :ILLUMINATE)
+end
 
 Battle::AbilityEffects::StatLossImmunity.add(:VICTORYRUSH,
   proc { |ability,battler,stat,battle,showMessages|
@@ -1508,6 +1512,10 @@ Battle::AbilityEffects::AccuracyCalcFromUser.add(:KEENEYE,
 )
 
 Battle::AbilityEffects::AccuracyCalcFromUser.copy(:KEENEYE, :MINDSEYE)
+
+if Settings::MECHANICS_GENERATION >= 9
+  Battle::AbilityEffects::AccuracyCalcFromUser.copy(:KEENEYE, :ILLUMINATE)
+end
 
 Battle::AbilityEffects::AccuracyCalcFromUser.add(:NOGUARD,
   proc { |ability, mods, user, target, move, type|

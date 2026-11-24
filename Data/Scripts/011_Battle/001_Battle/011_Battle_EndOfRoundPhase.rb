@@ -1151,7 +1151,11 @@ class Battle
     allBattlers.each do |battler|
       battler.effects[PBEffects::BanefulBunker]    = false
       battler.effects[PBEffects::BarkArmor]        = false
-      battler.effects[PBEffects::Charge]           -= 1 if battler.effects[PBEffects::Charge] > 0
+      if Settings::MECHANICS_GENERATION >= 9
+        battler.effects[PBEffects::Charge]         -= 1 if battler.effects[PBEffects::Charge] > 1
+      else
+        battler.effects[PBEffects::Charge]         -= 1 if battler.effects[PBEffects::Charge] > 0
+      end
       battler.effects[PBEffects::CometSwingEffectsActive] = false
       battler.effects[PBEffects::Counter]          = -1
       battler.effects[PBEffects::CounterTarget]    = -1

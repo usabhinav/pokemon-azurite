@@ -4,6 +4,7 @@
 module Battle::DebugVariables
   BATTLER_EFFECTS = {
     PBEffects::AirSupportTurnCount => { name: "Air Support airborne rounds remaining",      default: 0 },
+    PBEffects::AllySwitchRate => { name: "Ally Switch success chance 1/x",                  default: 1, max: 999},
     PBEffects::AquaRing       => { name: "Aqua Ring applies",                               default: false },
     PBEffects::Attract        => { name: "Battler that self is attracted to",               default: -1 },   # Battler index
     PBEffects::BanefulBunker  => { name: "Baneful Bunker applies this round",               default: false },

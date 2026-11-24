@@ -198,6 +198,7 @@ module GameData
         :OGERPON   => [:WELLSPRINGMASK, :HEARTHFLAMEMASK, :CORNERSTONEMASK],
         :COMBEE    => [:ROYALHONEY],
       }
+      combos[:GIRATINA].delete(:GRISEOUSORB) if Settings::MECHANICS_GENERATION >= 9
       return combos[species]&.include?(@id)
     end
   end

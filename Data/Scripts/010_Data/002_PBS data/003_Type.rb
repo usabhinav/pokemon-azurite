@@ -80,6 +80,10 @@ module Effectiveness
     return value == INEFFECTIVE
   end
 
+  def mostly_ineffective?(value)
+    return value > INEFFECTIVE && value < NORMAL_EFFECTIVE / NORMAL_EFFECTIVE_ONE
+  end
+
   def not_very_effective?(value)
     return value > INEFFECTIVE && value < NORMAL_EFFECTIVE
   end
@@ -94,6 +98,10 @@ module Effectiveness
 
   def super_effective?(value)
     return value > NORMAL_EFFECTIVE
+  end
+
+  def extremely_effective?(value)
+    return value > NORMAL_EFFECTIVE * NORMAL_EFFECTIVE_ONE
   end
 
   def ineffective_type?(attack_type, defend_type1, defend_type2 = nil, defend_type3 = nil)

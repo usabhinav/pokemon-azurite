@@ -851,10 +851,22 @@ class Battle
     return @field.weather
   end
 
+  def pbCanStartWeather?(new_weather, ignore_primal = false)
+    return false if @field.weather == new_weather
+    primal_weathers = [:HarshSun, :HeavyRain, :StrongWinds]
+    if !ignore_primal && primal_weathers.include?(@field.weather)
+      return new_weather == :None || primal_weathers.include?(new_weather)
+    end
+    return false if Settings::DEFAULT_WEATHER_AND_TERRAIN_CANNOT_BE_REPLACED &&
+                    ![:None, new_weather].include?(@field.defaultWeather) &&
+                    !primal_weathers.include?(new_weather)
+    return true
+  end
+
   # Used for causing weather by a move or by an ability.
-  def pbStartWeather(user, newWeather, fixedDuration = false, showAnim = true)
-    return if @field.weather == newWeather
-    @field.weather = newWeather
+  def pbStartWeather(user, new_weather, fixedDuration = false, showAnim = true, message = nil)
+    return if !pbCanStartWeather?(new_weather)
+    @field.weather = new_weather
     duration = (fixedDuration) ? 5 : -1
     if duration > 0 && user && user.itemActive?
       duration = Battle::ItemEffects.triggerWeatherExtender(user.item, @field.weather,
@@ -864,19 +876,23 @@ class Battle
     weather_data = GameData::BattleWeather.try_get(@field.weather)
     pbCommonAnimation(weather_data.animation) if showAnim && weather_data
     pbHideAbilitySplash(user) if user
-    case @field.weather
-    when :Sun         then pbDisplay(_INTL("The sunlight turned harsh!"))
-    when :Rain        then pbDisplay(_INTL("It started to rain!"))
-    when :Sandstorm   then pbDisplay(_INTL("A sandstorm brewed!"))
-    when :Hail        then pbDisplay(_INTL("It started to hail!"))
-    when :Snowstorm   then pbDisplay(_INTL("It started to snow!"))
-    when :HarshSun    then pbDisplay(_INTL("The sunlight turned extremely harsh!"))
-    when :HeavyRain   then pbDisplay(_INTL("A heavy rain began to fall!"))
-    when :StrongWinds then pbDisplay(_INTL("Mysterious strong winds are protecting Flying-type Pokémon!"))
-    when :ShadowSky   then pbDisplay(_INTL("A shadow sky appeared!"))
-    when :Thunderstorm then pbDisplay(_INTL("Thunder clouds started to roll in!"))
-    when :Windstorm   then pbDisplay(_INTL("A mysterious windstorm is protecting Flying-type Pokémon!"))
-    when :Firestorm   then pbDisplay(_INTL("Fire started to rain down from the sky!"))
+    if message
+      pbDisplay(message)
+    else
+      case @field.weather
+      when :Sun         then pbDisplay(_INTL("The sunlight turned harsh!"))
+      when :Rain        then pbDisplay(_INTL("It started to rain!"))
+      when :Sandstorm   then pbDisplay(_INTL("A sandstorm brewed!"))
+      when :Hail        then pbDisplay(_INTL("It started to hail!"))
+      when :Snowstorm   then pbDisplay(_INTL("It started to snow!"))
+      when :HarshSun    then pbDisplay(_INTL("The sunlight turned extremely harsh!"))
+      when :HeavyRain   then pbDisplay(_INTL("A heavy rain began to fall!"))
+      when :StrongWinds then pbDisplay(_INTL("Mysterious strong winds are protecting Flying-type Pokémon!"))
+      when :ShadowSky   then pbDisplay(_INTL("A shadow sky appeared!"))
+      when :Thunderstorm then pbDisplay(_INTL("Thunder clouds started to roll in!"))
+      when :Windstorm   then pbDisplay(_INTL("A mysterious windstorm is protecting Flying-type Pokémon!"))
+      when :Firestorm   then pbDisplay(_INTL("Fire started to rain down from the sky!"))
+      end
     end
     # Check for end of primordial weather, and weather-triggered form changes
     allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
@@ -940,59 +956,70 @@ class Battle
     end
   end
 
-  def pbStartWeatherAbility(new_weather, battler, ignore_primal = false)
-    return if !ignore_primal && [:HarshSun, :HeavyRain, :StrongWinds].include?(@field.weather)
-    return if @field.weather == new_weather
+  def pbStartWeatherAbility(new_weather, battler, ignore_primal = false, message = nil)
+    return if !pbCanStartWeather?(new_weather, ignore_primal)
     pbShowAbilitySplash(battler)
     if !Scene::USE_ABILITY_SPLASH
-      pbDisplay(_INTL("{1}'s {2} activated!", battler.pbThis, battler.abilityName))
+      pbDisplay(_INTL("{1} {2} activated!", battler.pbOfThis, battler.abilityName))
     end
     fixed_duration = false
     fixed_duration = true if Settings::FIXED_DURATION_WEATHER_FROM_ABILITY &&
                              ![:HarshSun, :HeavyRain, :StrongWinds].include?(new_weather)
-    pbStartWeather(battler, new_weather, fixed_duration)
+    pbStartWeather(battler, new_weather, fixed_duration, true, message)
     # NOTE: The ability splash is hidden again in def pbStartWeather.
   end
 
   #=============================================================================
   # Terrain
   #=============================================================================
+
   def defaultTerrain=(value)
     @field.defaultTerrain  = value
     @field.terrain         = value
     @field.terrainDuration = -1
   end
 
-  def pbStartTerrain(user, newTerrain, fixedDuration = true)
-    return if @field.terrain == newTerrain
-    @field.terrain = newTerrain
+  def pbCanStartTerrain?(new_terrain)
+    return false if @field.terrain == new_terrain
+    return false if Settings::DEFAULT_WEATHER_AND_TERRAIN_CANNOT_BE_REPLACED &&
+                    ![:None, new_terrain].include?(@field.defaultTerrain)
+    return true
+  end
+
+  def pbStartTerrain(user, new_terrain, fixedDuration = true, message = nil)
+    return if !pbCanStartTerrain?(new_terrain)
+    @field.terrain = new_terrain
     duration = (fixedDuration) ? 5 : -1
     if duration > 0 && user && user.itemActive?
-      duration = Battle::ItemEffects.triggerTerrainExtender(user.item, newTerrain,
+      duration = Battle::ItemEffects.triggerTerrainExtender(user.item, new_terrain,
                                                             duration, user, self)
     end
     @field.terrainDuration = duration
     terrain_data = GameData::BattleTerrain.try_get(@field.terrain)
     pbCommonAnimation(terrain_data.animation) if terrain_data
     pbHideAbilitySplash(user) if user
-    case @field.terrain
-    when :Electric
-      pbDisplay(_INTL("An electric current runs across the battlefield!"))
-    when :Grassy
-      pbDisplay(_INTL("Grass grew to cover the battlefield!"))
-    when :Misty
-      pbDisplay(_INTL("Mist swirled about the battlefield!"))
-    when :Psychic
-      pbDisplay(_INTL("The battlefield got weird!"))
-    when :Lava
-      pbDisplay(_INTL("Lava appeared on the battlefield!"))
-    when :Crystal
-      pbDisplay(_INTL("The battlefield crystallized!"))
-    when :Icy
-      pbDisplay(_INTL("The ground turned to ice!"))
-      allBattlers.each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
-    when :Sticky
-      pbDisplay(_INTL("The battlefield got gross and sticky!"))
+    if message
+      pbDisplay(message)
+    else
+      case @field.terrain
+      when :Electric
+        pbDisplay(_INTL("An electric current runs across the battlefield!"))
+      when :Grassy
+        pbDisplay(_INTL("Grass grew to cover the battlefield!"))
+      when :Misty
+        pbDisplay(_INTL("Mist swirled about the battlefield!"))
+      when :Psychic
+        pbDisplay(_INTL("The battlefield got weird!"))
+      when :Lava
+        pbDisplay(_INTL("Lava appeared on the battlefield!"))
+      when :Crystal
+        pbDisplay(_INTL("The battlefield crystallized!"))
+      when :Icy
+        pbDisplay(_INTL("The ground turned to ice!"))
+        allBattlers.each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
+      when :Sticky
+        pbDisplay(_INTL("The battlefield got gross and sticky!"))
+      end
     end
     # Check for abilities/items that trigger upon the terrain changing
     allBattlers.each { |b| b.pbCheckFormOnTerrainChange }
@@ -1019,6 +1046,17 @@ class Battle
     allBattlers.each { |b| b.pbCheckFormOnTerrainChange }
     allBattlers.each { |b| b.pbAbilityOnTerrainChange }
     allBattlers.each { |b| b.pbItemOnTerrainChange }
+  end
+
+  def pbStartTerrainAbility(new_terrain, battler, message = nil)
+    return if !pbCanStartTerrain?(new_terrain)
+    pbShowAbilitySplash(battler)
+    if !Scene::USE_ABILITY_SPLASH
+      pbDisplay(_INTL("{1} {2} activated!", battler.pbOfThis, battler.abilityName))
+    end
+    fixed_duration = true
+    pbStartTerrain(battler, new_terrain, fixed_duration, message)
+    # NOTE: The ability splash is hidden again in def pbStartTerrain.
   end
 
   #=============================================================================

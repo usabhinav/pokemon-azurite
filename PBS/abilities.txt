@@ -138,7 +138,7 @@ Description = Boosts the Pokémon's Speed in sunshine.
 #-------------------------------
 [ILLUMINATE]
 Name = Illuminate
-Description = Raises the likelihood of meeting wild Pokémon.
+Description = The Pokémon's accuracy stat cannot be lowered by another Pokémon.
 #-------------------------------
 [TRACE]
 Name = Trace

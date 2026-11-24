@@ -81,19 +81,15 @@ class Battle::Move::StartSnowstormWeatherSwitchOutUser < Battle::Move
 
   def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
     return if user.wild? || !@battle.pbCanChooseNonActive?(user.index)
-    return if user.effects[PBEffects::Commanding] >= 0 ||
-              user.effects[PBEffects::CommandedBy] >= 0
-
+    return if user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0
     @battle.pbDisplay(_INTL("{1} went back to {2}!", user.pbThis,
                             @battle.pbGetOwnerName(user.index)))
     @battle.pbPursuit(user.index)
     return if user.fainted?
-
-    newPkmn = @battle.pbGetReplacementPokemonIndex(user.index)
+    newPkmn = @battle.pbGetReplacementPokemonIndex(user.index)   # Owner chooses
     return if newPkmn < 0
-
     @battle.pbRecallAndReplace(user.index, newPkmn)
-    @battle.pbClearChoice(user.index)
+    @battle.pbClearChoice(user.index)   # Replacement Pokémon does nothing this round
     @battle.moldBreaker = false
     @battle.pbOnBattlerEnteringBattle(user.index)
     switchedBattlers.push(user.index)

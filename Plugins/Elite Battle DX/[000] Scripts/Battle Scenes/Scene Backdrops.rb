@@ -465,7 +465,7 @@ class BattleSceneRoom
   #-----------------------------------------------------------------------------
   def setWeather
     # loop once
-    for wth in [["Rain", [:Rain, :HeavyRain, :Thunderstorm]], ["Snow", :Hail], ["StrongWind", :StrongWinds, :Windstorm], ["Sunny", [:Sun, :HarshSun]], ["Sandstorm", :Sandstorm], ["Fog", :Fog]]
+    for wth in [["Rain", [:Rain, :HeavyRain, :Thunderstorm]], ["Snow", [:Hail, :Snowstorm]], ["StrongWind", [:StrongWinds, :Windstorm]], ["Sunny", [:Sun, :HarshSun]], ["Sandstorm", :Sandstorm], ["Fog", :Fog]]
       proceed = false
       for cond in (wth[1].is_a?(Array) ? wth[1] : [wth[1]])
         proceed = true if @battle.pbWeather == cond
@@ -746,7 +746,7 @@ class BattleSceneRoom
   # check if sky should be tinted lighter
   #-----------------------------------------------------------------------------
   def weatherTint?
-    for wth in [:Hail, :Sun, :HarshSun]
+    for wth in [:Hail, :Snowstorm, :Sun, :HarshSun]
       return true if @battle.pbWeather == wth
     end
     return false

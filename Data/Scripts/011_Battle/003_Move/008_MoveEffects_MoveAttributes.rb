@@ -2466,7 +2466,7 @@ class Battle::Move::TypeAndPowerDependOnWeather < Battle::Move
         ret = :WATER if GameData::Type.exists?(:WATER)
       when :Sandstorm
         ret = :ROCK if GameData::Type.exists?(:ROCK)
-      when :Hail
+      when :Hail, :Snowstorm
         ret = :ICE if GameData::Type.exists?(:ICE)
       end
     end

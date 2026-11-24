@@ -226,7 +226,7 @@ class Battle::AI
       score -= 90 if user.pbOwnSide.effects[PBEffects::LightScreen] > 0
     #---------------------------------------------------------------------------
     when "StartWeakenDamageAgainstUserSideIfHail"
-      if user.pbOwnSide.effects[PBEffects::AuroraVeil] > 0 || user.effectiveWeather != :Hail
+      if user.pbOwnSide.effects[PBEffects::AuroraVeil] > 0 || ![:Hail, :Snowstorm].include?(user.effectiveWeather)
         score -= 90
       else
         score += 40

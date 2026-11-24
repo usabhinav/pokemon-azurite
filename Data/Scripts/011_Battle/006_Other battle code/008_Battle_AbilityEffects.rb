@@ -2053,7 +2053,7 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:CRYSTALSTINGER,
 Battle::AbilityEffects::DamageCalcFromUser.add(:WINTERSPIRIT,
   proc { |ability,user,target,move,mults,baseDmg,type|
     next if type != :GHOST
-    next if user.effectiveWeather != :Hail
+    next if ![:Hail, :Snowstorm].include?(user.effectiveWeather)
     mults[:final_damage_multiplier] *= 1.5
   }
 )
@@ -4074,7 +4074,7 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:WEATHERBENEFIT,
       stat = :SPECIAL_ATTACK
     when :Sandstorm
       stat = :DEFENSE
-    when :Hail
+    when :Hail, :Snowstorm
       stat = :SPECIAL_DEFENSE
     when :StrongWinds, :Windstorm
       stat = :SPEED

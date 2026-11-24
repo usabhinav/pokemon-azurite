@@ -917,20 +917,8 @@ class Battle::Move::RemoveWeatherAndEntryHazards < Battle::Move
       @battle.pbDisplay(_INTL("{1} cleared asteroids!", user.pbThis))
     end
     if @battle.field.weather != :None
-      case @battle.field.weather
-      when :Sun       then @battle.pbDisplay(_INTL("The sunlight faded."))
-      when :Rain      then @battle.pbDisplay(_INTL("The rain stopped."))
-      when :Sandstorm then @battle.pbDisplay(_INTL("The sandstorm subsided."))
-      when :Hail      then @battle.pbDisplay(_INTL("The hail stopped."))
-      when :ShadowSky then @battle.pbDisplay(_INTL("The shadow sky faded."))
-      when :Thunderstorm then @battle.pbDisplay(_INTL("The thunderstorm subsided."))	
-      when :Windstorm then @battle.pbDisplay(_INTL("The windstorm subsided."))
-      when :Firestorm then @battle.pbDisplay(_INTL("The firestorm subsided."))
-      end
-      @battle.field.weather = :None
       @battle.field.weatherDuration = 0
-      # Check for form changes caused by the weather changing
-      @battle.allBattlers.each { |battler| battler.pbCheckFormOnWeatherChange }
+      @battle.pbEndWeather
       # Start up the default weather
       @battle.pbStartWeather(nil, @battle.field.defaultWeather) if @battle.field.defaultWeather != :None
     end

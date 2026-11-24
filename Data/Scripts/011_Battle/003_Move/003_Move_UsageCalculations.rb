@@ -632,10 +632,10 @@ class Battle::Move
       if target.pbHasType?(:ROCK) && (pbSpecialMove?(user) || @function == "UseTargetSpDefInsteadOfTargetDefense") && @function != "UseTargetDefenseInsteadOfTargetSpDef"
         multipliers[:defense_multiplier] *= 1.5
       end
-      when :Snowstorm
-          if target.pbHasType?(:ICE) && pbPhysicalMove?(user)
-          multipliers[:defense_multiplier] *= 1.5
-       end
+    when :Snowstorm
+      if target.pbHasType?(:ICE) && pbPhysicalMove?(user)
+        multipliers[:defense_multiplier] *= 1.5
+      end
     end
     # Critical hits
     if target.damageState.critical

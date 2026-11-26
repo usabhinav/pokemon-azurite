@@ -4100,7 +4100,7 @@ Battle::AbilityEffects::EndOfRoundWeather.add(:WEATHERBENEFIT,
 Battle::AbilityEffects::EndOfRoundHealing.add(:HEALER,
   proc { |ability, battler, battle|
     next unless battle.pbRandom(100) < 30
-    battler.allAllies.each do |b|
+    battler.allAllies(true).each do |b|
       next if b.status == :NONE
       battle.pbShowAbilitySplash(battler)
       oldStatus = b.status
@@ -4266,7 +4266,7 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:ADDITION,
 
 Battle::AbilityEffects::EndOfRoundEffect.add(:BADDREAMS,
   proc { |ability, battler, battle|
-    battle.allOtherSideBattlers(battler.index).each do |b|
+    battle.allOtherSideBattlers(battler.index, true).each do |b|
       next if !b.near?(battler) || !b.asleep?
       battle.pbShowAbilitySplash(battler)
       next if !b.takesIndirectDamage?(Battle::Scene::USE_ABILITY_SPLASH)
@@ -4358,7 +4358,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SIGNALBOOST,
 
 Battle::AbilityEffects::EndOfRoundEffect.add(:ALLSEEING,
   proc { |ability,battler,battle|
-    battle.allOtherSideBattlers(battler.index).each do |b|
+    battle.allOtherSideBattlers(battler.index, true).each do |b|
       if b.near?(battler) && b.pbCanLowerStatStage?(:EVASION,battler)
         b.pbLowerStatStageByAbility(:EVASION,1,battler)
       end
@@ -4430,7 +4430,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:GLEAMINGGLARE,
     next if battle.pbRandom(100) >= 10
     # Validate if any opponents can be paralyzed
     targets = []
-    battler.eachOpposing(true) do |b|
+    battler.eachOpposing do |b|
       targets.push(b) if b.pbCanParalyze?(battler, false)
     end
     next if targets.length == 0
@@ -4628,9 +4628,9 @@ Battle::AbilityEffects::OnSwitchIn.add(:COMATOSE,
 
 Battle::AbilityEffects::OnSwitchIn.add(:CURIOUSMEDICINE,
   proc { |ability, battler, battle, switch_in|
-    next if battler.allAllies.none? { |b| b.hasAlteredStatStages? }
+    next if battler.allAllies(true).none? { |b| b.hasAlteredStatStages? }
     battle.pbShowAbilitySplash(battler)
-    battler.allAllies.each do |b|
+    battler.allAllies(true).each do |b|
       next if !b.hasAlteredStatStages?
       b.pbResetStatStages
       if Battle::Scene::USE_ABILITY_SPLASH
@@ -4830,7 +4830,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:IMPOSTER,
 Battle::AbilityEffects::OnSwitchIn.add(:INTIMIDATE,
   proc { |ability, battler, battle, switch_in|
     battle.pbShowAbilitySplash(battler)
-    battle.allOtherSideBattlers(battler.index).each do |b|
+    battle.allOtherSideBattlers(battler.index, true).each do |b|
       next if !b.near?(battler)
       check_item = true
       if b.hasActiveAbility?(:CONTRARY)
@@ -5052,7 +5052,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:TEMPERMENTAL,
 Battle::AbilityEffects::OnSwitchIn.add(:MIRRORTYPE,
   proc { |ability, battler, battle, switch_in|
     targets = []
-    battle.allOtherSideBattlers(battler.index).each {|b| targets.push(b)}
+    battle.allOtherSideBattlers(battler.index, true).each {|b| targets.push(b)}
     if targets.length > 0
       target = targets[rand(targets.length)]
       battle.pbShowAbilitySplash(battler)
@@ -5145,7 +5145,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CRYSTALSURGE,
 
 Battle::AbilityEffects::OnSwitchIn.add(:HYPERAROMA,
   proc { |ability, battler, battle, switch_in|
-    battle.pbPriority(true, true).each do |b|
+    battle.pbPriority(true).each do |b|
       next if b.index == battler.index
       next if !b.pbCanAttract?(battler, false)
       next if b.hasActiveAbility?(:HYPERAROMA)
@@ -5224,7 +5224,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:ALIGNED,
 
 Battle::AbilityEffects::OnSwitchIn.add(:BULLY,
   proc { |ability, battler, battle, switch_in|
-    battle.allOtherSideBattlers(battler.index).each do |b|
+    battle.allOtherSideBattlers(battler.index, true).each do |b|
       next if b.pokemon.height > battler.pokemon.height
       next if b.pokemon.height == battler.pokemon.height && battler.pbWeight <= b.pbWeight
       next if !b.pbCanLowerStatStage?(:ATTACK, battler)
@@ -5374,7 +5374,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
 Battle::AbilityEffects::OnSwitchIn.add(:CHILLING,
   proc { |ability, battler, battle, switch_in|
     battle.pbShowAbilitySplash(battler)
-    battle.allOtherSideBattlers(battler.index).each do |b|
+    battle.allOtherSideBattlers(battler.index, true).each do |b|
       next if !b.near?(battler)
       b.pbLowerSpecialAttackStatStageChilling(battler)
       b.pbItemOnIntimidatedCheck # Copied from Intimidate
@@ -5630,7 +5630,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:SKILLSCAN,
   proc { |ability, battler, battle, switch_in|
     types = battler.pbTypes(true)
     showSprite = false
-    battler.eachOpposing(true) do |b|
+    battler.eachOpposing do |b|
       b.eachMove do |m|
         next if !m.pbDamagingMove?
         next if !Effectiveness.super_effective_type?(m.type, types[0], types[1], types[2])

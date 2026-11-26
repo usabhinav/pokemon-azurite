@@ -769,7 +769,7 @@ class Battle::Move::RemoveUserBindingAndEntryHazards < Battle::Move::StatUpMove
     if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
       user.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
       @battle.pbDisplay(_INTL("{1} blew away volt spikes!", user.pbThis))
-      @battle.eachSameSideBattler(target.index, true) do |t|
+      @battle.eachSameSideBattler(target.index) do |t|
         if t.pbCanParalyze?(user, false, self)
           t.pbParalyze(user)
         end
@@ -1065,7 +1065,7 @@ class Battle::Move::UserSwapsPositionsWithAlly < Battle::Move
     numTargets = 0
     @idxAlly = -1
     idxUserOwner = @battle.pbGetOwnerIndexFromBattlerIndex(user.index)
-    user.allAllies.each do |b|
+    user.allAllies(true).each do |b|
       next if @battle.pbGetOwnerIndexFromBattlerIndex(b.index) != idxUserOwner
       next if !b.near?(user)
       numTargets += 1

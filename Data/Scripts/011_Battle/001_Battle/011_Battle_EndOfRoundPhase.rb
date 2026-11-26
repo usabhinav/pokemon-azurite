@@ -296,7 +296,7 @@ class Battle
     # Beacon
     priority.each do |battler|
       next if battler.effects[PBEffects::BeaconTurnCount] <= 0
-      battler.allAllies.each do |ally|
+      battler.allAllies(true).each do |ally|
         next if !ally.canHeal?
         ally.pbRecoverHP(ally.totalhp / 4)
         pbDisplay(_INTL("{1} basked in the glow of the beacon from {2}!", ally.pbThis, battler.pbThis(true)))

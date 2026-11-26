@@ -595,12 +595,12 @@ class Battle
   end
 
   def pbCheckGlobalBizarreBand
-    allBattlers.each { |b| return b if b.hasActiveItem?(:BIZARREBAND) && b.pbHasType?(:MYSTIC)}
+    allBattlers(true).each { |b| return b if b.hasActiveItem?(:BIZARREBAND) && b.pbHasType?(:MYSTIC)}
     return nil
   end
 
   def pbCheckGlobalCosmoCube
-    allBattlers.each { |b| return b if b.hasActiveItem?(:COSMOCUBE) && b.pbHasType?(:COSMIC)}
+    allBattlers(true).each { |b| return b if b.hasActiveItem?(:COSMOCUBE) && b.pbHasType?(:COSMIC)}
     return nil
   end
 
@@ -613,7 +613,7 @@ class Battle
   end
 
   def pbCheckAllyCosmoCube(idxBattler = 0, includeSelf = true)
-    allSameSideBattlers(idxBattler).each do |b|
+    allSameSideBattlers(idxBattler, true).each do |b|
       next if !includeSelf && b.index == idxBattler
       return b if b.hasActiveItem?(:COSMOCUBE) && b.pbHasType?(:COSMIC)
     end

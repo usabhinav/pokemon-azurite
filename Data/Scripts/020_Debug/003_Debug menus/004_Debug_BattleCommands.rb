@@ -40,7 +40,7 @@ MenuHandlers.add(:battle_debug_menu, :list_foe_battlers, {
   "effect"      => proc { |battle|
     battlers = []
     cmds = []
-    battle.allOtherSideBattlers.each do |b|
+    battle.allOtherSideBattlers(0, true).each do |b|
       battlers.push(b)
       cmds.push("[#{b.index}] #{b.name}")
     end

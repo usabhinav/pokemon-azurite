@@ -130,7 +130,7 @@ class Battle
       @choices[b.index][2].pbDisplayChargeMessage(b)
     end
     # Reverb Damage
-    pbPriority(false, true).each do |b|
+    pbPriority.each do |b|
       if b.effects[PBEffects::ReverbDamage] > 0
         # NOTE: I am not checking for Sound-type immunity here because it's not necessary.
         #       The only way for Reverb damage to build up is if the battler was hit by a

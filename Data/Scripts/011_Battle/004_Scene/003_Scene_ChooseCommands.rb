@@ -300,7 +300,7 @@ class Battle::Scene
       when 4   # Use on opposing battler (Poké Balls)
         idxTarget = -1
         if @battle.pbOpposingBattlerCount(idxBattler, true) == 1
-          @battle.allOtherSideBattlers(idxBattler).each { |b| idxTarget = b.index }
+          @battle.allOtherSideBattlers(idxBattler, true).each { |b| idxTarget = b.index }
           break if yield item.id, useType, idxTarget, -1, itemScene
         else
           wasTargeting = true

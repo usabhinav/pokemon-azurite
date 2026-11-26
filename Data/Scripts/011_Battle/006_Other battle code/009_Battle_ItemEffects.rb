@@ -348,7 +348,7 @@ Battle::ItemEffects::DamageTaken.add(:STENCHDOLL,
     next false if !battler.pbHasType?(:POISON)
     next false if battler.hp >= (battler.totalhp * 3) / 10
     battle.pbDisplay(_INTL("{1}'s {2} released a foul smell to the opposing team!", battler.pbThis, battler.itemName))
-    battler.eachOpposing(true) do |b|
+    battler.eachOpposing do |b|
       next if b.nil? || b.fainted?
       next if !b.pbCanPoison?(battler, true)
       b.pbPoison(battler)

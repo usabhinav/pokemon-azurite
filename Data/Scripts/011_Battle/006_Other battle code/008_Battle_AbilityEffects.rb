@@ -369,7 +369,7 @@ Battle::AbilityEffects::SpeedCalc.add(:PRODIGY,
     # Validate if any foes have higher total stats
     abilityTriggered = false
     userTotalStats = battler.getTotalStats
-    battler.eachOpposing do |b|
+    battler.eachOpposing(true) do |b|
       abilityTriggered = true if b.getTotalStats > userTotalStats
     end
     next mult if !abilityTriggered
@@ -1257,7 +1257,7 @@ proc { |ability, user, target, move, type, battle, show_message|
     if target.pbCanRaiseStatStage?(:SPECIAL_ATTACK,target)
       target.pbRaiseStatStageByAbility(:SPECIAL_ATTACK,1,target,false)
     end
-    target.eachAlly do |b|
+    target.eachAlly(true) do |b|
       if b.pbCanRaiseStatStage?(:SPECIAL_ATTACK,target)
         b.pbRaiseStatStageByAbility(:SPECIAL_ATTACK,1,target,false)
       end
@@ -2043,7 +2043,7 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:PRODIGY,
     # Validate if any foes have higher total stats
     abilityTriggered = false
     userTotalStats = user.getTotalStats
-    user.eachOpposing do |b|
+    user.eachOpposing(true) do |b|
       abilityTriggered = true if b.getTotalStats > userTotalStats
     end
     next if !abilityTriggered
@@ -4430,7 +4430,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:GLEAMINGGLARE,
     next if battle.pbRandom(100) >= 10
     # Validate if any opponents can be paralyzed
     targets = []
-    battler.eachOpposing do |b|
+    battler.eachOpposing(true) do |b|
       targets.push(b) if b.pbCanParalyze?(battler, false)
     end
     next if targets.length == 0
@@ -5080,7 +5080,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:MYSTERYTYPE,
 Battle::AbilityEffects::OnSwitchIn.add(:RETEXTURING,
   proc { |ability, battler, battle, switch_in|
     opps = []
-    battler.eachOpposing do |b|
+    battler.eachOpposing(true) do |b|
       opps.push(b)
     end
     next if opps.length == 0
@@ -5272,7 +5272,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:OUTMATCH,
   proc { |ability, battler, battle, switch_in|
     next if !battler.pbCanRaiseStatStage?(:SPEED, battler)
     statIncrement = 1
-    battler.eachOpposing do |b|
+    battler.eachOpposing(true) do |b|
       next if b.pbSpeed <= battler.pbSpeed
       # Enemy is faster
       statIncrement = 2
@@ -5499,7 +5499,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLOAKCONTROL,
       # Intentionally keeps duplicates. For example, in a double battle against two part Fire-types, it is presumably better to
       # resist Fire than one of the other types.
       opposing_types = []
-      battler.eachOpposing do |b|
+      battler.eachOpposing(true) do |b|
         opposing_types.concat(b.pbTypes)
       end
       # Get list of types that resist the highest number of opposing types.
@@ -5630,7 +5630,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:SKILLSCAN,
   proc { |ability, battler, battle, switch_in|
     types = battler.pbTypes(true)
     showSprite = false
-    battler.eachOpposing do |b|
+    battler.eachOpposing(true) do |b|
       b.eachMove do |m|
         next if !m.pbDamagingMove?
         next if !Effectiveness.super_effective_type?(m.type, types[0], types[1], types[2])

@@ -143,7 +143,7 @@ class Battle::AI
     when "AddSpikesToFoeSide"
       if user.pbOpposingSide.effects[PBEffects::Spikes] >= 3
         score -= 90
-      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+      elsif user.allOpposing(true).none? { |b| @battle.pbCanChooseNonActive?(b.index) }
         score -= 90   # Opponent can't switch in any Pokemon
       else
         score += 10 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
@@ -153,7 +153,7 @@ class Battle::AI
     when "AddToxicSpikesToFoeSide"
       if user.pbOpposingSide.effects[PBEffects::ToxicSpikes] >= 2
         score -= 90
-      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+      elsif user.allOpposing(true).none? { |b| @battle.pbCanChooseNonActive?(b.index) }
         score -= 90  # Opponent can't switch in any Pokemon
       else
         score += 8 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
@@ -163,7 +163,7 @@ class Battle::AI
     when "AddStealthRocksToFoeSide"
       if user.pbOpposingSide.effects[PBEffects::StealthRock]
         score -= 90
-      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+      elsif user.allOpposing(true).none? { |b| @battle.pbCanChooseNonActive?(b.index) }
         score -= 90   # Opponent can't switch in any Pokemon
       else
         score += 10 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
@@ -178,7 +178,7 @@ class Battle::AI
     when "AddVoltSpikesToFoeSide"
       if user.pbOpposingSide.effects[PBEffects::VoltSpikes] >= 2
         score -= 90
-      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+      elsif user.allOpposing(true).none? { |b| @battle.pbCanChooseNonActive?(b.index) }
         score -= 90  # Opponent can't switch in any Pokemon
       else
         score += 8 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
@@ -188,7 +188,7 @@ class Battle::AI
   when "AddChargedSpikesToFoeSide"
     if user.pbOpposingSide.effects[PBEffects::ChargedSpikes]
       score -= 90
-    elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+    elsif user.allOpposing(true).none? { |b| @battle.pbCanChooseNonActive?(b.index) }
       score -= 90   # Opponent can't switch in any Pokemon
     else
       score += 10 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)
@@ -197,7 +197,7 @@ class Battle::AI
     when "AddBubbleTrapToFoeSide"
       if user.pbOpposingSide.effects[PBEffects::BubbleTrap] >= 3
         score -= 90
-      elsif user.allOpposing.none? { |b| @battle.pbCanChooseNonActive?(b.index) }
+      elsif user.allOpposing(true).none? { |b| @battle.pbCanChooseNonActive?(b.index) }
         score -= 90  # Opponent can't switch in any Pokemon
       else
         score += 8 * @battle.pbAbleNonActiveCount(user.idxOpposingSide)

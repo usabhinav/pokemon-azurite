@@ -238,7 +238,7 @@ class Battle::Battler
     if isSpecies?(:KINDESHU) && self.ability == :EFFULGE
       threatened = self.hp <= self.totalhp / 4
       threatenedOpponent = nil
-      self.eachOpposing do |b|
+      self.eachOpposing(true) do |b|
         next if b.hp > b.totalhp / 4
         threatenedOpponent = b
         break

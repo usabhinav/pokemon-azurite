@@ -503,7 +503,7 @@ class Battle::Battler
     if !target.semiInvulnerable? && target.opposes?(user)
       # Get any Legendary ally with Portal Rebound active
       portal_rebound_legendary_ally = nil
-      target.eachAlly do |t|
+      target.eachAlly(true) do |t|
         next if !t.effects[PBEffects::PortalReboundActive]
         species_data = t.pokemon.species_data
         next if !species_data.has_flag?("Legendary") && !species_data.has_flag?("Mythical")

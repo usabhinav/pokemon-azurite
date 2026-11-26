@@ -427,7 +427,7 @@ class Battle
     party = []
     # Stores information if each party Pokemon is on the field or not
     ally_indices = Array.new(Settings::MAX_PARTY_SIZE, -1)
-    battler.eachAlly do |b|
+    battler.eachAlly(true) do |b|
       next if pbGetOwnerIndexFromBattlerIndex(b.index) != pbGetOwnerIndexFromBattlerIndex(idxBattler)
       ally_indices[b.pokemonIndex] = b.index # Stores value >= 0 at same index as party index
       battlers.push(b)

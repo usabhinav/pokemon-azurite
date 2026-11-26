@@ -365,7 +365,7 @@ class Battle::AI
       sum  = 0
       pkmn.moves.each do |m|
         next if m.base_damage == 0
-        @battle.battlers[idxBattler].eachOpposing do |b|
+        @battle.battlers[idxBattler].eachOpposing(true) do |b|
           bTypes = b.pbTypes(true)
           sum += Effectiveness.calculate(m.type, bTypes[0], bTypes[1], bTypes[2])
         end

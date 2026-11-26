@@ -190,7 +190,7 @@ class Battle::Move::LowerTargetAtkSpAtk1SwitchOutUser < Battle::Move::TargetMult
       next if switchedBattlers.include?(b.index)
       # Get any Legendary ally with Portal Rebound active
       portal_rebound_legendary_ally = nil
-      b.eachAlly do |t|
+      b.eachAlly(true) do |t|
         next if !t.effects[PBEffects::PortalReboundActive]
         species_data = t.pokemon.species_data
         next if !species_data.has_flag?("Legendary") && !species_data.has_flag?("Mythical")

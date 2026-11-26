@@ -424,7 +424,7 @@ class Battle::Battler
   # Update which Pokémon will gain Exp if this battler is defeated.
   def pbUpdateParticipants
     return if fainted? || !@battle.opposes?(@index)
-    allOpposing.each do |b|
+    allOpposing(true).each do |b|
       @participants.push(b.pokemonIndex) if !@participants.include?(b.pokemonIndex)
     end
   end

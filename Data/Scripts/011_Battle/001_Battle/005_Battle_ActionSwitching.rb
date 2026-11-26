@@ -316,11 +316,11 @@ class Battle
   def pbOnAllBattlersEnteringBattle
     pbCalculatePriority(true)
     battler_indices = []
-    allBattlers.each { |b| battler_indices.push(b.index) }
+    allBattlers(true).each { |b| battler_indices.push(b.index) }
     pbOnBattlerEnteringBattle(battler_indices)
     pbCalculatePriority
     # Check forms are correct
-    allBattlers.each { |b| b.pbCheckForm }
+    allBattlers(true).each { |b| b.pbCheckForm }
   end
 
   # Called when one or more Pokémon switch in. Does a lot of things, including
@@ -336,7 +336,7 @@ class Battle
     #       this resetting would prevent that from happening, so it is skipped
     #       and instead done earlier in def pbAttackPhaseSwitch.
     if !skip_event_reset
-      allBattlers.each do |b|
+      allBattlers(true).each do |b|
         b.droppedBelowHalfHP = false
         b.statsDropped = false
       end
@@ -416,7 +416,7 @@ class Battle
       break if b.pbAbilitiesOnDamageTaken
       break if b.pbItemsOnDamageTaken
     end
-    allBattlers.each do |b|
+    allBattlers(true).each do |b|
       b.droppedBelowHalfHP = false
       b.statsDropped = false
     end
@@ -428,7 +428,7 @@ class Battle
       @field.effects[PBEffects::AmuletCoin] = true
     end
     # Update battlers' participants (who will gain Exp/EVs when a battler faints)
-    allBattlers.each { |b| b.pbUpdateParticipants }
+    allBattlers(true).each { |b| b.pbUpdateParticipants }
   end
 
   def pbMessagesOnBattlerEnteringBattle(battler)
@@ -580,7 +580,7 @@ class Battle
 
   def endAirCarryForBattlerAndAllies(battler, turn_count, show_message = true)
     return if turn_count == 0
-    allSameSideBattlers(battler.index).each do |b|
+    allSameSideBattlers(battler.index, true).each do |b|
       b.effects[PBEffects::AirCarryUserIndex] = -1 if b.effects[PBEffects::AirCarryUserIndex] == battler.index
     end
     battler.effects[PBEffects::AirCarryTurnCount] = 0

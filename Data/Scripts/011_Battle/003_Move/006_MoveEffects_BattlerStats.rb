@@ -2485,7 +2485,7 @@ end
 #===============================================================================
 class Battle::Move::ResetAllBattlersStatStages < Battle::Move
   def pbMoveFailed?(user, targets)
-    if @battle.allBattlers.none? { |b| b.hasAlteredStatStages? }
+    if @battle.allBattlers(true).none? { |b| b.hasAlteredStatStages? }
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -2493,7 +2493,7 @@ class Battle::Move::ResetAllBattlersStatStages < Battle::Move
   end
 
   def pbEffectGeneral(user)
-    @battle.allBattlers.each { |b| b.pbResetStatStages }
+    @battle.allBattlers(true).each { |b| b.pbResetStatStages }
     @battle.pbDisplay(_INTL("All stat changes were eliminated!"))
   end
 end

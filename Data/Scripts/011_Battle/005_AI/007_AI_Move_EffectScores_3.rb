@@ -1593,7 +1593,7 @@ class Battle::AI
     when "TrapAllBattlersInBattleForOneTurn"
     #---------------------------------------------------------------------------
     when "TrapAllBattlersInBattleAndRaiseAllBattlersAtkSpAtk1ExceptForFightingTypesThen2"
-      score -= 90 if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
+      score -= 90 if @battle.allBattlers(true).any? { |b| b.effects[PBEffects::CageMatch] }
     #---------------------------------------------------------------------------
     when "PursueSwitchingFoe"
     #---------------------------------------------------------------------------

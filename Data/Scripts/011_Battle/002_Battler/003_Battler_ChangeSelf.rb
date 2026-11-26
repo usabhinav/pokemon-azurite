@@ -144,7 +144,7 @@ class Battle::Battler
     end
     # Air Carry
     if @effects[PBEffects::AirCarryTurnCount] > 0
-      @battle.allSameSideBattlers(@index).each do |b|
+      @battle.allSameSideBattlers(@index, true).each do |b|
         b.effects[PBEffects::AirCarryUserIndex] = -1 if b.effects[PBEffects::AirCarryUserIndex] == @index
       end
       @effects[PBEffects::AirCarryTurnCount] = 0

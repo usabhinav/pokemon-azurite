@@ -143,7 +143,7 @@ class Battle
     return if !@battlers[position_index] || @battlers[position_index].fainted? ||
               @battlers[position_index].effects[PBEffects::Commanding] >= 0   # No target
     moveUser = nil
-    allBattlers.each do |battler|
+    allBattlers(true).each do |battler|
       next if battler.opposes?(position.effects[PBEffects::FutureSightUserIndex])
       next if battler.pokemonIndex != position.effects[PBEffects::FutureSightUserPartyIndex]
       moveUser = battler
@@ -1076,7 +1076,7 @@ class Battle
           if @powerWithin[side][i] <= 0
             # If Pokemon is on field, uncrystallize with animation, else uncrystallize silently
             find_battler = nil
-            allSameSideBattlers(side).each do |b|
+            allSameSideBattlers(side, true).each do |b|
               find_battler = b if b.pokemonIndex == i
             end
             if find_battler
@@ -1149,7 +1149,7 @@ class Battle
     # Try to make Trace work, check for end of primordial weather
     priority.each { |battler| battler.pbContinualAbilityChecks }
     # Reset/count down battler-specific effects (no messages)
-    allBattlers.each do |battler|
+    allBattlers(true).each do |battler|
       battler.effects[PBEffects::BanefulBunker]    = false
       battler.effects[PBEffects::BarkArmor]        = false
       if Settings::MECHANICS_GENERATION >= 9

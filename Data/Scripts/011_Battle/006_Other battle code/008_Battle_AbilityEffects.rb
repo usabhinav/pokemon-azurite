@@ -3859,7 +3859,7 @@ Battle::AbilityEffects::OnEndOfUsingMove.add(:WONDERHARP,
   proc { |ability,user,targets,move,battle|
     next if move.calcType != :SOUND && !move.pbSoundMove?(user)
     battle.pbShowAbilitySplash(user)
-    battle.allSameSideBattlers(user.index).each do |b|
+    battle.allSameSideBattlers(user.index, true).each do |b|
       if b.pbCanRaiseStatStage?(:DEFENSE, user)
         b.pbRaiseStatStage(:DEFENSE, 1, user)
       end
@@ -4214,14 +4214,14 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:SOOTHINGSHINE,
   proc { |ability,battler,battle|
     # Validates if any battlers on same side need healing
     canHealAnyBattler = false
-    battle.allSameSideBattlers(battler.index).each do |b|
+    battle.allSameSideBattlers(battler.index, true).each do |b|
       canHealAnyBattler = true if b.canHeal?
     end
     next if !canHealAnyBattler
     # Ability effect
     battle.pbShowAbilitySplash(battler)
     healfactor = [:Sun, :HarshSun].include?(battle.pbWeather) ? 8 : 16
-    battle.allSameSideBattlers(battler.index).each do |b|
+    battle.allSameSideBattlers(battler.index, true).each do |b|
       next if !b.canHeal?
       if b.pbRecoverHP(b.totalhp/healfactor) > 0
         if Battle::Scene::USE_ABILITY_SPLASH
@@ -4239,14 +4239,14 @@ Battle::AbilityEffects::EndOfRoundHealing.add(:ADDITION,
   proc { |ability,battler,battle|
     # Validates if any battlers on same side need healing
     canHealAnyBattler = false
-    battle.allSameSideBattlers(battler.index).each do |b|
+    battle.allSameSideBattlers(battler.index, true).each do |b|
       canHealAnyBattler = true if b.canHeal?
     end
     next if !canHealAnyBattler
     # Ability effect
     battle.pbShowAbilitySplash(battler)
     healmult = battle.pbCheckAllyAbility(:SUBTRACTION, battler.index) ? 0.3 : 0.1
-    battle.allSameSideBattlers(battler.index).each do |b|
+    battle.allSameSideBattlers(battler.index, true).each do |b|
       next if !b.canHeal?
       if b.pbRecoverHP(b.totalhp * healmult) > 0
         if Battle::Scene::USE_ABILITY_SPLASH
@@ -4328,7 +4328,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SPEEDBOOST,
 
 Battle::AbilityEffects::EndOfRoundEffect.add(:SWEETDREAMS,
   proc { |ability,battler,battle|
-    battle.allSameSideBattlers(battler.index).each do |b|
+    battle.allSameSideBattlers(battler.index, true).each do |b|
       next if !b.near?(battler) || !b.asleep?
       next if !b.canHeal?
       battle.pbShowAbilitySplash(battler)
@@ -4396,7 +4396,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
     next if !battler.canHeal?
     # Get number of affected battlers
     battlerCount = 0
-    battle.allBattlers.each do |b|
+    battle.allBattlers(true).each do |b|
       next if b.index == battler.index
       next if !b.takesIndirectDamage?
       battlerCount += 1
@@ -4407,7 +4407,7 @@ Battle::AbilityEffects::EndOfRoundEffect.add(:SOULABSORB,
     hpDrain = totalHPDrain / battlerCount
     # Do damage and heal ability user
     battle.pbShowAbilitySplash(battler)
-    battle.allBattlers.each do |b|
+    battle.allBattlers(true).each do |b|
       next if b.index == battler.index
       next if !b.takesIndirectDamage?(Battle::Scene::USE_ABILITY_SPLASH)
       oldHP = b.hp
@@ -4493,7 +4493,7 @@ Battle::AbilityEffects::EndOfRoundGainItem.add(:PICKUP,
     foundItem = nil
     fromBattler = nil
     use = 0
-    battle.allBattlers.each do |b|
+    battle.allBattlers(true).each do |b|
       next if b.index == battler.index
       next if b.effects[PBEffects::PickupUse] <= use
       foundItem   = b.effects[PBEffects::PickupItem]
@@ -4883,7 +4883,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:NEUTRALIZINGGAS,
     battle.pbShowAbilitySplash(battler, true)
     battle.pbHideAbilitySplash(battler)
     battle.pbDisplay(_INTL("Neutralizing gas filled the area!"))
-    battle.allBattlers.each do |b|
+    battle.allBattlers(true).each do |b|
       # Slow Start - end all turn counts
       b.effects[PBEffects::SlowStart] = 0
       # Truant - let b move on its first turn after Neutralizing Gas disappears
@@ -4907,7 +4907,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:NEUTRALIZINGGAS,
     had_unnerve = battle.pbCheckGlobalAbility(:UNNERVE)
     battler.ability_id = :NEUTRALIZINGGAS
     if had_unnerve && !battle.pbCheckGlobalAbility(:UNNERVE)
-      battle.allBattlers.each { |b| b.pbItemsOnUnnerveEnding }
+      battle.allBattlers(true).each { |b| b.pbItemsOnUnnerveEnding }
     end
   }
 )
@@ -5119,7 +5119,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:FERTILEGIFTS,
   proc { |ability, battler, battle, switch_in|
     battle.pbShowAbilitySplash(battler)
     battle.pbDisplay(_INTL("{1} is ready to share its fertile gifts!", battler.pbThis))
-    battle.allSameSideBattlers(battler).each do |b|
+    battle.allSameSideBattlers(battler, true).each do |b|
       next if b.index != battler.index && !b.pbHasType?(:GRASS)
       if b.pbCanRaiseStatStage?(:ATTACK, battler)
         b.pbRaiseStatStage(:ATTACK, 1, battler)
@@ -5362,7 +5362,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CLEARINGFUMES,
     targetSide.effects[PBEffects::StickyWeb] = false
     targetSide.effects[PBEffects::AsteroidBelt] = 0
     # Clear all battlers' stat changes
-    battle.allBattlers.each do |b|
+    battle.allBattlers(true).each do |b|
       b.pbResetStatStages
     end
     battle.pbShowAbilitySplash(battler)
@@ -5615,7 +5615,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:SUBTRACTION,
       subtractionCount += 1 if b.hasActiveAbility?(:SUBTRACTION)
     end
     battle.pbShowAbilitySplash(battler)
-    battle.allSameSideBattlers(battler.index).each do |b|
+    battle.allSameSideBattlers(battler.index, true).each do |b|
       if subtractionCount <= b.effects[PBEffects::SubtractionTypes].length
         typeListString = b.effects[PBEffects::SubtractionTypes][0...subtractionCount].join(", ")
         battle.pbDisplay(_INTL("{1} lost its weakness(es) to the following type(s): {2}", b.pbThis, typeListString))

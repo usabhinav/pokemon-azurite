@@ -761,7 +761,7 @@ class Battle::Move::CureUserPartyStatus < Battle::Move
   def worksWithNoTargets?; return true; end
 
   def pbMoveFailed?(user, targets)
-    has_effect = @battle.allSameSideBattlers(user).any? { |b| b.status != :NONE }
+    has_effect = @battle.allSameSideBattlers(user, true).any? { |b| b.status != :NONE }
     if !has_effect
       has_effect = @battle.pbParty(user.index).any? { |pkmn| pkmn&.able? && pkmn.status != :NONE }
     end
@@ -808,7 +808,7 @@ class Battle::Move::CureUserPartyStatus < Battle::Move
     # Cure all Pokémon in battle on the user's side. For the benefit of the Gen
     # 5 version of this move, to make Pokémon out in battle get cured first.
     if pbTarget(user) == :UserSide
-      @battle.allSameSideBattlers(user).each do |b|
+      @battle.allSameSideBattlers(user, true).each do |b|
         pbAromatherapyHeal(b.pokemon, b) if b.status != :NONE
       end
     end
@@ -843,7 +843,7 @@ class Battle::Move::ForEachMemberInUserPartyPoisonMemberIfNotPoisonTypeElseCureM
   def worksWithNoTargets?; return true; end
 
   def pbMoveFailed?(user, targets)
-    has_effect = @battle.allSameSideBattlers(user).any? { |b| (b.pbHasType?(:POISON) && (b.status != :NONE || b.canHeal?)) || (!b.pbHasType?(:POISON) && b.pbCanPoison?(user, false, self)) }
+    has_effect = @battle.allSameSideBattlers(user, true).any? { |b| (b.pbHasType?(:POISON) && (b.status != :NONE || b.canHeal?)) || (!b.pbHasType?(:POISON) && b.pbCanPoison?(user, false, self)) }
     if !has_effect
       @battle.pbParty(user.index).each_with_index do |pkmn, i|
         next if !pkmn || !pkmn.able?
@@ -946,7 +946,7 @@ class Battle::Move::LoseHalfOfTotalHPAndHealPartyMembers < Battle::Move
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    has_effect = @battle.allSameSideBattlers(user).any? { |b| b.index != user.index && b.canHeal? }
+    has_effect = @battle.allSameSideBattlers(user, true).any? { |b| b.index != user.index && b.canHeal? }
     if !has_effect
       @battle.pbParty(user.index).each_with_index do |pkmn, i|
         next if !pkmn
@@ -962,7 +962,7 @@ class Battle::Move::LoseHalfOfTotalHPAndHealPartyMembers < Battle::Move
       return true
     end
     # Get count of Pokémon that would get a share of the user's HP.
-    count = @battle.allSameSideBattlers(user).count { |b| b.index != user.index && b.canHeal? }
+    count = @battle.allSameSideBattlers(user, true).count { |b| b.index != user.index && b.canHeal? }
     @battle.pbParty(user.index).each_with_index do |pkmn, i|
       next if !pkmn
       next if @battle.pbFindBattler(i, user)   # Skip Pokémon in battle
@@ -2466,7 +2466,7 @@ class Battle::Move::StartGravity < Battle::Move
   def pbEffectGeneral(user)
     @battle.field.effects[PBEffects::Gravity] = 5
     @battle.pbDisplay(_INTL("Gravity intensified!"))
-    @battle.allBattlers.each do |b|
+    @battle.allBattlers(true).each do |b|
       showMessage = false
       if b.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSky",
                             "TwoTurnAttackInvulnerableInSkyParalyzeTarget",

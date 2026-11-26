@@ -45,7 +45,7 @@ class Battle::Battler
     # Check if any other battler still has Crystal Energy active
     if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
       # Revert battlers on field
-      @battle.allBattlers.each do |b|
+      @battle.allBattlers(true).each do |b|
         if b.crystal? || b.crystalEqualizer?
           @battle.pbUnCrystallize(b.index)
         end
@@ -79,7 +79,7 @@ class Battle::Battler
     # Check if any other battler still has Crystal Energy active
     if self.ability == :CRYSTALENERGY && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
       # Revert battlers on field
-      @battle.allBattlers.each do |b|
+      @battle.allBattlers(true).each do |b|
         if b.crystal? || b.crystalEqualizer?
           @battle.pbUnCrystallize(b.index)
         end
@@ -274,7 +274,7 @@ class Battle::Battler
     # Negation
     if hasActiveAbility?(:NEGATION) && !@battle.pbCheckGlobalAbility(:CRYSTALENERGY)
       # Revert battlers on field
-      @battle.allBattlers.each do |b|
+      @battle.allBattlers(true).each do |b|
         next if b.index == self.index
         if b.mega? || b.megaEqualizer?
           @battle.pbUnMegaEvolve(b.index)
@@ -317,7 +317,7 @@ class Battle::Battler
     # Crystal Energy
     if hasActiveAbility?(:CRYSTALENERGY)
       # Crystallize battlers on field
-      @battle.allBattlers.each do |b|
+      @battle.allBattlers(true).each do |b|
         if (b.hasCrystalWithoutItemCheck? && !b.crystal?) || (b.item == :EQUALIZERC && !b.crystalEqualizer?)
           if b.mega? || b.megaEqualizer?
             side  = self.idxOwnSide

@@ -358,7 +358,7 @@ class Battle
 
   def pbAbleNonActiveCount(idxBattler = 0)
     party = pbParty(idxBattler)
-    inBattleIndices = allSameSideBattlers(idxBattler).map { |b| b.pokemonIndex }
+    inBattleIndices = allSameSideBattlers(idxBattler, true).map { |b| b.pokemonIndex }
     count = 0
     party.each_with_index do |pkmn, idxParty|
       next if !pkmn || !pkmn.able?
@@ -373,7 +373,7 @@ class Battle
   end
 
   def pbTeamAbleNonActiveCount(idxBattler = 0)
-    inBattleIndices = allSameSideBattlers(idxBattler).map { |b| b.pokemonIndex }
+    inBattleIndices = allSameSideBattlers(idxBattler, true).map { |b| b.pokemonIndex }
     count = 0
     eachInTeamFromBattlerIndex(idxBattler) do |pkmn, i|
       next if !pkmn || !pkmn.able?
@@ -591,7 +591,7 @@ class Battle
 
   # This method only counts the player's Pokémon, not a partner trainer's.
   def pbPlayerBattlerCount
-    return allSameSideBattlers.select { |b| b.pbOwnedByPlayer? }.length
+    return allSameSideBattlers(0, true).select { |b| b.pbOwnedByPlayer? }.length
   end
 
   def pbCheckGlobalBizarreBand
@@ -605,7 +605,7 @@ class Battle
   end
 
   def pbCheckAllyItem(item, idxBattler = 0, includeSelf = true)
-    allSameSideBattlers(idxBattler).each do |b|
+    allSameSideBattlers(idxBattler, true).each do |b|
       next if !includeSelf && b.index == idxBattler
       return b if b.hasActiveItem?(item)
     end
@@ -774,7 +774,7 @@ class Battle
                      PBEffects::SkyDrop,
                      PBEffects::SyrupBombUser,
                      PBEffects::TrappingUser]
-    allBattlers.each do |b|
+    allBattlers(true).each do |b|
       effectsToSwap.each do |i|
         next if b.effects[i] != idxA && b.effects[i] != idxB
         b.effects[i] = (b.effects[i] == idxA) ? idxB : idxA
@@ -789,7 +789,7 @@ class Battle
   # Returns the battler representing the Pokémon at index idxParty in its party,
   # on the same side as a battler with battler index of idxBattlerOther.
   def pbFindBattler(idxParty, idxBattlerOther = 0)
-    allSameSideBattlers(idxBattlerOther).each { |b| return b if b.pokemonIndex == idxParty }
+    allSameSideBattlers(idxBattlerOther, true).each { |b| return b if b.pokemonIndex == idxParty }
     return nil
   end
 
@@ -896,9 +896,9 @@ class Battle
       end
     end
     # Check for end of primordial weather, and weather-triggered form changes
-    allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
-    allBattlers.each { |b| b.pbAbilityOnWeatherChange }
-    allBattlers.each { |b| b.pbItemOnWeatherChange }
+    allBattlers(true).each { |b| b.pbCheckFormOnWeatherChange }
+    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange }
+    allBattlers(true).each { |b| b.pbItemOnWeatherChange }
     pbEndPrimordialWeather
   end
 
@@ -922,9 +922,9 @@ class Battle
     end
     @field.weather = :None
     # Check for form changes/abilities/items caused by the weather changing
-    allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
-    allBattlers.each { |b| b.pbAbilityOnWeatherChange }
-    allBattlers.each { |b| b.pbItemOnWeatherChange }
+    allBattlers(true).each { |b| b.pbCheckFormOnWeatherChange }
+    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange }
+    allBattlers(true).each { |b| b.pbItemOnWeatherChange }
   end
 
   def pbEndPrimordialWeather
@@ -949,9 +949,9 @@ class Battle
     end
     if @field.weather != oldWeather
       # Check for form changes caused by the weather changing
-      allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
-      allBattlers.each { |b| b.pbAbilityOnWeatherChange }
-      allBattlers.each { |b| b.pbItemOnWeatherChange }
+      allBattlers(true).each { |b| b.pbCheckFormOnWeatherChange }
+      allBattlers(true).each { |b| b.pbAbilityOnWeatherChange }
+      allBattlers(true).each { |b| b.pbItemOnWeatherChange }
       # Start up the default weather
       pbStartWeather(nil, @field.defaultWeather) if @field.defaultWeather != :None
     end
@@ -1017,15 +1017,15 @@ class Battle
         pbDisplay(_INTL("The battlefield crystallized!"))
       when :Icy
         pbDisplay(_INTL("The ground turned to ice!"))
-        allBattlers.each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
+        allBattlers(true).each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
       when :Sticky
         pbDisplay(_INTL("The battlefield got gross and sticky!"))
       end
     end
     # Check for abilities/items that trigger upon the terrain changing
-    allBattlers.each { |b| b.pbCheckFormOnTerrainChange }
-    allBattlers.each { |b| b.pbAbilityOnTerrainChange }
-    allBattlers.each { |b| b.pbItemOnTerrainChange }
+    allBattlers(true).each { |b| b.pbCheckFormOnTerrainChange }
+    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange }
+    allBattlers(true).each { |b| b.pbItemOnTerrainChange }
   end
 
   # This doesn't reinstate the default terrain. Itj ust handles what happens
@@ -1044,9 +1044,9 @@ class Battle
     end
     @field.terrain = :None
     # Check for form changes/abilities/items caused by the terrain changing
-    allBattlers.each { |b| b.pbCheckFormOnTerrainChange }
-    allBattlers.each { |b| b.pbAbilityOnTerrainChange }
-    allBattlers.each { |b| b.pbItemOnTerrainChange }
+    allBattlers(true).each { |b| b.pbCheckFormOnTerrainChange }
+    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange }
+    allBattlers(true).each { |b| b.pbItemOnTerrainChange }
   end
 
   def pbStartTerrainAbility(new_terrain, battler, message = nil)

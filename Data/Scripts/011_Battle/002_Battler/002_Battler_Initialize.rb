@@ -152,7 +152,7 @@ class Battle::Battler
     @battle.abilitiesUsedPerSwitchIn[idxOwnSide][@pokemonIndex].clear
     @effects[PBEffects::AllySwitchRate]      = 1
     @effects[PBEffects::Attract]             = -1
-    @battle.allBattlers.each do |b|   # Other battlers no longer attracted to self
+    @battle.allBattlers(true).each do |b|   # Other battlers no longer attracted to self
       b.effects[PBEffects::Attract] = -1 if b.effects[PBEffects::Attract] == @index
     end
     @effects[PBEffects::BanefulBunker]       = false
@@ -208,11 +208,11 @@ class Battle::Battler
     @effects[PBEffects::Instruct]            = false
     @effects[PBEffects::Instructed]          = false
     @effects[PBEffects::JawLock]             = -1
-    @battle.allBattlers.each do |b|   # Other battlers no longer blocked by self
+    @battle.allBattlers(true).each do |b|   # Other battlers no longer blocked by self
       b.effects[PBEffects::JawLock] = -1 if b.effects[PBEffects::JawLock] == @index
     end
     @effects[PBEffects::KingsShield]         = false
-    @battle.allBattlers.each do |b|   # Other battlers lose their lock-on against self
+    @battle.allBattlers(true).each do |b|   # Other battlers lose their lock-on against self
       next if b.effects[PBEffects::LockOn] == 0
       next if b.effects[PBEffects::LockOnPos] != @index
       b.effects[PBEffects::LockOn]    = 0
@@ -222,7 +222,7 @@ class Battle::Battler
     @effects[PBEffects::MagicBounce]         = false
     @effects[PBEffects::MagicCoat]           = false
     @effects[PBEffects::MeanLook]            = -1
-    @battle.allBattlers.each do |b|   # Other battlers no longer blocked by self
+    @battle.allBattlers(true).each do |b|   # Other battlers no longer blocked by self
       b.effects[PBEffects::MeanLook] = -1 if b.effects[PBEffects::MeanLook] == @index
     end
     @effects[PBEffects::MeFirst]             = false
@@ -238,12 +238,12 @@ class Battle::Battler
     @effects[PBEffects::NoRetreat]           = false
     @effects[PBEffects::Obstruct]            = false
     @effects[PBEffects::Octolock]            = -1
-    @battle.allBattlers.each do |b|   # Other battlers no longer locked by self
+    @battle.allBattlers(true).each do |b|   # Other battlers no longer locked by self
       b.effects[PBEffects::Octolock] = -1 if b.effects[PBEffects::Octolock] == @index
     end
     @effects[PBEffects::SyrupBomb]     = 0
     @effects[PBEffects::SyrupBombUser] = -1
-    @battle.allBattlers.each do |b|   # Other battlers no longer syruped by self
+    @battle.allBattlers(true).each do |b|   # Other battlers no longer syruped by self
       next if b.effects[PBEffects::SyrupBombUser] != @index
       b.effects[PBEffects::SyrupBomb]     = 0
       b.effects[PBEffects::SyrupBombUser] = -1
@@ -267,7 +267,7 @@ class Battle::Battler
     @effects[PBEffects::SaltCure]            = false
     @effects[PBEffects::Vulnerable]          = false
     @effects[PBEffects::SkyDrop]             = -1
-    @battle.allBattlers.each do |b|   # Other battlers no longer Sky Dropped by self
+    @battle.allBattlers(true).each do |b|   # Other battlers no longer Sky Dropped by self
       b.effects[PBEffects::SkyDrop] = -1 if b.effects[PBEffects::SkyDrop] == @index
     end
     @effects[PBEffects::SlowStart]           = 0
@@ -290,7 +290,7 @@ class Battle::Battler
     @effects[PBEffects::Trapping]            = 0
     @effects[PBEffects::TrappingMove]        = nil
     @effects[PBEffects::TrappingUser]        = -1
-    @battle.allBattlers.each do |b|   # Other battlers no longer trapped by self
+    @battle.allBattlers(true).each do |b|   # Other battlers no longer trapped by self
       next if b.effects[PBEffects::TrappingUser] != @index
       b.effects[PBEffects::Trapping]     = 0
       b.effects[PBEffects::TrappingUser] = -1
@@ -347,7 +347,7 @@ class Battle::Battler
     @effects[PBEffects::AirCarryUserIndex]   = -1
     @effects[PBEffects::DoomedSerenadeCount] = 0
     @effects[PBEffects::DoomedSerenadeUser]  = -1
-    @battle.allBattlers.each do |b|   # Other battlers no longer blocked by self
+    @battle.allBattlers(true).each do |b|   # Other battlers no longer blocked by self
       if b.effects[PBEffects::DoomedSerenadeUser] == @index
         b.effects[PBEffects::DoomedSerenadeCount] = 0
         b.effects[PBEffects::DoomedSerenadeUser] = -1

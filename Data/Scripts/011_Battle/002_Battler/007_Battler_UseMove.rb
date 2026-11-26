@@ -121,7 +121,7 @@ class Battle::Battler
     end
     @effects[PBEffects::GemConsumed] = nil
     @effects[PBEffects::ShellTrap]   = false
-    @battle.allBattlers.each { |b| b.pbContinualAbilityChecks }   # Trace, end primordial weathers
+    @battle.allBattlers(true).each { |b| b.pbContinualAbilityChecks }   # Trace, end primordial weathers
   end
 
   def pbConfusionDamage(msg)
@@ -488,7 +488,7 @@ class Battle::Battler
       user.lastMoveFailed = true
     else   # We have targets, or move doesn't use targets
       # Reset whole damage state, perform various success checks (not accuracy)
-      @battle.allBattlers.each do |b|
+      @battle.allBattlers(true).each do |b|
         b.droppedBelowHalfHP = false
         b.statsDropped = false
       end
@@ -662,7 +662,7 @@ class Battle::Battler
       user.pbFaint if user.fainted?
       # External/general effects after all hits. Eject Button, Shell Bell, etc.
       pbEffectsAfterMove(user, targets, move, realNumHits)
-      @battle.allBattlers.each do |b|
+      @battle.allBattlers(true).each do |b|
         b.droppedBelowHalfHP = false
         b.statsDropped = false
       end
@@ -672,7 +672,7 @@ class Battle::Battler
     # Gain Exp
     @battle.pbGainExp
     # Battle Arena only - update skills
-    @battle.allBattlers.each { |b| @battle.successStates[b.index].updateSkill }
+    @battle.allBattlers(true).each { |b| @battle.successStates[b.index].updateSkill }
     # Shadow Pokémon triggering Hyper Mode
     pbHyperMode if @battle.choices[@index][0] != :None   # Not if self is replaced
     # End of move usage

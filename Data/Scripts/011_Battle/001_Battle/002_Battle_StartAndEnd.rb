@@ -327,7 +327,7 @@ class Battle
       pbDisplay(_INTL("The battlefield remains crystallized!"))
     when :Icy
       pbDisplay(_INTL("Ice covers the ground!"))
-      allBattlers.each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
+      allBattlers(true).each { |b| b.pbRaiseStatStage(:SPEED, 1, nil) if b.pbHasType?(:ICE) && b.pbCanRaiseStatStage?(:SPEED) }
     when :Sticky
       pbDisplay(_INTL("The battlefield is sticky and gross!"))
     end

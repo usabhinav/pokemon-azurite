@@ -60,7 +60,7 @@ class Battle
       pbPursuit(b.index) if time_break_index.nil?
       return if @decision > 0
       # Switch Pokémon
-      allBattlers.each do |b|
+      allBattlers(true).each do |b|
         b.droppedBelowHalfHP = false
         b.statsDropped = false
       end

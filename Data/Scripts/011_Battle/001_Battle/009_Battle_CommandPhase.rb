@@ -235,12 +235,12 @@ class Battle
   def pbDebugMenu
     pbBattleDebug(self)
     @scene.pbRefreshEverything
-    allBattlers.each { |b| b.pbCheckFormOnWeatherChange }
-    allBattlers.each { |b| b.pbCheckFormOnTerrainChange }
+    allBattlers(true).each { |b| b.pbCheckFormOnWeatherChange }
+    allBattlers(true).each { |b| b.pbCheckFormOnTerrainChange }
     pbEndPrimordialWeather
-    allBattlers.each { |b| b.pbAbilityOnWeatherChange }
-    allBattlers.each { |b| b.pbAbilityOnTerrainChange }
-    allBattlers.each do |b|
+    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange }
+    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange }
+    allBattlers(true).each do |b|
       b.pbCheckFormOnMovesetChange
       b.pbCheckFormOnStatusChange
     end

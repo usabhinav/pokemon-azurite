@@ -73,7 +73,7 @@ class Battle::Battler
     end
     # Uproar immunity
     if newStatus == :SLEEP && !(hasActiveAbility?(:SOUNDPROOF) && !@battle.moldBreaker)
-      @battle.allBattlers.each do |b|
+      @battle.allBattlers(true).each do |b|
         next if b.effects[PBEffects::Uproar] == 0
         @battle.pbDisplay(_INTL("But the uproar kept {1} awake!", pbThis(true))) if showMessages
         return false
@@ -289,7 +289,7 @@ class Battle::Battler
     if affectedByTerrain? && [:Electric, :Misty].include?(@battle.field.terrain)
       return false
     end
-    if !hasActiveAbility?(:SOUNDPROOF) && @battle.allBattlers.any? { |b| b.effects[PBEffects::Uproar] > 0 }
+    if !hasActiveAbility?(:SOUNDPROOF) && @battle.allBattlers(true).any? { |b| b.effects[PBEffects::Uproar] > 0 }
       return false
     end
     if Battle::AbilityEffects.triggerStatusImmunityNonIgnorable(self.ability, self, :SLEEP)

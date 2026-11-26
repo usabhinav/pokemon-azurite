@@ -760,7 +760,7 @@ class Battle::Battler
   def itemActive?(ignoreFainted = false)
     return false if fainted? && !ignoreFainted
     return false if @effects[PBEffects::Embargo] > 0
-    return false if @battle.field.effects[PBEffects::MagicRoom] > 0 && !(@battle.allSameSideBattlers(@index).any? { |b| b.item == :COSMOCUBE && b.pbHasType?(:COSMIC) } )
+    return false if @battle.field.effects[PBEffects::MagicRoom] > 0 && !(@battle.allSameSideBattlers(@index, true).any? { |b| b.item == :COSMOCUBE && b.pbHasType?(:COSMIC) } )
     return false if @battle.corrosiveGas[@index % 2][@pokemonIndex]
     return false if hasActiveAbility?(:KLUTZ, ignoreFainted)
     return false if @battle.pbCheckGlobalAbility(:MAGICSHOW)
@@ -992,12 +992,12 @@ class Battle::Battler
     return true if @effects[PBEffects::Trapping] > 0
     return true if @effects[PBEffects::MeanLook] >= 0
     return true if @effects[PBEffects::JawLock] >= 0
-    return true if @battle.allBattlers.any? { |b| b.effects[PBEffects::JawLock] == @index }
+    return true if @battle.allBattlers(true).any? { |b| b.effects[PBEffects::JawLock] == @index }
     return true if @effects[PBEffects::Octolock] >= 0
     return true if @effects[PBEffects::Ingrain]
     return true if @effects[PBEffects::NoRetreat]
     return true if @battle.field.effects[PBEffects::FairyLock] > 0
-    return true if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
+    return true if @battle.allBattlers(true).any? { |b| b.effects[PBEffects::CageMatch] }
     return true if @battle.field.effects[PBEffects::FlameRing] > 0
     return true if @effects[PBEffects::DoomedSerenadeCount] > 0
     return true if @effects[PBEffects::HugCounter] > 0

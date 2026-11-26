@@ -1784,7 +1784,7 @@ class Battle::AI
     when "ResetAllBattlersStatStages"
       if skill >= PBTrainerAI.mediumSkill
         stages = 0
-        @battle.allBattlers.each do |b|
+        @battle.allBattlers(true).each do |b|
           totalStages = 0
           GameData::Stat.each_battle { |s| totalStages += b.stages[s.id] }
           if b.opposes?(user)

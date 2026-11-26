@@ -594,7 +594,7 @@ end
 #===============================================================================
 class Battle::Move::TrapAllBattlersInBattleAndRaiseAllBattlersAtkSpAtk1ExceptForFightingTypesThen2 < Battle::Move
   def pbMoveFailed?(user, targets)
-    if @battle.allBattlers.any? { |b| b.effects[PBEffects::CageMatch] }
+    if @battle.allBattlers(true).any? { |b| b.effects[PBEffects::CageMatch] }
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -602,7 +602,7 @@ class Battle::Move::TrapAllBattlersInBattleAndRaiseAllBattlersAtkSpAtk1ExceptFor
   end
 
   def pbEffectGeneral(user)
-    @battle.allBattlers.each do |b|
+    @battle.allBattlers(true).each do |b|
       increment = b.pbHasType?(:FIGHTING) ? 2 : 1
       showAnim = true
       [:ATTACK, :DEFENSE].each do |stat|

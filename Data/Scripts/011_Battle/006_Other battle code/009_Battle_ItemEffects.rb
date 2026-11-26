@@ -311,6 +311,7 @@ Battle::ItemEffects::WeightCalc.add(:FLOATSTONE,
 
 Battle::ItemEffects::DamageTaken.add(:RETREATORDER,
   proc { |ability, battler, move_user, battle|
+    next false if battler.effects[PBEffects::Commanding] >= 0
     next false if battler.effects[PBEffects::SkyDrop] >= 0 ||
             battler.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSkyTargetCannotAct")   # Sky Drop
     next false if battle.pbAllFainted?(battler.idxOpposingSide)
@@ -556,6 +557,7 @@ Battle::ItemEffects::HPHeal.add(:WIKIBERRY,
 #===============================================================================
 Battle::ItemEffects::OnStatLoss.add(:EJECTPACK,
   proc { |item, battler, move_user, battle|
+    next false if battler.effects[PBEffects::Commanding] >= 0
     next false if battler.effects[PBEffects::SkyDrop] >= 0 ||
                   battler.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSkyTargetCannotAct")   # Sky Drop
     next false if battle.pbAllFainted?(battler.idxOpposingSide)
@@ -837,7 +839,7 @@ Battle::ItemEffects::MoveImmunity.add(:LIGHTBATTERY,
     next false if ![:PLUSLE, :MINUN].include?(target.species)
     next false if type != :ELECTRIC
     battle.pbDisplay(_INTL("{1}'s {2} made {3} ineffective!", target.pbThis, target.itemName, move.name))
-    battle.eachSameSideBattler(target.index) do |b|
+    battle.eachSameSideBattler(target.index, true) do |b|
       if b.pbCanRaiseStatStage?(:ATTACK, b)
         b.pbRaiseStatStage(:ATTACK, 1, b)
       end
@@ -1902,6 +1904,8 @@ Battle::ItemEffects::AfterMoveUseFromTarget.add(:EJECTBUTTON,
     next if !switched_battlers.empty?
     next if battle.pbAllFainted?(battler.idxOpposingSide)
     next if !battle.pbCanChooseNonActive?(battler.index)
+    next if battler.effects[PBEffects::Commanding] >= 0 ||
+            battler.effects[PBEffects::CommandedBy] >= 0
     battle.pbCommonAnimation("UseItem", battler)
     battle.pbDisplay(_INTL("{1} is switched out with the {2}!", battler.pbThis, battler.itemName))
     battler.pbConsumeItem(true, false)

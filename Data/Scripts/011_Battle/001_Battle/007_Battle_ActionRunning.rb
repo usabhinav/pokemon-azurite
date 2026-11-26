@@ -6,6 +6,7 @@ class Battle
     return false if trainerBattle?
     battler = @battlers[idxBattler]
     return false if !@canRun && !battler.opposes?
+    return false if battler.effects[PBEffects::Commanding] >= 0 || battler.effects[PBEffects::CommandedBy] >= 0
     return true if battler.pbHasType?(:GHOST) && Settings::MORE_TYPE_EFFECTS
     return true if battler.abilityActive? &&
                    Battle::AbilityEffects.triggerCertainEscapeFromBattle(battler.ability, battler)

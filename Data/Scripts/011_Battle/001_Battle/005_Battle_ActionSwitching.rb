@@ -51,7 +51,7 @@ class Battle
     end
     # Check whether battler can switch out
     battler = @battlers[idxBattler]
-    return false if battler.effects[PBEffects::Commanding] >= 0
+    return false if battler.effects[PBEffects::Commanding] >= 0 || battler.effects[PBEffects::CommandedBy] >= 0
     return true if battler.fainted?
     # Unstable	
     return true if battler.hasActiveAbility?(:UNSTABLE) && !self.moldBreaker
@@ -411,7 +411,7 @@ class Battle
     end
     # Check for triggering of Emergency Exit/Wimp Out/Eject Pack (only one will
     # be triggered)
-    pbPriority(true).each do |b|
+    pbPriority(true, true).each do |b|
       break if b.pbItemOnStatDropped
       break if b.pbAbilitiesOnDamageTaken
       break if b.pbItemsOnDamageTaken

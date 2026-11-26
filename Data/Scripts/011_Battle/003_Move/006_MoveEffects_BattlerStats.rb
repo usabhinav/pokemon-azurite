@@ -3013,7 +3013,12 @@ class Battle::Move::RaiseUserAtkSpd1RemoveEntryHazardsAndSubstitutes < Battle::M
   end
 end
 #===============================================================================
-# Order Up
+# Increases one of the user's stats by 1 stage depending on the form of the
+# Commander Tatsugiri commanding the user. (Order Up)
+# NOTE: This move is affected by Sheer Force, but apparently the stat increase
+#       happens even if the user has Sheer Force. I'm treating this as a bug and
+#       keeping the stat increase as a regular additional effect which is
+#       negated by sheer Force.
 #===============================================================================
 class Battle::Move::RaiseUserStatDependingOnCommander1 < Battle::Move::StatUpMove
   def initialize(battle, move)
@@ -3023,28 +3028,15 @@ class Battle::Move::RaiseUserStatDependingOnCommander1 < Battle::Move::StatUpMov
 
   def pbOnStartUse(user, targets)
     return if user.effects[PBEffects::CommandedBy] < 0
-
-    commander = @battle.battlers[
-      user.effects[PBEffects::CommandedBy]
-    ]
-
-    case commander.form
-    when 0
-      @statUp[0] = :ATTACK
-    when 1
-      @statUp[0] = :DEFENSE
-    when 2
-      @statUp[0] = :SPEED
-    end
+    commander = @battle.battlers[user.effects[PBEffects::CommandedBy]]
+    @statUp[0] = [:ATTACK, :DEFENSE, :SPEED][commander.form]
   end
 
   def pbAdditionalEffect(user, target)
     return if @statUp[0].nil?
-
     if user.pbCanRaiseStatStage?(@statUp[0], user, self)
       user.pbRaiseStatStage(@statUp[0], @statUp[1], user)
     end
-
     @statUp[0] = nil
   end
 end

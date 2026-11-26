@@ -185,14 +185,14 @@ class Battle::Scene
   def loadPlayerPokemonBitmapsForRunnerMode
     if @battle.rules["skipplayersendout"]
       # player side battle bitmaps
-      @battle.eachSameSideBattler(0) do |b|
+      @battle.eachSameSideBattler(0, true) do |b|
         next if !@sprites["pokemon_#{b.index}"]
         @sprites["pokemon_#{b.index}"].setPokemonBitmap(b.pokemon, true)
         @sprites["pokemon_#{b.index}"].visible = true
         @sprites["pokemon_#{b.index}"].initializeAura if !@battle.auraTypeOfBattler(b.index).nil?
       end
       # renders databoxes
-      @battle.eachSameSideBattler(0) do |b|
+      @battle.eachSameSideBattler(0, true) do |b|
         next if !@sprites["dataBox_#{b.index}"]
         @sprites["dataBox_#{b.index}"].render
       end
@@ -305,12 +305,12 @@ class Battle::Scene
       end
     end
     if @battle.rules["skipplayersendout"]
-      @battle.eachSameSideBattler(0) do |b|
+      @battle.eachSameSideBattler(0, true) do |b|
         break if EliteBattle.get(:smAnim)
         playBattlerCry(b)
       end
       # makes databoxes for player side battlers appear
-      @battle.eachSameSideBattler(0) do |b|
+      @battle.eachSameSideBattler(0, true) do |b|
         next if !@sprites["dataBox_#{b.index}"]
         @sprites["dataBox_#{b.index}"].appear if !EliteBattle.get(:smAnim)
       end

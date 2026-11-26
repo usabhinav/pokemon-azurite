@@ -19,6 +19,8 @@ module Battle::DebugVariables
     PBEffects::Charge         => { name: "Charge number of rounds remaining",               default: 0 },
     PBEffects::ChoiceBand     => { name: "Move locked into by Choice items",                default: nil, type: :move },
     PBEffects::ColdSteelTurnCount => { name: "Cold Steel number of rounds remaining",       default: 0 },
+#    PBEffects::CommandedBy - not suitable for setting via debug
+#    PBEffects::Commanding - not suitable for setting via debug
     PBEffects::Confusion      => { name: "Confusion number of rounds remaining",            default: 0 },
 #    PBEffects::Counter - not suitable for setting via debug
 #    PBEffects::CounterTarget - not suitable for setting via debug

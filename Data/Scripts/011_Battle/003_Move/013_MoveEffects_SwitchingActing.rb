@@ -27,7 +27,8 @@ class Battle::Move::SwitchOutUserStatusMove < Battle::Move
         @battle.pbDisplay(_INTL("But it failed!"))
         return true
       end
-    elsif !@battle.pbCanChooseNonActive?(user.index)
+    elsif !@battle.pbCanChooseNonActive?(user.index) ||
+          user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -158,6 +159,7 @@ class Battle::Move::SwitchOutUserDamagingMove < Battle::Move
     end
     return if targetSwitched
     return if !@battle.pbCanChooseNonActive?(user.index)
+    return if user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0
     @battle.pbDisplay(_INTL("{1} went back to {2}!", user.pbThis,
                             @battle.pbGetOwnerName(user.index)))
     @battle.pbPursuit(user.index)
@@ -201,6 +203,7 @@ class Battle::Move::LowerTargetAtkSpAtk1SwitchOutUser < Battle::Move::TargetMult
     end
     return if switcher.fainted? || numHits == 0
     return if !@battle.pbCanChooseNonActive?(switcher.index)
+    return if user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0
     @battle.pbDisplay(_INTL("{1} went back to {2}!", switcher.pbThis,
                             @battle.pbGetOwnerName(switcher.index)))
     @battle.pbPursuit(switcher.index)
@@ -221,7 +224,8 @@ end
 #===============================================================================
 class Battle::Move::SwitchOutUserPassOnEffects < Battle::Move
   def pbMoveFailed?(user, targets)
-    if !@battle.pbCanChooseNonActive?(user.index)
+    if !@battle.pbCanChooseNonActive?(user.index) ||
+       user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -357,7 +361,8 @@ class Battle::Move::SwitchOutUserAndTargetStatusMove < Battle::Move::SwitchOutTa
         @battle.pbDisplay(_INTL("But it failed!"))
         return true
       end
-    elsif !@battle.pbCanChooseNonActive?(user.index)
+    elsif !@battle.pbCanChooseNonActive?(user.index) ||
+          user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -1199,45 +1204,52 @@ end
 class Battle::Move::UserMakeSubstituteSwitchOutUser < Battle::Move
   def pbMoveFailed?(user, targets)
     if user.effects[PBEffects::Substitute] > 0
-      @battle.pbDisplay(_INTL("{1} already has a substitute!", user.pbThis))
+      @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
-    @lifeCost = [(user.totalhp / 2).ceil, 1].max
-    @subLife = [(@lifeCost / 4).ceil, 1].max
-    if user.hp <= @lifeCost
-      @battle.pbDisplay(_INTL("But it does not have enough HP left to make a substitute!"))
+    @subLife = [(user.totalhp / 2.0).ceil, 1].max
+    if user.hp <= @subLife
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    if user.wild? || !@battle.pbCanChooseNonActive?(user.index)
+      @battle.pbDisplay(_INTL("But it failed!"))
+      return true
+    end
+    if user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0
+      @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
     return false
   end
   
   def pbOnStartUse(user, targets)
-    user.pbReduceHP(@lifeCost, false, false)
+    user.pbReduceHP(@subLife, false, false)
     user.pbItemHPHealCheck
   end
 
   def pbEffectGeneral(user)
     user.effects[PBEffects::Trapping]     = 0
     user.effects[PBEffects::TrappingMove] = nil
-    user.effects[PBEffects::Substitute]   = @subLife
-    @battle.pbDisplay(_INTL("{1} shed its tail to create a decoy!", user.pbThis))
+    user.effects[PBEffects::Substitute]   = @subLife / 2
+    @battle.pbDisplay(_INTL("{1} put in a substitute!", user.pbThis))
   end
 
   def pbEndOfMoveUsageEffect(user, targets, numHits, switchedBattlers)
-    return if user.fainted? || numHits == 0
-    return if !@battle.pbCanChooseNonActive?(user.index)
-    @battle.pbDisplay(_INTL("{1} went back to {2}!", user.pbThis, @battle.pbGetOwnerName(user.index)))
+    return if user.wild? || !@battle.pbCanChooseNonActive?(user.index)
+    @battle.pbDisplay(_INTL("{1} went back to {2}!", user.pbThis,
+                            @battle.pbGetOwnerName(user.index)))
     @battle.pbPursuit(user.index)
-    oldSub = user.effects[PBEffects::Substitute]
     return if user.fainted?
-    newPkmn = @battle.pbGetReplacementPokemonIndex(user.index)
+    newPkmn = @battle.pbGetReplacementPokemonIndex(user.index)   # Owner chooses
     return if newPkmn < 0
+    user.effects[PBEffects::ShedTail] = true   # Ensures substitute isn't lost
     @battle.pbRecallAndReplace(user.index, newPkmn)
-    @battle.pbClearChoice(user.index)
+    user.effects[PBEffects::ShedTail] = false
+    @battle.pbClearChoice(user.index)   # Replacement Pokémon does nothing this round
     @battle.moldBreaker = false
     @battle.pbOnBattlerEnteringBattle(user.index)
     switchedBattlers.push(user.index)
-    user.effects[PBEffects::Substitute] = oldSub
   end
 end
 

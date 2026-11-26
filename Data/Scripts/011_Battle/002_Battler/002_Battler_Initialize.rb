@@ -91,14 +91,6 @@ class Battle::Battler
   end
 
   def pbInitEffects(batonPass)
-    @battle.allBattlers.each do |b|
-      if b.effects[PBEffects::Commanding] == @index
-        b.effects[PBEffects::Commanding] = -1
-      end
-      if b.effects[PBEffects::CommandedBy] == @index
-        b.effects[PBEffects::CommandedBy] = -1
-      end
-    end
     if batonPass
       # These effects are passed on if Baton Pass is used, but they need to be
       # reapplied
@@ -172,6 +164,12 @@ class Battle::Battler
     @effects[PBEffects::DoubleShock]         = false
     @effects[PBEffects::Charge]              = 0
     @effects[PBEffects::ChoiceBand]          = nil
+    @effects[PBEffects::CommandedBy]         = -1
+    @effects[PBEffects::Commanding]          = -1
+    @battle.allBattlers(true).each do |b|
+      b.effects[PBEffects::CommandedBy] = -1 if b.effects[PBEffects::CommandedBy] == @index
+      b.effects[PBEffects::Commanding] = -1 if b.effects[PBEffects::Commanding] == @index
+    end
     @effects[PBEffects::Counter]             = -1
     @effects[PBEffects::CounterTarget]       = -1
     @effects[PBEffects::CudChewBerry]        = nil
@@ -384,8 +382,6 @@ class Battle::Battler
     @effects[PBEffects::ParadoxStat]         = nil
     @effects[PBEffects::BoosterEnergy]       = false
     @effects[PBEffects::GigatonHammer]       = false
-    @effects[PBEffects::CommandedBy]         = -1
-    @effects[PBEffects::Commanding]          = -1
     @effects[PBEffects::SupremeOverlord]     = 0
   end
 

@@ -147,30 +147,38 @@ class Battle::Battler
         break
       end
       if ally
+        @battle.scene.pbForceBattlerInvisibility(@index, false)   # In case semi-invulnerable
         @battle.pbShowAbilitySplash(self)
         @battle.pbCommonAnimation("Commander", self, ally)
-        @battle.pbDisplay(_INTL("{1} was swallowed by {2} and became {2}'s commander!", pbThis, ally.pbThis(true)))
+        @battle.scene.pbForceBattlerInvisibility(@index, true)
+        @battle.pbDisplay(_INTL("{1} was swallowed by {2} and became {2} commander!", pbThis, ally.pbOfThis(true)))
         @effects[PBEffects::Commanding] = ally.index
         ally.effects[PBEffects::CommandedBy] = @index
-        # Raise all five of Dondozo's stats by 2 stages.
-        [:ATTACK, :DEFENSE, :SPECIAL_ATTACK, :SPECIAL_DEFENSE, :SPEED].each do |stat|
-        next if !ally.pbCanRaiseStatStage?(stat, self)
-        ally.pbRaiseStatStage(stat, 2, self)
-     end
-       # Hide Tatsugiri's ability splash.
-       @battle.pbHideAbilitySplash(self)
-       # Clear Tatsugiri's current battle choice.
-       @battle.pbClearChoice(@index)
-       # Clear ongoing move effects.
-       @effects[PBEffects::Bide] = 0
-       @effects[PBEffects::HyperBeam] = 0
-       @effects[PBEffects::Outrage] = 0
-       @effects[PBEffects::Rollout] = 0
-       @effects[PBEffects::TwoTurnAttack] = nil
-       @effects[PBEffects::Uproar] = 0
-       @effects[PBEffects::Encore] = 0
-       @effects[PBEffects::EncoreMove] = nil
-       @currentMove = nil
+        # Reset various values
+        @battle.pbClearChoice(@index)
+        @effects[PBEffects::Bide] = 0
+        @effects[PBEffects::HyperBeam] = 0
+        @effects[PBEffects::Outrage] = 0
+        @effects[PBEffects::Rollout] = 0
+        @effects[PBEffects::TwoTurnAttack] = nil
+        @effects[PBEffects::Uproar] = 0
+        @currentMove = nil
+        pbBeginTurn(nil)   # To clear all temporary effects
+        @effects[PBEffects::Encore]     = 0
+        @effects[PBEffects::EncoreMove] = nil
+        @effects[PBEffects::BeakBlast] = false
+        @effects[PBEffects::GemConsumed] = nil
+        @effects[PBEffects::ShellTrap] = false
+        # Raise ally's stats
+        stat_ups = [:ATTACK, 2, :DEFENSE, 2, :SPECIAL_ATTACK, 2, :SPECIAL_DEFENSE, 2, :SPEED, 2]
+        show_anim = true
+        (stat_ups.length / 2).times do |i|
+          next if !ally.pbCanRaiseStatStage?(stat_ups[i * 2], self)
+          if ally.pbRaiseStatStage(stat_ups[i * 2], stat_ups[(i * 2) + 1], self, show_anim)
+            show_anim = false
+          end
+        end
+        @battle.pbHideAbilitySplash(self)
       end
     end
     # Crystal Energy switch in message

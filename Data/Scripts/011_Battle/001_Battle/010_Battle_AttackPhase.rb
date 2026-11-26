@@ -130,7 +130,7 @@ class Battle
       @choices[b.index][2].pbDisplayChargeMessage(b)
     end
     # Reverb Damage
-    pbPriority.each do |b|
+    pbPriority(false, true).each do |b|
       if b.effects[PBEffects::ReverbDamage] > 0
         # NOTE: I am not checking for Sound-type immunity here because it's not necessary.
         #       The only way for Reverb damage to build up is if the battler was hit by a
@@ -301,7 +301,7 @@ class Battle
     # Reset certain effects
     @battlers.each_with_index do |b, i|
       next if !b
-      b.turnCount += 1 if !b.fainted?
+      b.turnCount += 1 if !b.fainted? && b.effects[PBEffects::Commanding] < 0
       @successStates[i].clear
       if @choices[i][0] != :UseMove && @choices[i][0] != :Shift && @choices[i][0] != :SwitchOut
         b.effects[PBEffects::DestinyBond] = false

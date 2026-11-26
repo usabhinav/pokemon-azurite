@@ -47,7 +47,7 @@ class Battle::Battler
     end
     # Healing Crown (boosts healing amount from ALL effects (drain, self-healing, etc.) except items used from bags (ex. Potions))
     has_healing_crown = false
-    @battle.eachSameSideBattler(self.index) do |b|
+    @battle.eachSameSideBattler(self.index, true) do |b|
       next if from_bag
       has_healing_crown = true if b.pbHasType?(:LIGHT) && b.hasActiveItem?(:HEALINGCROWN)
     end
@@ -103,6 +103,15 @@ class Battle::Battler
     # Increase faint counter
     @pokemon.increase_faint_count if @pokemon
     @battle.sideFaintCounts[idxOwnSide] += 1
+    @battle.scene.pbForceBattlerInvisibility(@index, false)
+    if @effects[PBEffects::Commanding] >= 0
+      @effects[PBEffects::Commanding] = -1
+      @battle.battlers[@effects[PBEffects::Commanding]].effects[PBEffects::CommandedBy] = -1
+    elsif @effects[PBEffects::CommandedBy] >= 0
+      @battle.scene.pbForceBattlerInvisibility(@effects[PBEffects::CommandedBy], false)
+      @effects[PBEffects::CommandedBy] = -1
+      @battle.battlers[@effects[PBEffects::CommandedBy]].effects[PBEffects::Commanding] = -1
+    end
     # Shed Spikes Armor
     if @effects[PBEffects::SpikesArmor] > 0
       pbOwnSide.effects[PBEffects::Spikes] += [@effects[PBEffects::SpikesArmor], 3].min

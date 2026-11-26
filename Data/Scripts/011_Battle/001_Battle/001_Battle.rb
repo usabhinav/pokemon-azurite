@@ -552,42 +552,41 @@ class Battle
   # Iterate through battlers
   #=============================================================================
   # Unused
-  def eachBattler
-    @battlers.each { |b| yield b if b && !b.fainted? }
+  def eachBattler(with_commanders = false)
+    allBattlers(with_commanders).each { |b| yield b }
   end
 
-  def allBattlers
-    return @battlers.select { |b| b && !b.fainted? }
+  def allBattlers(with_commanders = false)
+    return @battlers.select { |b| b && !b.fainted? && (with_commanders || b.effects[PBEffects::Commanding] < 0) }
+  end
+
+  def eachSameSideBattler(idxBattler = 0, with_commanders = false)
+    allSameSideBattlers(idxBattler, with_commanders).each { |b| yield b }
+  end
+
+  def allSameSideBattlers(idxBattler = 0, with_commanders = false)
+    idxBattler = idxBattler.index if idxBattler.respond_to?("index")
+    return @battlers.select { |b| b && !b.fainted? && !b.opposes?(idxBattler) &&
+                                  (with_commanders || b.effects[PBEffects::Commanding] < 0) }
   end
 
   # Unused
-  def eachSameSideBattler(idxBattler = 0)
+  def eachOtherSideBattler(idxBattler = 0, with_commanders = false)
+    allOtherSideBattlers(idxBattler, with_commanders).each { |b| yield b }
+  end
+
+  def allOtherSideBattlers(idxBattler = 0, with_commanders = false)
     idxBattler = idxBattler.index if idxBattler.respond_to?("index")
-    @battlers.each { |b| yield b if b && !b.fainted? && !b.opposes?(idxBattler) }
+    return @battlers.select { |b| b && !b.fainted? && b.opposes?(idxBattler) &&
+                                  (with_commanders || b.effects[PBEffects::Commanding] < 0) }
   end
 
-  def allSameSideBattlers(idxBattler = 0)
-    idxBattler = idxBattler.index if idxBattler.respond_to?("index")
-    return @battlers.select { |b| b && !b.fainted? && !b.opposes?(idxBattler) }
+  def pbSideBattlerCount(idxBattler = 0, with_commanders = false)
+    return allSameSideBattlers(idxBattler, with_commanders).length
   end
 
-  # Unused
-  def eachOtherSideBattler(idxBattler = 0)
-    idxBattler = idxBattler.index if idxBattler.respond_to?("index")
-    @battlers.each { |b| yield b if b && !b.fainted? && b.opposes?(idxBattler) }
-  end
-
-  def allOtherSideBattlers(idxBattler = 0)
-    idxBattler = idxBattler.index if idxBattler.respond_to?("index")
-    return @battlers.select { |b| b && !b.fainted? && b.opposes?(idxBattler) }
-  end
-
-  def pbSideBattlerCount(idxBattler = 0)
-    return allSameSideBattlers(idxBattler).length
-  end
-
-  def pbOpposingBattlerCount(idxBattler = 0)
-    return allOtherSideBattlers(idxBattler).length
+  def pbOpposingBattlerCount(idxBattler = 0, with_commanders = false)
+    return allOtherSideBattlers(idxBattler, with_commanders).length
   end
 
   # This method only counts the player's Pokémon, not a partner trainer's.
@@ -762,6 +761,8 @@ class Battle
     #       can't change sides.
     effectsToSwap = [PBEffects::Attract,
                      PBEffects::BideTarget,
+                     PBEffects::CommandedBy,
+                     PBEffects::Commanding,
                      PBEffects::CounterTarget,
                      PBEffects::DoomedSerenadeUser,
                      PBEffects::JawLock,

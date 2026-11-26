@@ -141,7 +141,6 @@ class Battle::AI
       score += 30 if oppspeed > attspeed
     #---------------------------------------------------------------------------
     when "DoublePowerIfTargetLostHPThisTurn"
-      score += 20 if @battle.pbOpposingBattlerCount(user) > 1
     #---------------------------------------------------------------------------
     when "DoublePowerIfUserStatsLoweredThisTurn"
     #---------------------------------------------------------------------------
@@ -1402,6 +1401,7 @@ class Battle::AI
          "SwitchOutUserStatusMoveAndRaiseReplacementRandomStat2",
          "SwitchOutUserStatusMoveAndRecoverOneThirdOfTotalHP"
       if !@battle.pbCanChooseNonActive?(user.index) ||
+         user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0 ||
          @battle.pbTeamAbleNonActiveCount(user.index) > 1   # Don't switch in ace
         score -= 100
       else
@@ -1438,7 +1438,8 @@ class Battle::AI
       score += avg / 2
     #---------------------------------------------------------------------------
     when "SwitchOutUserPassOnEffects"
-      if @battle.pbCanChooseNonActive?(user.index)
+      if @battle.pbCanChooseNonActive?(user.index) &&
+         user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0
         score -= 40 if user.effects[PBEffects::Confusion] > 0
         total = 0
         GameData::Stat.each_battle { |s| total += user.stages[s.id] }
@@ -1537,6 +1538,7 @@ class Battle::AI
       end
       # User-related scores
       if !@battle.pbCanChooseNonActive?(user.index) ||
+         user.effects[PBEffects::Commanding] >= 0 || user.effects[PBEffects::CommandedBy] >= 0 ||
          @battle.pbTeamAbleNonActiveCount(user.index) > 1   # Don't switch in ace
         score -= 100
       else

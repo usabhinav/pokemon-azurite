@@ -42,19 +42,23 @@ ItemHandlers::CanUseInBattle.addIf(proc { |item| GameData::Item.get(item).is_pok
       scene.pbDisplay(_INTL("It's impossible to aim without being focused!")) if showMessages
       next false
     end
-    if battler.semiInvulnerable?
+    if battler.semiInvulnerable? || battler.effects[PBEffects::Commanding] >= 0
       scene.pbDisplay(_INTL("It's no good! It's impossible to aim at a Pokémon that's not in sight!")) if showMessages
+      next false
+    end
+    if battler.effects[PBEffects::CommandedBy] >= 0
+      scene.pbDisplay(_INTL("It's no good! It's impossible to aim unless there is only one Pokémon!")) if showMessages
       next false
     end
     # NOTE: The code below stops you from throwing a Poké Ball if there is more
     #       than one unfainted opposing Pokémon. (Snag Balls can be thrown in
     #       this case, but only in trainer battles, and the trainer will deflect
     #       them if they are trying to catch a non-Shadow Pokémon.)
-    if battle.pbOpposingBattlerCount > 1 && !(GameData::Item.get(item).is_snag_ball? && battle.trainerBattle?)
-      if battle.pbOpposingBattlerCount == 2
+    if battle.pbOpposingBattlerCount(0, true) > 1 && !(GameData::Item.get(item).is_snag_ball? && battle.trainerBattle?)
+      if battle.pbOpposingBattlerCount(0, true) == 2
         scene.pbDisplay(_INTL("It's no good! It's impossible to aim when there are two Pokémon!")) if showMessages
-      elsif showMessages
-        scene.pbDisplay(_INTL("It's no good! It's impossible to aim when there is more than one Pokémon!"))
+      else
+        scene.pbDisplay(_INTL("It's no good! It's impossible to aim when there is more than one Pokémon!")) if showMessages
       end
       next false
     end

@@ -511,6 +511,7 @@ class Battle::Scene::BattlerSprite < RPG::Sprite
   attr_accessor :index
   attr_accessor :selected
   attr_reader   :sideSize
+  attr_accessor :forceInvisible
 
   def initialize(viewport, sideSize, index, battleAnimations, battle)
     super(viewport)
@@ -557,7 +558,12 @@ class Battle::Scene::BattlerSprite < RPG::Sprite
 
   def visible=(value)
     @spriteVisible = value if !@updating   # For selection/targeting flashing
-    super
+    super(!@forceInvisible && value)
+  end
+
+  def forceInvisible=(value)
+    @forceInvisible = value
+    self.visible = true
   end
 
   # Set sprite's origin to bottom middle
@@ -644,6 +650,7 @@ class Battle::Scene::BattlerShadowSprite < RPG::Sprite
   attr_reader   :pkmn
   attr_accessor :index
   attr_accessor :selected
+  attr_reader   :forceInvisible
 
   def initialize(viewport, sideSize, index)
     super(viewport)
@@ -663,6 +670,15 @@ class Battle::Scene::BattlerShadowSprite < RPG::Sprite
 
   def width;  return (self.bitmap) ? self.bitmap.width : 0;  end
   def height; return (self.bitmap) ? self.bitmap.height : 0; end
+
+  def visible=(value)
+    super(!@forceInvisible && value)
+  end
+
+  def forceInvisible=(value)
+    @forceInvisible = value
+    self.visible = true
+  end
 
   # Set sprite's origin to centre
   def pbSetOrigin

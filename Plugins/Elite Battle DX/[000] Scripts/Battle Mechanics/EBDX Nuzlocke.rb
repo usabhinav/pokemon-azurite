@@ -282,7 +282,7 @@ class Battle
       evo = battler.nil? ? false : EliteBattle.checkEvoNuzlocke?(battler.displaySpecies) && data.include?(:DUPSCLAUSE)
       static = data.include?(:STATIC) && !$nonStaticEncounter
       shiny = false
-      eachOtherSideBattler(args[0]) do |b|
+      eachOtherSideBattler(args[0], true) do |b|
         shiny = true if data.include?(:SHINY) && b.shinyOrGlossy?
       end
       map = $PokemonGlobal.nuzlockeData[$game_map.map_id]

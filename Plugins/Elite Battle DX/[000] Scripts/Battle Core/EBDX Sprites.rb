@@ -63,6 +63,7 @@ class DynamicPokemonSprite
   attr_reader :loaded, :selected, :isSub, :pulse
   attr_reader :viewport, :pokemon, :species, :form
   attr_reader :battle
+  attr_reader :forceInvisible
   #-----------------------------------------------------------------------------
   #  class inspector
   #-----------------------------------------------------------------------------
@@ -259,7 +260,7 @@ class DynamicPokemonSprite
   #-----------------------------------------------------------------------------
   def visible=(val)
     return if @hidden
-    @sprite.visible = val
+    @sprite.visible = !@forceInvisible && val
     if @fp
       val = false if @hidden || @fainted
       for key in @fp.keys
@@ -268,10 +269,17 @@ class DynamicPokemonSprite
         else
           val = false if !@isShadow
         end
-        @fp[key].visible = val
+        @fp[key].visible = !@forceInvisible && val
       end
     end
     self.formatShadow
+  end
+  #-----------------------------------------------------------------------------
+  # force invisibility
+  #-----------------------------------------------------------------------------
+  def forceInvisible=(value)
+    @forceInvisible = value
+    self.visible = true
   end
   #-----------------------------------------------------------------------------
   # gets target center of battler sprite
@@ -552,7 +560,7 @@ class DynamicPokemonSprite
     @shadow.mirror = @sprite.mirror
     @shadow.angle = @sprite.angle
     # hides shadow if not toggled
-    @shadow.visible = false if !@showshadow || @noshadow
+    @shadow.visible = false if !@showshadow || @noshadow || @forceInvisible
   end
   #-----------------------------------------------------------------------------
   # initialize aura sprite

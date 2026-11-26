@@ -297,6 +297,7 @@ class Battle
       idxBattler += 1
       break if idxBattler >= @battlers.length
       next if !@battlers[idxBattler] || pbOwnedByPlayer?(idxBattler) != isPlayer
+      next if @battlers[idxBattler].effects[PBEffects::Commanding] >= 0
       next if @choices[idxBattler][0] != :None    # Action is forced, can't choose one
       next if !pbCanShowCommands?(idxBattler)   # Action is forced, can't choose one
       time_break_active_for_battler = time_break_indices&.include?(idxBattler)

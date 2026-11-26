@@ -148,7 +148,7 @@ class Battle::Move::PoisonTargetRemoveUserBindingAndEntryHazards < Battle::Move:
     if user.pbOwnSide.effects[PBEffects::VoltSpikes] > 0
       user.pbOwnSide.effects[PBEffects::VoltSpikes] = 0
       @battle.pbDisplay(_INTL("{1} blew away volt spikes!", user.pbThis))
-      @battle.eachSameSideBattler(target.index) do |t|
+      @battle.eachSameSideBattler(target.index, true) do |t|
         if t.pbCanParalyze?(user, false, self)
           t.pbParalyze(user)
         end
@@ -2422,6 +2422,7 @@ class Battle::Move::HitsTargetInSkyGroundsTarget < Battle::Move
                                "TwoTurnAttackInvulnerableInSkyParalyzeTarget")   # NOTE: Not Sky Drop.
       target.effects[PBEffects::TwoTurnAttack] = nil
       @battle.pbClearChoice(target.index) if !target.movedThisRound?
+      @battle.scene.pbForceBattlerInvisibility(target.index, false)
     end
     target.effects[PBEffects::MagnetRise]  = 0
     target.effects[PBEffects::MagnetRiseMove] = nil
@@ -2472,6 +2473,7 @@ class Battle::Move::StartGravity < Battle::Move
                             "TwoTurnAttackInvulnerableInSkyTargetCannotAct")
         b.effects[PBEffects::TwoTurnAttack] = nil
         @battle.pbClearChoice(b.index) if !b.movedThisRound?
+        @battle.scene.pbForceBattlerInvisibility(target.index, false)
         showMessage = true
       end
       if b.effects[PBEffects::MagnetRise] > 0 ||

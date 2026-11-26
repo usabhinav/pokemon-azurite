@@ -748,8 +748,8 @@ class Battle::Scene
             break if idxParty >= 0
           when 4, 9   # Use on opposing battler (Poké Balls)
             idxTarget = -1
-            if @battle.pbOpposingBattlerCount(idxBattler) == 1
-              @battle.eachOtherSideBattler(idxBattler) { |b| idxTarget = b.index }
+            if @battle.pbOpposingBattlerCount(idxBattler, true) == 1
+              @battle.eachOtherSideBattler(idxBattler, true) { |b| idxTarget = b.index }
               ret = item
               break if yield item.id, useType, idxTarget, -1, @bagWindow
             else

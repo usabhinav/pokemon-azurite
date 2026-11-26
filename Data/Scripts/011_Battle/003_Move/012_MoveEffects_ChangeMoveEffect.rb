@@ -510,9 +510,12 @@ end
 class Battle::Move::CounterDamagePlusHalf < Battle::Move::FixedDamageMove
   def pbAddTarget(targets, user)
     return if user.lastFoeAttacker.length == 0
-    lastAttacker = user.lastFoeAttacker.last
-    return if lastAttacker < 0 || !user.opposes?(lastAttacker)
-    user.pbAddTarget(targets, user, @battle.battlers[lastAttacker], self, false)
+    user.lastFoeAttacker.reverse_each do |party_index|
+      battler = @battle.pbFindBattler(party_index, user.index + 1)
+      next if !battler || battler.effects[PBEffects::Commanding] >= 0
+      user.pbAddTarget(targets, user, battler, self, false)
+      break
+    end
   end
 
   def pbMoveFailed?(user, targets)

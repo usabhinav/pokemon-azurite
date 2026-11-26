@@ -193,6 +193,12 @@ class Battle::Scene
     pbRefresh
   end
   #-----------------------------------------------------------------------------
+  #  hide battler (for Commander)
+  #-----------------------------------------------------------------------------
+  def pbForceBattlerInvisibility(idxBattler, value)
+    @sprites["pokemon_#{idxBattler}"].forceInvisible = value
+  end
+  #-----------------------------------------------------------------------------
 end
 #===============================================================================
 # fix issue for disappearing sprites

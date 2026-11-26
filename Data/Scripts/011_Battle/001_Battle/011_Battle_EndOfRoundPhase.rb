@@ -140,7 +140,8 @@ class Battle
     return if !position || position.effects[PBEffects::FutureSightCounter] == 0
     position.effects[PBEffects::FutureSightCounter] -= 1
     return if position.effects[PBEffects::FutureSightCounter] > 0
-    return if !@battlers[position_index] || @battlers[position_index].fainted?   # No target
+    return if !@battlers[position_index] || @battlers[position_index].fainted? ||
+              @battlers[position_index].effects[PBEffects::Commanding] >= 0   # No target
     moveUser = nil
     allBattlers.each do |battler|
       next if battler.opposes?(position.effects[PBEffects::FutureSightUserIndex])
@@ -702,7 +703,7 @@ class Battle
     return if @field.effects[effect] > 0
     pbDisplay(msg)
     if effect == PBEffects::MagicRoom
-      pbPriority(true).each do |battler|
+      pbPriority(true, true).each do |battler|
         battler.pbItemOnWeatherChange
         battler.pbItemOnTerrainChange
       end
@@ -786,7 +787,7 @@ class Battle
     end
     # Lava terrain passive damage
     if @field.terrain == :Lava
-      priority = pbPriority
+      priority = pbPriority(true, true)
       priority.each do |b|
         next if !b.affectedByTerrain?
         next if b.fainted?
@@ -911,8 +912,8 @@ class Battle
     PBDebug.log("[End of round]")
     @endOfRound = true
     @scene.pbBeginEndOfRoundPhase
-    pbCalculatePriority           # recalculate speeds
-    priority = pbPriority(true)   # in order of fastest -> slowest speeds only
+    pbCalculatePriority                 # recalculate speeds
+    priority = pbPriority(true, true)   # in order of fastest -> slowest speeds only
     # Weather
     pbEOREndWeather(priority)
     # Future Sight/Doom Desire/Light Missiles

@@ -114,6 +114,7 @@ class Battle::Scene
     sendOuts.each_with_index do |b, i|
       pkmn = @battle.battlers[b[0]].effects[PBEffects::Illusion] || b[1]
       pbChangePokemon(b[0], pkmn)
+      pbForceBattlerInvisibility(b[0], false)
       pbRefresh
       if @battle.opposes?(b[0])
         sendOutAnim = Animation::PokeballTrainerSendOut.new(
@@ -166,14 +167,16 @@ class Battle::Scene
   #=============================================================================
   def pbRecall(idxBattler)
     @briefMessage = false
-    # Recall animation
-    recallAnim = Animation::BattlerRecall.new(@sprites, @viewport, @battle.battlers[idxBattler])
-    loop do
-      recallAnim&.update
-      pbUpdate
-      break if recallAnim.animDone?
+    if !@sprites["pokemon_#{idxBattler}"].forceInvisible
+      # Recall animation
+      recallAnim = Animation::BattlerRecall.new(@sprites, @viewport, @battle.battlers[idxBattler])
+      loop do
+        recallAnim&.update
+        pbUpdate
+        break if recallAnim.animDone?
+      end
+      recallAnim.dispose
     end
-    recallAnim.dispose
     # Data box disappear animation
     dataBoxAnim = Animation::DataBoxDisappear.new(@sprites, @viewport, idxBattler)
     loop do
@@ -240,6 +243,7 @@ class Battle::Scene
   end
 
   def pbDamageAnimation(battler, effectiveness = 0)
+    return if @sprites["pokemon_#{battler.index}"].forceInvisible
     @briefMessage = false
     # Damage animation
     damageAnim = Animation::BattlerDamage.new(@sprites, @viewport, battler.index, effectiveness)
@@ -259,8 +263,10 @@ class Battle::Scene
     # Set up animations
     damageAnims = []
     targets.each do |t|
-      anim = Animation::BattlerDamage.new(@sprites, @viewport, t[0].index, t[2])
-      damageAnims.push(anim)
+      if !@sprites["pokemon_#{t[0].index}"].forceInvisible
+        anim = Animation::BattlerDamage.new(@sprites, @viewport, t[0].index, t[2])
+        damageAnims.push(anim)
+      end
       # Changed these two lines for Berserker Bracelet
       totalhp = t[0].pokemon.nil? ? t[0].totalhp : t[0].pokemon.totalhp
       @sprites["dataBox_#{t[0].index}"].animateHP(t[1], t[0].hp, totalhp)

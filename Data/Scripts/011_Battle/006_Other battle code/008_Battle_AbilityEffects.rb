@@ -465,7 +465,7 @@ Battle::AbilityEffects::OnHPDroppedBelowHalf.add(:EMERGENCYEXIT,
                   battler.inTwoTurnAttack?("TwoTurnAttackInvulnerableInSkyTargetCannotAct")   # Sky Drop
     # In wild battles
     if battle.wildBattle?
-      next false if battler.opposes? && battle.pbSideBattlerCount(battler.index) > 1
+      next false if battler.opposes? && battle.pbSideBattlerCount(battler.index, true) > 1
       next false if !battle.pbCanRun?(battler.index)
       battle.pbShowAbilitySplash(battler, true)
       battle.pbHideAbilitySplash(battler)
@@ -5145,7 +5145,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:CRYSTALSURGE,
 
 Battle::AbilityEffects::OnSwitchIn.add(:HYPERAROMA,
   proc { |ability, battler, battle, switch_in|
-    battle.pbPriority(true).each do |b|
+    battle.pbPriority(true, true).each do |b|
       next if b.index == battler.index
       next if !b.pbCanAttract?(battler, false)
       next if b.hasActiveAbility?(:HYPERAROMA)

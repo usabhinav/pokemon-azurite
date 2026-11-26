@@ -299,7 +299,7 @@ class Battle::Scene
         itemScene.pbFadeInScene
       when 4   # Use on opposing battler (Poké Balls)
         idxTarget = -1
-        if @battle.pbOpposingBattlerCount(idxBattler) == 1
+        if @battle.pbOpposingBattlerCount(idxBattler, true) == 1
           @battle.allOtherSideBattlers(idxBattler).each { |b| idxTarget = b.index }
           break if yield item.id, useType, idxTarget, -1, itemScene
         else
@@ -360,7 +360,9 @@ class Battle::Scene
         showName = @battle.pbMoveCanTarget?(i, idxBattler, target_data)
       end
       next nil if !showName
-      next (@battle.battlers[i].fainted?) ? "" : @battle.battlers[i].name
+      next "" if @battle.battlers[i].fainted? ||
+                 @battle.battlers[i].effects[PBEffects::Commanding] >= 0
+      next @battle.battlers[i].name
     end
     return texts
   end
@@ -381,10 +383,12 @@ class Battle::Scene
       end
     when :NearFoe, :NearOther
       indices = @battle.pbGetOpposingIndicesInOrder(idxBattler)
+      indices.delete_if { |i| @battle.battlers[i]&.effects[PBEffects::Commanding] >= 0 }
       indices.each { |i| return i if @battle.nearBattlers?(i, idxBattler) && !@battle.battlers[i].fainted? }
       indices.each { |i| return i if @battle.nearBattlers?(i, idxBattler) }
     when :Foe, :Other
       indices = @battle.pbGetOpposingIndicesInOrder(idxBattler)
+      indices.delete_if { |ind| @battle.battlers[ind]&.effects[PBEffects::Commanding] >= 0 }
       indices.each { |i| return i if !@battle.battlers[i].fainted? }
       return indices.first if !indices.empty?
     end

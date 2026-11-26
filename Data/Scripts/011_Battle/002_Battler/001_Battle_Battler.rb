@@ -1153,26 +1153,24 @@ class Battle::Battler
 
   # Yields each unfainted ally Pokémon.
   # Unused
-  def eachAlly
-    @battle.battlers.each do |b|
-      yield b if b && !b.fainted? && !b.opposes?(@index) && b.index != @index
-    end
+  def eachAlly(with_commanders = false)
+    allAllies(with_commanders).each { |b| yield b }
   end
 
   # Returns an array containing all unfainted ally Pokémon.
-  def allAllies
-    return @battle.allSameSideBattlers(@index).reject { |b| b.index == @index }
+  def allAllies(with_commanders = false)
+    return @battle.allSameSideBattlers(@index, with_commanders).reject { |b| b.index == @index }
   end
 
   # Yields each unfainted opposing Pokémon.
   # Unused
-  def eachOpposing
-    @battle.battlers.each { |b| yield b if b && !b.fainted? && b.opposes?(@index) }
+  def eachOpposing(with_commanders = false)
+    allOpposing(with_commanders).each { |b| yield b }
   end
 
   # Returns an array containing all unfainted opposing Pokémon.
-  def allOpposing
-    return @battle.allOtherSideBattlers(@index)
+  def allOpposing(with_commanders = false)
+    return @battle.allOtherSideBattlers(@index, with_commanders)
   end
 
   # Returns the battler that is most directly opposite to self. unfaintedOnly is

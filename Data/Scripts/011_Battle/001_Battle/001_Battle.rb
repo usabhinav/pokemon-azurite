@@ -867,6 +867,7 @@ class Battle
   # Used for causing weather by a move or by an ability.
   def pbStartWeather(user, new_weather, fixedDuration = false, showAnim = true, message = nil)
     return if !pbCanStartWeather?(new_weather)
+    old_weather = @field.weather
     @field.weather = new_weather
     duration = (fixedDuration) ? 5 : -1
     if duration > 0 && user && user.itemActive?
@@ -897,8 +898,8 @@ class Battle
     end
     # Check for end of primordial weather, and weather-triggered form changes
     allBattlers(true).each { |b| b.pbCheckFormOnWeatherChange }
-    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange }
-    allBattlers(true).each { |b| b.pbItemOnWeatherChange }
+    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange(old_weather) }
+    allBattlers(true).each { |b| b.pbItemOnWeatherChange(old_weather) }
     pbEndPrimordialWeather
   end
 
@@ -923,12 +924,12 @@ class Battle
     @field.weather = :None
     # Check for form changes/abilities/items caused by the weather changing
     allBattlers(true).each { |b| b.pbCheckFormOnWeatherChange }
-    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange }
-    allBattlers(true).each { |b| b.pbItemOnWeatherChange }
+    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange(old_weather) }
+    allBattlers(true).each { |b| b.pbItemOnWeatherChange(old_weather) }
   end
 
   def pbEndPrimordialWeather
-    oldWeather = @field.weather
+    old_weather = @field.weather
     # End Primordial Sea, Desolate Land, Delta Stream
     case @field.weather
     when :HarshSun
@@ -947,11 +948,11 @@ class Battle
         pbDisplay("The mysterious air current has dissipated!")
       end
     end
-    if @field.weather != oldWeather
+    if @field.weather != old_weather
       # Check for form changes caused by the weather changing
       allBattlers(true).each { |b| b.pbCheckFormOnWeatherChange }
-      allBattlers(true).each { |b| b.pbAbilityOnWeatherChange }
-      allBattlers(true).each { |b| b.pbItemOnWeatherChange }
+      allBattlers(true).each { |b| b.pbAbilityOnWeatherChange(old_weather) }
+      allBattlers(true).each { |b| b.pbItemOnWeatherChange(old_weather) }
       # Start up the default weather
       pbStartWeather(nil, @field.defaultWeather) if @field.defaultWeather != :None
     end
@@ -989,6 +990,7 @@ class Battle
 
   def pbStartTerrain(user, new_terrain, fixedDuration = true, message = nil)
     return if !pbCanStartTerrain?(new_terrain)
+    old_terrain = @field.terrain
     @field.terrain = new_terrain
     duration = (fixedDuration) ? 5 : -1
     if duration > 0 && user && user.itemActive?
@@ -1024,8 +1026,8 @@ class Battle
     end
     # Check for abilities/items that trigger upon the terrain changing
     allBattlers(true).each { |b| b.pbCheckFormOnTerrainChange }
-    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange }
-    allBattlers(true).each { |b| b.pbItemOnTerrainChange }
+    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange(old_terrain) }
+    allBattlers(true).each { |b| b.pbItemOnTerrainChange(old_terrain) }
   end
 
   # This doesn't reinstate the default terrain. Itj ust handles what happens
@@ -1045,8 +1047,8 @@ class Battle
     @field.terrain = :None
     # Check for form changes/abilities/items caused by the terrain changing
     allBattlers(true).each { |b| b.pbCheckFormOnTerrainChange }
-    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange }
-    allBattlers(true).each { |b| b.pbItemOnTerrainChange }
+    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange(old_terrain) }
+    allBattlers(true).each { |b| b.pbItemOnTerrainChange(old_terrain) }
   end
 
   def pbStartTerrainAbility(new_terrain, battler, message = nil)

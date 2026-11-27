@@ -540,8 +540,8 @@ class Battle
     # Embargo
     pbEORCountDownBattlerEffect(priority, PBEffects::Embargo) { |battler|
       pbDisplay(_INTL("{1} can use items again!", battler.pbThis))
-      battler.pbItemOnWeatherChange
-      battler.pbItemOnTerrainChange
+      battler.pbItemOnWeatherChange(@field.weather)
+      battler.pbItemOnTerrainChange(@field.terrain)
     }
     # Yawn
     pbEORCountDownBattlerEffect(priority, PBEffects::Yawn) { |battler|
@@ -704,8 +704,8 @@ class Battle
     pbDisplay(msg)
     if effect == PBEffects::MagicRoom
       pbPriority(true, true).each do |battler|
-        battler.pbItemOnWeatherChange
-        battler.pbItemOnTerrainChange
+        battler.pbItemOnWeatherChange(@field.weather)
+        battler.pbItemOnTerrainChange(@field.terrain)
       end
     end
     @scene.invertBG if effect == PBEffects::InverseRoom

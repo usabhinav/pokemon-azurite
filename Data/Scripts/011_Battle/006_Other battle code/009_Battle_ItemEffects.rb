@@ -42,6 +42,7 @@ module Battle::ItemEffects
   TerrainExtender                 = ItemHandlerHash.new   # Terrain Extender
   OnWeatherChange                 = ItemHandlerHash.new
   OnTerrainChange                 = ItemHandlerHash.new
+  OnTrickRoomStarted              = ItemHandlerHash.new   # Room Service
   # End Of Round
   EndOfRoundHealing               = ItemHandlerHash.new
   EndOfRoundEffect                = ItemHandlerHash.new
@@ -201,6 +202,10 @@ module Battle::ItemEffects
 
   def self.triggerOnTerrainChange(item, battler, battle, old_terrain)
     return trigger(OnTerrainChange, item, battler, battle, old_terrain)
+  end
+
+  def self.triggerOnTrickRoomStarted(item, battler, battle)
+    OnTrickRoomStarted.trigger(item, battler, battle)
   end
 
   #=============================================================================
@@ -2312,11 +2317,67 @@ Battle::ItemEffects::TerrainExtender.add(:TERRAINEXTENDER,
 )
 
 #===============================================================================
+# OnWeatherChange handlers
+#===============================================================================
+
+Battle::ItemEffects::OnWeatherChange.add(:BOOSTERENERGY,
+  proc { |item, battler, battle, old_weather|
+    next false if battler.effects[PBEffects::Transform]
+    next false if battler.effects[PBEffects::ParadoxStat]
+    next false if battler.effects[PBEffects::BoosterEnergy]
+    next false if !battler.hasActiveAbility?(:PROTOSYNTHESIS)
+    next false if ![:Sun, :HarshSun].include?(battle.pbWeather)
+    best = nil
+    GameData::Stat.each_main_battle do |stat|
+      value = battler.stat_with_stages(stat.id)
+      best = [stat.id, value] if !best || value > best[1]
+    end
+    battler.effects[PBEffects::ParadoxStat] = best[0]
+    battler.effects[PBEffects::BoosterEnergy] = true
+    battle.pbCommonAnimation("UseItem", battler)
+    battle.pbDisplay(_INTL("The {1} was used up...", GameData::Item.get(item).name))
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} used its {2} to activate {3}!",
+                           battler.pbThis, GameData::Item.get(item).name, battler.abilityName))
+    battle.pbDisplay(_INTL("{1} {2} was heightened!", battler.pbOfThis, GameData::Stat.get(best[0]).name))
+    battle.pbHideAbilitySplash(battler)
+    battler.pbHeldItemTriggered(item)
+    next true
+  }
+)
+
+#===============================================================================
 # OnTerrainChange handlers
 #===============================================================================
 
+Battle::ItemEffects::OnTerrainChange.add(:BOOSTERENERGY,
+  proc { |item, battler, battle, old_terrain|
+    next false if battler.effects[PBEffects::Transform]
+    next false if battler.effects[PBEffects::ParadoxStat]
+    next false if battler.effects[PBEffects::BoosterEnergy]
+    next false if !battler.hasActiveAbility?(:QUARKDRIVE)
+    next false if battle.field.terrain != :Electric
+    best = nil
+    GameData::Stat.each_main_battle do |stat|
+      value = battler.stat_with_stages(stat.id)
+      best = [stat.id, value] if !best || value > best[1]
+    end
+    battler.effects[PBEffects::ParadoxStat] = best[0]
+    battler.effects[PBEffects::BoosterEnergy] = true
+    battle.pbCommonAnimation("UseItem", battler)
+    battle.pbDisplay(_INTL("The {1} was used up...", GameData::Item.get(item).name))
+    battle.pbShowAbilitySplash(battler)
+    battle.pbDisplay(_INTL("{1} used its {2} to activate {3}!",
+                           battler.pbThis, GameData::Item.get(item).name, battler.abilityName))
+    battle.pbDisplay(_INTL("{1} {2} was heightened!", battler.pbOfThis, GameData::Stat.get(best[0]).name))
+    battle.pbHideAbilitySplash(battler)
+    battler.pbHeldItemTriggered(item)
+    next true
+  }
+)
+
 Battle::ItemEffects::OnTerrainChange.add(:ELECTRICSEED,
-  proc { |item, battler, battle|
+  proc { |item, battler, battle, old_terrain|
     next false if battle.field.terrain != :Electric
     next false if !battler.pbCanRaiseStatStage?(:DEFENSE, battler)
     itemName = GameData::Item.get(item).name
@@ -2326,7 +2387,7 @@ Battle::ItemEffects::OnTerrainChange.add(:ELECTRICSEED,
 )
 
 Battle::ItemEffects::OnTerrainChange.add(:GRASSYSEED,
-  proc { |item, battler, battle|
+  proc { |item, battler, battle, old_terrain|
     next false if battle.field.terrain != :Grassy
     next false if !battler.pbCanRaiseStatStage?(:DEFENSE, battler)
     itemName = GameData::Item.get(item).name
@@ -2336,7 +2397,7 @@ Battle::ItemEffects::OnTerrainChange.add(:GRASSYSEED,
 )
 
 Battle::ItemEffects::OnTerrainChange.add(:MISTYSEED,
-  proc { |item, battler, battle|
+  proc { |item, battler, battle, old_terrain|
     next false if battle.field.terrain != :Misty
     next false if !battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
     itemName = GameData::Item.get(item).name
@@ -2346,12 +2407,27 @@ Battle::ItemEffects::OnTerrainChange.add(:MISTYSEED,
 )
 
 Battle::ItemEffects::OnTerrainChange.add(:PSYCHICSEED,
-  proc { |item, battler, battle|
+  proc { |item, battler, battle, old_terrain|
     next false if battle.field.terrain != :Psychic
     next false if !battler.pbCanRaiseStatStage?(:SPECIAL_DEFENSE, battler)
     itemName = GameData::Item.get(item).name
     battle.pbCommonAnimation("UseItem", battler)
     next battler.pbRaiseStatStageByCause(:SPECIAL_DEFENSE, 1, battler, itemName)
+  }
+)
+
+#===============================================================================
+# OnTrickRoomStarted handlers
+#===============================================================================
+
+Battle::ItemEffects::OnTrickRoomStarted.add(:ROOMSERVICE,
+  proc { |item, battler, battle|
+    next if battle.field.effects[PBEffects::TrickRoom] == 0
+    next if battle.pbCheckGlobalCosmoCube.nil?
+    next if !battler.pbCanLowerStatStage?(:SPEED)
+    battle.pbCommonAnimation("UseItem", battler)
+    battler.pbLowerStatStage(:SPEED, 1, nil)
+    battler.pbConsumeItem
   }
 )
 
@@ -2448,16 +2524,6 @@ Battle::ItemEffects::OnSwitchIn.add(:AIRBALLOON,
   }
 )
 
-Battle::ItemEffects::OnSwitchIn.add(:ROOMSERVICE,
-  proc { |item, battler, battle|
-    next if battle.field.effects[PBEffects::TrickRoom] == 0 || battle.pbCheckGlobalCosmoCube
-    next if !battler.pbCanLowerStatStage?(:SPEED)
-    battle.pbCommonAnimation("UseItem", battler)
-    battler.pbLowerStatStage(:SPEED, 1, nil)
-    battler.pbConsumeItem
-  }
-)
-
 Battle::ItemEffects::OnSwitchIn.add(:PECULIARMIRROR,
   proc { |item,battler,battle|
     choices = []
@@ -2518,6 +2584,18 @@ Battle::ItemEffects::OnSwitchIn.add(:RIDDLESBOOK,
   proc { |item, battler, battle|
     next if battler.moves.any? {|m| m && m.type == :PSYCHIC}
     battler.pbConfuseSelf(_INTL("{1} was confused by its {2}!", battler.pbThis, battler.itemName))
+  }
+)
+
+#===============================================================================
+# OnSwitchInDelayed handlers
+#===============================================================================
+
+Battle::ItemEffects::OnSwitchInDelayed.add(:BOOSTERENERGY,
+  proc { |item, battler, battle|
+    next if battler.effects[PBEffects::ParadoxStat]
+    Battle::ItemEffects.triggerOnWeatherChange(item, battler, battle, battle.field.weather)
+    Battle::ItemEffects.triggerOnTerrainChange(item, battler, battle, battle.field.terrain)
   }
 )
 

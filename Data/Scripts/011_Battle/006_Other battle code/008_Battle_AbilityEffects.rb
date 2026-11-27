@@ -285,12 +285,12 @@ module Battle::AbilityEffects
     OnBattlerFainting.trigger(ability, battler, fainted, battle)
   end
 
-  def self.triggerOnTerrainChange(ability, battler, battle, ability_changed)
-    OnTerrainChange.trigger(ability, battler, battle, ability_changed)
+  def self.triggerOnTerrainChange(ability, battler, battle, old_terrain, ability_changed)
+    OnTerrainChange.trigger(ability, battler, battle, old_terrain, ability_changed)
   end
 
-  def self.triggerOnWeatherChange(ability, battler, battle, ability_changed)
-    OnWeatherChange.trigger(ability, battler, battle, ability_changed)
+  def self.triggerOnWeatherChange(ability, battler, battle, old_weather, ability_changed)
+    OnWeatherChange.trigger(ability, battler, battle, old_weather, ability_changed)
   end
 
   def self.triggerOnIntimidated(ability, battler, battle)
@@ -321,6 +321,15 @@ Battle::AbilityEffects::SpeedCalc.add(:CHLOROPHYLL,
     next mult * 2 if [:Sun, :HarshSun].include?(battler.effectiveWeather)
   }
 )
+
+Battle::AbilityEffects::SpeedCalc.add(:PROTOSYNTHESIS,
+  proc { |ability, battler, mult|
+    next mult * 1.5 if !battler.effects[PBEffects::Transform] &&
+                       battler.effects[PBEffects::ParadoxStat] == :SPEED
+  }
+)
+
+Battle::AbilityEffects::SpeedCalc.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
 
 Battle::AbilityEffects::SpeedCalc.add(:QUICKFEET,
   proc { |ability, battler, mult|
@@ -1775,6 +1784,26 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:OVERGROW,
   }
 )
 
+Battle::AbilityEffects::DamageCalcFromUser.add(:PROTOSYNTHESIS,
+  proc { |ability, user, target, move, mults, power, type|
+    next if user.effects[PBEffects::Transform]
+    next if !user.effects[PBEffects::ParadoxStat]
+    stat = user.effects[PBEffects::ParadoxStat]
+    case stat
+    when :ATTACK
+      if (move.pbPhysicalMove?(user) && move.function != "UseTargetSpDefInsteadOfTargetDefense") || move.function == "UseTargetDefenseInsteadOfTargetSpDef"
+        mults[:attack_multiplier] *= 1.3
+      end
+    when :SPECIAL_ATTACK
+      if (move.pbSpecialMove?(user) && move.function != "UseTargetDefenseInsteadOfTargetSpDef") || move.function == "UseTargetSpDefInsteadOfTargetDefense"
+        mults[:attack_multiplier] *= 1.3
+      end
+    end
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromUser.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
+
 Battle::AbilityEffects::DamageCalcFromUser.add(:PUNKROCK,
   proc { |ability, user, target, move, mults, baseDmg, type|
     mults[:attack_multiplier] *= 1.3 if move.pbSoundMove?(user)
@@ -2360,6 +2389,26 @@ Battle::AbilityEffects::DamageCalcFromTargetNonIgnorable.add(:PRISMARMOR,
     end
   }
 )
+
+Battle::AbilityEffects::DamageCalcFromTargetNonIgnorable.add(:PROTOSYNTHESIS,
+  proc { |ability, user, target, move, mults, power, type|
+    next if target.effects[PBEffects::Transform]
+    next if !target.effects[PBEffects::ParadoxStat]
+    stat = target.effects[PBEffects::ParadoxStat]
+    case stat
+    when :DEFENSE
+      if (move.pbPhysicalMove?(user) && move.function != "UseTargetSpDefInsteadOfTargetDefense") || move.function == "UseTargetDefenseInsteadOfTargetSpDef"
+        mults[:defense_multiplier] *= 1.3
+      end
+    when :SPECIAL_DEFENSE
+      if (move.pbSpecialMove?(user) && move.function != "UseTargetDefenseInsteadOfTargetSpDef") || move.function == "UseTargetSpDefInsteadOfTargetDefense"
+        mults[:defense_multiplier] *= 1.3
+      end
+    end
+  }
+)
+
+Battle::AbilityEffects::DamageCalcFromTargetNonIgnorable.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
 
 Battle::AbilityEffects::DamageCalcFromTargetNonIgnorable.add(:SHADOWSHIELD,
   proc { |ability, user, target, move, mults, baseDmg, type|
@@ -5843,6 +5892,20 @@ Battle::AbilityEffects::OnSwitchInDelayed.add(:HOSPITALITY,
   }
 )
 
+Battle::AbilityEffects::OnSwitchInDelayed.add(:PROTOSYNTHESIS,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.effects[PBEffects::ParadoxStat]
+    Battle::AbilityEffects.triggerOnWeatherChange(ability, battler, battle, battle.field.weather, false)
+  }
+)
+
+Battle::AbilityEffects::OnSwitchInDelayed.add(:QUARKDRIVE,
+  proc { |ability, battler, battle, switch_in|
+    next if battler.effects[PBEffects::ParadoxStat]
+    Battle::AbilityEffects.triggerOnTerrainChange(ability, battler, battle, battle.field.terrain, false)
+  }
+)
+
 #===============================================================================
 # OnSwitchOut handlers
 #===============================================================================
@@ -6010,11 +6073,53 @@ Battle::AbilityEffects::OnBattlerFainting.add(:EFFULGE,
 )
 
 #===============================================================================
+# OnWeatherChange handlers
+#===============================================================================
+
+Battle::AbilityEffects::OnWeatherChange.add(:PROTOSYNTHESIS,
+  proc { |ability, battler, battle, old_weather, ability_changed|
+    next if battler.effects[PBEffects::BoosterEnergy]
+    triggered = false
+    consume_item = false
+    if !battler.effects[PBEffects::Transform]
+      if [:Sun, :HarshSun].include?(battle.pbWeather)
+        triggered = true
+      elsif battler.hasActiveItem?(:BOOSTERENERGY)
+        triggered = true
+        battle.pbCommonAnimation("UseItem", battler)
+        consume_item = true
+      end
+    end
+    if triggered
+      best = nil
+      GameData::Stat.each_main_battle do |stat|
+        value = battler.stat_with_stages(stat.id)
+        best = [stat.id, value] if !best || value > best[1]
+      end
+      battler.effects[PBEffects::ParadoxStat] = best[0]
+      battle.pbShowAbilitySplash(battler)
+      if consume_item
+        battle.pbDisplay(_INTL("{1} used its {2} to activate {3}!",
+                               battler.pbThis, battler.itemName, battler.abilityName))
+      else
+        battle.pbDisplay(_INTL("The harsh sunlight activated {1} {2}!", battler.pbOfThis(true), battler.abilityName))
+      end
+      battle.pbDisplay(_INTL("{1} {2} was heightened!", battler.pbOfThis, GameData::Stat.get(best[0]).name))
+      battle.pbHideAbilitySplash(battler)
+      battler.pbHeldItemTriggered(battler.item) if consume_item
+    elsif battler.effects[PBEffects::ParadoxStat]
+      battler.effects[PBEffects::ParadoxStat] = nil
+      battle.pbDisplay(_INTL("The effects of {1} have worn off...", battler.abilityName))
+    end
+  }
+)
+
+#===============================================================================
 # OnTerrainChange handlers
 #===============================================================================
 
 Battle::AbilityEffects::OnTerrainChange.add(:MIMICRY,
-  proc { |ability, battler, battle, ability_changed|
+  proc { |ability, battler, battle, old_terrain, ability_changed|
     if battle.field.terrain == :None
       # Revert to original typing
       battle.pbShowAbilitySplash(battler)
@@ -6050,6 +6155,45 @@ Battle::AbilityEffects::OnTerrainChange.add(:MIMICRY,
   }
 )
 
+Battle::AbilityEffects::OnTerrainChange.add(:QUARKDRIVE,
+  proc { |ability, battler, battle, old_terrain, ability_changed|
+    next if battler.effects[PBEffects::BoosterEnergy]
+    triggered = false
+    consume_item = false
+    if !battler.effects[PBEffects::Transform]
+      if battle.field.terrain == :Electric
+        triggered = true
+      elsif battler.hasActiveItem?(:BOOSTERENERGY)
+        triggered = true
+        battle.pbCommonAnimation("UseItem", battler)
+        consume_item = true
+      end
+    end
+    if triggered
+      best = nil
+      GameData::Stat.each_main_battle do |stat|
+        value = battler.stat_with_stages(stat.id)
+        best = [stat.id, value] if !best || value > best[1]
+      end
+      battler.effects[PBEffects::ParadoxStat] = best[0]
+      battler.effects[PBEffects::BoosterEnergy] = true if consume_item
+      battle.pbShowAbilitySplash(battler)
+      if consume_item
+        battle.pbDisplay(_INTL("{1} used its {2} to activate {3}!",
+                               battler.pbThis, battler.itemName, battler.abilityName))
+      else
+        battle.pbDisplay(_INTL("The Electric Terrain activated {1} {2}!", battler.pbOfThis(true), battler.abilityName))
+      end
+      battle.pbDisplay(_INTL("{1} {2} was heightened!", battler.pbOfThis, GameData::Stat.get(best[0]).name))
+      battle.pbHideAbilitySplash(battler)
+      battler.pbHeldItemTriggered(battler.item) if consume_item
+    elsif battler.effects[PBEffects::ParadoxStat]
+      battler.effects[PBEffects::ParadoxStat] = nil
+      battle.pbDisplay(_INTL("The effects of {1} have worn off...", battler.abilityName))
+    end
+  }
+)
+
 #===============================================================================
 # OnIntimidated handlers
 #===============================================================================
@@ -6070,99 +6214,6 @@ Battle::AbilityEffects::CertainEscapeFromBattle.add(:RUNAWAY,
     next true
   }
 )
-
-#===============================================================================
-# Protosynthesis, Quark Drive
-#===============================================================================
-Battle::AbilityEffects::OnSwitchIn.add(:PROTOSYNTHESIS,
-  proc { |ability, battler, battle, switch_in|
-    next if battler.effects[PBEffects::Transform]
-    case ability
-    when :PROTOSYNTHESIS then field_check = [:Sun, :HarshSun].include?(battle.pbWeather)
-    when :QUARKDRIVE     then field_check = battle.field.terrain == :Electric
-    end
-    if !field_check && !battler.effects[PBEffects::BoosterEnergy] && battler.effects[PBEffects::ParadoxStat]
-      battle.pbDisplay(_INTL("The effects of {1}'s {2} wore off!", battler.pbThis(true), battler.abilityName))
-      battler.effects[PBEffects::ParadoxStat] = nil
-    end
-    next if battler.effects[PBEffects::ParadoxStat]
-    next if !field_check && battler.item != :BOOSTERENERGY
-    highestStat = nil
-    highestStatVal = 0
-    stageMul = [2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 6, 7, 8]
-    stageDiv = [8, 7, 6, 5, 4, 3, 2, 2, 2, 2, 2, 2, 2]
-    battler.plainStats.each do |stat, val|
-      stage = battler.stages[stat] + 6
-      realStat = (val.to_f * stageMul[stage] / stageDiv[stage]).floor
-      if realStat > highestStatVal
-        highestStatVal = realStat 
-        highestStat = stat
-      end
-    end
-    if highestStat
-      battle.pbShowAbilitySplash(battler)
-      if field_check
-        case ability
-        when :PROTOSYNTHESIS then cause = "harsh sunlight"
-        when :QUARKDRIVE     then cause = "Electric Terrain"
-        end
-        battle.pbDisplay(_INTL("The #{cause} activated {1}'s {2}!", battler.pbThis(true), battler.abilityName))
-      elsif battler.item_id == :BOOSTERENERGY
-        battler.effects[PBEffects::BoosterEnergy] = true
-        battle.pbDisplay(_INTL("{1} used its {2} to activate its {3}!", battler.pbThis, battler.itemName, battler.abilityName))
-        battler.pbHeldItemTriggered(battler.item)
-      end
-      battler.effects[PBEffects::ParadoxStat] = highestStat
-      battle.pbDisplay(_INTL("{1}'s {2} was heightened!", battler.pbThis, GameData::Stat.get(highestStat).name))
-      battle.pbHideAbilitySplash(battler)
-    end
-  }
-)
-
-Battle::AbilityEffects::OnSwitchIn.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
-
-Battle::AbilityEffects::OnTerrainChange.add(:QUARKDRIVE,
-  proc { |ability, battler, battle, switch_in|
-    Battle::AbilityEffects.triggerOnSwitchIn(ability, battler, battle, switch_in)
-  }
-)
-
-Battle::AbilityEffects::OnWeatherChange.add(:PROTOSYNTHESIS,
-  proc { |ability, battler, battle, switch_in|
-    Battle::AbilityEffects.triggerOnSwitchIn(ability, battler, battle, switch_in)
-  }
-)
-
-Battle::AbilityEffects::DamageCalcFromUser.add(:PROTOSYNTHESIS,
-  proc { |ability, user, target, move, mults, baseDmg, type|
-    next if user.effects[PBEffects::Transform]
-    stat = user.effects[PBEffects::ParadoxStat]
-    mults[:attack_multiplier] *= 1.3 if move.physicalMove? && stat == :ATTACK
-    mults[:attack_multiplier] *= 1.3 if move.specialMove?  && stat == :SPECIAL_ATTACK
-  }
-)
-
-Battle::AbilityEffects::DamageCalcFromUser.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
-
-Battle::AbilityEffects::SpeedCalc.add(:PROTOSYNTHESIS,
-  proc { |ability, battler, mult, ret|
-    next mult if battler.effects[PBEffects::Transform]
-    next mult * 1.5 if battler.effects[PBEffects::ParadoxStat] == :SPEED
-  }
-)
-
-Battle::AbilityEffects::SpeedCalc.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
-
-Battle::AbilityEffects::DamageCalcFromTarget.add(:PROTOSYNTHESIS,
-  proc { |ability, user, target, move, mults, baseDmg, type|
-    next if target.effects[PBEffects::Transform]
-    stat = target.effects[PBEffects::ParadoxStat]
-    mults[:defense_multiplier] *= 1.3 if move.physicalMove? && stat == :DEFENSE
-    mults[:defense_multiplier] *= 1.3 if move.specialMove?  && stat == :SPECIAL_DEFENSE
-  }
-)
-
-Battle::AbilityEffects::DamageCalcFromTarget.copy(:PROTOSYNTHESIS, :QUARKDRIVE)
 
 #===============================================================================
 # OnDealingStatus handlers

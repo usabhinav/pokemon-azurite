@@ -238,8 +238,8 @@ class Battle
     allBattlers(true).each { |b| b.pbCheckFormOnWeatherChange }
     allBattlers(true).each { |b| b.pbCheckFormOnTerrainChange }
     pbEndPrimordialWeather
-    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange }
-    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange }
+    allBattlers(true).each { |b| b.pbAbilityOnWeatherChange(@field.weather) }
+    allBattlers(true).each { |b| b.pbAbilityOnTerrainChange(@field.terrain) }
     allBattlers(true).each do |b|
       b.pbCheckFormOnMovesetChange
       b.pbCheckFormOnStatusChange

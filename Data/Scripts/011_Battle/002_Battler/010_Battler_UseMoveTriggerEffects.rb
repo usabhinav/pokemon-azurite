@@ -226,13 +226,10 @@ class Battle::Battler
       end
     end
     # Room Service
-    if move.function == "StartSlowerBattlersActFirst" && @battle.field.effects[PBEffects::TrickRoom] > 0 && @battle.pbCheckGlobalCosmoCube.nil?
+    if move.function == "StartSlowerBattlersActFirst"
       @battle.allBattlers.each do |b|
-        next if !b.hasActiveItem?(:ROOMSERVICE)
-        next if !b.pbCanLowerStatStage?(:SPEED)
-        @battle.pbCommonAnimation("UseItem", b)
-        b.pbLowerStatStage(:SPEED, 1, nil)
-        b.pbConsumeItem
+        next if !b.itemActive?
+        Battle::ItemEffects.triggerOnTrickRoomStarted(b.item, b, @battle)
       end
     end
     # Consume user's Gem

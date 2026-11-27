@@ -391,6 +391,12 @@ class Battle
       # Berry check, status-curing ability check
       b.pbHeldItemTriggerCheck
       b.pbAbilityStatusCureCheck
+      # Terrain Seeds, Room Service
+      if b.itemActive? && b.item != :BOOSTERENERGY
+        Battle::ItemEffects.triggerOnWeatherChange(b.item, b, self, :None)
+        Battle::ItemEffects.triggerOnTerrainChange(b.item, b, self, :None)
+        Battle::ItemEffects.triggerOnTrickRoomStarted(b.item, b, self)
+      end
     end
     # For each battler that entered battle, in speed order
     pbPriority(true).each do |b|

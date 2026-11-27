@@ -104,14 +104,14 @@ class Battle::Battler
     return Battle::AbilityEffects.triggerOnHPDroppedBelowHalf(self.ability, self, move_user, @battle)
   end
 
-  def pbAbilityOnTerrainChange(ability_changed = false)
+  def pbAbilityOnTerrainChange(old_terrain, ability_changed = false)
     return if !abilityActive?
-    Battle::AbilityEffects.triggerOnTerrainChange(self.ability, self, @battle, ability_changed)
+    Battle::AbilityEffects.triggerOnTerrainChange(self.ability, self, @battle, old_terrain, ability_changed)
   end
 
-  def pbAbilityOnWeatherChange(ability_changed = false)
+  def pbAbilityOnWeatherChange(old_weather, ability_changed = false)
     return if !abilityActive?
-    Battle::AbilityEffects.triggerOnWeatherChange(self.ability, self, @battle, ability_changed)
+    Battle::AbilityEffects.triggerOnWeatherChange(self.ability, self, @battle, old_weather, ability_changed)
   end
 
   # Used for Rattled's Gen 8 effect. Called when Intimidate is triggered.
@@ -471,9 +471,9 @@ class Battle::Battler
     # Revert form if Flower Gift/Forecast was lost
     pbCheckFormOnWeatherChange(true)
     pbCheckFormOnTerrainChange(true)
-    # Abilities that trigger when the terrain changes
-    pbAbilityOnWeatherChange(true)
-    pbAbilityOnTerrainChange(true)
+    # Abilities that trigger when the weather/terrain changes
+    pbAbilityOnWeatherChange(@battle.field.weather, true)
+    pbAbilityOnTerrainChange(@battle.field.terrain, true)
   end
 
   def pbTriggerAbilityOnGainingIt
@@ -608,8 +608,8 @@ class Battle::Battler
     if Battle::ItemEffects.triggerHPHeal(itm, self, @battle, !item_to_use.nil?)
       pbHeldItemTriggered(itm, item_to_use.nil?, fling)
     elsif !item_to_use
-      pbItemOnWeatherChange
-      pbItemOnTerrainChange
+      pbItemOnWeatherChange(@battle.field.weather)
+      pbItemOnTerrainChange(@battle.field.terrain)
     end
   end
 
@@ -654,7 +654,7 @@ class Battle::Battler
     end
   end
 
-  def pbItemOnWeatherChange
+  def pbItemOnWeatherChange(old_weather)
     return if !itemActive?
     if Battle::ItemEffects.triggerOnWeatherChange(self.item, self, @battle, old_weather)
       pbHeldItemTriggered(self.item)
@@ -662,9 +662,9 @@ class Battle::Battler
   end
 
   # Called when the battle terrain changes and when a Pokémon loses HP.
-  def pbItemOnTerrainChange
+  def pbItemOnTerrainChange(old_terrain)
     return if !itemActive?
-    if Battle::ItemEffects.triggerOnTerrainChange(self.item, self, @battle)
+    if Battle::ItemEffects.triggerOnTerrainChange(self.item, self, @battle, old_terrain)
       pbHeldItemTriggered(self.item)
     end
   end

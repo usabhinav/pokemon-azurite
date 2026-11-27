@@ -8685,6 +8685,14 @@ FieldUse = OnPokemon
 Flags = EvolutionStone,Fling_30
 Description = A peculiar set of armor that can make a certain species of Pokémon evolve. Auspicious wishes live within it.
 #-------------------------------
+[ABILITYSHIELD]
+Name = Ability Shield
+NamePlural = Ability Shields
+Pocket = 1
+Price = 20000
+Flags = Fling_30,WeirdTrinketHeldItem
+Description = This cute and rather unique-looking shield protects the holder from having its Ability changed by others.
+#-------------------------------
 [CLEARAMULET]
 Name = Clear Amulet
 NamePlural = Clear Amulets
@@ -8692,6 +8700,14 @@ Pocket = 1
 Price = 30000
 Flags = Fling_30,WeirdTrinketHeldItem
 Description = This clear, sparkling amulet protects the holder from having its stats lowered by other Pokémon.
+#-------------------------------
+[COVERTCLOAK]
+Name = Covert Cloak
+NamePlural = Covert Cloaks
+Pocket = 1
+Price = 20000
+Flags = Fling_30,WeirdTrinketHeldItem
+Description = This hooded cloak conceals the holder, protecting it from the additional effects of other Pokémon's moves.
 #-------------------------------
 [LOADEDDICE]
 Name = Loaded Dice
@@ -8783,6 +8799,14 @@ Pocket = 1
 Price = 3000
 Flags = Fling_30
 Description = A shard of what appears to be an old blade of some sort. It is held only by certain Bisharp.
+#-------------------------------
+[MIRRORHERB]
+Name = Mirror Herb
+NamePlural = Mirror Herbs
+Pocket = 1
+Price = 30000
+Flags = Fling_30,TastyTreatItem
+Description = This herb will allow the holder to mirror an opponent's stat increases to raise its own stats - but only once.
 #-------------------------------
 #Gen 9 (mega stones)
 #-------------------------------

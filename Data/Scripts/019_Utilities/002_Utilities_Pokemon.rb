@@ -408,14 +408,14 @@ def getRandomPokemonForRunnerMode(level, runnerModeBattleCounter)
   if runnerModeBattleCounter <= 40
     species_id_list.delete_if do |species_id|
       species_data = GameData::Species.get(species_id)
-      next species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical") || species_data.has_flag?("UltraBeast")
+      next species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical") || species_data.has_flag?("UltraBeast") || species_data.has_flag?("Paradox")
     end
   end
-  # Up to round 60, allow mythicals but not legendaries or ultra beasts
+  # Up to round 60, allow mythicals but not legendaries, ultra beasts, and paradox Pokemon
   if runnerModeBattleCounter <= 60
     species_id_list.delete_if do |species_id|
       species_data = GameData::Species.get(species_id)
-      next species_data.has_flag?("Legendary") || species_data.has_flag?("UltraBeast")
+      next species_data.has_flag?("Legendary") || species_data.has_flag?("UltraBeast") || species_data.has_flag?("Paradox")
     end
   end
   # First get random species

@@ -363,7 +363,7 @@ class Battle::Move
     return true if user.hasActiveItem?(:BERSERKERBRACELET)
     return true if target.effects[PBEffects::DropGuardActive]
     c += 1 if highCriticalRate?
-    c += user.effects[PBEffects::FocusEnergy]
+    c += user.criticalHitRate
     c += 1 if user.effects[PBEffects::WarCryActive]
 	  c += 1 if user.hasActiveItem?(:CHOICESCOPE) && (self.accuracy == 0 || self.accuracy == 100)
     c += 1 if user.inHyperMode? && @type == :SHADOW

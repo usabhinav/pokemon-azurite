@@ -8,6 +8,7 @@ module Battle::ItemEffects
   DamageTaken                     = ItemHandlerHash.new
   HPHeal                          = ItemHandlerHash.new
   OnStatLoss                      = ItemHandlerHash.new
+  CopyStatChanges                 = ItemHandlerHash.new
   StatLossImmunity                = ItemHandlerHash.new
   # Battler's status problem
   StatusCure                      = ItemHandlerHash.new
@@ -86,6 +87,10 @@ module Battle::ItemEffects
 
   def self.triggerOnStatLoss(item, user, move_user, battle)
     return trigger(OnStatLoss, item, user, move_user, battle)
+  end
+
+  def self.triggerCopyStatChanges(item, battler, battle)
+    CopyStatChanges.trigger(item, battler, battle)
   end
 
   #=============================================================================
@@ -426,9 +431,9 @@ Battle::ItemEffects::HPHeal.add(:IAPAPABERRY,
 Battle::ItemEffects::HPHeal.add(:LANSATBERRY,
   proc { |item, battler, battle, forced|
     next false if !forced && !battler.canConsumePinchBerry?
-    next false if battler.effects[PBEffects::FocusEnergy] >= 2
+    next false if battler.criticalHitRate >= 2
     battle.pbCommonAnimation("EatBerry", battler) if !forced
-    battler.effects[PBEffects::FocusEnergy] = 2
+    battler.setCriticalHitRate(2)
     itemName = GameData::Item.get(item).name
     if forced
       battle.pbDisplay(_INTL("{1} got pumped from the {2}!", battler.pbThis, itemName))
@@ -585,6 +590,36 @@ Battle::ItemEffects::OnStatLoss.add(:EJECTPACK,
     battle.moldBreaker = false if move_user && battler.index == move_user.index
     battle.pbOnBattlerEnteringBattle(battler.index)
     next true
+  }
+)
+
+#===============================================================================
+# CopyStatChanges handlers
+#===============================================================================
+
+Battle::ItemEffects::CopyStatChanges.add(:MIRRORHERB,
+  proc { |item, battler, battle|
+    raises = {}
+    GameData::Stat.each_battle { |stat| raises[stat.id] = 0 }
+    raises[:CRITICAL_HIT] = 0
+    battler.allOpposing.each do |b|
+      b.stagesChangeRecord[0].each_pair { |stat, increment| raises[stat] += increment }
+    end
+    next if raises.none? { |stat, increment| increment > 0 }
+    battle.pbCommonAnimation("UseItem", battler)
+    battle.pbDisplay(_INTL("{1} used its {2} to mirror its opponent's stat changes!",
+                           battler.pbThis, battler.itemName))
+    raises.each_pair do |stat, increment|
+      next if increment <= 0
+      if stat == :CRITICAL_HIT
+        battler.setCriticalHitRate(increment)
+        battle.pbDisplay(_INTL("{1} is getting pumped!", battler.pbThis))
+      else
+        battler.pbRaiseStatStage(stat, increment, battler)
+      end
+    end
+    battle.pbDisplay(_INTL("The {1} was used up...", battler.itemName))
+    battler.pbHeldItemTriggered(item)
   }
 )
 
@@ -2204,6 +2239,8 @@ Battle::ItemEffects::OnEndOfUsingMoveStatRestore.add(:WHITEHERB,
     reducedStats = false
     GameData::Stat.each_battle do |s|
       next if battler.stages[s.id] >= 0
+      battler.stagesChangeRecord[0][s.id] ||= 0
+      battler.stagesChangeRecord[0][s.id] -= battler.stages[s.id]
       battler.stages[s.id] = 0
       battler.statsRaisedThisRound = true
       reducedStats = true

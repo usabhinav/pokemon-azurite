@@ -506,7 +506,7 @@ class Battle::Battler
       target.eachAlly(true) do |t|
         next if !t.effects[PBEffects::PortalReboundActive]
         species_data = t.pokemon.species_data
-        next if !species_data.has_flag?("Legendary") && !species_data.has_flag?("Mythical")
+        next if !species_data.has_flag?("Legendary") && !species_data.has_flag?("Mythical") && !species_data.has_flag?("UltraBeast")
         portal_rebound_legendary_ally = t
         break
       end

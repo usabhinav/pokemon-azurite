@@ -313,7 +313,7 @@ ItemHandlers::CanUseInBattle.add(:MAXMUSHROOMS, proc { |item, pokemon, battler, 
 })
 
 ItemHandlers::CanUseInBattle.add(:DIREHIT, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
-  if !battler || battler.effects[PBEffects::FocusEnergy] >= 1
+  if !battler || battler.criticalHitRate >= 2
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false
   end
@@ -321,7 +321,7 @@ ItemHandlers::CanUseInBattle.add(:DIREHIT, proc { |item, pokemon, battler, move,
 })
 
 ItemHandlers::CanUseInBattle.add(:DIREHIT2, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
-  if !battler || battler.effects[PBEffects::FocusEnergy] >= 2
+  if !battler || battler.criticalHitRate >= 2
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false
   end
@@ -329,7 +329,7 @@ ItemHandlers::CanUseInBattle.add(:DIREHIT2, proc { |item, pokemon, battler, move
 })
 
 ItemHandlers::CanUseInBattle.add(:DIREHIT3, proc { |item, pokemon, battler, move, firstAction, battle, scene, showMessages|
-  if !battler || battler.effects[PBEffects::FocusEnergy] >= 3
+  if !battler || battler.criticalHitRate >= 3
     scene.pbDisplay(_INTL("It won't have any effect.")) if showMessages
     next false
   end
@@ -784,19 +784,19 @@ ItemHandlers::BattleUseOnBattler.add(:MAXMUSHROOMS, proc { |item, battler, scene
 })
 
 ItemHandlers::BattleUseOnBattler.add(:DIREHIT, proc { |item, battler, scene|
-  battler.effects[PBEffects::FocusEnergy] = 2
+  battler.setCriticalHitRate(2)
   scene.pbDisplay(_INTL("{1} is getting pumped!", battler.pbThis))
   battler.pokemon.changeHappiness("battleitem")
 })
 
 ItemHandlers::BattleUseOnBattler.add(:DIREHIT2, proc { |item, battler, scene|
-  battler.effects[PBEffects::FocusEnergy] = 2
+  battler.setCriticalHitRate(2)
   scene.pbDisplay(_INTL("{1} is getting pumped!", battler.pbThis))
   battler.pokemon.changeHappiness("battleitem")
 })
 
 ItemHandlers::BattleUseOnBattler.add(:DIREHIT3, proc { |item, battler, scene|
-  battler.effects[PBEffects::FocusEnergy] = 3
+  battler.setCriticalHitRate(3)
   scene.pbDisplay(_INTL("{1} is getting pumped!", battler.pbThis))
   battler.pokemon.changeHappiness("battleitem")
 })

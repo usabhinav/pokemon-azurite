@@ -251,6 +251,7 @@ class Battle::Battler
     if !switched_battlers.include?(user.index)
       move.pbEndOfMoveUsageEffect(user, targets, numHits, switched_battlers)
     end
+    @battle.checkStatChangeResponses
     # User's ability/item that switches the user out (all negated by Sheer Force)
     if !(user.hasActiveAbility?([:SHEERFORCE, :MORALPACT]) && move.addlEffect > 0)
       pbEffectsAfterMove3(user, targets, move, numHits, switched_battlers)

@@ -576,7 +576,7 @@ class Battle::AI
       end
     #---------------------------------------------------------------------------
     when "TwoTurnAttackFlinchTarget"
-      score += 20 if user.effects[PBEffects::FocusEnergy] > 0
+      score += 20 if user.criticalHitRate > 0
       if skill >= PBTrainerAI.highSkill
         score += 20 if !target.hasActiveAbility?(:INNERFOCUS) &&
                        target.effects[PBEffects::Substitute] == 0

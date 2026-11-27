@@ -670,12 +670,12 @@ class Battle::AI
     #---------------------------------------------------------------------------
     when "RaiseUserCriticalHitRate2"
       if move.statusMove?
-        if user.effects[PBEffects::FocusEnergy] >= 2
+        if user.criticalHitRate > 0
           score -= 80
         else
           score += 30
         end
-      elsif user.effects[PBEffects::FocusEnergy] < 2
+      elsif user.criticalHitRate < 1
         score += 30
       end
     #---------------------------------------------------------------------------

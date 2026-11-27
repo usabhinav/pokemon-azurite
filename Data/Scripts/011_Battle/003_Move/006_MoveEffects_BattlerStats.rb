@@ -89,12 +89,16 @@ class Battle::Move::MaxUserAttackLoseHalfOfTotalHP < Battle::Move
     hpLoss = [user.totalhp / 2, 1].max
     user.pbReduceHP(hpLoss, false, false)
     if user.hasActiveAbility?(:CONTRARY)
+      user.stagesChangeRecord[1][:ATTACK] ||= 0
+      user.stagesChangeRecord[1][:ATTACK] += 6 + user.stages[:ATTACK]
       user.stages[:ATTACK] = -6
       user.statsLoweredThisRound = true
       user.statsDropped = true
       @battle.pbCommonAnimation("StatDown", user)
       @battle.pbDisplay(_INTL("{1} cut its own HP and minimized its Attack!", user.pbThis))
     else
+      user.stagesChangeRecord[0][:ATTACK] ||= 0
+      user.stagesChangeRecord[0][:ATTACK] += 6 - user.stages[:ATTACK]
       user.stages[:ATTACK] = 6
       user.statsRaisedThisRound = true
       @battle.pbCommonAnimation("StatUp", user)
@@ -134,12 +138,16 @@ class Battle::Move::MaxUserRandomStatLoseHalfOfTotalHP < Battle::Move
     user.pbReduceHP(hpLoss, false, false)
     stat_name = GameData::Stat.get(@stat_to_change).name
     if user.hasActiveAbility?(:CONTRARY)
+      user.stagesChangeRecord[1][@stat_to_change] ||= 0
+      user.stagesChangeRecord[1][@stat_to_change] += 6 + user.stages[@stat_to_change]
       user.stages[@stat_to_change] = -6
       user.statsLoweredThisRound = true
       user.statsDropped = true
       @battle.pbCommonAnimation("StatDown", user)
       @battle.pbDisplay(_INTL("{1} cut its own HP and minimized its {2}!", user.pbThis, stat_name))
     else
+      user.stagesChangeRecord[0][@stat_to_change] ||= 0
+      user.stagesChangeRecord[0][@stat_to_change] += 6 - user.stages[@stat_to_change]
       user.stages[@stat_to_change] = 6
       user.statsRaisedThisRound = true
       @battle.pbCommonAnimation("StatUp", user)
@@ -427,7 +435,7 @@ class Battle::Move::RaiseUserCriticalHitRate2 < Battle::Move
   def canSnatch?; return true; end
 
   def pbMoveFailed?(user, targets)
-    if user.effects[PBEffects::FocusEnergy] >= 2
+    if user.criticalHitRate > 0
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -435,19 +443,18 @@ class Battle::Move::RaiseUserCriticalHitRate2 < Battle::Move
   end
 
   def pbEffectGeneral(user)
-    user.effects[PBEffects::FocusEnergy] = 2
+    user.setCriticalHitRate(2)
     @battle.pbDisplay(_INTL("{1} is getting pumped!", user.pbThis))
   end
 end
 
 #===============================================================================
-# Increases allies' critical hit rate. (Dragon Cheer)
+# Increases allies' critical hit rate, and more so for Dragon-type allies.
+ # (Dragon Cheer)
 #===============================================================================
 class Battle::Move::RaiseAlliesCriticalHitRate1Or2IfDragonType < Battle::Move
   def pbMoveFailed?(user, targets)
-    if user.allAllies.none? { |battler|
-      battler.effects[PBEffects::FocusEnergy] == 0
-    }
+    if user.allAllies.none? { |battler| battler.criticalHitRate == 0 }
       @battle.pbDisplay(_INTL("But it failed!"))
       return true
     end
@@ -456,10 +463,9 @@ class Battle::Move::RaiseAlliesCriticalHitRate1Or2IfDragonType < Battle::Move
 
   def pbEffectGeneral(user)
     user.allAllies.each do |battler|
-      next if battler.effects[PBEffects::FocusEnergy] > 0
+      next if battler.criticalHitRate > 0
       increment = (battler.pbHasType?(:DRAGON)) ? 2 : 1
-      battler.effects[PBEffects::FocusEnergy] = increment
-      @battle.pbCommonAnimation("CriticalHitRateUp", battler)
+      battler.setCriticalHitRate(increment)
       @battle.pbDisplay(_INTL("{1} is getting pumped!", battler.pbThis))
     end
   end
@@ -2285,11 +2291,19 @@ class Battle::Move::UserTargetSwapAtkSpAtkStages < Battle::Move
   def pbEffectAgainstTarget(user, target)
     [:ATTACK, :SPECIAL_ATTACK].each do |s|
       if user.stages[s] > target.stages[s]
+        user.stagesChangeRecord[1][s] ||= 0
+        user.stagesChangeRecord[1][s] += user.stages[s] - target.stages[s]
         user.statsLoweredThisRound = true
         user.statsDropped = true
+        target.stagesChangeRecord[0][s] ||= 0
+        target.stagesChangeRecord[0][s] += user.stages[s] - target.stages[s]
         target.statsRaisedThisRound = true
       elsif user.stages[s] < target.stages[s]
+        user.stagesChangeRecord[0][s] ||= 0
+        user.stagesChangeRecord[0][s] += target.stages[s] - user.stages[s]
         user.statsRaisedThisRound = true
+        target.stagesChangeRecord[1][s] ||= 0
+        target.stagesChangeRecord[1][s] += target.stages[s] - user.stages[s]
         target.statsLoweredThisRound = true
         target.statsDropped = true
       end
@@ -2308,11 +2322,19 @@ class Battle::Move::UserTargetSwapDefSpDefStages < Battle::Move
   def pbEffectAgainstTarget(user, target)
     [:DEFENSE, :SPECIAL_DEFENSE].each do |s|
       if user.stages[s] > target.stages[s]
+        user.stagesChangeRecord[1][s] ||= 0
+        user.stagesChangeRecord[1][s] += user.stages[s] - target.stages[s]
         user.statsLoweredThisRound = true
         user.statsDropped = true
+        target.stagesChangeRecord[0][s] ||= 0
+        target.stagesChangeRecord[0][s] += user.stages[s] - target.stages[s]
         target.statsRaisedThisRound = true
       elsif user.stages[s] < target.stages[s]
+        user.stagesChangeRecord[0][s] ||= 0
+        user.stagesChangeRecord[0][s] += target.stages[s] - user.stages[s]
         user.statsRaisedThisRound = true
+        target.stagesChangeRecord[1][s] ||= 0
+        target.stagesChangeRecord[1][s] += target.stages[s] - user.stages[s]
         target.statsLoweredThisRound = true
         target.statsDropped = true
       end
@@ -2331,11 +2353,19 @@ class Battle::Move::UserTargetSwapStatStages < Battle::Move
   def pbEffectAgainstTarget(user, target)
     GameData::Stat.each_battle do |s|
       if user.stages[s.id] > target.stages[s.id]
+        user.stagesChangeRecord[1][s.id] ||= 0
+        user.stagesChangeRecord[1][s.id] += user.stages[s.id] - target.stages[s.id]
         user.statsLoweredThisRound = true
         user.statsDropped = true
+        target.stagesChangeRecord[0][s.id] ||= 0
+        target.stagesChangeRecord[0][s.id] += user.stages[s.id] - target.stages[s.id]
         target.statsRaisedThisRound = true
       elsif user.stages[s.id] < target.stages[s.id]
+        user.stagesChangeRecord[0][s.id] ||= 0
+        user.stagesChangeRecord[0][s.id] += target.stages[s.id] - user.stages[s.id]
         user.statsRaisedThisRound = true
+        target.stagesChangeRecord[1][s.id] ||= 0
+        target.stagesChangeRecord[1][s.id] += target.stages[s.id] - user.stages[s.id]
         target.statsLoweredThisRound = true
         target.statsDropped = true
       end
@@ -2354,16 +2384,20 @@ class Battle::Move::UserCopyTargetStatStages < Battle::Move
   def pbEffectAgainstTarget(user, target)
     GameData::Stat.each_battle do |s|
       if user.stages[s.id] > target.stages[s.id]
+        user.stagesChangeRecord[1][s.id] ||= 0
+        user.stagesChangeRecord[1][s.id] += user.stages[s.id] - target.stages[s.id]
         user.statsLoweredThisRound = true
         user.statsDropped = true
       elsif user.stages[s.id] < target.stages[s.id]
+        user.stagesChangeRecord[0][s.id] ||= 0
+        user.stagesChangeRecord[0][s.id] += target.stages[s.id] - user.stages[s.id]
         user.statsRaisedThisRound = true
       end
       user.stages[s.id] = target.stages[s.id]
     end
     if Settings::NEW_CRITICAL_HIT_RATE_MECHANICS
-      user.effects[PBEffects::FocusEnergy] = target.effects[PBEffects::FocusEnergy]
-      user.effects[PBEffects::LaserFocus]  = target.effects[PBEffects::LaserFocus]
+      user.setCriticalHitRate(target.criticalHitRate)
+      user.effects[PBEffects::LaserFocus] = target.effects[PBEffects::LaserFocus]
     end
     @battle.pbDisplay(_INTL("{1} copied {2}'s stat changes!", user.pbThis, target.pbThis(true)))
   end
@@ -2413,9 +2447,13 @@ class Battle::Move::InvertTargetStatStages < Battle::Move
   def pbEffectAgainstTarget(user, target)
     GameData::Stat.each_battle do |s|
       if target.stages[s.id] > 0
+        target.stagesChangeRecord[1][s.id] ||= 0
+        target.stagesChangeRecord[1][s.id] += target.stages[s.id] * 2
         target.statsLoweredThisRound = true
         target.statsDropped = true
       elsif target.stages[s.id] < 0
+        target.stagesChangeRecord[0][s.id] ||= 0
+        target.stagesChangeRecord[0][s.id] -= target.stages[s.id] * 2
         target.statsRaisedThisRound = true
       end
       target.stages[s.id] *= -1
@@ -2446,9 +2484,13 @@ class Battle::Move::InvertTargetRandomStat < Battle::Move
     end
     stat_to_invert = stats_to_choose.sample
     if target.stages[stat_to_invert.id] > 0
+      target.stagesChangeRecord[1][stat_to_invert.id] ||= 0
+      target.stagesChangeRecord[1][stat_to_invert.id] += target.stages[stat_to_invert.id] * 2
       target.statsLoweredThisRound = true
       target.statsDropped = true
     elsif target.stages[stat_to_invert.id] < 0
+      target.stagesChangeRecord[0][stat_to_invert.id] ||= 0
+      target.stagesChangeRecord[0][stat_to_invert.id] -= target.stages[stat_to_invert.id] * 2
       target.statsRaisedThisRound = true
     end
     target.stages[stat_to_invert.id] *= -1

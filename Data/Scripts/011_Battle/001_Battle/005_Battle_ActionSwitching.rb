@@ -327,6 +327,7 @@ class Battle
   # entry hazards, form changes and items/abilities that trigger upon switching
   # in.
   def pbOnBattlerEnteringBattle(battler_index, skip_event_reset = false)
+    clearStagesChangeRecords
     battler_index = [battler_index] if !battler_index.is_a?(Array)
     battler_index.flatten!
     # NOTE: This isn't done for switch commands, because they previously call
@@ -415,6 +416,8 @@ class Battle
         Battle::ItemEffects.triggerOnSwitchInDelayed(b.item, b, self)
       end
     end
+    # Opportunist, Mirror Herb
+    checkStatChangeResponses
     # Check for triggering of Emergency Exit/Wimp Out/Eject Pack (only one will
     # be triggered)
     pbPriority(true, true).each do |b|
@@ -422,6 +425,7 @@ class Battle
       break if b.pbAbilitiesOnDamageTaken
       break if b.pbItemsOnDamageTaken
     end
+    checkStatChangeResponses
     allBattlers(true).each do |b|
       b.droppedBelowHalfHP = false
       b.statsDropped = false

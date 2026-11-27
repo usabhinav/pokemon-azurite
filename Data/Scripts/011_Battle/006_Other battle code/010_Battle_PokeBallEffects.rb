@@ -190,7 +190,7 @@ Battle::PokeBallEffects::ModifyCatchRate.add(:CRYSTALBALL, proc { |ball, catchRa
 
 Battle::PokeBallEffects::ModifyCatchRate.add(:DEITYBALL, proc { |ball, catchRate, battle, battler|
   species_data = battler.pokemon.species_data
-  catchRate *= 3.5 if species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical")
+  catchRate *= 3.5 if species_data.has_flag?("Legendary") || species_data.has_flag?("Mythical") || species_data.has_flag?("UltraBeast")
   next catchRate
 })
 

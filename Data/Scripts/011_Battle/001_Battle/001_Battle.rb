@@ -832,6 +832,23 @@ class Battle
     end
   end
 
+  def clearStagesChangeRecords
+    allBattlers(true).each { |b| b.clearStagesChangeRecord }
+  end
+
+  # For Opportunist/Mirror Herb to copy stat raises.
+  def checkStatChangeResponses
+    allBattlers(true).each do |b|
+      if b.abilityActive?
+        Battle::AbilityEffects.triggerCopyStatChanges(b.ability, b, self)
+      end
+      if b.itemActive?
+        Battle::ItemEffects.triggerCopyStatChanges(b.item, b, self)
+      end
+    end
+    clearStagesChangeRecords
+  end
+
   def nextPickupUse
     @nextPickupUse += 1
     return @nextPickupUse

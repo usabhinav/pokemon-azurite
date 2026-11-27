@@ -48,9 +48,11 @@ class Battle::Battler
     end
     # Use the move
     PBDebug.log("[Move usage] #{pbThis} started using #{choice[2].name}")
+    @battle.clearStagesChangeRecords
     PBDebug.logonerr {
       pbUseMove(choice, choice[2] == @battle.struggle)
     }
+    @battle.checkStatChangeResponses
     @battle.pbJudge
     # Update priority order
     @battle.pbCalculatePriority if Settings::RECALCULATE_TURN_ORDER_AFTER_SPEED_CHANGES
@@ -532,7 +534,9 @@ class Battle::Battler
             @battle.pbDisplayBrief(_INTL("{1} moved first!",b.pbThis))
             @battle.pbHideAbilitySplash(b)
             b.lastRoundMoved = @battle.turnCount
+            @battle.clearStagesChangeRecords
             b.pbUseMove(@battle.choices[b.index])
+            @battle.checkStatChangeResponses
             destinybond = b.effects[PBEffects::DestinyBond]
             b.pbTakeEffectDamage(b.hp)
             # This effectively cancels the user's move if there are no targets left.
@@ -556,9 +560,11 @@ class Battle::Battler
           @battle.pbDisplayBrief(_INTL("{1}'s {2} allowed it to move first!", b.pbThis, b.itemName))
           b.pbConsumeItem
           b.lastRoundMoved = @battle.turnCount
+          @battle.clearStagesChangeRecords
           b.pbUseMove(@battle.choices[b.index])
+          @battle.checkStatChangeResponses
           # Re-displays the "X used Y!" message for the original user's move
-          move.pbDisplayUseMessage(self)
+          move.pbDisplayUseMessage(self) if !user.fainted?
         end
       end
       # Process each hit in turn
@@ -669,6 +675,8 @@ class Battle::Battler
     end
     # End effect of Mold Breaker
     @battle.moldBreaker = false
+    # Effects that trigger upon a stat change happening
+    @battle.checkStatChangeResponses
     # Gain Exp
     @battle.pbGainExp
     # Battle Arena only - update skills
@@ -689,7 +697,9 @@ class Battle::Battler
       b.effects[PBEffects::Instructed] = true
       if b.pbCanChooseMove?(@moves[idxMove], false)
         PBDebug.logonerr {
+          @battle.clearStagesChangeRecords
           b.pbUseMoveSimple(b.lastMoveUsed, b.lastRegularMoveTarget, idxMove, false)
+          @battle.checkStatChangeResponses
         }
         b.lastRoundMoved = oldLastRoundMoved
         @battle.pbJudge
@@ -724,9 +734,11 @@ class Battle::Battler
         end
         nextUser.effects[PBEffects::Dancer] = true
         if nextUser.pbCanChooseMove?(move, false)
+          @battle.clearStagesChangeRecords
           PBDebug.logonerr {
             nextUser.pbUseMoveSimple(move.id, preTarget)
           }
+          @battle.checkStatChangeResponses
           nextUser.lastRoundMoved = oldLastRoundMoved
           nextUser.effects[PBEffects::Outrage] = oldOutrage
           nextUser.currentMove = oldCurrentMove

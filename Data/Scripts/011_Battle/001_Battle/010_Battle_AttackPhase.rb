@@ -48,6 +48,7 @@ class Battle
   end
 
   def pbAttackPhaseSwitch(time_break_index = nil)
+    clearStagesChangeRecords
     pbPriority.each do |b|
       next if !time_break_index.nil? && time_break_index != b.index
       next unless @choices[b.index][0] == :SwitchOut && !b.fainted?
@@ -86,6 +87,7 @@ class Battle
   end
 
   def pbAttackPhaseItems(time_break_index = nil)
+    clearStagesChangeRecords
     pbPriority.each do |b|
       next if !time_break_index.nil? && time_break_index != b.index
       next unless @choices[b.index][0] == :UseItem && !b.fainted?
@@ -106,10 +108,12 @@ class Battle
       end
       return if @decision > 0
     end
+    checkStatChangeResponses
     pbCalculatePriority if Settings::RECALCULATE_TURN_ORDER_AFTER_SPEED_CHANGES
   end
 
   def pbAttackPhaseMegaEvolution
+    clearStagesChangeRecords
     pbPriority.each do |b|
       next if b.wild?
       next unless @choices[b.index][0] == :UseMove && !b.fainted?
@@ -120,6 +124,7 @@ class Battle
         pbCrystallize(b.index)
       end
     end
+    checkStatChangeResponses
   end
 
   def pbAttackPhaseMoves

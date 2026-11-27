@@ -888,7 +888,7 @@ class Battle::AI
       c = -1 if target.pbOwnSide.effects[PBEffects::LuckyChant] > 0
       if c >= 0
         c += 1 if move.highCriticalRate?
-        c += user.effects[PBEffects::FocusEnergy]
+        c += user.criticalHitRate
         c += 1 if user.effects[PBEffects::WarCryActive]
         c += 1 if user.inHyperMode? && move.type == :SHADOW
       end

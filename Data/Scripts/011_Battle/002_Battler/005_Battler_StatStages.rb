@@ -39,6 +39,8 @@ class Battle::Battler
       new = @stages[stat] + increment
       PBDebug.log("[Stat change] #{pbThis}'s #{stat_name}: #{@stages[stat]} -> #{new} (+#{increment})")
       @stages[stat] += increment
+      @stagesChangeRecord[0][stat] ||= 0
+      @stagesChangeRecord[0][stat] += increment
       @statsRaisedThisRound = true
     end
     return increment
@@ -233,6 +235,8 @@ class Battle::Battler
       new = @stages[stat] - increment
       PBDebug.log("[Stat change] #{pbThis}'s #{stat_name}: #{@stages[stat]} -> #{new} (-#{increment})")
       @stages[stat] -= increment
+      @stagesChangeRecord[1][stat] ||= 0
+      @stagesChangeRecord[1][stat] += increment
       @statsLoweredThisRound = true
       @statsDropped = true
     end
@@ -539,6 +543,25 @@ class Battle::Battler
     return pbLowerStatStageByCause(:SPECIAL_ATTACK, 1, user, user.abilityName)
   end
 
+  #-----------------------------------------------------------------------------
+  # Critical hit rate.
+  #-----------------------------------------------------------------------------
+
+  def criticalHitRate
+    return @effects[PBEffects::FocusEnergy] || 0
+  end
+
+  def setCriticalHitRate(value)
+    return if @effects[PBEffects::FocusEnergy] && @effects[PBEffects::FocusEnergy] == value
+    old_value = @effects[PBEffects::FocusEnergy] || 0
+    @effects[PBEffects::FocusEnergy] = value
+    if @effects[PBEffects::FocusEnergy] > old_value
+      @stagesChangeRecord[0][:CRITICAL_HIT] = value
+    else
+      @stagesChangeRecord[1][:CRITICAL_HIT] = value
+    end
+  end
+
   #=============================================================================
   # Reset stat stages
   #=============================================================================
@@ -567,6 +590,11 @@ class Battle::Battler
       end
       @stages[s.id] = 0
     end
+  end
+
+  def clearStagesChangeRecord
+    @stagesChangeRecord[0].clear
+    @stagesChangeRecord[1].clear
   end
 
   #=============================================================================

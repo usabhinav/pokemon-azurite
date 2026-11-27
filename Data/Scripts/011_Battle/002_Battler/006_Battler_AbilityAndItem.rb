@@ -124,11 +124,13 @@ class Battle::Battler
     return if @battle.pbCheckGlobalAbility(:NEUTRALIZINGGAS)
     @battle.pbDisplay(_INTL("The effects of the neutralizing gas wore off!"))
     @battle.pbEndPrimordialWeather
+    @battle.checkStatChangeResponses
     @battle.pbPriority(true).each do |b|
       next if b.fainted?
       next if !b.unstoppableAbility? && !b.abilityActive?
       Battle::AbilityEffects.triggerOnSwitchIn(b.ability, b, @battle)
     end
+    @battle.checkStatChangeResponses
   end
 
   # Called when a Pokémon (self) enters battle, at the end of each move used,
@@ -692,9 +694,11 @@ class Battle::Battler
   end
 
   def pbItemsOnUnnerveEnding
+    @battle.checkStatChangeResponses
     @battle.pbPriority(true).each do |b|
       b.pbHeldItemTriggerCheck if b.item&.is_berry?
     end
+    @battle.checkStatChangeResponses
   end
 
   #=============================================================================

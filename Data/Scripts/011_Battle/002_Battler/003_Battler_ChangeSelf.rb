@@ -436,8 +436,8 @@ class Battle::Battler
     @speed   = target.speed
     GameData::Stat.each_battle { |s| @stages[s.id] = target.stages[s.id] }
     if Settings::NEW_CRITICAL_HIT_RATE_MECHANICS
-      @effects[PBEffects::FocusEnergy] = target.effects[PBEffects::FocusEnergy]
-      @effects[PBEffects::LaserFocus]  = target.effects[PBEffects::LaserFocus]
+      setCriticalHitRate(target.criticalHitRate)
+      @effects[PBEffects::LaserFocus] = target.effects[PBEffects::LaserFocus]
     end
     @moves.clear
     target.moves.each_with_index do |m, i|

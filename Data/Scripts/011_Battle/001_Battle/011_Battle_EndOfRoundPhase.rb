@@ -200,7 +200,9 @@ class Battle
     battler.lastRoundMoved = @turnCount
     userLastMoveFailed = battler.lastMoveFailed
     battler.effects[PBEffects::DelayedAttackInUseNow] = true
+    clearStagesChangeRecords
     battler.pbUseMove(battler.effects[PBEffects::DelayedAttackChoices], true)
+    checkStatChangeResponses
     battler.effects[PBEffects::DelayedAttackInUseNow] = false
     battler.lastMoveFailed = userLastMoveFailed
     # Clear remaining effects
@@ -912,6 +914,7 @@ class Battle
     PBDebug.log("[End of round]")
     @endOfRound = true
     @scene.pbBeginEndOfRoundPhase
+    clearStagesChangeRecords
     pbCalculatePriority                 # recalculate speeds
     priority = pbPriority(true, true)   # in order of fastest -> slowest speeds only
     # Weather
@@ -1136,6 +1139,7 @@ class Battle
       pbDisplay(_INTL("{1} was freed from the stare!", battler.pbThis))
       battler.pbTriggerAbilityOnGainingIt if !battler.unstoppableAbility?
     }
+    checkStatChangeResponses
     pbGainExp
     return if @decision > 0
     # Form checks
@@ -1148,6 +1152,7 @@ class Battle
     pbEORShiftDistantBattlers
     # Try to make Trace work, check for end of primordial weather
     priority.each { |battler| battler.pbContinualAbilityChecks }
+    checkStatChangeResponses
     # Reset/count down battler-specific effects (no messages)
     allBattlers(true).each do |battler|
       battler.effects[PBEffects::BanefulBunker]    = false

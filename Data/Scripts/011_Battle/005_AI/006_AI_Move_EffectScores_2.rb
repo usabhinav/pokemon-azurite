@@ -357,7 +357,8 @@ class Battle::AI
       score += 30
       if skill >= PBTrainerAI.highSkill
         score += 30 if !target.hasActiveAbility?(:INNERFOCUS) &&
-                       target.effects[PBEffects::Substitute] == 0
+                       target.effects[PBEffects::Substitute] == 0 &&
+                       target.affectedByAdditionalEffects?
       end
     #---------------------------------------------------------------------------
     when "FlinchTargetFailsIfUserNotAsleep"
@@ -365,7 +366,8 @@ class Battle::AI
         score += 100   # Because it can only be used while asleep
         if skill >= PBTrainerAI.highSkill
           score += 30 if !target.hasActiveAbility?(:INNERFOCUS) &&
-                         target.effects[PBEffects::Substitute] == 0
+                         target.effects[PBEffects::Substitute] == 0 &&
+                         target.affectedByAdditionalEffects?
         end
       else
         score -= 90   # Because it will fail here
@@ -376,7 +378,8 @@ class Battle::AI
       if user.turnCount == 0
         if skill >= PBTrainerAI.highSkill
           score += 30 if !target.hasActiveAbility?(:INNERFOCUS) &&
-                         target.effects[PBEffects::Substitute] == 0
+                         target.effects[PBEffects::Substitute] == 0 &&
+                         target.affectedByAdditionalEffects?
         end
       else
         score -= 90   # Because it will fail here
@@ -386,7 +389,8 @@ class Battle::AI
     when "FlinchTargetDoublePowerIfTargetInSky"
       if skill >= PBTrainerAI.highSkill
         score += 30 if !target.hasActiveAbility?(:INNERFOCUS) &&
-                       target.effects[PBEffects::Substitute] == 0
+                       target.effects[PBEffects::Substitute] == 0 &&
+                       target.affectedByAdditionalEffects?
       end
     #---------------------------------------------------------------------------
     when "FlinchTargetIfTargetSpAtkLessThan70"

@@ -1747,7 +1747,7 @@ class Battle::AI
       score += numStages * 20
     #---------------------------------------------------------------------------
     when "InvertTargetStatStages", "InvertTargetRandomStat"
-      if target.effects[PBEffects::Substitute] > 0
+      if target.effects[PBEffects::Substitute] > 0 || !target.affectedByAdditionalEffects?
         score -= 90
       else
         numpos = 0
@@ -1764,7 +1764,7 @@ class Battle::AI
       end
     #---------------------------------------------------------------------------
     when "ResetTargetStatStages"
-      if target.effects[PBEffects::Substitute] > 0
+      if target.effects[PBEffects::Substitute] > 0 || !target.affectedByAdditionalEffects?
         score -= 90
       else
         avg = 0

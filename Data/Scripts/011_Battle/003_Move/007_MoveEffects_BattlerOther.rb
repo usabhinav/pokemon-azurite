@@ -15,6 +15,7 @@ class Battle::Move::SleepTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbSleep if target.pbCanSleep?(user, false, self)
   end
@@ -102,6 +103,7 @@ class Battle::Move::PoisonTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbPoison(user, nil, @toxic) if target.pbCanPoison?(user, false, self)
   end
@@ -238,6 +240,7 @@ class Battle::Move::PoisonTargetOrSleepTargetOrParalyzeTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     inflictRandomStatusOnTarget(user, target, [:PARALYZE, :POISON, :SLEEP])
   end
@@ -283,6 +286,7 @@ class Battle::Move::PoisonTargetBoostToxicityOnConsecutiveUseAndPowerIncreasesIf
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     poisonEffect(user, target)
   end
@@ -305,6 +309,7 @@ class Battle::Move::ParalyzeTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
   end
@@ -350,6 +355,7 @@ class Battle::Move::ParalyzeFlinchTarget < Battle::Move
   def flinchingMove?; return true; end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     chance = pbAdditionalEffectChance(user, target, 10)
     return if chance == 0
@@ -434,6 +440,7 @@ class Battle::Move::BurnTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
   end
@@ -456,6 +463,7 @@ class Battle::Move::BurnFlinchTarget < Battle::Move
   def flinchingMove?; return true; end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     chance = pbAdditionalEffectChance(user, target, 10)
     return if chance == 0
@@ -502,6 +510,7 @@ class Battle::Move::FreezeTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbFreeze if target.pbCanFreeze?(user, false, self)
   end
@@ -534,6 +543,7 @@ class Battle::Move::FreezeFlinchTarget < Battle::Move
   def flinchingMove?; return true; end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     chance = pbAdditionalEffectChance(user, target, 10)
     return if chance == 0
@@ -551,6 +561,7 @@ class Battle::Move::FreezeFlinchTarget30Percent < Battle::Move
   def flinchingMove?; return true; end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     chance = pbAdditionalEffectChance(user, target, 30)
     return if chance == 0
@@ -566,6 +577,7 @@ end
 #===============================================================================
 class Battle::Move::ParalyzeBurnOrFreezeTarget < Battle::Move
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     case @battle.pbRandom(3)
     when 0 then target.pbBurn(user) if target.pbCanBurn?(user, false, self)
@@ -576,10 +588,11 @@ class Battle::Move::ParalyzeBurnOrFreezeTarget < Battle::Move
 end
 
 #===============================================================================
-# Dire Claw
+# Poisons, paralyzes or puts to sleep the target. (Dire Claw)
 #===============================================================================
 class Battle::Move::PoisonParalyzeOrSleepTarget < Battle::Move
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     case @battle.pbRandom(3)
     when 0 then target.pbSleep          if target.pbCanSleep?(user, false, self)
@@ -594,6 +607,7 @@ end
 #===============================================================================
 class Battle::Move::BurnOrFreezeTarget < Battle::Move
   def pbAdditionalEffect(user,target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     case @battle.pbRandom(2)
     when 0; target.pbBurn(user) if target.pbCanBurn?(user, false, self)
@@ -1014,6 +1028,7 @@ end
 class Battle::Move::CureTargetBurn < Battle::Move
   def pbAdditionalEffect(user, target)
     return if target.fainted? || target.damageState.substitute
+    return if !target.affectedByAdditionalEffects?
     return if target.status != :BURN
     target.pbCureStatus
   end
@@ -1030,6 +1045,7 @@ class Battle::Move::CureTargetSleepFreezeTarget < Battle::Move
 
   def pbAdditionalEffect(user, target)
     return if target.fainted? || target.damageState.substitute
+    return if !target.affectedByAdditionalEffects?
     target.pbCureStatus if target.status == :SLEEP
     if target.pbCanFreeze?(user, false, self) && @battle.pbRandom(100) < 10
       target.pbFreeze
@@ -1076,6 +1092,7 @@ class Battle::Move::FlinchTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbFlinch(user)
   end
@@ -1179,6 +1196,7 @@ class Battle::Move::ConfuseTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     return if !target.pbCanConfuse?(user, false, self)
     target.pbConfuse
@@ -1288,6 +1306,7 @@ class Battle::Move::ConfuseTargetOrPoisonTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     inflictRandomStatusOnTarget(user, target, [:CONFUSE, :POISON])
   end
@@ -1300,6 +1319,7 @@ class Battle::Move::ConfuseFlinchTarget < Battle::Move
   def flinchingMove?; return true; end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     chance = pbAdditionalEffectChance(user, target, 10)
     return if chance == 0
@@ -1401,6 +1421,7 @@ class Battle::Move::AttractTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbAttract(user) if target.pbCanAttract?(user, false)
   end
@@ -1433,6 +1454,7 @@ class Battle::Move::InflictRandomStatusOnTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     inflictRandomStatusOnTarget(user, target, [:BURN, :PARALYZE, :POISON, :SLEEP, :FREEZE, :CONFUSE, :ATTRACT])
   end
@@ -1465,6 +1487,7 @@ class Battle::Move::InflictRandomStatusOnTargetExceptFreeze < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     inflictRandomStatusOnTarget(user, target, [:BURN, :PARALYZE, :POISON, :SLEEP, :CONFUSE, :ATTRACT])
   end
@@ -2325,6 +2348,7 @@ end
 #===============================================================================
 class Battle::Move::StartTargetRingingRing < Battle::Move
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.effects[PBEffects::RingingRing] = true
     @battle.pbDisplay(_INTL("{1} felt an intense ringing in its head!", target.pbThis))
@@ -2531,6 +2555,7 @@ end
 #===============================================================================
 class Battle::Move::StartSaltCureTarget < Battle::Move
   def pbEffectAgainstTarget(user, target)
+    return if !target.affectedByAdditionalEffects?
     target.effects[PBEffects::SaltCure] = true
     @battle.pbDisplay(_INTL("{1} is being salt cured!", target.pbThis))
   end

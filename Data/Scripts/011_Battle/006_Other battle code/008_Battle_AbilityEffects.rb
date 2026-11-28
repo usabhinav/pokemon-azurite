@@ -1960,7 +1960,7 @@ Battle::AbilityEffects::DamageCalcFromUser.add(:TORRENT,
 
 Battle::AbilityEffects::DamageCalcFromUser.add(:TOUGHCLAWS,
   proc { |ability, user, target, move, mults, baseDmg, type|
-    mults[:base_damage_multiplier] *= 4 / 3.0 if move.contactMove?
+    mults[:base_damage_multiplier] *= 4 / 3.0 if move.pbContactMove?(user)
   }
 )
 
@@ -3227,7 +3227,8 @@ Battle::AbilityEffects::OnBeingHit.add(:WINDPOWER,
 
 Battle::AbilityEffects::OnDealingHit.add(:POISONTOUCH,
   proc { |ability, user, target, move, battle|
-    next if !move.contactMove?
+    next if !move.pbContactMove?(user)
+    next if !target.affectedByAdditionalEffects?
     next if battle.pbRandom(100) >= 30
     battle.pbShowAbilitySplash(user)
     if target.hasActiveAbility?(:SHIELDDUST) && !battle.moldBreaker
@@ -3250,6 +3251,7 @@ Battle::AbilityEffects::OnDealingHit.add(:POISONTOUCH,
 Battle::AbilityEffects::OnDealingHit.add(:FORESTFIRE,
   proc { |ability,user,target,move,battle|
     next if target.fainted?
+    next if !target.affectedByAdditionalEffects?
     next if move.calcType != :GRASS
     battle.pbShowAbilitySplash(user)
     if Battle::Scene::USE_ABILITY_SPLASH
@@ -3281,6 +3283,7 @@ Battle::AbilityEffects::OnDealingHit.add(:ENTANGLINGMESS,
 Battle::AbilityEffects::OnDealingHit.add(:MADNESS,
   proc { |ability,user,target,move,battle|
     next if !move.pbContactMove?(user)
+    next if !target.affectedByAdditionalEffects?
     next if battle.pbRandom(10) < 5
     battle.pbShowAbilitySplash(user)
     if target.pbCanConfuse?(user)
@@ -3294,6 +3297,7 @@ Battle::AbilityEffects::OnDealingHit.add(:PHILANTHROPIST,
   proc { |ability,user,target,move,battle|
     next if target.fainted?
     next if !move.pbContactMove?(user)
+    next if !target.affectedByAdditionalEffects?
     next if battle.pbRandom(10) < 5
     if target.status != PBStatuses::NONE
       battle.pbShowAbilitySplash(user)
@@ -3316,6 +3320,7 @@ Battle::AbilityEffects::OnDealingHit.add(:TAINTEDPOWER,
 
 Battle::AbilityEffects::OnDealingHit.add(:REVERB,
   proc { |ability,user,target,move,battle|
+    next if !target.affectedByAdditionalEffects?
     next if !move.pbDamagingMove?
     next if move.calcType != :SOUND && !move.pbSoundMove?(user)
     target.effects[PBEffects::ReverbDamage] += target.damageState.calcDamage * 0.3
@@ -3338,6 +3343,7 @@ Battle::AbilityEffects::OnDealingHit.add(:ROARINGHORN,
     battle.allSameSideBattlers(target.index).each do |b|
       next if b.index != target.index + 2 && b.index != target.index - 2
       next if !b.takesIndirectDamage?
+      next if !b.affectedByAdditionalEffects?
       battle.pbShowAbilitySplash(user)
       battle.pbDisplay(_INTL("{1} took damage from the impact!",b.pbThis))
       battle.scene.pbDamageAnimation(b)
@@ -3349,6 +3355,7 @@ Battle::AbilityEffects::OnDealingHit.add(:ROARINGHORN,
 
 Battle::AbilityEffects::OnDealingHit.add(:BLAST,
   proc { |ability,user,target,move,battle|
+    next if !target.affectedByAdditionalEffects?
     next if !user.opposes?(target)
     target.effects[PBEffects::BlastUsers].push(user)
   }
@@ -3358,6 +3365,7 @@ Battle::AbilityEffects::OnDealingHit.add(:SPICETANK,
   proc { |ability,user,target,move,battle|
     next if move.calcType != :POISON
     next if !target.pbCanBurn?(user, false)
+    next if !target.affectedByAdditionalEffects?
     next if battle.pbRandom(100) >= 30
     battle.pbShowAbilitySplash(user)
     target.pbBurn(user)
@@ -3367,6 +3375,7 @@ Battle::AbilityEffects::OnDealingHit.add(:SPICETANK,
 
 Battle::AbilityEffects::OnDealingHit.add(:SLOPPY,
   proc { |ability,user,target,move,battle|
+    next if !target.affectedByAdditionalEffects?
     next if !move.pbPhysicalMove?(user)
     chance = battle.pbRandom(100)
     # 50% chance to do nothing
@@ -3440,6 +3449,7 @@ Battle::AbilityEffects::OnDealingHit.add(:VICTORYRUSH,
 
 Battle::AbilityEffects::OnDealingHit.add(:SOUNDWAVES,
   proc { |ability,user,target,move,battle|
+    next if !target.affectedByAdditionalEffects?
     next if move.calcType != :SOUND && !move.pbSoundMove?(user)
     next if battle.pbRandom(100) >= 30
     battle.pbShowAbilitySplash(user)
@@ -3455,6 +3465,7 @@ Battle::AbilityEffects::OnDealingHit.add(:SOUNDWAVES,
 
 Battle::AbilityEffects::OnDealingHit.add(:LIQUIDCONDUCTION,
   proc { |ability,user,target,move,battle|
+    next if !target.affectedByAdditionalEffects?
     next if move.calcType != :WATER
     next if battle.pbRandom(100) >= 20
     next if !target.pbCanParalyze?(user, false)
@@ -3483,6 +3494,7 @@ Battle::AbilityEffects::OnDealingHit.add(:HEALTHYDIET,
 Battle::AbilityEffects::OnDealingHit.add(:PUNISHER,
   proc { |ability,user,target,move,battle|
     next if target.fainted?
+    next if !target.affectedByAdditionalEffects?
     next if target.effects[PBEffects::Curse]
     next if battle.pbRandom(100) >= 10
     battle.pbShowAbilitySplash(user)
@@ -3512,6 +3524,7 @@ Battle::AbilityEffects::OnDealingHit.add(:WHIRLPOOLSTYLE,
 
 Battle::AbilityEffects::OnDealingHit.add(:FRAGRANCE,
   proc { |ability,user,target,move,battle|
+    next if !target.affectedByAdditionalEffects?
     next if !move.pbContactMove?(user)
     next if battle.pbRandom(100) >= 30
     atk_stat = move.pbSpecialMove?(user) ? :SPECIAL_ATTACK : :ATTACK
@@ -4018,7 +4031,7 @@ Battle::AbilityEffects::AfterMoveUseFromTarget.add(:PICKPOCKET,
     #       sense, so this code doesn't do it.
     next if target.wild?
     next if switched_battlers.include?(user.index)   # User was switched out
-    next if !move.contactMove?
+    next if !move.pbContactMove?(user)
     next if user.effects[PBEffects::Substitute] > 0 || target.damageState.substitute
     next if target.item || !user.item
     next if user.unlosableItem?(user.item) || target.unlosableItem?(user.item)

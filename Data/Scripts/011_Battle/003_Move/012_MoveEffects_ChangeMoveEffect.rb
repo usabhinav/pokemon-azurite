@@ -278,6 +278,7 @@ class Battle::Move::EffectDependsOnEnvironment < Battle::Move
   #       via Parental Bond).
   def pbEffectAfterAllHits(user, target)
     return if target.fainted?
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.unaffected || target.damageState.substitute
     chance = pbAdditionalEffectChance(user, target)
     return if @battle.pbRandom(100) >= chance

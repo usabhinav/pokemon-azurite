@@ -579,7 +579,8 @@ class Battle::AI
       score += 20 if user.criticalHitRate > 0
       if skill >= PBTrainerAI.highSkill
         score += 20 if !target.hasActiveAbility?(:INNERFOCUS) &&
-                       target.effects[PBEffects::Substitute] == 0
+                       target.effects[PBEffects::Substitute] == 0 &&
+                       target.affectedByAdditionalEffects?
       end
     #---------------------------------------------------------------------------
     when "TwoTurnAttackRaiseUserSpAtkSpDefSpd2"
@@ -1582,7 +1583,8 @@ class Battle::AI
       score -= 90 if target.effects[PBEffects::HugCounter] >= 0
       if skill >= PBTrainerAI.highSkill
         score += 30 if !target.hasActiveAbility?(:INNERFOCUS) &&
-                       target.effects[PBEffects::Substitute] == 0
+                       target.effects[PBEffects::Substitute] == 0 &&
+                       target.affectedByAdditionalEffects?
       end
     #---------------------------------------------------------------------------
     when "TrapUserAndTargetInBattle"

@@ -462,6 +462,7 @@ end
 class Battle::Move::BindBurnTarget < Battle::Move::BindTarget
   def pbAdditionalEffect(user, target)
     return if target.damageState.substitute
+    return if !target.affectedByAdditionalEffects?
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
   end
 end
@@ -550,7 +551,7 @@ class Battle::Move::TrapFlinchTargetForNextTurn < Battle::Move
     end
     target.effects[PBEffects::HugCounter] = 2
     @battle.pbDisplay(_INTL("{1} has been embraced!", target.pbThis))
-    target.pbFlinch(user)
+    target.pbFlinch(user) if target.affectedByAdditionalEffects?
   end
 end
 
@@ -909,8 +910,9 @@ end
 # Target's last move used loses 3 PP. Damaging move. (Eerie Spell)
 #===============================================================================
 class Battle::Move::LowerPPOfTargetLastMoveBy3 < Battle::Move
-  def pbEffectAgainstTarget(user, target)
-    return if target.fainted?
+  def pbAdditionalEffect(user, target)
+    return if target.fainted? || target.damageState.substitute
+    return if !target.affectedByAdditionalEffects?
     last_move = target.pbGetMoveWithID(target.lastRegularMoveUsed)
     return if !last_move || last_move.pp == 0 || last_move.total_pp <= 0
     reduction = [3, last_move.pp].min
@@ -1169,6 +1171,7 @@ end
 class Battle::Move::DisableTargetSoundMoves < Battle::Move
   def pbAdditionalEffect(user, target)
     return if target.fainted? || target.damageState.substitute
+    return if !target.affectedByAdditionalEffects?
     if target.effects[PBEffects::ThroatChop] == 0
       @battle.pbDisplay(_INTL("The effects of {1} prevent {2} from using certain moves!",
                               @name, target.pbThis(true)))
@@ -1254,13 +1257,13 @@ class Battle::Move::UserMakeSubstituteSwitchOutUser < Battle::Move
 end
 
 #===============================================================================
-# Psychic Noise
+# For 2 rounds, disables the target's healing moves. (Psychic Noise)
 #===============================================================================
 class Battle::Move::StartTargetCannotHeal < Battle::Move
   def pbAdditionalEffect(user, target)
-    return if target.fainted?
-    return if target.effects[PBEffects::HealBlock] > 0
+    return if !target.affectedByAdditionalEffects?
     return if pbMoveFailedAromaVeil?(user, target, false)
+    return if target.effects[PBEffects::HealBlock] > 0
     target.effects[PBEffects::HealBlock] = 2
     @battle.pbDisplay(_INTL("{1} was prevented from healing!", target.pbThis))
     target.pbItemStatusCureCheck

@@ -1108,6 +1108,7 @@ class Battle::Move::RaiseTargetAttack1 < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if !target.pbCanRaiseStatStage?(:ATTACK, user, self)
     target.pbRaiseStatStage(:ATTACK, 1, user)
   end
@@ -1579,6 +1580,7 @@ end
 #===============================================================================
 class Battle::Move::StartSyrupBombTarget < Battle::Move
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.effects[PBEffects::SyrupBomb] > 0
     target.effects[PBEffects::SyrupBomb]     = 4
     target.effects[PBEffects::SyrupBombUser] = user.index
@@ -1984,6 +1986,7 @@ class Battle::Move::LowerTargetRandomStat1 < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     stat = @statArrayMap[target.index].sample
     return if stat.nil?
@@ -2503,6 +2506,7 @@ class Battle::Move::InvertTargetRandomStat < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     return if !target.hasAlteredStatStages?
     invertStat(user, target)
@@ -2854,6 +2858,7 @@ class Battle::Move::LowerTargetDefense1AndRaiseAllyAttack1 < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     if user.opposes?(target)
       return if !target.pbCanLowerStatStage?(:DEFENSE, user, self)
@@ -3098,6 +3103,7 @@ class Battle::Move::LowerTargetDefense1FlinchTarget < Battle::Move::TargetStatDo
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
 
     # 50% chance to lower Defense.

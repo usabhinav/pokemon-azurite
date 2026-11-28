@@ -322,6 +322,7 @@ class Battle::Move::TwoTurnAttackParalyzeTarget < Battle::Move::TwoTurnMove
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
   end
@@ -337,6 +338,7 @@ class Battle::Move::TwoTurnAttackBurnTarget < Battle::Move::TwoTurnMove
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
   end
@@ -354,6 +356,7 @@ class Battle::Move::TwoTurnAttackFlinchTarget < Battle::Move::TwoTurnMove
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbFlinch(user)
   end
@@ -491,6 +494,7 @@ class Battle::Move::TwoTurnAttackInvulnerableInSkyParalyzeTarget < Battle::Move:
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
   end

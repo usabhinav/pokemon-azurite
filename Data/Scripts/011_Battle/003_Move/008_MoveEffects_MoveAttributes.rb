@@ -69,6 +69,7 @@ end
 #===============================================================================
 class Battle::Move::LowerTargetHP20 < Battle::Move
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     target.pbReduceHP(20, false)
     @battle.pbDisplay(_INTL("Some crystal shards hit {1}!", target.pbThis(true)))
   end
@@ -1498,6 +1499,7 @@ class Battle::Move::RecoilThirdOfDamageDealtParalyzeTarget < Battle::Move::Recoi
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbParalyze(user) if target.pbCanParalyze?(user, false, self)
   end
@@ -1515,6 +1517,7 @@ class Battle::Move::RecoilThirdOfDamageDealtBurnTarget < Battle::Move::RecoilMov
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
   end
@@ -1533,6 +1536,7 @@ class Battle::Move::RecoilTenPercentOfTotalHPBurnTarget < Battle::Move
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
   end
@@ -1556,6 +1560,7 @@ end
 #===============================================================================
 class Battle::Move::RecoilThirdOfDamageDealtFreezeTarget < Battle::Move::RecoilThirdOfDamageDealt
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbFreeze if target.pbCanFreeze?(user, false, self)
   end
@@ -1624,6 +1629,7 @@ class Battle::Move::Recoil30PercentAndConfuseTarget < Battle::Move::RecoilMove
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     return if !target.pbCanConfuse?(user, false, self)
     target.pbConfuse
@@ -1642,6 +1648,7 @@ class Battle::Move::Recoil40PercentAndBurnTarget < Battle::Move::RecoilMove
   end
 
   def pbAdditionalEffect(user, target)
+    return if !target.affectedByAdditionalEffects?
     return if target.damageState.substitute
     target.pbBurn(user) if target.pbCanBurn?(user, false, self)
   end
